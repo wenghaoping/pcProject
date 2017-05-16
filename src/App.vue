@@ -22,7 +22,7 @@
       <el-menu default-active="activeIndex" class="el-menu-demo" mode="horizontal">
         <el-menu-item :span="3" index="1"><img src="./assets/logo/logoing.png"></el-menu-item>
         <el-menu-item index="2">首页</el-menu-item>
-        <el-menu-item index="3">工作台</el-menu-item>
+        <el-menu-item index="myProject" default-active="/myProject">工作台</el-menu-item>
         <el-menu-item index="4"><i class="el-icon-setting"></i>小程序</el-menu-item>
       </el-menu>
       </el-col>
@@ -56,7 +56,10 @@
       return {
         activeIndex: '1'
       };
-    }
+    },
+    created: function(){
+      this.$router.push('/myProject');
+    },
   }
 </script>
 

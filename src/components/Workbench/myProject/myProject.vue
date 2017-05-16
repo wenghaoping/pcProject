@@ -9,6 +9,7 @@
     <topNav>
 
     </topNav>
+
     <div class="search">
       <el-input
         placeholder="搜索项目,公司名称"
@@ -28,7 +29,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import topNav from '../../base/topNav.vue'
+  import topNav from './../../base/topNav.vue'
   export default {
     data() {
       return {
