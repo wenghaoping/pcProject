@@ -1,11 +1,14 @@
 <template>
   <div class="myProjct">
-    <el-tabs v-model="activeName2" type="card" class="top_nav">
+    <!--<el-tabs v-model="activeName2" type="card" class="top_nav">
       <el-tab-pane label="我的项目" name="first">我的项目</el-tab-pane>
       <el-tab-pane label="我的人脉" name="second">我的人脉</el-tab-pane>
       <el-tab-pane label="跟进记录" name="third">跟进记录</el-tab-pane>
 
-    </el-tabs>
+    </el-tabs>-->
+    <topNav>
+
+    </topNav>
     <div class="search">
       <el-input
         placeholder="搜索项目,公司名称"
@@ -25,12 +28,16 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import topNav from './topNav.vue'
   export default {
     data() {
       return {
         input2: '',
         activeName2:''
       }
+    },
+    components: {
+      topNav
     },
     methods: {
       handleIconClick(ev) {
