@@ -28,7 +28,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import topNav from './topNav.vue'
+  import topNav from '../../base/topNav.vue'
   export default {
     data() {
       return {
