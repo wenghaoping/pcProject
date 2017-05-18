@@ -1,10 +1,7 @@
 <template>
-  <div id="test">
+  <div id="topNav">
     <ul class="select ulfl tc">
       <li @click="toggle(index)" v-for="(tab,index) in tabs" :class="{border:active===index}">
-<!--        <a :href=" tab.jump ">
-          {{tab.type}}
-        </a>-->
         <router-link :to=" tab.jump ">
           {{tab.type}}
         </router-link>
@@ -32,14 +29,14 @@
     methods: {
       toggle(i){
         this.active = i
-        console.log(i)
+
       }
     }
   }
 </script>
 
 <style lang="less">
-
+#topNav{
   .select{
     border-bottom: 1px black solid;height: 58px;
     cursor: pointer;
@@ -50,6 +47,7 @@
       }
     }
 
+
     .border{
       border:4px #d3dce6 solid;
       border-bottom: none;
@@ -59,5 +57,6 @@
       }
     }
   }
+}
 
 </style>

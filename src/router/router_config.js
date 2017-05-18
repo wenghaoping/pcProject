@@ -24,25 +24,28 @@ import test from '@/test/test.vue'
 /*配置路由*/
 export default [
 
-    {
-      path: '/workBench', name: 'workBench', component: workBench, name:"workBench",
+  {
+    path: '/workBench', name: 'workBench', component: workBench, name:"workBench",
 
-      children:[
-        { path: '', component: indexmyProject},
-        { path: '/workBench/myProject', component: indexmyProject, name:"indexmyProject",
-          children:[
-            { path: '', component: myProject, name:"myProject"},
-            { path: '/workBench/myContacts', component: myContacts, name:"myContacts"},
-            { path: '/workBench/followup', component: followUp, name:"followUp"}
-          ]
-        },
-      ]
-    },
+    children:[
+      { path: '', component: indexmyProject},
+      { path: '/workBench/myProject', component: indexmyProject, name:"indexmyProject",
+        children:[
+          { path: '', component: myProject, name:"myProject"},
+          { path: '/workBench/myContacts', component: myContacts, name:"myContacts"},
+          { path: '/workBench/followup', component: followUp, name:"followUp"}
+        ]
+      },
+    ]
+  },
   {
     path: '/index', name: 'index', component: index, name:"index"
   },
   {
     path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine, name:"SmallRoutine"
+  },
+  {
+    path: '/test', name: 'test', component: test, name:"test"
   }
   ]
 
