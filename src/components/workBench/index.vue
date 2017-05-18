@@ -63,7 +63,7 @@ export default {
 #index .main-right{background-color: #fff;padding-left: 170px;}
 /* 路由切换动效 */
 .fade-enter-active, .fade-leave-active {
-  transition: all .5s;
+  transition: all .2s;
 }
 .fade-enter, .fade-leave-active {
   opacity: 0;

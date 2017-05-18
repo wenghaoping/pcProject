@@ -2,43 +2,49 @@
   <div id="test">
     <ul class="select ulfl tc">
       <li @click="toggle(index)" v-for="(tab,index) in tabs" :class="{border:active===index}">
-<!--        <a :href=" tab.jump ">
+        <a :href=" tab.jump ">
           {{tab.type}}
-        </a>-->
-        <router-link :to=" tab.jump ">
-          {{tab.type}}
-        </router-link>
+        </a>
       </li>
     </ul>
 
+    <!--下方主内容切换区-->
+    <main>
+      <transition name="fade"  mode="out-in">
+        <router-view class="view">
+
+
+        </router-view>
+      </transition>
+    </main>
   </div>
 
 </template>
 
 <script type="text/ecmascript-6">
 
-  export default {
-    name: 'hello',
-    data () {
-      return {
+export default {
+  name: 'hello',
+  data () {
+    return {
         active: 0,
         tabs: [
-          {type: '我的项目',jump:'/workBench/myProject'},
-          {type: '我的人脉',jump:'/workBench/myContacts'},
-          {type: '跟进记录',jump:'/workBench/followUp'}
+          {type: '我的项目',jump:'myProject'},
+          {type: '我的人脉',jump:'myContacts'},
+          {type: '跟进记录',jump:'followUp'}
         ]
-      }
-    },
-    methods: {
-      toggle(i){
-        this.active = i
-        console.log(i)
-      }
+    }
+  },
+  methods: {
+    toggle(i){
+      this.active = i
+      console.log(i)
     }
   }
+}
 </script>
 
-<style lang="less">
+<style scoped lang="less">
 
   .select{
     border-bottom: 1px black solid;height: 58px;
@@ -46,7 +52,7 @@
     li{width: 100px;height: 50px;line-height: 50px;border:4px #fff solid;
 
       a{
-        width: 100px;height: 50px;color:#8492a6;display: block;
+        color:#8492a6;
       }
     }
 
