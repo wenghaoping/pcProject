@@ -36,7 +36,6 @@
   Vue.use(Element)
   import $ from 'jquery'
   import tool from './assets/js/tool.js';
-  Object.defineProperty(Vue.prototype, '$tool', { value: tool });
   export default {
 
     name: 'app',

@@ -5,7 +5,7 @@
  * 获取页面数据
  */
 const tool={
-  getFormData : function (){
+  getFormData (){
     var rtn = new Object();
     // input元素的值
     $("input[type=text]").each(function(){
@@ -58,7 +58,7 @@ const tool={
    *
    * @param data
    */
-  bindFormData: function (data) {
+  bindFormData (data) {
     if ((data == null) || (data == "") || (data == undefined)) {
       return;
     }
@@ -77,7 +77,18 @@ const tool={
       }
       element.val(data[key]);
     }
+  },
+  /*数组封装*/
+  getToObject (data) {
+    let object={};
+    for(let key in data){
+      object[key]=data[key]
+    }
+    return object;
   }
+}
 
+export{ //很关键
+  tool
 }
 
