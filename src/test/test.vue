@@ -1,5 +1,21 @@
 <template>
   <div id="test">
+    <el-upload
+      class="upload-demo"
+      ref="upload"
+      action="post"
+      :on-preview="handlePreview"
+      :on-remove="handleRemove"
+      :file-list="fileList"
+      :auto-upload="false">
+      <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+      <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
+
+
+
+
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="活动名称">
         <el-input v-model="form.name"></el-input>
@@ -63,7 +79,8 @@
           delivery: false,
           type: [],
           resource: '',
-          desc: ''
+          desc: '',
+          fileList: []
         }
       }
     },
@@ -71,11 +88,17 @@
 
       onSubmit() {
         var data=this.form;
-        var object={};
-        for(let key in data){
-          object[key]=data[key]
-        }
-        console.log(object);
+
+        console.log(tool.getToObject(data));
+      },
+      submitUpload() {
+        this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
       }
     }
   }
