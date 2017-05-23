@@ -19,7 +19,12 @@ import SmallRoutine from '@/components/SmallRoutine/index.vue'
 
 
 //测试路由
-import test from '@/test/test.vue'
+import test from '@/test/upload.vue'
+import test2 from '@/test/test2.vue'
+import create from '@/test/watch.vue'
+import createForm from '@/test/createForm.vue'
+
+
 
 /*配置路由*/
 export default [
@@ -45,7 +50,7 @@ export default [
     path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine, name:"SmallRoutine"
   },
   {
-    path: '/test', name: 'test', component: test, name:"test"
+    path: '/test', name: 'test', component: createForm, name:"test"
   }
   ]
 
