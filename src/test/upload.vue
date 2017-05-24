@@ -101,17 +101,17 @@
       onSubmit() {
         var data=this.form;
 
-        console.log(tool.getToObject(data));
+        console.log(this.$tool.getToObject(data));
       },
       submitUpload() {
         this.$refs.upload.submit();
       },
       handleRemove(file, fileList) {
-        console.log(tool.getToObject(file));
-        console.log(tool.getToObject(fileList));
+        console.log(this.$tool.getToObject(file));
+        console.log(this.$tool.getToObject(fileList));
       },
       handlePreview(file) {
-        console.log(tool.getToObject(file));
+        console.log(this.$tool.getToObject(file));
       },
       success(response, file, fileList){
         console.log(response)
@@ -119,13 +119,13 @@
         console.log(fileList)
       },
       err(err, file, fileList){
-        console.log(tool.getToObject(err))
-        console.log(tool.getToObject(file))
-        console.log(tool.getToObject(fileList))
+        console.log(this.$tool.getToObject(err))
+        console.log(this.$tool.getToObject(file))
+        console.log(this.$tool.getToObject(fileList))
       },
       handleChange(file, fileList) {
-        console.log(tool.getToObject(file))
-        console.log(tool.getToObject(fileList))
+        console.log(this.$tool.getToObject(file))
+        console.log(this.$tool.getToObject(fileList))
 
       }
     }

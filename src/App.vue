@@ -33,9 +33,10 @@
   //引入自己的CSS,格式化样式
   import './assets/css/base.css'
   import './assets/css/animate.css'
-  Vue.use(Element)
   import $ from 'jquery'
   import tool from './assets/js/tool.js';
+  Vue.use(Element)//UI库
+  Vue.use(tool);//自己的库
   export default {
 
     name: 'app',
@@ -64,9 +65,10 @@
 </script>
 
 <style lang="less">
+  @import './assets/css/index.less';
   body{margin: 0;}
   #app {
-    min-width: 1200px;
+    min-width: 1920px;
     margin: 0 auto;
     font-family: "Helvetica Neue","PingFang SC",Arial,sans-serif;
       header{

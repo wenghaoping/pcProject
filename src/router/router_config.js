@@ -9,7 +9,11 @@ import workBench from '@/components/workBench/index.vue'
 //我的项目主页路由
 import indexmyProject from '@/components/workBench/myProject/index.vue'
 import myProject from '@/components/workBench/myProject/myProject.vue'    //我的项目
+import projectDetails from '@/components/workBench/myProject/projectDetails.vue'   //项目详情
+
+
 import myContacts from '@/components/workBench/myContacts/mycontacts.vue'//我的人脉
+
 import followUp from '@/components/workBench/followUp/followup.vue'     //跟进记录
 
 /*===============================小程序页面路由配置===============================*/
@@ -19,10 +23,10 @@ import SmallRoutine from '@/components/SmallRoutine/index.vue'
 
 
 //测试路由
-import test from '@/test/upload.vue'
-import test2 from '@/test/test2.vue'
-import create from '@/test/watch.vue'
 import createForm from '@/test/createForm.vue'
+import watch from '@/test/watch.vue'
+import jump from '@/test/jump.vue'
+import selectbox from '@/test/selectbox.vue'
 
 
 
@@ -37,10 +41,12 @@ export default [
       { path: '/workBench/myProject', component: indexmyProject, name:"indexmyProject",
         children:[
           { path: '', component: myProject, name:"myProject"},
-          { path: '/workBench/myContacts', component: myContacts, name:"myContacts"},
-          { path: '/workBench/followup', component: followUp, name:"followUp"}
+
+          { path: 'myContacts', component: myContacts, name:"myContacts"},
+          { path: 'followup', component: followUp, name:"followUp"}
         ]
       },
+      { path: 'projectDetails', component: projectDetails, name:"projectDetails"},
     ]
   },
   {
@@ -50,7 +56,7 @@ export default [
     path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine, name:"SmallRoutine"
   },
   {
-    path: '/test', name: 'test', component: createForm, name:"test"
+    path: '/test', name: 'test', component: selectbox, name:"test"
   }
   ]
 

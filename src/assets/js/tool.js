@@ -78,7 +78,9 @@ const tool={
       element.val(data[key]);
     }
   },
-  /*数组封装*/
+  /*数组封装
+  * 将对象中无用的参数去除
+  * */
   getToObject (data) {
     let object={};
     for(let key in data){
@@ -86,11 +88,21 @@ const tool={
     }
     return object;
   },
-
+  /*对象封装
+   * 将数组中无用的参数去除
+   *
+   * */
+  getToArrObject(data) {
+    let newArr = new Array;
+    for(let i=0;i<data.length; i++){
+      newArr[i]=tool.getToObject(data[i])
+    }
+    return newArr;
+  },
   /*设置上传文件大小以及类型fileChange(this)*/
 fileChange(target,id) {
-  var isIE = /msie/i.test(navigator.userAgent) && !window.opera;
-  var fileSize = 0;
+  let isIE = /msie/i.test(navigator.userAgent) && !window.opera;
+  let fileSize = 0;
   const filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
   const filepath = target.value;
   const filemaxsize = 1024*2;//2M
@@ -140,7 +152,8 @@ fileChange(target,id) {
 }
 }
 
-export{ //很关键
-  tool
+export default{
+  install(Vue){
+    Vue.prototype.$tool = tool;
+  }
 }
-
