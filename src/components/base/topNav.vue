@@ -1,8 +1,8 @@
 <template>
   <div id="topNav">
     <ul class="select ulfl tc">
-      <li @click="toggle(index)" v-for="(tab,index) in tabs" :class="{border:active===index}">
-        <router-link :to=" tab.jump ">
+      <li @click="toggle(index)" v-for="(tab,index) in tabs">
+        <router-link :to=" tab.jump " :class="{border:active===index}">
           {{tab.type}}
         </router-link>
       </li>
@@ -38,23 +38,17 @@
 <style lang="less">
 #topNav{
   .select{
-    border-bottom: 1px black solid;height: 58px;
+    height: 50px;
     cursor: pointer;
-    li{width: 100px;height: 50px;line-height: 50px;border:4px #fff solid;
-
+    padding-left: 25px;
+    li{width: 100px;height: 50px;line-height: 50px;
       a{
-        width: 100px;height: 50px;color:#8492a6;display: block;
+        height: 40px;color:#8492a6;display: block;font-size: 15px;
       }
     }
-
-
     .border{
-      border:4px #d3dce6 solid;
-      border-bottom: none;
-      border-radius: 10px 10px  0 0;
-      a{
-        color: #20a0ff;
-      }
+      border-bottom: 2px #20a0ff solid;
+      color: #20a0ff;
     }
   }
 }

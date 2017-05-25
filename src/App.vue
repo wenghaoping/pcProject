@@ -3,9 +3,9 @@
 <!--     头部导航 -->
     <header id="header">
       <ul class="select ulfl tc">
-        <li style="width: 150px;"><img src="./assets/logo/logoing.png"></li>
-        <li @click="toggle(index)" v-for="(tab,index) in tabs" :class="{border:active===index}">
-          <router-link :to=" tab.jump ">
+        <li style="width: 150px;margin-right: 320px;vertical-align: middle;display: table-cell;height: 60px;"><img src="./assets/logo/logoing.png" style="vertical-align:middle;"></li>
+        <li @click="toggle(index)" v-for="(tab,index) in tabs" >
+          <router-link :to=" tab.jump " :class="{border:active===index}">
             {{tab.type}}
           </router-link>
         </li>
@@ -35,8 +35,12 @@
   import './assets/css/animate.css'
   import $ from 'jquery'
   import tool from './assets/js/tool.js';
+  import axios from 'axios'
+  import VueAxios from 'vue-axios'
+  Vue.use(VueAxios, axios)//http请求
   Vue.use(Element)//UI库
   Vue.use(tool);//自己的库
+
   export default {
 
     name: 'app',
@@ -44,7 +48,7 @@
       return {
         active: 0,
         tabs: [
-          {type: '首页',jump:'/index'},
+/*          {type: '首页',jump:'/index'},*/
           {type: '工作台',jump:'/workBench/myProject'},
           {type: '小程序',jump:'/smallRoutine'},
           {type: '测试页面',jump:'/test'}
@@ -59,7 +63,7 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/index');
+      this.$router.push('/workBench/projectDetails');
     },
   }
 </script>
@@ -71,23 +75,33 @@
     min-width: 1920px;
     margin: 0 auto;
     font-family: "Helvetica Neue","PingFang SC",Arial,sans-serif;
-      header{
-         width: 100%;background: #40587A;height: 60px;
-       }
-    width: 100%;background: #40587A;height: 60px;
+      header {
+        width: 100%;
+        background:#40587a;
+        height: 60px;
+      }
 
     .select{
-      color:#fff;
       cursor: pointer;
-      li{width: 100px;height: 50px;line-height: 50px;
 
+      color:#ffffff;
+      letter-spacing:0;
+      line-height:16px;
+      height: 60px;
+      li{width: 150px;
+        height: 50px;
+        line-height: 50px;
         a{
-          width: 100px;height: 50px;display: block;color: #fff;
+          text-align:center;
+          height: 50px;
+          display: block;
+          color: #fff;
+          font-size: 16px;
+          width: 70px;
         }
       }
       .border{
-        border-bottom: 3px white solid;
-
+        border-bottom: 1px white solid;
         a{
           color: #fff;
         }

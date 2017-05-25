@@ -1,83 +1,82 @@
 <template>
   <div id="projectDetails">
-    {{ this.$route.query.address }}
+<!--    {{ this.$route.query.address }}-->
     <div class="contain-grid contain-center">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
-        <div class="item-lists">
-          <div class="item">
-            <span class="title">微天使乐投平台</span>
-            <span class="small-tag">私密</span>
-            <span class="company">杭州投着乐网络科技有限公司</span>
-            <span class="resource">来源 : 真格基金</span>
-          </div>
-          <div class="item" style="margin-top: 14px;">
-            <div class="doc">这里是这个项目的一句话介绍，字数在40字以内，要全部显示这里是这个项目的一句话介。</div>
-            <span class="flower">跟进人 : 金牛</span>
-          </div>
-          <div class="item" style="margin-top:18px;">
-            <span class="mid-tag">教育培训</span>
-            <span class="mid-tag">社交通讯</span>
-            <span class="mid-tag">大数据</span>
-            <span class="mid-tag">sass</span>
-          </div>
-          <div class="item" style="margin-top:18px;">
-            <span class="big-tag">100-300万</span><span class="split">｜</span>
-            <span class="big-tag">杭州</span><span class="split">｜</span>
-            <span class="big-tag">10%</span><span class="split">｜</span>
-            <span class="big-tag">天使轮</span>
-          </div>
-          <div class="item progress" style="margin-top:90px;margin-bottom: 4px;">
-            <div class="txt begin">项目线索</div>
-            <div class="progress-bar">
-              <span class="circle circle-s"></span>
-              <span class="bar-bg">&nbsp;</span>
-              <span class="bar-fg">&nbsp;</span>
-
-              <span class="circle circle-c"></span>
-              <span  class="txt state">签约</span>
-
-              <span class="circle circle-e">&nbsp;</span>
+        <div class="item-lists clearfix">
+          <div class="item-lists-inner-left fl">
+            <div class="item">
+              <span class="small-tag">私密</span>
+              <el-tooltip class="item" effect="dark" placement="top-start">
+                <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
+              <span class="icon"><img src="../../../assets/logo/why.png"/></span>
+              </el-tooltip>
+              <span class="title">微天使乐投平台</span>
+              <span class="company">杭州投着乐网络科技有限公司</span>
             </div>
-            <div class="txt end">佣金收讫</div>
-
-
-            <div class="txt end" style="margin-left: 65px">项目完事度</div>
-            <div class="progress-bar">
-              <span class="bar-bg">&nbsp;</span>
-              <span class="bar-fg" style="background:#13ce66;width:68px;">&nbsp;</span>
+            <div class="item" style="margin-top: 14px;">
+              <div class="doc">这里是这个项目的一句话介绍，字数在40字以内，要全部显示这里是这个项目的一句话介。</div>
             </div>
-            <div class="txt end">100%</div>
+            <div class="item" style="margin-top:18px;">
+              <span class="mid-tag">教育培训</span>
+              <span class="mid-tag">社交通讯</span>
+              <span class="mid-tag">大数据</span>
+              <span class="mid-tag">sass</span>
+            </div>
+            <div class="item" style="margin-top:18px;">
+              <span class="big-tag">100-300万</span><span class="split">｜</span>
+              <span class="big-tag">杭州</span><span class="split">｜</span>
+              <span class="big-tag">10%</span><span class="split">｜</span>
+              <span class="big-tag">天使轮</span>
+              <span class="flower">跟进人 : 金牛</span>
+              <span class="flower">来源 : 真格基金　</span>
+            </div>
+            <div class="item" style="margin-top:18px;">
+            <span class="project">
+              <span class="title">项目完整度:</span>
+              <span class="number">100%</span>
+              <span class="more">超过60%的项目更易被投资人关注</span>
+            </span>
+              <span class="project" style="width: 291px;">
+              <div class="item progress">
+                <div class="txt begin">项目线索</div>
+                <div class="progress-bar">
+                  <span class="circle circle-s"></span>
+                  <span class="bar-bg">&nbsp;</span>
+                  <span  class="txt state">签约</span>
+                  <span class="circle circle-e">&nbsp;</span>
+                </div>
+                <div class="txt end">佣金收讫</div>
+              </div>
+            </span>
+            </div>
+            <div class="onlyone">
+              <img src="../../../assets/logo/onlyonedark.png"/>
+<!--              <img src="../../../assets/logo/onlyonelight.png"/>-->
+            </div>
+          </div>
+          <div class="item-lists-inner-right fl">
+            <div class="text">
+              <img src="../../../assets/logo/text.png"/>
+            </div>
+            <el-tooltip class="item" effect="dark" placement="top-start">
+              <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商,核心团队,产品数据,历史融资,新闻谬论等全方面信息</div>
+              <span class="icon icon2"><img src="../../../assets/logo/why.png"/></span>
+            </el-tooltip>
 
             <div class="button-float" @click="dialogVisible = true" style="cursor:pointer" >
-              一键尽调
-            </div>
-            <!--===========================================一键尽调弹窗=============================================-->
-            <!--<el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-              <el-form :model="form">
-                <el-form-item label="活动名称" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="活动区域" :label-width="formLabelWidth">
-                  <el-select v-model="form.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-form>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-              </div>
-            </el-dialog>-->
-            <research :dialog-visible="dialogVisible" v-on:changeall="listenToMyBoy">
-
-            </research>
-
+            一键尽调
           </div>
+          </div>
+
+          <!--===========================================一键尽调弹窗=============================================-->
+          <research :dialog-visible="dialogVisible" v-on:changeall="dialogVisiblechange">
+
+          </research>
+
         </div>
-        <div class="line"></div>
-        <div class="item-lists">
+        <div class="item-lists clearfix">
           <el-tabs v-model="show" @tab-click="handleClick">
             <el-tab-pane label="项目详情" name="detail"></el-tab-pane>
             <el-tab-pane label="跟进记录" name="flow"></el-tab-pane>
@@ -235,16 +234,13 @@
         </div>
       </div>
     </div>
-    <div class="contain-grid contain-right-1">
+    <div class="contain-grid contain-right-1 clearfix">
       <div class="main-box">
         <el-tabs v-model="show" @tab-click="handleClick">
           <el-tab-pane label="潜在买家" name="detail"></el-tab-pane>
           <el-tab-pane label="人脉匹配" name="flow"></el-tab-pane>
           <el-tab-pane label="全网人脉匹配" name="files"></el-tab-pane>
         </el-tabs>
-        <div class="item-lists" style="height:290px;">
-          <div id="pieBox" style="width:392px;height:290px;"></div>
-        </div>
         <div class="item-lists">
           <div class="item">
             <div class="card-title">
@@ -392,7 +388,7 @@
         </div>
       </div>
     </div>
-    <div class="contain-grid contain-right-2">
+    <div class="contain-grid contain-right-2 clearfix">
       <div class="main-box">
         <div class="title-box">
           <span class="lit-line"></span>
@@ -415,8 +411,7 @@
         form:{
           name:'',
           region:''
-        },
-        formLabelWidth: '100px'
+        }
       }
     },
     computed:{
@@ -534,7 +529,7 @@
       goBack(){//返回上一层
         this.$router.go(-1);
       },
-      listenToMyBoy(msg){
+      dialogVisiblechange(msg){
         this.dialogVisible=msg;
         console.log(msg)
       }
