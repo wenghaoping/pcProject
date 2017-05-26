@@ -59,6 +59,7 @@
 
 <script type="text/ecmascript-6">
   import ElButton from "../../../../node_modules/element-ui/packages/button/src/button";
+
   export default {
     components: {ElButton},
     data() {
@@ -119,7 +120,8 @@
         roundFilters:[{ text: 'IPO上市后', value: 'IPO上市后' },{ text: 'Pre-A', value: 'Pre-A' }],
         regionFilters:[{ text: '北京', value: '北京' },{ text: '上海', value: '上海' }],
         moneyFilters:[{ text: '3000万', value: '3000万' },{ text: '4000万', value: '4000万'}],
-        currentPage:1
+        currentPage:1,
+        fullscreenLoading: false
       }
     },
     methods:{
@@ -135,6 +137,7 @@
         console.log(this.$tool.getToObject(row))
         console.log(column)
         if(column.label!="操作"){
+
           this.$router.push({ name: 'projectDetails', query: { address:row.address}})
         }
       },

@@ -41,6 +41,7 @@
     height: 50px;
     cursor: pointer;
     padding-left: 25px;
+    background: #ffffff;
     li{width: 100px;height: 50px;line-height: 50px;
       a{
         height: 40px;color:#8492a6;display: block;font-size: 15px;

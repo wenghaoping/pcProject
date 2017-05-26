@@ -9,6 +9,26 @@
             {{tab.type}}
           </router-link>
         </li>
+<!--        <el-tooltip placement="bottom" effect="light">
+          <div slot="content">-->
+
+<!--          </div>-->
+          <li style="position: relative" id="samllrou">小程序</li>
+          <div class="weixin">
+            <p style="margin-top: 25px;">微信扫一扫</p>
+            <p>发现更多精选资源</p>
+            <div class="img">
+              <img src="./assets/logo/weixin.png">
+            </div>
+            <div class="arrow">
+              <img src="./assets/logo/arrow.png">
+            </div>
+          </div>
+<!--        </el-tooltip>-->
+
+        <li style="margin-left: 490px;">
+          张三
+        </li>
       </ul>
     </header>
 
@@ -50,7 +70,7 @@
         tabs: [
 /*          {type: '首页',jump:'/index'},*/
           {type: '工作台',jump:'/workBench/myProject'},
-          {type: '小程序',jump:'/smallRoutine'},
+          {type: '扫码登陆页面测试',jump:'/smallRoutine'},
           {type: '测试页面',jump:'/test'}
         ]
       }
@@ -63,7 +83,7 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/workBench/projectDetails');
+      this.$router.push('/workBench/myProject');
     },
   }
 </script>
@@ -71,6 +91,12 @@
 <style lang="less">
   @import './assets/css/index.less';
   body{margin: 0;}
+/*  .is-light{
+    border: none!important;
+  }
+  .el-tooltip__popper{
+    padding: 0!important;
+  }*/
   #app {
     min-width: 1920px;
     margin: 0 auto;
@@ -80,7 +106,6 @@
         background:#40587a;
         height: 60px;
       }
-
     .select{
       cursor: pointer;
 
@@ -99,6 +124,7 @@
           font-size: 16px;
           width: 70px;
         }
+
       }
       .border{
         border-bottom: 1px white solid;
@@ -108,9 +134,42 @@
       }
     }
   }
+  #samllrou:hover + .weixin{
+    opacity: 1;
+  }
+  .weixin{
+    opacity: 0;
+    transition: all 0.5s;
+
+    position: absolute;
+    z-index: 100;
+    top:53px;
+    right:327px;
+    background:#ffffff;
+    box-shadow:0 4px 4px 0 rgba(64,88,122,0.10);
+    border-radius:4px;
+    width:227px;
+    height:296px;
+    p{
+      font-size:18px;
+      color:#1f2d3d;
+      line-height:24px;
+      text-align:center;
+
+    }
+    .img{
+      margin: 32px;
+    }
+    .arrow{
+      position: absolute;
+      top: -14px;
+      right: 105px
+    }
+  }
+
 
 /*  !* 主内容区 *!*/
-  main{min-height: 800px;}
+/*  main{min-height: 800px;}*/
 
   /* 路由切换动效 */
   .fade-enter-active, .fade-leave-active {

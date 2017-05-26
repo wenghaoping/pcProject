@@ -441,6 +441,7 @@
 
 <script type="text/ecmascript-6">
   import research from './research.vue'
+  import { Loading } from 'element-ui';
   var echarts = require('echarts');
   export default {
     data(){
@@ -459,6 +460,7 @@
     components: {
       research
     },
+    //Echart组件
     mounted:function(){
       var myPie = echarts.init(document.getElementById('pieBox'));
       var colors = ["#13ce66","#f7ba2a","#20a0ff"];
@@ -571,8 +573,36 @@
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
         console.log(msg)
+      },
+      fetchData () {
+        Loading.service({ fullscreen: true,text:"正在加载数据中"});
+        setTimeout(function () {
+          let loadingInstance = Loading.service({ fullscreen: true});
+          loadingInstance.close();
+        },1000)
+
+        /*this.error = this.post = null
+        this.loading = true
+        // replace getPost with your data fetching util / API wrapper
+        getPost(this.$route.params.id, (err, post) => {
+          this.loading = false
+          if (err) {
+            this.error = err.toString()
+          } else {
+            this.post = post
+          }
+        })*/
       }
-    }
+    },
+    created () {
+      // 组件创建完后获取数据，
+      // 此时 data 已经被 observed 了
+      this.fetchData()
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      '$route': 'fetchData'
+    },
   }
 </script>
 
