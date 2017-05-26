@@ -1,10 +1,10 @@
 <template>
-  <div id="projectDetails">
+  <div id="projectDetails" class="clearfix">
 <!--    {{ this.$route.query.address }}-->
     <div class="contain-grid contain-center">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
-      <div class="main-box">
-        <div class="item-lists clearfix">
+      <div class="main-box clearfix">
+        <div class="item-lists item-lists-top clearfix">
           <div class="item-lists-inner-left fl">
             <div class="item">
               <span class="small-tag">私密</span>
@@ -43,7 +43,8 @@
                 <div class="txt begin">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
-                  <span class="bar-bg">&nbsp;</span>
+                  <span class="bar-bg1">&nbsp;</span>
+                  <span class="bar-bg2">&nbsp;</span>
                   <span  class="txt state">签约</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
@@ -61,10 +62,9 @@
               <img src="../../../assets/logo/text.png"/>
             </div>
             <el-tooltip class="item" effect="dark" placement="top-start">
-              <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商,核心团队,产品数据,历史融资,新闻谬论等全方面信息</div>
-              <span class="icon icon2"><img src="../../../assets/logo/why.png"/></span>
+              <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商、核心团队、产品数据、历史融资、新闻谬论等全方面信息</div>
+              <span class="icon icon2" style="cursor: pointer"><img src="../../../assets/logo/why.png"/></span>
             </el-tooltip>
-
             <div class="button-float" @click="dialogVisible = true" style="cursor:pointer" >
             一键尽调
           </div>
@@ -76,6 +76,7 @@
           </research>
 
         </div>
+        <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
         <div class="item-lists clearfix">
           <el-tabs v-model="show" @tab-click="handleClick">
             <el-tab-pane label="项目详情" name="detail"></el-tab-pane>
@@ -84,7 +85,7 @@
           </el-tabs>
           <div class="ul-lists">
             <div class="item">
-              <span class="title">项目介绍</span>
+              <span class="title"><img class="img" src="../../../assets/logo/projectIntroduce.png">项目介绍</span>
               <div class="person-info">
                 <span>项目联系人 : </span>
                 <span>张三</span>
@@ -97,10 +98,19 @@
             </div>
             <div class="item" style="margin-top:24px;">
               <div class="paper">
-                <span class="pt">商业计划书：杭州投着乐网络科技有限公司bp科技有限公司bp</span>
+                <img class="img" style="padding-right: 16px;" src="../../../assets/logo/paper.png">
+                <span class="pt">杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司</span>
+                <el-button type="text" size="mini">查看</el-button>
+                <el-button type="text" size="mini">下载</el-button>
+              </div>
+              <div class="paper">
+                <img class="img" style="padding-right: 16px;" src="../../../assets/logo/paper.png">
+                <span class="pt">杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司</span>
+                <el-button type="text" size="mini">查看</el-button>
+                <el-button type="text" size="mini">下载</el-button>
               </div>
             </div>
-            <div class="item" style="margin-top:24px;height: 20px;">
+            <div class="item" style="margin-top:24px;height: 49px;">
               <div class="bot-det">
                 <span class="det-title">运营状态：</span>
                 <span class="del-info">已上线</span>
@@ -114,11 +124,18 @@
                 <span class="del-info">5-20人</span>
               </div>
             </div>
+            <div class="line"></div>
+            <div class="ul-lists" style="margin-top:16px;padding: 0">
+              <div class="item">
+                <span class="title" style="font-size: 16px;">项目亮点</span>
+                <div class="prod-doc" style="font-size: 13px;">我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。 2.行中：管家确保出现在用户出行过程中每一个重要和紧急的环节。 我们的管家分为线上的总部管家和线下的目的地管家。目前，我们在全球7个国家建立了分公司、办事处。飞机落地之后，对接当地管家。此外，用户在任何时候都可以通过微信公众号或者 24 小时待机的国内电话联系到总部管家，并得到总部管家的帮助。</div>
+              </div>
+            </div>
           </div>
 
           <div class="ul-lists" style="margin-top:16px;">
             <div class="item">
-              <span class="title">核心团队</span>
+              <span class="title"><img class="img" src="../../../assets/logo/team.png">核心团队</span>
             </div>
             <div class="item" style="margin-top:33px;">
               <span class="person-tag">90后创业者</span>
@@ -138,17 +155,9 @@
               <div class="p-doc">我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。</div>
             </div>
           </div>
-
           <div class="ul-lists" style="margin-top:16px;">
             <div class="item">
-              <span class="title">项目亮点</span>
-              <div class="prod-doc">我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。 2.行中：管家确保出现在用户出行过程中每一个重要和紧急的环节。 我们的管家分为线上的总部管家和线下的目的地管家。目前，我们在全球7个国家建立了分公司、办事处。飞机落地之后，对接当地管家。此外，用户在任何时候都可以通过微信公众号或者 24 小时待机的国内电话联系到总部管家，并得到总部管家的帮助。</div>
-            </div>
-          </div>
-
-          <div class="ul-lists" style="margin-top:16px;">
-            <div class="item">
-              <span class="title">融资信息</span>
+              <span class="title"><img class="img" src="../../../assets/logo/money.png">融资信息</span>
               <div class="rz-details">
                 <div class="rz-detail">
                   <p class="det-title">期望融资</p>
@@ -197,7 +206,7 @@
           </div>
           <div class="ul-lists" style="margin-top:16px;">
             <div class="item">
-              <span class="title">融资信息</span>
+              <span class="title"><img class="img" src="../../../assets/logo/Milepost.png">里程碑</span>
             </div>
             <div class="item" style="margin-top:6px;">
               <div>
@@ -231,16 +240,46 @@
             </div>
 
           </div>
+          <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;">
+            <div class="item">
+              <span class="title"><img class="img" src="../../../assets/logo/money.png">FA签约协议</span>
+              <div class="rz-details" >
+                <div class="rz-detail" style="width: 25%">
+                  <p class="det-title">签约佣金</p>
+                  <p class="det-info">10%</p>
+                </div>
+                <div class="rz-detail" style="width: 25%">
+                  <p class="det-title">股权赠与</p>
+                  <p class="det-info">10%</p>
+                </div>
+                <div class="rz-detail" style="width: 25%">
+                  <p class="det-title">其他权益</p>
+                  <p class="det-info">100%</p>
+                </div>
+                <div class="rz-detail" style="width: 25%">
+                  <p class="det-title">跟投权</p>
+                  <p class="det-info">-</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="toButton">
+            <el-button type="primary" size="large" style="margin:0 auto;display: block;width: 88px;">编辑</el-button>
+          </div>
         </div>
+
       </div>
     </div>
-    <div class="contain-grid contain-right-1 clearfix">
+    <div class="contain-grid contain-right-1">
       <div class="main-box">
         <el-tabs v-model="show" @tab-click="handleClick">
           <el-tab-pane label="潜在买家" name="detail"></el-tab-pane>
           <el-tab-pane label="人脉匹配" name="flow"></el-tab-pane>
           <el-tab-pane label="全网人脉匹配" name="files"></el-tab-pane>
         </el-tabs>
+        <div class="item-lists" style="height:290px;">
+          <div id="pieBox" style="width:392px;height:290px;"></div>
+        </div>
         <div class="item-lists">
           <div class="item">
             <div class="card-title">

@@ -83,8 +83,11 @@
 
 
   .item-lists{
-
+    .toButton{
+      position: fixed;bottom:40px;right: 0px;left: 0px;margin:auto;
+    }
     padding:24px;
+
     .item-lists-inner-left{
 
       position: relative;
@@ -125,6 +128,7 @@
       position: absolute;
       right: -5px;
       top: -28px;
+      background: #ffffff;
     }
 
     .item{
@@ -140,6 +144,9 @@
         line-height:20px;
         text-align:left;
         padding-right: 12px;
+        .img{
+          padding-right: 16px;
+        }
       }
       .icon{
         padding-right: 5px;
@@ -231,17 +238,15 @@
         margin-right: 15px;
       }
       .paper{
-        border:1px solid #e0e6ed;
-        border-radius:3px;
-        height:88px;
-        line-height: 88px;
-        text-align: center;
+        height:54px;
+        line-height: 54px;
+        text-align: left;
         .pt{
-          width: 425px;
-          font-size:20px;
-          color:#666666;
-          line-height:20px;
-
+          width: 626px;
+          font-size:16px;
+          color:#333333;
+          line-height:16px;
+          text-align:left;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -307,7 +312,7 @@
         }
       }
       .p-doc{
-        font-size:14px;
+        font-size:13px;
         color:#5e6d82;
         margin-top: 5px;
         margin-bottom: 11px;
@@ -331,6 +336,7 @@
           text-align: center;
           padding-top:30px;
         }
+
         .det-title{
           font-size:16px;
           color:#475669;
@@ -345,7 +351,7 @@
       }
       .yt-doc{
         margin-top: 12px;
-        font-size:14px;
+        font-size:13px;
         color:#5e6d82;
         line-height:28px;
       }
@@ -393,7 +399,7 @@
         display: inline-block;
         width: 732px;
         vertical-align: top;
-        margin-left:30px;
+/*        margin-left:30px;*/
         line-height: 60px;
         .v-progress-txt{
           font-size:14px;
@@ -452,8 +458,13 @@
         .circle-e{
           left:calc(~"100% - 5px");
         }
-        .bar-bg{
-          width:160px;
+        .bar-bg1{
+          width:80px;
+          height: 2px;
+          background: #c0ccda;
+        }
+        .bar-bg2{
+          width:80px;
           height: 2px;
           background: #c0ccda;
         }
@@ -470,7 +481,7 @@
           position: absolute;
           z-index: 3;
           top:12px;
-          left:40px;
+          left:70px;
           font-size:14px;
           color:#20a0ff;
           letter-spacing:0;
@@ -485,15 +496,21 @@
       background: #f9fafc;
     }
   }
+  .item-lists-top{
+    height: 273px;
+    background: #ffffff;
+  }
 }
 /* ==================右侧样式 第二部分===================== */
 
 .contain-right-1{
   width:440px;
   background:#f9fafc;
-  margin-top: 60px;
+  margin-top: 33px;
   .main-box{
     padding:12px 24px 24px;
+    background:#f9fafc;
+
     .item-lists{
       .item{
         margin-top: 16px;
@@ -614,7 +631,7 @@
   width:355px;
   height: 2117px;
   margin-left: 22px;
-  margin-top: 0px;
+  margin-top: -22px;
   background: #fff;
   .main-box{
     .title-box{

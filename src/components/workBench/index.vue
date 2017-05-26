@@ -7,7 +7,7 @@
       </el-menu>
     </div>
     <!-- 右侧主内容区 -->
-    <div class="main-right">
+    <div class="main-right clearfix">
       <transition name="fade">
         <router-view class="view">
 
@@ -47,7 +47,7 @@ export default {
   padding-top: 24px;
   .el-menu-item{height:50px;line-height: 50px;background-color: #d3dce6;width: 200px;}
   .main-left{width: 224px;position: absolute;font-size: 14px;background-color: #eff2f7;height: 100%;}
-  .main-right{background-color: #fff;padding-left: 224px;}
+  .main-right{padding-left: 224px;}
 }
 /* 路由切换动效 */
 .fade-enter-active, .fade-leave-active {
