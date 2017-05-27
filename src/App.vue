@@ -2,7 +2,7 @@
   <div id="app">
 <!--     头部导航 -->
     <header id="header">
-      <ul class="select ulfl tc">
+      <ul class="select ulfl tc"  style="position: relative" >
         <li style="width: 150px;margin-right: 320px;vertical-align: middle;display: table-cell;height: 60px;"><img src="./assets/logo/logoing.png" style="vertical-align:middle;"></li>
         <li @click="toggle(index)" v-for="(tab,index) in tabs" >
           <router-link :to=" tab.jump " :class="{border:active===index}">
@@ -13,7 +13,7 @@
           <div slot="content">-->
 
 <!--          </div>-->
-          <li style="position: relative" id="samllrou">小程序</li>
+          <li id="samllrou">小程序</li>
           <div class="weixin">
             <p style="margin-top: 25px;">微信扫一扫</p>
             <p>发现更多精选资源</p>
@@ -70,8 +70,9 @@
         tabs: [
 /*          {type: '首页',jump:'/index'},*/
           {type: '工作台',jump:'/workBench/myProject'},
-          {type: '扫码登陆页面测试',jump:'/smallRoutine'},
-          {type: '测试页面',jump:'/test'}
+          {type: '扫码登陆',jump:'/smallRoutine'},
+          {type: '测试页面',jump:'/test'},
+          {type: '测试页面2',jump:'/test2'}
         ]
       }
     },
@@ -83,7 +84,7 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/workBench/myProject');
+      this.$router.push('/test');
     },
   }
 </script>
@@ -135,16 +136,15 @@
     }
   }
   #samllrou:hover + .weixin{
-    opacity: 1;
+    display: block;
   }
   .weixin{
-    opacity: 0;
-    transition: all 0.5s;
+    display: none;
 
     position: absolute;
     z-index: 100;
     top:53px;
-    right:327px;
+    right:808px;
     background:#ffffff;
     box-shadow:0 4px 4px 0 rgba(64,88,122,0.10);
     border-radius:4px;

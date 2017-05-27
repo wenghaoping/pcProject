@@ -13,10 +13,10 @@
         <el-table-column prop="address" label="项目来源" min-width="150" :filters="addressFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip	>
         </el-table-column>
 
-        <el-table-column prop="name" label="跟进人" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="name" label="跟进人" min-width="80" show-overflow-tooltip>
         </el-table-column>
 
-        <el-table-column prop="state" label="跟进状态" min-width="130" :filters="stateFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable>
+        <el-table-column prop="state" label="跟进状态" min-width="130" :filters="stateFilters" :filter-method="filterTag" filter-placement="bottom-end" :filter-multiple="stateCheck" sortable>
         </el-table-column>
 
         <el-table-column prop="field" label="领域" min-width="100" :filters="fieldFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip>
@@ -69,7 +69,7 @@
           introduce:'我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
           company: '偷着了偷着了偷着了偷着了偷着了偷着了偷着了偷着了',
           address: '我是项目来源1',
-          name: '我是跟进人1',
+          name: '迪丽热巴',
           state:'我是跟进状态1',
           field:'大数据服务',
           sole:'独家',
@@ -81,7 +81,7 @@
           introduce:'我是项目介绍',
           company: '投着乐',
           address: '我是项目来源2',
-          name: '我是跟进人2我是跟进人2我是跟进人2',
+          name: '我是跟进',
           state:'我是跟进状态2',
           field:'教育培训',
           sole:"非独",
@@ -114,14 +114,15 @@
           money:'4000万'
         }],
         addressFilters:[{ text: '项目来源1', value: '我是项目来源1' }, { text: '项目来源2', value: '我是项目来源2' },{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
-        stateFilters:[{ text: '全部', value: '全部' }, { text: '项目线索', value: '项目线索' },{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
+        stateFilters:[{ text: '项目线索', value: '项目线索' },{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
         fieldFilters:[{ text: '大数据服务', value: '大数据服务' }, { text: '教育培训', value: '教育培训' }],
         soleFilters:[{ text: '独家', value: '独家' },{ text: '非独', value: '非独' },{ text: '其他', value: '其他' }],
         roundFilters:[{ text: 'IPO上市后', value: 'IPO上市后' },{ text: 'Pre-A', value: 'Pre-A' }],
         regionFilters:[{ text: '北京', value: '北京' },{ text: '上海', value: '上海' }],
         moneyFilters:[{ text: '3000万', value: '3000万' },{ text: '4000万', value: '4000万'}],
         currentPage:1,
-        fullscreenLoading: false
+        fullscreenLoading: false,
+        stateCheck:false//状态单选
       }
     },
     methods:{

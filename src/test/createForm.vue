@@ -7,6 +7,7 @@
             label="成员姓名"
             :prop="'domains.' + index + '.name'"
             v-for="(domain, index) in dateForm.domains"
+            :key="domain.index"
             :rules="[{required: true, message: '成员姓名不能为空', trigger: 'blur'},{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }]">
             <el-input v-model="domain.name"></el-input>
           </el-form-item>
@@ -16,6 +17,7 @@
             label="成员职位"
             :prop="'domains.' + index + '.position'"
             v-for="(domain, index) in dateForm.domains"
+            :key="domain.index"
             :rules="[{required: true, message: '成员职位不能为空', trigger: 'blur'},{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }]">
             <el-input v-model="domain.position"></el-input>
           </el-form-item>
@@ -25,13 +27,14 @@
             label="股权比例"
             :prop="'domains.' + index + '.money'"
             v-for="(domain, index) in dateForm.domains"
+            :key="domain.index"
             :rules="[{ required: true, message: '比例不能为空'},{ type: 'number', message: '比例必须为数字值'}]">
             <el-input v-model.number="domain.money"></el-input>
           </el-form-item>
 
         </el-col>
         <el-col :span="4" >
-          <el-form v-for="(domain, index) in dateForm.domains" style="padding-bottom: 22px;">
+          <el-form v-for="(domain, index) in dateForm.domains" :key="domain.index" style="padding-bottom: 22px;">
             <el-button @click.prevent="removeDomain(domain)">删除</el-button>
           </el-form>
         </el-col>

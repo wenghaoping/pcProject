@@ -27,6 +27,8 @@ import createForm from '@/test/createForm.vue'
 import watch from '@/test/watch.vue'
 import jump from '@/test/jump.vue'
 import selectbox from '@/test/selectbox.vue'
+import alertUpload from '@/test/alertUpload.vue'
+import upload from '@/test/upload.vue'
 
 
 
@@ -56,7 +58,10 @@ export default [
     path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine, name:"SmallRoutine"
   },
   {
-    path: '/test', name: 'test', component: selectbox, name:"test"
+    path: '/test', name: 'test', component: alertUpload
+  },
+  {
+    path: '/test2', name: 'test2', component: upload
   }
   ]
 
