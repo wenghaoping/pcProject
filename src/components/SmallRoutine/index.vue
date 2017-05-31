@@ -4,7 +4,7 @@
         <p class="title">微天使,帮您成交的项目管理工具</p>
         <p class="samll">扫一扫，快速创建融资项目</p>
         <div class="img">
-          <img src="../../assets/logo/weixin.png">
+          <img src="../../assets/images/weixin.png">
         </div>
       </div>
   </div>

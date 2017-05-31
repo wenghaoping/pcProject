@@ -10,7 +10,7 @@
               <span class="small-tag">私密</span>
               <el-tooltip class="item" effect="dark" placement="top-start">
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
-              <span class="icon"><img src="../../../assets/logo/why.png"/></span>
+              <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
               <span class="title">微天使乐投平台</span>
               <span class="company">杭州投着乐网络科技有限公司</span>
@@ -53,17 +53,17 @@
             </span>
             </div>
             <div class="onlyone">
-              <img src="../../../assets/logo/onlyonedark.png"/>
-<!--              <img src="../../../assets/logo/onlyonelight.png"/>-->
+              <img src="../../../assets/images/onlyonedark.png"/>
+<!--              <img src="../../../assimageslogo/onlyonelight.png"/>-->
             </div>
           </div>
           <div class="item-lists-inner-right fl">
             <div class="text">
-              <img src="../../../assets/logo/text.png"/>
+              <img src="../../../assets/images/text.png"/>
             </div>
             <el-tooltip class="item" effect="dark" placement="top-start">
               <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商、核心团队、产品数据、历史融资、新闻谬论等全方面信息</div>
-              <span class="icon icon2" style="cursor: pointer"><img src="../../../assets/logo/why.png"/></span>
+              <span class="icon icon2" style="cursor: pointer"><img src="../../../assets/images/why.png"/></span>
             </el-tooltip>
             <div class="button-float" @click="dialogVisible = true" style="cursor:pointer" >
             一键尽调
@@ -85,7 +85,7 @@
           </el-tabs>
           <div class="ul-lists">
             <div class="item">
-              <span class="title"><img class="img" src="../../../assets/logo/projectIntroduce.png">项目介绍</span>
+              <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
               <div class="person-info">
                 <span>项目联系人 : </span>
                 <span>张三</span>
@@ -98,13 +98,13 @@
             </div>
             <div class="item" style="margin-top:24px;">
               <div class="paper">
-                <img class="img" style="padding-right: 16px;" src="../../../assets/logo/paper.png">
+                <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
                 <span class="pt">杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司</span>
                 <el-button type="text" size="mini">查看</el-button>
                 <el-button type="text" size="mini">下载</el-button>
               </div>
               <div class="paper">
-                <img class="img" style="padding-right: 16px;" src="../../../assets/logo/paper.png">
+                <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
                 <span class="pt">杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司</span>
                 <el-button type="text" size="mini">查看</el-button>
                 <el-button type="text" size="mini">下载</el-button>
@@ -135,7 +135,7 @@
 
           <div class="ul-lists" style="margin-top:16px;">
             <div class="item">
-              <span class="title"><img class="img" src="../../../assets/logo/team.png">核心团队</span>
+              <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
             </div>
             <div class="item" style="margin-top:33px;">
               <span class="person-tag">90后创业者</span>
@@ -157,7 +157,7 @@
           </div>
           <div class="ul-lists" style="margin-top:16px;">
             <div class="item">
-              <span class="title"><img class="img" src="../../../assets/logo/money.png">融资信息</span>
+              <span class="title"><img class="img" src="../../../assets/images/money.png">融资信息</span>
               <div class="rz-details">
                 <div class="rz-detail">
                   <p class="det-title">期望融资</p>
@@ -206,7 +206,7 @@
           </div>
           <div class="ul-lists" style="margin-top:16px;">
             <div class="item">
-              <span class="title"><img class="img" src="../../../assets/logo/Milepost.png">里程碑</span>
+              <span class="title"><img class="img" src="../../../assets/images/Milepost.png">里程碑</span>
             </div>
             <div class="item" style="margin-top:6px;">
               <div>
@@ -242,7 +242,7 @@
           </div>
           <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;">
             <div class="item">
-              <span class="title"><img class="img" src="../../../assets/logo/money.png">FA签约协议</span>
+              <span class="title"><img class="img" src="../../../assets/images/money.png">FA签约协议</span>
               <div class="rz-details" >
                 <div class="rz-detail" style="width: 25%">
                   <p class="det-title">签约佣金</p>
@@ -264,7 +264,7 @@
             </div>
           </div>
           <div class="toButton">
-            <el-button type="primary" size="large" style="margin:0 auto;display: block;width: 88px;">编辑</el-button>
+            <el-button type="primary" size="large" style="margin:0 auto;display: block;width: 88px;" @click="toEdit">编辑</el-button>
           </div>
         </div>
 
@@ -440,7 +440,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import research from './research.vue'
+  import research from './onekeyresearch.vue'
   import { Loading } from 'element-ui';
   var echarts = require('echarts');
   export default {
@@ -592,6 +592,9 @@
             this.post = post
           }
         })*/
+      },
+      toEdit(){
+        this.$router.push({ name: 'editproject'})
       }
     },
     created () {
@@ -607,5 +610,5 @@
 </script>
 
 <style scoped lang="less">
-
+  @import '../../../assets/css/index.less';
 </style>

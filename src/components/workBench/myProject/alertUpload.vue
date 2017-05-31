@@ -1,8 +1,6 @@
 <template>
   <div id="alertUpload">
-      <el-button type="text" @click="dialogUploadVisible = true">打开嵌套表格的 Dialog</el-button>
-
-    <el-dialog title="批量上传创建项目" :visible.sync="dialogUploadVisible">
+    <el-dialog title="批量上传创建项目" :visible="dialogUploadVisible" :before-close="handleClose">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
                    action="/api/upload"
@@ -17,12 +15,12 @@
         </el-upload>
 
       <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
-        <el-button @click="dialogUploadVisible = false">取 消</el-button>
+        <el-button @click="dialogVisiblechange">取 消</el-button>
       </div>
     </el-dialog>
 
 
-    <el-dialog title="批量上传创建项目" :visible.sync="dialogUpload2Visible">
+    <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose">
       <el-upload
         class="upload-demo"
         ref="upload"
@@ -100,9 +98,10 @@
 <script type="text/ecmascript-6">
 export default {
   name: 'hello',
+  props: ["dialogUploadVisible"],
   data () {
     return {
-      dialogUploadVisible: true,//第一个弹窗的控制
+//      dialogUploadVisible: false,//第一个弹窗的控制
       dialogUpload2Visible:false,//第二个弹窗的控制
       formLabelWidth: '880px',
       fileList:[
@@ -117,7 +116,7 @@ export default {
   methods: {
     //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
     handleChange(file, fileList) {
-      this.dialogUploadVisible=false;
+      this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
       if(file.status=="ready"){
         this.addDomain(file.name,file.name,file.name)
@@ -203,8 +202,21 @@ export default {
     },
     //当取消时,清空上传列表
     cancel(){
-      this.dialogUpload2Visible = false
+      this.$emit('changeupload',false)
+      this.dialogUpload2Visible=false;
       this.dateForm.domains.splice(0,this.dateForm.domains.length)
+    },
+    dialogVisiblechange() {
+      this.$emit('changeupload',false)
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？关闭后所有数据清空')
+        .then(_ => {
+          this.$emit('changeupload',false)
+          this.dialogUpload2Visible=false;
+          done()
+        })
+        .catch(_ => {});
     }
   }
 }

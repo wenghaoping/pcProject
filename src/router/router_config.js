@@ -11,10 +11,13 @@ import indexmyProject from '@/components/workBench/myProject/index.vue'
 import myProject from '@/components/workBench/myProject/myProject.vue'    //我的项目
 import projectDetails from '@/components/workBench/myProject/projectDetails.vue'   //项目详情
 
+import editproject from '@/components/workBench/myProject/editproject.vue'   //编辑项目
+
 
 import myContacts from '@/components/workBench/myContacts/mycontacts.vue'//我的人脉
 
 import followUp from '@/components/workBench/followUp/followup.vue'     //跟进记录
+
 
 /*===============================小程序页面路由配置===============================*/
 //小程序页面
@@ -49,6 +52,7 @@ export default [
         ]
       },
       { path: 'projectDetails', component: projectDetails, name:"projectDetails"},
+      { path: 'editproject', component: editproject, name:"editproject"},
     ]
   },
   {
@@ -58,10 +62,10 @@ export default [
     path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine, name:"SmallRoutine"
   },
   {
-    path: '/test', name: 'test', component: alertUpload
+    path: '/test', name: 'test', component: createForm
   },
   {
-    path: '/test2', name: 'test2', component: upload
+    path: '/test2', name: 'test2', component: selectbox
   }
   ]
 

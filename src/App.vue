@@ -3,7 +3,7 @@
 <!--     头部导航 -->
     <header id="header">
       <ul class="select ulfl tc"  style="position: relative" >
-        <li style="width: 150px;margin-right: 320px;vertical-align: middle;display: table-cell;height: 60px;"><img src="./assets/logo/logoing.png" style="vertical-align:middle;"></li>
+        <li style="width: 150px;margin-right: 320px;vertical-align: middle;display: table-cell;height: 60px;"><img src="./assets/images/logoing.png" style="vertical-align:middle;"></li>
         <li @click="toggle(index)" v-for="(tab,index) in tabs" >
           <router-link :to=" tab.jump " :class="{border:active===index}">
             {{tab.type}}
@@ -18,10 +18,10 @@
             <p style="margin-top: 25px;">微信扫一扫</p>
             <p>发现更多精选资源</p>
             <div class="img">
-              <img src="./assets/logo/weixin.png">
+              <img src="./assets/images/weixin.png">
             </div>
             <div class="arrow">
-              <img src="./assets/logo/arrow.png">
+              <img src="./assets/images/arrow.png">
             </div>
           </div>
 <!--        </el-tooltip>-->
@@ -84,13 +84,19 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/test');
+      this.$router.push('/workBench/editproject');
     },
   }
 </script>
 
 <style lang="less">
-  @import './assets/css/index.less';
+  *{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    font-family:"Microsoft YaHei","微软雅黑";
+
+  }
   body{margin: 0;}
 /*  .is-light{
     border: none!important;
