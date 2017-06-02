@@ -2,14 +2,14 @@
   <div id="myproject">
     <div class="wrap-left fl">
       <div class="top-big-progress">
-        <div class="pp-item pp-node pp-start">
+        <div class="pp-item pp-node pp-start" v-bind:class="{'pp-cur':node0}" @click="setNode('0')">
           <p class="pp-num pp-txt">75</p>
           <span class="pp-sec-title">全部项目</span>
         </div>
         <div class="pp-item pp-lines">
           <span class="lp-line">&nbsp;</span>
         </div>
-        <div class="pp-item pp-node">
+        <div class="pp-item pp-node" v-bind:class="{'pp-cur':node1}" @click="setNode('1')">
           <p class="pp-num pp-txt">35</p>
           <span class="pp-sec-title">项目线索</span>
         </div>
@@ -22,7 +22,7 @@
             <span class="circle circle-0">&nbsp;</span>
           </el-tooltip>
         </div>
-        <div class="pp-item pp-node">
+        <div class="pp-item pp-node" v-bind:class="{'pp-cur':node2}" @click="setNode('2')">
           <p class="pp-num pp-txt">28</p>
           <span class="pp-sec-title">FA项目</span>
         </div>
@@ -49,8 +49,15 @@
             <span class="circle circle-3">&nbsp;</span>
           </el-tooltip>
 
+          <el-tooltip placement="top">
+            <div slot="content">
+              <div style="width:50px;">签约 : 10 </div>
+            </div>
+            <span class="circle circle-4">&nbsp;</span>
+          </el-tooltip>
+
         </div>
-        <div class="pp-item pp-node">
+        <div class="pp-item pp-node" v-bind:class="{'pp-cur':node3}" @click="setNode('3')">
           <p class="pp-num pp-txt">15</p>
           <span class="pp-sec-title">佣金收讫</span>
         </div>
@@ -74,59 +81,97 @@
           </alertUpload>
         </div>
       </div>
-      <el-table :data="tableData" style="width: 100%" @row-click="handleSelect" stripe>
-        <el-table-column prop="project" label="项目名称" min-width="120" show-overflow-tooltip>
-        </el-table-column>
+      <div class="top-lists" style="height:690px;background: #f3f4f8;">
+          <template>
+            <el-table :data="tableData" style="width: 100%" @row-click="handleSelect" @header-click="headerClick" @sort-change="sortChange"stripe>
 
-        <el-table-column prop="introduce" label="项目介绍" min-width="130" show-overflow-tooltip>
-        </el-table-column>
+            <el-table-column prop="project" label="项目名称" width="144" show-overflow-tooltip>
 
-        <el-table-column prop="company" label="公司名称" min-width="130" show-overflow-tooltip>
-        </el-table-column>
+            </el-table-column>
 
-        <el-table-column prop="address" label="项目来源" width="112" :filters="addressFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip	>
-        </el-table-column>
+            <el-table-column prop="introduce" label="一句话介绍" width="174" show-overflow-tooltip>
+            </el-table-column>
 
-        <el-table-column prop="name" label="跟进人" min-width="90" show-overflow-tooltip>
-        </el-table-column>
+            <el-table-column prop="company" label="公司名称" width="96" show-overflow-tooltip>
+              <template scope="scope">
+                <div v-if="scope.row.company.length === 0">
+                  —
+                </div>
+                <div v-if="scope.row.company.length > 0">
+                  {{scope.row.company}}
+                </div>
+              </template>
+            </el-table-column>
 
-        <el-table-column prop="state" label="跟进状态" min-width="135" :filters="stateFilters" :filter-method="filterTag" filter-placement="bottom-end" :filter-multiple="stateCheck" sortable>
-        </el-table-column>
+            <el-table-column prop="address" label="项目来源" width="96" :filters="addressFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip	>
+              <template scope="scope">
+                <div v-if="scope.row.address.length === 0">
+                  —
+                </div>
+                <div v-if="scope.row.address.length > 0">
+                  {{scope.row.address}}
+                </div>
+              </template>
+            </el-table-column>
 
-        <el-table-column prop="field" label="领域" min-width="85" :filters="fieldFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip>
-        </el-table-column>
+            <el-table-column prop="name" label="跟进人" width="96" show-overflow-tooltip>
+            </el-table-column>
 
-        <el-table-column prop="sole" label="是否独家" width="135" :filters="soleFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable>
-          <template scope="scope">
-            <el-tag :type="scope.row.sole === '独家' ? 'primary' : 'success'" v-if="scope.row.sole === '独家'" close-transition>{{scope.row.sole}}</el-tag>
-            <el-tag :type="scope.row.sole === '其他' ? 'gray' : 'success'" v-else close-transition>{{scope.row.sole}}</el-tag>
-          </template>
-        </el-table-column>
+            <el-table-column prop="state" label="跟进状态" width="96" :filters="stateFilters" :filter-method="filterTag" filter-placement="bottom-end" :filter-multiple="stateCheck" sortable="custom">
+            </el-table-column>
 
-        <el-table-column prop="round" label="轮次" width="105" :filters="roundFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable>
-        </el-table-column>
-        <el-table-column prop="region" label="地区" width="105" :filters="regionFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable>
-        </el-table-column>
-        <el-table-column prop="money" label="期望融资" width="140" :filters="moneyFilters" :filter-method="filterTag" filter-placement="bottom-end" >
-        </el-table-column>
-        <el-table-column label="操作">
-          <template scope="scope">
-            <el-button
-              size="small"
-              @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="pagenav">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[50, 100, 150, 200]"
-          :page-size="50"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="150">
-        </el-pagination>
+            <el-table-column prop="field" label="领域" width="144" :filters="fieldFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip>
+            </el-table-column>
+
+            <el-table-column prop="sole" label="是否独家" width="98" :filters="soleFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+              <template scope="scope">
+                <el-tag :type="scope.row.sole === '独家' ? 'primary' : scope.row.sole === '非独' ? 'success':'gray' " close-transition>{{scope.row.sole}}</el-tag>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="round" label="轮次" width="80" :filters="roundFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+            </el-table-column>
+            <el-table-column prop="region" label="地区" width="80" :filters="regionFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+            </el-table-column>
+            <el-table-column prop="money" label="期望融资" width="102" :filters="moneyFilters" :filter-method="filterTag" filter-placement="bottom-end" >
+            </el-table-column>
+            <el-table-column
+              prop="reset"
+              label="重置"
+              width="130" class="set-th">
+              <template scope="scope">
+                <el-button
+                  @click="handleEdit(scope.$index, scope.row)"
+                  type="text"
+                  size="small" class="edits-btn btn-cur">
+                  编辑
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small" class="flow-btn">
+                  跟进
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small" class="send-btn">
+                  推送
+                </el-button>
+                <img src="../../../assets/images/more.png" alt="" class="more">
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagenav">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[50, 100, 150, 200]"
+              :page-size="50"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="150">
+            </el-pagination>
+          </div>
+        </template>
       </div>
     </div>
     <div class="page-grid wrap-right contain-right-2 fl">
@@ -138,6 +183,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -151,11 +197,11 @@
         tableData: [{
           project: '公司名称公司名称公司名称公司名称',
           introduce:'我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
-          company: '偷着了偷着了偷着了偷着了偷着了偷着了偷着了偷着了',
+          company: '',
           address: '我是项目来源1',
           name: '迪丽热巴',
           state:'我是跟进状态1',
-          field:'大数据服务',
+          field:'大数据、社交通讯，电商平台，教育培训',
           sole:'独家',
           round:'IPO上市后',
           region:'北京',
@@ -164,10 +210,10 @@
           project: '我是项目介绍2',
           introduce:'我是项目介绍',
           company: '杭州偷着乐网络科技有限公司',
-          address: '我是项目来源2',
+          address: '',
           name: '我是跟进',
           state:'约谈',
-          field:'教育培训',
+          field:'大数据、社交通讯，电商平台，教育培训',
           sole:"非独",
           round:'Pre-A',
           region:'上海',
@@ -209,21 +255,26 @@
         stateCheck:false,//状态单选
         input:'',
         dialogUploadVisible: false,//第一个弹窗的控制
+        node0:true,
+        node1:false,
+        node2:false,
+        node3:false
       }
     },
     methods:{
       filterTag(value, row) {               //筛选
-          let object=this.$tool.getToObject(row)
-          for(var key in object){
-              if(object[key]===value){
-                return object[key]===value
-              }
+        let object=this.$tool.getToObject(row)
+        for(var key in object){
+          if(object[key]===value){
+            return object[key]===value
           }
+        }
+        console.log("111111")
       },
       handleSelect(row, event, column) {          //跳转传参数
         console.log(this.$tool.getToObject(row))
         console.log(column)
-        if(column.label!="操作"){
+        if(column.label!="重置"){
 
           this.$router.push({ name: 'projectDetails', query: { address:row.address}})
         }
@@ -231,6 +282,7 @@
       handleEdit(index, row){
         console.log(index);
         console.log(this.$tool.getToObject(row));
+        this.$router.push({ name: 'editproject', query: { address:row.address}})
         /*跳转到编辑页面*/
       },
       handleSizeChange(val) {
@@ -246,6 +298,25 @@
         this.dialogUploadVisible=msg;
         console.log(msg)
       },
+      setNode(v){
+        this.node0 = false ;
+        this.node1 = false ;
+        this.node2 = false ;
+        this.node3 = false ;
+        this['node' + v] = true ;
+      },
+      headerClick(column, event){//点击重置按钮时
+        console.log(column)
+        console.log(event)
+        if(column.label==="重置"){
+          this.filterTag()
+        }
+      },
+      sortChange(column, prop, order){
+        console.log(column)
+        console.log(prop)
+        console.log(order)
+      }
     },
     computed: {
       howType(){
@@ -274,48 +345,7 @@
   }
 </script>
 
-<style scoped lang="less">
+<style type="text/css" lang="less">
   @import '../../../assets/css/myproject';
-  #myproject{
-    .el-tag--primary{
-      color:#20a0ff;
-    }
-    .pagenav{
-      margin-top: 16px;
-      .el-pagination{
-        text-align: center;
-      }
-    }
-    .contain-right-2{
-      width:234px;
-      height: 1000px;
-      margin-left: 22px;
-      margin-top: -71px;
-      background: #fff;
-      .main-box{
-        .title-box{
-          margin-top: 17px;
-          text-align: center;
-          span{
-            display: inline-block;
-            vertical-align: middle;
-          }
-          .title{
-            font-size:16px;
-            color:#475669;
-            margin:0 5px;
-            // font-weight: bold;
-          }
-          .lit-line{
-            width:25px;
-            height: 1px ;
-            background: #c0ccda;
-          }
-        }
-      }
-    }
-    .el-table__row{
-      font-size: 20px!important;
-    }
-  }
+
 </style>

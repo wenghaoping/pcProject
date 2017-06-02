@@ -42,7 +42,7 @@
     cursor: pointer;
     padding-left: 25px;
     background: #ffffff;
-    width: 1440px;
+    width: 1336px;
     li{width: 100px;height: 50px;line-height: 50px;
       a{
         height: 40px;color:#8492a6;display: block;font-size: 15px;

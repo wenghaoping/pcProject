@@ -50,6 +50,7 @@
   import Vue from 'vue'
   import Element from 'element-ui'
   import 'element-ui/lib/theme-default/index.css'
+  import { Notification } from 'element-ui';
   //引入自己的CSS,格式化样式
   import './assets/css/base.css'
   import './assets/css/animate.css'
@@ -105,7 +106,7 @@
     padding: 0!important;
   }*/
   #app {
-    min-width: 1920px;
+    min-width: 1900px;
     margin: 0 auto;
     font-family: "Helvetica Neue","PingFang SC",Arial,sans-serif;
       header {
@@ -183,6 +184,12 @@
   }
   .fade-enter, .fade-leave-active {
     opacity: 0;
+  }
+  .el-notification{
+    top: 300px;
+    left: 0;
+    right: 0;
+    margin: auto;
   }
 
 </style>

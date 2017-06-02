@@ -220,10 +220,12 @@ display: block;
 
 
   .right-wrap{
-    float: left;
+    position: fixed;
+    right: 468px;
+    top: 155px;
     height: 100%;
-    margin-top: 24px;
-    margin-left: 31px;
+    /*margin-top: 24px;
+    margin-left: 31px;*/
     width:280px;
     .command-box{
       background:#f9fafc;
@@ -257,7 +259,6 @@ display: block;
           border-radius: 5px;
         }
         .progress-fg{
-          width:30%;
           height: 7px;
           border-radius: 5px;
           background: #40587a;
@@ -309,6 +310,20 @@ display: block;
           font-size:12px;
           color:#c0ccda;
           line-height:14px;
+        }
+      }
+      &:hover{
+        background:#e5e9f2;
+      }
+    }
+    .checked{
+      .block-tlt{
+        color:#009eff;
+      }
+      .check-flag{
+        img{
+          // border:1px solid #eee;
+          // background:rgba(64, 88, 122, 0.2);
         }
       }
     }

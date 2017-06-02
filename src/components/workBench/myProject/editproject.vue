@@ -5,6 +5,7 @@
       <div class="main-box">
         <div class="left-wrap">
 <!--=================================项目文件=================================-->
+          <div class="d_jump"></div>
           <div class="item-block" style="margin-top:0;">
             <div class="block-tt-line">
               <span class="b-title">项目文件</span>
@@ -59,6 +60,7 @@
             </el-collapse-transition>
           </div>
 <!--=================================项目介绍=================================-->
+          <div class="d_jump"></div>
           <div class="item-block">
             <div class="block-tt-line">
               <span class="b-title">项目介绍</span>
@@ -264,6 +266,7 @@
             </el-collapse-transition>
           </div>
 <!--=================================核心团队=================================-->
+          <div class="d_jump"></div>
           <div class="item-block">
             <div class="block-tt-line">
               <span class="b-title">核心团队</span>
@@ -347,6 +350,7 @@
             </el-collapse-transition>
           </div>
 <!--=================================融资信息=================================-->
+          <div class="d_jump"></div>
           <div class="item-block">
             <div class="block-tt-line">
               <span class="b-title">融资信息</span>
@@ -465,6 +469,7 @@
             </el-collapse-transition>
           </div>
 <!--=================================里程碑=================================-->
+          <div class="d_jump"></div>
           <div class="item-block">
             <div class="block-tt-line">
               <span class="b-title">里程碑</span>
@@ -514,6 +519,7 @@
             </el-collapse-transition>
           </div>
 <!--=================================FA签约协议===============================-->
+          <div class="d_jump"></div>
           <div class="item-block">
             <div class="block-tt-line">
               <span class="b-title">FA签约协议</span>
@@ -581,17 +587,18 @@
         <div class="right-wrap">
           <div class="command-box">
             <div class="command-title">
-              项目完整度：<span class="command-val">30%</span>
+              项目完整度：<span class="command-val">{{proportion}}%</span>
             </div>
             <div class="command-title-sec">
               完整度超过60%的项目更容易被投资人关注
             </div>
             <div class="command-progress">
               <div class="progress-bg"></div>
-              <div class="progress-fg"></div>
+              <div class="progress-fg" :style="{ width: proportion+'%'}"></div>
             </div>
           </div>
-          <div class="check-block" style="margin-top:12px;">
+
+          <div class="check-block" v-bind:class="{'checked':node0}" @click="setNode('0')" style="margin-top:12px;">
               <span class="block-icon">
                 <img src="../../../assets/images/arts.png" alt="">
               </span>
@@ -604,7 +611,7 @@
               </span>
           </div>
 
-          <div class="check-block">
+          <div class="check-block" v-bind:class="{'checked':node1}" @click="setNode('1')" >
               <span class="block-icon">
                 <img src="../../../assets/images/arts.png" alt="">
               </span>
@@ -616,7 +623,7 @@
               </span>
           </div>
 
-          <div class="check-block">
+          <div class="check-block" v-bind:class="{'checked':node2}" @click="setNode('2')">
               <span class="block-icon">
                 <img src="../../../assets/images/group.png" alt="">
               </span>
@@ -628,7 +635,7 @@
               </span>
           </div>
 
-          <div class="check-block">
+          <div class="check-block" v-bind:class="{'checked':node3}" @click="setNode('3')">
               <span class="block-icon">
                 <img src="../../../assets/images/money.png" alt="">
               </span>
@@ -642,7 +649,7 @@
               </span>
           </div>
 
-          <div class="check-block">
+          <div class="check-block" v-bind:class="{'checked':node4}" @click="setNode('4')">
               <span class="block-icon">
                 <img src="../../../assets/images/time.png" alt="">
               </span>
@@ -656,7 +663,7 @@
               </span>
           </div>
 
-          <div class="check-block cur-block">
+          <div class="check-block" v-bind:class="{'checked':node5}" @click="setNode('5')">
               <span class="block-icon">
                 <img src="../../../assets/images/doc.png" alt="">
               </span>
@@ -912,10 +919,56 @@ export default {
         {label:'10万-100万',value:'10万-100万'},
         {label:'100万-1000万',value:'100万-1000万'}
       ],
+      node0:true,
+      node1:false,
+      node2:false,
+      node3:false,
+      node4:false,
+      node5:false,
+
     }
   },
   computed:{
+      /*项目完整度判断*/
+    proportion(){
+        let number=0;
+        let projectValue=this.project
+        let teamValue=this.team
+        let financingValue=this.financing
+        let milepostValue=this.milepost
+        let signValue=this.sign
+        let sum=Object.keys(projectValue).length+//所有数据的总长度
+          Object.keys(teamValue).length+
+          Object.keys(financingValue).length+
+          Object.keys(milepostValue).length+
+          Object.keys(signValue).length-5
+        function forFor(value){
+          for(let key in value){
+            if(isArray(value[key])){
+              if(value[key].length==0){
+                number++;
+              }
+            }else if(value[key]==""){
+              number++;
+            }
+          }
+        }
+      function isArray(o){
+        return Object.prototype.toString.call(o)=='[object Array]';
+      }
+/*      console.log(isArray(ary));*/
+      forFor(projectValue)
+      forFor(teamValue)
+      forFor(financingValue)
+      forFor(milepostValue)
+      forFor(signValue)
 
+
+        console.log(parseInt(((sum-number)/sum)*100))
+        console.log(parseInt(number/sum))
+
+      return parseInt(((sum-number)/sum)*100)
+    }
   },
   mounted() {
     this.list = this.states.map(item => {
@@ -1078,32 +1131,122 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
-          let value=new Object;
-          value.project=this.project
-          value.team=this.team
-          value.financing=this.financing
-          value.milepost=this.milepost
-          value.sign=this.sign
-          console.log(value)
+
+          return true;
         } else {
-          this.open()
+//          this.open()
           return false;
         }
       });
     },
     /*全部保存按钮*/
     allSave(){
-      this.submitForm('project')
+/*      this.submitForm('project')
       this.submitForm('team')
       this.submitForm('financing')
-      this.submitForm('milepost')
+      this.submitForm('milepost')*/
+//      let check = new Object;
+//      check.project=this.submitForm('project')
+//      check.team=this.submitForm('team')
+//      check.financing=this.submitForm('financing')
+//      check.milepost=this.submitForm('milepost')
+/*      let projectCheck=true;
+      for(var key in check){
+          if(check[key]==false){
+            projectCheck=false;
+            return;
+          }
+      }*/
+      if(this.submitForm('project') || this.submitForm('team') || this.submitForm('financing') || this.submitForm('milepost')){
+        let value=new Object;
+        value.project=this.$tool.getToObject(this.project)
+        value.team=this.$tool.getToObject(this.team)
+        value.financing=this.$tool.getToObject(this.financing)
+        value.milepost=this.$tool.getToObject(this.milepost)
+        value.sign=this.$tool.getToObject(this.sign)
+        console.log(value)
+      }else{
+        this.open()
+      }
     },
     /*警告弹窗*/
     open() {
-      this.$alert('请填写标红项', '错误', {
-        confirmButtonText: '确定'
+      this.$notify.error({
+        message: '必填项不能为空',
+        offset: 300
       });
+    },
+    /*跳转*/
+    setNode(v){
+      this.node0 = false ;
+      this.node1 = false ;
+      this.node2 = false ;
+      this.node3 = false ;
+      this.node4 = false ;
+      this.node5 = false ;
+      this['node' + v] = true ;
+      switch (v){
+        case "0":
+          this.fileShow=true
+          break;
+        case "1":
+          this.ProjectShow=true
+          break;
+        case "2":
+          this.teamShow=true
+          break;
+        case "3":
+          this.financingShow=true
+          break;
+        case "4":
+          this.milepostShow=true
+          break;
+        case "5":
+          this.SignShow=true
+          break;
+        default:
+          this.fileShow=true
+          break;
+      };
+      let jump = document.querySelectorAll('.d_jump')
+      // 获取需要滚动的距离
+      let total = jump[v].offsetTop
+      let distance = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+      // 平滑滚动，时长500ms，每10ms一跳，共50跳
+      let step = total / 50
+      if (total > distance) {
+        smoothDown()
+      } else {
+        let newTotal = distance - total
+        step = newTotal / 50
+        smoothUp()
+      }
+      function smoothDown () {
+        if (distance < total) {
+          distance += step
+          document.body.scrollTop = distance
+          document.documentElement.scrollTop = distance
+          window.pageYOffset = distance
+          setTimeout(smoothDown, 10)
+        } else {
+          document.body.scrollTop = total
+          document.documentElement.scrollTop = total
+          window.pageYOffset = total
+        }
+      }
+      function smoothUp () {
+        if (distance > total) {
+          distance -= step
+          document.body.scrollTop = distance
+          document.documentElement.scrollTop = distance
+          window.pageYOffset = distance
+          setTimeout(smoothUp, 10)
+        } else {
+          document.body.scrollTop = total
+          document.documentElement.scrollTop = total
+          window.pageYOffset = total
+        }
+      }
     }
   }
 }
@@ -1111,4 +1254,5 @@ export default {
 
 <style scoped lang="less">
   @import '../../../assets/css/edit.less';
+
 </style>
