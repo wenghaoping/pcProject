@@ -14,13 +14,25 @@
               <span class="b-hander" @click="openDiv('fileShow')" v-show="!fileShow">展开</span>
             </div>
             <div class="block-info block-cc-file">
-              <span class="f-title">商业计划书</span>
-              <span class="f-name">微天使商业计划书</span>
-              <span class="del-btn"><i class="el-icon-delete"></i></span>
+              <span class="f-title fl">商业计划书</span>
+              <!--<span class="f-name">微天使商业计划书</span>
+              <span class="del-btn"><i class="el-icon-delete"></i></span>-->
+              <span style="margin-left: 20px;" class="fl">
+                <el-upload class="planUpload"
+                           action="/api/upload"
+                           :on-change="planChange"
+                           :on-success="planuploadsuccess"
+                           :on-remove="planRemove"
+                           :file-list="planList"
+                           >
+                  <el-button slot="trigger" type="primary" v-show="planButton"><i class="el-icon-plus"></i>计划书上传</el-button>
+                </el-upload>
+              </span>
+
             </div>
             <div class="block-info block-cc-pro">
-              <span class="f-title">项目文件</span>
-              <span style="margin-left: 20px;">
+              <span class="f-title fl">项目文件</span>
+              <span style="margin-left: 34px;" class="fl">
                   <el-upload
                     class="upload"
                     ref="upload"
@@ -33,10 +45,10 @@
                     :auto-upload="false"
                     :data="uploadDate"
                     multiple>
-                    <el-button slot="trigger" type="primary" class="fl"><i class="el-icon-plus"></i>批量上传</el-button>
+                    <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
                   </el-upload>
               </span>
-              <span class="f-tips">（仅自己可见）</span>
+              <span class="f-tips fl" style="margin-left: 8px;" >（仅自己可见）</span>
             </div>
             <br/>
             <br/>
@@ -86,7 +98,7 @@
                         label="公司名称"
                         prop="company">
                         <el-select :span="12" v-model="project.company" filterable="" remote placeholder="公司名称" :remote-method="remoteMethod"
-                                   :loading="loading" loading-text="正在加载" class="width360">
+                                   :loading="loading" loading-text="正在加载" class="width360" allow-create>
                           <el-option v-for="item in companyList" :key="item.value" :label="item.label" :value="item.value">
                           </el-option>
                         </el-select>
@@ -603,23 +615,23 @@
                 <img src="../../../assets/images/arts.png" alt="">
               </span>
             <span class="block-tlt">项目文件
-                <span class="tlt-tips">必填项不能为空</span>
+                <span class="tlt-tips" v-show="fileMust">请添加商业计划书</span>
               </span>
             <span class="check-flag">
-                <!-- <img src="../assets/gou.png" alt=""> -->
-                <span class="flag-txt">待完善</span>
+                <img v-if="filePerfect" src="../../../assets/images/gou.png" alt="">
+                <span v-else class="flag-txt">待完善</span>
               </span>
           </div>
-
           <div class="check-block" v-bind:class="{'checked':node1}" @click="setNode('1')" >
               <span class="block-icon">
                 <img src="../../../assets/images/arts.png" alt="">
               </span>
             <span class="block-tlt">项目介绍
-                <span class="tlt-tips">必填项不能为空</span>
+                <span class="tlt-tips" v-show="projectMust">必填项不能为空</span>
               </span>
             <span class="check-flag">
-                <img src="../../../assets/images/gou.png" alt="">
+                <img v-if="projectPerfect" src="../../../assets/images/gou.png" alt="">
+                <span v-else class="flag-txt">待完善</span>
               </span>
           </div>
 
@@ -628,10 +640,11 @@
                 <img src="../../../assets/images/group.png" alt="">
               </span>
             <span class="block-tlt">核心团队
-                <span class="tlt-tips">必填项不能为空</span>
+                <span class="tlt-tips" v-show="teamMust">必填项不能为空</span>
               </span>
             <span class="check-flag">
-                <img src="../../../assets/images/gou.png" alt="">
+                <img v-if="teamPerfect" src="../../../assets/images/gou.png" alt="">
+              <span v-else class="flag-txt">待完善</span>
               </span>
           </div>
 
@@ -640,12 +653,11 @@
                 <img src="../../../assets/images/money.png" alt="">
               </span>
             <span class="block-tlt">融资信息
-                <span class="tlt-tips">必填项不能为空</span>
+                <span class="tlt-tips" v-show="financingMust">必填项不能为空</span>
               </span>
             <span class="check-flag">
-                <!-- <img src="../../../assets/gou.png" alt=""> -->
-                <span class="flag-txt">待完善</span>
-
+                 <img v-if="financingPerfect" src="../../../assets/images/gou.png" alt="">
+                <span v-else class="flag-txt">待完善</span>
               </span>
           </div>
 
@@ -654,12 +666,11 @@
                 <img src="../../../assets/images/time.png" alt="">
               </span>
             <span class="block-tlt">里程碑
-                <span class="tlt-tips">必填项不能为空</span>
+                <span class="tlt-tips" v-show="milepostMust">必填项不能为空</span>
               </span>
             <span class="check-flag">
-                <!-- <img src="../../../assets/gou.png" alt=""> -->
-                <span class="flag-txt">待完善</span>
-
+                 <img v-if="milepostPerfect" src="../../../assets/images/gou.png" alt="">
+                <span v-else class="flag-txt">待完善</span>
               </span>
           </div>
 
@@ -667,17 +678,14 @@
               <span class="block-icon">
                 <img src="../../../assets/images/doc.png" alt="">
               </span>
-            <span class="block-tlt">FA签约协议
-                <span class="tlt-tips">必填项不能为空</span>
-              </span>
+            <span class="block-tlt">FA签约协议</span>
             <span class="check-flag">
-                <!-- <img src="../../../assets/gou.png" alt=""> -->
-                <span class="flag-txt">待完善</span>
-
+                 <img v-if="signPerfect" src="../../../assets/images/gou.png" alt="">
+                <span v-else class="flag-txt">待完善</span>
               </span>
           </div>
           <div class="bot-btn">
-            <el-button type="primary" size="large">保存项目</el-button>
+            <el-button type="primary" size="large" @click="allSave">保存项目</el-button>
           </div>
         </div>
       </div>
@@ -729,7 +737,9 @@
 export default {
   data(){
     return {
-      fileList:[],//上传文件列表
+      planList:[],//商业计划书上传列表
+      fileList:[],//批量上传文件列表
+      planButton:true,//控制上传按钮的显示
       uploadShow:{//上传文件展示列表,就是老夫操作的列表
         lists:[]
       },
@@ -925,13 +935,26 @@ export default {
       node3:false,
       node4:false,
       node5:false,
-
+      /*判断项目完整度*/
+      filePerfect:false,
+      projectPerfect:false,
+      teamPerfect:false,
+      financingPerfect:false,
+      milepostPerfect:false,
+      signPerfect:false,
+      /*判断必填项是否填写*/
+      fileMust:false,
+      projectMust:false,
+      teamMust:false,
+      financingMust:false,
+      milepostMust:false,
     }
   },
   computed:{
-      /*项目完整度判断*/
+    /*项目完整度判断*/
     proportion(){
-        let number=0;
+        let number=0;//所有的空值数
+        let fileValue=this.planList
         let projectValue=this.project
         let teamValue=this.team
         let financingValue=this.financing
@@ -941,34 +964,64 @@ export default {
           Object.keys(teamValue).length+
           Object.keys(financingValue).length+
           Object.keys(milepostValue).length+
-          Object.keys(signValue).length-5
+          Object.keys(signValue).length+6
+      //判断所有为空的数值,包括数组内的第一组
         function forFor(value){
-          for(let key in value){
-            if(isArray(value[key])){
-              if(value[key].length==0){
+          let inner=0;//每一次调用的空值
+          if(isArray(value)){
+            if(value.length===0) {number++;inner++};
+          }else{
+            for(let key in value){
+              if(isArray(value[key])){
+                if(value[key].length==0){
+                  number++;
+                  inner++
+                }else{
+                  for(let key2 in  value[key][0]){
+                    if(value[key][0][key2]==""){
+                      number++;
+                      inner++
+                    }
+                  }
+                }
+              }else if(value[key]==""){
                 number++;
+                inner++
               }
-            }else if(value[key]==""){
-              number++;
             }
           }
+
+          return inner
         }
-      function isArray(o){
-        return Object.prototype.toString.call(o)=='[object Array]';
-      }
-/*      console.log(isArray(ary));*/
-      forFor(projectValue)
-      forFor(teamValue)
-      forFor(financingValue)
-      forFor(milepostValue)
-      forFor(signValue)
+      //是否为数组
+        function isArray(o){
+          return Object.prototype.toString.call(o)=='[object Array]';
+        }
+      if(forFor(fileValue)==0)this.filePerfect=true;
+      else this.filePerfect=false;
 
+      if(forFor(projectValue)==0)this.projectPerfect=true;
+      else this.signPerfect=false;
 
-        console.log(parseInt(((sum-number)/sum)*100))
-        console.log(parseInt(number/sum))
+      if(forFor(teamValue)==0) this.teamPerfect=true;
+      else this.teamPerfect=false;
+
+      if(forFor(financingValue)==0) this.financingPerfect=true;
+      else this.financingPerfect=false;
+
+      if(forFor(milepostValue)==0) this.milepostPerfect=true;
+      else this.milepostPerfect=false;
+
+      if(forFor(signValue)==0)this.signPerfect=true;
+        else this.signPerfect=false;
+
+/*      console.log(parseInt(((sum-number)/sum)*100))
+      console.log(parseInt(number/sum))*/
 
       return parseInt(((sum-number)/sum)*100)
-    }
+    },
+
+
   },
   mounted() {
     this.list = this.states.map(item => {
@@ -976,7 +1029,21 @@ export default {
     });
   },
   methods:{
-      /*批量上传*/
+      /*商业计划书上传*/
+    planChange(file, fileList){
+//      console.log(fileList)
+      this.planButton=false;
+    },
+    planuploadsuccess(response, file, fileList){
+      this.planList = fileList
+    },
+    planRemove(file, fileList) {
+      this.planList = fileList.slice(1,1);
+      if (fileList.length == 0) this.planButton = true;
+      else this.planButton = true;
+
+    },
+    /*批量上传*/
     //2号当添加文件时,添加入上传列表
     handleChange(file, fileList){
       if(file.status=="ready"){
@@ -1129,22 +1196,28 @@ export default {
     },
     /*检查所有必填项目以及获取所有数据*/
     submitForm(formName) {
+      let check=true
       this.$refs[formName].validate((valid) => {
         if (valid) {
-
-          return true;
+          return
         } else {
 //          this.open()
-          return false;
+          check=false;
         }
       });
+      return check;
     },
     /*全部保存按钮*/
     allSave(){
-/*      this.submitForm('project')
-      this.submitForm('team')
-      this.submitForm('financing')
-      this.submitForm('milepost')*/
+      if(this.planList.length===0) this.fileMust=true
+      else this.fileMust=false
+
+      console.log(this.fileMust)
+      console.log(this.planList.length)
+      this.projectMust=!this.submitForm('project')
+      this.teamMust=!this.submitForm('team')
+      this.financingMust=!this.submitForm('financing')
+      this.milepostMust=!this.submitForm('milepost')
 //      let check = new Object;
 //      check.project=this.submitForm('project')
 //      check.team=this.submitForm('team')
@@ -1157,7 +1230,7 @@ export default {
             return;
           }
       }*/
-      if(this.submitForm('project') || this.submitForm('team') || this.submitForm('financing') || this.submitForm('milepost')){
+      /*if(this.submitForm('project') || this.submitForm('team') || this.submitForm('financing') || this.submitForm('milepost')){
         let value=new Object;
         value.project=this.$tool.getToObject(this.project)
         value.team=this.$tool.getToObject(this.team)
@@ -1167,7 +1240,7 @@ export default {
         console.log(value)
       }else{
         this.open()
-      }
+      }*/
     },
     /*警告弹窗*/
     open() {
@@ -1248,11 +1321,30 @@ export default {
         }
       }
     }
+  },
+  //    当dom一创建时
+  created(){
+    if(this.planList.length!=0) this.planButton=false;
+    else this.planButton=true;
+
   }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   @import '../../../assets/css/edit.less';
-
+.planUpload{
+  .el-upload{
+    display:block;
+  }
+  .el-upload-list__item{
+/*    width: 200px;*/
+  }
+  .el-upload-list__item-name{
+    font-size:14px;
+    color:#475669;
+    letter-spacing:0;
+    text-decoration:underline
+  }
+}
 </style>

@@ -319,24 +319,7 @@
       }
     },
     computed: {
-      howType(){
-        let type;
-        let data = this.tableData
-        for (var i = 0; i < data.length; i++) {
-          let obj = data[i];
-          for (var key in obj) {
-            if (obj['sole'] === '独家') {
-              type = 'primary';
-            } else if (obj['sole'] === '非独') {
-              type = 'success';
-            } else {
-              type = 'gray';
-            }
-          }
-          console.log(obj)
-        }
-        return type
-      }
+
     },
     components: {
       alertUpload
