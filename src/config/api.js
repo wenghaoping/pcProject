@@ -16,13 +16,14 @@ axios.interceptors.request.use((config) => {
   }
   return config;
 },(error) =>{
-  alert("网络异常");
+  alert("错误的传参");
   return Promise.reject(error);
 });
 
 //code状态码200判断
 axios.interceptors.response.use((res) =>{
-  if(res.status=== 200){
+  if(res.data.code != '200'){
+    alert(res.data.msg);
     return Promise.reject(res);
   }
   return res;

@@ -331,7 +331,7 @@
       // 组件创建完后获取数据，
       const getNodeCountURL=this.URL.PROJECT.getNodeCount/*项目节点数量URL*/
       const url="http://wthrcdn.etouch.cn/weather_mini"
-/*      this.$http.post(getNodeCountURL,{user_id: '2rzyz5vp'})
+      this.$http.post(getNodeCountURL,{user_id: '2rzyz5vp'})
         .then(res=>{
           console.log(res)
           alert("正确")
@@ -339,10 +339,11 @@
         .catch(err=>{
           console.log(err)
           alert("错误")
-        })*/
-      this.$http.get(url,{ params:{city: "杭州"} })
-        .then(res=>{ console.log(res,1) })
-        .catch(err=>{ console.log(err,2) })
+        })
+//      this.$http.get(url,{ params:{city: "杭州"} })
+//        .then(res=>{ console.log(res,1) })
+//        .catch(err=>{ console.log(err,2) })
+
 
     }
 
