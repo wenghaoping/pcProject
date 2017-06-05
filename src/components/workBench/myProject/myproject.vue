@@ -2,27 +2,27 @@
   <div id="myproject">
     <div class="wrap-left fl">
       <div class="top-big-progress">
-        <div class="pp-item pp-node pp-start" v-bind:class="{'pp-cur':node0}" @click="setNode('0')">
+        <div class="pp-item pp-node pp-start" :class="{'pp-cur':node0}" @click="setNode('0')">
           <p class="pp-num pp-txt">75</p>
           <span class="pp-sec-title">全部项目</span>
         </div>
         <div class="pp-item pp-lines">
           <span class="lp-line">&nbsp;</span>
         </div>
-        <div class="pp-item pp-node" v-bind:class="{'pp-cur':node1}" @click="setNode('1')">
+        <div class="pp-item pp-node" :class="{'pp-cur':node1}" @click="setNode('1')">
           <p class="pp-num pp-txt">35</p>
           <span class="pp-sec-title">项目线索</span>
         </div>
         <div class="pp-item pp-lines">
           <span class="lp-line">&nbsp;</span>
-          <el-tooltip placement="top">
+          <el-tooltip placement="top" class="pp-cur">
             <div slot="content">
               <div style="width:50px;">签约 : 10 </div>
             </div>
             <span class="circle circle-0">&nbsp;</span>
           </el-tooltip>
         </div>
-        <div class="pp-item pp-node" v-bind:class="{'pp-cur':node2}" @click="setNode('2')">
+        <div class="pp-item pp-node" :class="{'pp-cur':node2}" @click="setNode('2')">
           <p class="pp-num pp-txt">28</p>
           <span class="pp-sec-title">FA项目</span>
         </div>
@@ -68,13 +68,13 @@
           <el-input
             placeholder="搜索项目、公司名称"
             icon="search"
-            v-model="input"
+            v-model="searchinput"
             :on-icon-click="handleIconClick">
           </el-input>
         </div>
         <div class="btns-box">
           <el-button type="primary" @click="dialogUploadVisible = true">批量上传项目</el-button>
-          <el-button type="primary">创建项目</el-button>
+          <el-button type="primary" @click="createProject">创建项目</el-button>
 
           <alertUpload :dialog-upload-visible="dialogUploadVisible" v-on:changeupload="dialogUploadVisiblechange">
 
@@ -160,15 +160,14 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="pagenav">
+          <div class="pagenav" v-if="totalData>10">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-sizes="[50, 100, 150, 200]"
-              :page-size="50"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="150">
+              :current-page.sync="currentPage"
+              :page-size="10"
+              layout="total, prev, pager, next"
+              :total="totalData">
             </el-pagination>
           </div>
         </template>
@@ -253,12 +252,13 @@
         currentPage:1,
         fullscreenLoading: false,//全屏加载
         stateCheck:false,//状态单选
-        input:'',
+        searchinput:'',
         dialogUploadVisible: false,//第一个弹窗的控制
         node0:true,
         node1:false,
         node2:false,
-        node3:false
+        node3:false,
+        totalData:1000//总数据条数
       }
     },
     methods:{
@@ -275,7 +275,6 @@
         console.log(this.$tool.getToObject(row))
         console.log(column)
         if(column.label!="重置"){
-
           this.$router.push({ name: 'projectDetails', query: { address:row.address}})
         }
       },
@@ -292,7 +291,7 @@
         console.log(`当前页: ${val}`);
       },
       handleIconClick:function(){
-        console.log(0);
+        console.log(this.searchinput);
       },
       dialogUploadVisiblechange(msg){
         this.dialogUploadVisible=msg;
@@ -304,6 +303,7 @@
         this.node2 = false ;
         this.node3 = false ;
         this['node' + v] = true ;
+
       },
       headerClick(column, event){//点击重置按钮时
         console.log(column)
@@ -316,6 +316,9 @@
         console.log(column)
         console.log(prop)
         console.log(order)
+      },
+      createProject(){
+        this.$router.push({ name: 'creatproject', query: {}})
       }
     },
     computed: {
@@ -323,6 +326,24 @@
     },
     components: {
       alertUpload
+    },
+    created () {
+      // 组件创建完后获取数据，
+      const getNodeCountURL=this.URL.PROJECT.getNodeCount/*项目节点数量URL*/
+      const url="http://wthrcdn.etouch.cn/weather_mini"
+/*      this.$http.post(getNodeCountURL,{user_id: '2rzyz5vp'})
+        .then(res=>{
+          console.log(res)
+          alert("正确")
+        })
+        .catch(err=>{
+          console.log(err)
+          alert("错误")
+        })*/
+      this.$http.get(url,{ params:{city: "杭州"} })
+        .then(res=>{ console.log(res,1) })
+        .catch(err=>{ console.log(err,2) })
+
     }
 
   }

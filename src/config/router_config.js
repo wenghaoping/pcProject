@@ -12,6 +12,7 @@ import myProject from '@/components/workBench/myProject/myProject.vue'    //我�
 import projectDetails from '@/components/workBench/myProject/projectDetails.vue'   //项目详情
 
 import editproject from '@/components/workBench/myProject/editproject.vue'   //编辑项目
+import creatproject from '@/components/workBench/myProject/creatproject.vue'   //编辑项目
 
 
 import myContacts from '@/components/workBench/myContacts/mycontacts.vue'//我的人脉
@@ -53,6 +54,7 @@ export default [
       },
       { path: 'projectDetails', component: projectDetails, name:"projectDetails"},
       { path: 'editproject', component: editproject, name:"editproject"},
+      { path: 'creatproject', component: creatproject, name:"creatproject"},
     ]
   },
   {

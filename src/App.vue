@@ -47,20 +47,6 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import Element from 'element-ui'
-  import 'element-ui/lib/theme-default/index.css'
-  import { Notification } from 'element-ui';
-  //引入自己的CSS,格式化样式
-  import './assets/css/base.css'
-  import './assets/css/animate.css'
-  import $ from 'jquery'
-  import tool from './assets/js/tool.js';
-  import axios from 'axios'
-  import VueAxios from 'vue-axios'
-  Vue.use(VueAxios, axios)//http请求
-  Vue.use(Element)//UI库
-  Vue.use(tool);//自己的库
 
   export default {
 
@@ -85,7 +71,7 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/workBench/editproject');
+      this.$router.push('/workBench/myProject');
     },
   }
 </script>

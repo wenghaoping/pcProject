@@ -22,6 +22,7 @@
                            action="/api/upload"
                            :on-change="planChange"
                            :on-success="planuploadsuccess"
+                           :on-error="planuploaderror"
                            :on-remove="planRemove"
                            :file-list="planList"
                            >
@@ -97,11 +98,12 @@
                       <el-form-item
                         label="公司名称"
                         prop="company">
-                        <el-select :span="12" v-model="project.company" filterable="" remote placeholder="公司名称" :remote-method="remoteMethod"
-                                   :loading="loading" loading-text="正在加载" class="width360" allow-create>
-                          <el-option v-for="item in companyList" :key="item.value" :label="item.label" :value="item.value">
-                          </el-option>
-                        </el-select>
+                        <el-autocomplete v-model="project.company"
+                                         :fetch-suggestions="querySearchAsync"
+                                         placeholder="请输入内容"
+                                         @select="handleSelect" class="width360">
+
+                        </el-autocomplete>
                       </el-form-item>
                     </el-col>
                     <span class="ques">
@@ -503,6 +505,7 @@
                         <el-date-picker
                           v-model="milePostSomeThing.time"
                           type="date"
+                          style="width: 360px;"
                           placeholder="选择日期" class="width360">
                         </el-date-picker>
                       </el-form-item>
@@ -730,10 +733,23 @@
         <el-button type="primary" @click="saveGroupChange">保　存</el-button>
       </div>
     </el-dialog>
+    <!--搜索同步的弹窗-->
+    <el-dialog
+      title="杭州投着乐网络科技有限公司（微天使）"
+      :visible.sync="dialogVisible"
+      size="tiny"
+      :show-close="close">
+      <span>微天使为您找到相似公司，是否一键同步</span>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="sync">一键同步</el-button>
+          </span>
+    </el-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import { Loading } from 'element-ui';
 export default {
   data(){
     return {
@@ -948,6 +964,9 @@ export default {
       teamMust:false,
       financingMust:false,
       milepostMust:false,
+      dialogVisible:false,//是否同步弹窗
+      close:false,
+      restaurants: [],//数据存放
     }
   },
   computed:{
@@ -1020,22 +1039,27 @@ export default {
 
       return parseInt(((sum-number)/sum)*100)
     },
-
-
   },
   mounted() {
     this.list = this.states.map(item => {
       return { value: item, label: item };
     });
+    this.restaurants = this.loadAll();
   },
   methods:{
       /*商业计划书上传*/
     planChange(file, fileList){
-//      console.log(fileList)
-      this.planButton=false;
+      console.log(this.$tool.getToObject(file))
+      if(file.status==="fail") this.planButton=true;
+        else this.planButton=false;
     },
     planuploadsuccess(response, file, fileList){
       this.planList = fileList
+    },
+    planuploaderror(err, file, fileList){//上传失败
+      console.log(this.planButton)
+      this.open("上传失败,请联系管理员")
+
     },
     planRemove(file, fileList) {
       this.planList = fileList.slice(1,1);
@@ -1122,20 +1146,49 @@ export default {
     goBack(){//返回上一层
       this.$router.go(-1);
     },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          this.companyList = this.list.filter(item => {
-            return item.label.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1;
-          });
-        }, 1000);
-      } else {
-        this.companyList = [];
-      }
+
+    /*获取数据*/
+    loadAll() {
+      return [
+        { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
+        { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
+        { "value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        { "value": "泷千家(天山西路店)", "address": "天山西路438号" },
+        { "value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101" },
+        { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
+        { "value": "豪大大香鸡排超级奶爸", "address": "上海市嘉定区曹安公路曹安路1685号" },
+        { "value": "茶芝兰（奶茶，手抓饼）", "address": "上海市普陀区同普路1435号" },
+        { "value": "十二泷町", "address": "上海市北翟路1444弄81号B幢-107" },
+        { "value": "星移浓缩咖啡", "address": "上海市嘉定区新郁路817号" },
+        { "value": "阿姨奶茶/豪大大", "address": "嘉定区曹安路1611号" },
+        { "value": "新麦甜四季甜品炸鸡", "address": "嘉定区曹安公路2383弄55号" },
+        { "value": "Monica摩托主题咖啡店", "address": "嘉定区江桥镇曹安公路2409号1F，2383弄62号1F" },
+        { "value": "浮生若茶（凌空soho店）", "address": "上海长宁区金钟路968号9号楼地下一层" },
+        { "value": "NONO JUICE  鲜榨果汁", "address": "上海市长宁区天山西路119号" }
+      ];
     },
+    /*自动搜索,接口写这里面*/
+    querySearchAsync(queryString, cb) {
+      console.log(queryString)
+
+      var restaurants = this.restaurants;
+      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 500 * Math.random());
+    },
+    createStateFilter(queryString) {
+      return (state) => {
+        return (state.value.indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
+
+    handleSelect(item) {
+      console.log(item);
+      this.dialogVisible=true;
+    },//选择了搜索出来的数据后
+
     radiochange(label){/*控制添加radio*/
       if(label=="自定义添加"){
         this.dialogFormVisible=true;
@@ -1201,7 +1254,6 @@ export default {
         if (valid) {
           return
         } else {
-//          this.open()
           check=false;
         }
       });
@@ -1214,42 +1266,55 @@ export default {
 
       console.log(this.fileMust)
       console.log(this.planList.length)
-      this.projectMust=!this.submitForm('project')
-      this.teamMust=!this.submitForm('team')
-      this.financingMust=!this.submitForm('financing')
-      this.milepostMust=!this.submitForm('milepost')
-//      let check = new Object;
-//      check.project=this.submitForm('project')
-//      check.team=this.submitForm('team')
-//      check.financing=this.submitForm('financing')
-//      check.milepost=this.submitForm('milepost')
-/*      let projectCheck=true;
-      for(var key in check){
-          if(check[key]==false){
-            projectCheck=false;
-            return;
-          }
-      }*/
-      /*if(this.submitForm('project') || this.submitForm('team') || this.submitForm('financing') || this.submitForm('milepost')){
-        let value=new Object;
-        value.project=this.$tool.getToObject(this.project)
-        value.team=this.$tool.getToObject(this.team)
-        value.financing=this.$tool.getToObject(this.financing)
-        value.milepost=this.$tool.getToObject(this.milepost)
-        value.sign=this.$tool.getToObject(this.sign)
-        console.log(value)
-      }else{
-        this.open()
-      }*/
+      this.projectMust=!this.submitForm('project');
+      this.teamMust=!this.submitForm('team');
+      this.financingMust=!this.submitForm('financing');
+      this.milepostMust=!this.submitForm('milepost');
+      if(this.fileMust && this.projectMust && this.teamMust && this.financingMust && this.milepostMust) this.open("必填项不能为空")
+        else this.open2('项目编辑成功','您当前的项目完整度为'+this.proportion+'%','查看详情','继续编辑')
     },
     /*警告弹窗*/
-    open() {
+    open(text) {
       this.$notify.error({
-        message: '必填项不能为空',
+        message: text,
         offset: 300
       });
     },
-    /*跳转*/
+    /*编辑成功弹窗*/
+    open2(title,main,confirm,cancel) {
+      this.$confirm(main,title , {
+        confirmButtonText: confirm,
+        cancelButtonText:cancel ,
+        type: 'success'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '继续编辑'
+        });
+      }).catch(() => {
+        this.$router.push({ name: 'projectDetails', query: {}})
+      });
+    },
+    fetchData () {
+      Loading.service({ fullscreen: true,text:"正在加载数据中"});
+      setTimeout(function () {
+        let loadingInstance = Loading.service({ fullscreen: true});
+        loadingInstance.close();
+      },1000)
+
+      /*this.error = this.post = null
+       this.loading = true
+       // replace getPost with your data fetching util / API wrapper
+       getPost(this.$route.params.id, (err, post) => {
+       this.loading = false
+       if (err) {
+       this.error = err.toString()
+       } else {
+       this.post = post
+       }
+       })*/
+    },
+    /*锚点跳转*/
     setNode(v){
       this.node0 = false ;
       this.node1 = false ;
@@ -1320,12 +1385,18 @@ export default {
           window.pageYOffset = total
         }
       }
+    },
+    /*一键同步按钮*/
+    sync(){
+      this.dialogVisible = false;
     }
   },
   //    当dom一创建时
   created(){
     if(this.planList.length!=0) this.planButton=false;
     else this.planButton=true;
+
+    this.fetchData()
 
   }
 }
@@ -1347,4 +1418,5 @@ export default {
     text-decoration:underline
   }
 }
+
 </style>

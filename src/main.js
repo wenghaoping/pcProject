@@ -3,8 +3,29 @@
 import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
-import router_config from './router/router_config.js'
+import router_config from './config/router_config.js'
+import Element from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
 
+import { Notification } from 'element-ui';
+
+//引入自己的CSS,格式化样式
+import './assets/css/base.css'
+import './assets/css/animate.css'
+import $ from 'jquery'
+import tool from './assets/js/tool.js';
+import axios from './config/api.js'
+Vue.prototype.$http = axios
+// import axios from 'axios'
+/*  import VueAxios from 'vue-axios'*/
+// Vue.prototype.$ajax = axios
+import URL_ from './assets/js/url.js'//URL请求地址汇总
+Vue.prototype.URL = URL_
+
+/*  Vue.use(axios)//http请求*/
+Vue.use(Element)//UI库
+Vue.use(tool);//自己的库
+/*  Vue.use(URL);//URL汇总*/
 
 Vue.config.productionTip = false
 //设置路由
