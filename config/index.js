@@ -28,11 +28,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {
+      '/project': {
         target: 'https://dev.weitianshi.cn',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/api'
+          '^/project': '/project'
         }
       }
     },

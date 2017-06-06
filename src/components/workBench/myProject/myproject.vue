@@ -3,62 +3,68 @@
     <div class="wrap-left fl">
       <div class="top-big-progress">
         <div class="pp-item pp-node pp-start" :class="{'pp-cur':node0}" @click="setNode('0')">
-          <p class="pp-num pp-txt">75</p>
+          <p class="pp-num pp-txt">{{nodeCount.whole}}</p>
           <span class="pp-sec-title">全部项目</span>
         </div>
         <div class="pp-item pp-lines">
           <span class="lp-line">&nbsp;</span>
         </div>
         <div class="pp-item pp-node" :class="{'pp-cur':node1}" @click="setNode('1')">
-          <p class="pp-num pp-txt">35</p>
+          <p class="pp-num pp-txt">{{nodeCount.clue}}</p>
           <span class="pp-sec-title">项目线索</span>
         </div>
         <div class="pp-item pp-lines">
           <span class="lp-line">&nbsp;</span>
           <el-tooltip placement="top" class="pp-cur">
             <div slot="content">
-              <div style="width:50px;">签约 : 10 </div>
+              <div style="width:50px;">约谈 : {{nodeCount.interview}} </div>
             </div>
             <span class="circle circle-0">&nbsp;</span>
           </el-tooltip>
+          <el-tooltip placement="top" class="pp-cur">
+            <div slot="content">
+              <div style="width:50px;">考察 : {{nodeCount.investigate}} </div>
+            </div>
+            <span class="circle circle-5">&nbsp;</span>
+          </el-tooltip>
         </div>
         <div class="pp-item pp-node" :class="{'pp-cur':node2}" @click="setNode('2')">
-          <p class="pp-num pp-txt">28</p>
-          <span class="pp-sec-title">FA项目</span>
+          <p class="pp-num pp-txt">{{nodeCount.sign}}</p>
+          <span class="pp-sec-title">签署FA协议</span>
         </div>
         <div class="pp-item pp-lines">
           <span class="lp-line">&nbsp;</span>
           <el-tooltip placement="top">
             <div slot="content">
-              <div style="width:50px;">签约 : 10 </div>
+              <div style="width:100px;">引荐投资方 : {{nodeCount.recommended}} </div>
             </div>
             <span class="circle circle-1">&nbsp;</span>
           </el-tooltip>
 
           <el-tooltip placement="top">
             <div slot="content">
-              <div style="width:50px;">签约 : 10 </div>
+              <div style="width:80px;">投资协议 : {{nodeCount.agreement}} </div>
             </div>
             <span class="circle circle-2">&nbsp;</span>
           </el-tooltip>
 
           <el-tooltip placement="top">
             <div slot="content">
-              <div style="width:50px;">签约 : 10 </div>
+              <div style="width:50px;">交割 : {{nodeCount.delivery}} </div>
             </div>
             <span class="circle circle-3">&nbsp;</span>
           </el-tooltip>
 
           <el-tooltip placement="top">
             <div slot="content">
-              <div style="width:50px;">签约 : 10 </div>
+              <div style="width:80px;">待收佣金 : {{nodeCount.collect}} </div>
             </div>
             <span class="circle circle-4">&nbsp;</span>
           </el-tooltip>
 
         </div>
         <div class="pp-item pp-node" v-bind:class="{'pp-cur':node3}" @click="setNode('3')">
-          <p class="pp-num pp-txt">15</p>
+          <p class="pp-num pp-txt">{{nodeCount.revenue}}</p>
           <span class="pp-sec-title">佣金收讫</span>
         </div>
       </div>
@@ -250,15 +256,26 @@
         regionFilters:[{ text: '北京', value: '北京' },{ text: '上海', value: '上海' }],
         moneyFilters:[{ text: '3000万', value: '3000万' },{ text: '4000万', value: '4000万'}],
         currentPage:1,
-        fullscreenLoading: false,//全屏加载
         stateCheck:false,//状态单选
         searchinput:'',
-        dialogUploadVisible: false,//第一个弹窗的控制
+        dialogUploadVisible: true,//第一个弹窗的控制
         node0:true,
         node1:false,
         node2:false,
         node3:false,
-        totalData:1000//总数据条数
+        totalData:1000,//总数据条数
+        nodeCount:{
+          whole:0,//全部项目
+          clue:0,//项目线索
+          interview:0,//约谈
+          investigate:0,//考察
+          sign:0,//签署FA协议
+          recommended:0,//引荐投资方
+          agreement:0,//投资协议
+          delivery:0,//交割
+          collect:0,//待收佣金
+          revenue:0//佣金收益
+        }
       }
     },
     methods:{
@@ -295,7 +312,6 @@
       },
       dialogUploadVisiblechange(msg){
         this.dialogUploadVisible=msg;
-        console.log(msg)
       },
       setNode(v){
         this.node0 = false ;
@@ -319,7 +335,69 @@
       },
       createProject(){
         this.$router.push({ name: 'creatproject', query: {}})
-      }
+      },
+      /*请求函数*/
+      getNodeCount(){
+        // 项目节点数量URL
+        const getNodeCountURL=this.URL.getNodeCount
+
+        this.$http.post(getNodeCountURL,{user_id: '2rzyz5vp'})
+          .then(res=>{
+            setTimeout(() => { let data = res.data.data
+
+              this.nodeCount.whole=data.total.schedule_count//全部项目
+
+              let nodeList=data.node_list;
+              for(let key in nodeList){//数据导入顶部标签
+                switch (nodeList[key].schedule_id){
+                  case 1:
+                    this.nodeCount.clue=nodeList[key].schedule_count
+                    break;
+                  case 2:
+                    this.nodeCount.interview=nodeList[key].schedule_count
+                    break;
+                  case 3:
+                    this.nodeCount.investigate=nodeList[key].schedule_count
+                    break;
+                  case 4:
+                    this.nodeCount.sign=nodeList[key].schedule_count
+                    break;
+                  case 5:
+                    this.nodeCount.recommended=nodeList[key].schedule_count
+                    break;
+                  case 6:
+                    this.nodeCount.agreement=nodeList[key].schedule_count
+                    break;
+                  case 7:
+                    this.nodeCount.delivery=nodeList[key].schedule_count
+                    break;
+                  case 8:
+                    this.nodeCount.collect=nodeList[key].schedule_count
+                    break;
+                  case 9:
+                    this.nodeCount.revenue=nodeList[key].schedule_count
+                    break;
+                  default:
+                    alert("错误")
+                    break;
+                };
+              }
+              console.log(res)
+              if(res.status===200){
+/*                this.closeLoading();*/
+              }}, 10);
+          })
+          .catch(err=>{
+            console.log(err)
+
+          })
+      },
+/*      loading () {
+        this.$loading({ fullscreen: true,text:"正在加载数据中"})
+      },
+      closeLoading(){
+        this.$loading({ fullscreen: true,text:"正在加载数据中"}).close();
+      }*/
     },
     computed: {
 
@@ -329,20 +407,8 @@
     },
     created () {
       // 组件创建完后获取数据，
-      const getNodeCountURL=this.URL.PROJECT.getNodeCount/*项目节点数量URL*/
-      const url="http://wthrcdn.etouch.cn/weather_mini"
-      this.$http.post(getNodeCountURL,{user_id: '2rzyz5vp'})
-        .then(res=>{
-          console.log(res)
-          alert("正确")
-        })
-        .catch(err=>{
-          console.log(err)
-          alert("错误")
-        })
-//      this.$http.get(url,{ params:{city: "杭州"} })
-//        .then(res=>{ console.log(res,1) })
-//        .catch(err=>{ console.log(err,2) })
+/*      this.loading();*/
+      this.getNodeCount();
 
 
     }

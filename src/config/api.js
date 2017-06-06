@@ -22,8 +22,7 @@ axios.interceptors.request.use((config) => {
 
 //code状态码200判断
 axios.interceptors.response.use((res) =>{
-  if(res.data.code != '200'){
-    alert(res.data.msg);
+  if(res.status!=200){
     return Promise.reject(res);
   }
   return res;

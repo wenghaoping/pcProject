@@ -1,0 +1,229 @@
+<template>
+  <div>
+    <div class="mark">
+      <img src="../../../assets/images/mark.png">
+    </div>
+    <el-tabs v-model="bussinessName">
+
+      <el-tab-pane label="工商信息" name="1">
+        <div class="block">
+          <div class="rz-details">
+            <div class="rz-detail">
+              <p class="det-title">法定代表人</p>
+              <p class="det-info">程川</p>
+            </div>
+            <div class="rz-detail">
+              <p class="det-title">注册资本</p>
+              <p class="det-info">1000万</p>
+            </div>
+            <div class="rz-detail">
+              <p class="det-title">经营状态</p>
+              <p class="det-info">开业</p>
+            </div>
+          </div>
+        </div>
+        <div class="block" >
+          <el-row :span="24">
+            <el-col :span="4"><div class="content left">企业类型：</div></el-col>
+            <el-col :span="8"><div class="content right">有限责任公司（自然人投资或控股）</div></el-col>
+            <el-col :span="4"><div class="content left">统一社会信用代码：</div></el-col>
+            <el-col :span="8"><div class="content right">2014-03-23</div></el-col>
+          </el-row>
+          <el-row :span="24">
+            <el-col :span="4"><div class="content left">工商注册号：</div></el-col>
+            <el-col :span="8"><div class="content right">110108015068911</div></el-col>
+            <el-col :span="4"><div class="content left">组织机构代码: </div></el-col>
+            <el-col :span="8"><div class="content right">59963405-X</div></el-col>
+          </el-row>
+          <el-row :span="24">
+            <el-col :span="4"><div class="content left">营业期限：</div></el-col>
+            <el-col :span="8"><div class="content right">2012-07-10 至 2032-07-09</div></el-col>
+            <el-col :span="4"><div class="content left">发照日期：</div></el-col>
+            <el-col :span="8"><div class="content right">2016-09-27</div></el-col>
+          </el-row>
+          <el-row :span="24">
+            <el-col :span="4"><div class="content left">登记机关：</div></el-col>
+            <el-col :span="8"><div class="content right">海淀分局</div></el-col>
+            <el-col :span="4"><div class="content left">登记状态：</div></el-col>
+            <el-col :span="8"><div class="content right">这里是登记状态</div></el-col>
+          </el-row>
+          <el-row :span="24">
+            <el-col :span="4" style="height: 109px;line-height: 109px;"><div class="left" >经营范围：</div></el-col>
+            <el-col :span="20" style="height: 109px;"><div style="padding: 14px 12px 12px 15px">我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。 内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。</div></el-col>
+          </el-row>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="工商变更" name="2">
+        <div class="bloack change">
+          <el-table
+            :data="changeData"
+            stripe
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="date"
+              label="时间"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="something"
+              label="事项"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="changebefore"
+              label="变更前"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="changeafter"
+              label="变更后"
+            >
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-tab-pane>
+      <!--商标信息-->
+      <el-tab-pane :label="trademarkMessage" name="3">
+        <div class="block">
+          <el-table
+            :data="trademarkData"
+            stripe
+            style="width: 100%">
+            <el-table-column
+              prop="date"
+              label="时间"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="商标名称"
+              width="260">
+            </el-table-column>
+            <el-table-column
+              prop="status"
+              label="状态"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="type"
+              label="类型"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="registration"
+              label="注册号">
+            </el-table-column>
+          </el-table>
+
+        </div>
+      </el-tab-pane>
+      <!--招聘信息-->
+      <el-tab-pane :label="patentMessage" name="4">
+        <div class="block patent">
+          <el-table
+            :data="patentData"
+            stripe
+            style="width: 100%">
+            <el-table-column
+              prop="name"
+              label="专利名称"
+              width="250">
+            </el-table-column>
+            <el-table-column
+              prop="publishNubmer"
+              label="申请公布号"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="publishdate"
+              label="申请公布日"
+              width="110"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="applyNumber"
+              label="申请号"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="classify"
+              label="分类号">
+            </el-table-column>
+          </el-table>
+
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  name: 'hello',
+  data () {
+    return {
+      bussinessName: '4',
+      trademarkMessage:'商标信息(3)',
+      patentMessage:'招聘信息(29)',
+      trademarkData: [{
+        date: '2016-05-04',
+        name: '杭州投着乐网络科技邮箱公司',
+        status: '已注册',
+        type:"20",
+        registration:'17680971A'
+      },{
+        date: '2016-05-04',
+        name: '杭州投着乐网络科技邮箱公司',
+        status: '转让程序中',
+        type:"20",
+        registration:'17680971A'
+      }],
+      changeData:[{
+        date:"2015-08-17",
+        something:"认缴的出资额、认缴的出资方式、认缴的出资时间、实缴的出资额、实缴的出资方式、实缴的出资时间、投资人",
+        changebefore:"技术开发、技术咨询、技术服务、技术推广；基础软件服务；应用软件服务。（未取得行政许可的项目除外）",
+        changeafter:"技术开发、技术咨询、技术服务、技术推广；基础软件服务；应用软件服务；设计、制作、代理、发布广告。（依法须经批准的项目，经相关部门批准后方可开展经营活动）技术开发、技术咨询、技术服务、技术推广；基础软件服务；应用软件服务；设计、制作、代理、发布广告。（依法须经批准的项目"
+      }],
+      patentData:[{
+        name:"用于培训驾驶技术的自动化实现方法、装置和系统",
+        publishNubmer:"CN105741643A",
+        publishdate:"2016-04-20",
+        applyNumber:"201610248895X",
+        classify:"G09B19/16(2006.01)I"
+
+      }]
+    }
+  },
+  methods: {
+
+  }
+}
+</script>
+
+<style lang="less">
+  .mark{
+    position: absolute;
+    left: 191px;
+    top: -14px;
+    width: 8px;
+    height: 8px;
+    z-index: 1000;
+    img{
+      width: 100%;
+    }
+  }
+  .change{
+    .cell{
+     margin:16px 0 19px;
+    }
+  }
+  .patent{
+    .cell{
+      font-size:12px;
+      color:#1f2d3d;
+    }
+  }
+
+
+</style>

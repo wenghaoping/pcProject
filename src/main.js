@@ -14,18 +14,19 @@ import './assets/css/base.css'
 import './assets/css/animate.css'
 import $ from 'jquery'
 import tool from './assets/js/tool.js';
+
 import axios from './config/api.js'
 Vue.prototype.$http = axios
-// import axios from 'axios'
-/*  import VueAxios from 'vue-axios'*/
-// Vue.prototype.$ajax = axios
+
 import URL_ from './assets/js/url.js'//URL请求地址汇总
 Vue.prototype.URL = URL_
 
-/*  Vue.use(axios)//http请求*/
+/*import LOADING_ from './assets/js/loading.js'//加载
+Vue.prototype.LOAD = LOADING_*/
+
 Vue.use(Element)//UI库
 Vue.use(tool);//自己的库
-/*  Vue.use(URL);//URL汇总*/
+
 
 Vue.config.productionTip = false
 //设置路由

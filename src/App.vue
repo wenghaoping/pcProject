@@ -9,10 +9,6 @@
             {{tab.type}}
           </router-link>
         </li>
-<!--        <el-tooltip placement="bottom" effect="light">
-          <div slot="content">-->
-
-<!--          </div>-->
           <li id="samllrou">小程序</li>
           <div class="weixin">
             <p style="margin-top: 25px;">微信扫一扫</p>
@@ -24,7 +20,6 @@
               <img src="./assets/images/arrow.png">
             </div>
           </div>
-<!--        </el-tooltip>-->
 
         <li style="margin-left: 490px;">
           张三
@@ -71,7 +66,7 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/workBench/myProject');
+      this.$router.push('/workBench/projectDetails');
     },
   }
 </script>

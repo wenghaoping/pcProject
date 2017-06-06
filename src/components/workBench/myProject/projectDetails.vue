@@ -71,7 +71,7 @@
           </div>
 
           <!--===========================================一键尽调弹窗=============================================-->
-          <research :dialog-visible="dialogVisible" v-on:changeall="dialogVisiblechange">
+          <research :dialog-visible="dialogVisible" v-on:changeall="dialogVisiblechange" lock-scroll>
 
           </research>
 
@@ -447,7 +447,7 @@
     data(){
       return {
         show:"detail",
-        dialogVisible: false,
+        dialogVisible: true,
         form:{
           name:'',
           region:''

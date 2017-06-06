@@ -3,10 +3,11 @@
     <el-dialog title="批量上传创建项目" :visible="dialogUploadVisible" :before-close="handleClose">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
-                   action="/api/upload"
-                   :auto-upload="false"
+                   action="/project/projectUpload"
                    :on-change="handleChange"
+                   :on-success="uploadsuccess"
                    :file-list="fileList"
+                   :data="uploadDate"
                    ref="upload"
                    drag multiple>
           <i class="el-icon-upload"></i>
@@ -24,13 +25,12 @@
       <el-upload
         class="upload-demo"
         ref="upload"
-        action="/api/upload"
+        action="project/projectUpload"
         :on-preview="handlePreview"
         :on-change="handleChange2"
         :on-success="uploadsuccess"
         :on-remove="handleRemove"
         :file-list="fileList"
-        :auto-upload="false"
         :data="uploadDate"
         multiple>
         <div class="inner">
@@ -109,7 +109,7 @@ export default {
       dateForm: {//展示的列表
         domains: [],
       },
-      uploadDate:{}//上传所带的额外的参数
+      uploadDate:{user_id: '2rzyz5vp'}//上传所带的额外的参数
 
     }
   },
@@ -118,10 +118,7 @@ export default {
     handleChange(file, fileList) {
       this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
-      if(file.status=="ready"){
-        this.addDomain(file.name,file.name,file.name)
-      }
-      this.fileList.push(file)
+
 /*      console.log(this.fileList)
       console.log("file")
       console.log(this.$tool.getToObject(file))
@@ -144,7 +141,12 @@ export default {
       console.log(newArr)*/
     },
     uploadsuccess(response, file, fileList){
-//        this.success=false;
+        console.log(response)
+        console.log(file)
+        console.log(fileList)
+        this.addDomain(file.name,file.name,file.name)
+
+      this.fileList.push(file)
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

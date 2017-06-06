@@ -5,13 +5,9 @@
 
 /*项目详情URL*/
 
-const PROJECT={
-  getNodeCount:"project/getNodeCount", //项目节点数量
-
-}
 
 
 export default
 {
-  PROJECT
+  getNodeCount:"project/getNodeCount", //项目节点数量
 }
