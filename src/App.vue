@@ -66,7 +66,7 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/workBench/projectDetails');
+      this.$router.push('/workBench/myproject');
     },
   }
 </script>

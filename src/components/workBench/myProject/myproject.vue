@@ -1,5 +1,5 @@
 <template>
-  <div id="myproject">
+  <div id="myproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <div class="wrap-left fl">
       <div class="top-big-progress">
         <div class="pp-item pp-node pp-start" :class="{'pp-cur':node0}" @click="setNode('0')">
@@ -91,55 +91,139 @@
           <template>
             <el-table :data="tableData" style="width: 100%" @row-click="handleSelect" @header-click="headerClick" @sort-change="sortChange"stripe>
 
-            <el-table-column prop="project" label="项目名称" width="144" show-overflow-tooltip>
-
-            </el-table-column>
-
-            <el-table-column prop="introduce" label="一句话介绍" width="174" show-overflow-tooltip>
-            </el-table-column>
-
-            <el-table-column prop="company" label="公司名称" width="96" show-overflow-tooltip>
+            <el-table-column prop="pro_name" label="项目名称" width="144" show-overflow-tooltip>
               <template scope="scope">
-                <div v-if="scope.row.company.length === 0">
+                <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 7 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.pro_name}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.pro_name}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.pro_name.length === 0">
+                  -
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="pro_intro" label="一句话介绍" width="174" show-overflow-tooltip>
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 10 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.pro_intro}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.pro_intro}}
+                  </div>
+                </el-tooltip>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="pro_company_name" label="公司名称" width="96" show-overflow-tooltip>
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.pro_company_name.length > 5 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.pro_company_name}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.pro_company_name}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.pro_company_name.length === 0">
                   —
                 </div>
-                <div v-if="scope.row.company.length > 0">
-                  {{scope.row.company}}
-                </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="address" label="项目来源" width="96" :filters="addressFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip	>
+            <el-table-column prop="pro_source" label="项目来源" width="96" :filters="pro_sourceFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip	>
               <template scope="scope">
-                <div v-if="scope.row.address.length === 0">
+                <div v-if="scope.row.pro_source.length === 0">
                   —
                 </div>
-                <div v-if="scope.row.address.length > 0">
-                  {{scope.row.address}}
+                <div v-if="scope.row.pro_source.length > 0">
+                  {{scope.row.pro_source}}
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="name" label="跟进人" width="96" show-overflow-tooltip>
+            <el-table-column prop="pro_follow_up_user" label="跟进人" width="96" show-overflow-tooltip>
             </el-table-column>
 
-            <el-table-column prop="state" label="跟进状态" width="96" :filters="stateFilters" :filter-method="filterTag" filter-placement="bottom-end" :filter-multiple="stateCheck" sortable="custom">
-            </el-table-column>
-
-            <el-table-column prop="field" label="领域" width="144" :filters="fieldFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip>
-            </el-table-column>
-
-            <el-table-column prop="sole" label="是否独家" width="98" :filters="soleFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+            <el-table-column prop="pro_schedule" label="跟进状态" width="96" :filters="pro_scheduleFilters" :filter-method="filterTag" filter-placement="bottom-end" :filter-multiple="stateCheck" sortable="custom">
               <template scope="scope">
-                <el-tag :type="scope.row.sole === '独家' ? 'primary' : scope.row.sole === '非独' ? 'success':'gray' " close-transition>{{scope.row.sole}}</el-tag>
+                <div v-if="scope.row.pro_schedule==''">
+                  —
+                </div>
+                <div else>
+                  {{scope.row.pro_schedule}}
+                </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="round" label="轮次" width="80" :filters="roundFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+            <el-table-column prop="pro_industry" label="领域" width="144" :filters="pro_industryFilters" :filter-method="filterTag" filter-placement="bottom-end" show-overflow-tooltip>
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.pro_industry.length > 8 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.pro_industry}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.pro_industry}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.pro_industry.length === 0">
+                  —
+                </div>
+              </template>
             </el-table-column>
-            <el-table-column prop="region" label="地区" width="80" :filters="regionFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+
+            <el-table-column prop="is_exclusive" label="是否独家" width="98" :filters="soleFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+              <template scope="scope">
+                <el-tag :type="scope.row.is_exclusive === 0 ? 'primary' : scope.row.is_exclusive === 1 ? 'success':'gray' " close-transition>
+<!--                  <template scope="scope">
+                    <div v-if="scope.row.is_exclusive=== 1">
+                      独家
+                    </div>
+                    <div v-if="scope.row.is_exclusive===0">
+                      其他
+                    </div>
+                    <div v-if="scope.row.is_exclusive===2">
+                      非独
+                    </div>
+                  </template>-->
+                </el-tag>
+              </template>
             </el-table-column>
-            <el-table-column prop="money" label="期望融资" width="102" :filters="moneyFilters" :filter-method="filterTag" filter-placement="bottom-end" >
+
+            <el-table-column prop="pro_stage" label="轮次" width="80" :filters="pro_stageFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+              <template scope="scope">
+                <div v-if="scope.row.pro_stage.length === 0">
+                  —
+                </div>
+                <div v-if="scope.row.pro_stage.length > 0">
+                  {{scope.row.pro_stage}}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="pro_area" label="地区" width="80" :filters="pro_areaFilters" :filter-method="filterTag" filter-placement="bottom-end" sortable="custom">
+              <template scope="scope">
+                <div v-if="scope.row.pro_area.length === 0">
+                  —
+                </div>
+                <div v-if="scope.row.pro_area.length > 0">
+                  {{scope.row.pro_area}}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="pro_scale" label="期望融资" width="102" :filters="pro_scaleFilters" :filter-method="filterTag" filter-placement="bottom-end" >
+              <template scope="scope">
+                <div v-if="scope.row.pro_scale.length === 0">
+                  —
+                </div>
+                <div v-if="scope.row.pro_scale.length > 0">
+                  {{scope.row.pro_scale}}
+                </div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="reset"
@@ -200,65 +284,30 @@
     data() {
       return {
         tableData: [{
-          project: '公司名称公司名称公司名称公司名称',
-          introduce:'我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
-          company: '',
-          address: '我是项目来源1',
-          name: '迪丽热巴',
-          state:'我是跟进状态1',
-          field:'大数据、社交通讯，电商平台，教育培训',
-          sole:'独家',
-          round:'IPO上市后',
-          region:'北京',
-          money:'3000万'
-        }, {
-          project: '我是项目介绍2',
-          introduce:'我是项目介绍',
-          company: '杭州偷着乐网络科技有限公司',
-          address: '',
-          name: '我是跟进',
-          state:'约谈',
-          field:'大数据、社交通讯，电商平台，教育培训',
-          sole:"非独",
-          round:'Pre-A',
-          region:'上海',
-          money:'3000万-4000万'
-        },{
-          project: '我是项目介绍2',
-          introduce:'我是项目介绍',
-          company: '投着乐',
-          address: '我是项目来源2',
-          name: '我是跟进人2',
-          state:'我是跟进状态2',
-          field:'教育培训',
-          sole:"其他",
-          round:'Pre-A',
-          region:'上海',
-          money:'4000万'
-        },{
-          project: '我是项目介绍2',
-          introduce:'我是项目介绍',
-          company: '投着乐',
-          address: '我是项目来源2',
-          name: '我是跟进人3',
-          state:'我是跟进状态2',
-          field:'教育培训',
-          sole:"其他",
-          round:'Pre-A',
-          region:'上海',
-          money:'4000万'
+          pro_name: '公司名称公司名称公司名称公司名称',
+          pro_intro:'我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
+          pro_company_name: '',
+          pro_source: '我是项目来源1',
+          pro_follow_up_user: '迪丽热巴',
+          pro_schedule:'我是跟进状态1',
+          pro_industry:'大数据、社交通讯，电商平台，教育培训',
+          is_exclusive:'独家',
+          pro_stage:'IPO上市后',
+          pro_area:'北京',
+          pro_scale:'3000万',
+          pro_id:''
         }],
-        addressFilters:[{ text: '项目来源1', value: '我是项目来源1' }, { text: '项目来源2', value: '我是项目来源2' },{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
-        stateFilters:[{ text: '项目线索', value: '项目线索' },{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
-        fieldFilters:[{ text: '大数据服务', value: '大数据服务' }, { text: '教育培训', value: '教育培训' }],
-        soleFilters:[{ text: '独家', value: '独家' },{ text: '非独', value: '非独' },{ text: '其他', value: '其他' }],
-        roundFilters:[{ text: 'IPO上市后', value: 'IPO上市后' },{ text: 'Pre-A', value: 'Pre-A' }],
-        regionFilters:[{ text: '北京', value: '北京' },{ text: '上海', value: '上海' }],
-        moneyFilters:[{ text: '3000万', value: '3000万' },{ text: '4000万', value: '4000万'}],
+        pro_sourceFilters:[{ text: '项目来源1', value: '我是项目来源1' }, { text: '项目来源2', value: '我是项目来源2' },{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
+        pro_scheduleFilters:[{ text: '项目线索', value: '项目线索' },{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
+        pro_industryFilters:[{ text: '大数据服务', value: '大数据服务' }, { text: '教育培训', value: '教育培训' }],
+        soleFilters:[{ text: '独家', value: 0 },{ text: '非独', value: 1 },{ text: '其他', value: 2 }],
+        pro_stageFilters:[{ text: 'IPO上市后', value: 'IPO上市后' },{ text: 'Pre-A', value: 'Pre-A' }],
+        pro_areaFilters:[],
+        pro_scaleFilters:[{ text: '3000万', value: '3000万' },{ text: '4000万', value: '4000万'}],
         currentPage:1,
         stateCheck:false,//状态单选
         searchinput:'',
-        dialogUploadVisible: true,//第一个弹窗的控制
+        dialogUploadVisible: false,//第一个弹窗的控制
         node0:true,
         node1:false,
         node2:false,
@@ -275,7 +324,8 @@
           delivery:0,//交割
           collect:0,//待收佣金
           revenue:0//佣金收益
-        }
+        },
+        loading:false
       }
     },
     methods:{
@@ -307,9 +357,53 @@
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
+
       handleIconClick:function(){
-        console.log(this.searchinput);
-      },
+        const getProjectListURL=this.URL.getProjectList
+        this.$http.post(getProjectListURL,{user_id: '2rzyz5vp',search:this.searchinput})
+          .then(res=>{
+            this.searchinput="";
+            let data = res.data.data
+            console.log(data)
+
+            /*let arr = new Array;
+            for(let i=0; i<data.length; i++){
+              let obj=new Object;
+              obj.pro_name=data[i].pro_name;
+              obj.pro_intro=data[i].pro_intro;
+              obj.pro_company_name=data[i].pro_company_name;
+              obj.pro_source=data[i].pro_source;
+              obj.pro_follow_up_user=data[i].pro_follow_up_user;
+              obj.pro_schedule=data[i].pro_schedule;
+              obj.pro_industry=this.getProjectPro_industry(data[i].pro_industry)
+              obj.is_exclusive=data[i].is_exclusive;
+              obj.pro_stage=this.getProjectPro_stage(data[i].pro_stage)
+              obj.pro_area=this.getProjectPro_area(data[i].pro_area)
+              obj.pro_scale=this.getProjectPro_scale(data[i].pro_scale)
+              obj.pro_id=data[i].pro_id;
+              arr.push(obj)
+            }*/
+//            console.log(arr)
+            this.tableData=this.getProjectList(data)
+/*            pro_name: '公司名称公司名称公司名称公司名称',
+              pro_intro:'我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
+              pro_company_name: '',
+              pro_source: '我是项目来源1',
+              pro_follow_up_user: '迪丽热巴',
+              pro_schedule:'我是跟进状态1',
+              pro_industry:'大数据、社交通讯，电商平台，教育培训',
+              is_exclusive:'独家',
+              pro_stage:'IPO上市后',
+              pro_area:'北京',
+              pro_scale:'3000万',
+              pro_id:''*/
+            this.loading=false;
+          })
+          .catch(err=>{
+            this.loading=false;
+            console.log(err,2)
+          })
+      },//搜索
       dialogUploadVisiblechange(msg){
         this.dialogUploadVisible=msg;
       },
@@ -340,13 +434,10 @@
       getNodeCount(){
         // 项目节点数量URL
         const getNodeCountURL=this.URL.getNodeCount
-
         this.$http.post(getNodeCountURL,{user_id: '2rzyz5vp'})
           .then(res=>{
-            setTimeout(() => { let data = res.data.data
-
+              let data = res.data.data
               this.nodeCount.whole=data.total.schedule_count//全部项目
-
               let nodeList=data.node_list;
               for(let key in nodeList){//数据导入顶部标签
                 switch (nodeList[key].schedule_id){
@@ -382,22 +473,103 @@
                     break;
                 };
               }
-              console.log(res)
               if(res.status===200){
-/*                this.closeLoading();*/
-              }}, 10);
+                this.loading=false;
+              }
           })
           .catch(err=>{
-            console.log(err)
-
+            alert(err)
+            this.loading=false;
           })
       },
-/*      loading () {
-        this.$loading({ fullscreen: true,text:"正在加载数据中"})
+      titleSift(){
+        this.loading=true;
+        // 获取表头URL
+        const titleSiftURL=this.URL.titleSift
+/*        this.$http.post(titleSiftURL,{user_id: '2rzyz5vp'})
+          .then(res=>{
+            let data = res.data.data
+            let pro_area=data.pro_area;//地区
+            let pro_industry=data.pro_industry;//领域
+            let pro_scale=data.pro_scale;//期望融资
+            let pro_schedule=data.pro_schedule;//跟进状态
+            let pro_source=data.pro_source;//项目来源
+            let pro_stage=data.pro_stage;//轮次
+            this.pro_areaFilters=this.getTitleSift(pro_area);
+            this.pro_industryFilters=this.getTitleSift(pro_industry);
+            this.pro_scaleFilters=this.getTitleSift(pro_scale);
+            this.pro_scheduleFilters=this.getTitleSift(pro_schedule);
+            this.pro_sourceFilters=this.getTitleSift(pro_source);
+            this.pro_stageFilters=this.getTitleSift(pro_stage);
+            this.loading=false;
+          })
+          .catch(err=>{
+            this.loading=false;
+            console.log(err,2)
+          })*/
       },
-      closeLoading(){
-        this.$loading({ fullscreen: true,text:"正在加载数据中"}).close();
-      }*/
+      getTitleSift(data){
+        let arr = [];
+        for(let key in data){
+          let obj=new Object;
+          obj.text=data[key]
+          obj.value=key
+          arr.push(obj)
+        }
+        return arr
+      },
+      getProjectPro_industry(arr){
+        let str=""
+        for(let i=0;i<arr.length;i++){
+          str+=arr[i].industry_name+'.'
+        }
+        return str
+      },
+      getProjectPro_stage(arr){
+        let str=""
+        for(let i=0;i<arr.length;i++){
+          str+=arr[i].stage_name+'.'
+        }
+        return str
+      },
+      getProjectPro_area(arr){
+        let str=""
+        for(let i=0;i<arr.length;i++){
+          str+=arr[i].area_title+'.'
+        }
+        return str
+      },
+      getProjectPro_scale(arr){
+        let str=""
+        if(arr.length===0) {
+          str=""
+        } else {
+            for(let i=0;i<arr.length;i++){
+              str+=arr[i].scale_money+'.'
+            }
+        }
+        return str
+      },
+      getProjectList(list){
+        let arr = new Array;
+        for(let i=0; i<list.length; i++){
+          let obj=new Object;
+          obj.pro_name=list[i].pro_name;
+          obj.pro_intro=list[i].pro_intro;
+          obj.pro_company_name=list[i].pro_company_name;
+          obj.pro_source=list[i].pro_source;
+          obj.pro_follow_up_user=list[i].pro_follow_up_user;
+          obj.pro_schedule=list[i].pro_schedule;
+          obj.pro_industry=this.getProjectPro_industry(list[i].pro_industry)
+          obj.is_exclusive=list[i].is_exclusive;
+          obj.pro_stage=this.getProjectPro_stage(list[i].pro_stage)
+          obj.pro_area=this.getProjectPro_area(list[i].pro_area)
+          obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale)
+          obj.pro_id=list[i].pro_id;
+          arr.push(obj)
+        }
+        return arr
+      }
     },
     computed: {
 
@@ -407,10 +579,9 @@
     },
     created () {
       // 组件创建完后获取数据，
-/*      this.loading();*/
+      this.loading=true;
       this.getNodeCount();
-
-
+      this.titleSift();
     }
 
   }
@@ -418,5 +589,10 @@
 
 <style type="text/css" lang="less">
   @import '../../../assets/css/myproject';
+  .el-table-filter__content{
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 
 </style>

@@ -6,16 +6,15 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          action="/api/upload"
+          action="project/projectUpload"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
-          :on-seccess="success"
+          :on-success="success"
           :on-error="err"
           :on-change="handleChange"
           :thumbnail-mode="true"
           :data="form"
           :file-list="fileList"
-          :auto-upload="false"
           multiple>
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
@@ -38,7 +37,7 @@
         fileList: [
 
         ],
-        form :{data:"我只是个参数",data1:"我只是个参数1",data2:"我只是个参数2"}
+        form :{user_id: '2rzyz5vp'}
 
       }
     },
@@ -52,7 +51,7 @@
       },
       submitUpload() {
         this.$refs.upload.submit();
-        console.log(this.fileList)
+//        console.log(this.fileList)
       },
       handleRemove(file, fileList) {
         console.log(this.$tool.getToObject(file));
@@ -63,17 +62,19 @@
       },
       success(response, file, fileList){
         console.log(response)
-        console.log(file)
-        console.log(fileList)
+/*        console.log(file)
+        console.log(fileList)*/
+        console.log("success")
       },
       err(err, file, fileList){
         console.log(this.$tool.getToObject(err))
-        console.log(this.$tool.getToObject(file))
-        console.log(this.$tool.getToObject(fileList))
+//        console.log(this.$tool.getToObject(file))
+//        console.log(this.$tool.getToObject(fileList))
       },
       handleChange(file, fileList) {
         console.log(this.$tool.getToObject(file))
-        console.log(this.$tool.getToObject(fileList))
+//        console.log(this.$tool.getToObject(fileList))
+        console.log("handleChange")
 
       }
     }

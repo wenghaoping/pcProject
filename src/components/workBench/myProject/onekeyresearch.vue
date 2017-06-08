@@ -4,10 +4,11 @@
     <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose" close-on-press-escape close-on-click-modal >
       <div class="contain-grid">
         <div class="contain-position">
-          <p>您要尽调的公司：<span>杭州投着乐网络科技有限公司</span><el-button type="primary" class="fr button">主要按钮</el-button></p>
+          <p>您要尽调的公司：<span>杭州投着乐网络科技有限公司</span><el-button type="primary" class="fr button" @click="goToEdit">修改公司</el-button></p>
         </div>
         <div class="contain-inner">
           <div class="item-lists">
+            <!--项目信息-->
             <div class="item2">
               <div class="title">项目信息</div>
               <div class="portrait fl"><img src="../../../assets/images/researchheader.png"></div>
@@ -26,7 +27,7 @@
                   <span class="mid-tag">社交通讯</span>
                   <span class="mid-tag">大数据</span>
                   <span class="mid-tag">sass</span>
-                  <span class="big-tag" style="margin-left: 200px;">100-300万</span><span class="split">｜</span>
+                  <span class="big-tag" style="margin-left: 191px;">100-300万</span><span class="split">｜</span>
                   <span class="big-tag">杭州</span><span class="split">｜</span>
                   <span class="big-tag">天使轮</span>
                 </div>
@@ -45,30 +46,242 @@
               </div>
               <div class="picture">
                 <el-carousel :interval="4000" type="card" height="200px">
-                  <el-carousel-item v-for="item in 3" :key="item">
-                    <img src="../../../assets/images/blockimg.png">
+                  <el-carousel-item v-for="image in images" :key="image">
+                    <img :src="image.url">
                   </el-carousel-item>
                 </el-carousel>
               </div>
 
             </div>
-
+            <!--公司信息-->
             <div class="item">
               <company-message></company-message>
             </div>
+            <!--工商信息-->
             <div class="item">
               <business style="position: relative"></business>
+            </div>
+            <!--核心成员-->
+            <div class="item clearfix">
+              <div class="clearfix">
+                <div class="title">核心成员</div>
+                <div class="border">
+                  <div class="portrait fl clearfix"><img src="../../../assets/images/header3.png"></div>
+                  <div class="portrait-right fl ">
+                    <div class="block">
+                      <span class="block-title fl clearfix">顾嘉</span>
+                      <span class="block-company fl">CEO</span>
+                      <span class="block-tag fl"><el-tag type="primary">创业者</el-tag></span>
+                      <span class="bloack-right fr">股权占比：12%</span>
+                    </div>
+                    <div class="block">
+                      <span class="doc fl">13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下</span>
+                    </div>
+                  </div>
+                  <div class="clearfix" style="margin-top:16px;">
+                    <div style="margin-top:6px;" class="clearfix">
+                      <div class="v-progress" style="height: 182px;">
+                        <span class="circle circle-s">&nbsp;</span>
+
+                        <span class="v-line v-line-1">&nbsp;</span>
+                        <span class="circle circle-c">&nbsp;</span>
+                        <span class="v-line v-line-2">&nbsp;</span>
+
+                        <span class="circle circle-e">&nbsp;</span>
+                      </div>
+                      <div class="v-progress-table" style="height: 182px;position: relative">
+                        <div class="v-progress-txt">
+                          <span class="pro-txt-1">2011.05-至今</span>
+                          <span class="pro-txt-2"  style="color:#5e6d82;">杭州城市大学</span>
+                          <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
+                        </div>
+                        <div class="line"></div>
+                        <div class="v-progress-txt">
+                          <span class="pro-txt-1">2011.05-2015.05</span>
+                          <span class="pro-txt-2"  style="color:#5e6d82;">杭州投着乐网络科技有限公司</span>
+                          <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
+                        </div>
+                        <div class="line"></div>
+                        <div class="v-progress-txt">
+                          <span class="pro-txt-1">2011.05-2015.05</span>
+                          <span class="pro-txt-2"  style="color:#5e6d82;">微天使乐投平台</span>
+                          <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
+                        </div>
+                        <div class="line"></div>
+                        <div class="v-progress-txt">
+                          <span class="pro-txt-1">2011.05-2015.05</span>
+                          <span class="pro-txt-2"  style="color:#5e6d82;">百度</span>
+                          <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="border clearfix">
+                <div class="portrait fl clearfix"><img src="../../../assets/images/header3.png"></div>
+                <div class="portrait-right fl ">
+                  <div class="block">
+                    <span class="block-title fl clearfix">顾嘉</span>
+                    <span class="block-company fl">CEO</span>
+                    <span class="block-tag fl"><el-tag type="primary">创业者</el-tag></span>
+                    <span class="bloack-right fr">股权占比：12%</span>
+                  </div>
+                  <div class="block">
+                    <span class="doc fl">13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <!--图表-->
+            <div class="item">
+              <downloadechart></downloadechart>
+            </div>
+            <!--历史融资-->
+            <div class="item">
+              <div class="title">历史融资</div>
+              <div class="lists">
+                  <div class="list">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                    <span class="date">2017.05.04</span>
+                    <span class="blood">100-500万</span>
+                    <span class="blood">A轮</span>
+                    <span class="main">天使投资</span>
+                  </div>
+                <div class="list">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                  <span class="date">2017.05.04</span>
+                  <span class="blood">100-500万</span>
+                  <span class="blood">A轮</span>
+                  <span class="main">天使投资</span>
+                </div>
+              </div>
+            </div>
+            <!--里程碑-->
+            <div class="item">
+              <div class="title">里程碑</div>
+              <div class="lists">
+                <div class="list">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                  <span class="date">2017.05.04</span>
+                  <span class="blood blood2">获汉鼎宇佑集团和盛大亿元投资 P2P行业再掀波澜，获得1.5亿B轮融资，获得1.5亿B轮
+融资佑集团</span>
+                </div>
+                <div class="list">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                  <span class="date">2017.05.04</span>
+                  <span class="blood blood2">App的下载量冲破1000万</span>
+                </div>
+              </div>
+            </div>
+            <!--新闻-->
+            <div class="item">
+              <div class="title">新闻</div>
+              <div class="lists">
+                <div class="list">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                  <span class="date">2017.05.04<el-tag type="primary" style="margin-left: 5px;">产品</el-tag></span>
+                  <span class="blood blood3">滴滴首推五星级出行服务 「豪华车」 入口在京开放预约</span>
+                  <span class="main mian2">view.inews.qq.com</span>
+                </div>
+                <div class="list">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                  <span class="date">2017.05.04</span>
+                  <span class="blood blood3">滴滴出行资深副总裁陶然因个人原因离职</span>
+                  <span class="main mian2">view.inews.qq.com</span>
+                </div>
+              </div>
+            </div>
+            <!--竞品-->
+            <div class="item">
+              <div class="title">竞品</div>
+              <ul class="ulfl h-table">
+                <li class="table1">项目</li>
+                <li class="table2">领域</li>
+                <li class="table3">投资方</li>
+                <li class="table4">融资事件</li>
+                <li class="table5">融资轮次</li>
+                <li class="table6">融资金额</li>
+              </ul>
+              <ul  class="ulfl m-table">
+                <li class="table1">
+                  <div class="img fl">
+                    <img src="../../../assets/images/message.png">
+                  </div>
+                  <div class="title2 fl">
+                    微天使乐投平台
+                  </div>
+                  <div class="bo fl">杭州<span style="margin-left: 20px;">2014-07</span></div>
+                </li>
+                <li class="table2">医疗健康,医疗器械及硬件</li>
+                <li class="table3">华兴资本</li>
+                <li class="table4">2017-07</li>
+                <li class="table5">战略投资</li>
+                <li class="table6">亿元及以上人民币</li>
+              </ul>
+              <ul  class="ulfl m-table">
+                <li class="table1">
+                  <div class="img fl">
+                    <img src="../../../assets/images/message.png">
+                  </div>
+                  <div class="title2 fl">
+                    微天使乐投平台
+                  </div>
+                  <div class="bo fl">杭州<span style="margin-left: 20px;">2014-07</span></div>
+                </li>
+                <li class="table2">医疗健康,医疗器械及硬件</li>
+                <li class="table3">华兴资本</li>
+                <li class="table4">2017-07</li>
+                <li class="table5">战略投资</li>
+                <li class="table6">亿元及以上人民币</li>
+              </ul>
+              <ul  class="ulfl m-table">
+                <li class="table1">
+                  <div class="img fl">
+                    <img src="../../../assets/images/message.png">
+                  </div>
+                  <div class="title2 fl">
+                    微天使乐投平台
+                  </div>
+                  <div class="bo fl">杭州<span style="margin-left: 20px;">2014-07</span></div>
+                </li>
+                <li class="table2">医疗健康,医疗器械及硬件</li>
+                <li class="table3">华兴资本</li>
+                <li class="table4">2017-07</li>
+                <li class="table5">战略投资</li>
+                <li class="table6">亿元及以上人民币</li>
+              </ul>
             </div>
 
           </div>
         </div>
       </div>
 
-
-      <div slot="footer" class="dialog-footer">
+      <!--<div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisibleTo">取 消</el-button>
         <el-button type="primary" @click="dialogVisibleTo">确 定</el-button>
-      </div>
+      </div>-->
     </el-dialog>
   </div>
 </template>
@@ -76,6 +289,7 @@
 <script type="text/ecmascript-6">
 import companyMessage from './companyMessage.vue'
 import business from './business.vue'
+import downloadechart from './downloadEchart.vue'
 export default {
   props: ["dialogVisible"],
   data () {
@@ -95,7 +309,14 @@ export default {
         experience: '1年',
         address:"北京",
         date:'2016-05-04'
-      }]
+      }],
+      images:[
+          {url:"../../../../static/lanren_01.jpg"},
+          {url:"../../../../static/lanren_02.jpg"},
+          {url:"../../../../static/lanren_03.jpg"},
+          {url:"../../../../static/lanren_04.jpg"},
+          {url:"../../../../static/lanren_05.jpg"}
+          ]
 
     }
   },
@@ -111,8 +332,8 @@ export default {
         })
         .catch(_ => {});
     },
-    handleClick(tab, event) {
-//      console.log(tab, event);
+    goToEdit(){
+      this.$router.push({ name: 'editproject', query: {}})
     },
     loadMore(){
      this.recruitData.push({
@@ -141,7 +362,8 @@ export default {
   },
   components: {
     companyMessage,
-    business
+    business,
+    downloadechart
   },
 }
 </script>

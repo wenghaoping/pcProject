@@ -30,6 +30,7 @@ module.exports = {
     proxyTable: {
       '/project': {
         target: 'https://dev.weitianshi.cn',
+        // target: 'http://www.local.app',
         changeOrigin: true,
         pathRewrite: {
           '^/project': '/project'

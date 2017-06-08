@@ -64,10 +64,10 @@ export default [
     path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine, name:"SmallRoutine"
   },
   {
-    path: '/test', name: 'test', component: createForm
+    path: '/test', name: 'test', component: projectDetails
   },
   {
-    path: '/test2', name: 'test2', component: selectbox
+    path: '/test2', name: 'test2', component: upload
   }
   ]
 

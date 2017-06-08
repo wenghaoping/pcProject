@@ -128,27 +128,31 @@
             <el-table-column
               prop="name"
               label="专利名称"
-              width="250">
+              width="230">
             </el-table-column>
             <el-table-column
               prop="publishNubmer"
               label="申请公布号"
-              width="120">
+              min-width="110"
+              >
             </el-table-column>
             <el-table-column
               prop="publishdate"
               label="申请公布日"
-              width="110"
+              min-width="100"
             >
             </el-table-column>
             <el-table-column
               prop="applyNumber"
               label="申请号"
+              min-width="120"
             >
             </el-table-column>
             <el-table-column
               prop="classify"
-              label="分类号">
+              label="分类号"
+              min-width="145"
+              >
             </el-table-column>
           </el-table>
 
@@ -165,7 +169,7 @@ export default {
     return {
       bussinessName: '4',
       trademarkMessage:'商标信息(3)',
-      patentMessage:'招聘信息(29)',
+      patentMessage:'专利信息(12)',
       trademarkData: [{
         date: '2016-05-04',
         name: '杭州投着乐网络科技邮箱公司',

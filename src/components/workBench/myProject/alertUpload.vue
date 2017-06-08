@@ -1,12 +1,15 @@
 <template>
-  <div id="alertUpload">
+  <div id="alertUpload" >
     <el-dialog title="批量上传创建项目" :visible="dialogUploadVisible" :before-close="handleClose">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
                    action="/project/projectUpload"
+                   :on-preview="handlePreview"
                    :on-change="handleChange"
                    :on-success="uploadsuccess"
                    :file-list="fileList"
+                   :before-upload="beforeUpload"
+                   :on-progress="handleProgress"
                    :data="uploadDate"
                    ref="upload"
                    drag multiple>
@@ -22,74 +25,76 @@
 
 
     <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose">
-      <el-upload
-        class="upload-demo"
-        ref="upload"
-        action="project/projectUpload"
-        :on-preview="handlePreview"
-        :on-change="handleChange2"
-        :on-success="uploadsuccess"
-        :on-remove="handleRemove"
-        :file-list="fileList"
-        :data="uploadDate"
-        multiple>
-        <div class="inner">
-          <el-button slot="trigger" type="primary" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
-          <p class="bp fl">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、png，jpg，jpeg文件格式</p>
+      <div class="loadmodel" v-loading="loading" element-loading-text="上传中">
+        <el-upload
+          class="upload-demo"
+          ref="upload"
+          action="/project/projectUpload"
+          :on-preview="handlePreview"
+          :on-change="handleChange"
+          :on-success="uploadsuccess"
+          :on-progress="handleProgress"
+          :file-list="fileList"
+          :data="uploadDate"
+
+          multiple>
+          <div class="inner">
+            <el-button slot="trigger" type="primary" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
+            <p class="bp fl">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、png，jpg，jpeg文件格式</p>
+          </div>
+
+        </el-upload>
+        <div class="uploadForm" style="padding-top: 32px;">
+          <el-form :model="dateForm" ref="dateForm" label-width="100px" class="demo-dynamic" label-position="top">
+            <el-row :span="24" :gutter="10">
+              <el-col :span="6">
+                <el-form-item
+                  label="项目名称"
+                  :prop="'domains.' + index + '.bp_title'"
+                  v-for="(domain, index) in dateForm.domains"
+                  :key="domain.index"
+                  :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'}]">
+                  <el-input v-model="domain.bp_title"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item
+                  label="项目介绍"
+                  :prop="'domains.' + index + '.pro_desc'"
+                  v-for="(domain, index) in dateForm.domains"
+                  :key="domain.index"
+                  :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
+                  <el-input v-model="domain.pro_desc"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item
+                  label="商业计划书"
+                  :prop="'domains.' + index + '.pro_name'"
+                  v-for="(domain, index) in dateForm.domains"
+                  :key="domain.index">
+                  <el-input v-model="domain.pro_name" :disabled="true"></el-input>
+                </el-form-item>
+
+              </el-col>
+              <el-col :span="2" >
+                <el-form-item
+                  v-for="(domain, index) in dateForm.domains"
+                  :key="domain.index"
+                  style="padding-top: 23px;">
+                  <el-button @click.prevent="removeDomain(domain)">删除</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <br>
+          <el-button @click="resetForm('dateForm')">重置</el-button>
+          <el-button type="primary" @click="submitUpload('dateForm',dateForm)">提交</el-button>
         </div>
-
-      </el-upload>
-      <div class="uploadForm" style="padding-top: 32px;">
-        <el-form :model="dateForm" ref="dateForm" label-width="100px" class="demo-dynamic" label-position="top">
-          <el-row :span="24" :gutter="10">
-            <el-col :span="6">
-              <el-form-item
-                label="项目名称"
-                :prop="'domains.' + index + '.projectName'"
-                v-for="(domain, index) in dateForm.domains"
-                :key="domain.index"
-                :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'}]">
-                <el-input v-model="domain.projectName"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item
-                label="项目介绍"
-                :prop="'domains.' + index + '.projectDetails'"
-                v-for="(domain, index) in dateForm.domains"
-                :key="domain.index"
-                :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
-                <el-input v-model="domain.projectDetails"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item
-                label="商业计划书"
-                :prop="'domains.' + index + '.prospectus'"
-                v-for="(domain, index) in dateForm.domains"
-                :key="domain.index">
-                <el-input v-model="domain.prospectus" :disabled="true"></el-input>
-              </el-form-item>
-
-            </el-col>
-            <el-col :span="2" >
-              <el-form-item
-                v-for="(domain, index) in dateForm.domains"
-                :key="domain.index"
-                style="padding-top: 23px;">
-                <el-button @click.prevent="removeDomain(domain)">删除</el-button>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <br>
-        <el-button @click="resetForm('dateForm')">重置</el-button>
-        <el-button type="primary" @click="submitUpload('dateForm',dateForm)">提交</el-button>
-      </div>
-      <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
-        <el-button @click="cancel">取 消</el-button>
-        <!--<el-button type="primary" @click="submitUpload('dateForm',dateForm)">确 定</el-button>-->
-        <el-button type="primary" @click="submitUpload('dateForm',dateForm)">确 定</el-button>
+        <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
+          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitUpload('dateForm',dateForm)">确 定</el-button>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -97,78 +102,84 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'hello',
   props: ["dialogUploadVisible"],
   data () {
     return {
 //      dialogUploadVisible: false,//第一个弹窗的控制
       dialogUpload2Visible:false,//第二个弹窗的控制
+      status:"",//状态success/exception
+      percentage:0,//进度
       formLabelWidth: '880px',
       fileList:[
       ],//上传文件的列表
       dateForm: {//展示的列表
         domains: [],
       },
+      loading:false,
       uploadDate:{user_id: '2rzyz5vp'}//上传所带的额外的参数
 
     }
   },
   methods: {
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
     //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
     handleChange(file, fileList) {
       this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
-
-/*      console.log(this.fileList)
-      console.log("file")
-      console.log(this.$tool.getToObject(file))
-      console.log(this.$tool.getToObject(fileList))*/
-    },
-    //2号当添加文件时,添加入上传列表
-    handleChange2(file, fileList){
-      if(file.status=="ready"){
-        this.addDomain(file.name,file.name,file.name)
-      }
-      console.log(fileList)
-      console.log(this.fileList)
- /*     console.log(this.$tool.getToObject(file))
-      console.log(this.$tool.getToObject(fileList))*/
-/*      let newArr = new Array;
-      for(let i=0; i<fileList.length; i++){
-        newArr[i]=this.$tool.getToObject(fileList[i])
-        this.fileList=newArr;
-      }
-      console.log(newArr)*/
+//      this.loading=true;
+      console.log("change")
+      console.log(this.loading)
     },
     uploadsuccess(response, file, fileList){
-        console.log(response)
-        console.log(file)
-        console.log(fileList)
-        this.addDomain(file.name,file.name,file.name)
 
-      this.fileList.push(file)
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+        let data=response.data
+//      console.log(data)
+        if(response.status_code==2000000) {
+          this.addDomain(data.bp_title,data.pro_desc,data.pro_name,data.project_id)
+          this.loading=false;
+        }
+        console.log(response)
+
+      console.log("success")
+      console.log(this.loading)
+
     },
     handlePreview(file) {
       console.log(file);
     },
-    //上传到服务器时
+    beforeUpload(file){
+//      this.loading("正在上传");
+//      console.log(file)
+//      console.log("beforeUpload")
+
+    },
+    handleProgress(event, file, fileList){
+
+      this.percentage=parseInt(event.percent);
+      if(event.percent==100)
+      console.log(event)
+/*      console.log(file)
+      console.log(fileList)*/
+    },
+    //提交表单服务器时
     submitUpload(formName,formData) {
-/*        console.log(this.fileList)
-/!*        this.uploadDate={data:"我是额外的参数啊"}*!/
-      console.log("formData")
-        console.log(formData)*/
-      let obj = formData.domains;
-        for(let i=0; i<obj.length; i++){
-          this.uploadDate=obj[i]
-//          console.log(obj[i])
-        }
+      let obj = this.dateForm.domains;
         this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('submit!');
-
+          const saveUploadURL=this.URL.saveUpload
+          this.$http.post(saveUploadURL,obj)
+            .then(res=>{
+              console.log(res)
+              if(res.status===200){
+//                  this.closeLoading();
+              }
+            }).catch(err=>{
+            console.log(err)
+//            this.closeLoading();
+          })
 /*          console.log("obj")
           console.log(obj)
 
@@ -187,19 +198,37 @@ export default {
     },
     //删除当前上传文件
     removeDomain(item) {
-      console.log(this.fileList)
+
+      const deleteUpload=this.URL.deleteUpload
+
+/*      console.log(this.fileList)
+      console.log(item)*/
+      console.log(item.project_id)
       var index = this.dateForm.domains.indexOf(item)
       if (index !== -1) {
         this.dateForm.domains.splice(index, 1)
         this.fileList.splice(index, 1)
       }
+
+      this.$http.post(deleteUpload,{user_id: '2rzyz5vp',project_id:item.project_id})
+        .then(res=>{
+          if(res.status===200){
+//            this.loading=false;
+          }
+            console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+
+        })
     },
     //添加上传文件时,加入显示列表
-    addDomain(projectName,projectDetails,prospectus,url,status) {
+    addDomain(bp_title,pro_desc,pro_name,project_id) {
       let object ={};
-      object.projectName=projectName;
-      object.projectDetails=projectDetails;
-      object.prospectus=prospectus;
+      object.bp_title=bp_title;
+      object.pro_desc=pro_desc;
+      object.pro_name=pro_name;
+      object.project_id=project_id;
       this.dateForm.domains.push(object);
     },
     //当取消时,清空上传列表
@@ -219,7 +248,13 @@ export default {
           done()
         })
         .catch(_ => {});
-    }
+    }/*,
+    loading (text) {
+      this.$loading({ fullscreen: true,text:text})
+    },
+    closeLoading(text){
+      this.$loading({ fullscreen: true,text:text}).close();
+    }*/
   }
 }
 </script>
@@ -251,4 +286,10 @@ export default {
   line-height: 36px;
   padding-left: 10px;
 }
+  .el-progress--circle{
+    left: 30%;
+  }
+  .loadmodel{
+    width: 100%;
+  }
 </style>

@@ -447,7 +447,7 @@
     data(){
       return {
         show:"detail",
-        dialogVisible: true,
+        dialogVisible: false,
         form:{
           name:'',
           region:''
