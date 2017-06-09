@@ -1418,5 +1418,12 @@ export default {
     text-decoration:underline
   }
 }
+  #editproject{
+    .addMember{
+      display: block;
+      margin: 0 auto;
+    }
+  }
+
 
 </style>

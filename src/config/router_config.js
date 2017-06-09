@@ -40,11 +40,11 @@ import upload from '@/test/upload.vue'
 export default [
 
   {
-    path: '/workBench', name: 'workBench', component: workBench, name:"workBench",
+    path: '/workBench',component: workBench,
 
     children:[
       { path: '', component: indexmyProject},
-      { path: '/workBench/myProject', component: indexmyProject, name:"indexmyProject",
+      { path: '/workBench/myProject', component: indexmyProject,
         children:[
           { path: '', component: myProject, name:"myProject"},
 

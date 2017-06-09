@@ -67,6 +67,7 @@
 //    当dom一创建时
     created(){
       this.$router.push('/workBench/myproject');
+//      this.$router.push({ name: 'projectDetails'})
     },
   }
 </script>
@@ -87,7 +88,7 @@
     padding: 0!important;
   }*/
   #app {
-    min-width: 1900px;
+    min-width: 1903px;
     margin: 0 auto;
     font-family: "Helvetica Neue","PingFang SC",Arial,sans-serif;
       header {

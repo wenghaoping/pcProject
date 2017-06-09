@@ -1,5 +1,5 @@
 <template>
-  <div id="projectDetails" class="clearfix">
+  <div id="projectDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
 <!--    {{ this.$route.query.address }}-->
     <div class="contain-grid contain-center">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
@@ -441,7 +441,6 @@
 
 <script type="text/ecmascript-6">
   import research from './onekeyresearch.vue'
-  import { Loading } from 'element-ui';
   var echarts = require('echarts');
   export default {
     data(){
@@ -451,7 +450,8 @@
         form:{
           name:'',
           region:''
-        }
+        },
+        loading:false
       }
     },
     computed:{
@@ -469,9 +469,6 @@
           orient: 'horizontal',
           bottom: '5',
           data: ['佣金收讫','FA签约','项目线索'],
-          // formatter:function(e){
-          //   return e
-          // }
         },
         series : [
           {
@@ -572,26 +569,10 @@
       },
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
-        console.log(msg)
       },
       fetchData () {
-        Loading.service({ fullscreen: true,text:"正在加载数据中"});
-        setTimeout(function () {
-          let loadingInstance = Loading.service({ fullscreen: true});
-          loadingInstance.close();
-        },1000)
+          this.loading=false
 
-        /*this.error = this.post = null
-        this.loading = true
-        // replace getPost with your data fetching util / API wrapper
-        getPost(this.$route.params.id, (err, post) => {
-          this.loading = false
-          if (err) {
-            this.error = err.toString()
-          } else {
-            this.post = post
-          }
-        })*/
       },
       toEdit(){
         this.$router.push({ name: 'editproject'})
@@ -599,7 +580,7 @@
     },
     created () {
       // 组件创建完后获取数据，
-      // 此时 data 已经被 observed 了
+//      this.loading=true
       this.fetchData()
     },
     watch: {
