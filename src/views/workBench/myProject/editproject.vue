@@ -128,23 +128,25 @@
                     <el-col :span="6">
                       <el-form-item
                         label="所属省级"
-                        prop="district1"
-                        :rules="[{required: true, message: '所属地区不能为空', trigger: 'change'}]">
-                        <el-select v-model="project.district1" placeholder="请选择">
-                          <el-option-group v-for="group in city" :key="group.label" :label="group.label">
-                            <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
-                            </el-option>
-                          </el-option-group>
+                        prop="area1"
+                        :rules="[{required: true, message: '所属地区不能为空', trigger: 'change',type: 'number'}]">
+                        <el-select v-model="project.area1" placeholder="请选择">
+                          <el-option
+                            v-for="item in area"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="所属市级"
-                        prop="district2"
-                        :rules="[{required: true, message: '所属地区不能为空', trigger: 'change'}]">
-                        <el-select v-model="project.district2" placeholder="请选择">
+                        prop="area2"
+                        :rules="[{required: true, message: '所属地区不能为空', trigger: 'change',type: 'number'}]">
+                        <el-select v-model="project.area2" placeholder="请选择">
                          <el-option
-                           v-for="item in city2"
+                           v-for="item in area2"
                            :key="item.value"
                            :label="item.label"
                            :value="item.value">
@@ -790,8 +792,8 @@ export default {
         name : '',//项目名称
         company : '',//公司名称
         introduce : '',//项目介绍
-        district1:'',//所属地区1省级单位
-        district2:'',//所属地区2市级单位
+        area1:'',//所属地区1省级单位
+        area2:'',//所属地区2市级单位
         frequency:'',//项目轮次
         field:[],//项目领域
         companystate:"概念",//运营状态
@@ -841,46 +843,12 @@ export default {
       },//FA签约协议
       companyList: [],//公司搜索的数据
       list: [],
-      loading: false,
       /*公司远程搜索*/
       states: ["阿里","百度","投着乐网络科技有限公司"],
       /*所属地区1省级选项*/
-      city: [{
-        label: '热门城市',
-        options: [{
-          value: 'Shanghai',
-          label: '上海'
-        }, {
-          value: 'Beijing',
-          label: '北京'
-        }]
-      }, {
-        label: '城市名',
-        options: [{
-          value: 'Chengdu',
-          label: '成都'
-        }, {
-          value: 'Shenzhen',
-          label: '深圳'
-        }, {
-          value: 'Guangzhou',
-          label: '广州'
-        }, {
-          value: 'Dalian',
-          label: '大连'
-        }]
-      }],
+      area: [],
       /*所属地区2市级选项*/
-      city2: [{
-        value: '杭州',
-        label: '杭州'
-      }, {
-        value: '温州',
-        label: '温州'
-      }, {
-        value: '宁波',
-        label: '宁波'
-      }],
+      area2: [],
       /*项目轮次选项*/
       projectFrequency: [{
         value: 'A轮',
@@ -1060,6 +1028,33 @@ export default {
     this.restaurants = this.loadAll();
   },
   methods:{
+    getCity(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].area_title;
+        obj.value=data[i].area_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取地区(二级城市)
+    getWxProjectCategory(){
+      this.$http.post("api/category/getWxProjectCategory",{user_id: sessionStorage.user_id, project_id:"59W2a0GE"})
+        .then(res=>{
+          let data = res.data.data;
+
+          this.area=this.$tool.getSelectValue(data.area);//设置城市1列表
+
+          //area
+          console.log(data)
+
+        })
+        .catch(err=>{
+          console.log(err)
+  //            this.loading=false;
+        })
+    },//获取所有下拉框的数据
+
       /*商业计划书上传*/
     planChange(file, fileList){
       console.log(this.$tool.getToObject(file))
@@ -1184,8 +1179,8 @@ export default {
     querySearchAsync(queryString, cb) {
       console.log(queryString)
 
-      var restaurants = this.restaurants;
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+      let restaurants = this.restaurants;
+      let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         cb(results);
@@ -1201,7 +1196,6 @@ export default {
       console.log(item);
       this.dialogVisible=true;
     },//选择了搜索出来的数据后
-
     radiochange(label){/*控制添加radio*/
       if(label=="自定义添加"){
         this.dialogFormVisible=true;
@@ -1388,19 +1382,7 @@ export default {
     /*一键同步按钮*/
     sync(){
       this.dialogVisible = false;
-    },
-    getWxProjectCategory(){
-      this.$http.post("api/category/getWxProjectCategory",{user_id: sessionStorage.user_id, project_id:"59W2a0GE"})
-        .then(res=>{
-          let data = res.data.data
-          console.log(res)
-
-        })
-        .catch(err=>{
-          console.log(err)
-//            this.loading=false;
-        })
-    }//获取所有下拉框的数据
+    }
   },
   //    当dom一创建时
   created(){

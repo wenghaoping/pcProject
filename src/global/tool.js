@@ -2,62 +2,10 @@
  * Created by WengHaoping on 2017/5/18.
  */
 /**
- * 获取页面数据
+ * 总的工具类
  */
 const tool={
-  getFormData (){
-    var rtn = new Object();
-    // input元素的值
-    $("input[type=text]").each(function(){
-      var element=$(this);
-      if ((element.attr("id")!=null)&&(element.attr("id")!="")){
-        rtn[element.attr("id")]=element.val();
-      }
-    });
-    $("input[type=hidden]").each(function(){
-      var element=$(this);
-      if ((element.attr("id")!=null)&&(element.attr("id")!="")){
-        rtn[element.attr("id")]=element.val();
-      }
-    });
-    // input元素的值
-    $("input[type=password]").each(function(){
-      var element=$(this);
-      if ((element.attr("id")!=null)&&(element.attr("id")!="")){
-        rtn[element.attr("id")]=element.val();
-      }
-    });
-    // 获取checkbox的值
-    $('input[type=checkbox]').each(function(){
-      var element=$(this);
-      if (element.attr("checked")==true){
-        if ((element.attr("id")!=null)&&(element.attr("id")!="")){
-          rtn[element.attr("id")]=element.val();
 
-        }
-      }
-    });
-    // 获取textarea的值
-    $("textarea").each(function(){
-      var element=$(this);
-      if ((element.attr("id")!=null)&&(element.attr("id")!="")){
-        rtn[element.attr("id")]=element.val();
-      }
-    });
-    // 获取select值
-    $("select").each(function(){
-      var element=$(this);
-      if ((element.attr("id")!=null)&&(element.attr("id")!="")){
-        rtn[element.attr("id")]=element.val();
-      }
-    });
-    return rtn;
-  },
-  /**
-   * 绑定数据
-   *
-   * @param data
-   */
   bindFormData (data) {
     if ((data == null) || (data == "") || (data == undefined)) {
       return;
@@ -77,21 +25,16 @@ const tool={
       }
       element.val(data[key]);
     }
-  },
-  /*数组封装
-  * 将对象中无用的参数去除
-  * */
+  }, //*数组封装将对象中无用的参数去除
+
   getToObject (data) {
     let object={};
     for(let key in data){
       object[key]=data[key]
     }
     return object;
-  },
-  /*对象封装
-   * 将数组中无用的参数去除
-   *
-   * */
+  }, //对象封装 将数组中无用的参数去除
+
   getToArrObject(data) {
     let newArr = new Array;
     for(let i=0;i<data.length; i++){
@@ -99,8 +42,8 @@ const tool={
     }
     return newArr;
   },
-  /*设置上传文件大小以及类型fileChange(this)*/
-fileChange(target) {
+
+  fileChange(target) {
   let isIE = /msie/i.test(navigator.userAgent) && !window.opera;
   let fileSize = 0;
   const filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
@@ -149,7 +92,29 @@ fileChange(target) {
     target.value ="";
     return false;
   }
-}
+},/*设置上传文件大小以及类型fileChange(this)*/
+
+  getTitleSift(data){
+    let arr = [];
+    for(let key in data){
+      let obj=new Object;
+      obj.text=data[key]
+      obj.value=key
+      arr.push(obj)
+    }
+    return arr
+  },//设置表格表头的筛选内容======表格页都用的到
+
+  getSelectValue(data){
+    let arr = [];
+    for(let key in data){
+      let obj=new Object;
+      obj.label=data[key]
+      obj.value=key
+      arr.push(obj)
+    }
+    return arr
+  }//设置选择器的内容=====选择器远程设置内容用的到
 }
 
 export default{

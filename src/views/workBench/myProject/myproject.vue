@@ -370,8 +370,8 @@
         }
       },//跳转到项目详情页面传参数
       handleEdit(index, row){
-        console.log(index);
-        console.log(this.$tool.getToObject(row));
+//        console.log(index);
+//        console.log(this.$tool.getToObject(row));
         this.$router.push({ name: 'editproject', query: { pro_id:row.pro_id}})
         /*跳转到编辑页面*/
       },//跳转到编辑页
@@ -542,12 +542,12 @@
             let pro_schedule=data.pro_schedule;//跟进状态
             let pro_source=data.pro_source;//项目来源
             let pro_stage=data.pro_stage;//轮次
-            this.pro_areaFilters=this.getTitleSift(pro_area);
-            this.pro_industryFilters=this.getTitleSift(pro_industry);
-            this.pro_scaleFilters=this.getTitleSift(pro_scale);
-            this.pro_scheduleFilters=this.getTitleSift(pro_schedule);
+            this.pro_areaFilters=this.$tool.getTitleSift(pro_area);
+            this.pro_industryFilters=this.$tool.getTitleSift(pro_industry);
+            this.pro_scaleFilters=this.$tool.getTitleSift(pro_scale);
+            this.pro_scheduleFilters=this.$tool.getTitleSift(pro_schedule);
             this.pro_sourceFilters=this.getTitleSiftpro_source(pro_source);
-            this.pro_stageFilters=this.getTitleSift(pro_stage);
+            this.pro_stageFilters=this.$tool.getTitleSift(pro_stage);
             this.loading=false;
           })
           .catch(err=>{
@@ -555,16 +555,7 @@
             console.log(err,2)
           })
       },// 获取表头
-      getTitleSift(data){
-        let arr = [];
-        for(let key in data){
-          let obj=new Object;
-          obj.text=data[key]
-          obj.value=key
-          arr.push(obj)
-        }
-        return arr
-      },//设置表头
+
       getTitleSiftpro_source(data){
         let arr = [];
         for(let key in data){

@@ -453,6 +453,7 @@
         },
         loading:false,
         project:{
+          pro_id:"",//项目id
           pro_name:"微天使",//项目名称
           pro_company_name:"杭州投着乐网络科技有限公司",//公司名称
           pro_company_scale:"10-20人",//公司规模
@@ -466,12 +467,98 @@
           pro_scale:"规模",//规模
           pro_industry:["社交网络","大数据"],//领域标签
           is_exclusive:0,//0其他 1独家 2非独家
+          open_status: 1,//0私密  1公开
 
+          pro_history_finance:[{//历史融资信息
+            project_id: 37,
+            pro_finance_stage: 1,//轮次
+            pro_finance_scale: "100.00",//金额
+            pro_finance_investor: "周杰伦",//投资人
+            created_time: null,
+            updated_time: null
+          }],
 
+          pro_goodness: "专注于篮球项目的移动端社交平台。在基于用户所处的地理位置基础上，将用户个人，球队，比赛，场馆等资源有机整合，形成一个以用户为核心的垂直网络社区，带给篮球爱好者全新的社交方式和运动体验。",//项目介绍
+          pro_website: "www",//官方网址
+          pro_status: "",//运营状态
 
-        },
+          //项目联系人
+          contact: {
+            user_name: "赵工佐",
+            user_mobile: "18551711000"
+          },
 
-      }
+          //核心团队人员
+          core_users: [
+            {
+              project_ct_id: 30,
+              ct_index: "9bd0c8d7d615832340340aab0c0625b7",
+              project_id: 37,
+              project_index: "275fa4f135eecf08e5660d23e294e6cd",
+              ct_member_name: "赵工佐",
+              ct_member_career: "创始人兼首席执行官",
+              ct_member_intro: "前高中和大学校队主力球员，城市街头篮球战队知名成员，热爱篮球运动与健身，球龄16年。美国南加州大学景观建筑硕士，加州大学洛杉矶分校运动学与训练科学在读。曾任职于美国著名设计公司AECOM和SWA从事设计师工作。HoopEASY开创性的开发理念源于Joe对篮球十几年如一日的热爱以及对行业痛点问题的深刻认识。其贯穿中美的设计背景与经验帮助团队打造出与众不同的产品及一流的用户体验。",
+              created_at: null,
+              updated_at: null,
+              stock_scale: null
+            }
+          ],
+          //自定义标签
+          tag: [
+            {
+              tag_id: 1,
+              tag_name: "海贼王",
+              user_id: 0,
+              project_id: 37,
+              created_time: null,
+              updated_time: null,
+              type: 0//项目标签
+            },
+            {
+              tag_id: 3,
+              tag_name: "全职猎人",
+              user_id: 0,
+              project_id: 37,
+              created_time: null,
+              updated_time: null,
+              type: 1//团队标签
+            }
+          ],
+          //里程碑
+          pro_develop: [
+            {
+            project_dh_id: 6,
+            dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
+            project_id: 37,
+            project_index: "275fa4f135eecf08e5660d23e294e6cd",
+            dh_start_time: "1436112000",//时间
+            dh_end_time: "1443542400",
+            dh_event: "组建团队和设立办公室",//事件
+            created_at: null,
+            updated_at: null
+          }],
+          //FA签约
+          pro_FA: {
+            project_id: 37,
+            commission: "63.00",//签约佣金
+            stock_right: "13.00",//股权赠与
+            stock_follow: "12.00",//跟投权
+            stock_other: "55.00",//其他权益
+            created_at: null,
+            updeted_at: null
+          },
+          //BP文件
+          pro_BP: {
+            bp_id: 34,
+            project_id: 37,
+            user_id: 181391,
+            bp_title: "HoopEASY商业计划PPT+for+pitch",
+            bp_ext: "pptx",
+            bp_url: "20161201/e6b499c3e94ed4247147cdbfd50ca319.pptx",
+            created_at: "2017-06-01 18:14:38",
+            updated_at: "2017-06-01 18:14:38",
+            deleted_at: null
+          }
     },
     computed:{
 
@@ -602,17 +689,22 @@
           })
       },//获取项目详情数据
       toEdit(){
-        this.$router.push({ name: 'editproject'})
+        this.$router.push({ name: 'editproject',query: { pro_id:this.project.pro_id}},)
+      },
+      getproId(){
+        this.$route.query.pro_id=this.project.pro_id
+        console.log(this.$route.query.pro_id)
       }
     },
     created () {
       // 组件创建完后获取数据，
 //      this.loading=true
-      this.getOneProject()
+      this.getOneProject();
+      this.getproId();
     }
   }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   @import '../../../assets/css/index.less';
 </style>
