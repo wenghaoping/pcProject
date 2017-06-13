@@ -61,13 +61,17 @@
     methods: {
       toggle(i){
         this.active = i
-
+      },
+      setUserId(){
+        sessionStorage.user_id='2rzyz5vp';
       }
     },
 //    当dom一创建时
     created(){
       this.$router.push('/workBench/myproject');
 //      this.$router.push({ name: 'projectDetails'})
+      this.setUserId();
+
     },
   }
 </script>

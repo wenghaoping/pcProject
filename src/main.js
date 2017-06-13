@@ -13,12 +13,12 @@ import { Notification } from 'element-ui';
 import './assets/css/base.css'
 import './assets/css/animate.css'
 import $ from 'jquery'
-import tool from './assets/js/tool.js';
+import tool from './global/tool.js';
 
 import axios from './config/api.js'
 Vue.prototype.$http = axios
 
-import URL_ from './assets/js/url.js'//URL请求地址汇总
+import URL_ from './global/url.js'//URL请求地址汇总
 Vue.prototype.URL = URL_
 
 /*import LOADING_ from './assets/js/loading.js'//加载

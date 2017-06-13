@@ -1,5 +1,5 @@
 <template>
-  <div id="editproject">
+  <div id="editproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
@@ -271,6 +271,17 @@
                           </el-option>
                         </el-select>
 
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="24">
+                      <el-form-item label="项目亮点"
+                                    prop="highlights"
+                                    :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'}]">
+                        <el-input type="textarea"
+                                  v-model="project.highlights"
+                                  :autosize="{ minRows: 4, maxRows: 7}"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -790,7 +801,8 @@ export default {
         phone:'',//手机号
         source:'',//项目来源
         private:'',//私密设置
-        tag:''//项目标签
+        tag:'',//项目标签
+        highlights:''//项目亮点
       },//项目介绍
       team:{
         teamTag:[],//团队标签
@@ -967,6 +979,7 @@ export default {
       dialogVisible:false,//是否同步弹窗
       close:false,
       restaurants: [],//数据存放
+      loading:false//加载
     }
   },
   computed:{
@@ -1009,13 +1022,13 @@ export default {
               }
             }
           }
-
           return inner
         }
       //是否为数组
-        function isArray(o){
+      function isArray(o){
           return Object.prototype.toString.call(o)=='[object Array]';
         }
+
       if(forFor(fileValue)==0)this.filePerfect=true;
       else this.filePerfect=false;
 
@@ -1068,7 +1081,7 @@ export default {
 
     },
     /*批量上传*/
-    //2号当添加文件时,添加入上传列表
+    //当添加文件时,添加入上传列表
     handleChange(file, fileList){
       if(file.status=="ready"){
         this.addDomain("其他",file.name)
@@ -1147,7 +1160,7 @@ export default {
       this.$router.go(-1);
     },
 
-    /*获取数据*/
+    /*获取远程数据模拟*/
     loadAll() {
       return [
         { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
@@ -1264,13 +1277,18 @@ export default {
       if(this.planList.length===0) this.fileMust=true
       else this.fileMust=false
 
-      console.log(this.fileMust)
-      console.log(this.planList.length)
+//      console.log(this.fileMust)
+//      console.log(this.planList.length)
       this.projectMust=!this.submitForm('project');
       this.teamMust=!this.submitForm('team');
       this.financingMust=!this.submitForm('financing');
       this.milepostMust=!this.submitForm('milepost');
-      if(this.fileMust && this.projectMust && this.teamMust && this.financingMust && this.milepostMust) this.open("必填项不能为空")
+//      console.log(this.projectMust,this.teamMust,this.financingMust,this.milepostMust)
+      if(this.fileMust ) this.open("请添加商业计划书")
+        else if(this.projectMust) this.open("项目介绍必填项不能为空")
+        else if(this.teamMust) this.open("核心团队必填项不能为空")
+        else if(this.financingMust) this.open("融资信息必填项不能为空")
+        else if(this.milepostMust) this.open("里程碑必填项不能为空")
         else this.open2('项目编辑成功','您当前的项目完整度为'+this.proportion+'%','查看详情','继续编辑')
     },
     /*警告弹窗*/
@@ -1294,25 +1312,6 @@ export default {
       }).catch(() => {
         this.$router.push({ name: 'projectDetails', query: {}})
       });
-    },
-    fetchData () {
-      Loading.service({ fullscreen: true,text:"正在加载数据中"});
-      setTimeout(function () {
-        let loadingInstance = Loading.service({ fullscreen: true});
-        loadingInstance.close();
-      },1000)
-
-      /*this.error = this.post = null
-       this.loading = true
-       // replace getPost with your data fetching util / API wrapper
-       getPost(this.$route.params.id, (err, post) => {
-       this.loading = false
-       if (err) {
-       this.error = err.toString()
-       } else {
-       this.post = post
-       }
-       })*/
     },
     /*锚点跳转*/
     setNode(v){
@@ -1389,15 +1388,26 @@ export default {
     /*一键同步按钮*/
     sync(){
       this.dialogVisible = false;
-    }
+    },
+    getWxProjectCategory(){
+      this.$http.post("api/category/getWxProjectCategory",{user_id: sessionStorage.user_id, project_id:"59W2a0GE"})
+        .then(res=>{
+          let data = res.data.data
+          console.log(res)
+
+        })
+        .catch(err=>{
+          console.log(err)
+//            this.loading=false;
+        })
+    }//获取所有下拉框的数据
   },
   //    当dom一创建时
   created(){
     if(this.planList.length!=0) this.planButton=false;
     else this.planButton=true;
 
-    this.fetchData()
-
+    this.getWxProjectCategory();
   }
 }
 </script>

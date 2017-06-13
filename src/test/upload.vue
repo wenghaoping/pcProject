@@ -27,7 +27,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {tool} from '../assets/js/tool.js'
+  import {tool} from '../global/tool.js'
   import ElCol from "element-ui/packages/col/src/col";
   export default {
     components: {ElCol},

@@ -12,7 +12,7 @@
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
               <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
-              <span class="title">微天使乐投平台</span>
+              <span class="title">{{project.pro_name}}</span>
               <span class="company">杭州投着乐网络科技有限公司</span>
             </div>
             <div class="item" style="margin-top: 14px;">
@@ -441,7 +441,7 @@
 
 <script type="text/ecmascript-6">
   import research from './onekeyresearch.vue'
-  var echarts = require('echarts');
+  const echarts = require('echarts');
   export default {
     data(){
       return {
@@ -451,7 +451,26 @@
           name:'',
           region:''
         },
-        loading:false
+        loading:false,
+        project:{
+          pro_name:"微天使",//项目名称
+          pro_company_name:"杭州投着乐网络科技有限公司",//公司名称
+          pro_company_scale:"10-20人",//公司规模
+          pro_source:"微天使项目",//项目来源
+          pro_intro:"一款最酷的篮球社交软件",//项目简介
+          pro_total_score:"98.00",//信息完整度
+          pro_finance_value:"100-300万",//项目估值
+          pro_schedule:"90%",//项目进度
+          pro_area:"杭州",//区域
+          pro_stage:"天使轮",//轮次
+          pro_scale:"规模",//规模
+          pro_industry:["社交网络","大数据"],//领域标签
+          is_exclusive:0,//0其他 1独家 2非独家
+
+
+
+        },
+
       }
     },
     computed:{
@@ -462,9 +481,9 @@
     },
     //Echart组件
     mounted:function(){
-      var myPie = echarts.init(document.getElementById('pieBox'));
-      var colors = ["#13ce66","#f7ba2a","#20a0ff"];
-      var option = {
+      let myPie = echarts.init(document.getElementById('pieBox'));
+      let colors = ["#13ce66","#f7ba2a","#20a0ff"];
+      let option = {
         legend: {
           orient: 'horizontal',
           bottom: '5',
@@ -570,10 +589,18 @@
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
       },
-      fetchData () {
-          this.loading=false
-
-      },
+      getOneProject () {
+        this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:"ZaWJ8rYE"})
+          .then(res=>{
+            this.loading=false
+            let data = res.data.data
+            console.log(data)
+          })
+          .catch(err=>{
+            this.loading=false
+            console.log(err,2)
+          })
+      },//获取项目详情数据
       toEdit(){
         this.$router.push({ name: 'editproject'})
       }
@@ -581,12 +608,8 @@
     created () {
       // 组件创建完后获取数据，
 //      this.loading=true
-      this.fetchData()
-    },
-    watch: {
-      // 如果路由有变化，会再次执行该方法
-      '$route': 'fetchData'
-    },
+      this.getOneProject()
+    }
   }
 </script>
 

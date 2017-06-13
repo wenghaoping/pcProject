@@ -100,7 +100,7 @@ const tool={
     return newArr;
   },
   /*设置上传文件大小以及类型fileChange(this)*/
-fileChange(target,id) {
+fileChange(target) {
   let isIE = /msie/i.test(navigator.userAgent) && !window.opera;
   let fileSize = 0;
   const filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];

@@ -7,15 +7,17 @@
                    :on-preview="handlePreview"
                    :on-change="handleChange"
                    :on-success="uploadsuccess"
+                   :on-error="uploaderror"
                    :file-list="fileList"
                    :before-upload="beforeUpload"
                    :on-progress="handleProgress"
                    :data="uploadDate"
                    ref="upload"
+                   accept=".doc, .ppt, .pdf, .zip, .rar, .npg"
                    drag multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip" >BP私密保护，投资人可通过申请查看来了解项目价值<br>支持pdf、ppt、doc、png，jpg，jpeg文件格式</div>
+          <div class="el-upload__tip" slot="tip" >BP私密保护，投资人可通过申请查看来了解项目价值<br>支持pdf、ppt、doc、zip、rar文件格式</div>
         </el-upload>
 
       <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
@@ -25,7 +27,7 @@
 
 
     <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose">
-      <div class="loadmodel" v-loading="loading" element-loading-text="上传中">
+      <div class="loadmodel" v-loading.fullscreen.lock="loading" element-loading-text="上传中">
         <el-upload
           class="upload-demo"
           ref="upload"
@@ -34,6 +36,7 @@
           :on-change="handleChange"
           :on-success="uploadsuccess"
           :on-progress="handleProgress"
+          :on-error="uploaderror"
           :file-list="fileList"
           :data="uploadDate"
 
@@ -116,8 +119,8 @@ export default {
         domains: [],
       },
       loading:false,
-      uploadDate:{user_id: '2rzyz5vp'}//上传所带的额外的参数
-
+      uploadDate:{user_id: '2rzyz5vp'},//上传所带的额外的参数
+      loadingcheck:''
     }
   },
   methods: {
@@ -126,40 +129,54 @@ export default {
     },
     //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
     handleChange(file, fileList) {
+      this.loading=true;
+      let type=file.name.substr(file.name.length-3,3)
+//      pdf,ppt,doc,png,jpg,jpeg
+/*      if(type!='pdf' || type!='ppt' || type!='doc' || type!='png' || type!='jpg'){
+        this.open("只支持pdf、ppt、doc、png，jpg，jpeg文件格式")
+        return
+      }*/
+//      console.log(fileList)
       this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
-//      this.loading=true;
+      if(!this.loadingcheck){
+        this.loading=false;
+      }
       console.log("change")
-      console.log(this.loading)
     },
     uploadsuccess(response, file, fileList){
-
+        this.loadingcheck=true;
         let data=response.data
 //      console.log(data)
         if(response.status_code==2000000) {
           this.addDomain(data.bp_title,data.pro_desc,data.pro_name,data.project_id)
           this.loading=false;
+          this.loadingcheck=false;
         }
         console.log(response)
 
       console.log("success")
-      console.log(this.loading)
+//      console.log(this.loading)
 
+    },
+    uploaderror(err, file, fileList){
+      this.loading=false;
     },
     handlePreview(file) {
       console.log(file);
     },
     beforeUpload(file){
-//      this.loading("正在上传");
-//      console.log(file)
-//      console.log("beforeUpload")
-
+        if(file.size > 30720000) file.abort()
+        console.log(file.size)
+        console.log("beforeUpload")
+      /*this.fileChange(file)*/
+      this.loading=true;
     },
     handleProgress(event, file, fileList){
 
       this.percentage=parseInt(event.percent);
-      if(event.percent==100)
-      console.log(event)
+//      if(event.percent==100)
+//      console.log(event)
 /*      console.log(file)
       console.log(fileList)*/
     },
@@ -168,7 +185,6 @@ export default {
       let obj = this.dateForm.domains;
         this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
           const saveUploadURL=this.URL.saveUpload
           this.$http.post(saveUploadURL,obj)
             .then(res=>{
@@ -186,7 +202,6 @@ export default {
           console.log("uploadDate")
           console.log(this.uploadDate)*/
           this.$refs.upload.submit();
-
         } else {
           console.log('error submit!!');
           return false;
@@ -198,19 +213,14 @@ export default {
     },
     //删除当前上传文件
     removeDomain(item) {
-
       const deleteUpload=this.URL.deleteUpload
-
-/*      console.log(this.fileList)
-      console.log(item)*/
-      console.log(item.project_id)
       var index = this.dateForm.domains.indexOf(item)
       if (index !== -1) {
         this.dateForm.domains.splice(index, 1)
         this.fileList.splice(index, 1)
       }
 
-      this.$http.post(deleteUpload,{user_id: '2rzyz5vp',project_id:item.project_id})
+      this.$http.post(deleteUpload,{user_id: sessionStorage.user_id,project_id:item.project_id})
         .then(res=>{
           if(res.status===200){
 //            this.loading=false;
@@ -248,13 +258,14 @@ export default {
           done()
         })
         .catch(_ => {});
-    }/*,
-    loading (text) {
-      this.$loading({ fullscreen: true,text:text})
     },
-    closeLoading(text){
-      this.$loading({ fullscreen: true,text:text}).close();
-    }*/
+    /*警告弹窗*/
+    open(text) {
+      this.$notify.error({
+        message: text,
+        offset: 300
+      });
+    }
   }
 }
 </script>

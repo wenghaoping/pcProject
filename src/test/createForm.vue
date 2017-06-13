@@ -52,7 +52,7 @@
   import ElForm from "../../node_modules/element-ui/packages/form/src/form";
   import ElCol from "element-ui/packages/col/src/col";
   import ElFormItem from "../../node_modules/element-ui/packages/form/src/form-item";
-  import {tool} from '../assets/js/tool.js'
+  import {tool} from '../global/tool.js'
   export default {
     components: {
       ElFormItem,
