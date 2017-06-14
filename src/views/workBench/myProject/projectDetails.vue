@@ -1,41 +1,39 @@
 <template>
   <div id="projectDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-<!--    {{ this.$route.query.address }}-->
+    {{ this.$route.query.pro_id }}
     <div class="contain-grid contain-center">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
         <div class="item-lists item-lists-top clearfix">
           <div class="item-lists-inner-left fl">
             <div class="item">
-              <span class="small-tag">私密</span>
+              <el-tag type="primary" v-if="project.open_status==0">私密</el-tag>
+              <el-tag type="success" v-if="project.open_status==1">公开</el-tag>
               <el-tooltip class="item" effect="dark" placement="top-start">
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
               <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
               <span class="title">{{project.pro_name}}</span>
-              <span class="company">杭州投着乐网络科技有限公司</span>
+              <span class="company">{{project.pro_company_name}}</span>
             </div>
             <div class="item" style="margin-top: 14px;">
-              <div class="doc">这里是这个项目的一句话介绍，字数在40字以内，要全部显示这里是这个项目的一句话介。</div>
+              <div class="doc">{{project.pro_intro}}</div>
             </div>
             <div class="item" style="margin-top:18px;">
-              <span class="mid-tag">教育培训</span>
-              <span class="mid-tag">社交通讯</span>
-              <span class="mid-tag">大数据</span>
-              <span class="mid-tag">sass</span>
+              <span class="mid-tag" v-for="industry in project.pro_industry">{{industry.industry_name}}</span>
             </div>
             <div class="item" style="margin-top:18px;">
-              <span class="big-tag">100-300万</span><span class="split">｜</span>
-              <span class="big-tag">杭州</span><span class="split">｜</span>
-              <span class="big-tag">10%</span><span class="split">｜</span>
-              <span class="big-tag">天使轮</span>
-              <span class="flower">跟进人 : 金牛</span>
-              <span class="flower">来源 : 真格基金　</span>
+              <span class="big-tag">{{project.pro_scale.scale_money}}</span><span class="split">｜</span>
+              <span class="big-tag">{{project.pro_area.area_title}}</span><span class="split">｜</span>
+              <span class="big-tag">{{project.pro_schedule.schedule_name}}</span><span class="split">｜</span>
+              <span class="big-tag">{{project.pro_stage.stage_name}}</span>
+              <span class="flower">跟进人 : {{project.follow_up}}</span>
+              <span class="flower">来源 : {{project.pro_source}}　</span>
             </div>
             <div class="item" style="margin-top:18px;">
             <span class="project">
               <span class="title">项目完整度:</span>
-              <span class="number">100%</span>
+              <span class="number">{{project.pro_total_score}}%</span>
               <span class="more">超过60%的项目更易被投资人关注</span>
             </span>
               <span class="project" style="width: 291px;">
@@ -45,7 +43,7 @@
                   <span class="circle circle-s"></span>
                   <span class="bar-bg1">&nbsp;</span>
                   <span class="bar-bg2">&nbsp;</span>
-                  <span  class="txt state">签约</span>
+                  <span  class="txt state">{{project.pro_status.status_name}}</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
                 <div class="txt end">佣金收讫</div>
@@ -53,8 +51,8 @@
             </span>
             </div>
             <div class="onlyone">
-              <img src="../../../assets/images/onlyonedark.png"/>
-<!--              <img src="../../../assimageslogo/onlyonelight.png"/>-->
+              <img v-if="project.is_exclusive==1" src="../../../assets/images/onlyonedark.png"/>
+              <img v-else="project.is_exclusive==0" src="../../../assets/images/onlyonelight.png"/>
             </div>
           </div>
           <div class="item-lists-inner-right fl">
@@ -88,123 +86,107 @@
               <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
               <div class="person-info">
                 <span>项目联系人 : </span>
-                <span>张三</span>
-                <span>15823457890</span>
+                <span>{{project.contact.user_name}}</span>
+                <span>{{project.contact.user_mobile}}</span>
               </div>
             </div>
             <div class="item" style="margin-top:33px;">
-              <span class="person-tag">90后创业者</span>
-              <span class="person-tag">80后创业者</span>
+              <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
             </div>
             <div class="item" style="margin-top:24px;">
-              <div class="paper">
+              <div class="paper" v-for="file in project.pro_file">
                 <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
-                <span class="pt">杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司</span>
+                <span class="pt">{{file.file_title}}</span>
                 <el-button type="text" size="mini">查看</el-button>
-                <el-button type="text" size="mini">下载</el-button>
-              </div>
-              <div class="paper">
-                <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
-                <span class="pt">杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司杭州投着乐网络科技有限公司</span>
-                <el-button type="text" size="mini">查看</el-button>
-                <el-button type="text" size="mini">下载</el-button>
+                <el-button type="text" size="mini"><a href="">下载</a></el-button>
               </div>
             </div>
-            <div class="item" style="margin-top:24px;height: 49px;">
-              <div class="bot-det">
+            <div class="item" style="margin-top:24px;height: 49px;" v-if="project.pro_status!=''">
+              <div class="bot-det" v-if="project.pro_status!=''">
                 <span class="det-title">运营状态：</span>
-                <span class="del-info">已上线</span>
+                <span class="del-info">{{project.pro_status.status_name}}</span>
               </div>
-              <div class="bot-det" style="margin-left:170px;">
+              <div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">
                 <span class="det-title">产品链接：</span>
-                <span class="del-info"><a href="">www.baidu.com</a></span>
+                <span class="del-info"><a href="">{{project.pro_website}}</a></span>
               </div>
-              <div class="bot-det" style="float:right;">
+              <div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">
                 <span class="det-title">公司规模：</span>
-                <span class="del-info">5-20人</span>
+                <span class="del-info">{{project.pro_company_scale.comp_scale_value}} 人</span>
               </div>
             </div>
             <div class="line"></div>
             <div class="ul-lists" style="margin-top:16px;padding: 0">
               <div class="item">
                 <span class="title" style="font-size: 16px;">项目亮点</span>
-                <div class="prod-doc" style="font-size: 13px;">我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。 2.行中：管家确保出现在用户出行过程中每一个重要和紧急的环节。 我们的管家分为线上的总部管家和线下的目的地管家。目前，我们在全球7个国家建立了分公司、办事处。飞机落地之后，对接当地管家。此外，用户在任何时候都可以通过微信公众号或者 24 小时待机的国内电话联系到总部管家，并得到总部管家的帮助。</div>
+                <div class="prod-doc" style="font-size: 13px;">{{project.pro_goodness}}</div>
               </div>
             </div>
           </div>
-
-          <div class="ul-lists" style="margin-top:16px;">
+          <!--核心团队-->
+          <div class="ul-lists" style="margin-top:16px;" v-if="project.core_users!=''">
             <div class="item">
               <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
             </div>
             <div class="item" style="margin-top:33px;">
-              <span class="person-tag">90后创业者</span>
-              <span class="person-tag">80后创业者</span>
+              <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
             </div>
-            <div class="item" style="margin-top:32px;">
-              <span class="p-name">顾嘉</span>
-              <span class="p-mg">创始人</span>
-              <div class="p-gf">占股比例 : <span>12%</span></div>
-              <div class="p-doc">13年开发经验，这里是一段话，这里是一段他的个人介绍，字数</div>
+            <div style="margin-top:32px;"></div>
+            <div class="item" v-for="user in project.core_users" style="margin-top:10px;">
+              <span class="p-name">{{user.ct_member_name}}</span>
+              <span class="p-mg">{{user.ct_member_career}}</span>
+              <div class="p-gf">占股比例 : <span>{{user.stock_scale}}%</span></div>
+              <div class="p-doc">{{user.ct_member_intro}}</div>
+              <div class="line"></div>
             </div>
-            <div class="line"></div>
-            <div class="item" style="margin-top:10px;">
-              <span class="p-name">顾嘉加</span>
-              <span class="p-mg">创始人</span>
-              <div class="p-gf">占股比例 : <span>12%</span></div>
-              <div class="p-doc">我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。</div>
-            </div>
+
           </div>
+          <!--融资信息-->
           <div class="ul-lists" style="margin-top:16px;">
             <div class="item">
               <span class="title"><img class="img" src="../../../assets/images/money.png">融资信息</span>
               <div class="rz-details">
                 <div class="rz-detail">
                   <p class="det-title">期望融资</p>
-                  <p class="det-info">1000万-3000万</p>
+                  <p class="det-info">{{project.pro_finance_scale}}万</p>
                 </div>
                 <div class="rz-detail">
                   <p class="det-title">投后股份</p>
-                  <p class="det-info">10%</p>
+                  <p class="det-info">{{project.pro_finance_stock_after}}%</p>
                 </div>
                 <div class="rz-detail">
                   <p class="det-title">估值</p>
-                  <p class="det-info">2000万</p>
+                  <p class="det-info">{{project.pro_finance_value}}万</p>
                 </div>
               </div>
             </div>
-            <div class="item" style="margin-top:35px;">
+            <div class="item" style="margin-top:35px;" v-if="project.pro_history_finance=''">
               <span class="sec-title">资金用途</span>
               <div class="yt-doc">
-                我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，
+                {{project.pro_finance_use}}
               </div>
             </div>
-            <div class="item" style="margin-top:6px;">
+            <div class="item" style="margin-top:6px;" v-if="project.pro_history_finance=''">
               <div>
                 <div class="v-progress" style="height: 121px;">
                   <span class="circle circle-s">&nbsp;</span>
                   <span class="v-line v-line-1">&nbsp;</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
-                <div class="v-progress-table" style="height: 121px;">
-                  <div class="v-progress-txt">
-                    <span class="pro-txt-1">2017.05.04</span>
-                    <span class="pro-txt-2">100-500万</span>
-                    <span class="pro-txt-3">A轮</span>
-                    <span class="pro-txt-4">天使投资</span>
-                  </div>
-                  <div class="line"></div>
-                  <div class="v-progress-txt">
-                    <span class="pro-txt-1">2017.05.04</span>
-                    <span class="pro-txt-2">1000-5000万</span>
-                    <span class="pro-txt-3">天使轮</span>
-                    <span class="pro-txt-4">天使投资、华兴资本、微天使</span>
+                <div class="v-progress-table">
+                  <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
+                    <span class="pro-txt-1">{{finance.created_time}}</span>
+                    <span class="pro-txt-2">{{finance.pro_finance_scale}}万</span>
+                    <span class="pro-txt-3">{{finance.pro_finance_stage_name}}</span>
+                    <span class="pro-txt-4">{{finance.pro_finance_investor}}</span>
+                    <div class="line"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="ul-lists" style="margin-top:16px;">
+          <!--里程碑-->
+          <div class="ul-lists" style="margin-top:16px;" v-if="project.pro_develop!=''">
             <div class="item">
               <span class="title"><img class="img" src="../../../assets/images/Milepost.png">里程碑</span>
             </div>
@@ -219,20 +201,11 @@
 
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
-                <div class="v-progress-table" style="height: 182px;">
-                  <div class="v-progress-txt">
-                    <span class="pro-txt-1">2017.05.04</span>
-                    <span class="pro-txt-2"  style="color:#5e6d82;">App的下载量突破100万</span>
-                  </div>
-                  <div class="line"></div>
-                  <div class="v-progress-txt">
-                    <span class="pro-txt-1">2017.05.04</span>
-                    <span class="pro-txt-2"  style="color:#5e6d82;">获汉鼎宇佑集团和盛大亿元投资 P2P行业再掀波澜，获得1.5亿B轮融资</span>
-                  </div>
-                  <div class="line"></div>
-                  <div class="v-progress-txt">
-                    <span class="pro-txt-1">2017.05.04</span>
-                    <span class="pro-txt-2"  style="color:#5e6d82;">获汉鼎宇佑集团和盛大亿元投资 P2P行业再掀波澜，获得1.5亿B轮融资</span>
+                <div class="v-progress-table">
+                  <div class="v-progress-txt" v-for="develop in project.pro_develop">
+                    <span class="pro-txt-1">{{develop.dh_start_time}}</span>
+                    <span class="pro-txt-2"  style="color:#5e6d82;">{{develop.dh_event}}</span>
+                    <div class="line"></div>
                   </div>
                 </div>
               </div>
@@ -240,25 +213,26 @@
             </div>
 
           </div>
-          <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;">
+          <!--FA签约协议-->
+          <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
             <div class="item">
               <span class="title"><img class="img" src="../../../assets/images/money.png">FA签约协议</span>
               <div class="rz-details" >
                 <div class="rz-detail" style="width: 25%">
                   <p class="det-title">签约佣金</p>
-                  <p class="det-info">10%</p>
+                  <p class="det-info">{{project.pro_FA.commission}}%</p>
                 </div>
                 <div class="rz-detail" style="width: 25%">
                   <p class="det-title">股权赠与</p>
-                  <p class="det-info">10%</p>
+                  <p class="det-info">{{project.pro_FA.stock_right}}%</p>
                 </div>
                 <div class="rz-detail" style="width: 25%">
                   <p class="det-title">其他权益</p>
-                  <p class="det-info">100%</p>
+                  <p class="det-info">{{project.pro_FA.stock_other}}%</p>
                 </div>
                 <div class="rz-detail" style="width: 25%">
                   <p class="det-title">跟投权</p>
-                  <p class="det-info">-</p>
+                  <p class="det-info">{{project.pro_FA.stock_follow}}</p>
                 </div>
               </div>
             </div>
@@ -302,15 +276,15 @@
               <div class="card-person">
                 <span class="name">张三</span>
                 <span class="manger">总监</span>
-                <span class="flag"><img src="../../../assets/flag.png" />买方FA </span>
+                <span class="flag"><img src="../../../assets/images/flag.png" />买方FA </span>
               </div>
-              <div class="head-img"><img src="../../../assets/header.png" alt="" /></div>
+              <div class="head-img"><img src="../../../assets/images/header.png" alt="" /></div>
               <div class="card-txt">杭州投着乐网络科技有限公司</div>
               <div class="card-doc doc1">投资领域：<span>智能服务、电商</span></div>
               <div class="card-doc doc2">投资轮次：<span>种子轮、天使轮、A轮、B轮</span></div>
               <div class="line">&nbsp;</div>
               <div class="card-bottom">我跟进的用户：<span>感兴趣</span>
-                <span class="handler"><img src="../../../assets/slice.png" alt="" />移除</span>
+                <span class="handler"><img src="../../../assets/images/slice.png" alt="" />移除</span>
               </div>
             </div>
           </div>
@@ -336,15 +310,15 @@
               <div class="card-person">
                 <span class="name">张三</span>
                 <span class="manger">总监</span>
-                <span class="flag"><img src="../../../assets/flag.png" />买方FA </span>
+                <span class="flag"><img src="../../../assets/images/flag.png" />买方FA </span>
               </div>
-              <div class="head-img"><img src="../../../assets/header.png" alt="" /></div>
+              <div class="head-img"><img src="../../../assets/images/header.png" alt="" /></div>
               <div class="card-txt">杭州投着乐网络科技有限公司</div>
               <div class="card-doc doc1">投资领域：<span>智能服务、电商</span></div>
               <div class="card-doc doc2">投资轮次：<span>种子轮、天使轮、A轮、B轮</span></div>
               <div class="line">&nbsp;</div>
               <div class="card-bottom">我跟进的用户：<span>感兴趣</span>
-                <span class="handler"><img src="../../../assets/slice.png" alt="" />移除</span>
+                <span class="handler"><img src="../../../assets/images/slice.png" alt="" />移除</span>
               </div>
             </div>
           </div>
@@ -370,15 +344,15 @@
               <div class="card-person">
                 <span class="name">张三</span>
                 <span class="manger">总监</span>
-                <span class="flag"><img src="../../../assets/flag.png" />买方FA </span>
+                <span class="flag"><img src="../../../assets/images/flag.png" />买方FA </span>
               </div>
-              <div class="head-img"><img src="../../../assets/header.png" alt="" /></div>
+              <div class="head-img"><img src="../../../assets/images/header.png" alt="" /></div>
               <div class="card-txt">杭州投着乐网络科技有限公司</div>
               <div class="card-doc doc1">投资领域：<span>智能服务、电商</span></div>
               <div class="card-doc doc2">投资轮次：<span>种子轮、天使轮、A轮、B轮</span></div>
               <div class="line">&nbsp;</div>
               <div class="card-bottom">我跟进的用户：<span>感兴趣</span>
-                <span class="handler"><img src="../../../assets/slice.png" alt="" />移除</span>
+                <span class="handler"><img src="../../../assets/images/slice.png" alt="" />移除</span>
               </div>
             </div>
           </div>
@@ -404,15 +378,15 @@
               <div class="card-person">
                 <span class="name">张三</span>
                 <span class="manger">总监</span>
-                <span class="flag"><img src="../../../assets/flag.png" />买方FA </span>
+                <span class="flag"><img src="../../../assets/images/flag.png" />买方FA </span>
               </div>
-              <div class="head-img"><img src="../../../assets/header.png" alt="" /></div>
+              <div class="head-img"><img src="../../../assets/images/header.png" alt="" /></div>
               <div class="card-txt">杭州投着乐网络科技有限公司</div>
               <div class="card-doc doc1">投资领域：<span>智能服务、电商</span></div>
               <div class="card-doc doc2">投资轮次：<span>种子轮、天使轮、A轮、B轮</span></div>
               <div class="line">&nbsp;</div>
               <div class="card-bottom">我跟进的用户：<span>感兴趣</span>
-                <span class="handler"><img src="../../../assets/slice.png" alt="" />移除</span>
+                <span class="handler"><img src="../../../assets/images/slice.png" alt="" />移除</span>
               </div>
             </div>
           </div>
@@ -445,50 +419,110 @@
   export default {
     data(){
       return {
-        show:"detail",
+        show: "detail",
         dialogVisible: false,
-        form:{
-          name:'',
-          region:''
+        form: {
+          name: '',
+          region: ''
         },
-        loading:false,
-        project:{
-          pro_id:"",//项目id
-          pro_name:"微天使",//项目名称
-          pro_company_name:"杭州投着乐网络科技有限公司",//公司名称
-          pro_company_scale:"10-20人",//公司规模
-          pro_source:"微天使项目",//项目来源
-          pro_intro:"一款最酷的篮球社交软件",//项目简介
-          pro_total_score:"98.00",//信息完整度
-          pro_finance_value:"100-300万",//项目估值
-          pro_schedule:"90%",//项目进度
-          pro_area:"杭州",//区域
-          pro_stage:"天使轮",//轮次
-          pro_scale:"规模",//规模
-          pro_industry:["社交网络","大数据"],//领域标签
-          is_exclusive:0,//0其他 1独家 2非独家
+        loading: false,
+        project: {
+          project_id: "59W2a0GE",//项目id
+          pro_name: "HoopEASY商业计划PPT+for+pitch",//项目名称
+          pro_company_name: "HoopEASY",//公司名称
+          pro_company_scale: {
+            comp_scale_id: 1,
+            comp_scale_value: "1-20"
+          },//公司规模
+          pro_source: "微天使项目",//项目来源
+          pro_intro: "一款最酷的篮球社交软件",//项目简介
+          pro_total_score: "98.00",//信息完整度
+          pro_finance_value: "10.00",//项目估值
+          is_exclusive: 0,//0其他 1独家 2非独家
           open_status: 1,//0私密  1公开
-
-          pro_history_finance:[{//历史融资信息
-            project_id: 37,
-            pro_finance_stage: 1,//轮次
-            pro_finance_scale: "100.00",//金额
-            pro_finance_investor: "周杰伦",//投资人
-            created_time: null,
-            updated_time: null
-          }],
-
           pro_goodness: "专注于篮球项目的移动端社交平台。在基于用户所处的地理位置基础上，将用户个人，球队，比赛，场馆等资源有机整合，形成一个以用户为核心的垂直网络社区，带给篮球爱好者全新的社交方式和运动体验。",//项目介绍
-          pro_website: "www",//官方网址
-          pro_status: "",//运营状态
-
-          //项目联系人
+          pro_website: "www.baidu.com",//官方网址
           contact: {
             user_name: "赵工佐",
             user_mobile: "18551711000"
-          },
+          },//项目联系人
 
-          //核心团队人员
+          pro_schedule: {
+            "schedule_id": 3,
+            "schedule_name": "考察",
+            "created_at": null,
+            "updated_at": "2017-06-06 11:00:21",
+            "user_id": 0
+          },//项目进度
+
+          pro_status: {
+            "status_id": 3,
+            "status_name": "上线",
+            "created_at": null,
+            "updated_at": null
+          },//运营状态
+
+          pro_area: {
+            "area_id": 2,
+            "area_title": "北京市",
+            "pid": 1,
+            "created_at": null,
+            "updated_at": null,
+            "pivot": {
+              "item_id": 37,
+              "area_id": 2,
+              "created_at": "2017-06-01 16:27:35",
+              "updated_at": "2017-06-01 16:27:35",
+              "priority": 1
+            }
+          },//区域
+          pro_stage: {
+            "stage_id": 2,
+            "stage_name": "天使轮",
+            "sort": 2,
+            "created_at": null,
+            "updated_at": null,
+            "pivot": {
+              "item_id": 37,
+              "stage_id": 2,
+              "created_at": "2017-06-01 16:23:04",
+              "updated_at": "2017-06-13 18:33:31",
+              "priority": 1
+            }
+          },//轮次
+
+          pro_scale: {
+            "scale_id": 1,
+            "scale_money": "100W以下",
+            "created_at": null,
+            "updated_at": null,
+            "pivot": {
+              "item_id": 37,
+              "scale_id": 1,
+              "created_at": null,
+              "updated_at": null,
+              "priority": 1
+            }
+          },//规模
+
+          pro_industry: [
+            {
+              "industry_id": 12,
+              "industry_name": "社交网络",
+              "parent_id": 0,
+              "created_at": null,
+              "updated_at": null,
+              "pivot": {
+                "item_id": 37,
+                "industry_id": 12,
+                "created_at": "2017-06-01 16:21:46",
+                "updated_at": "2017-06-01 16:21:46",
+                "priority": 1
+              }
+            }
+          ],//领域标签
+
+        /*核心团队人员*/
           core_users: [
             {
               project_ct_id: 30,
@@ -501,9 +535,36 @@
               created_at: null,
               updated_at: null,
               stock_scale: null
-            }
+            },{
+              "project_ct_id": 31,
+              "ct_index": "952e903cabf7b4a5e82d106c33c646ec",
+              "project_id": 37,
+              "project_index": "275fa4f135eecf08e5660d23e294e6cd",
+              "ct_member_name": "王勇越",
+              "ct_member_career": "首席技术官",
+              "ct_member_intro": "前高中和大学校队主力球员，城市街头篮球战队知名成员，热爱篮球运动Brian高中时期开始研究电脑网络技术并打下扎实技术功底。大学时期开始创业，主要从事网络安全服务业务，在2001年带领团队远赴韩国，菲律宾等海外国家开发市场，早年的团队成员已成为360网络公司的项目负责人。其至今已积累了10年前台与后台的开发经验，5年项目管理经验，以及多次创业实战经验。通过招募经验丰富，能力出众的技术开发人员，Brian为产品量身打造了一支出色的技术开发团队。\n",
+              "created_at": null,
+              "updated_at": null,
+              "stock_scale": null
+            },
           ],
-          //自定义标签
+        /*//历史融资信息*/
+        pro_history_finance: [{
+          project_id: 37,
+          pro_finance_stage: 1,//轮次
+          pro_finance_scale: "100.00",//金额
+          pro_finance_investor: "周杰伦",//投资人
+          created_time: null,
+          updated_time: null
+        },{
+          project_id: 37,
+          pro_finance_stage: 2,
+          pro_finance_scale: "200.00",
+          pro_finance_investor: "小哥",
+          created_time: null,
+          updated_time: null
+        }],
+        /*自定义标签*/
           tag: [
             {
               tag_id: 1,
@@ -524,20 +585,52 @@
               type: 1//团队标签
             }
           ],
-          //里程碑
+        /*文件列表*/
+          pro_file: [
+            {
+              file_id: 1,
+              project_id: 37,
+              file_title: "项目文件1",
+              file_ext: "doc",
+              file_url: "/data/url",
+              created_at: null,
+              updated_at: null,
+              deleted_at: null
+            },
+            {
+              file_id: 2,
+              project_id: 37,
+              file_title: "项目文件2",
+              file_ext: "git",
+              file_url: "/data/url",
+              created_at: null,
+              updated_at: null,
+              deleted_at: null
+            }],
+        /*里程碑*/
           pro_develop: [
             {
-            project_dh_id: 6,
-            dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
-            project_id: 37,
-            project_index: "275fa4f135eecf08e5660d23e294e6cd",
-            dh_start_time: "1436112000",//时间
-            dh_end_time: "1443542400",
-            dh_event: "组建团队和设立办公室",//事件
-            created_at: null,
-            updated_at: null
-          }],
-          //FA签约
+              project_dh_id: 6,
+              dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
+              project_id: 37,
+              project_index: "275fa4f135eecf08e5660d23e294e6cd",
+              dh_start_time: "1436112000",//时间
+              dh_end_time: "1443542400",
+              dh_event: "组建团队和设立办公室",//事件
+              created_at: null,
+              updated_at: null
+            },{
+              "project_dh_id": 7,
+              "dh_index": "ffdb1a610a224ba9336d71adb1fb692e",
+              "project_id": 37,
+              "project_index": "275fa4f135eecf08e5660d23e294e6cd",
+              "dh_start_time": "1433520000",
+              "dh_end_time": "1435593600",
+              "dh_event": "公司于2015年6月底在美国洛杉矶创立",
+              "created_at": null,
+              "updated_at": null
+            }],
+          /*FA签约*/
           pro_FA: {
             project_id: 37,
             commission: "63.00",//签约佣金
@@ -547,7 +640,7 @@
             created_at: null,
             updeted_at: null
           },
-          //BP文件
+         /*BP文件*/
           pro_BP: {
             bp_id: 34,
             project_id: 37,
@@ -559,6 +652,9 @@
             updated_at: "2017-06-01 18:14:38",
             deleted_at: null
           }
+
+        },
+      }
     },
     computed:{
 
@@ -677,11 +773,23 @@
         this.dialogVisible=msg;
       },
       getOneProject () {
-        this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:"ZaWJ8rYE"})
+        this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:this.project.pro_id})
           .then(res=>{
             this.loading=false
-            let data = res.data.data
-            console.log(data)
+            let data = res.data.data;
+
+            for(let i=0; i<data.core_users.length; i++){
+                if(data.core_users[i].stock_scale==null){
+                  data.core_users[i].stock_scale="－"
+                }
+            }
+            if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
+            if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
+            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-"}
+            if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
+            console.log(this.$tool.getToObject(data))
+            this.project=data;
+
           })
           .catch(err=>{
             this.loading=false
@@ -692,16 +800,17 @@
         this.$router.push({ name: 'editproject',query: { pro_id:this.project.pro_id}},)
       },
       getproId(){
-        this.$route.query.pro_id=this.project.pro_id
+        this.project.pro_id=this.$route.query.pro_id
         console.log(this.$route.query.pro_id)
       }
     },
     created () {
       // 组件创建完后获取数据，
 //      this.loading=true
-      this.getOneProject();
       this.getproId();
+      this.getOneProject();
     }
+
   }
 </script>
 

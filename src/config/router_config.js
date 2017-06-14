@@ -57,10 +57,10 @@ export default [
     ]
   },
   {
-    path: '/index', name: 'index', component: index, name:"index"
+    path: '/index', name: 'index', component: index
   },
   {
-    path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine, name:"SmallRoutine"
+    path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine
   },
   {
     path: '/test', name: 'test', component: projectDetails

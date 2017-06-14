@@ -16,29 +16,27 @@ import $ from 'jquery'
 import tool from './global/tool.js';
 
 import axios from './config/api.js'
-Vue.prototype.$http = axios
+Vue.prototype.$http = axios;
 
 import URL_ from './global/url.js'//URL请求地址汇总
-Vue.prototype.URL = URL_
+Vue.prototype.URL = URL_;
 
-/*import LOADING_ from './assets/js/loading.js'//加载
-Vue.prototype.LOAD = LOADING_*/
 
-Vue.use(Element)//UI库
+Vue.use(Element);//UI库
 Vue.use(tool);//自己的库
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 //设置路由
 Vue.use(VueRouter);
 //定义路由
 const router = new VueRouter({
   routes: router_config
-})
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
   components: { App }
-})
+});
