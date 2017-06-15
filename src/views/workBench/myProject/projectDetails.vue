@@ -787,7 +787,7 @@
             if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
             if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-"}
             if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-            console.log(this.$tool.getToObject(data))
+//            console.log(this.$tool.getToObject(data))
             this.project=data;
 
           })
