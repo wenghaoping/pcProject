@@ -18,14 +18,16 @@
               <!--<span class="f-name">微天使商业计划书</span>
               <span class="del-btn"><i class="el-icon-delete"></i></span>-->
               <span style="margin-left: 20px;" class="fl">
+                                           <!--accept=".doc, .ppt, .pdf, .zip, .rar, .png"-->
                 <el-upload class="planUpload"
-                           action="/api/upload"
+                           action="/project/projectUpload"
+                           :on-preview="planPreview"
                            :on-change="planChange"
                            :on-success="planuploadsuccess"
                            :on-error="planuploaderror"
                            :on-remove="planRemove"
                            :file-list="planList"
-                           >
+                           :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton"><i class="el-icon-plus"></i>计划书上传</el-button>
                 </el-upload>
               </span>
@@ -37,14 +39,13 @@
                   <el-upload
                     class="upload"
                     ref="upload"
-                    action="/api/upload"
-                    :on-preview="handlePreview"
+                    action="/project/uploadFile"
                     :on-change="handleChange"
                     :on-success="uploadsuccess"
-                    :on-remove="handleRemove"
+                    :on-error="uploaderror"
+                    :before-upload="beforeUpload"
                     :file-list="fileList"
-                    :auto-upload="false"
-                    :data="uploadDate"
+                    :data="fileuploadDate"
                     multiple>
                     <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
                   </el-upload>
@@ -62,10 +63,10 @@
             <el-collapse-transition>
               <div v-show="fileShow">
                 <div class="block-info block-cc-other" style="margin-bottom: 15px;"
-                     v-for="(list, index) in uploadShow.lists"
+                     v-for="(list, index) in uploadShow2.lists"
                      :key="list.index">
-                  <span class="f-title">{{list.type}} : </span>
-                  <span class="f-name">{{list.name}}</span>
+                  <span class="f-title">{{list.bp_type}} : </span>
+                  <span class="f-name" @click.prevent="download(list)" style="cursor: pointer">{{list.file_title}}</span>
                   <span class="del-btn" @click.prevent="removeList(list)"><i class="el-icon-delete"></i></span>
                   <span class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
                 </div>
@@ -90,7 +91,7 @@
                       <el-form-item
                         label="项目名称"
                         prop="name">
-                        <el-input v-model="project.name" placeholder="请输入"></el-input>
+                        <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -98,11 +99,11 @@
                       <el-form-item
                         label="公司名称"
                         prop="company">
-                        <el-autocomplete v-model="project.company"
+                        <el-autocomplete v-model="project.pro_company_name"
                                          :fetch-suggestions="querySearchAsync"
                                          placeholder="请输入内容"
-                                         @select="handleSelect" class="width360">
-
+                                         @select="handleSelect"
+                                         class="width360">
                         </el-autocomplete>
                       </el-form-item>
                     </el-col>
@@ -120,31 +121,33 @@
                     <el-col :span="12">
                       <el-form-item
                         label="项目介绍"
-                        prop="introduce"
+                        prop="pro_intro"
                         :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
-                        <el-input v-model="project.introduce" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
+                        <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item
                         label="所属省级"
-                        prop="area1"
-                        :rules="[{required: true, message: '所属地区不能为空', trigger: 'change',type: 'number'}]">
-                        <el-select v-model="project.area1" placeholder="请选择">
+                        prop="pro_area.area_id"
+
+                        :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
+                        <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change">
                           <el-option
                             v-for="item in area"
                             :key="item.value"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.value"
+                            >
                           </el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="所属市级"
-                        prop="area2"
-                        :rules="[{required: true, message: '所属地区不能为空', trigger: 'change',type: 'number'}]">
-                        <el-select v-model="project.area2" placeholder="请选择">
+                        prop="pro_area.area_id"
+                        :rules="[{required: true, message: '所属市级不能为空', trigger: 'change',type: 'number'}]">
+                        <el-select v-model="project.pro_area.area_id" placeholder="请选择">
                          <el-option
                            v-for="item in area2"
                            :key="item.value"
@@ -159,11 +162,11 @@
                     <el-col :span="12">
                       <el-form-item
                         label="项目轮次"
-                        prop="frequency"
-                        :rules="[{required: true, message: '项目轮次不能为空', trigger: 'change'}]">
-                        <el-select v-model="project.frequency" placeholder="请选择" class="width360">
+                        prop="pro_stage.stage_id"
+                        :rules="[{type:'number',required: true, message: '项目轮次不能为空', trigger: 'change'}]">
+                        <el-select v-model="project.pro_stage.stage_name" placeholder="请选择" class="width360">
                           <el-option
-                            v-for="item in projectFrequency"
+                            v-for="item in stage"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -174,17 +177,15 @@
                     <el-col :span="12">
                       <el-form-item
                         label="项目领域"
-                        prop="field"
+                        prop="pro_industry"
                         :rules="[{type: 'array',required: true, message: '项目领域不能为空', trigger: 'change'}]">
                         <el-select
-                          v-model="project.field"
+                          v-model="project.pro_industry"
                           multiple
-                          filterable
-                          allow-create
                           :multiple-limit="multiplelimit"
                           placeholder="请添加(最多5个)" class="width360" >
                           <el-option
-                            v-for="item in projectfield"
+                            v-for="item in industry"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -197,9 +198,9 @@
                     <el-col :span="24">
                       <el-form-item
                         label="运营状态"
-                        prop="companystate">
-                        <el-radio-group v-model="project.companystate" @change="radiochange">
-                          <el-radio v-for="companystate in companystates" class="radio"
+                        prop="pro_status">
+                        <el-radio-group v-model="project.pro_status" @change="radiochange">
+                          <el-radio v-for="companystate in company_status" class="radio"
                                     :label="companystate.label"
                                     :key="companystate.value"
                                     >{{companystate.value}}</el-radio>
@@ -211,8 +212,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="公司规模"
-                        prop="companySize">
-                        <el-select v-model="project.companySize" placeholder="请选择" class="width360">
+                        prop="pro_scale.scale_money">
+                        <el-select v-model="project.pro_scale.scale_money" placeholder="请选择" class="width360">
                           <el-option
                             v-for="item in companySize"
                             :key="item.value"
@@ -225,8 +226,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="产品链接"
-                        prop="url">
-                        <el-input v-model="project.url" placeholder="请输入项目主页地址"></el-input>
+                        prop="pro_website">
+                        <el-input v-model="project.pro_website" placeholder="请输入项目主页地址"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -234,18 +235,18 @@
                     <el-col :span="6">
                       <el-form-item
                         label="项目联系人"
-                        prop="name">
-                        <el-input v-model="project.contacts" placeholder="请输入"></el-input>
+                        prop="contact.user_name">
+                        <el-input v-model="project.contact.user_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="手机号">
-                        <el-input v-model="project.phone" placeholder="请输入"></el-input>
+                        <el-input v-model="project.contact.user_mobile" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item label="项目来源">
-                        <el-input v-model="project.source" placeholder="请输入项目来源，如：来源机构、来源人"></el-input>
+                        <el-input v-model="project.pro_source" placeholder="请输入项目来源，如：来源机构、来源人"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -253,20 +254,20 @@
                     <el-col :span="12">
                       <el-form-item
                         label="私密设置"
-                        prop="private">
-                        <el-select v-model="project.private" placeholder="请选择" class="width360">
-                          <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="私密项目（仅自己／团队成员可查看编辑）"></el-option>
-                          <el-option label="公开" value="公开"></el-option>
+                        prop="open_status">
+                        <el-select v-model="project.open_status" placeholder="请选择" class="width360">
+                          <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="0"></el-option>
+                          <el-option label="公开" value="1"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="项目标签"
-                        prop="tag">
-                        <el-select v-model="project.tag" multiple placeholder="请选择" class="width360">
+                        prop="tags_pro">
+                        <el-select v-model="project.tags_pro" multiple placeholder="请选择" class="width360" filterable allow-create default-first-option>
                           <el-option
-                            v-for="item in projectTag"
+                            v-for="item in tags_pro"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -279,16 +280,16 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item label="项目亮点"
-                                    prop="highlights"
+                                    prop="pro_goodness"
                                     :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'}]">
                         <el-input type="textarea"
-                                  v-model="project.highlights"
+                                  v-model="project.pro_goodness"
                                   :autosize="{ minRows: 4, maxRows: 7}"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                 </el-form>
-<!--                <el-button type="primary" @click="submitForm('project')">提交</el-button>-->
+                <el-button type="primary" @click="submitForm('project')">提交</el-button>
               </div>
             </el-collapse-transition>
           </div>
@@ -308,15 +309,15 @@
                     <el-col :span="12">
                       <el-form-item
                         label="团队标签"
-                        prop="teamTag">
+                        prop="tags_team">
                         <el-select
-                          v-model="team.teamTag"
+                          v-model="team.tags_team"
                           multiple
                           filterable
                           allow-create
-                          placeholder="请添加（最多5个)" class="width360">
+                          placeholder="请添加（最多5个)" class="width360" default-first-option>
                           <el-option
-                            v-for="item in teamTag"
+                            v-for="item in tags_team"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -329,42 +330,42 @@
                     <el-col :span="4">
                       <el-form-item
                         label="成员姓名"
-                        :prop="'members.' + index + '.name'"
-                        v-for="(member, index) in team.members"
+                        :prop="'core_users.' + index + '.ct_member_name'"
+                        v-for="(member, index) in team.core_users"
                         :key="member.index"
                         :rules="[{required: true, message: '成员姓名不能为空', trigger: 'blur'}]">
-                        <el-input v-model="member.name" placeholder="请输入"></el-input>
+                        <el-input v-model="member.ct_member_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="4">
                       <el-form-item
                         label="成员职位"
-                        :prop="'members.' + index + '.position'"
-                        v-for="(member, index) in team.members"
+                        :prop="'core_users.' + index + '.ct_member_career'"
+                        v-for="(member, index) in team.core_users"
                         :key="member.index">
-                        <el-input v-model="member.position" placeholder="请输入"></el-input>
+                        <el-input v-model="member.ct_member_career" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="4">
                       <el-form-item
                         label="股权比例"
-                        :prop="'members.' + index + '.shares'"
-                        v-for="(member, index) in team.members"
+                        :prop="'core_users.' + index + '.stock_scale'"
+                        v-for="(member, index) in team.core_users"
                         :key="member.index">
-                        <el-input v-model.number="member.shares" placeholder="请输入"></el-input>
+                        <el-input v-model.number="member.stock_scale" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="11">
                       <el-form-item
                         label="成员介绍"
-                        :prop="'members.' + index + '.introduce'"
-                        v-for="(member, index) in team.members"
+                        :prop="'core_users.' + index + '.ct_member_intro'"
+                        v-for="(member, index) in team.core_users"
                         :key="member.index">
-                        <el-input v-model.number="member.introduce" placeholder="请输入"></el-input>
+                        <el-input v-model.number="member.ct_member_intro" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1" >
-                      <el-form-item label="　　"　v-for="(member, index) in team.members" :key="member.index">
+                      <el-form-item label="　　"v-for="(member, index) in team.core_users" :key="member.index">
                         <span class="imgdele" @click.prevent="removeMember(member)"><img src="../../../assets/images/delete.png"></span>
                       </el-form-item>
                     </el-col>
@@ -392,11 +393,11 @@
                     <el-col :span="12">
                       <el-form-item
                         label="期望融资"
-                        prop="except"
-                        :rules="[{required: true, message: '期望融资不能为空', trigger: 'change'}]">
-                        <el-select v-model="financing.except" placeholder="请选择" class="width360">
+                        prop="pro_finance_scale"
+                        :rules="[{type: 'number',required: true, message: '期望融资不能为空', trigger: 'change'}]">
+                        <el-select v-model="financing.pro_finance_scale" placeholder="请选择" class="width360">
                           <el-option
-                            v-for="item in exceptedFinancing"
+                            v-for="item in scale"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -407,8 +408,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="资金用途"
-                        prop="purpose">
-                        <el-input v-model="financing.purpose" placeholder="请输入"></el-input>
+                        prop="pro_finance_use">
+                        <el-input v-model="financing.pro_finance_use" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -416,17 +417,15 @@
                     <el-col :span="12">
                       <el-form-item
                         label="投后股份( % )"
-                        prop="shares"
-                        :rules="[{ type: 'number', message: '比例必须为数字值'}]">
-                        <el-input v-model.number="financing.shares" placeholder="请输入具体数值，如：10"></el-input>
+                        prop="pro_finance_stock_after">
+                        <el-input v-model="financing.pro_finance_stock_after" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="项目估值( 万 )"
-                        prop="valuation"
-                        :rules="[{ type: 'number', message: '估值必须为数字值'}]">
-                        <el-input v-model.number="financing.valuation" placeholder="请输入具体数值，如：1000"></el-input>
+                        prop="pro_finance_value">
+                        <el-input v-model="financing.pro_finance_value" placeholder="请输入具体数值，如：1000"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -434,12 +433,12 @@
                     <el-col :span="4">
                       <el-form-item
                         label="历史融资时间"
-                        :prop="'historys.' + index + '.time'"
-                        v-for="(history, index) in financing.historys"
+                        :prop="'pro_history_finance.' + index + '.created_at'"
+                        v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
                         :rules="[{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }]">
                         <el-date-picker
-                          v-model="history.time"
+                          v-model="history.created_at"
                           type="date"
                           placeholder="选择日期" style="width: 125px;">
                         </el-date-picker>
@@ -448,13 +447,13 @@
                     <el-col :span="4">
                       <el-form-item
                         label="历史融资轮次"
-                        :prop="'historys.' + index + '.round'"
-                        v-for="(history, index) in financing.historys"
+                        :prop="'pro_history_finance.' + index + '.pro_finance_stage'"
+                        v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
-                        :rules="[{required: true, message: '融资轮次不能为空', trigger: 'change'}]">
-                        <el-select v-model="history.round" placeholder="请选择">
+                        :rules="[{type:'number',required: true, message: '融资轮次不能为空', trigger: 'change'}]">
+                        <el-select v-model="history.pro_finance_stage" placeholder="请选择">
                           <el-option
-                            v-for="item in projectFrequency"
+                            v-for="item in stage"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -465,25 +464,24 @@
                     <el-col :span="4">
                       <el-form-item
                         label="融资金额(万)"
-                        :prop="'historys.' + index + '.money'"
-                        v-for="(history, index) in financing.historys"
-                        :key="history.index"
-                        :rules="[{ type: 'number', message: '金额必须为数字值'}]">
-                        <el-input v-model.number="history.money" placeholder="输入金额"></el-input>
+                        :prop="'pro_history_finance.' + index + '.pro_finance_scale'"
+                        v-for="(history, index) in financing.pro_history_finance"
+                        :key="history.index">
+                        <el-input v-model="history.pro_finance_scale" placeholder="输入金额"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="11">
                       <el-form-item
                         label="历史投资方"
-                        :prop="'historys.' + index + '.investors'"
-                        v-for="(history, index) in financing.historys"
+                        :prop="'pro_history_finance.' + index + '.pro_finance_investor'"
+                        v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
                         :rules="[{required: true, message: '投资方不能为空', trigger: 'blur'}]">
-                        <el-input v-model="history.investors" placeholder="请添加"></el-input>
+                        <el-input v-model="history.pro_finance_investor" placeholder="请添加"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1" >
-                      <el-form-item label="　　" v-for="(history, index) in financing.historys" :key="history.index">
+                      <el-form-item label="　　" v-for="(history, index) in financing.pro_history_finance" :key="history.index">
                         <span class="imgdele" @click.prevent="removeHistory(history)"><img src="../../../assets/images/delete.png"></span>
                       </el-form-item>
                     </el-col>
@@ -491,7 +489,7 @@
                 </el-form>
                 <br>
                 <el-button type="text" @click="addHistory" class="addMember"><i class="el-icon-plus"></i> 添加历史融资</el-button>
-<!--                <el-button type="primary" @click="submitForm('financing')">提交</el-button>-->
+                <el-button type="primary" @click="submitForm('financing')">提交</el-button>
               </div>
             </el-collapse-transition>
           </div>
@@ -511,12 +509,12 @@
                     <el-col :span="12">
                       <el-form-item
                         label="历史融资时间"
-                        :prop="'milePostSomeThings.' + index + '.time'"
-                        v-for="(milePostSomeThing, index) in milepost.milePostSomeThings"
+                        :prop="'pro_develop.' + index + '.dh_start_time'"
+                        v-for="(milePostSomeThing, index) in milepost.pro_develop"
                         :key="milePostSomeThing.index"
                         :rules="[{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }]">
                         <el-date-picker
-                          v-model="milePostSomeThing.time"
+                          v-model="milePostSomeThing.dh_start_time"
                           type="date"
                           style="width: 360px;"
                           placeholder="选择日期" class="width360">
@@ -526,15 +524,15 @@
                     <el-col :span="11">
                       <el-form-item
                         label="事件"
-                        :prop="'milePostSomeThings.' + index + '.something'"
-                        v-for="(milePostSomeThing, index) in milepost.milePostSomeThings"
+                        :prop="'pro_develop.' + index + '.dh_event'"
+                        v-for="(milePostSomeThing, index) in milepost.pro_develop"
                         :key="milePostSomeThing.index"
                         :rules="[{required: true, message: '请输入事件', trigger: 'blur'}]">
-                        <el-input v-model="milePostSomeThing.something" placeholder="请添加"></el-input>
+                        <el-input v-model="milePostSomeThing.dh_event" placeholder="请添加"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1" >
-                      <el-form-item label="　　" v-for="(milePostSomeThing, index) in milepost.milePostSomeThings" :key="milePostSomeThing.index">
+                      <el-form-item label="　　" v-for="(milePostSomeThing, index) in milepost.pro_develop" :key="milePostSomeThing.index">
                         <span class="imgdele" @click.prevent="removemilePost(milePostSomeThing)"><img src="../../../assets/images/delete.png"></span>
                       </el-form-item>
                     </el-col>
@@ -557,15 +555,15 @@
             </div>
             <el-collapse-transition>
               <div v-show="SignShow">
-                <el-form :model="sign" ref="sign" label-width="100px" class="padding" label-position="top">
+                <el-form :model="pro_FA" ref="pro_FA" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item
                         label="运营状态"
-                        prop="exclusive">
-                        <el-radio class="radio" v-model="sign.exclusive" label="1">非独家FA签约</el-radio>
-                        <el-radio class="radio" v-model="sign.exclusive" label="2">独家FA签约</el-radio>
-                        <el-radio class="radio" v-model="sign.exclusive" label="3">其他</el-radio>
+                        prop="is_exclusive">
+                        <el-radio class="radio" v-model="is_exclusive" :label=2>非独家FA签约</el-radio>
+                        <el-radio class="radio" v-model="is_exclusive" :label=1>独家FA签约</el-radio>
+                        <el-radio class="radio" v-model="is_exclusive" :label=0>其他</el-radio>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -574,16 +572,16 @@
                       <el-form-item
                         label="签约佣金（%）"
                         prop="commission"
-                        :rules="[{ type: 'number', message: '比例必须为数字值'}]">
-                        <el-input v-model.number="sign.commission" placeholder="请输入具体数值，如：10"></el-input>
+                        :rules="[{message: '比例必须为数字值'}]">
+                        <el-input v-model="pro_FA.commission" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="股权赠与（%）"
-                        prop="shares"
-                        :rules="[{ type: 'number', message: '估值必须为数字值'}]">
-                        <el-input v-model.number="sign.shares" placeholder="请输入具体数值，如：10"></el-input>
+                        prop="stock_right"
+                        :rules="[{message: '估值必须为数字值'}]">
+                        <el-input v-model="pro_FA.stock_right" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -591,17 +589,17 @@
                     <el-col :span="12">
                       <el-form-item
                         label="其他权益（%）"
-                        prop="other"
-                        :rules="[{ type: 'number', message: '比例必须为数字值'}]">
-                        <el-input v-model.number="sign.other" placeholder="请输入具体数值，如：10"></el-input>
+                        prop="stock_other"
+                        :rules="[{message: '比例必须为数字值'}]">
+                        <el-input v-model="pro_FA.stock_other" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="跟投权（%）"
-                        prop="follow"
-                        :rules="[{ type: 'number', message: '估值必须为数字值'}]">
-                        <el-input v-model.number="sign.follow" placeholder="请输入具体数值，如：10"></el-input>
+                        prop="stock_follow"
+                        :rules="[{message: '估值必须为数字值'}]">
+                        <el-input v-model="pro_FA.stock_follow" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -762,22 +760,24 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { Loading } from 'element-ui';
 export default {
   data(){
     return {
       planList:[],//商业计划书上传列表
       fileList:[],//批量上传文件列表
       planButton:true,//控制上传按钮的显示
-      uploadShow:{//上传文件展示列表,就是老夫操作的列表
+      uploadShow:{//计划书上传列表,需要存数据啦
+
+      },
+      uploadShow2:{//上传文件展示列表,就是老夫操作的列表
         lists:[]
       },
-      uploadDate:{},//上传所带的额外的参数
+      uploadDate:{user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
+      fileuploadDate:{user_id: sessionStorage.user_id,project_id:"vrnPjkW6"},//项目文件上传带的参数
       groups:{
         input:"",
         group:[{type:"其他",label:'其他',value:'其他'},{type:"尽职调查",label:'尽职调查',value:'尽职调查'}],
-        type:"其他",
-        index:""
+        type:"其他"
       },//分组用的所有参数
       name:"",
       show:"detail",
@@ -788,59 +788,127 @@ export default {
       milepostShow:true,
       SignShow:true,
       multiplelimit:5,
+
+
+
+
       project: {
-        name : '',//项目名称
-        company : '',//公司名称
-        introduce : '',//项目介绍
-        area1:'',//所属地区1省级单位
-        area2:'',//所属地区2市级单位
-        frequency:'',//项目轮次
-        field:[],//项目领域
-        companystate:"概念",//运营状态
-        companySize:[],//公司规模
-        url:'',//产品链接
-        contacts:'',//项目联系人
-        phone:'',//手机号
-        source:'',//项目来源
-        private:'',//私密设置
-        tag:'',//项目标签
-        highlights:''//项目亮点
-      },//项目介绍
+        pro_name : 'HoopEASY商业计划PPT+for+pitch',//项目名称
+        pro_company_name : 'HoopEASY',//公司名称
+        pro_intro : '一款最酷的篮球社交软件',//项目介绍
+        pro_area: {
+          area_id: 2,
+          area_title: "北京市",
+          pid: 1,
+          created_at: null,
+          updated_at: null,
+          pivot: {
+            item_id: 37,
+            area_id: 2,
+            created_at: "2017-06-01 16:27:35",
+            updated_at: "2017-06-01 16:27:35",
+            priority: 1
+          }
+        },//所属地区1省级单位
+        pro_stage: {
+          "stage_id": 2,
+          "stage_name": "天使轮",
+          "sort": 2,
+          "created_at": null,
+          "updated_at": null,
+          "pivot": {
+            "item_id": 37,
+            "stage_id": 2,
+            "created_at": "2017-06-01 16:23:04",
+            "updated_at": "2017-06-13 18:33:31",
+            "priority": 1
+          }
+        },//轮次
+        pro_industry: [],//领域标签
+        pro_status: 2,
+        pro_scale: {
+          "scale_id": 1,
+          "scale_money": "100W以下",
+          "created_at": null,
+          "updated_at": null,
+          "pivot": {
+            "item_id": 37,
+            "scale_id": 1,
+            "created_at": null,
+            "updated_at": null,
+            "priority": 1
+          }
+        },//规模
+        pro_website:'www.baidu.com',//产品链接
+        contact: {
+          user_name: "赵工佐",
+          user_mobile: "18551711000"
+        },//项目联系人
+        pro_source:'微天使项目',//项目来源
+        open_status:'1',//私密设置
+        tags_pro:[],//项目标签
+        //项目亮点
+        pro_goodness: "专注于篮球项目的移动端社交平台。在基于用户所处的地理位置基础上，将用户个人，球队，比赛，场馆等资源有机整合，形成一个以用户为核心的垂直网络社区，带给篮球爱好者全新的社交方式和运动体验。",//项目介绍
+      },
+
       team:{
-        teamTag:[],//团队标签
-        members: [{
-          name : '',//姓名
-          position : '',//职位
-          shares : '',//股权比例
-          introduce:''//成员介绍
-        }],
+        tags_team:[],//团队标签
+        core_users: [
+          {
+            project_ct_id: 30,
+            ct_index: "9bd0c8d7d615832340340aab0c0625b7",
+            project_id: 37,
+            project_index: "275fa4f135eecf08e5660d23e294e6cd",
+            ct_member_name: "赵工佐",
+            ct_member_career: "创始人兼首席执行官",
+            ct_member_intro: "前高中和大学校队主力球员，",
+            created_at: null,
+            updated_at: null,
+            stock_scale: null
+          }],
       },//核心团队
+
       financing:{
-        except:'',//期望融资
-        purpose:'',//资金用途
-        shares:'',//投后股份
-        valuation:'',//项目估值
-        historys:[{
-          time:'',//历史融资时间
-          round:'',//历史融资轮次
-          money:'',//历史融资金额
-          investors:''//历史投资方
-        }]
+        pro_finance_scale:1,//期望融资
+        pro_finance_use:'买东西',//资金用途
+        pro_finance_stock_after:'10',//投后股份
+        pro_finance_value:'10',//项目估值
+        /*//历史融资信息*/
+        pro_history_finance: [{
+          project_id: 37,
+          pro_finance_stage: 10,//轮次
+          pro_finance_scale: "100.00",//金额
+          pro_finance_investor: "周杰伦",//投资人
+          created_at: "2017-06-20 17:39:25",
+          updated_time: null
+        }],
       },//融资信息
       milepost:{
-        milePostSomeThings:[{
-          time:'',//里程碑时间
-          something:''//事件
-        }]
+        pro_develop: [
+          {
+            project_dh_id: 6,
+            dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
+            project_id: 37,
+            project_index: "275fa4f135eecf08e5660d23e294e6cd",
+            dh_start_time: "2017-06-20 17:39:25",//时间
+            dh_end_time: "1443542400",
+            dh_event: "组建团队和设立办公室",//事件
+            created_at: null,
+            updated_at: null
+          }]
       },//里程碑
-      sign:{
-        exclusive:'1',//是否独家
-        commission:'',//佣金%
-        shares:'',//股权赠与%
-        other:'',//其他权益%
-        follow:''//跟投权%
+
+      pro_FA:{
+        project_id: 37,
+        commission: "",//签约佣金
+        stock_right: "",//股权赠与
+        stock_follow: "",//跟投权
+        stock_other: "",//其他权益
+        created_at: null,
+        updeted_at: null,
 
       },//FA签约协议
+      is_exclusive: 1,//0其他 1独家 2非独家
       companyList: [],//公司搜索的数据
       list: [],
       /*公司远程搜索*/
@@ -850,44 +918,11 @@ export default {
       /*所属地区2市级选项*/
       area2: [],
       /*项目轮次选项*/
-      projectFrequency: [{
-        value: 'A轮',
-        label: 'A轮'
-      }, {
-        value: 'B轮',
-        label: 'B轮'
-      },{
-        value: '天使轮',
-        label: '天使轮'
-      }],
+      stage: [],
       /*项目领域默认选项*/
-      projectfield: [{
-        value: '人工智能',
-        label: '人工智能'
-      }, {
-        value: '教育培训',
-        label: '教育培训'
-      }, {
-        value: 'IT',
-        label: 'IT'
-      }],
+      industry: [],
       /*运营状态默认值*/
-      companystates:[{
-        label:'概念',
-        value:'概念',
-      },{
-        label:'研发',
-        value:'研发',
-      },{
-        label:'上线',
-        value:'上线',
-      },{
-        label:'盈利',
-        value:'盈利',
-      },{
-        label:'自定义添加',
-        value:'自定义添加',
-      }],
+      company_status:[],
       /*公司规模*/
       companySize:[{
         value: '1-20人',
@@ -900,16 +935,7 @@ export default {
         label: '50-100人'
       }],
       /*项目标签*/
-      projectTag:[{
-        label:'阿里系',
-        value:'阿里系',
-      },{
-        label:'百度系',
-        value:'百度系',
-      },{
-        label:'淘宝系',
-        value:'淘宝系',
-      },],
+      tags_pro:[],
       formLabelWidth: '120px',
       dialogFormVisible: false,
       dialogFileVisible:false,
@@ -919,12 +945,9 @@ export default {
       },
 
       /*==================团队标签=====================*/
-      teamTag:[],
+      tags_team:[],
       /*==================融资范围=====================*/
-      exceptedFinancing:[
-        {label:'10万-100万',value:'10万-100万'},
-        {label:'100万-1000万',value:'100万-1000万'}
-      ],
+      scale:[],
       node0:true,
       node1:false,
       node2:false,
@@ -954,17 +977,17 @@ export default {
     /*项目完整度判断*/
     proportion(){
         let number=0;//所有的空值数
-        let fileValue=this.planList
-        let projectValue=this.project
-        let teamValue=this.team
-        let financingValue=this.financing
-        let milepostValue=this.milepost
-        let signValue=this.sign
+        let fileValue=this.planList;
+        let projectValue=this.project;
+        let teamValue=this.team;
+        let financingValue=this.financing;
+        let milepostValue=this.milepost;
+        let signValue=this.pro_FA;
         let sum=Object.keys(projectValue).length+//所有数据的总长度
           Object.keys(teamValue).length+
           Object.keys(financingValue).length+
           Object.keys(milepostValue).length+
-          Object.keys(signValue).length+6
+          Object.keys(signValue).length+6;
       //判断所有为空的数值,包括数组内的第一组
         function forFor(value){
           let inner=0;//每一次调用的空值
@@ -976,11 +999,11 @@ export default {
                 if(value[key].length==0){
                   number++;
                   inner++
-                }else{
-                  for(let key2 in  value[key][0]){
+                }else {
+                  for(let key2 in value[key][0]){
                     if(value[key][0][key2]==""){
                       number++;
-                      inner++
+                      inner++;
                     }
                   }
                 }
@@ -994,8 +1017,19 @@ export default {
         }
       //是否为数组
       function isArray(o){
-          return Object.prototype.toString.call(o)=='[object Array]';
+        return Object.prototype.toString.call(o)=='[object Array]';
+      }
+      //判断是否为空对象
+      function isOwnEmpty(obj) {
+        for(let key in obj)
+        {
+          if(obj.hasOwnProperty(key))
+          {
+            return false;//返回false，不为空对象
+          }
         }
+        return true;//返回true，为空对象
+      };
 
       if(forFor(fileValue)==0)this.filePerfect=true;
       else this.filePerfect=false;
@@ -1015,6 +1049,8 @@ export default {
       if(forFor(signValue)==0)this.signPerfect=true;
         else this.signPerfect=false;
 
+
+
 /*      console.log(parseInt(((sum-number)/sum)*100))
       console.log(parseInt(number/sum))*/
 
@@ -1028,6 +1064,7 @@ export default {
     this.restaurants = this.loadAll();
   },
   methods:{
+    /*获取列表各种数据*/
     getCity(data){
       let arr = [];
       for(let i=0; i<data.length; i++){
@@ -1037,77 +1074,314 @@ export default {
         arr.push(obj)
       }
       return arr
-    },//获取地区(二级城市)
+    },//获取城市列表
+    getScale(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].scale_money;
+        obj.value=data[i].scale_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取期望融资
+    getStage(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].stage_name;
+        obj.value=data[i].stage_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取轮次信息
+    getIndustry(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].industry_name;
+        obj.value=data[i].industry_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取项目领域
+    getCompanyStatus(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].status_id;
+        obj.value=data[i].status_name;
+        arr.push(obj)
+      }
+      arr.push({label:'自定义添加', value:'自定义添加'})
+      return arr
+    },//获取运营状态
+    getTags_pro(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].tag_name;
+        obj.value=data[i].tag_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取项目标签
     getWxProjectCategory(){
-      this.$http.post("api/category/getWxProjectCategory",{user_id: sessionStorage.user_id, project_id:"59W2a0GE"})
+      this.$http.post(this.URL.getWxProjectCategory,{user_id: sessionStorage.user_id, project_id:"59W2a0GE"})
         .then(res=>{
           let data = res.data.data;
-
-          this.area=this.$tool.getSelectValue(data.area);//设置城市1列表
-
-          //area
-          console.log(data)
-
+//          console.log(data)
+          this.area=this.getCity(data.area);//设置城市1列表
+          this.scale=this.getScale(data.scale);//设置期望融资
+          this.stage=this.getStage(data.stage);//设置轮次信息
+          this.industry=this.getIndustry(data.industry);//设置轮次信息
+          this.company_status=this.getCompanyStatus(data.company_status);//设置运营状态
+          this.tags_pro=this.getTags_pro(data.tags_pro);//设置项目标签
+          this.tags_team=this.getTags_pro(data.tags_team);//设置团队标签
         })
         .catch(err=>{
           console.log(err)
   //            this.loading=false;
         })
     },//获取所有下拉框的数据
+    area1Change(data){
+      this.$http.post(this.URL.getArea,{user_id: sessionStorage.user_id, pid:data})
+        .then(res=>{
+          let data = res.data.data;
+          this.area2=this.getCity(data);
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    },//设置二级城市下拉列表
 
-      /*商业计划书上传*/
+
+  /*获取项目详情*/
+
+
+    getTag(data,num){
+    let tags=[];
+    for(let i=0; i<data.length; i++){
+      if(data[i].type==num) {
+        tags.push(data[i].tag_id);
+      }
+    }
+    return tags
+  },//设置团队/项目标签
+    getindustry(data){
+      let tags=[];
+      for(let i=0; i<data.length; i++){
+        tags.push(data[i].industry_id);
+      }
+      return tags
+    },//设置领域标签
+    setDateTime(data){
+      for(let i=0; i<data.length; i++){
+        data[i].created_at=new Date(data[i].created_at);
+      }
+    },//时间转化
+    setDateTime2(data){
+      for(let i=0; i<data.length; i++){
+        data[i].dh_start_time=new Date(data[i].dh_start_time);
+      }
+    },//时间转化2
+    setUploadShow2(data){
+      for(let i=0; i<data.length; i++){
+        this.addDomain("其他",data[i].file_title,data[i].file_id,data[i].project_id)
+      }
+    },//设置批量上传文件
+    getOneProject () {
+
+      this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:"59W2a0GE"})//this.project.pro_id
+        .then(res=>{
+
+          let data = res.data.data;
+          console.log(this.$tool.getToObject(data));
+          this.area1Change(data.pro_area.pid);//设置市级
+          this.setDateTime(data.pro_history_finance);//时间格式设置
+          this.setDateTime2(data.pro_develop);//时间格式设置2
+
+          this.planList=[{name:data.pro_BP.bp_title,url:data.pro_BP.bp_url}];
+          this.uploadShow={
+              bp_title:data.pro_BP.bp_title,
+            pro_desc:data.pro_BP.bp_title,
+            pro_name:data.pro_BP.bp_title,
+            project_id:"59W2a0GE",
+            bp_id:data.pro_BP.bp_id};
+
+          this.setUploadShow2(data.pro_file);
+
+
+          this.project.pro_name=data.pro_name;
+          this.project.pro_company_name=data.pro_company_name;
+          this.project.pro_intro=data.pro_intro;
+          this.project.pro_area=data.pro_area;
+          this.project.pro_stage=data.pro_stage;
+          this.project.pro_industry=this.getindustry(data.pro_industry);//领域标签
+          this.project.pro_status=data.pro_status.status_id;//运营状态
+          this.project.pro_scale=data.pro_scale;
+          this.project.pro_website=data.pro_website;
+          this.project.contact=data.contact;
+          this.project.pro_source=data.pro_source;
+          this.project.open_status=data.open_status.toString();//运营状态
+          this.project.tags_pro=this.getTag(data.tag,0);//项目标签
+          this.project.pro_goodness=data.pro_goodness;
+
+          this.team.tags_team=this.getTag(data.tag,1);//团队标签
+          this.team.core_users=data.core_users;
+
+          this.financing.pro_finance_scale=data.pro_finance_scale;
+          this.financing.pro_finance_use=data.pro_finance_use;
+          this.financing.pro_finance_stock_after=data.pro_finance_stock_after;
+          this.financing.pro_finance_value=data.pro_finance_value;
+          this.financing.pro_history_finance=data.pro_history_finance;
+
+          if(data.pro_history_finance=="") this.financing.pro_history_finance=[{pro_finance_stage: "", pro_finance_scale: "", pro_finance_investor: "", created_at: "", updated_time: null}];
+          this.milepost.pro_develop=data.pro_develop;
+
+          if(data.core_users=="") this.team.core_users=[{ct_member_name:"",ct_member_career:"",ct_member_intro:"",stock_scale:""}];
+
+          delete data.pro_FA.created_at;
+          delete data.pro_FA.updeted_at;
+          this.is_exclusive=data.is_exclusive;//FA运营状态
+          this.pro_FA=data.pro_FA;
+
+          if(this.planList.length!=0) this.planButton=false;
+          else this.planButton=true;
+          this.loading=false
+        })
+        .catch(err=>{
+          this.loading=false
+          console.log(err,2)
+        })
+    },//获取项目详情数据
+
+      /*商业计划书*/
     planChange(file, fileList){
-      console.log(this.$tool.getToObject(file))
+      this.planList=fileList
       if(file.status==="fail") this.planButton=true;
         else this.planButton=false;
     },
     planuploadsuccess(response, file, fileList){
-      this.planList = fileList
-    },
-    planuploaderror(err, file, fileList){//上传失败
-      console.log(this.planButton)
-      this.open("上传失败,请联系管理员")
-
-    },
+      this.success("上传成功")
+      let data = response.data
+      this.addplan(data.bp_title,data.pro_desc,data.pro_name,data.project_id,data.bp_id)
+    },//上传成功后添加字段
+    planuploaderror(err, file, fileList){
+      this.alert("上传失败,请联系管理员")
+    },//上传失败
     planRemove(file, fileList) {
-      this.planList = fileList.slice(1,1);
+      const deleteAtUpload=this.URL.deleteAtUpload;
       if (fileList.length == 0) this.planButton = true;
       else this.planButton = true;
+      this.$http.post(deleteAtUpload,{user_id: sessionStorage.user_id,project_id:this.uploadShow.project_id})
+        .then(res=>{
+          if(res.status===200){
+            this.loading=false;
+            this.success("删除成功")
+          }
+          console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+          this.alert("删除失败,请联系管理员")
+        })
 
-    },
+    },//删除文件
+    addplan(bp_title,pro_desc,pro_name,project_id,bp_id) {
+      let object ={};
+      object.bp_title=bp_title;
+      object.pro_desc=pro_desc;
+      object.pro_name=pro_name;
+      object.project_id=project_id;
+      object.bp_id=bp_id;
+      this.uploadShow=object;
+    },//添加上传文件时,保存返回的数据
+    planPreview(file){
+      const download=this.URL.download;
+      this.$http.get(download,{ params:{user_id: sessionStorage.user_id,type:"project_bp",bp_id:this.uploadShow.bp_id}})//this.uploadShow.bp_id
+        .then(res=>{
+          if(res.data.status_code===4004004){
+            this.loading=false;
+            this.alert("下载失败,请联系管理员")
+          }
+//          console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+          this.opealertn("网络出错,请联系管理员")
+        })
+    },//点击下载
+
     /*批量上传*/
-    //当添加文件时,添加入上传列表
-    handleChange(file, fileList){
-      if(file.status=="ready"){
-        this.addDomain("其他",file.name)
+    beforeUpload(){
+      let id=this.uploadShow.project_id;
+      if(id==""|| id==undefined) {
+          this.alert("请先上传商业计划书")
+      } else {
+          this.fileuploadDate.project_id=this.uploadShow.project_id;
       }
-      console.log(fileList)
-      console.log(this.fileList)
-      console.log(this.uploadShow)
-
     },
+    //当添加文件时,添加入上传列表
+    handleChange(file, fileList){},
     uploadsuccess(response, file, fileList){
-//        this.success=false;
+      let data = response.data
+      data.bp_type="其他"
+      console.log(response)
+      this.success("上传成功")
+      this.addDomain(data.bp_type,data.file_title,data.file_id,data.project_id)
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file){},
+    uploaderror(err, file, fileList){
+      this.alert("上传失败,请联系管理员")
+    },//上传失败
+    download(item){
+      let index = this.uploadShow2.lists.indexOf(item);
+      if (index !== -1) {
+        let file_id=this.uploadShow2.lists[index].file_id;
+        const download=this.URL.download;
+        this.$http.get(download,{ params:{user_id: sessionStorage.user_id,type:"project_file",file_id:file_id}})
+          .then(res=>{
+            if(res.data.status_code===4004004){
+              this.loading=false;
+              this.alert("下载失败,请联系管理员");
+            }
+            console.log(res)
+          })
+          .catch(err=>{
+            console.log(err)
+            this.alert("网络出错,请联系管理员")
+          })
+        console.log(file_id)
+      }
+    },//点击下载
     //删除当前上传文件
     removeList(item) {
-      console.log(this.fileList)
-      var index = this.uploadShow.lists.indexOf(item)
+      var index = this.uploadShow2.lists.indexOf(item)
       if (index !== -1) {
-        this.uploadShow.lists.splice(index, 1)
         this.fileList.splice(index, 1)
+        const deleteAtFile=this.URL.deleteAtFile;
+        this.$http.post(deleteAtFile,{user_id: sessionStorage.user_id,project_id:item.project_id,file_id:item.file_id})
+          .then(res=>{
+            if(res.status===200){
+              this.loading=false;
+              this.uploadShow2.lists.splice(index, 1)
+              this.success("删除成功")
+            }
+          })
+          .catch(err=>{
+            console.log(err)
+            this.alert("删除失败,请联系管理员")
+          })
       }
     },
     //添加上传文件时,加入显示列表
-    addDomain(type,name) {
+    addDomain(bp_type,file_title,file_id,project_id) {
       let object ={};
-      object.type=type;
-      object.name=name;
-      this.uploadShow.lists.push(object);
+      object.bp_type=bp_type;
+      object.file_title=file_title;
+      object.file_id=file_id;
+      object.project_id=project_id;
+      this.uploadShow2.lists.push(object);
     },
     //点击分组设置中的单选框
     groupchange(label){
@@ -1131,16 +1405,17 @@ export default {
         }
       });
     },
+    //==========================================这儿发送分组设置请求
     saveGroupChange(){
       let type=this.groups.type;
       let index=this.groups.index;
       if (index !== -1) {
-        this.uploadShow.lists[index].type=type;
+        this.uploadShow2.lists[index].bp_type=type;
         this.dialogFileVisible=false
       }
     },
     toGroup(item){
-      var index = this.uploadShow.lists.indexOf(item)
+      var index = this.uploadShow2.lists.indexOf(item)
       this.groups.index=index;
       this.dialogFileVisible=true;
     },
@@ -1191,74 +1466,78 @@ export default {
         return (state.value.indexOf(queryString.toLowerCase()) === 0);
       };
     },
-
     handleSelect(item) {
       console.log(item);
       this.dialogVisible=true;
     },//选择了搜索出来的数据后
-    radiochange(label){/*控制添加radio*/
+    radiochange(label){
       if(label=="自定义添加"){
         this.dialogFormVisible=true;
       }
-    },
+    },//*控制添加radio
+
     /*添加运营状态*/
     addState(){
       let newState={};
       newState.label=this.form.state
       newState.value=this.form.state
       this.project.companystate=this.form.state
-      this.companystates.splice(length-1,0,newState)
+      this.company_status.splice(length-1,0,newState)
       this.dialogFormVisible = false
     },
 
     /*添加团队成员*/
     removeMember(item) {
-      var index = this.team.members.indexOf(item)
+      var index = this.team.core_users.indexOf(item)
       if (index !== -1) {
-        this.team.members.splice(index, 1)
+        this.team.core_users.splice(index, 1)
       }
     },
     addMember() {
-      this.team.members.push({
-        name : '',
-        position : '',
-        shares : '',
-        introduce:''
+      this.team.core_users.push({
+        ct_member_name : '',
+        ct_member_career : '',
+        stock_scale : '',
+        ct_member_intro:''
       });
     },
+
     /*添加历史融资信息*/
     removeHistory(item) {
-      var index = this.financing.historys.indexOf(item)
+      var index = this.financing.pro_history_finance.indexOf(item)
       if (index !== -1) {
-        this.financing.historys.splice(index, 1)
+        this.financing.pro_history_finance.splice(index, 1)
       }
     },
     addHistory() {
-      this.financing.historys.push({
-        time:'',
-        round:'',
-        money:'',
-        investors:''
+      this.financing.pro_history_finance.push({
+        created_at:'',
+        pro_finance_stage:'',
+        pro_finance_scale:'',
+        pro_finance_investor:''
       });
     },
+
     /*添加里程碑*/
     removemilePost(item) {
-      var index = this.milepost.milePostSomeThings.indexOf(item)
+      var index = this.milepost.pro_develop.indexOf(item)
       if (index !== -1) {
-        this.milepost.milePostSomeThings.splice(index, 1)
+        this.milepost.pro_develop.splice(index, 1)
       }
     },
     addmilePost() {
-      this.milepost.milePostSomeThings.push({
-        time:'',
-        something:''
+      this.milepost.pro_develop.push({
+        dh_start_time:'',
+        dh_event:''
       });
     },
+
     /*检查所有必填项目以及获取所有数据*/
     submitForm(formName) {
       let check=true
       this.$refs[formName].validate((valid) => {
         if (valid) {
+            console.log(this.$tool.getToObject(this.financing))
           return
         } else {
           check=false;
@@ -1270,7 +1549,7 @@ export default {
     allSave(){
       if(this.planList.length===0) this.fileMust=true
       else this.fileMust=false
-
+    console.log(this.planList)
 //      console.log(this.fileMust)
 //      console.log(this.planList.length)
       this.projectMust=!this.submitForm('project');
@@ -1278,19 +1557,27 @@ export default {
       this.financingMust=!this.submitForm('financing');
       this.milepostMust=!this.submitForm('milepost');
 //      console.log(this.projectMust,this.teamMust,this.financingMust,this.milepostMust)
-      if(this.fileMust ) this.open("请添加商业计划书")
-        else if(this.projectMust) this.open("项目介绍必填项不能为空")
-        else if(this.teamMust) this.open("核心团队必填项不能为空")
-        else if(this.financingMust) this.open("融资信息必填项不能为空")
-        else if(this.milepostMust) this.open("里程碑必填项不能为空")
+      if(this.fileMust ) this.alert("请添加商业计划书")
+        else if(this.projectMust) this.alert("项目介绍必填项不能为空")
+        else if(this.teamMust) this.alert("核心团队必填项不能为空")
+        else if(this.financingMust) this.alert("融资信息必填项不能为空")
+        else if(this.milepostMust) this.alert("里程碑必填项不能为空")
         else this.open2('项目编辑成功','您当前的项目完整度为'+this.proportion+'%','查看详情','继续编辑')
     },
     /*警告弹窗*/
-    open(text) {
+    alert(text) {
       this.$notify.error({
         message: text,
         offset: 300
       });
+    },
+    /*成功弹窗*/
+    success(text) {
+      this.$notify({
+        message: text,
+        type: 'success',
+        offset: 300
+      })
     },
     /*编辑成功弹窗*/
     open2(title,main,confirm,cancel) {
@@ -1386,10 +1673,9 @@ export default {
   },
   //    当dom一创建时
   created(){
-    if(this.planList.length!=0) this.planButton=false;
-    else this.planButton=true;
-
+    this.loading=true
     this.getWxProjectCategory();
+    this.getOneProject ();
   }
 }
 </script>

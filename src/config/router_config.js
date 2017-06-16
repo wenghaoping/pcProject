@@ -12,7 +12,7 @@ import myProject from '@/views/workBench/myProject/myProject.vue'    //我的项
 import projectDetails from '@/views/workBench/myProject/projectDetails.vue'   //项目详情
 
 import editproject from '@/views/workBench/myProject/editproject.vue'   //编辑项目
-import creatproject from '@/views/workBench/myProject/creatproject.vue'   //编辑项目
+import creatproject from '@/views/workBench/myProject/creatproject.vue'   //创建项目
 
 
 import myContacts from '@/views/workBench/myContacts/mycontacts.vue'//我的人脉

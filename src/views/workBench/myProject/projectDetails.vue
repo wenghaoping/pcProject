@@ -619,16 +619,6 @@
               dh_event: "组建团队和设立办公室",//事件
               created_at: null,
               updated_at: null
-            },{
-              "project_dh_id": 7,
-              "dh_index": "ffdb1a610a224ba9336d71adb1fb692e",
-              "project_id": 37,
-              "project_index": "275fa4f135eecf08e5660d23e294e6cd",
-              "dh_start_time": "1433520000",
-              "dh_end_time": "1435593600",
-              "dh_event": "公司于2015年6月底在美国洛杉矶创立",
-              "created_at": null,
-              "updated_at": null
             }],
           /*FA签约*/
           pro_FA: {

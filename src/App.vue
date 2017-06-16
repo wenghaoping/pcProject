@@ -68,8 +68,8 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/workBench/myproject');
-//      this.$router.push({ name: 'projectDetails'})
+//      this.$router.push('/workBench/myproject');
+      this.$router.push({ name: 'editproject'})
       this.setUserId();
 
     },

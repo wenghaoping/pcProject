@@ -119,7 +119,7 @@ export default {
         domains: [],
       },
       loading:false,
-      uploadDate:{user_id: '2rzyz5vp'},//上传所带的额外的参数
+      uploadDate:{user_id: sessionStorage.user_id},//上传所带的额外的参数
       loadingcheck:''
     }
   },
@@ -131,11 +131,6 @@ export default {
     handleChange(file, fileList) {
       this.loading=true;
       let type=file.name.substr(file.name.length-3,3)
-//      pdf,ppt,doc,png,jpg,jpeg
-/*      if(type!='pdf' || type!='ppt' || type!='doc' || type!='png' || type!='jpg'){
-        this.open("只支持pdf、ppt、doc、png，jpg，jpeg文件格式")
-        return
-      }*/
 //      console.log(fileList)
       this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
@@ -196,11 +191,6 @@ export default {
             console.log(err)
 //            this.closeLoading();
           })
-/*          console.log("obj")
-          console.log(obj)
-
-          console.log("uploadDate")
-          console.log(this.uploadDate)*/
           this.$refs.upload.submit();
         } else {
           console.log('error submit!!');
