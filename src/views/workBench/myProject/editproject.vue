@@ -52,14 +52,6 @@
               </span>
               <span class="f-tips fl" style="margin-left: 8px;" >（仅自己可见）</span>
             </div>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
             <el-collapse-transition>
               <div v-show="fileShow">
                 <div class="block-info block-cc-other" style="margin-bottom: 15px;"
@@ -212,10 +204,10 @@
                     <el-col :span="12">
                       <el-form-item
                         label="公司规模"
-                        prop="pro_scale.scale_money">
-                        <el-select v-model="project.pro_scale.scale_money" placeholder="请选择" class="width360">
+                        prop="pro_company_scale.comp_scale_id">
+                        <el-select v-model="project.pro_company_scale.comp_scale_id" placeholder="请选择" class="width360">
                           <el-option
-                            v-for="item in companySize"
+                            v-for="item in company_scale"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -265,7 +257,7 @@
                       <el-form-item
                         label="项目标签"
                         prop="tags_pro">
-                        <el-select v-model="project.tags_pro" multiple placeholder="请选择" class="width360" filterable allow-create default-first-option>
+                        <el-select v-model="project.tags_pro" multiple placeholder="请选择" class="width360" filterable allow-create default-first-option @change="addChangepro">
                           <el-option
                             v-for="item in tags_pro"
                             :key="item.value"
@@ -309,13 +301,15 @@
                     <el-col :span="12">
                       <el-form-item
                         label="团队标签"
-                        prop="tags_team">
+                        prop="tags_team" >
                         <el-select
                           v-model="team.tags_team"
                           multiple
                           filterable
                           allow-create
-                          placeholder="请添加（最多5个)" class="width360" default-first-option>
+                          placeholder="请添加（最多5个)" class="width360"
+                          default-first-option
+                          @change="addChangeTeam">
                           <el-option
                             v-for="item in tags_team"
                             :key="item.value"
@@ -746,7 +740,7 @@
     </el-dialog>
     <!--搜索同步的弹窗-->
     <el-dialog
-      title="杭州投着乐网络科技有限公司（微天使）"
+      :title="companyTitle"
       :visible.sync="dialogVisible"
       size="tiny"
       :show-close="close">
@@ -763,6 +757,7 @@
 export default {
   data(){
     return {
+      project_id:"",//项目Id全局保存
       planList:[],//商业计划书上传列表
       fileList:[],//批量上传文件列表
       planButton:true,//控制上传按钮的显示
@@ -773,7 +768,7 @@ export default {
         lists:[]
       },
       uploadDate:{user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
-      fileuploadDate:{user_id: sessionStorage.user_id,project_id:"vrnPjkW6"},//项目文件上传带的参数
+      fileuploadDate:{user_id: sessionStorage.user_id,project_id:this.project_id},//项目文件上传带的参数
       groups:{
         input:"",
         group:[{type:"其他",label:'其他',value:'其他'},{type:"尽职调查",label:'尽职调查',value:'尽职调查'}],
@@ -789,40 +784,22 @@ export default {
       SignShow:true,
       multiplelimit:5,
 
-
-
-
       project: {
         pro_name : 'HoopEASY商业计划PPT+for+pitch',//项目名称
-        pro_company_name : 'HoopEASY',//公司名称
-        pro_intro : '一款最酷的篮球社交软件',//项目介绍
+        pro_company_name : '',//公司名称
+        pro_intro : '',//项目介绍
         pro_area: {
           area_id: 2,
           area_title: "北京市",
-          pid: 1,
-          created_at: null,
-          updated_at: null,
-          pivot: {
-            item_id: 37,
-            area_id: 2,
-            created_at: "2017-06-01 16:27:35",
-            updated_at: "2017-06-01 16:27:35",
-            priority: 1
-          }
+          pid: 1
         },//所属地区1省级单位
         pro_stage: {
           "stage_id": 2,
           "stage_name": "天使轮",
           "sort": 2,
           "created_at": null,
-          "updated_at": null,
-          "pivot": {
-            "item_id": 37,
-            "stage_id": 2,
-            "created_at": "2017-06-01 16:23:04",
-            "updated_at": "2017-06-13 18:33:31",
-            "priority": 1
-          }
+          "updated_at": null
+
         },//轮次
         pro_industry: [],//领域标签
         pro_status: 2,
@@ -830,25 +807,22 @@ export default {
           "scale_id": 1,
           "scale_money": "100W以下",
           "created_at": null,
-          "updated_at": null,
-          "pivot": {
-            "item_id": 37,
-            "scale_id": 1,
-            "created_at": null,
-            "updated_at": null,
-            "priority": 1
-          }
-        },//规模
-        pro_website:'www.baidu.com',//产品链接
+          "updated_at": null
+        },//规模多少钱
+        pro_company_scale:{
+          comp_scale_id: 1,
+          comp_scale_value: "1-20"
+        },//规模多少人
+        pro_website:'',//产品链接
         contact: {
-          user_name: "赵工佐",
-          user_mobile: "18551711000"
+          user_name: "",
+          user_mobile: ""
         },//项目联系人
-        pro_source:'微天使项目',//项目来源
+        pro_source:'',//项目来源
         open_status:'1',//私密设置
         tags_pro:[],//项目标签
         //项目亮点
-        pro_goodness: "专注于篮球项目的移动端社交平台。在基于用户所处的地理位置基础上，将用户个人，球队，比赛，场馆等资源有机整合，形成一个以用户为核心的垂直网络社区，带给篮球爱好者全新的社交方式和运动体验。",//项目介绍
+        pro_goodness: "专注于篮球项目的移动端社交平台"//项目介绍
       },
 
       team:{
@@ -861,10 +835,7 @@ export default {
             project_index: "275fa4f135eecf08e5660d23e294e6cd",
             ct_member_name: "赵工佐",
             ct_member_career: "创始人兼首席执行官",
-            ct_member_intro: "前高中和大学校队主力球员，",
-            created_at: null,
-            updated_at: null,
-            stock_scale: null
+            ct_member_intro: "前高中和大学校队主力球员，"
           }],
       },//核心团队
 
@@ -924,16 +895,7 @@ export default {
       /*运营状态默认值*/
       company_status:[],
       /*公司规模*/
-      companySize:[{
-        value: '1-20人',
-        label: '1-20人'
-      },{
-        value: '20-50人',
-        label: '20-50人'
-      },{
-        value: '50-100人',
-        label: '50-100人'
-      }],
+      company_scale:[],
       /*项目标签*/
       tags_pro:[],
       formLabelWidth: '120px',
@@ -970,7 +932,9 @@ export default {
       dialogVisible:false,//是否同步弹窗
       close:false,
       restaurants: [],//数据存放
-      loading:false//加载
+      loading:false,//加载
+      add_pro:[],//添加个人标签暂存
+      companyTitle:"微天使"
     }
   },
   computed:{
@@ -1058,10 +1022,6 @@ export default {
     },
   },
   mounted() {
-    this.list = this.states.map(item => {
-      return { value: item, label: item };
-    });
-    this.restaurants = this.loadAll();
   },
   methods:{
     /*获取列表各种数据*/
@@ -1126,8 +1086,19 @@ export default {
       }
       return arr
     },//获取项目标签
+    getCompany_scale(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].comp_scale_value;
+        obj.value=data[i].comp_scale_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取公司规模几人
+
     getWxProjectCategory(){
-      this.$http.post(this.URL.getWxProjectCategory,{user_id: sessionStorage.user_id, project_id:"59W2a0GE"})
+      this.$http.post(this.URL.getWxProjectCategory,{user_id: sessionStorage.user_id, project_id:this.project_id})
         .then(res=>{
           let data = res.data.data;
 //          console.log(data)
@@ -1138,6 +1109,7 @@ export default {
           this.company_status=this.getCompanyStatus(data.company_status);//设置运营状态
           this.tags_pro=this.getTags_pro(data.tags_pro);//设置项目标签
           this.tags_team=this.getTags_pro(data.tags_team);//设置团队标签
+          this.company_scale=this.getCompany_scale(data.company_scale);//设置公司规模几人
         })
         .catch(err=>{
           console.log(err)
@@ -1154,7 +1126,6 @@ export default {
           console.log(err)
         })
     },//设置二级城市下拉列表
-
 
   /*获取项目详情*/
 
@@ -1191,12 +1162,9 @@ export default {
       }
     },//设置批量上传文件
     getOneProject () {
-
-      this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:"59W2a0GE"})//this.project.pro_id
+      this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:this.project_id})
         .then(res=>{
-
           let data = res.data.data;
-          console.log(this.$tool.getToObject(data));
           this.area1Change(data.pro_area.pid);//设置市级
           this.setDateTime(data.pro_history_finance);//时间格式设置
           this.setDateTime2(data.pro_develop);//时间格式设置2
@@ -1206,17 +1174,20 @@ export default {
               bp_title:data.pro_BP.bp_title,
             pro_desc:data.pro_BP.bp_title,
             pro_name:data.pro_BP.bp_title,
-            project_id:"59W2a0GE",
+            project_id:this.project_id,
             bp_id:data.pro_BP.bp_id};
 
           this.setUploadShow2(data.pro_file);
-
 
           this.project.pro_name=data.pro_name;
           this.project.pro_company_name=data.pro_company_name;
           this.project.pro_intro=data.pro_intro;
           this.project.pro_area=data.pro_area;
-          this.project.pro_stage=data.pro_stage;
+
+          if(data.pro_stage=="") {this.project.pro_stage = {stage_id: 0, stage_name: ""}};
+
+
+
           this.project.pro_industry=this.getindustry(data.pro_industry);//领域标签
           this.project.pro_status=data.pro_status.status_id;//运营状态
           this.project.pro_scale=data.pro_scale;
@@ -1227,24 +1198,33 @@ export default {
           this.project.tags_pro=this.getTag(data.tag,0);//项目标签
           this.project.pro_goodness=data.pro_goodness;
 
+          this.project.pro_company_scale=data.pro_company_scale;
+          if(data.pro_company_scale=="") {this.project.pro_company_scale = {comp_scale_id: 1,comp_scale_value: "1-20"}};
+
           this.team.tags_team=this.getTag(data.tag,1);//团队标签
           this.team.core_users=data.core_users;
 
-          this.financing.pro_finance_scale=data.pro_finance_scale;
+           this.financing.pro_finance_scale=data.pro_finance_scale;
           this.financing.pro_finance_use=data.pro_finance_use;
           this.financing.pro_finance_stock_after=data.pro_finance_stock_after;
           this.financing.pro_finance_value=data.pro_finance_value;
           this.financing.pro_history_finance=data.pro_history_finance;
 
-          if(data.pro_history_finance=="") this.financing.pro_history_finance=[{pro_finance_stage: "", pro_finance_scale: "", pro_finance_investor: "", created_at: "", updated_time: null}];
+          if(data.pro_history_finance=="") this.financing.pro_history_finance=[{pro_finance_stage: "", pro_finance_scale: "", pro_finance_investor: "", created_at: ""}];
           this.milepost.pro_develop=data.pro_develop;
 
           if(data.core_users=="") this.team.core_users=[{ct_member_name:"",ct_member_career:"",ct_member_intro:"",stock_scale:""}];
 
-          delete data.pro_FA.created_at;
-          delete data.pro_FA.updeted_at;
+
+  //          delete data.pro_FA.created_at;
+//          delete data.pro_FA.updeted_at;
           this.is_exclusive=data.is_exclusive;//FA运营状态
+
+          if(data.pro_FA=="") data.pro_FA={commission: "", stock_right: "", stock_follow: "", stock_other: ""};
+
           this.pro_FA=data.pro_FA;
+
+          console.log(this.$tool.getToObject(data));
 
           if(this.planList.length!=0) this.planButton=false;
           else this.planButton=true;
@@ -1431,35 +1411,32 @@ export default {
     },
 
     /*获取远程数据模拟*/
-    loadAll() {
-      return [
-        { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
-        { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
-        { "value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
-        { "value": "泷千家(天山西路店)", "address": "天山西路438号" },
-        { "value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101" },
-        { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
-        { "value": "豪大大香鸡排超级奶爸", "address": "上海市嘉定区曹安公路曹安路1685号" },
-        { "value": "茶芝兰（奶茶，手抓饼）", "address": "上海市普陀区同普路1435号" },
-        { "value": "十二泷町", "address": "上海市北翟路1444弄81号B幢-107" },
-        { "value": "星移浓缩咖啡", "address": "上海市嘉定区新郁路817号" },
-        { "value": "阿姨奶茶/豪大大", "address": "嘉定区曹安路1611号" },
-        { "value": "新麦甜四季甜品炸鸡", "address": "嘉定区曹安公路2383弄55号" },
-        { "value": "Monica摩托主题咖啡店", "address": "嘉定区江桥镇曹安公路2409号1F，2383弄62号1F" },
-        { "value": "浮生若茶（凌空soho店）", "address": "上海长宁区金钟路968号9号楼地下一层" },
-        { "value": "NONO JUICE  鲜榨果汁", "address": "上海市长宁区天山西路119号" }
-      ];
+
+    loadData(arr){
+      let newArr=[];
+      for(let key in arr){
+        let obj={};
+        obj.value=arr[key];
+        obj.address=key;
+        newArr.push(obj)
+      }
+      return newArr
     },
     /*自动搜索,接口写这里面*/
     querySearchAsync(queryString, cb) {
-      console.log(queryString)
-
-      let restaurants = this.restaurants;
-      let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        cb(results);
-      }, 500 * Math.random());
+      this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
+        .then(res=>{
+          let data=res.data;
+          this.restaurants=this.loadData(data);
+          if(queryString=="") this.restaurants=[]
+          let restaurants = this.restaurants;
+          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+          cb(results);
+        })
+        .catch(err=>{
+          this.alert("加载失败");
+          console.log(err);
+        })
     },
     createStateFilter(queryString) {
       return (state) => {
@@ -1468,46 +1445,130 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
+      this.companyTitle=item.value;
+      this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,project_id:item.address})
+        .then(res=>{
+          let data=res.data;
+          console.log(data);
+        })
+        .catch(err=>{
+          this.alert("获取失败");
+          console.log(err);
+        });
       this.dialogVisible=true;
     },//选择了搜索出来的数据后
+
     radiochange(label){
       if(label=="自定义添加"){
         this.dialogFormVisible=true;
       }
     },//*控制添加radio
 
+    checkArr(arr,arr2){
+        let newArr=[]
+        let data = arr[arr.length - 1]
+        for(let i=0; i<arr2.length; i++){
+          newArr.push(arr2[i].value);
+        }
+        if(newArr.indexOf(data)==-1) return data
+
+
+    },//判断是否重复
     /*添加运营状态*/
     addState(){
-      let newState={};
-      newState.label=this.form.state
-      newState.value=this.form.state
-      this.project.companystate=this.form.state
-      this.company_status.splice(length-1,0,newState)
-      this.dialogFormVisible = false
+        console.log(this.form.state)
+      this.$http.post(this.URL.createStatusPro,{user_id: sessionStorage.user_id, status_name:this.form.state})
+        .then(res=>{
+            console.log(res);
+          let data = res.data;
+          let newState={};
+          newState.label=data.status_id;
+          newState.value=this.form.state;
+          this.project.companystate=this.form.state;
+          this.company_status.splice(length-1,0,newState);
+          this.dialogFormVisible = false;
+        })
+        .catch(err=>{
+          alert("添加失败");
+          console.log(err);
+        })
+
+
     },
+    addChangepro(e){
+        let tagName=this.checkArr(e,this.tags_pro);
+        if(tagName!=undefined){
+          this.$http.post(this.URL.createCustomTag,{user_id: sessionStorage.user_id, type:0,tag_name:tagName})
+            .then(res=>{
+              let newState={};
+              newState.label=tagName;
+              newState.value=res.data.tag_id;
+              this.tags_pro.push(newState);
+            })
+            .catch(err=>{
+              alert("添加失败");
+              console.log(err);
+            })
+        }
+    },//添加项目标签
+    addChangeTeam(e){
+        let tagName=this.checkArr(e,this.tags_team);
+        if(tagName!=undefined){
+          this.$http.post(this.URL.createCustomTag,{user_id: sessionStorage.user_id, type:1,tag_name:tagName})
+            .then(res=>{
+              let newState={};
+              newState.label=tagName;
+              newState.value=res.data.tag_id;
+              this.tags_team.push(newState);
+            })
+            .catch(err=>{
+              alert("添加失败");
+              console.log(err);
+            })
+        }
+    },//添加团队标签
+
 
     /*添加团队成员*/
     removeMember(item) {
-      var index = this.team.core_users.indexOf(item)
-      if (index !== -1) {
-        this.team.core_users.splice(index, 1)
-      }
+      this.$http.post(this.URL.deleteCoreTeam,{user_id: sessionStorage.user_id,  project_id:this.project_id,project_ct_id:item.project_ct_id})
+        .then(res=>{
+          console.log(res);
+          let index = this.team.core_users.indexOf(item);
+          if (index !== -1) {
+            this.team.core_users.splice(index, 1)
+          }
+        })
+        .catch(err=>{
+          alert("删除失败");
+          console.log(err);
+        })
+
     },
     addMember() {
       this.team.core_users.push({
         ct_member_name : '',
         ct_member_career : '',
         stock_scale : '',
-        ct_member_intro:''
+        ct_member_intro:'',
+        project_ct_id:'',
       });
     },
 
     /*添加历史融资信息*/
     removeHistory(item) {
-      var index = this.financing.pro_history_finance.indexOf(item)
-      if (index !== -1) {
-        this.financing.pro_history_finance.splice(index, 1)
-      }
+      this.$http.post(this.URL.deleteFinance,{user_id: sessionStorage.user_id,  project_id:this.project_id,history_id:item.history_id})
+        .then(res=>{
+          console.log(res);
+          let index = this.financing.pro_history_finance.indexOf(item)
+          if (index !== -1) {
+            this.financing.pro_history_finance.splice(index, 1)
+          }
+        })
+        .catch(err=>{
+          alert("删除失败");
+          console.log(err);
+        })
     },
     addHistory() {
       this.financing.pro_history_finance.push({
@@ -1520,15 +1581,24 @@ export default {
 
     /*添加里程碑*/
     removemilePost(item) {
-      var index = this.milepost.pro_develop.indexOf(item)
-      if (index !== -1) {
-        this.milepost.pro_develop.splice(index, 1)
-      }
+      this.$http.post(this.URL.deleteDevelop,{user_id: sessionStorage.user_id,  project_id:this.project_id,project_dh_id:item.project_dh_id})
+        .then(res=>{
+          console.log(res);
+          let index = this.milepost.pro_develop.indexOf(item)
+          if (index !== -1) {
+            this.milepost.pro_develop.splice(index, 1)
+          }
+        })
+        .catch(err=>{
+          alert("删除失败");
+          console.log(err);
+        })
     },
     addmilePost() {
       this.milepost.pro_develop.push({
         dh_start_time:'',
-        dh_event:''
+        dh_event:'',
+        history_id:''
       });
     },
 
@@ -1545,13 +1615,17 @@ export default {
       });
       return check;
     },
+    takeData(data,obj){
+      for(let key in obj){
+        data[key]=obj[key];
+      }
+    },
     /*全部保存按钮*/
     allSave(){
       if(this.planList.length===0) this.fileMust=true
       else this.fileMust=false
     console.log(this.planList)
-//      console.log(this.fileMust)
-//      console.log(this.planList.length)
+
       this.projectMust=!this.submitForm('project');
       this.teamMust=!this.submitForm('team');
       this.financingMust=!this.submitForm('financing');
@@ -1562,7 +1636,45 @@ export default {
         else if(this.teamMust) this.alert("核心团队必填项不能为空")
         else if(this.financingMust) this.alert("融资信息必填项不能为空")
         else if(this.milepostMust) this.alert("里程碑必填项不能为空")
-        else this.open2('项目编辑成功','您当前的项目完整度为'+this.proportion+'%','查看详情','继续编辑')
+        else {
+
+          let allData={};
+          this.takeData(allData,this.project)
+          this.takeData(allData,this.team)
+          this.takeData(allData,this.financing)
+          this.takeData(allData,this.milepost)
+          this.takeData(allData,this.pro_FA)
+          allData.is_exclusive=this.is_exclusive;
+          allData.project_id =this.project_id ;
+          allData.pro_area_province =this.project.pro_area.area_id;
+          allData.pro_area_city =this.project.pro_area.pid;
+
+          allData.contact_user_name =this.project.contact.user_name;
+          allData.contact_user_mobile =this.project.contact.user_mobile;
+
+          allData.pro_core_team =this.team.core_users;
+          allData.pro_finance_stage =this.project.pro_stage.stage_id;
+          allData.pro_company_scale =this.project.pro_company_scale.comp_scale_id;
+          allData.user_id=sessionStorage.user_id
+        for(let key in allData){
+          if(allData[key]=="-"){
+            allData[key]="";
+          }
+        }
+          console.log(allData);
+        this.$http.post(this.URL.editProject,allData)
+          .then(res=>{
+            console.log(res)
+            this.open2('项目编辑成功','您当前的项目完整度为'+this.proportion+'%','查看详情','继续编辑')
+          })
+          .catch(err=>{
+            alert("编辑失败");
+            console.log(err);
+          })
+
+      }
+
+
     },
     /*警告弹窗*/
     alert(text) {
@@ -1669,11 +1781,16 @@ export default {
     /*一键同步按钮*/
     sync(){
       this.dialogVisible = false;
+    },
+    getprojectId(){
+      this.project_id=this.$route.query.project_id
+      console.log(this.$route.query.project_id)
     }
   },
   //    当dom一创建时
   created(){
-    this.loading=true
+    this.loading=true;
+    this.getprojectId();
     this.getWxProjectCategory();
     this.getOneProject ();
   }

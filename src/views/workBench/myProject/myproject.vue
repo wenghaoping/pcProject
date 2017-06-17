@@ -318,7 +318,7 @@
           pro_stage:'IPO上市后',
           pro_area:'北京',
           pro_scale:'3000万',
-          pro_id:''
+          project_id:''
         }*/
         ],
         pro_sourceFilters:[{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
@@ -363,17 +363,16 @@
     },
     methods:{
       handleSelect(row, event, column) {
-//        console.log(this.$tool.getToObject(row))
+        console.log(this.$tool.getToObject(row))
 //        console.log(column)
         if(column.label!="重置"){
-          this.$router.push({ name: 'projectDetails', query: { pro_id:row.pro_id}})
+          this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id}})
         }
       },//跳转到项目详情页面传参数
       handleEdit(index, row){
 //        console.log(index);
 //        console.log(this.$tool.getToObject(row));
-        this.$router.push({ name: 'editproject', query: { pro_id:row.pro_id}})
-        /*跳转到编辑页面*/
+        this.$router.push({ name: 'editproject', query: { project_id:row.project_id}})
       },//跳转到编辑页
       createProject(){
         this.$router.push({ name: 'creatproject', query: {}})
@@ -617,7 +616,7 @@
           obj.pro_stage=this.getProjectPro_stage(list[i].pro_stage)
           obj.pro_area=this.getProjectPro_area(list[i].pro_area)
           obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale)
-          obj.pro_id=list[i].pro_id;
+          obj.project_id=list[i].project_id;
           arr.push(obj)
         }
 //        console.log(arr)

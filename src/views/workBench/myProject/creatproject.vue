@@ -16,12 +16,13 @@
               <span class="del-btn"><i class="el-icon-delete"></i></span>-->
               <span style="margin-left: 20px;" class="fl">
                 <el-upload class="Upload"
-                           action="/api/upload"
+                           action="/project/projectUpload"
                            :on-change="planChange"
                            :on-success="planuploadsuccess"
                            :on-remove="planRemove"
+                           :on-error="planuploaderror"
                            :file-list="planList"
-                >
+                           :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
                   <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、png，jpg，jpeg文件格式</div>
                 </el-upload>
@@ -34,17 +35,18 @@
                   <span class="justIlook">(仅自己可见)</span>
                   <el-form-item
                     label="项目名称"
-                    prop="name">
-                    <el-input v-model="project.name" placeholder="请输入"></el-input>
+                    prop="pro_name"
+                    :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'}]">
+                    <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <span class="justIlook2">(仅自己可见)</span>
                   <el-form-item
                     label="公司名称"
-                    prop="company"
-                  >
-                    <el-autocomplete v-model="project.company"
+                    prop="pro_company_name"
+                    :rules="[{required: true, message: '公司名称不能为空', trigger: 'blur'}]">
+                    <el-autocomplete v-model="project.pro_company_name"
                                      :fetch-suggestions="querySearchAsync"
                                      placeholder="请输入内容"
                                      @select="handleSelect" class="width360">
@@ -75,25 +77,25 @@
                 <el-col :span="12">
                   <el-form-item
                     label="项目介绍"
-                    prop="introduce"
+                    prop="pro_intro"
                     :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
-                    <el-input v-model="project.introduce" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
+                    <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item
                     label="项目领域"
-                    prop="field"
+                    prop="pro_industry"
                     :rules="[{type: 'array',required: true, message: '项目领域不能为空', trigger: 'change'}]">
                     <el-select
-                      v-model="project.field"
+                      v-model="project.pro_industry"
                       multiple
                       filterable
                       allow-create
                       :multiple-limit="multiplelimit"
                       placeholder="请添加(最多5个)" class="width360" >
                       <el-option
-                        v-for="item in projectfield"
+                        v-for="item in industry"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -106,11 +108,11 @@
                 <el-col :span="12">
                   <el-form-item
                     label="项目轮次"
-                    prop="frequency"
-                    :rules="[{required: true, message: '项目轮次不能为空', trigger: 'change'}]">
-                    <el-select v-model="project.frequency" placeholder="请选择" class="width360">
+                    prop="pro_stage"
+                    :rules="[{type:'number',required: true, message: '项目轮次不能为空', trigger: 'change'}]">
+                    <el-select v-model="project.pro_stage" placeholder="请选择" class="width360">
                       <el-option
-                        v-for="item in projectFrequency"
+                        v-for="item in stage"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -121,23 +123,27 @@
                 <el-col :span="6">
                   <el-form-item
                     label="所属省级"
-                    prop="district1"
-                    :rules="[{required: true, message: '所属地区不能为空', trigger: 'change'}]">
-                    <el-select v-model="project.district1" placeholder="请选择">
-                      <el-option-group v-for="group in city" :key="group.label" :label="group.label">
-                        <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                      </el-option-group>
+                    prop="pro_area_province.area_id"
+
+                    :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
+                    <el-select v-model="project.pro_area_province.area_id" placeholder="请选择" @change="area1Change">
+                      <el-option
+                        v-for="item in area"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                      </el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="所属市级"
-                                prop="district2"
-                                :rules="[{required: true, message: '所属地区不能为空', trigger: 'change'}]">
-                    <el-select v-model="project.district2" placeholder="请选择">
+                                prop="pro_area_city.area_id"
+                                :rules="[{required: true, message: '所属市级不能为空', trigger: 'change',type: 'number'}]">
+                    <el-select v-model="project.pro_area_city.area_id" placeholder="请选择">
                       <el-option
-                        v-for="item in city2"
+                        v-for="item in area2"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -150,11 +156,11 @@
                 <el-col :span="12">
                   <el-form-item
                     label="期望融资"
-                    prop="except"
-                    :rules="[{required: true, message: '期望融资不能为空', trigger: 'change'}]">
-                    <el-select v-model="project.except" placeholder="请选择" class="width360">
+                    prop="pro_finance_scale"
+                    :rules="[{type:'number',required: true, message: '期望融资不能为空', trigger: 'change'}]">
+                    <el-select v-model="project.pro_finance_scale" placeholder="请选择" class="width360">
                       <el-option
-                        v-for="item in exceptedFinancing"
+                        v-for="item in scale"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -165,8 +171,8 @@
                 <el-col :span="12">
                   <el-form-item
                     label="投后股份(%)"
-                    prop="shares">
-                    <el-input v-model="project.shares" placeholder="请输入具体数值，如：10"></el-input>
+                    prop="pro_finance_stock_after">
+                    <el-input v-model="project.pro_finance_stock_after" placeholder="请输入具体数值，如：10"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -174,30 +180,30 @@
                 <el-col :span="12">
                   <el-form-item
                     label="私密设置"
-                    prop="private">
-                    <el-select v-model="project.private" placeholder="请选择" class="width360">
-                      <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="私密项目（仅自己／团队成员可查看编辑）"></el-option>
-                      <el-option label="公开" value="公开"></el-option>
+                    prop="open_status">
+                    <el-select v-model="project.open_status" placeholder="请选择" class="width360">
+                      <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="0"></el-option>
+                      <el-option label="公开" value="1"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item
                     label="运营状态"
-                    prop="exclusive">
-                    <el-radio class="radio" v-model="project.exclusive" label="1">非独家FA签约</el-radio>
-                    <el-radio class="radio" v-model="project.exclusive" label="2">独家FA签约</el-radio>
-                    <el-radio class="radio" v-model="project.exclusive" label="3">其他</el-radio>
+                    prop="is_exclusive">
+                    <el-radio class="radio" v-model="project.is_exclusive" :label=2>非独家FA签约</el-radio>
+                    <el-radio class="radio" v-model="project.is_exclusive" :label=1>独家FA签约</el-radio>
+                    <el-radio class="radio" v-model="project.is_exclusive" :label=0>其他</el-radio>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :span="24" :gutter="32">
                 <el-col :span="24">
                   <el-form-item label="项目亮点"
-                                prop="highlights"
+                                prop="pro_goodness"
                                 :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'}]">
                     <el-input type="textarea"
-                              v-model="project.highlights"
+                              v-model="project.pro_goodness"
                               :autosize="{ minRows: 4, maxRows: 7}"></el-input>
                   </el-form-item>
                 </el-col>
@@ -208,7 +214,7 @@
           <el-button type="primary" size="large" style="margin: 0px auto; display: block;" @click="allSave">提交</el-button>
           <div style="height: 50px;"></div>
           <el-dialog
-            title="杭州投着乐网络科技有限公司（微天使）"
+            :title="companyTitle"
             :visible.sync="dialogVisible"
             size="tiny"
             :show-close="close">
@@ -228,112 +234,202 @@
 export default {
   data () {
     return {
-      planList:[{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],//商业计划书上传列表
+      planList:[],//商业计划书上传列表
       planButton:false,//控制上传按钮的显示
       dialogVisible:false,//是否同步弹窗
+      uploadShow:{//计划书上传列表,需要存数据啦
+
+      },
       close:false,
+      uploadDate:{user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
       project: {
-        name : '',//项目名称
-        company : '',//公司名称
-        introduce : '',//项目介绍
-        field:[],//项目领域
-        frequency:'',//项目轮次
-        district1:'',//所属地区1省级单位
-        district2:'',//所属地区2市级单位
-        except:'',//融资范围
-        shares:'',//投后股分
-        private:'',//私密设置
-        exclusive:'1',//是否独家
-        highlights:''//项目亮点
+        project_id:'',
+        pro_name : '',//项目名称
+        pro_company_name : '',//公司名称
+        pro_intro : '',//项目介绍
+        pro_industry:[],//项目领域
+        pro_stage: {
+          "stage_id": 2,
+          "stage_name": "天使轮",
+          "sort": 2,
+          "created_at": null,
+          "updated_at": null
+        },//轮次
+        pro_area_province:{
+          area_id: "",
+          area_title: ""
+        },//所属地区1省级单位
+        pro_area_city:{
+          area_id: "",
+          area_title: ""
+        },//所属地区2市级单位
+        pro_finance_scale:'',//期望融资
+        pro_finance_stock_after:'',//投后股分
+        open_status:'1',//私密设置
+        is_exclusive: 0,//0其他 1独家 2非独家
+        pro_goodness:''//项目亮点
 
       },//项目介绍
       multiplelimit:5,
-      companyList: [],//公司搜索的数据
       /*公司远程搜索*/
-      states: ["阿里","百度","投着乐网络科技有限公司"],
       loading: false,
       restaurants: [],
       timeout:  null,
-      city: [{
-        label: '热门城市',
-        options: [{
-          value: 'Shanghai',
-          label: '上海'
-        }, {
-          value: 'Beijing',
-          label: '北京'
-        }]
-      }, {
-        label: '城市名',
-        options: [{
-          value: 'Chengdu',
-          label: '成都'
-        }, {
-          value: 'Shenzhen',
-          label: '深圳'
-        }, {
-          value: 'Guangzhou',
-          label: '广州'
-        }, {
-          value: 'Dalian',
-          label: '大连'
-        }]
-      }],
+      /*所属地区1省级选项*/
+      area: [],
       /*所属地区2市级选项*/
-      city2: [{
-        value: '杭州',
-        label: '杭州'
-      }, {
-        value: '温州',
-        label: '温州'
-      }, {
-        value: '宁波',
-        label: '宁波'
-      }],
-      /*项目轮次选项*/
-      projectFrequency: [{
-        value: 'A轮',
-        label: 'A轮'
-      }, {
-        value: 'B轮',
-        label: 'B轮'
-      },{
-        value: '天使轮',
-        label: '天使轮'
-      }],
+      area2: [],
       /*项目领域默认选项*/
-      projectfield: [{
-        value: '人工智能',
-        label: '人工智能'
-      }, {
-        value: '教育培训',
-        label: '教育培训'
-      }, {
-        value: 'IT',
-        label: 'IT'
-      }],
+      industry: [],
       /*融资范围*/
-      exceptedFinancing:[
-        {label:'10万-100万',value:'10万-100万'},
-        {label:'100万-1000万',value:'100万-1000万'}
-      ],
+      scale:[],
+      /*项目轮次选项*/
+      stage: [],
+      companyTitle:"微天使"
 
     }
   },
   methods: {
-    /*商业计划书上传*/
+    /*获取列表各种数据*/
+    getCity(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].area_title;
+        obj.value=data[i].area_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取城市列表
+    getScale(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].scale_money;
+        obj.value=data[i].scale_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取期望融资
+    getStage(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].stage_name;
+        obj.value=data[i].stage_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取轮次信息
+    getIndustry(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        let obj={};
+        obj.label=data[i].industry_name;
+        obj.value=data[i].industry_id;
+        arr.push(obj)
+      }
+      return arr
+    },//获取项目领域
+    getWxProjectCategory(){
+      this.$http.post(this.URL.getWxProjectCategory,{user_id: sessionStorage.user_id})
+        .then(res=>{
+          let data = res.data.data;
+          this.area=this.getCity(data.area);//设置城市1列表
+          this.scale=this.getScale(data.scale);//设置期望融资
+          this.stage=this.getStage(data.stage);//设置轮次信息
+          this.industry=this.getIndustry(data.industry);//设置轮次信息
+        })
+        .catch(err=>{
+          console.log(err)
+          //            this.loading=false;
+        })
+    },//获取所有下拉框的数据
+    area1Change(data){
+      this.$http.post(this.URL.getArea,{user_id: sessionStorage.user_id, pid:data})
+        .then(res=>{
+          let data = res.data.data;
+          this.area2=this.getCity(data);
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    },//设置二级城市下拉列表
+
+
+    /*商业计划书*/
     planChange(file, fileList){
-      if(file.status==="fail") {this.planButton=true;this.open("上传失败,请联系管理员");}
+      this.planList=fileList
+      if(file.status==="fail") this.planButton=true;
       else this.planButton=false;
     },
     planuploadsuccess(response, file, fileList){
-      this.planList = fileList
-    },
+      this.success("上传成功")
+      let data = response.data
+      this.addplan(data.bp_title,data.pro_desc,data.pro_name,data.project_id,data.bp_id)
+    },//上传成功后添加字段
+    planuploaderror(err, file, fileList){
+      this.alert("上传失败,请联系管理员")
+    },//上传失败
     planRemove(file, fileList) {
-      this.planList = fileList.slice(1,1);
+      const deleteAtUpload=this.URL.deleteAtUpload;
       if (fileList.length == 0) this.planButton = true;
       else this.planButton = true;
+      this.$http.post(deleteAtUpload,{user_id: sessionStorage.user_id,project_id:this.uploadShow.project_id})
+        .then(res=>{
+          if(res.status===200){
+            this.loading=false;
+            this.success("删除成功")
+          }
+          console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+          this.alert("删除失败,请联系管理员")
+        })
 
+    },//删除文件
+    addplan(bp_title,pro_desc,pro_name,project_id,bp_id) {
+      let object ={};
+      object.bp_title=bp_title;
+      object.pro_desc=pro_desc;
+      object.pro_name=pro_name;
+      object.project_id=project_id;
+      object.bp_id=bp_id;
+      this.uploadShow=object;
+    },//添加上传文件时,保存返回的数据
+    planPreview(file){
+      const download=this.URL.download;
+      this.$http.get(download,{ params:{user_id: sessionStorage.user_id,type:"project_bp",bp_id:this.uploadShow.bp_id}})//this.uploadShow.bp_id
+        .then(res=>{
+          if(res.data.status_code===4004004){
+            this.loading=false;
+            this.alert("下载失败,请联系管理员")
+          }
+//          console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+          this.opealertn("网络出错,请联系管理员")
+        })
+    },//点击下载
+
+
+
+    /*警告弹窗*/
+    alert(text) {
+      this.$notify.error({
+        message: text,
+        offset: 300
+      });
+    },
+    /*成功弹窗*/
+    success(text) {
+      this.$notify({
+        message: text,
+        type: 'success',
+        offset: 300
+      })
     },
     goBack(){//返回上一层
       this.$router.go(-1);
@@ -345,18 +441,11 @@ export default {
         if (valid) {
           return
         } else {
-          this.open('必填项不能为空')
+          this.alert('必填项不能为空')
           check=false;
         }
       });
       return check;
-    },
-    /*警告弹窗*/
-    open(text) {
-      this.$notify.error({
-        message: text,
-        offset: 300
-      });
     },
     /*创建成功弹窗*/
     open2(title,main,confirm,cancel) {
@@ -369,47 +458,57 @@ export default {
           type: 'success',
           message: '继续完善'
         });
-        this.$router.push({ name: 'editproject', query: {}})
+        this.$router.push({ name: 'editproject', query: {project_id:this.project.project_id}})
       }).catch(() => {
-
         this.$router.push({ name: 'indexmyProject', query: {}})
       });
     },
     /*全部保存按钮*/
     allSave(){
-      if(this.submitForm('project')) this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过')
+
+      if(this.submitForm('project')) {
+          this.project.pro_area_province=this.project.pro_area_province.area_id;
+          this.project.pro_area_city=this.project.pro_area_city.area_id;
+          this.project.user_id=sessionStorage.user_id;
+        this.$http.post(this.URL.editProject,this.project)
+          .then(res=>{
+            console.log(res)
+            this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过')
+          })
+          .catch(err=>{
+            this.alert("创建失败");
+            console.log(err);
+          })
+
+      }
       console.log(this.$tool.getToObject(this.project));
     },
     /*获取数据*/
-    loadAll() {
-      return [
-        { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
-        { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
-        { "value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
-        { "value": "泷千家(天山西路店)", "address": "天山西路438号" },
-        { "value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101" },
-        { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
-        { "value": "豪大大香鸡排超级奶爸", "address": "上海市嘉定区曹安公路曹安路1685号" },
-        { "value": "茶芝兰（奶茶，手抓饼）", "address": "上海市普陀区同普路1435号" },
-        { "value": "十二泷町", "address": "上海市北翟路1444弄81号B幢-107" },
-        { "value": "星移浓缩咖啡", "address": "上海市嘉定区新郁路817号" },
-        { "value": "阿姨奶茶/豪大大", "address": "嘉定区曹安路1611号" },
-        { "value": "新麦甜四季甜品炸鸡", "address": "嘉定区曹安公路2383弄55号" },
-        { "value": "Monica摩托主题咖啡店", "address": "嘉定区江桥镇曹安公路2409号1F，2383弄62号1F" },
-        { "value": "浮生若茶（凌空soho店）", "address": "上海长宁区金钟路968号9号楼地下一层" },
-        { "value": "NONO JUICE  鲜榨果汁", "address": "上海市长宁区天山西路119号" }
-      ];
+    loadData(arr){
+      let newArr=[];
+      for(let key in arr){
+        let obj={};
+        obj.value=arr[key];
+        obj.address=key;
+        newArr.push(obj)
+      }
+      return newArr
     },
     /*自动搜索,接口写这里面*/
     querySearchAsync(queryString, cb) {
-      console.log(queryString)
-      this.project.company=queryString;
-      var restaurants = this.restaurants;
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        cb(results);
-      }, 500 * Math.random());
+      this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
+        .then(res=>{
+          let data=res.data;
+          this.restaurants=this.loadData(data);
+          if(queryString=="") this.restaurants=[]
+            let restaurants = this.restaurants;
+          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+          cb(results);
+        })
+        .catch(err=>{
+          this.alert("加载失败");
+          console.log(err);
+        })
     },
     createStateFilter(queryString) {
       return (state) => {
@@ -418,6 +517,17 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
+      this.companyTitle=item.value;
+      this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,project_id:item.address})
+        .then(res=>{
+          let data=res.data;
+          console.log(data);
+        })
+        .catch(err=>{
+          this.alert("获取失败");
+          console.log(err);
+        });
+
      this.dialogVisible=true;
     },
     /*一键同步按钮*/
@@ -426,7 +536,12 @@ export default {
     }
   },
   mounted() {
-    this.restaurants = this.loadAll();
+
+  },
+  created(){
+    if(this.planList.length!=0) this.planButton=false;
+    else this.planButton=true;
+    this.getWxProjectCategory();
   }
 
 }

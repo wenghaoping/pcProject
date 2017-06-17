@@ -1,6 +1,5 @@
 <template>
   <div id="projectDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    {{ this.$route.query.pro_id }}
     <div class="contain-grid contain-center">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
@@ -763,7 +762,7 @@
         this.dialogVisible=msg;
       },
       getOneProject () {
-        this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:this.project.pro_id})
+        this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:this.project.project_id})
           .then(res=>{
             this.loading=false
             let data = res.data.data;
@@ -787,17 +786,17 @@
           })
       },//获取项目详情数据
       toEdit(){
-        this.$router.push({ name: 'editproject',query: { pro_id:this.project.pro_id}},)
+        this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },
-      getproId(){
-        this.project.pro_id=this.$route.query.pro_id
-        console.log(this.$route.query.pro_id)
+      getprojectId(){
+        this.project.project_id=this.$route.query.project_id
+        console.log(this.$route.query.project_id)
       }
     },
     created () {
       // 组件创建完后获取数据，
 //      this.loading=true
-      this.getproId();
+      this.getprojectId();
       this.getOneProject();
     }
 
