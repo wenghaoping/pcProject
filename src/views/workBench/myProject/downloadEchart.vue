@@ -14,7 +14,7 @@
 
     </el-tabs>
     <div id="pieBox" style="width:803px;height:432px;"></div>
-    <p class="sec"><span>{{title}}：</span>{{main}}</p>
+    <p class="sec"><i>{{title}}：</i>{{main}}</p>
   </div>
 </template>
 
@@ -172,9 +172,11 @@ export default {
     font-size:13px;
     color:#5e6d82;
     margin-top:48px;
-    span{
+    line-height: 23px;
+    i{
       color:#475669;
       font-weight: bolder;
+      line-height: 23px;
 
     }
   }

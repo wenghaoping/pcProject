@@ -209,7 +209,7 @@
 
             </el-form>
           </div>
-          <el-button type="primary" size="large" style="margin: 0px auto; display: block;" @click="allSave">提交</el-button>
+          <el-button type="primary" size="large" style="float: right;" @click="allSave">提交</el-button>
           <div style="height: 50px;"></div>
           <el-dialog
             :title="companyTitle"

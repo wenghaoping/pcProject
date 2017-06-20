@@ -6,7 +6,7 @@
         <div class="left-wrap">
 <!--=================================项目文件=================================-->
           <div class="d_jump"></div>
-          <div class="item-block" style="margin-top:0;">
+          <div class="item-block" style="margin-top:0; padding-bottom: 5px">
             <div class="block-tt-line">
               <span class="b-title">项目文件</span>
               <span class="b-line"></span>
@@ -27,7 +27,7 @@
                            :on-error="planuploaderror"
                            :on-remove="planRemove"
                            :file-list="planList"
-                           :show-file-list="showList"
+                           accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton"><i class="el-icon-plus"></i>计划书上传</el-button>
                 </el-upload>
@@ -79,7 +79,7 @@
             <el-collapse-transition>
               <div v-show="ProjectShow">
                 <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <span class="justIlook">(仅自己可见)</span>
                       <el-form-item
@@ -111,7 +111,7 @@
                         </el-tooltip>
                       </span>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="项目介绍"
@@ -122,7 +122,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item
-                        label="所属省级"
+                        label="所属地区"
                         prop="pro_area.pid"
 
                         :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
@@ -152,7 +152,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="项目轮次"
@@ -188,7 +188,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item
                         label="运营状态"
@@ -202,7 +202,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="公司规模"
@@ -225,7 +225,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="6">
                       <el-form-item
                         label="项目联系人"
@@ -244,15 +244,15 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="私密设置"
                         prop="open_status">
                         <el-select v-model="project.open_status" placeholder="请选择" class="width360">
                           <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="0"></el-option>
-                          <el-option label="“公开项⽬目（投放到交易易市场参与融资匹配，投资⼈人可以申请查看bp，每⽇日
-限公开⼀一次）”" value="1"></el-option>
+                          <el-option label="“公开项.目（投放到交易易市场参与融资匹配，投资.人可以申请查看bp，每.日
+限公开.一次）”" value="1"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -272,7 +272,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item label="项目亮点"
                                     prop="pro_goodness"
@@ -299,7 +299,7 @@
             <el-collapse-transition>
               <div v-show="teamShow">
                 <el-form :model="team" ref="team" label-width="100px" class="padding" label-position="top">
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="团队标签"
@@ -322,7 +322,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="4">
                       <el-form-item
                         label="成员姓名"
@@ -384,7 +384,7 @@
             <el-collapse-transition>
               <div v-show="financingShow">
                 <el-form :model="financing" ref="financing" label-width="100px" class="padding" label-position="top">
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="期望融资"
@@ -408,7 +408,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="投后股份( % )"
@@ -424,7 +424,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="4">
                       <el-form-item
                         label="历史融资时间"
@@ -499,7 +499,7 @@
             <el-collapse-transition>
               <div v-show="milepostShow">
                 <el-form :model="milepost" ref="milepost" label-width="100px" class="padding" label-position="top">
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="历史融资时间"
@@ -549,7 +549,7 @@
             <el-collapse-transition>
               <div v-show="SignShow">
                 <el-form :model="pro_FA" ref="pro_FA" label-width="100px" class="padding" label-position="top">
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item
                         label="运营状态"
@@ -560,7 +560,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="签约佣金（%）"
@@ -578,7 +578,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="其他权益（%）"
@@ -713,7 +713,7 @@
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible">
       <el-form :model="groups"  ref="groups" >
         <el-form-item label="分组名称" label-width="80px" prop="input" :rules="[{required: true, message: '分组不能为空', trigger: 'blur'}]">
-          <el-row :span="24" :gutter="10">
+          <el-row :span="24" :gutter="32">
             <el-col :span="18">
               <el-input v-model="groups.input" auto-complete="off"></el-input>
             </el-col>

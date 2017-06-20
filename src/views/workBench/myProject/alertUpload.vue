@@ -1,6 +1,6 @@
 <template>
   <div id="alertUpload" >
-    <el-dialog title="批量上传创建项目" :visible="dialogUploadVisible" :before-close="handleClose">
+    <el-dialog title="批量上传创建项目" :visible="dialogUploadVisible" :before-close="handleClose" :show-close="showList">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
                    action="/project/projectUpload"
@@ -12,9 +12,10 @@
                    :before-upload="beforeUpload"
                    :on-progress="handleProgress"
                    :data="uploadDate"
+
                    :show-file-list="showList"
                    ref="upload"
-                   accept=".doc, .ppt, .pdf, .zip, .rar, .npg"
+                   accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"
                    drag multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -22,12 +23,12 @@
         </el-upload>
 
       <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
-        <el-button @click="dialogVisiblechange">取 消</el-button>
+        <el-button @click="handleClose">取 消</el-button>
       </div>
     </el-dialog>
 
 
-    <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose">
+    <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose" :show-close="showList">
       <div class="loadmodel" v-loading.fullscreen.lock="loading" element-loading-text="上传中">
         <el-upload
           class="upload-demo"
@@ -40,7 +41,9 @@
           :on-error="uploaderror"
           :file-list="fileList"
           :data="uploadDate"
+
           :show-file-list="showList"
+          accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"
           multiple>
           <div class="inner">
             <el-button slot="trigger" type="primary" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
@@ -229,13 +232,17 @@ export default {
     },
     //当取消时,清空上传列表
     cancel(){
-      this.$emit('changeupload',false)
-      this.dialogUpload2Visible=false;
-      this.dateForm.domains.splice(0,this.dateForm.domains.length)
+      this.$confirm('确认关闭？关闭后所有数据清空')
+        .then(_ => {
+          this.$emit('changeupload',false);
+          this.dialogUpload2Visible=false;
+          this.dateForm.domains.splice(0,this.dateForm.domains.length)
+        })
+        .catch(_ => {});
     },
-    dialogVisiblechange() {
-      this.$emit('changeupload',false)
-    },
+//    dialogVisiblechange() {
+//      this.$emit('changeupload',false)
+//    },
     handleClose(done) {
       this.$confirm('确认关闭？关闭后所有数据清空')
         .then(_ => {

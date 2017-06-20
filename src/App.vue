@@ -92,8 +92,11 @@
     padding: 0!important;
   }*/
   #app {
-    min-width: 1903px;
-    margin: 0 auto;
+    /*min-width: 1903px;*/
+    mian{
+      min-width: 1336px;
+      margin: 0 auto;
+    }
     font-family: "Helvetica Neue","PingFang SC",Arial,sans-serif;
       header {
         width: 100%;

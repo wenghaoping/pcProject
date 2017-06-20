@@ -285,7 +285,7 @@
         </template>
       </div>
     </div>
-    <div class="page-grid wrap-right contain-right-2 fl">
+<!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
         <div class="title-box">
           <span class="lit-line"></span>
@@ -293,7 +293,7 @@
           <span class="lit-line"></span>
         </div>
       </div>
-    </div>
+    </div>-->
 
   </div>
 </template>

@@ -13,7 +13,7 @@
     </div>-->
 
     <!--下方主内容切换区-->
-    <main>
+    <main class="clearfix">
       <transition name="fade"  mode="out-in">
         <router-view class="view">
 
@@ -48,7 +48,10 @@
 
 <style scoped>
 #myProjct .search{width: 190px;position: absolute;left:300px;top:0px;}
-#myProjct{position: relative;}
+#myProjct{
+  position: relative;
+
+}
   /* 路由切换动效 */
 .fade-enter-active, .fade-leave-active {
   transition: all .2s;
@@ -57,4 +60,5 @@
   opacity: 0;
   transform: translateX(100px);
 }
+
 </style>
