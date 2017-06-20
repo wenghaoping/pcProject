@@ -35,8 +35,7 @@
                   <span class="justIlook">(仅自己可见)</span>
                   <el-form-item
                     label="项目名称"
-                    prop="pro_name"
-                    :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'}]">
+                    prop="pro_name">
                     <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
                   </el-form-item>
                 </el-col>
@@ -44,8 +43,7 @@
                   <span class="justIlook2">(仅自己可见)</span>
                   <el-form-item
                     label="公司名称"
-                    prop="pro_company_name"
-                    :rules="[{required: true, message: '公司名称不能为空', trigger: 'blur'}]">
+                    prop="pro_company_name">
                     <el-autocomplete v-model="project.pro_company_name"
                                      :fetch-suggestions="querySearchAsync"
                                      placeholder="请输入内容"
@@ -123,10 +121,10 @@
                 <el-col :span="6">
                   <el-form-item
                     label="所属省级"
-                    prop="pro_area_province.area_id"
+                    prop="pro_area_province"
 
                     :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
-                    <el-select v-model="project.pro_area_province.area_id" placeholder="请选择" @change="area1Change">
+                    <el-select v-model="project.pro_area_province" placeholder="请选择" @change="area1Change">
                       <el-option
                         v-for="item in area"
                         :key="item.value"
@@ -139,9 +137,9 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="所属市级"
-                                prop="pro_area_city.area_id"
+                                prop="pro_area_city"
                                 :rules="[{required: true, message: '所属市级不能为空', trigger: 'change',type: 'number'}]">
-                    <el-select v-model="project.pro_area_city.area_id" placeholder="请选择">
+                    <el-select v-model="project.pro_area_city" placeholder="请选择">
                       <el-option
                         v-for="item in area2"
                         :key="item.value"
@@ -157,7 +155,7 @@
                   <el-form-item
                     label="期望融资"
                     prop="pro_finance_scale"
-                    :rules="[{type:'number',required: true, message: '期望融资不能为空', trigger: 'change'}]">
+                    :rules="[{required: true, message: '期望融资不能为空', trigger: 'change',type: 'number'}]">
                     <el-select v-model="project.pro_finance_scale" placeholder="请选择" class="width360">
                       <el-option
                         v-for="item in scale"
@@ -255,14 +253,8 @@ export default {
           "created_at": null,
           "updated_at": null
         },//轮次
-        pro_area_province:{
-          area_id: "",
-          area_title: ""
-        },//所属地区1省级单位
-        pro_area_city:{
-          area_id: "",
-          area_title: ""
-        },//所属地区2市级单位
+        pro_area_province:"",//所属地区1省级单位
+        pro_area_city:"",//所属地区2市级单位
         pro_finance_scale:'',//期望融资
         pro_finance_stock_after:'',//投后股分
         open_status:'1',//私密设置
@@ -285,7 +277,8 @@ export default {
       scale:[],
       /*项目轮次选项*/
       stage: [],
-      companyTitle:"微天使"
+      companyTitle:"微天使",
+      queryData:{},
 
     }
   },
@@ -346,6 +339,7 @@ export default {
         })
     },//获取所有下拉框的数据
     area1Change(data){
+      this.project.pro_area_city="";
       this.$http.post(this.URL.getArea,{user_id: sessionStorage.user_id, pid:data})
         .then(res=>{
           let data = res.data.data;
@@ -460,19 +454,18 @@ export default {
         });
         this.$router.push({ name: 'editproject', query: {project_id:this.project.project_id}})
       }).catch(() => {
-        this.$router.push({ name: 'indexmyProject', query: {}})
+        this.$router.push({ name: 'indexmyProject'})
       });
     },
     /*全部保存按钮*/
     allSave(){
-
       if(this.submitForm('project')) {
-          this.project.pro_area_province=this.project.pro_area_province.area_id;
-          this.project.pro_area_city=this.project.pro_area_city.area_id;
-          this.project.user_id=sessionStorage.user_id;
+        this.project.user_id=sessionStorage.user_id;
         this.$http.post(this.URL.editProject,this.project)
           .then(res=>{
             console.log(res)
+            let data=res.data;
+            this.project.project_id=data.project_id;
             this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过')
           })
           .catch(err=>{
@@ -486,10 +479,10 @@ export default {
     /*获取数据*/
     loadData(arr){
       let newArr=[];
-      for(let key in arr){
+      for(let i=0; i<arr.length; i++){
         let obj={};
-        obj.value=arr[key];
-        obj.address=key;
+        obj.value=arr[i].company_name;
+        obj.address=arr[i].com_id;
         newArr.push(obj)
       }
       return newArr
@@ -498,12 +491,16 @@ export default {
     querySearchAsync(queryString, cb) {
       this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
         .then(res=>{
+//          this.restaurants=[];
           let data=res.data;
           this.restaurants=this.loadData(data);
-          if(queryString=="") this.restaurants=[]
-            let restaurants = this.restaurants;
+          if(queryString=="") this.restaurants=[];
+          let restaurants = this.restaurants;
           let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-          cb(results);
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(() => {
+            cb(results);
+          }, 500);
         })
         .catch(err=>{
           this.alert("加载失败");
@@ -516,23 +513,37 @@ export default {
       };
     },
     handleSelect(item) {
-      console.log(item);
       this.companyTitle=item.value;
       this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,project_id:item.address})
         .then(res=>{
-          let data=res.data;
-          console.log(data);
+          let data=res.data.data;
+          this.queryData=data;
+          console.log(this.$tool.getToObject(data));
         })
         .catch(err=>{
           this.alert("获取失败");
           console.log(err);
         });
-
      this.dialogVisible=true;
     },
     /*一键同步按钮*/
     sync(){
+      let data=this.project;
+      for(let key in data){
+          if(data[key]!=""){
+
+          }
+      }
       this.dialogVisible = false;
+      data.pro_goodness=this.queryData.pro_goodness;
+      data.pro_area_province=this.queryData.pro_area_province;
+      data.pro_area_city=this.queryData.pro_area_city;
+      data.open_status=this.queryData.open_status.toString();
+      data.pro_finance_scale=this.queryData.pro_finance_scale;
+      data.pro_intro=this.queryData.pro_intro;
+
+//      if(this.queryData.pro_finance_scale==0) this.project.pro_finance_scale="";
+
     }
   },
   mounted() {
@@ -541,6 +552,7 @@ export default {
   created(){
     if(this.planList.length!=0) this.planButton=false;
     else this.planButton=true;
+
     this.getWxProjectCategory();
   }
 

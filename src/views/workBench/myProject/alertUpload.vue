@@ -12,6 +12,7 @@
                    :before-upload="beforeUpload"
                    :on-progress="handleProgress"
                    :data="uploadDate"
+                   :show-file-list="showList"
                    ref="upload"
                    accept=".doc, .ppt, .pdf, .zip, .rar, .npg"
                    drag multiple>
@@ -39,7 +40,7 @@
           :on-error="uploaderror"
           :file-list="fileList"
           :data="uploadDate"
-
+          :show-file-list="showList"
           multiple>
           <div class="inner">
             <el-button slot="trigger" type="primary" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
@@ -90,9 +91,6 @@
               </el-col>
             </el-row>
           </el-form>
-          <br>
-          <el-button @click="resetForm('dateForm')">重置</el-button>
-          <el-button type="primary" @click="submitUpload('dateForm',dateForm)">提交</el-button>
         </div>
         <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
           <el-button @click="cancel">取 消</el-button>
@@ -120,7 +118,8 @@ export default {
       },
       loading:false,
       uploadDate:{user_id: sessionStorage.user_id},//上传所带的额外的参数
-      loadingcheck:''
+      loadingcheck:'',
+      showList:false
     }
   },
   methods: {
@@ -142,7 +141,6 @@ export default {
     uploadsuccess(response, file, fileList){
         this.loadingcheck=true;
         let data=response.data
-//      console.log(data)
         if(response.status_code==2000000) {
           this.addDomain(data.bp_title,data.pro_desc,data.pro_name,data.project_id)
           this.loading=false;
@@ -151,7 +149,6 @@ export default {
         console.log(response)
 
       console.log("success")
-//      console.log(this.loading)
 
     },
     uploaderror(err, file, fileList){
@@ -162,8 +159,7 @@ export default {
     },
     beforeUpload(file){
         if(file.size > 30720000) file.abort()
-        console.log(file.size)
-        console.log("beforeUpload")
+        console.log(file.size);
       /*this.fileChange(file)*/
       this.loading=true;
     },
@@ -185,7 +181,7 @@ export default {
             .then(res=>{
               console.log(res)
               if(res.status===200){
-//                  this.closeLoading();
+                this.dialogUpload2Visible=false;
               }
             }).catch(err=>{
             console.log(err)

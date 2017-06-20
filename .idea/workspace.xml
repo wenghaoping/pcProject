@@ -2,11 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4540dd6-2bbd-423b-9ba0-5f5613f2720c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/App.vue" afterPath="$PROJECT_DIR$/src/App.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/ico.ico" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/css/index.less" afterPath="$PROJECT_DIR$/src/assets/css/index.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/css/onekeyresearch.less" afterPath="$PROJECT_DIR$/src/assets/css/onekeyresearch.less" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/global/url.js" afterPath="$PROJECT_DIR$/src/global/url.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/dialog.vue" afterPath="$PROJECT_DIR$/src/test/dialog.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/workBench/myProject/alertUpload.vue" afterPath="$PROJECT_DIR$/src/views/workBench/myProject/alertUpload.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/workBench/myProject/creatproject.vue" afterPath="$PROJECT_DIR$/src/views/workBench/myProject/creatproject.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/workBench/myProject/editproject.vue" afterPath="$PROJECT_DIR$/src/views/workBench/myProject/editproject.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/workBench/myProject/myproject.vue" afterPath="$PROJECT_DIR$/src/views/workBench/myProject/myproject.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/workBench/myProject/onekeyresearch.vue" afterPath="$PROJECT_DIR$/src/views/workBench/myProject/onekeyresearch.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/workBench/myProject/projectDetails.vue" afterPath="$PROJECT_DIR$/src/views/workBench/myProject/projectDetails.vue" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -27,20 +34,65 @@
     <favorites_list name="pcproject" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.5295047">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="creatproject.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/creatproject.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="278">
+                  <caret line="126" column="65" lean-forward="false" selection-start-line="126" selection-start-column="48" selection-end-line="126" selection-end-column="65" />
+                  <folding>
+                    <element signature="e#10969#11116#0" expanded="false" />
+                    <element signature="e#11783#11990#0" expanded="false" />
+                    <element signature="e#12018#12227#0" expanded="false" />
+                    <element signature="e#12255#12463#0" expanded="false" />
+                    <element signature="e#12494#12708#0" expanded="false" />
+                    <element signature="e#12744#13241#0" expanded="false" />
+                    <element signature="e#13633#13756#0" expanded="false" />
+                    <element signature="e#13805#13959#0" expanded="false" />
+                    <element signature="e#14090#14615#0" expanded="false" />
+                    <element signature="e#14680#14897#0" expanded="false" />
+                    <element signature="e#14937#15417#0" expanded="false" />
+                    <element signature="e#15457#15544#0" expanded="false" />
+                    <element signature="e#15577#15682#0" expanded="false" />
+                    <element signature="e#15696#15737#0" expanded="false" />
+                    <element signature="e#15789#16016#0" expanded="false" />
+                    <element signature="e#16528#17066#0" expanded="false" />
+                    <element signature="e#18085#18198#0" expanded="false" />
+                    <element signature="e#18668#19244#0" expanded="false" />
+                    <element signature="n#style#0;n#!!top" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="projectDetails.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/projectDetails.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="227">
-                  <caret line="759" column="8" lean-forward="true" selection-start-line="759" selection-start-column="8" selection-end-line="759" selection-end-column="8" />
+                <state relative-caret-position="373">
+                  <caret line="765" column="22" lean-forward="true" selection-start-line="765" selection-start-column="22" selection-end-line="765" selection-end-column="22" />
                   <folding>
-                    <element signature="e#20208#27342#0" expanded="false" />
-                    <element signature="e#24610#24829#0" expanded="false" />
-                    <element signature="e#24830#25035#0" expanded="false" />
-                    <element signature="e#27444#29873#0" expanded="false" />
-                    <element signature="e#30126#31096#0" expanded="false" />
+                    <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#3;n#div#2;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="e#12641#20354#0" expanded="false" />
+                    <element signature="e#21514#21698#0" expanded="false" />
+                    <element signature="e#21729#21866#0" expanded="false" />
+                    <element signature="e#21895#22277#0" expanded="false" />
+                    <element signature="e#22304#22689#0" expanded="false" />
+                    <element signature="e#22717#23049#0" expanded="false" />
+                    <element signature="e#23080#23534#0" expanded="false" />
+                    <element signature="e#23584#24873#0" expanded="false" />
+                    <element signature="e#24926#25145#0" expanded="false" />
+                    <element signature="e#25146#25351#0" expanded="false" />
+                    <element signature="e#25387#25874#0" expanded="false" />
+                    <element signature="e#25913#26480#0" expanded="false" />
+                    <element signature="e#26521#26931#0" expanded="false" />
+                    <element signature="e#26970#27229#0" expanded="false" />
+                    <element signature="e#27267#27632#0" expanded="false" />
+                    <element signature="e#27760#30193#0" expanded="false" />
+                    <marker date="1497929048692" expanded="false" signature="10157:10171" ph="..." />
+                    <marker date="1497929048692" expanded="false" signature="13027:13040" ph="..." />
+                    <marker date="1497929048692" expanded="false" signature="13077:13102" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -49,40 +101,207 @@
           <file leaf-file-name="myproject.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/myproject.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="404">
-                  <caret line="374" column="83" lean-forward="false" selection-start-line="374" selection-start-column="73" selection-end-line="374" selection-end-column="83" />
+                <state relative-caret-position="-3486">
+                  <caret line="93" column="47" lean-forward="false" selection-start-line="93" selection-start-column="47" selection-end-line="93" selection-end-column="47" />
                   <folding>
+                    <element signature="n#style#0;n#div#3;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#template#0;n#el-table-column#11;n#el-table#0;n#template#0;n#div#3;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#div#1;n#div#0;n#template#0;n#!!top" expanded="false" />
-                    <element signature="e#13913#14195#0" expanded="false" />
-                    <element signature="e#14973#15020#0" expanded="false" />
-                    <element signature="e#15068#15533#0" expanded="false" />
-                    <element signature="e#15448#15524#0" expanded="false" />
-                    <element signature="e#15642#15862#0" expanded="false" />
-                    <element signature="e#15958#16153#0" expanded="false" />
-                    <element signature="e#16801#16977#0" expanded="false" />
-                    <element signature="e#17136#17862#0" expanded="false" />
-                    <element signature="e#17908#17996#0" expanded="false" />
-                    <element signature="e#18028#19895#0" expanded="false" />
-                    <element signature="e#18178#19792#0" expanded="false" />
-                    <element signature="e#19925#21046#0" expanded="false" />
-                    <element signature="e#21090#21293#0" expanded="false" />
-                    <element signature="e#21368#21504#0" expanded="false" />
-                    <element signature="e#21544#21677#0" expanded="false" />
-                    <element signature="e#21716#21849#0" expanded="false" />
-                    <element signature="e#21889#22108#0" expanded="false" />
-                    <element signature="e#22147#23033#0" expanded="false" />
-                    <element signature="e#23090#23098#0" expanded="false" />
+                    <element signature="e#12627#13071#0" expanded="false" />
+                    <element signature="e#13930#14212#0" expanded="false" />
+                    <element signature="e#14395#14617#0" expanded="false" />
+                    <element signature="e#14661#14839#0" expanded="false" />
+                    <element signature="e#14870#14930#0" expanded="false" />
+                    <element signature="e#14979#15026#0" expanded="false" />
+                    <element signature="e#15074#15539#0" expanded="false" />
+                    <element signature="e#15454#15530#0" expanded="false" />
+                    <element signature="e#15734#15954#0" expanded="false" />
+                    <element signature="e#16050#16245#0" expanded="false" />
+                    <element signature="e#16893#17069#0" expanded="false" />
+                    <element signature="e#17226#17952#0" expanded="false" />
+                    <element signature="e#17998#18086#0" expanded="false" />
+                    <element signature="e#18118#19985#0" expanded="false" />
+                    <element signature="e#18268#19882#0" expanded="false" />
+                    <element signature="e#20015#21136#0" expanded="false" />
+                    <element signature="e#21180#21383#0" expanded="false" />
+                    <element signature="e#21458#21594#0" expanded="false" />
+                    <element signature="e#21634#21767#0" expanded="false" />
+                    <element signature="e#21806#21939#0" expanded="false" />
+                    <element signature="e#21979#22198#0" expanded="false" />
+                    <element signature="e#23180#23188#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="index.less" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/assets/css/index.less">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="332">
+                  <caret line="196" column="27" lean-forward="true" selection-start-line="196" selection-start-column="27" selection-end-line="196" selection-end-column="27" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="onekeyresearch.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/onekeyresearch.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="357">
+                  <caret line="17" column="51" lean-forward="true" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
+                  <folding>
+                    <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#0;n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#1;n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#0;n#div#1;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#1;n#div#1;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#4;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#7;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#ul#0;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#li#0;n#ul#1;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#li#0;n#ul#2;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#li#0;n#ul#3;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="e#13474#13610#0" expanded="false" />
+                    <element signature="e#13612#13743#0" expanded="false" />
+                    <element signature="e#13759#14031#0" expanded="false" />
+                    <element signature="e#14146#14290#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="onekeyresearch.less" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/assets/css/onekeyresearch.less">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="21">
+                  <caret line="346" column="13" lean-forward="false" selection-start-line="335" selection-start-column="12" selection-end-line="346" selection-end-column="13" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="editproject.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/editproject.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="392">
+                  <caret line="244" column="29" lean-forward="true" selection-start-line="244" selection-start-column="29" selection-end-line="244" selection-end-column="29" />
+                  <folding>
+                    <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#el-collapse-transition#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#el-autocomplete#0;n#el-form-item#0;n#el-col#1;n#el-row#0;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#span#0;n#el-row#0;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#el-row#4;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#5;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#0;n#div#5;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#el-collapse-transition#0;n#div#5;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#0;n#div#7;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#11;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#el-row#1;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#11;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#el-row#2;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#11;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#3;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#4;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#5;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#div#6;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="e#37497#37633#0" expanded="false" />
+                    <element signature="e#38877#39265#0" expanded="false" />
+                    <element signature="e#39765#40193#0" expanded="false" />
+                    <element signature="e#40214#40423#0" expanded="false" />
+                    <element signature="e#40959#40987#0" expanded="false" />
+                    <element signature="e#41850#44203#0" expanded="false" />
+                    <element signature="e#43284#43478#0" expanded="false" />
+                    <element signature="e#44275#44482#0" expanded="false" />
+                    <element signature="e#44510#44719#0" expanded="false" />
+                    <element signature="e#44747#44955#0" expanded="false" />
+                    <element signature="e#44986#45200#0" expanded="false" />
+                    <element signature="e#45236#45493#0" expanded="false" />
+                    <element signature="e#45524#45728#0" expanded="false" />
+                    <element signature="e#45764#45983#0" expanded="false" />
+                    <element signature="e#46022#46865#0" expanded="false" />
+                    <element signature="e#46900#47162#0" expanded="false" />
+                    <element signature="e#47212#47367#0" expanded="false" />
+                    <element signature="e#47401#47533#0" expanded="false" />
+                    <element signature="e#47564#47676#0" expanded="false" />
+                    <element signature="e#47706#47824#0" expanded="false" />
+                    <element signature="e#47857#47995#0" expanded="false" />
+                    <element signature="e#51454#51579#0" expanded="false" />
+                    <element signature="e#51628#51782#0" expanded="false" />
+                    <element signature="e#51835#51874#0" expanded="false" />
+                    <element signature="e#51913#52438#0" expanded="false" />
+                    <element signature="e#52503#52720#0" expanded="false" />
+                    <element signature="e#52760#53240#0" expanded="false" />
+                    <element signature="e#53280#53489#0" expanded="false" />
+                    <element signature="e#53591#53788#0" expanded="false" />
+                    <element signature="e#53826#53865#0" expanded="false" />
+                    <element signature="e#53891#54537#0" expanded="false" />
+                    <element signature="e#54581#55197#0" expanded="false" />
+                    <element signature="e#55273#55477#0" expanded="false" />
+                    <element signature="e#55519#55551#0" expanded="false" />
+                    <element signature="e#55592#56035#0" expanded="false" />
+                    <element signature="e#56117#56315#0" expanded="false" />
+                    <element signature="e#56334#56462#0" expanded="false" />
+                    <element signature="e#56479#56509#0" expanded="false" />
+                    <element signature="e#56526#56557#0" expanded="false" />
+                    <element signature="e#56571#56612#0" expanded="false" />
+                    <element signature="e#56650#56864#0" expanded="false" />
+                    <element signature="e#56924#57601#0" expanded="false" />
+                    <element signature="e#57638#57751#0" expanded="false" />
+                    <element signature="e#57776#58195#0" expanded="false" />
+                    <element signature="e#58233#58311#0" expanded="false" />
+                    <element signature="e#58348#58557#0" expanded="false" />
+                    <element signature="e#58596#59196#0" expanded="false" />
+                    <element signature="e#59217#59730#0" expanded="false" />
+                    <element signature="e#59760#60275#0" expanded="false" />
+                    <element signature="e#60325#60843#0" expanded="false" />
+                    <element signature="e#60861#61052#0" expanded="false" />
+                    <element signature="e#61096#61594#0" expanded="false" />
+                    <element signature="e#61613#61793#0" expanded="false" />
+                    <element signature="e#61835#62321#0" expanded="false" />
+                    <element signature="e#62341#62466#0" expanded="false" />
+                    <element signature="e#62519#62714#0" expanded="false" />
+                    <element signature="e#62738#62808#0" expanded="false" />
+                    <element signature="e#62839#64778#0" expanded="false" />
+                    <element signature="e#64809#64896#0" expanded="false" />
+                    <element signature="e#64929#65034#0" expanded="false" />
+                    <element signature="e#65488#67480#0" expanded="false" />
+                    <element signature="e#65690#66168#0" expanded="false" />
+                    <element signature="e#66638#67043#0" expanded="false" />
+                    <element signature="e#67071#67474#0" expanded="false" />
+                    <element signature="n#style#0;n#!!top" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="url.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/global/url.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="546">
+                  <caret line="28" column="47" lean-forward="true" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
           <file leaf-file-name="editproject.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/editproject.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="5068">
-                  <caret line="1454" column="29" lean-forward="true" selection-start-line="1454" selection-start-column="29" selection-end-line="1454" selection-end-column="29" />
+                <state relative-caret-position="357">
+                  <caret line="259" column="33" lean-forward="true" selection-start-line="259" selection-start-column="33" selection-end-line="259" selection-end-column="33" />
                   <folding>
                     <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#el-collapse-transition#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -95,7 +314,6 @@
                     <element signature="n#div#0;n#div#5;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#el-collapse-transition#0;n#div#5;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#div#0;n#div#7;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-                    <element signature="n#el-collapse-transition#0;n#div#7;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#div#9;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#div#11;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#el-row#1;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#11;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
@@ -108,162 +326,70 @@
                     <element signature="n#div#6;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="false" />
-                    <element signature="e#37768#37904#0" expanded="false" />
-                    <element signature="e#38609#38739#0" expanded="false" />
-                    <element signature="e#39144#39532#0" expanded="false" />
-                    <element signature="e#39764#39999#0" expanded="false" />
-                    <element signature="e#40032#40460#0" expanded="false" />
-                    <element signature="e#40481#40690#0" expanded="false" />
-                    <element signature="e#41226#41254#0" expanded="false" />
-                    <element signature="e#42053#44406#0" expanded="false" />
-                    <element signature="e#43487#43681#0" expanded="false" />
-                    <element signature="e#44478#44685#0" expanded="false" />
-                    <element signature="e#44713#44922#0" expanded="false" />
-                    <element signature="e#44950#45158#0" expanded="false" />
-                    <element signature="e#45189#45403#0" expanded="false" />
-                    <element signature="e#45439#45696#0" expanded="false" />
-                    <element signature="e#45727#45931#0" expanded="false" />
-                    <element signature="e#45967#46186#0" expanded="false" />
-                    <element signature="e#46225#47068#0" expanded="false" />
-                    <element signature="e#47103#47363#0" expanded="false" />
-                    <element signature="e#47413#47568#0" expanded="false" />
-                    <element signature="e#47602#47734#0" expanded="false" />
-                    <element signature="e#47765#47877#0" expanded="false" />
-                    <element signature="e#47907#48025#0" expanded="false" />
-                    <element signature="e#48058#48196#0" expanded="false" />
-                    <element signature="e#48229#51349#0" expanded="false" />
-                    <element signature="e#51408#51533#0" expanded="false" />
-                    <element signature="e#51582#51736#0" expanded="false" />
-                    <element signature="e#51789#51828#0" expanded="false" />
-                    <element signature="e#51867#52392#0" expanded="false" />
-                    <element signature="e#52457#52674#0" expanded="false" />
-                    <element signature="e#52714#53194#0" expanded="false" />
-                    <element signature="e#53234#53443#0" expanded="false" />
-                    <element signature="e#53545#53742#0" expanded="false" />
-                    <element signature="e#53780#53819#0" expanded="false" />
-                    <element signature="e#53845#54491#0" expanded="false" />
-                    <element signature="e#54535#55151#0" expanded="false" />
-                    <element signature="e#55227#55431#0" expanded="false" />
-                    <element signature="e#55546#55989#0" expanded="false" />
-                    <element signature="e#56071#56269#0" expanded="false" />
-                    <element signature="e#56288#56416#0" expanded="false" />
-                    <element signature="e#56433#56463#0" expanded="false" />
-                    <element signature="e#56480#56511#0" expanded="false" />
-                    <element signature="e#56525#56566#0" expanded="false" />
-                    <element signature="e#56845#57384#0" expanded="false" />
-                    <element signature="e#57981#58059#0" expanded="false" />
-                    <element signature="e#58096#58305#0" expanded="false" />
-                    <element signature="e#58344#58944#0" expanded="false" />
-                    <element signature="e#58965#59478#0" expanded="false" />
-                    <element signature="e#59508#60023#0" expanded="false" />
-                    <element signature="e#60073#60520#0" expanded="false" />
-                    <element signature="e#60538#60729#0" expanded="false" />
-                    <element signature="e#60773#61239#0" expanded="false" />
-                    <element signature="e#61258#61438#0" expanded="false" />
-                    <element signature="e#61480#61934#0" expanded="false" />
-                    <element signature="e#61954#62079#0" expanded="false" />
-                    <element signature="e#62132#62391#0" expanded="false" />
-                    <element signature="e#62415#62485#0" expanded="false" />
-                    <element signature="e#62515#64574#0" expanded="false" />
-                    <element signature="e#64605#64692#0" expanded="false" />
-                    <element signature="e#64725#64830#0" expanded="false" />
-                    <element signature="e#64884#65228#0" expanded="false" />
-                    <element signature="e#65257#67249#0" expanded="false" />
-                    <element signature="e#65459#65937#0" expanded="false" />
-                    <element signature="e#66407#66812#0" expanded="false" />
-                    <element signature="e#66840#67243#0" expanded="false" />
-                    <element signature="e#67276#67317#0" expanded="false" />
-                    <element signature="n#style#0;n#!!top" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="App.vue" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/App.vue">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="614">
-                  <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-                  <folding>
-                    <element signature="n#header#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-                    <element signature="n#style#0;n#!!top" expanded="false" />
-                    <element signature="e#2111#2812#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="url.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/global/url.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="588">
-                  <caret line="30" column="15" lean-forward="false" selection-start-line="30" selection-start-column="2" selection-end-line="30" selection-end-column="15" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="alertUpload.vue" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/alertUpload.vue">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="21">
-                  <caret line="192" column="12" lean-forward="false" selection-start-line="192" selection-start-column="12" selection-end-line="192" selection-end-column="12" />
-                  <folding>
-                    <element signature="e#4953#4994#0" expanded="false" />
-                    <element signature="e#5063#5350#0" expanded="false" />
-                    <element signature="e#5886#5918#0" expanded="false" />
-                    <element signature="e#6162#6331#0" expanded="false" />
-                    <element signature="e#7017#7065#0" expanded="false" />
-                    <element signature="e#7105#7631#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="creatproject.vue" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/creatproject.vue">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="446">
-                  <caret line="530" column="29" lean-forward="true" selection-start-line="530" selection-start-column="29" selection-end-line="530" selection-end-column="29" />
-                  <folding>
-                    <element signature="e#11172#11319#0" expanded="false" />
-                    <element signature="e#11351#11410#0" expanded="false" />
-                    <element signature="e#11445#11504#0" expanded="false" />
-                    <element signature="e#16329#16768#0" expanded="false" />
-                    <element signature="e#18260#18373#0" expanded="false" />
-                    <element signature="n#style#0;n#!!top" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="creatproject.vue" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/creatproject.vue">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="353">
-                  <caret line="533" column="11" lean-forward="true" selection-start-line="533" selection-start-column="11" selection-end-line="533" selection-end-column="11" />
-                  <folding>
-                    <element signature="e#11172#11319#0" expanded="false" />
-                    <element signature="e#11351#11410#0" expanded="false" />
-                    <element signature="e#11445#11504#0" expanded="false" />
-                    <element signature="e#12079#12286#0" expanded="false" />
-                    <element signature="e#12314#12523#0" expanded="false" />
-                    <element signature="e#12551#12759#0" expanded="false" />
-                    <element signature="e#12790#13004#0" expanded="false" />
-                    <element signature="e#13040#13537#0" expanded="false" />
-                    <element signature="e#13572#13832#0" expanded="false" />
-                    <element signature="e#13892#14015#0" expanded="false" />
-                    <element signature="e#14064#14218#0" expanded="false" />
-                    <element signature="e#14349#14874#0" expanded="false" />
-                    <element signature="e#14939#15156#0" expanded="false" />
-                    <element signature="e#15196#15676#0" expanded="false" />
-                    <element signature="e#16329#16768#0" expanded="false" />
-                    <element signature="e#17441#17622#0" expanded="false" />
-                    <element signature="e#17682#18223#0" expanded="false" />
+                    <element signature="e#37497#37633#0" expanded="false" />
+                    <element signature="e#38877#39265#0" expanded="false" />
+                    <element signature="e#39765#40193#0" expanded="false" />
+                    <element signature="e#40214#40423#0" expanded="false" />
+                    <element signature="e#40959#40987#0" expanded="false" />
+                    <element signature="e#41850#44203#0" expanded="false" />
+                    <element signature="e#43284#43478#0" expanded="false" />
+                    <element signature="e#44275#44482#0" expanded="false" />
+                    <element signature="e#44510#44719#0" expanded="false" />
+                    <element signature="e#44747#44955#0" expanded="false" />
+                    <element signature="e#44986#45200#0" expanded="false" />
+                    <element signature="e#45236#45493#0" expanded="false" />
+                    <element signature="e#45524#45728#0" expanded="false" />
+                    <element signature="e#45764#45983#0" expanded="false" />
+                    <element signature="e#46022#46865#0" expanded="false" />
+                    <element signature="e#46900#47162#0" expanded="false" />
+                    <element signature="e#47212#47367#0" expanded="false" />
+                    <element signature="e#47401#47533#0" expanded="false" />
+                    <element signature="e#47564#47676#0" expanded="false" />
+                    <element signature="e#47706#47824#0" expanded="false" />
+                    <element signature="e#47857#47995#0" expanded="false" />
+                    <element signature="e#51454#51579#0" expanded="false" />
+                    <element signature="e#51628#51782#0" expanded="false" />
+                    <element signature="e#51835#51874#0" expanded="false" />
+                    <element signature="e#51913#52438#0" expanded="false" />
+                    <element signature="e#52503#52720#0" expanded="false" />
+                    <element signature="e#52760#53240#0" expanded="false" />
+                    <element signature="e#53280#53489#0" expanded="false" />
+                    <element signature="e#53591#53788#0" expanded="false" />
+                    <element signature="e#53826#53865#0" expanded="false" />
+                    <element signature="e#53891#54537#0" expanded="false" />
+                    <element signature="e#54581#55197#0" expanded="false" />
+                    <element signature="e#55273#55477#0" expanded="false" />
+                    <element signature="e#55519#55551#0" expanded="false" />
+                    <element signature="e#55592#56035#0" expanded="false" />
+                    <element signature="e#56117#56315#0" expanded="false" />
+                    <element signature="e#56334#56462#0" expanded="false" />
+                    <element signature="e#56479#56509#0" expanded="false" />
+                    <element signature="e#56526#56557#0" expanded="false" />
+                    <element signature="e#56571#56612#0" expanded="false" />
+                    <element signature="e#56650#56864#0" expanded="false" />
+                    <element signature="e#56924#57601#0" expanded="false" />
+                    <element signature="e#57638#57751#0" expanded="false" />
+                    <element signature="e#57776#58195#0" expanded="false" />
+                    <element signature="e#58233#58311#0" expanded="false" />
+                    <element signature="e#58348#58557#0" expanded="false" />
+                    <element signature="e#58596#59196#0" expanded="false" />
+                    <element signature="e#59217#59730#0" expanded="false" />
+                    <element signature="e#59760#60275#0" expanded="false" />
+                    <element signature="e#60325#60843#0" expanded="false" />
+                    <element signature="e#60861#61052#0" expanded="false" />
+                    <element signature="e#61096#61594#0" expanded="false" />
+                    <element signature="e#61613#61793#0" expanded="false" />
+                    <element signature="e#61835#62321#0" expanded="false" />
+                    <element signature="e#62341#62466#0" expanded="false" />
+                    <element signature="e#62519#62714#0" expanded="false" />
+                    <element signature="e#62738#62808#0" expanded="false" />
+                    <element signature="e#62839#64778#0" expanded="false" />
+                    <element signature="e#64809#64896#0" expanded="false" />
+                    <element signature="e#64929#65034#0" expanded="false" />
+                    <element signature="e#65488#67480#0" expanded="false" />
+                    <element signature="e#65690#66168#0" expanded="false" />
+                    <element signature="e#66638#67043#0" expanded="false" />
+                    <element signature="e#67071#67474#0" expanded="false" />
                     <element signature="n#style#0;n#!!top" expanded="false" />
                   </folding>
                 </state>
@@ -287,36 +413,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>handleEdit</find>
-      <find>pro_industry</find>
-      <find>project/editProject</find>
-      <find>pro_finance_scale</find>
-      <find>所属升级</find>
-      <find>area1Change</find>
-      <find>私密</find>
-      <find>is_exclusive</find>
+      <find>contain-center</find>
+      <find>item-lists</find>
+      <find>mid-tag</find>
+      <find>el-dialog__header</find>
+      <find>border</find>
+      <find>line</find>
+      <find>doc</find>
+      <find>修改公司</find>
+      <find>selectCompany</find>
+      <find>里程碑</find>
+      <find>pro-txt-1</find>
+      <find>v-progress-txt</find>
+      <find>pro-txt-2</find>
+      <find>goToEdit</find>
+      <find>radio_line</find>
+      <find>getOneProject</find>
+      <find>v-progress-table</find>
+      <find>pro_area_city</find>
+      <find>加载</find>
+      <find>show-file-list</find>
+      <find>pro_history_finance</find>
       <find>项目轮次</find>
-      <find>uploadDate</find>
-      <find>planButton</find>
-      <find>open</find>
-      <find>uploadShow</find>
-      <find>planuploaderror</find>
-      <find>pro_name</find>
       <find>pro_stage</find>
-      <find>pro_finance_stage</find>
-      <find>el-dialog</find>
-      <find>公司名称</find>
-      <find>pro_company_name</find>
-      <find>alert</find>
-      <find>querySearchAsync</find>
-      <find>cb</find>
-      <find>list</find>
-      <find>restaurants</find>
-      <find>loadAll</find>
-      <find>company</find>
-      <find>states</find>
-      <find>companyList</find>
-      <find>sync</find>
+      <find>planList</find>
+      <find>pro_total_score</find>
+      <find>提交</find>
+      <find>pro_area_province</find>
+      <find>pro_area</find>
+      <find>项目来源</find>
+      <find>title</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -325,11 +451,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/workBench/myProject/research.vue" />
-        <option value="$PROJECT_DIR$/src/components/workBench/index.vue" />
         <option value="$PROJECT_DIR$/src/components/SmallRoutine/index.vue" />
         <option value="$PROJECT_DIR$/node_modules/_element-ui@1.3.4@element-ui/lib/theme-default/index.css" />
-        <option value="$PROJECT_DIR$/src/test/alertUpload.vue" />
         <option value="$PROJECT_DIR$/src/test/createForm.vue" />
         <option value="$PROJECT_DIR$/src/components/base/topNav.vue" />
         <option value="$PROJECT_DIR$/src/test/type.js" />
@@ -347,7 +470,6 @@
         <option value="$PROJECT_DIR$/src/components/workBench/myProject/downloadEchart.vue" />
         <option value="$PROJECT_DIR$/src/assets/js/url.js" />
         <option value="$PROJECT_DIR$/src/assets/css/edit.less" />
-        <option value="$PROJECT_DIR$/src/assets/css/onekeyresearch.less" />
         <option value="$PROJECT_DIR$/src/components/workBench/myProject/projectDetails.vue" />
         <option value="$PROJECT_DIR$/src/components/workBench/myProject/onekeyresearch.vue" />
         <option value="$PROJECT_DIR$/src/test/jump.vue" />
@@ -359,23 +481,27 @@
         <option value="$PROJECT_DIR$/src/views/workBench/myProject/business.vue" />
         <option value="$PROJECT_DIR$/src/test/watch.vue" />
         <option value="$PROJECT_DIR$/src/test/selectbox.vue" />
-        <option value="$PROJECT_DIR$/src/test/dialog.vue" />
         <option value="$PROJECT_DIR$/src/test/dialog2.vue" />
         <option value="$PROJECT_DIR$/src/global/tool.js" />
         <option value="$PROJECT_DIR$/src/main.js" />
         <option value="$PROJECT_DIR$/src/test/1211.js" />
-        <option value="$PROJECT_DIR$/src/assets/css/index.less" />
         <option value="$PROJECT_DIR$/build/webpack.base.conf.js" />
         <option value="$PROJECT_DIR$/src/config/router_config.js" />
         <option value="$PROJECT_DIR$/src/test/编辑项目数据.js" />
-        <option value="$PROJECT_DIR$/src/views/workBench/myProject/alertUpload.vue" />
         <option value="$PROJECT_DIR$/config/index.js" />
-        <option value="$PROJECT_DIR$/src/views/workBench/myProject/myproject.vue" />
-        <option value="$PROJECT_DIR$/src/views/workBench/myProject/projectDetails.vue" />
         <option value="$PROJECT_DIR$/src/App.vue" />
+        <option value="$PROJECT_DIR$/src/test/dialog.vue" />
+        <option value="$PROJECT_DIR$/src/views/workBench/myProject/onekeyresearch.vue" />
+        <option value="$PROJECT_DIR$/src/assets/css/onekeyresearch.less" />
         <option value="$PROJECT_DIR$/src/global/url.js" />
         <option value="$PROJECT_DIR$/src/views/workBench/myProject/creatproject.vue" />
+        <option value="$PROJECT_DIR$/src/views/workBench/myProject/myproject.vue" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/src/test/alertUpload.vue" />
+        <option value="$PROJECT_DIR$/src/views/workBench/myProject/alertUpload.vue" />
+        <option value="$PROJECT_DIR$/src/views/workBench/myProject/projectDetails.vue" />
         <option value="$PROJECT_DIR$/src/views/workBench/myProject/editproject.vue" />
+        <option value="$PROJECT_DIR$/src/assets/css/index.less" />
       </list>
     </option>
   </component>
@@ -553,14 +679,72 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pcproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pcproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pcproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pcproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pcproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pcproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -573,19 +757,19 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\Project\GitHubProject\pcproject\src\assets\images" />
+      <recent name="H:\Project\GitHubProject\pcproject\static" />
+      <recent name="H:\Project\GitHubProject\pcproject\src\assets" />
+      <recent name="H:\Project\GitHubProject\pcproject\src\components\workBench\myProject" />
+      <recent name="H:\Project\GitHubProject\pcproject\src\assets\logo" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="H:\Project\GitHubProject\pcproject\static" />
       <recent name="H:\Project\GitHubProject\pcproject\src\assets\images" />
       <recent name="H:\Project\GitHubProject\pcproject\src\test" />
       <recent name="H:\Project\GitHubProject\pcproject\src\components" />
       <recent name="H:\Project\GitHubProject\pcproject\src\view" />
-      <recent name="H:\Project\GitHubProject\pcproject\src\global" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="H:\Project\GitHubProject\pcproject\static" />
-      <recent name="H:\Project\GitHubProject\pcproject\src\assets\images" />
-      <recent name="H:\Project\GitHubProject\pcproject\src\assets" />
-      <recent name="H:\Project\GitHubProject\pcproject\src\components\workBench\myProject" />
-      <recent name="H:\Project\GitHubProject\pcproject\src\assets\logo" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -709,11 +893,13 @@
       <workItem from="1497490572202" duration="27618000" />
       <workItem from="1497577320223" duration="26553000" />
       <workItem from="1497678976410" duration="21363000" />
+      <workItem from="1497836084241" duration="28167000" />
+      <workItem from="1497923439868" duration="9873000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="583142000" />
+    <option name="totallyTimeSpent" value="621182000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -726,15 +912,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.243338" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1654373" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286334" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299566" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329718" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18980478" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18872017" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -745,25 +932,6 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3275488" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286334" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299566" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329718" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18980478" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.243338" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3275488" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -773,7 +941,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="24" />
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -799,13 +967,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/assets/css/myproject.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="78" column="19" lean-forward="true" selection-start-line="78" selection-start-column="19" selection-end-line="78" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/assets/css/base.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="369">
@@ -820,62 +981,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/assets/css/onekeyresearch.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2626">
-          <caret line="358" column="31" lean-forward="false" selection-start-line="358" selection-start-column="31" selection-end-line="358" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dist/static/img/header.a050f1a.png" />
     <entry file="file://$PROJECT_DIR$/dist/index.html" />
-    <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/onekeyresearch.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4290">
-          <caret line="380" column="20" lean-forward="true" selection-start-line="380" selection-start-column="20" selection-end-line="380" selection-end-column="20" />
-          <folding>
-            <element signature="n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#4;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#business#0;n#div#2;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#2;n#div#0;n#div#1;n#div#0;n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#2;n#div#2;n#div#1;n#div#0;n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#2;n#div#4;n#div#1;n#div#0;n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#2;n#div#6;n#div#1;n#div#0;n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#1;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#1;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#4;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#5;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#7;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#el-tag#0;n#span#1;n#div#0;n#div#1;n#div#7;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#ul#0;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#li#0;n#ul#1;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#0;n#div#2;n#li#0;n#ul#1;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#li#0;n#ul#2;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#0;n#div#2;n#li#0;n#ul#2;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#li#0;n#ul#3;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#span#0;n#div#2;n#li#0;n#ul#3;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="e#13302#13351#0" expanded="false" />
-            <element signature="e#13619#13755#0" expanded="false" />
-            <element signature="e#13757#13888#0" expanded="false" />
-            <element signature="e#14291#14435#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/assets/js/loading.js" />
     <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/index.vue">
       <provider selected="true" editor-type-id="text-editor">
@@ -919,29 +1026,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/alertUpload.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="102" column="10" lean-forward="false" selection-start-line="102" selection-start-column="10" selection-end-line="102" selection-end-column="10" />
-          <folding>
-            <element signature="e#4114#4379#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/dialog.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="9" column="33" lean-forward="true" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/dialog2.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="676">
           <caret line="26" column="39" lean-forward="false" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -949,13 +1037,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
           <caret line="4" column="8" lean-forward="false" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1004,13 +1085,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/assets/css/index.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="390" column="7" lean-forward="false" selection-start-line="390" selection-start-column="7" selection-end-line="390" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/config/api.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -1022,20 +1096,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="10" column="10" lean-forward="false" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#47#0" expanded="false" />
-            <element signature="e#170#2052#0" expanded="false" />
-            <element signature="e#2067#2904#0" expanded="false" />
-            <element signature="e#2919#4879#0" expanded="false" />
-            <element signature="e#4897#6593#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/config/router_config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="54" column="70" lean-forward="false" selection-start-line="54" selection-start-column="59" selection-end-line="54" selection-end-column="70" />
         </state>
       </provider>
     </entry>
@@ -1129,10 +1189,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/dialog.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="651">
+          <caret line="34" column="11" lean-forward="true" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config/router_config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="651">
+          <caret line="32" column="36" lean-forward="false" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/assets/css/myproject.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="18" column="7" lean-forward="false" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="614">
-          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+        <state relative-caret-position="1029">
+          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
           <folding>
             <element signature="n#header#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#!!top" expanded="false" />
@@ -1141,77 +1224,180 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/projectDetails.vue">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="759" column="8" lean-forward="true" selection-start-line="759" selection-start-column="8" selection-end-line="759" selection-end-column="8" />
+        <state relative-caret-position="252">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/global/url.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="28" column="47" lean-forward="true" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/assets/css/onekeyresearch.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="346" column="13" lean-forward="false" selection-start-line="335" selection-start-column="12" selection-end-line="346" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/alertUpload.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="88" selection-end-column="91" />
           <folding>
-            <element signature="e#20208#27342#0" expanded="false" />
-            <element signature="e#24610#24829#0" expanded="false" />
-            <element signature="e#24830#25035#0" expanded="false" />
-            <element signature="e#27444#29873#0" expanded="false" />
-            <element signature="e#30126#31096#0" expanded="false" />
+            <element signature="e#4114#4379#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/myproject.vue">
+    <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/onekeyresearch.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="374" column="83" lean-forward="false" selection-start-line="374" selection-start-column="73" selection-end-line="374" selection-end-column="83" />
+        <state relative-caret-position="357">
+          <caret line="17" column="51" lean-forward="true" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
           <folding>
-            <element signature="n#template#0;n#el-table-column#11;n#el-table#0;n#template#0;n#div#3;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="e#13913#14195#0" expanded="false" />
-            <element signature="e#14973#15020#0" expanded="false" />
-            <element signature="e#15068#15533#0" expanded="false" />
-            <element signature="e#15448#15524#0" expanded="false" />
-            <element signature="e#15642#15862#0" expanded="false" />
-            <element signature="e#15958#16153#0" expanded="false" />
-            <element signature="e#16801#16977#0" expanded="false" />
-            <element signature="e#17136#17862#0" expanded="false" />
-            <element signature="e#17908#17996#0" expanded="false" />
-            <element signature="e#18028#19895#0" expanded="false" />
-            <element signature="e#18178#19792#0" expanded="false" />
-            <element signature="e#19925#21046#0" expanded="false" />
-            <element signature="e#21090#21293#0" expanded="false" />
-            <element signature="e#21368#21504#0" expanded="false" />
-            <element signature="e#21544#21677#0" expanded="false" />
-            <element signature="e#21716#21849#0" expanded="false" />
-            <element signature="e#21889#22108#0" expanded="false" />
-            <element signature="e#22147#23033#0" expanded="false" />
-            <element signature="e#23090#23098#0" expanded="false" />
+            <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#1;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#1;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#1;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#4;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#7;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#ul#0;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#li#0;n#ul#1;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#li#0;n#ul#2;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#li#0;n#ul#3;n#div#8;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="e#13474#13610#0" expanded="false" />
+            <element signature="e#13612#13743#0" expanded="false" />
+            <element signature="e#13759#14031#0" expanded="false" />
+            <element signature="e#14146#14290#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/alertUpload.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="192" column="12" lean-forward="false" selection-start-line="192" selection-start-column="12" selection-end-line="192" selection-end-column="12" />
+        <state relative-caret-position="462">
+          <caret line="82" column="23" lean-forward="true" selection-start-line="82" selection-start-column="23" selection-end-line="82" selection-end-column="23" />
           <folding>
-            <element signature="e#4953#4994#0" expanded="false" />
-            <element signature="e#5063#5350#0" expanded="false" />
-            <element signature="e#5886#5918#0" expanded="false" />
-            <element signature="e#6162#6331#0" expanded="false" />
-            <element signature="e#7017#7065#0" expanded="false" />
-            <element signature="e#7105#7631#0" expanded="false" />
+            <element signature="e#4881#4922#0" expanded="false" />
+            <element signature="e#4991#5278#0" expanded="false" />
+            <element signature="e#5754#5786#0" expanded="false" />
+            <element signature="e#5995#6164#0" expanded="false" />
+            <element signature="e#6858#6906#0" expanded="false" />
+            <element signature="e#6946#7472#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/global/url.js">
+    <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/myproject.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="30" column="15" lean-forward="false" selection-start-line="30" selection-start-column="2" selection-end-line="30" selection-end-column="15" />
-          <folding />
+        <state relative-caret-position="-3486">
+          <caret line="93" column="47" lean-forward="false" selection-start-line="93" selection-start-column="47" selection-end-line="93" selection-end-column="47" />
+          <folding>
+            <element signature="n#style#0;n#div#3;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#template#0;n#el-table-column#11;n#el-table#0;n#template#0;n#div#3;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="e#12627#13071#0" expanded="false" />
+            <element signature="e#13930#14212#0" expanded="false" />
+            <element signature="e#14395#14617#0" expanded="false" />
+            <element signature="e#14661#14839#0" expanded="false" />
+            <element signature="e#14870#14930#0" expanded="false" />
+            <element signature="e#14979#15026#0" expanded="false" />
+            <element signature="e#15074#15539#0" expanded="false" />
+            <element signature="e#15454#15530#0" expanded="false" />
+            <element signature="e#15734#15954#0" expanded="false" />
+            <element signature="e#16050#16245#0" expanded="false" />
+            <element signature="e#16893#17069#0" expanded="false" />
+            <element signature="e#17226#17952#0" expanded="false" />
+            <element signature="e#17998#18086#0" expanded="false" />
+            <element signature="e#18118#19985#0" expanded="false" />
+            <element signature="e#18268#19882#0" expanded="false" />
+            <element signature="e#20015#21136#0" expanded="false" />
+            <element signature="e#21180#21383#0" expanded="false" />
+            <element signature="e#21458#21594#0" expanded="false" />
+            <element signature="e#21634#21767#0" expanded="false" />
+            <element signature="e#21806#21939#0" expanded="false" />
+            <element signature="e#21979#22198#0" expanded="false" />
+            <element signature="e#23180#23188#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/projectDetails.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="765" column="22" lean-forward="true" selection-start-line="765" selection-start-column="22" selection-end-line="765" selection-end-column="22" />
+          <folding>
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#3;n#div#2;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#12641#20354#0" expanded="false" />
+            <element signature="e#21514#21698#0" expanded="false" />
+            <element signature="e#21729#21866#0" expanded="false" />
+            <element signature="e#21895#22277#0" expanded="false" />
+            <element signature="e#22304#22689#0" expanded="false" />
+            <element signature="e#22717#23049#0" expanded="false" />
+            <element signature="e#23080#23534#0" expanded="false" />
+            <element signature="e#23584#24873#0" expanded="false" />
+            <element signature="e#24926#25145#0" expanded="false" />
+            <element signature="e#25146#25351#0" expanded="false" />
+            <element signature="e#25387#25874#0" expanded="false" />
+            <element signature="e#25913#26480#0" expanded="false" />
+            <element signature="e#26521#26931#0" expanded="false" />
+            <element signature="e#26970#27229#0" expanded="false" />
+            <element signature="e#27267#27632#0" expanded="false" />
+            <element signature="e#27760#30193#0" expanded="false" />
+            <marker date="1497929048692" expanded="false" signature="10157:10171" ph="..." />
+            <marker date="1497929048692" expanded="false" signature="13027:13040" ph="..." />
+            <marker date="1497929048692" expanded="false" signature="13077:13102" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/creatproject.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="126" column="65" lean-forward="false" selection-start-line="126" selection-start-column="48" selection-end-line="126" selection-end-column="65" />
+          <folding>
+            <element signature="e#10969#11116#0" expanded="false" />
+            <element signature="e#11783#11990#0" expanded="false" />
+            <element signature="e#12018#12227#0" expanded="false" />
+            <element signature="e#12255#12463#0" expanded="false" />
+            <element signature="e#12494#12708#0" expanded="false" />
+            <element signature="e#12744#13241#0" expanded="false" />
+            <element signature="e#13633#13756#0" expanded="false" />
+            <element signature="e#13805#13959#0" expanded="false" />
+            <element signature="e#14090#14615#0" expanded="false" />
+            <element signature="e#14680#14897#0" expanded="false" />
+            <element signature="e#14937#15417#0" expanded="false" />
+            <element signature="e#15457#15544#0" expanded="false" />
+            <element signature="e#15577#15682#0" expanded="false" />
+            <element signature="e#15696#15737#0" expanded="false" />
+            <element signature="e#15789#16016#0" expanded="false" />
+            <element signature="e#16528#17066#0" expanded="false" />
+            <element signature="e#18085#18198#0" expanded="false" />
+            <element signature="e#18668#19244#0" expanded="false" />
+            <element signature="n#style#0;n#!!top" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/editproject.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5068">
-          <caret line="1454" column="29" lean-forward="true" selection-start-line="1454" selection-start-column="29" selection-end-line="1454" selection-end-column="29" />
+        <state relative-caret-position="392">
+          <caret line="244" column="29" lean-forward="true" selection-start-line="244" selection-start-column="29" selection-end-line="244" selection-end-column="29" />
           <folding>
             <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#el-collapse-transition#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1219,13 +1405,10 @@
             <element signature="n#el-autocomplete#0;n#el-form-item#0;n#el-col#1;n#el-row#0;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#span#0;n#el-row#0;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#el-row#4;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#el-row#5;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#div#5;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#div#0;n#div#5;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#el-collapse-transition#0;n#div#5;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#div#0;n#div#7;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#el-collapse-transition#0;n#div#7;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#9;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#div#11;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#el-row#1;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#11;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#el-row#2;n#el-form#0;n#div#0;n#el-collapse-transition#0;n#div#11;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
@@ -1237,100 +1420,80 @@
             <element signature="n#div#6;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="e#37768#37904#0" expanded="false" />
-            <element signature="e#38609#38739#0" expanded="false" />
-            <element signature="e#39144#39532#0" expanded="false" />
-            <element signature="e#39764#39999#0" expanded="false" />
-            <element signature="e#40032#40460#0" expanded="false" />
-            <element signature="e#40481#40690#0" expanded="false" />
-            <element signature="e#41226#41254#0" expanded="false" />
-            <element signature="e#42053#44406#0" expanded="false" />
-            <element signature="e#43487#43681#0" expanded="false" />
-            <element signature="e#44478#44685#0" expanded="false" />
-            <element signature="e#44713#44922#0" expanded="false" />
-            <element signature="e#44950#45158#0" expanded="false" />
-            <element signature="e#45189#45403#0" expanded="false" />
-            <element signature="e#45439#45696#0" expanded="false" />
-            <element signature="e#45727#45931#0" expanded="false" />
-            <element signature="e#45967#46186#0" expanded="false" />
-            <element signature="e#46225#47068#0" expanded="false" />
-            <element signature="e#47103#47363#0" expanded="false" />
-            <element signature="e#47413#47568#0" expanded="false" />
-            <element signature="e#47602#47734#0" expanded="false" />
-            <element signature="e#47765#47877#0" expanded="false" />
-            <element signature="e#47907#48025#0" expanded="false" />
-            <element signature="e#48058#48196#0" expanded="false" />
-            <element signature="e#48229#51349#0" expanded="false" />
-            <element signature="e#51408#51533#0" expanded="false" />
-            <element signature="e#51582#51736#0" expanded="false" />
-            <element signature="e#51789#51828#0" expanded="false" />
-            <element signature="e#51867#52392#0" expanded="false" />
-            <element signature="e#52457#52674#0" expanded="false" />
-            <element signature="e#52714#53194#0" expanded="false" />
-            <element signature="e#53234#53443#0" expanded="false" />
-            <element signature="e#53545#53742#0" expanded="false" />
-            <element signature="e#53780#53819#0" expanded="false" />
-            <element signature="e#53845#54491#0" expanded="false" />
-            <element signature="e#54535#55151#0" expanded="false" />
-            <element signature="e#55227#55431#0" expanded="false" />
-            <element signature="e#55546#55989#0" expanded="false" />
-            <element signature="e#56071#56269#0" expanded="false" />
-            <element signature="e#56288#56416#0" expanded="false" />
-            <element signature="e#56433#56463#0" expanded="false" />
-            <element signature="e#56480#56511#0" expanded="false" />
-            <element signature="e#56525#56566#0" expanded="false" />
-            <element signature="e#56845#57384#0" expanded="false" />
-            <element signature="e#57981#58059#0" expanded="false" />
-            <element signature="e#58096#58305#0" expanded="false" />
-            <element signature="e#58344#58944#0" expanded="false" />
-            <element signature="e#58965#59478#0" expanded="false" />
-            <element signature="e#59508#60023#0" expanded="false" />
-            <element signature="e#60073#60520#0" expanded="false" />
-            <element signature="e#60538#60729#0" expanded="false" />
-            <element signature="e#60773#61239#0" expanded="false" />
-            <element signature="e#61258#61438#0" expanded="false" />
-            <element signature="e#61480#61934#0" expanded="false" />
-            <element signature="e#61954#62079#0" expanded="false" />
-            <element signature="e#62132#62391#0" expanded="false" />
-            <element signature="e#62415#62485#0" expanded="false" />
-            <element signature="e#62515#64574#0" expanded="false" />
-            <element signature="e#64605#64692#0" expanded="false" />
-            <element signature="e#64725#64830#0" expanded="false" />
-            <element signature="e#64884#65228#0" expanded="false" />
-            <element signature="e#65257#67249#0" expanded="false" />
-            <element signature="e#65459#65937#0" expanded="false" />
-            <element signature="e#66407#66812#0" expanded="false" />
-            <element signature="e#66840#67243#0" expanded="false" />
-            <element signature="e#67276#67317#0" expanded="false" />
+            <element signature="e#37497#37633#0" expanded="false" />
+            <element signature="e#38877#39265#0" expanded="false" />
+            <element signature="e#39765#40193#0" expanded="false" />
+            <element signature="e#40214#40423#0" expanded="false" />
+            <element signature="e#40959#40987#0" expanded="false" />
+            <element signature="e#41850#44203#0" expanded="false" />
+            <element signature="e#43284#43478#0" expanded="false" />
+            <element signature="e#44275#44482#0" expanded="false" />
+            <element signature="e#44510#44719#0" expanded="false" />
+            <element signature="e#44747#44955#0" expanded="false" />
+            <element signature="e#44986#45200#0" expanded="false" />
+            <element signature="e#45236#45493#0" expanded="false" />
+            <element signature="e#45524#45728#0" expanded="false" />
+            <element signature="e#45764#45983#0" expanded="false" />
+            <element signature="e#46022#46865#0" expanded="false" />
+            <element signature="e#46900#47162#0" expanded="false" />
+            <element signature="e#47212#47367#0" expanded="false" />
+            <element signature="e#47401#47533#0" expanded="false" />
+            <element signature="e#47564#47676#0" expanded="false" />
+            <element signature="e#47706#47824#0" expanded="false" />
+            <element signature="e#47857#47995#0" expanded="false" />
+            <element signature="e#51454#51579#0" expanded="false" />
+            <element signature="e#51628#51782#0" expanded="false" />
+            <element signature="e#51835#51874#0" expanded="false" />
+            <element signature="e#51913#52438#0" expanded="false" />
+            <element signature="e#52503#52720#0" expanded="false" />
+            <element signature="e#52760#53240#0" expanded="false" />
+            <element signature="e#53280#53489#0" expanded="false" />
+            <element signature="e#53591#53788#0" expanded="false" />
+            <element signature="e#53826#53865#0" expanded="false" />
+            <element signature="e#53891#54537#0" expanded="false" />
+            <element signature="e#54581#55197#0" expanded="false" />
+            <element signature="e#55273#55477#0" expanded="false" />
+            <element signature="e#55519#55551#0" expanded="false" />
+            <element signature="e#55592#56035#0" expanded="false" />
+            <element signature="e#56117#56315#0" expanded="false" />
+            <element signature="e#56334#56462#0" expanded="false" />
+            <element signature="e#56479#56509#0" expanded="false" />
+            <element signature="e#56526#56557#0" expanded="false" />
+            <element signature="e#56571#56612#0" expanded="false" />
+            <element signature="e#56650#56864#0" expanded="false" />
+            <element signature="e#56924#57601#0" expanded="false" />
+            <element signature="e#57638#57751#0" expanded="false" />
+            <element signature="e#57776#58195#0" expanded="false" />
+            <element signature="e#58233#58311#0" expanded="false" />
+            <element signature="e#58348#58557#0" expanded="false" />
+            <element signature="e#58596#59196#0" expanded="false" />
+            <element signature="e#59217#59730#0" expanded="false" />
+            <element signature="e#59760#60275#0" expanded="false" />
+            <element signature="e#60325#60843#0" expanded="false" />
+            <element signature="e#60861#61052#0" expanded="false" />
+            <element signature="e#61096#61594#0" expanded="false" />
+            <element signature="e#61613#61793#0" expanded="false" />
+            <element signature="e#61835#62321#0" expanded="false" />
+            <element signature="e#62341#62466#0" expanded="false" />
+            <element signature="e#62519#62714#0" expanded="false" />
+            <element signature="e#62738#62808#0" expanded="false" />
+            <element signature="e#62839#64778#0" expanded="false" />
+            <element signature="e#64809#64896#0" expanded="false" />
+            <element signature="e#64929#65034#0" expanded="false" />
+            <element signature="e#65488#67480#0" expanded="false" />
+            <element signature="e#65690#66168#0" expanded="false" />
+            <element signature="e#66638#67043#0" expanded="false" />
+            <element signature="e#67071#67474#0" expanded="false" />
             <element signature="n#style#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/workBench/myProject/creatproject.vue">
+    <entry file="file://$PROJECT_DIR$/src/assets/css/index.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="533" column="11" lean-forward="true" selection-start-line="533" selection-start-column="11" selection-end-line="533" selection-end-column="11" />
-          <folding>
-            <element signature="e#11172#11319#0" expanded="false" />
-            <element signature="e#11351#11410#0" expanded="false" />
-            <element signature="e#11445#11504#0" expanded="false" />
-            <element signature="e#12079#12286#0" expanded="false" />
-            <element signature="e#12314#12523#0" expanded="false" />
-            <element signature="e#12551#12759#0" expanded="false" />
-            <element signature="e#12790#13004#0" expanded="false" />
-            <element signature="e#13040#13537#0" expanded="false" />
-            <element signature="e#13572#13832#0" expanded="false" />
-            <element signature="e#13892#14015#0" expanded="false" />
-            <element signature="e#14064#14218#0" expanded="false" />
-            <element signature="e#14349#14874#0" expanded="false" />
-            <element signature="e#14939#15156#0" expanded="false" />
-            <element signature="e#15196#15676#0" expanded="false" />
-            <element signature="e#16329#16768#0" expanded="false" />
-            <element signature="e#17441#17622#0" expanded="false" />
-            <element signature="e#17682#18223#0" expanded="false" />
-            <element signature="n#style#0;n#!!top" expanded="false" />
-          </folding>
+        <state relative-caret-position="332">
+          <caret line="196" column="27" lean-forward="true" selection-start-line="196" selection-start-column="27" selection-end-line="196" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -7,7 +7,7 @@
           <p>您要尽调的公司：<span>杭州投着乐网络科技有限公司</span><el-button type="primary" class="fr button" @click="goToEdit">修改公司</el-button></p>
         </div>
         <div class="contain-inner">
-          <div class="item-lists">
+          <div class="item-lists1">
             <!--项目信息-->
             <div class="item2">
               <div class="title">项目信息</div>
@@ -15,7 +15,7 @@
               <div class="portrait-right fl ">
                 <div class="block">
                   <span class="block-title fl">微天使乐投平台</span>
-                  <span class="line fl"> | </span>
+                  <span class="line1 fl"> | </span>
                   <span class="block-company fl">杭州投着乐网络科技有限公司</span>
                   <span class="block-tag fl"><el-tag type="primary">以上线</el-tag><el-tag type="success">初创</el-tag></span>
                 </div>
@@ -95,19 +95,16 @@
                           <span class="pro-txt-2"  style="color:#5e6d82;">杭州城市大学</span>
                           <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
                         </div>
-                        <div class="line"></div>
                         <div class="v-progress-txt">
                           <span class="pro-txt-1">2011.05-2015.05</span>
                           <span class="pro-txt-2"  style="color:#5e6d82;">杭州投着乐网络科技有限公司</span>
                           <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
                         </div>
-                        <div class="line"></div>
                         <div class="v-progress-txt">
                           <span class="pro-txt-1">2011.05-2015.05</span>
                           <span class="pro-txt-2"  style="color:#5e6d82;">微天使乐投平台</span>
                           <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
                         </div>
-                        <div class="line"></div>
                         <div class="v-progress-txt">
                           <span class="pro-txt-1">2011.05-2015.05</span>
                           <span class="pro-txt-2"  style="color:#5e6d82;">百度</span>

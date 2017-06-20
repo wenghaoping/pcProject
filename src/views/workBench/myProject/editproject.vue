@@ -27,6 +27,7 @@
                            :on-error="planuploaderror"
                            :on-remove="planRemove"
                            :file-list="planList"
+                           :show-file-list="showList"
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton"><i class="el-icon-plus"></i>计划书上传</el-button>
                 </el-upload>
@@ -46,6 +47,7 @@
                     :before-upload="beforeUpload"
                     :file-list="fileList"
                     :data="fileuploadDate"
+                    :show-file-list="showList"
                     multiple>
                     <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
                   </el-upload>
@@ -121,7 +123,7 @@
                     <el-col :span="6">
                       <el-form-item
                         label="所属省级"
-                        prop="pro_area.area_id"
+                        prop="pro_area.pid"
 
                         :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
                         <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change">
@@ -156,7 +158,7 @@
                         label="项目轮次"
                         prop="pro_stage.stage_id"
                         :rules="[{type:'number',required: true, message: '项目轮次不能为空', trigger: 'change'}]">
-                        <el-select v-model="project.pro_stage.stage_name" placeholder="请选择" class="width360">
+                        <el-select v-model="project.pro_stage.stage_id" placeholder="请选择" class="width360">
                           <el-option
                             v-for="item in stage"
                             :key="item.value"
@@ -281,7 +283,6 @@
                     </el-col>
                   </el-row>
                 </el-form>
-                <el-button type="primary" @click="submitForm('project')">提交</el-button>
               </div>
             </el-collapse-transition>
           </div>
@@ -367,7 +368,6 @@
                 </el-form>
                 <br>
                 <el-button type="text" @click="addMember" class="addMember"><i class="el-icon-plus"></i> 新增成员</el-button>
-<!--                <el-button type="primary" @click="submitForm('team')">提交</el-button>-->
               </div>
             </el-collapse-transition>
           </div>
@@ -483,7 +483,6 @@
                 </el-form>
                 <br>
                 <el-button type="text" @click="addHistory" class="addMember"><i class="el-icon-plus"></i> 添加历史融资</el-button>
-                <el-button type="primary" @click="submitForm('financing')">提交</el-button>
               </div>
             </el-collapse-transition>
           </div>
@@ -534,7 +533,6 @@
                 </el-form>
                 <br>
                 <el-button type="text" @click="addmilePost" class="addMember"><i class="el-icon-plus"></i> 添加里程碑</el-button>
-<!--                <el-button type="primary" @click="submitForm('milepost')">提交</el-button>-->
               </div>
             </el-collapse-transition>
           </div>
@@ -790,16 +788,15 @@ export default {
         pro_intro : '',//项目介绍
         pro_area: {
           area_id: 2,
-          area_title: "北京市",
-          pid: 1
+          area_title: "北京市",//市级
+          pid: 1//省级
         },//所属地区1省级单位
         pro_stage: {
-          "stage_id": 2,
-          "stage_name": "天使轮",
+          "stage_id": 1,
+          "stage_name": "",
           "sort": 2,
           "created_at": null,
           "updated_at": null
-
         },//轮次
         pro_industry: [],//领域标签
         pro_status: 2,
@@ -934,7 +931,10 @@ export default {
       restaurants: [],//数据存放
       loading:false,//加载
       add_pro:[],//添加个人标签暂存
-      companyTitle:"微天使"
+      companyTitle:"微天使",
+      queryData:{},
+      timeout:  null,
+      showList:false
     }
   },
   computed:{
@@ -1117,6 +1117,7 @@ export default {
         })
     },//获取所有下拉框的数据
     area1Change(data){
+
       this.$http.post(this.URL.getArea,{user_id: sessionStorage.user_id, pid:data})
         .then(res=>{
           let data = res.data.data;
@@ -1125,6 +1126,7 @@ export default {
         .catch(err=>{
           console.log(err)
         })
+
     },//设置二级城市下拉列表
 
   /*获取项目详情*/
@@ -1165,6 +1167,9 @@ export default {
       this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:this.project_id})
         .then(res=>{
           let data = res.data.data;
+          console.log(res)
+
+//         console.log(this.$tool.getToObject(data))
           this.area1Change(data.pro_area.pid);//设置市级
           this.setDateTime(data.pro_history_finance);//时间格式设置
           this.setDateTime2(data.pro_develop);//时间格式设置2
@@ -1182,11 +1187,19 @@ export default {
           this.project.pro_name=data.pro_name;
           this.project.pro_company_name=data.pro_company_name;
           this.project.pro_intro=data.pro_intro;
+
           this.project.pro_area=data.pro_area;
+          if(data.pro_area=="") {this.project.pro_area = {area_id:"",pid:"",area_title: ""}};
 
-          if(data.pro_stage=="") {this.project.pro_stage = {stage_id: 0, stage_name: ""}};
 
 
+          console.log(data.pro_area,1);
+          console.log(this.project.pro_area,2);
+
+
+
+          this.project.pro_stage=data.pro_stage;
+          if(data.pro_stage=="") {this.project.pro_stage = {stage_id:""}};
 
           this.project.pro_industry=this.getindustry(data.pro_industry);//领域标签
           this.project.pro_status=data.pro_status.status_id;//运营状态
@@ -1208,9 +1221,11 @@ export default {
           this.financing.pro_finance_use=data.pro_finance_use;
           this.financing.pro_finance_stock_after=data.pro_finance_stock_after;
           this.financing.pro_finance_value=data.pro_finance_value;
-          this.financing.pro_history_finance=data.pro_history_finance;
 
           if(data.pro_history_finance=="") this.financing.pro_history_finance=[{pro_finance_stage: "", pro_finance_scale: "", pro_finance_investor: "", created_at: ""}];
+          this.financing.pro_history_finance=data.pro_history_finance;
+
+
           this.milepost.pro_develop=data.pro_develop;
 
           if(data.core_users=="") this.team.core_users=[{ct_member_name:"",ct_member_career:"",ct_member_intro:"",stock_scale:""}];
@@ -1223,9 +1238,6 @@ export default {
           if(data.pro_FA=="") data.pro_FA={commission: "", stock_right: "", stock_follow: "", stock_other: ""};
 
           this.pro_FA=data.pro_FA;
-
-          console.log(this.$tool.getToObject(data));
-
           if(this.planList.length!=0) this.planButton=false;
           else this.planButton=true;
           this.loading=false
@@ -1410,14 +1422,14 @@ export default {
       this.$router.go(-1);
     },
 
-    /*获取远程数据模拟*/
 
+    /*获取远程数据模拟*/
     loadData(arr){
       let newArr=[];
-      for(let key in arr){
+      for(let i=0; i<arr.length; i++){
         let obj={};
-        obj.value=arr[key];
-        obj.address=key;
+        obj.value=arr[i].company_name;
+        obj.address=arr[i].com_id;
         newArr.push(obj)
       }
       return newArr
@@ -1427,14 +1439,18 @@ export default {
       this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
         .then(res=>{
           let data=res.data;
-          this.restaurants=this.loadData(data);
-          if(queryString=="") this.restaurants=[]
+          console.log(data);
+          /*this.restaurants=this.loadData(data);
+         if(queryString=="") this.restaurants=[];
           let restaurants = this.restaurants;
           let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-          cb(results);
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(() => {
+            cb(results);
+          }, 500);*/
         })
         .catch(err=>{
-          this.alert("加载失败");
+//          this.alert("加载失败");
           console.log(err);
         })
     },
@@ -1444,12 +1460,12 @@ export default {
       };
     },
     handleSelect(item) {
-      console.log(item);
       this.companyTitle=item.value;
       this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,project_id:item.address})
         .then(res=>{
-          let data=res.data;
-          console.log(data);
+          let data=res.data.data;
+          this.queryData=data;
+          console.log(this.$tool.getToObject(data));
         })
         .catch(err=>{
           this.alert("获取失败");
@@ -1531,9 +1547,11 @@ export default {
 
     /*添加团队成员*/
     removeMember(item) {
+      this.dialogDeleteVisible = true;
       this.$http.post(this.URL.deleteCoreTeam,{user_id: sessionStorage.user_id,  project_id:this.project_id,project_ct_id:item.project_ct_id})
         .then(res=>{
           console.log(res);
+          this.success("删除成功");
           let index = this.team.core_users.indexOf(item);
           if (index !== -1) {
             this.team.core_users.splice(index, 1)
@@ -1560,6 +1578,7 @@ export default {
       this.$http.post(this.URL.deleteFinance,{user_id: sessionStorage.user_id,  project_id:this.project_id,history_id:item.history_id})
         .then(res=>{
           console.log(res);
+          this.success("删除成功");
           let index = this.financing.pro_history_finance.indexOf(item)
           if (index !== -1) {
             this.financing.pro_history_finance.splice(index, 1)
@@ -1584,6 +1603,7 @@ export default {
       this.$http.post(this.URL.deleteDevelop,{user_id: sessionStorage.user_id,  project_id:this.project_id,project_dh_id:item.project_dh_id})
         .then(res=>{
           console.log(res);
+          this.success("删除成功");
           let index = this.milepost.pro_develop.indexOf(item)
           if (index !== -1) {
             this.milepost.pro_develop.splice(index, 1)
@@ -1607,7 +1627,6 @@ export default {
       let check=true
       this.$refs[formName].validate((valid) => {
         if (valid) {
-            console.log(this.$tool.getToObject(this.financing))
           return
         } else {
           check=false;
@@ -1620,17 +1639,15 @@ export default {
         data[key]=obj[key];
       }
     },
+
     /*全部保存按钮*/
     allSave(){
       if(this.planList.length===0) this.fileMust=true
       else this.fileMust=false
-    console.log(this.planList)
-
       this.projectMust=!this.submitForm('project');
       this.teamMust=!this.submitForm('team');
       this.financingMust=!this.submitForm('financing');
       this.milepostMust=!this.submitForm('milepost');
-//      console.log(this.projectMust,this.teamMust,this.financingMust,this.milepostMust)
       if(this.fileMust ) this.alert("请添加商业计划书")
         else if(this.projectMust) this.alert("项目介绍必填项不能为空")
         else if(this.teamMust) this.alert("核心团队必填项不能为空")
@@ -1646,8 +1663,8 @@ export default {
           this.takeData(allData,this.pro_FA)
           allData.is_exclusive=this.is_exclusive;
           allData.project_id =this.project_id ;
-          allData.pro_area_province =this.project.pro_area.area_id;
-          allData.pro_area_city =this.project.pro_area.pid;
+          allData.pro_area_province =this.project.pro_area.pid;
+          allData.pro_area_city =this.project.pro_area.area_id;
 
           allData.contact_user_name =this.project.contact.user_name;
           allData.contact_user_mobile =this.project.contact.user_mobile;
@@ -1664,7 +1681,7 @@ export default {
           console.log(allData);
         this.$http.post(this.URL.editProject,allData)
           .then(res=>{
-            console.log(res)
+            console.log(res);
             this.open2('项目编辑成功','您当前的项目完整度为'+this.proportion+'%','查看详情','继续编辑')
           })
           .catch(err=>{
@@ -1698,12 +1715,13 @@ export default {
         cancelButtonText:cancel ,
         type: 'success'
       }).then(() => {
+        this.$router.push({ name: 'projectDetails', query: {project_id:this.project_id}})
+      }).catch(() => {
         this.$message({
           type: 'success',
           message: '继续编辑'
         });
-      }).catch(() => {
-        this.$router.push({ name: 'projectDetails', query: {}})
+
       });
     },
     /*锚点跳转*/
@@ -1781,10 +1799,21 @@ export default {
     /*一键同步按钮*/
     sync(){
       this.dialogVisible = false;
+      this.project.pro_intro=this.queryData.pro_intro;
+      this.project.pro_area.area_id=this.queryData.pro_area_city;
+      this.project.pro_area.pid=this.queryData.pro_area_province;
+      this.project.open_status=this.queryData.open_status.toString();
+      this.project.pro_scale.scale_id=this.queryData.pro_finance_scale;
+      this.project.pro_website=this.queryData.pro_website;
+      this.project.contact.user_name=this.queryData.contact_user_name;
+      this.project.contact.user_mobile=this.queryData.contact_user_mobile;
+      this.project.pro_source=this.queryData.pro_source;
+      this.project.pro_stage.stage_id=this.queryData.pro_finance_stage;
+
     },
     getprojectId(){
-      this.project_id=this.$route.query.project_id
-      console.log(this.$route.query.project_id)
+      this.project_id=this.$route.query.project_id;
+      console.log(this.$route.query.project_id);
     }
   },
   //    当dom一创建时

@@ -88,7 +88,7 @@
           </alertUpload>
         </div>
       </div>
-      <div class="top-lists" style="height:690px;background: #f3f4f8;">
+      <div class="top-lists" style="height:690px;background: #f3f4f8;cursor: pointer">
           <template>
             <el-table :data="tableData" style="width: 100%"
                       @row-click="handleSelect"
@@ -276,7 +276,7 @@
             <el-pagination
               small
               @current-change="filterChange"
-              :current-page="currentPage"
+              :current-page.sync="currentPage"
               :page-size="10"
               layout="total, prev, pager, next"
               :total="totalData">
@@ -342,7 +342,7 @@
         node8:false,
         node9:false,
         currentPage:1,//当前第几页
-        totalData:1000,//总数据条数
+        totalData:0,//总数据条数
         nodeCount:{
           whole:0,//全部项目
           clue:0,//项目线索
@@ -375,7 +375,7 @@
         this.$router.push({ name: 'editproject', query: { project_id:row.project_id}})
       },//跳转到编辑页
       createProject(){
-        this.$router.push({ name: 'creatproject', query: {}})
+        this.$router.push({ name: 'creatproject'})
       },//跳转到创建项目页面
       dialogUploadVisiblechange(msg){
         this.dialogUploadVisible=msg;
@@ -400,7 +400,10 @@
       },//搜索===首次进入页面加载的数据
 
       filterChange(filters){
-        this.loading=true
+        console.log(filters)
+        this.loading=true;
+        this.currentPage=1;
+        this.currentPage=1;
         if(filters.pro_schedule) {
             if(parseInt(filters.pro_schedule)){
               this.setNode(parseInt(filters.pro_schedule))
@@ -443,8 +446,6 @@
             this.loading=false
             console.log(err,2)
           })
-
-
       },//筛选 ascending升/descending降/页码.
       setNode(v){
         this.loading=true  ;

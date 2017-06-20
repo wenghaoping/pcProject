@@ -27,7 +27,7 @@ export default
   deleteFinance:"project/deleteFinance",  //删除历史融资
   deleteDevelop:"project/deleteDevelop",  //删除里程碑
   editProject:"project/editProject",  //项目编辑、新建
-  selectCompany:"project/selectCompany",  //公司名称提示
+
   getOneCompany:"project/getOneCompany",  //获取公司信息
 
 
@@ -35,6 +35,7 @@ export default
   getArea:"api/category/getArea",  //二级城市接口
   createStatusPro:"api/category/createStatusPro",  //添加自定义运营状态
   createCustomTag:"api/category/createCustomTag",  //添加自定义标签/个人,团队
+  selectCompany:"api/crawler/selectCompany",  //公司名称提示
 
 
 }

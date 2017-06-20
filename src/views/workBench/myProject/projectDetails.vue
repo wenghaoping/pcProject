@@ -191,7 +191,7 @@
             </div>
             <div class="item" style="margin-top:6px;">
               <div>
-                <div class="v-progress" style="height: 182px;">
+<!--                <div class="v-progress" style="height: 182px;">
                   <span class="circle circle-s">&nbsp;</span>
 
                   <span class="v-line v-line-1">&nbsp;</span>
@@ -199,11 +199,19 @@
                   <span class="v-line v-line-2">&nbsp;</span>
 
                   <span class="circle circle-e">&nbsp;</span>
-                </div>
+                </div>-->
                 <div class="v-progress-table">
                   <div class="v-progress-txt" v-for="develop in project.pro_develop">
-                    <span class="pro-txt-1">{{develop.dh_start_time}}</span>
-                    <span class="pro-txt-2"  style="color:#5e6d82;">{{develop.dh_event}}</span>
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                    <span class="pro-txt-1">
+                      {{develop.dh_start_time}}
+                    </span>
+                    <span class="pro-txt-2"  style="color:#5e6d82;">
+                      {{develop.dh_event}}
+                    </span>
                     <div class="line"></div>
                   </div>
                 </div>
@@ -243,7 +251,7 @@
 
       </div>
     </div>
-    <div class="contain-grid contain-right-1">
+    <!--<div class="contain-grid contain-right-1">
       <div class="main-box">
         <el-tabs v-model="show" @tab-click="handleClick">
           <el-tab-pane label="潜在买家" name="detail"></el-tab-pane>
@@ -260,7 +268,7 @@
               <span class="card-val">90%</span>
               <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
-                  目标线索<i class="el-icon-caret-bottom el-icon--right"></i>
+                  目标线索<i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>目标线索1</el-dropdown-item>
@@ -294,7 +302,7 @@
               <span class="card-val">90%</span>
               <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
-                  佣金收讫<i class="el-icon-caret-bottom el-icon--right"></i>
+                  佣金收讫<i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>目标线索1</el-dropdown-item>
@@ -328,7 +336,7 @@
               <span class="card-val">90%</span>
               <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
-                  FA签约<i class="el-icon-caret-bottom el-icon--right"></i>
+                  FA签约<i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>目标线索1</el-dropdown-item>
@@ -362,7 +370,7 @@
               <span class="card-val">90%</span>
               <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
-                  FA买方<i class="el-icon-caret-bottom el-icon--right"></i>
+                  FA买方<i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>目标线索1</el-dropdown-item>
@@ -408,7 +416,7 @@
           <span class="lit-line"></span>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -653,7 +661,7 @@
     },
     //Echart组件
     mounted:function(){
-      let myPie = echarts.init(document.getElementById('pieBox'));
+      /*let myPie = echarts.init(document.getElementById('pieBox'));
       let colors = ["#13ce66","#f7ba2a","#20a0ff"];
       let option = {
         legend: {
@@ -749,7 +757,7 @@
           }
         ]
       };
-      myPie.setOption(option);
+      myPie.setOption(option);*/
     },
     methods:{
       handleClick:function(tab, event){
@@ -805,4 +813,19 @@
 
 <style lang="less">
   @import '../../../assets/css/index.less';
+  #projectDetails{
+    .radio_line{
+      width: 13px;
+      //height: 49px;
+    }
+    .radio{
+      border:1px solid #e0e6ed;
+      border-radius:20px;
+      width:12px;
+      background: #f9fafc;
+      height:12px;
+      position: relative;
+    }
+  }
+
 </style>
