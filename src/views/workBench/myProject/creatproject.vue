@@ -30,7 +30,7 @@
 
             </div>
             <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
-              <el-row :span="24" :gutter="32">
+              <el-row :span="24" :gutter="10">
                 <el-col :span="12">
                   <span class="justIlook">(仅自己可见)</span>
                   <el-form-item
@@ -71,7 +71,7 @@
               <span class="b-line"></span>
             </div>
             <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
-              <el-row :span="24" :gutter="32">
+              <el-row :span="24" :gutter="10">
                 <el-col :span="12">
                   <el-form-item
                     label="项目介绍"
@@ -102,7 +102,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :span="24" :gutter="32">
+              <el-row :span="24" :gutter="10">
                 <el-col :span="12">
                   <el-form-item
                     label="项目轮次"
@@ -150,7 +150,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :span="24" :gutter="32">
+              <el-row :span="24" :gutter="10">
                 <el-col :span="12">
                   <el-form-item
                     label="期望融资"
@@ -174,7 +174,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :span="24" :gutter="32">
+              <el-row :span="24" :gutter="10">
                 <el-col :span="12">
                   <el-form-item
                     label="私密设置"
@@ -195,7 +195,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :span="24" :gutter="32">
+              <el-row :span="24" :gutter="10">
                 <el-col :span="24">
                   <el-form-item label="项目亮点"
                                 prop="pro_goodness"

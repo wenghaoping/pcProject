@@ -1,7 +1,7 @@
 <template>
   <div id="samllRoutine">
       <div class="scan">
-        <p class="title">微天使,帮您成交的项目管理工具</p>
+        <p class="title">微天使，帮您成交的项目管理工具</p>
         <p class="samll">扫一扫，快速创建融资项目</p>
         <div class="img">
           <img src="../../assets/images/weixin.png">

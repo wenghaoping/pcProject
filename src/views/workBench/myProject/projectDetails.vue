@@ -74,11 +74,11 @@
 
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
-        <div class="item-lists clearfix">
+        <div class="item-lists clearfix" style="padding-top: 10px;">
           <el-tabs v-model="show" @tab-click="handleClick">
             <el-tab-pane label="项目详情" name="detail"></el-tab-pane>
-            <el-tab-pane label="跟进记录" name="flow"></el-tab-pane>
-            <el-tab-pane label="文件管理" name="files"></el-tab-pane>
+<!--            <el-tab-pane label="跟进记录" name="flow"></el-tab-pane>
+            <el-tab-pane label="文件管理" name="files"></el-tab-pane>-->
           </el-tabs>
           <div class="ul-lists">
             <div class="item">
@@ -107,7 +107,7 @@
               </div>
               <div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">
                 <span class="det-title">产品链接：</span>
-                <span class="del-info"><a href="">{{project.pro_website}}</a></span>
+                <span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}</a></span>
               </div>
               <div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">
                 <span class="det-title">公司规模：</span>
@@ -245,7 +245,7 @@
             </div>
           </div>
           <div class="toButton">
-            <el-button type="primary" size="large" style="margin:0 auto;display: block;width: 88px;" @click="toEdit">编辑</el-button>
+            <button style="margin:0 auto;display: block;width: 88px;background:#009eff;border-radius:2px;height: 36px;color:#ffffff;cursor: pointer" @click="toEdit">编辑</button>
           </div>
         </div>
 
