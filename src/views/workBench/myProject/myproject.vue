@@ -76,7 +76,7 @@
             icon="search"
             v-model="searchinput"
             :on-icon-click="handleIconClick"
-            @keyup.enter="handleIconClick">
+            @keyup.native.enter="handleIconClick">
           </el-input>
         </div>
         <div class="btns-box">
