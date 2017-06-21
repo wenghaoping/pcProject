@@ -3,15 +3,6 @@
     <!--顶部导航栏-->
     <top-nav></top-nav>
 
-    <!--<div class="search">
-      <el-input
-        placeholder="搜索项目,公司名称"
-        icon="search"
-        v-model="input2"
-        :on-icon-click="handleIconClick">
-      </el-input>
-    </div>-->
-
     <!--下方主内容切换区-->
     <main class="clearfix">
       <transition name="fade"  mode="out-in">

@@ -56,11 +56,11 @@
             </div>
             <!--公司信息-->
             <div class="item">
-              <company-message :comp="comp"></company-message>
+              <company-message></company-message>
             </div>
             <!--工商信息-->
             <div class="item">
-              <business style="position: relative" :comid="comid"></business>
+              <business style="position: relative"></business>
             </div>
             <!--核心成员-->
             <div class="item clearfix">
@@ -266,11 +266,11 @@ import companyMessage from './companyMessage.vue'
 import business from './business.vue'
 import downloadechart from './downloadEchart.vue'
 export default {
-  props: ["dialogVisible","comid"],
+  props: ["dialogVisible","companyId"],
   data () {
     return {
       comp: "杭州",//一键尽调公司的名称
-      comids: 123,//公司Id
+      com_id: 0,//公司Id
       conmanyName: '3',
       productMessage: '产品信息(3)',
       recruitMessage: '招聘信息(29)',
@@ -482,17 +482,19 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
+          this.getCrawLerLbel(res.data.data);
           this.project = res.data.data;
+          console.log(this.project)
         })
         .catch(err => {
           console.log(err);
         })
     },//获取项目
-    getComId(){
-      this.comids=this.comid;
-      console.log(this.comid);
-    }
-
+    getCrawLerLbel(data){
+      for(let i=0; i<data.length; i++){
+        data[i].project_label=data[i].project_label.split(",");
+      }
+    },//设置项目中的投资
   },
   computed: {},
   components: {
@@ -501,14 +503,20 @@ export default {
     downloadechart
   },
   created(){
-//    this.getCrawlerTeam();
-//    this.getCrawlerHistoryFinance();
-//    this.getCrawlerMilestone();
-//    this.getCrawlerNews();
-//    this.getCrawlerCompeting();
-//    this.getCrawlerProject();
-    this.getComId();
 
+
+  },
+
+  watch : {
+    companyId : function(e){
+      this.com_id=e;
+      this.getCrawlerTeam();
+      this.getCrawlerHistoryFinance();
+      this.getCrawlerMilestone();
+      this.getCrawlerNews();
+      this.getCrawlerCompeting();
+      this.getCrawlerProject();
+    }//获取公司id
   }
 }
 </script>

@@ -68,7 +68,7 @@
           </div>
 
           <!--===========================================一键尽调弹窗=============================================-->
-          <research :dialog-visible="dialogVisible" :comid="comid" v-on:changeall="dialogVisiblechange" lock-scroll>
+          <research :dialog-visible="dialogVisible" :company-id="companyid" v-on:changeall="dialogVisiblechange" lock-scroll>
 
           </research>
 
@@ -438,7 +438,7 @@
   export default {
     data(){
       return {
-        comid:"",//公司id给一键尽调用的
+        companyid:"",//公司id给一键尽调用的
         show: "detail",
         dialogVisible: false,
         dialogSearchVisible:false,
@@ -666,25 +666,10 @@
           }
 
         },
-        seachCompanys:[
-          {
-            com_id: 1,
-            company_name: "怪化猫怪化猫喵喵喵"
-          },
-          {
-            com_id: 3,
-            company_name: "猫汤猫汤猫汤"
-          },{
-            com_id: 4,
-            company_name: "21321"
-          }
-        ]
+        seachCompanys:[]
       }
     },
     computed:{
-      getCompany:function () {
-
-      }
     },
     components: {
       research
@@ -807,12 +792,14 @@
         }else{
           this.$http.post(this.URL.getCrawlerCompany, {user_id: sessionStorage.user_id, company_name: this.project.pro_company_name})
             .then(res => {
-              let data = res.data;
+              let data = res.data.data;
+              console.log(data);
               if(data.length==0) {
                 this.dialogSearchVisible = true;
                 this.searchName=this.project.pro_company_name;
               }else{
                 this.dialogVisible = true;
+                this.companyid=data.company.com_id;
               }
               console.log(data);
             })
@@ -823,7 +810,8 @@
         }
       },//一键尽调按钮
       search(e){
-        this.comid=e;
+        this.companyid=e;
+        console.log(this.companyid);
         this.dialogVisible = true;
       },
       handleIconClick(){
