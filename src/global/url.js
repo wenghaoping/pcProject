@@ -28,7 +28,7 @@ export default
   deleteDevelop:"project/deleteDevelop",  //删除里程碑
   editProject:"project/editProject",  //项目编辑、新建
 
-  getOneCompany:"project/getOneCompany",  //获取公司信息
+  getOneCompany:"api/crawler/getOneCompany",  //获取公司信息
   setFileType:"project/setFileType",  //文件分组设置
 
   getWxProjectCategory:"api/category/getWxProjectCategory",  //编辑项目各种标签接口
@@ -41,7 +41,7 @@ export default
 
 
 
-  getWebCrawler:"api/crawler/getWebCrawler",  //一键尽调-公司
+  getCrawlerCompany:"api/crawler/getCrawlerCompany",  //一键尽调-公司
   getCrawlerLeader:"api/crawler/getCrawlerLeader",  //一键尽调-公司高管
   getCrawlerBrand:"api/crawler/getCrawlerBrand",  //一键尽调-商标
   getCrawlerTeam:"api/crawler/getCrawlerTeam",  //一键尽调-核心成员

@@ -454,7 +454,8 @@ export default {
         });
         this.$router.push({ name: 'editproject', query: {project_id:this.project.project_id}})
       }).catch(() => {
-        this.$router.push({ name: 'indexmyProject'})
+          console.log()
+        this.$router.push({ path: '/workBench/myProject'})
       });
     },
     /*全部保存按钮*/
@@ -491,8 +492,8 @@ export default {
     querySearchAsync(queryString, cb) {
       this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
         .then(res=>{
-//          this.restaurants=[];
-          let data=res.data;
+          this.restaurants=[];
+          let data=res.data.data;
           this.restaurants=this.loadData(data);
           if(queryString=="") this.restaurants=[];
           let restaurants = this.restaurants;
@@ -500,7 +501,7 @@ export default {
           clearTimeout(this.timeout);
           this.timeout = setTimeout(() => {
             cb(results);
-          }, 500);
+          }, 300);
         })
         .catch(err=>{
           this.alert("加载失败");

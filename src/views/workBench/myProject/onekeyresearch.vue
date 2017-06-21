@@ -266,35 +266,34 @@ import companyMessage from './companyMessage.vue'
 import business from './business.vue'
 import downloadechart from './downloadEchart.vue'
 export default {
-  props: ["dialogVisible"],
+  props: ["dialogVisible","comid"],
   data () {
     return {
-      comp:"杭州",//一键尽调公司的名称
-      comid:123,//公司Id
+      comp: "杭州",//一键尽调公司的名称
+      comids: 123,//公司Id
       conmanyName: '3',
-      productMessage:'产品信息(3)',
-      recruitMessage:'招聘信息(29)',
+      productMessage: '产品信息(3)',
+      recruitMessage: '招聘信息(29)',
       recruitData: [{
         position: 'JAVA',
         money: '20-30K',
         experience: '1-2年',
-        address:"北京",
-        date:'2016-05-04'
+        address: "北京",
+        date: '2016-05-04'
       }, {
         position: 'IOS',
         money: '1-2K',
         experience: '1年',
-        address:"北京",
-        date:'2016-05-04'
+        address: "北京",
+        date: '2016-05-04'
       }],
-      images:[
-          {url:"../../../../static/lanren_01.jpg"},
-          {url:"../../../../static/lanren_02.jpg"},
-          {url:"../../../../static/lanren_03.jpg"},
-          {url:"../../../../static/lanren_04.jpg"},
-          {url:"../../../../static/lanren_05.jpg"}
-          ],
-
+      images: [
+        {url: "../../../../static/lanren_01.jpg"},
+        {url: "../../../../static/lanren_02.jpg"},
+        {url: "../../../../static/lanren_03.jpg"},
+        {url: "../../../../static/lanren_04.jpg"},
+        {url: "../../../../static/lanren_05.jpg"}
+      ],
 
 
       /*项目信息*/
@@ -306,7 +305,7 @@ export default {
           project_name: "杭州投着乐网络科技有限公司",
           project_industry: "初创",
           project_introduce: "我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫",
-          project_label: ["教育培训","社交通讯","sass"],
+          project_label: ["教育培训", "社交通讯", "sass"],
           project_website: "www.weitianshi.cn",
           project_logo: "../../../assets/images/researchheader.png",
           project_score: "已上线"
@@ -318,22 +317,22 @@ export default {
           project_name: "杭州投着乐网络科技有限公司",
           project_industry: "初创",
           project_introduce: "我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫",
-          project_label: ["教育培训","社交通讯","sass"],
+          project_label: ["教育培训", "社交通讯", "sass"],
           project_website: "www.weitianshi.cn",
           project_logo: "../../../assets/images/researchheader.png",
           project_score: "已上线"
         }
       ],
       /*产品新闻*/
-      news:[{
-        project_id:"12",//产品ID
-        project_news_time:"2017.05.04",//新闻时间
-        project_news_label:"产品",//新闻标签
-        project_news_title:"滴滴首推五星级出行服务 「豪华车」 入口在京开放预约",//新闻标题
-        source:"view.inews.qq.com"//资源链接
+      news: [{
+        project_id: "12",//产品ID
+        project_news_time: "2017.05.04",//新闻时间
+        project_news_label: "产品",//新闻标签
+        project_news_title: "滴滴首推五星级出行服务 「豪华车」 入口在京开放预约",//新闻标题
+        source: "view.inews.qq.com"//资源链接
       }],
       /*竞品表*/
-      competing:[
+      competing: [
         {
           com_id: "",//
           project_id: "",//竞品ID
@@ -351,31 +350,31 @@ export default {
         }
       ],
       /*历史融资表*/
-      history_finance:[
+      history_finance: [
         {
-          com_id:"",//公司id
-          History_financing_time:"2017.05.04",//融资时间
-          History_financing_rounds:"A轮",//融资轮次
-          History_financing_money:"100-500万",//融资金额
-          History_financing_who:"天使投资",//融资方
+          com_id: "",//公司id
+          History_financing_time: "2017.05.04",//融资时间
+          History_financing_rounds: "A轮",//融资轮次
+          History_financing_money: "100-500万",//融资金额
+          History_financing_who: "天使投资",//融资方
         }
       ],
       /*里程碑信息表*/
-      milestone_list:[
+      milestone_list: [
         {
-          project_id:"",//产品ID
-          milestone_event:"获汉鼎宇佑集团和盛大亿元投资 P2P行业再掀波澜，获得1.5亿B轮融资，获得1.5亿B轮融资佑集团",//里程碑事件
-          milestone_time:"2017.05.04",//里程碑时间
+          project_id: "",//产品ID
+          milestone_event: "获汉鼎宇佑集团和盛大亿元投资 P2P行业再掀波澜，获得1.5亿B轮融资，获得1.5亿B轮融资佑集团",//里程碑事件
+          milestone_time: "2017.05.04",//里程碑时间
         }
       ],
       /*团队成员*/
-      team:[
+      team: [
         {
-          project_id:"",//产品ID
-          team_member_introduce:"13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下",//成员介绍
-          team_member_photo:"../../../assets/images/header3.png",//成员头像
-          team_member_name:"顾嘉",//成员名字
-          team_member_position:"CEO",//成员职位
+          project_id: "",//产品ID
+          team_member_introduce: "13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下",//成员介绍
+          team_member_photo: "../../../assets/images/header3.png",//成员头像
+          team_member_name: "顾嘉",//成员名字
+          team_member_position: "CEO",//成员职位
         }
       ],
 
@@ -384,37 +383,38 @@ export default {
   },
   methods: {
     dialogVisibleTo() {
-      this.$emit('changeall',false)
+      this.$emit('changeall', false)
     },
     handleClose(done) {
-        done();
-        this.dialogVisibleTo()
+      done();
+      this.dialogVisibleTo()
     },
     goToEdit(){
-      this.$router.push({ name: 'editproject', query: {}})
+      this.$router.push({name: 'editproject', query: {}})
     },
     loadMore(){
-     this.recruitData.push({
-       position: 'IOS',
-       money: '1-2K',
-       experience: '1年',
-       address:"北京",
-       date:'2016-05-04'
-     },{
-       position: 'IOS',
-       money: '1-2K',
-       experience: '1年',
-       address:"北京",
-       date:'2016-05-04'
-     },{
-       position: 'IOS',
-       money: '1-2K',
-       experience: '1年',
-       address:"北京",
-       date:'2016-05-04'
-     })
+      this.recruitData.push({
+        position: 'IOS',
+        money: '1-2K',
+        experience: '1年',
+        address: "北京",
+        date: '2016-05-04'
+      }, {
+        position: 'IOS',
+        money: '1-2K',
+        experience: '1年',
+        address: "北京",
+        date: '2016-05-04'
+      }, {
+        position: 'IOS',
+        money: '1-2K',
+        experience: '1年',
+        address: "北京",
+        date: '2016-05-04'
+      })
     },
-    getWebCrawler(){},//获取公司信息
+    getWebCrawler(){
+    },//获取公司信息
 
     getCrawlerTeam(){
       this.$http.post(this.URL.getCrawlerTeam, {
@@ -422,7 +422,7 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
-          this.team=res.data.data;
+          this.team = res.data.data;
         })
         .catch(err => {
           console.log(err);
@@ -434,7 +434,7 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
-          this.history_finance=res.data.data;
+          this.history_finance = res.data.data;
         })
         .catch(err => {
           console.log(err);
@@ -446,7 +446,7 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
-          this.milestone_list=res.data.data;
+          this.milestone_list = res.data.data;
         })
         .catch(err => {
           console.log(err);
@@ -458,7 +458,7 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
-          this.news=res.data.data;
+          this.news = res.data.data;
         })
         .catch(err => {
           console.log(err);
@@ -470,7 +470,7 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
-          this.competing=res.data.data;
+          this.competing = res.data.data;
         })
         .catch(err => {
           console.log(err);
@@ -482,17 +482,19 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
-          this.project=res.data.data;
+          this.project = res.data.data;
         })
         .catch(err => {
           console.log(err);
         })
     },//获取项目
+    getComId(){
+      this.comids=this.comid;
+      console.log(this.comid);
+    }
 
   },
-  computed: {
-
-  },
+  computed: {},
   components: {
     companyMessage,
     business,
@@ -505,7 +507,9 @@ export default {
 //    this.getCrawlerNews();
 //    this.getCrawlerCompeting();
 //    this.getCrawlerProject();
-  },
+    this.getComId();
+
+  }
 }
 </script>
 

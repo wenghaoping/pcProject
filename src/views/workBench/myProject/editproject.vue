@@ -23,11 +23,13 @@
                            :on-success="planuploadsuccess"
                            :on-error="planuploaderror"
                            :on-remove="planRemove"
+                           :before-upload="beforeUpload"
                            :file-list="planList"
-                           accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"
+
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton"><i
                     class="el-icon-plus"></i>计划书上传</el-button>
+                  <!--accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"-->
                 </el-upload>
               </span>
 
@@ -47,6 +49,7 @@
                     :data="fileuploadDate"
                     :show-file-list="showList"
                     multiple>
+                    <!--accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"-->
                     <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
                   </el-upload>
               </span>
@@ -557,7 +560,7 @@
                 </el-button>
               </div>
             </el-collapse-transition>
-            
+
           </div>
           <!--=================================FA签约协议===============================-->
           <div class="d_jump"></div>
@@ -796,7 +799,8 @@
         groups: {
           input: "",
           group: [{type: "其他", label: '其他', value: '其他'}],
-          type: "2"
+          type: "",
+          name:""
         },//分组用的所有参数
         name: "",
         show: "detail",
@@ -1218,7 +1222,10 @@
       },//时间转化中国标准时间发送转换回时间戳
       setUploadShow2(data){
         for (let i = 0; i < data.length; i++) {
-          this.addDomain(data[i].type_name, data[i].file_title, data[i].file_id, data[i].project_id)
+          if(data[i].belongs_to_type==null) {
+              data[i].belongs_to_type={type_name:""};
+          }
+          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title, data[i].file_id, data[i].belongs_to_type.type_id)
         }
       },//设置批量上传文件显示
       getOneProject () {
@@ -1232,8 +1239,8 @@
             this.setDateTime(data.pro_history_finance);//时间格式设置
 
             this.setDateTime2(data.pro_develop);//时间格式设置2
-            console.log(data.pro_history_finance)
-            console.log(data.pro_develop)
+            console.log(data.pro_history_finance);
+            console.log(data.pro_develop);
             this.planList = [{name: data.pro_BP.file_title, url: data.pro_BP.bp_url}];
             this.uploadShow = {
               bp_title: data.pro_BP.file_title,
@@ -1249,7 +1256,7 @@
             };
 
             this.setUploadShow2(data.pro_file);
-
+            console.log()
             this.project.pro_name = data.pro_name;
             this.project.pro_company_name = data.pro_company_name;
             this.project.pro_intro = data.pro_intro;
@@ -1460,6 +1467,14 @@
       //点击分组设置中的单选框
       groupchange(label){
         console.log(label)
+        let index = this.groups.index;
+        let data = this.groups.group;
+        for(let i=0 ;i<data.length; i++){
+          if(data[i].value==label){
+              this.groups.name=data[i].label;
+              this.uploadShow2.lists[index].type=label;
+          }
+        }
       },
       //添加分组设置的分组
       addGroup(formName) {
@@ -1492,6 +1507,7 @@
       saveGroupChange(){//file_id type_id user_id
         let type = this.groups.bp_type;
         let index = this.groups.index;
+        let type_name = this.groups.name
         console.log(this.uploadShow2)
         this.$http.post(this.URL.setFileType, {
           user_id: sessionStorage.user_id,
@@ -1500,7 +1516,7 @@
         })
           .then(res => {
             if (index !== -1) {
-              this.uploadShow2.lists[index].bp_type = type;
+              this.uploadShow2.lists[index].bp_type = type_name;
               this.dialogFileVisible = false
             }
           })
@@ -1511,7 +1527,8 @@
       },//发送分组设置请求
       toGroup(item){
         console.log(item)
-        this.groups.type=item.type
+        console.log(this.groups)
+        this.groups.type=item.type;
         var index = this.uploadShow2.lists.indexOf(item)
         this.groups.index = index;
         this.dialogFileVisible = true;
@@ -1544,20 +1561,20 @@
       querySearchAsync(queryString, cb) {
         this.$http.post(this.URL.selectCompany, {user_id: sessionStorage.user_id, company_name: queryString})
           .then(res => {
-            let data = res.data;
-            console.log(data);
-            /*this.restaurants=this.loadData(data);
+            this.restaurants=[];
+            let data=res.data.data;
+            this.restaurants=this.loadData(data);
              if(queryString=="") this.restaurants=[];
              let restaurants = this.restaurants;
              let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
              clearTimeout(this.timeout);
              this.timeout = setTimeout(() => {
-             cb(results);
-             }, 500);*/
+              cb(results);
+             }, 300);
           })
           .catch(err => {
 //          this.alert("加载失败");
-            console.log(err);
+            console.log(this.restaurants);
           })
       },
       createStateFilter(queryString) {

@@ -68,7 +68,7 @@
           </div>
 
           <!--===========================================一键尽调弹窗=============================================-->
-          <research :dialog-visible="dialogVisible" v-on:changeall="dialogVisiblechange" lock-scroll>
+          <research :dialog-visible="dialogVisible" :comid="comid" v-on:changeall="dialogVisiblechange" lock-scroll>
 
           </research>
 
@@ -422,7 +422,7 @@
     <el-dialog title="一键尽调" :visible.sync="dialogSearchVisible">
       <el-form label-position="top" label-width="140px">
         <el-form-item label="请输入你要尽调的公司">
-          <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick"></el-input>
+          <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick" @change="searchChange"></el-input>
         </el-form-item>
       </el-form>
       <ul class="onsearch">
@@ -438,9 +438,10 @@
   export default {
     data(){
       return {
+        comid:"",//公司id给一键尽调用的
         show: "detail",
         dialogVisible: false,
-        dialogSearchVisible:true,
+        dialogSearchVisible:false,
         searchName:"",
         form: {
           name: '',
@@ -789,30 +790,41 @@
       myPie.setOption(option);*/
     },
     methods:{
+      searchChange(queryString){
+        this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
+          .then(res=>{
+            this.seachCompanys=[];
+            let data =res.data.data;
+            this.seachCompanys=data;
+          })
+          .catch(err=>{
+            console.log(err);
+          })
+      },
       goOnkey(){
         if(this.project.pro_company_name==""){
           this.dialogSearchVisible = true;
         }else{
-          this.searchName=this.project.pro_company_name;
-          this.$http.post(this.URL.getWebCrawler, {user_id: sessionStorage.user_id, company_name: this.project.pro_company_name})
+          this.$http.post(this.URL.getCrawlerCompany, {user_id: sessionStorage.user_id, company_name: this.project.pro_company_name})
             .then(res => {
               let data = res.data;
-              if(data.length.length==0) {}
+              if(data.length==0) {
+                this.dialogSearchVisible = true;
+                this.searchName=this.project.pro_company_name;
+              }else{
+                this.dialogVisible = true;
+              }
               console.log(data);
-//              this.seachCompanys=data;
-//              this.dialogVisible = true;
             })
             .catch(err => {
 //          this.alert("加载失败");
               console.log(err);
             })
         }
-
-
-      },
+      },//一键尽调按钮
       search(e){
-
-        console.log(e)
+        this.comid=e;
+        this.dialogVisible = true;
       },
       handleIconClick(){
 
@@ -897,7 +909,7 @@
   #projectDetails{
     .onsearch{
       width: 100%;
-      max-height: 200px;
+      max-height: 320px;
       overflow-y: auto;
       li{
       width: 100%;
