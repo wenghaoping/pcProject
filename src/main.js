@@ -15,7 +15,7 @@ import './assets/css/animate.css'
 import $ from 'jquery'
 import tool from './global/tool.js';
 
-import axios from './config/api.js'
+import axios from './config/api.js'//axios请求配置
 Vue.prototype.$http = axios;
 
 import URL_ from './global/url.js'//URL请求地址汇总

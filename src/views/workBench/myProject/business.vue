@@ -166,7 +166,7 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'hello',
+  props: ["comid"],
   data () {
     return {
       bussinessName: '1',
@@ -222,8 +222,23 @@ export default {
     }
   },
   methods: {
-
-  }
+    getCrawlerBrand(){
+      this.$http.post(this.URL.getWebCrawler, {
+        user_id: sessionStorage.user_id,
+        com_id: this.comid
+      })
+        .then(res => {
+          this.business=res.data.data;
+        })
+        .catch(err => {
+          alert("删除失败");
+          console.log(err);
+        })
+    }//获取商标信息
+  },
+  created(){
+//    this.getCrawlerBrand();
+  },
 }
 </script>
 

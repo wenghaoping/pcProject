@@ -363,15 +363,11 @@
     },
     methods:{
       handleSelect(row, event, column) {
-        console.log(this.$tool.getToObject(row))
-//        console.log(column)
         if(column.label!="重置"){
           this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id}})
         }
       },//跳转到项目详情页面传参数
       handleEdit(index, row){
-//        console.log(index);
-//        console.log(this.$tool.getToObject(row));
         this.$router.push({ name: 'editproject', query: { project_id:row.project_id}})
       },//跳转到编辑页
       createProject(){

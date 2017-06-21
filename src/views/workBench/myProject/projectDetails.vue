@@ -62,7 +62,7 @@
               <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商、核心团队、产品数据、历史融资、新闻谬论等全方面信息</div>
               <span class="icon icon2" style="cursor: pointer"><img src="../../../assets/images/why.png"/></span>
             </el-tooltip>
-            <div class="button-float" @click="dialogVisible = true" style="cursor:pointer" >
+            <div class="button-float" @click="goOnkey" style="cursor:pointer" >
             一键尽调
           </div>
           </div>
@@ -417,6 +417,18 @@
         </div>
       </div>
     </div>-->
+
+    <!--尽调搜索弹窗-->
+    <el-dialog title="一键尽调" :visible.sync="dialogSearchVisible">
+      <el-form label-position="top" label-width="140px">
+        <el-form-item label="请输入你要尽调的公司">
+          <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick"></el-input>
+        </el-form-item>
+      </el-form>
+      <ul class="onsearch">
+        <li v-for="seachCompany in seachCompanys" @click="search(seachCompany.com_id)">{{seachCompany.company_name}}</li>
+      </ul>
+    </el-dialog>
   </div>
 </template>
 
@@ -428,6 +440,8 @@
       return {
         show: "detail",
         dialogVisible: false,
+        dialogSearchVisible:true,
+        searchName:"",
         form: {
           name: '',
           region: ''
@@ -651,10 +665,25 @@
           }
 
         },
+        seachCompanys:[
+          {
+            com_id: 1,
+            company_name: "怪化猫怪化猫喵喵喵"
+          },
+          {
+            com_id: 3,
+            company_name: "猫汤猫汤猫汤"
+          },{
+            com_id: 4,
+            company_name: "21321"
+          }
+        ]
       }
     },
     computed:{
+      getCompany:function () {
 
+      }
     },
     components: {
       research
@@ -760,6 +789,34 @@
       myPie.setOption(option);*/
     },
     methods:{
+      goOnkey(){
+        if(this.project.pro_company_name==""){
+          this.dialogSearchVisible = true;
+        }else{
+          this.searchName=this.project.pro_company_name;
+          this.$http.post(this.URL.getWebCrawler, {user_id: sessionStorage.user_id, company_name: this.project.pro_company_name})
+            .then(res => {
+              let data = res.data;
+              if(data.length.length==0) {}
+              console.log(data);
+//              this.seachCompanys=data;
+//              this.dialogVisible = true;
+            })
+            .catch(err => {
+//          this.alert("加载失败");
+              console.log(err);
+            })
+        }
+
+
+      },
+      search(e){
+
+        console.log(e)
+      },
+      handleIconClick(){
+
+      },//输入搜索
       handleClick:function(tab, event){
         this.show = tab.name ;
       },
@@ -768,7 +825,26 @@
       },
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
-      },
+      },//传递给一键尽调窗口
+      getLocalTime(data) {
+        for(let i=0; i<data.length; i++){
+          data[i].dh_start_time=new Date(parseInt(data[i].dh_start_time) * 1000).toLocaleString().substr(0, 9)
+        }
+      },//设置时间1
+      getLocalTime2(data) {
+        for(let i=0; i<data.length; i++){
+          data[i].created_at=new Date(parseInt(data[i].created_at) * 1000).toLocaleString().substr(0, 9)
+        }
+      },//设置时间2
+      getProjectTag(arr){
+        let str=""
+        for(let i=0;i<arr.length;i++){
+          if(arr[i].type==2){
+            str+=arr[i].tag_name+'.'
+          }
+        }
+        return str
+      },//项目来源编辑
       getOneProject () {
         this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:this.project.project_id})
           .then(res=>{
@@ -780,13 +856,18 @@
                   data.core_users[i].stock_scale="－"
                 }
             }
+
             if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
             if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
             if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-"}
             if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-//            console.log(this.$tool.getToObject(data))
-            this.project=data;
 
+            this.getLocalTime(data.pro_develop);
+            this.getLocalTime2(data.pro_history_finance);
+
+            console.log(this.$tool.getToObject(data))
+            this.project=data;
+            this.project.pro_source=this.getProjectTag(data.tag);
           })
           .catch(err=>{
             this.loading=false
@@ -814,6 +895,26 @@
 <style lang="less">
   @import '../../../assets/css/index.less';
   #projectDetails{
+    .onsearch{
+      width: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      li{
+      width: 100%;
+        height:40px;
+        line-height: 40px;
+        font-size:13px;
+        color:#475669;
+        text-align:left;
+        cursor: pointer;
+        padding-left: 20px;
+      }
+      li:hover{
+        background:#009eff;
+        color:#ffffff;
+      }
+    }
+
     .radio_line{
       width: 13px;
       //height: 49px;
@@ -825,6 +926,9 @@
       background: #f9fafc;
       height:12px;
       position: relative;
+    }
+    .el-dialog--small{
+      width: 30%;
     }
   }
 

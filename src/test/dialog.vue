@@ -1,14 +1,15 @@
 <template>
   <div id="selectbox">
-    <el-select v-model="value3" placeholder="请选择" @change="change">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
-
+    <div class="block">
+      <span class="demonstration">默认</span>
+      <el-date-picker
+        v-model="value1"
+        type="date"
+        format="yyyy/WW 周"
+        placeholder="选择日期">
+      </el-date-picker>
+    </div>
+<buttom @click="change">点击</buttom>
   </div>
 </template>
 
@@ -17,29 +18,16 @@
   export default {
     data() {
       return {
-        options: [{
-          value: '1',
-          label: '黄金糕'
-        }, {
-          value: '2',
-          label: '双皮奶'
-        }, {
-          value: '3',
-          label: '蚵仔煎'
-        }, {
-          value: '4',
-          label: '龙须面'
-        }, {
-          value: '5',
-          label: '北京烤鸭'
-        }],
-        value3: '5'
+        value1: ''
       }
     },
     methods:{
+//1498060800
+//      var timestamp3 = 1403058804;
+//  var newDate = new Date();
+//  newDate.setTime(timestamp3 * 1000);
       change(e){
-          console.log(e)
-          console.log(this.value3)
+          console.log(new Date(1403058804))
       }
     }
   }

@@ -83,6 +83,7 @@
 
 <script type="text/ecmascript-6">
 export default {
+  props: ["comp"],
   data () {
     return {
       conmanyName: '1',
@@ -158,8 +159,30 @@ export default {
         address:"北京",
         date:'2016-05-04'
       })
-    }
+    },
+    getWebCrawler(){
+      this.$http.post(this.URL.getWebCrawler, {
+        user_id: sessionStorage.user_id,
+        company_name: this.comp
+      })
+        .then(res => {
+          this.company=res.data.data;
+        })
+        .catch(err => {
+          alert("删除失败");
+          console.log(err);
+        })
+    },//获取公司信息
+  },
+  created(){
+//    this.getWebCrawler();
+//    this.$watch('comp', function(newVal, oldVal){
+//      console.log('newVal');//这里再感受下值拿到了没
+//      console.log(newVal);//这里再感受下值拿到了没
+//    });
+
   }
+
 }
 </script>
 

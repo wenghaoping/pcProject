@@ -56,11 +56,11 @@
             </div>
             <!--公司信息-->
             <div class="item">
-              <company-message></company-message>
+              <company-message :comp="comp"></company-message>
             </div>
             <!--工商信息-->
             <div class="item">
-              <business style="position: relative"></business>
+              <business style="position: relative" :comid="comid"></business>
             </div>
             <!--核心成员-->
             <div class="item clearfix">
@@ -269,6 +269,8 @@ export default {
   props: ["dialogVisible"],
   data () {
     return {
+      comp:"杭州",//一键尽调公司的名称
+      comid:123,//公司Id
       conmanyName: '3',
       productMessage:'产品信息(3)',
       recruitMessage:'招聘信息(29)',
@@ -292,6 +294,7 @@ export default {
           {url:"../../../../static/lanren_04.jpg"},
           {url:"../../../../static/lanren_05.jpg"}
           ],
+
 
 
       /*项目信息*/
@@ -321,7 +324,6 @@ export default {
           project_score: "已上线"
         }
       ],
-
       /*产品新闻*/
       news:[{
         project_id:"12",//产品ID
@@ -411,7 +413,82 @@ export default {
        address:"北京",
        date:'2016-05-04'
      })
-    }
+    },
+    getWebCrawler(){},//获取公司信息
+
+    getCrawlerTeam(){
+      this.$http.post(this.URL.getCrawlerTeam, {
+        user_id: sessionStorage.user_id,
+        com_id: this.com_id
+      })
+        .then(res => {
+          this.team=res.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },//获取核心成员
+    getCrawlerHistoryFinance(){
+      this.$http.post(this.URL.getCrawlerHistoryFinance, {
+        user_id: sessionStorage.user_id,
+        com_id: this.com_id
+      })
+        .then(res => {
+          this.history_finance=res.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },//获取历史融资
+    getCrawlerMilestone(){
+      this.$http.post(this.URL.getCrawlerMilestone, {
+        user_id: sessionStorage.user_id,
+        com_id: this.com_id
+      })
+        .then(res => {
+          this.milestone_list=res.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },//获取里程碑
+    getCrawlerNews(){
+      this.$http.post(this.URL.getCrawlerNews, {
+        user_id: sessionStorage.user_id,
+        com_id: this.com_id
+      })
+        .then(res => {
+          this.news=res.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },//获取新闻
+    getCrawlerCompeting(){
+      this.$http.post(this.URL.getCrawlerCompeting, {
+        user_id: sessionStorage.user_id,
+        com_id: this.com_id
+      })
+        .then(res => {
+          this.competing=res.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },//获取竞品
+    getCrawlerProject(){
+      this.$http.post(this.URL.getCrawlerProject, {
+        user_id: sessionStorage.user_id,
+        com_id: this.com_id
+      })
+        .then(res => {
+          this.project=res.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },//获取项目
+
   },
   computed: {
 
@@ -420,6 +497,14 @@ export default {
     companyMessage,
     business,
     downloadechart
+  },
+  created(){
+//    this.getCrawlerTeam();
+//    this.getCrawlerHistoryFinance();
+//    this.getCrawlerMilestone();
+//    this.getCrawlerNews();
+//    this.getCrawlerCompeting();
+//    this.getCrawlerProject();
   },
 }
 </script>
