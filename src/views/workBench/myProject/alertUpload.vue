@@ -12,10 +12,9 @@
                    :before-upload="beforeUpload"
                    :on-progress="handleProgress"
                    :data="uploadDate"
-
                    :show-file-list="showList"
                    ref="upload"
-                   accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"
+                   accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                    drag multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -41,7 +40,7 @@
           :on-error="uploaderror"
           :file-list="fileList"
           :data="uploadDate"
-
+          :before-upload="beforeUpload"
           :show-file-list="showList"
           accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"
           multiple>
@@ -109,6 +108,7 @@ export default {
   props: ["dialogUploadVisible"],
   data () {
     return {
+      num:0,//控制一次最多选择个数
 //      dialogUploadVisible: false,//第一个弹窗的控制
       dialogUpload2Visible:false,//第二个弹窗的控制
       status:"",//状态success/exception
@@ -145,34 +145,35 @@ export default {
         this.loadingcheck=true;
         let data=response.data
         if(response.status_code==2000000) {
+          this.success("上传成功");
           this.addDomain(data.bp_title,data.pro_desc,data.pro_name,data.project_id)
           this.loading=false;
           this.loadingcheck=false;
         }
-        console.log(response)
-
-      console.log("success")
-
     },
     uploaderror(err, file, fileList){
       this.loading=false;
+      this.alert("上传失败");
     },
     handlePreview(file) {
       console.log(file);
     },
     beforeUpload(file){
-        if(file.size > 30720000) file.abort()
-        console.log(file.size);
-      /*this.fileChange(file)*/
-      this.loading=true;
+      this.num++;
+      if(parseInt(file.size) > parseInt(31457280)){
+        this.alert("请上传小于30MB的文件");
+        console.log("超过啦")
+        return false;
+      };
+      if(parseInt(this.num) > parseInt(5)){
+        this.alert("一次最多选择5个文件");
+        this.num=0;
+        return false;
+      }
+//      this.loading=true;
     },
     handleProgress(event, file, fileList){
-
       this.percentage=parseInt(event.percent);
-//      if(event.percent==100)
-//      console.log(event)
-/*      console.log(file)
-      console.log(fileList)*/
     },
     //提交表单服务器时
     submitUpload(formName,formData) {
@@ -213,6 +214,7 @@ export default {
         .then(res=>{
           if(res.status===200){
 //            this.loading=false;
+            this.alert("删除成功");
           }
             console.log(res)
         })
@@ -246,25 +248,37 @@ export default {
     handleClose(done) {
       this.$confirm('确认关闭？关闭后所有数据清空')
         .then(_ => {
-          this.$emit('changeupload',false)
+          this.$emit('changeupload',false);
           this.dialogUpload2Visible=false;
           done()
         })
         .catch(_ => {});
     },
     /*警告弹窗*/
-    open(text) {
+    alert(text) {
       this.$notify.error({
         message: text,
         offset: 300,
-        duration:500
+        duration:2000
       });
-    }
+    },
+    /*成功弹窗*/
+    success(text) {
+      this.$notify({
+        message: text,
+        type: 'success',
+        offset: 300,
+        duration:2000
+      })
+    },
   }
 }
 </script>
 
 <style scoped lang="less">
+  .el-notification{
+    z-index: 2005;
+  }
   .el-upload__tip{
     text-align: center;
   }
@@ -296,5 +310,8 @@ export default {
   }
   .loadmodel{
     width: 100%;
+  }
+  .el-notification{
+    z-index: 2004;
   }
 </style>

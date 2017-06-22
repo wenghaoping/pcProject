@@ -1,5 +1,6 @@
 <template>
   <div id="dialog">
+    12312321
     <el-dialog
       title="提示"
       :visible.sync="dialogVisible"
@@ -8,19 +9,22 @@
       <span>这是一段信息</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="doing">取 消</el-button>
+        <el-button
+          plain
+          @click="open4">
+          警告
+        </el-button>
         <el-button type="primary" @click="doing">确 定</el-button>
       </span>
     </el-dialog>
-    <button></button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  props: ["dialogVisible"],
   data () {
     return {
-      msg: ''
+      dialogVisible: true
     }
   },
   methods: {
@@ -45,6 +49,14 @@ export default {
           console.log(err)
         })
 
+    },
+    open4(){
+      this.$notify({
+        title: '警告',
+        message: '这是一条警告的提示消息',
+        type: 'warning',
+        duration:0
+      });
     }
   }
 }

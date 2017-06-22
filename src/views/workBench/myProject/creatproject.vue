@@ -16,12 +16,15 @@
               <span class="del-btn"><i class="el-icon-delete"></i></span>-->
               <span style="margin-left: 20px;" class="fl">
                 <el-upload class="Upload"
+                           ref="upload"
                            action="/project/projectUpload"
                            :on-change="planChange"
                            :on-success="planuploadsuccess"
                            :on-remove="planRemove"
                            :on-error="planuploaderror"
                            :file-list="planList"
+                           :before-upload="beforeUpload"
+                            accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
                   <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、png，jpg，jpeg文件格式</div>
@@ -407,7 +410,12 @@ export default {
           this.opealertn("网络出错,请联系管理员")
         })
     },//点击下载
-
+    beforeUpload(file){
+      if(parseInt(file.size) > parseInt(31457280)){
+        this.alert("请上传小于30MB的文件");
+        return false;
+      }
+    },//上传前
 
 
     /*警告弹窗*/
@@ -415,7 +423,7 @@ export default {
       this.$notify.error({
         message: text,
         offset: 300,
-        duration:2000
+        duration:1000
       });
     },
     /*成功弹窗*/
@@ -424,7 +432,7 @@ export default {
         message: text,
         type: 'success',
         offset: 300,
-        duration:2000
+        duration:1000
       })
     },
     goBack(){//返回上一层
@@ -548,7 +556,7 @@ export default {
 
 //      if(this.queryData.pro_finance_scale==0) this.project.pro_finance_scale="";
 
-    }
+    },
   },
   mounted() {
 

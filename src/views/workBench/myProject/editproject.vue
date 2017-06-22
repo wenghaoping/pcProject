@@ -25,11 +25,11 @@
                            :on-remove="planRemove"
                            :before-upload="beforeUpload"
                            :file-list="planList"
-
+                           accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton"><i
                     class="el-icon-plus"></i>计划书上传</el-button>
-                  <!--accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"-->
+
                 </el-upload>
               </span>
 
@@ -48,8 +48,8 @@
                     :file-list="fileList"
                     :data="fileuploadDate"
                     :show-file-list="showList"
+                     accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg, .pptx"
                     multiple>
-                    <!--accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"-->
                     <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
                   </el-upload>
               </span>
@@ -784,6 +784,7 @@
   export default {
     data(){
       return {
+        num:0,//一次上传最多选5个
         project_id: "",//项目Id全局保存
         planList: [],//商业计划书上传列表
         fileList: [],//批量上传文件列表
@@ -1387,13 +1388,24 @@
       },//点击下载
 
       /*批量上传*/
-      beforeUpload(){
+      beforeUpload(file){
+        this.num++;
+        console.log(this.num);
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
+        if(parseInt(file.size) > parseInt(31457280)){
+          this.alert("请上传小于30MB的文件");
+          return false;
+        };
+        if(parseInt(this.num) > parseInt(5)){
+          this.alert("一次最多选择5个文件");
+          this.num=0;
+          return false;
+        }
       },
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
-          console.log(this.fileuploadDate)
+//          console.log(this.fileuploadDate)
       },
       uploadsuccess(response, file, fileList){
         let data = response.data
@@ -1875,7 +1887,7 @@
         this.$notify.error({
           message: text,
           offset: 300,
-          duration:2000
+          duration:1000
         });
       },
       /*成功弹窗*/
@@ -1884,7 +1896,7 @@
           message: text,
           type: 'success',
           offset: 300,
-          duration:2000
+          duration:1000
         })
       },
       /*编辑成功弹窗*/
