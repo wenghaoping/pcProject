@@ -11,6 +11,7 @@
         <el-button type="primary" @click="doing">确 定</el-button>
       </span>
     </el-dialog>
+    <button></button>
   </div>
 </template>
 
@@ -29,6 +30,21 @@ export default {
     doing(){
       this.$emit('update:dialogVisible', false);
       console.log('visible')
+    },
+    do(){
+      this.$http.post(this.URL.createFileType, {
+        user_id: sessionStorage.user_id,
+        type_name: this.groups.input
+      })
+        .then(res => {
+          let data =res.data.data;
+          let newObj = {};
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
     }
   }
 }

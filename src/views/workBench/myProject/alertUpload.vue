@@ -256,7 +256,8 @@ export default {
     open(text) {
       this.$notify.error({
         message: text,
-        offset: 300
+        offset: 300,
+        duration:500
       });
     }
   }

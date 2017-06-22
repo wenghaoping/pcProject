@@ -10,7 +10,7 @@
           <div class="rz-details" style="width: 795px;">
             <div class="rz-detail">
               <p class="det-title">法定代表人</p>
-              <p class="det-info">{{business.company.company_legal_representative}}</p>
+              <p class="det-info">{{business.company.company_business_number}}</p>
             </div>
             <div class="rz-detail">
               <p class="det-title">注册资本</p>
@@ -31,7 +31,7 @@
           </el-row>
           <el-row :span="24">
             <el-col :span="4"><div class="content left">工商注册号</div></el-col>
-            <el-col :span="8"><div class="content right">{{business.company.company_business_number}}</div></el-col>
+            <el-col :span="8"><div class="content right">{{business.company.company_legal_representative}}</div></el-col>
             <el-col :span="4"><div class="content left">组织机构代码</div></el-col>
             <el-col :span="8"><div class="content right"></div></el-col>
           </el-row>
@@ -223,7 +223,7 @@ export default {
   },
   methods: {
     getCrawlerBrand(){
-      this.$http.post(this.URL.getWebCrawler, {
+      this.$http.post(this.URL.getCrawlerBrand, {
         user_id: sessionStorage.user_id,
         com_id: this.comid
       })
@@ -231,14 +231,20 @@ export default {
           this.business=res.data.data;
         })
         .catch(err => {
-          alert("删除失败");
+          alert("获取失败");
           console.log(err);
         })
     }//获取商标信息
   },
   created(){
-//    this.getCrawlerBrand();
+    this.getCrawlerBrand();
   },
+  watch : {
+//    comid : function(e){
+//      this.com_id=e;
+//      console.log(e);
+//    }//获取公司id
+  }
 }
 </script>
 

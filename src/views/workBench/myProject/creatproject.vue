@@ -106,9 +106,9 @@
                 <el-col :span="12">
                   <el-form-item
                     label="项目轮次"
-                    prop="pro_stage"
+                    prop="pro_finance_stage"
                     :rules="[{type:'number',required: true, message: '项目轮次不能为空', trigger: 'change'}]">
-                    <el-select v-model="project.pro_stage" placeholder="请选择" class="width360">
+                    <el-select v-model="project.pro_finance_stage" placeholder="请选择" class="width360">
                       <el-option
                         v-for="item in stage"
                         :key="item.value"
@@ -246,7 +246,7 @@ export default {
         pro_company_name : '',//公司名称
         pro_intro : '',//项目介绍
         pro_industry:[],//项目领域
-        pro_stage: {
+        pro_finance_stage: {
           "stage_id": 2,
           "stage_name": "天使轮",
           "sort": 2,
@@ -359,7 +359,7 @@ export default {
     },
     planuploadsuccess(response, file, fileList){
       this.success("上传成功")
-      let data = response.data
+      let data = response.data;
       this.addplan(data.bp_title,data.pro_desc,data.pro_name,data.project_id,data.bp_id)
     },//上传成功后添加字段
     planuploaderror(err, file, fileList){
@@ -414,7 +414,8 @@ export default {
     alert(text) {
       this.$notify.error({
         message: text,
-        offset: 300
+        offset: 300,
+        duration:2000
       });
     },
     /*成功弹窗*/
@@ -422,7 +423,8 @@ export default {
       this.$notify({
         message: text,
         type: 'success',
-        offset: 300
+        offset: 300,
+        duration:2000
       })
     },
     goBack(){//返回上一层
@@ -462,9 +464,10 @@ export default {
     allSave(){
       if(this.submitForm('project')) {
         this.project.user_id=sessionStorage.user_id;
+        this.project.project_id=this.uploadShow.project_id;
         this.$http.post(this.URL.editProject,this.project)
           .then(res=>{
-            console.log(res)
+            console.log(res);
             let data=res.data;
             this.project.project_id=data.project_id;
             this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过')
@@ -515,7 +518,7 @@ export default {
     },
     handleSelect(item) {
       this.companyTitle=item.value;
-      this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,project_id:item.address})
+      this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,com_id:item.address})
         .then(res=>{
           let data=res.data.data;
           this.queryData=data;

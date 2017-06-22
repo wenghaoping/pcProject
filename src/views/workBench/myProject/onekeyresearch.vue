@@ -1,10 +1,10 @@
 <template>
-  <div id="research">
+  <div id="research" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================一键尽调弹窗=============================================-->
     <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose" close-on-press-escape close-on-click-modal >
       <div class="contain-grid" style="width: 881px;">
         <div class="contain-position">
-          <p>您要尽调的公司：<span>杭州投着乐网络科技有限公司</span><button class="fr button" @click="goToEdit">修改公司</button></p>
+          <p>您要尽调的公司：<span>{{compname}}</span><button class="fr button" @click="goToEdit">修改公司</button></p>
         </div>
         <div class="contain-inner">
           <div class="item-lists1">
@@ -27,9 +27,9 @@
                   </div>
                   <div class="block" style="height: 24px">
                     <span class="mid-tag" v-for="pro in project1.project_label">{{pro}}</span>
-                    <span class="big-tag" style="margin-left: 191px;">100-300万</span><span class="split">｜</span>
-                    <span class="big-tag">杭州</span><span class="split">｜</span>
-                    <span class="big-tag">天使轮</span>
+<!--                    <span class="big-tag" style="margin-left: 191px;">-&#45;&#45;</span><span class="split">｜</span>
+                    <span class="big-tag">&#45;&#45;</span><span class="split">｜</span>
+                    <span class="big-tag">&#45;&#45;</span>-->
                   </div>
                 </div>
                 <div class="tag clearfix">
@@ -56,11 +56,11 @@
             </div>
             <!--公司信息-->
             <div class="item">
-              <company-message></company-message>
+              <company-message :comp-name="compname"></company-message>
             </div>
             <!--工商信息-->
             <div class="item">
-              <business style="position: relative"></business>
+              <business style="position: relative" :comid="com_id"></business>
             </div>
             <!--核心成员-->
             <div class="item clearfix">
@@ -266,10 +266,10 @@ import companyMessage from './companyMessage.vue'
 import business from './business.vue'
 import downloadechart from './downloadEchart.vue'
 export default {
-  props: ["dialogVisible","companyId"],
+  props: ["dialogVisible","companyId","compName"],
   data () {
     return {
-      comp: "杭州",//一键尽调公司的名称
+      compname: "",//一键尽调公司的名称
       com_id: 0,//公司Id
       conmanyName: '3',
       productMessage: '产品信息(3)',
@@ -295,41 +295,28 @@ export default {
         {url: "../../../../static/lanren_05.jpg"}
       ],
 
-
       /*项目信息*/
       project: [
         {
           project_id: 1,
           com_id: 4,
-          company_name: "微天使乐投平台",
-          project_name: "杭州投着乐网络科技有限公司",
-          project_industry: "初创",
-          project_introduce: "我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫",
-          project_label: ["教育培训", "社交通讯", "sass"],
-          project_website: "www.weitianshi.cn",
-          project_logo: "../../../assets/images/researchheader.png",
-          project_score: "已上线"
-        },
-        {
-          project_id: 1,
-          com_id: 4,
-          company_name: "微天使乐投平台",
-          project_name: "杭州投着乐网络科技有限公司",
-          project_industry: "初创",
-          project_introduce: "我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫我是项目结婚扫",
-          project_label: ["教育培训", "社交通讯", "sass"],
-          project_website: "www.weitianshi.cn",
-          project_logo: "../../../assets/images/researchheader.png",
-          project_score: "已上线"
+          company_name: "",
+          project_name: "",
+          project_industry: "",
+          project_introduce: "",
+          project_label: [],
+          project_website: "",
+          project_logo: "",
+          project_score: ""
         }
       ],
       /*产品新闻*/
       news: [{
-        project_id: "12",//产品ID
-        project_news_time: "2017.05.04",//新闻时间
-        project_news_label: "产品",//新闻标签
-        project_news_title: "滴滴首推五星级出行服务 「豪华车」 入口在京开放预约",//新闻标题
-        source: "view.inews.qq.com"//资源链接
+        project_id: "",//产品ID
+        project_news_time: "",//新闻时间
+        project_news_label: "",//新闻标签
+        project_news_title: "",//新闻标题
+        source: ""//资源链接
       }],
       /*竞品表*/
       competing: [
@@ -337,7 +324,7 @@ export default {
           com_id: "",//
           project_id: "",//竞品ID
           competing_goods_name: "微天使平台",//竞品名字
-          competing_goods_logo: "../../../assets/images/message.png",//竞品LOGO
+          competing_goods_logo: "",//竞品LOGO
           competing_goods_industry: "医疗健康,医疗器械及硬件",//竞品行业
           competing_goods_Set_up: "2014-07",//竞品成立日期
           competing_goods_Financing_rounds: "战略投资",//竞品获投轮次
@@ -371,12 +358,13 @@ export default {
       team: [
         {
           project_id: "",//产品ID
-          team_member_introduce: "13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下",//成员介绍
-          team_member_photo: "../../../assets/images/header3.png",//成员头像
-          team_member_name: "顾嘉",//成员名字
-          team_member_position: "CEO",//成员职位
+          team_member_introduce: "",//成员介绍
+          team_member_photo: "",//成员头像
+          team_member_name: "",//成员名字
+          team_member_position: "",//成员职位
         }
       ],
+      loading:false
 
 
     }
@@ -390,7 +378,9 @@ export default {
       this.dialogVisibleTo()
     },
     goToEdit(){
-      this.$router.push({name: 'editproject', query: {}})
+//      this.$router.push({name: 'editproject', query: {}})
+      this.$emit('changeall', false)
+      this.$emit('changeallin', true)
     },
     loadMore(){
       this.recruitData.push({
@@ -405,16 +395,8 @@ export default {
         experience: '1年',
         address: "北京",
         date: '2016-05-04'
-      }, {
-        position: 'IOS',
-        money: '1-2K',
-        experience: '1年',
-        address: "北京",
-        date: '2016-05-04'
       })
     },
-    getWebCrawler(){
-    },//获取公司信息
 
     getCrawlerTeam(){
       this.$http.post(this.URL.getCrawlerTeam, {
@@ -484,7 +466,7 @@ export default {
         .then(res => {
           this.getCrawLerLbel(res.data.data);
           this.project = res.data.data;
-          console.log(this.project)
+          this.loading=false;
         })
         .catch(err => {
           console.log(err);
@@ -504,19 +486,25 @@ export default {
   },
   created(){
 
-
   },
 
   watch : {
     companyId : function(e){
+      this.loading=true;
       this.com_id=e;
+      this.compname=this.compName;
       this.getCrawlerTeam();
       this.getCrawlerHistoryFinance();
       this.getCrawlerMilestone();
       this.getCrawlerNews();
       this.getCrawlerCompeting();
       this.getCrawlerProject();
-    }//获取公司id
+
+    },//获取公司id
+    dialogVisible:function(e){
+
+    }
+
   }
 }
 </script>

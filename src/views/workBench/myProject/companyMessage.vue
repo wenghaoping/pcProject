@@ -83,9 +83,10 @@
 
 <script type="text/ecmascript-6">
 export default {
-  props: ["comp"],
+  props: ["compName"],
   data () {
     return {
+      compaName:"", //搜索用的公司名称
       conmanyName: '1',
       productMessage:'产品信息(3)',
       recruitMessage:'招聘信息(29)',
@@ -160,26 +161,30 @@ export default {
         date:'2016-05-04'
       })
     },
-    getWebCrawler(){
-      this.$http.post(this.URL.getWebCrawler, {
+    getCrawlerCompany(){
+      this.$http.post(this.URL.getCrawlerCompany, {
         user_id: sessionStorage.user_id,
-        company_name: this.comp
+        company_name: this.compaName
       })
         .then(res => {
           this.company=res.data.data;
         })
         .catch(err => {
-          alert("删除失败");
           console.log(err);
         })
     },//获取公司信息
   },
   created(){
-//    this.getWebCrawler();
-//    this.$watch('comp', function(newVal, oldVal){
-//      console.log('newVal');//这里再感受下值拿到了没
-//      console.log(newVal);//这里再感受下值拿到了没
-//    });
+//    console.log(this.compName)
+    this.getCrawlerCompany();
+  },
+ watch: {
+ /*     compName: function(e){
+      console.log(e);
+      this.compaName=e;
+      console.log(this.compaName)
+      this.getCrawlerCompany();
+    }//获取公司id*/
   }
 
 }

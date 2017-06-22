@@ -68,7 +68,7 @@
           </div>
 
           <!--===========================================一键尽调弹窗=============================================-->
-          <research :dialog-visible="dialogVisible" :company-id="companyid" v-on:changeall="dialogVisiblechange" lock-scroll>
+          <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" v-on:changeall="dialogVisiblechange" v-on:changeallin="dialogVisiblechangeIn" lock-scroll>
 
           </research>
 
@@ -426,7 +426,7 @@
         </el-form-item>
       </el-form>
       <ul class="onsearch">
-        <li v-for="seachCompany in seachCompanys" @click="search(seachCompany.com_id)">{{seachCompany.company_name}}</li>
+        <li v-for="seachCompany in seachCompanys" @click="search(seachCompany)">{{seachCompany.company_name}}</li>
       </ul>
     </el-dialog>
   </div>
@@ -438,6 +438,7 @@
   export default {
     data(){
       return {
+        companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
         show: "detail",
         dialogVisible: false,
@@ -793,15 +794,16 @@
           this.$http.post(this.URL.getCrawlerCompany, {user_id: sessionStorage.user_id, company_name: this.project.pro_company_name})
             .then(res => {
               let data = res.data.data;
-              console.log(data);
-              if(data.length==0) {
+              if(data.length==0) {//搜索不到信息
                 this.dialogSearchVisible = true;
                 this.searchName=this.project.pro_company_name;
-              }else{
+                this.companyname=this.project.pro_company_name;
+                this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请输入",com_id:-1}];
+              }else{//搜索到了
                 this.dialogVisible = true;
                 this.companyid=data.company.com_id;
+                this.companyname=this.project.pro_company_name;
               }
-              console.log(data);
             })
             .catch(err => {
 //          this.alert("加载失败");
@@ -809,13 +811,16 @@
             })
         }
       },//一键尽调按钮
-      search(e){
-        this.companyid=e;
-        console.log(this.companyid);
-        this.dialogVisible = true;
-      },
+      search(data){
+        if(data.com_id==-1) alert("请输入公司")
+        else {
+          this.companyid=data.com_id;
+          this.companyname=data.company_name;
+          this.dialogVisible = true;
+        }
+      },//点击下拉选择公司后
       handleIconClick(){
-
+        this.searchChange(this.companyname);
       },//输入搜索
       handleClick:function(tab, event){
         this.show = tab.name ;
@@ -826,6 +831,10 @@
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
       },//传递给一键尽调窗口
+      dialogVisiblechangeIn(msg){
+          console.log(msg);
+        this.dialogSearchVisible=msg;
+      },//传递给一键尽调搜索窗口
       getLocalTime(data) {
         for(let i=0; i<data.length; i++){
           data[i].dh_start_time=new Date(parseInt(data[i].dh_start_time) * 1000).toLocaleString().substr(0, 9)
@@ -865,7 +874,7 @@
             this.getLocalTime(data.pro_develop);
             this.getLocalTime2(data.pro_history_finance);
 
-            console.log(this.$tool.getToObject(data))
+//            console.log(this.$tool.getToObject(data))
             this.project=data;
             this.project.pro_source=this.getProjectTag(data.tag);
           })
@@ -884,7 +893,7 @@
     },
     created () {
       // 组件创建完后获取数据，
-//      this.loading=true
+      this.loading=true
       this.getprojectId();
       this.getOneProject();
     }

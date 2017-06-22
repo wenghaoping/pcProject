@@ -4,28 +4,43 @@
         <p class="title">微天使，帮您成交的项目管理工具</p>
         <p class="samll">扫一扫，快速创建融资项目</p>
         <div class="img">
-          <img src="../../assets/images/weixin.png">
+          <vue-q-art :config="config" :downloadButton="downloadButton"></vue-q-art>
         </div>
+        <br/>
+        <br/>
+        <br/>
+        <el-input v-model="input" placeholder="请输入内容"></el-input>
+        <el-button type="primary" @click="change">更换验证码尝试</el-button>
       </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import VueQArt from 'vue-qart'
 export default {
-  name: 'samllRourine',
   data () {
     return {
-      msg: ''
+      input: '',
+      config: {
+        value: 'https://www.baidu.com',
+        imagePath: '../../../static/170.png',
+        filter: 'color'
+      },
+      downloadButton: false
     }
   },
   methods: {
-
+    change(){
+      this.config.value=this.input
+    }
+  },
+  components: {
+      VueQArt
   }
 }
 </script>
 
 <style scoped lang="less">
-html{  }
 #samllRoutine{
   background: #f3f4f8;
   font-family:PingFangSC-Regular;
@@ -53,8 +68,8 @@ html{  }
       margin-top: 71px;
     }
     .img{
-      width: 162px;
-      height: 162px;
+      width: 195px;
+      height: 195px;
       display: block;
       margin: 24px auto 0;
     }

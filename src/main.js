@@ -21,6 +21,9 @@ Vue.prototype.$http = axios;
 import URL_ from './global/url.js'//URL请求地址汇总
 Vue.prototype.URL = URL_;
 
+// import qrCode from './global/qrCode.js'//生成二维码地址
+// Vue.prototype.$QRCode = qrCode;
+
 
 Vue.use(Element);//UI库
 Vue.use(tool);//自己的库

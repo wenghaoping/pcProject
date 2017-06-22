@@ -1140,7 +1140,6 @@
         return arr;
       },//获取项目分组信息
 
-
       setFileType(){
         this.$http.post(this.URL.getFileType, {user_id: sessionStorage.user_id})
           .then(res => {
@@ -1202,45 +1201,40 @@
       },//设置领域标签
       setDateTime(data){
         for (let i = 0; i < data.length; i++) {
-          data[i].created_at = new Date(data[i].created_at);
+          data[i].created_at = new Date(data[i].created_at*1000);
         }
       },//时间转化接受从时间戳转化为中国标准时间
       setDateTime2(data){
         for (let i = 0; i < data.length; i++) {
-          data[i].dh_start_time = new Date(data[i].dh_start_time);
+          data[i].dh_start_time = new Date(data[i].dh_start_time*1000);
         }
       },//时间转化接受从时间戳转化为中国标准时间
       setDateTime3(data){
         for (let i = 0; i < data.length; i++) {
-          data[i].created_at = Date.parse(new Date(data[i].created_at))/ 1000;
+          data[i].created_at1=Date.parse(data[i].created_at);
         }
       },//时间转化中国标准时间发送转换回时间戳
       setDateTime4(data){
         for (let i = 0; i < data.length; i++) {
-          data[i].dh_start_time = Date.parse(new Date(data[i].dh_start_time))/ 1000;
+          data[i].dh_start_time1=Date.parse(data[i].dh_start_time);
         }
       },//时间转化中国标准时间发送转换回时间戳
       setUploadShow2(data){
         for (let i = 0; i < data.length; i++) {
           if(data[i].belongs_to_type==null) {
-              data[i].belongs_to_type={type_name:""};
-          }
-          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title, data[i].file_id, data[i].belongs_to_type.type_id)
+              data[i].belongs_to_type={type_name:"其他"};
+          };
+          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title, data[i].file_id, data[i].belongs_to_type.type_id);
         }
       },//设置批量上传文件显示
       getOneProject () {
         this.$http.post(this.URL.getOneProject, {user_id: sessionStorage.user_id, project_id: this.project_id})
           .then(res => {
             let data = res.data.data;
-            console.log(res)
-
-//         console.log(this.$tool.getToObject(data))
             this.area1Change(data.pro_area.pid);//设置市级
             this.setDateTime(data.pro_history_finance);//时间格式设置
-
             this.setDateTime2(data.pro_develop);//时间格式设置2
-            console.log(data.pro_history_finance);
-            console.log(data.pro_develop);
+
             this.planList = [{name: data.pro_BP.file_title, url: data.pro_BP.bp_url}];
             this.uploadShow = {
               bp_title: data.pro_BP.file_title,
@@ -1256,7 +1250,6 @@
             };
 
             this.setUploadShow2(data.pro_file);
-            console.log()
             this.project.pro_name = data.pro_name;
             this.project.pro_company_name = data.pro_company_name;
             this.project.pro_intro = data.pro_intro;
@@ -1296,14 +1289,15 @@
             this.financing.pro_finance_stock_after = data.pro_finance_stock_after;
             this.financing.pro_finance_value = data.pro_finance_value;
 
+
+            this.financing.pro_history_finance = data.pro_history_finance;
+
             if (data.pro_history_finance == "") this.financing.pro_history_finance = [{
               pro_finance_stage: "",
               pro_finance_scale: "",
               pro_finance_investor: "",
               created_at: ""
             }];
-            this.financing.pro_history_finance = data.pro_history_finance;
-
 
             this.milepost.pro_develop = data.pro_develop;
 
@@ -1320,7 +1314,6 @@
             if (data.pro_FA == "") data.pro_FA = {commission: "", stock_right: "", stock_follow: "", stock_other: ""};
 
             this.pro_FA = data.pro_FA;
-
             if (this.planList.length != 0) this.planButton = false;
             else this.planButton = true;
             this.loading = false
@@ -1404,7 +1397,6 @@
       },
       uploadsuccess(response, file, fileList){
         let data = response.data
-        console.log(response)
         this.success("上传成功")
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type)
       },
@@ -1416,7 +1408,7 @@
         if (index !== -1) {
           let file_id = this.uploadShow2.lists[index].file_id;
           const download = this.URL.download;
-          this.$http.get(download, {params: {user_id: sessionStorage.user_id, type: "project_file", file_id: file_id}})
+          /*this.$http.get(download, {params: {user_id: sessionStorage.user_id, type: "project_file", file_id: file_id}})
             .then(res => {
               if (res.data.status_code === 4004004) {
                 this.loading = false;
@@ -1427,7 +1419,7 @@
             .catch(err => {
 //              console.log(err)
               this.alert("网络出错,请联系管理员")
-            })
+            })*/
 //          console.log(file_id)
         }
       },//点击下载
@@ -1463,10 +1455,10 @@
         object.file_id = file_id;
         object.type = type;//文件类型
         this.uploadShow2.lists.push(object);
+
       },
       //点击分组设置中的单选框
       groupchange(label){
-        console.log(label)
         let index = this.groups.index;
         let data = this.groups.group;
         for(let i=0 ;i<data.length; i++){
@@ -1508,7 +1500,6 @@
         let type = this.groups.bp_type;
         let index = this.groups.index;
         let type_name = this.groups.name
-        console.log(this.uploadShow2)
         this.$http.post(this.URL.setFileType, {
           user_id: sessionStorage.user_id,
           file_id: this.uploadShow2.lists[index].file_id,
@@ -1526,8 +1517,6 @@
 
       },//发送分组设置请求
       toGroup(item){
-        console.log(item)
-        console.log(this.groups)
         this.groups.type=item.type;
         var index = this.uploadShow2.lists.indexOf(item)
         this.groups.index = index;
@@ -1584,7 +1573,7 @@
       },
       handleSelect(item) {
         this.companyTitle = item.value;
-        this.$http.post(this.URL.getOneCompany, {user_id: sessionStorage.user_id, project_id: item.address})
+        this.$http.post(this.URL.getOneCompany, {user_id: sessionStorage.user_id, com_id: item.address})
           .then(res => {
             let data = res.data.data;
             this.queryData = data;
@@ -1614,7 +1603,6 @@
       },//判断是否重复
       /*添加运营状态*/
       addState(){
-        console.log(this.form.state)
         this.$http.post(this.URL.createStatusPro, {user_id: sessionStorage.user_id, status_name: this.form.state})
           .then(res => {
             let data = res.data;
@@ -1683,24 +1671,29 @@
 
       /*添加团队成员*/
       removeMember(item) {
-        this.dialogDeleteVisible = true;
-        this.$http.post(this.URL.deleteCoreTeam, {
-          user_id: sessionStorage.user_id,
-          project_id: this.project_id,
-          project_ct_id: item.project_ct_id
-        })
-          .then(res => {
+        if(item.project_ct_id=="") {
+          let index = this.team.core_users.indexOf(item);
+          if (index !== -1) {
+            this.team.core_users.splice(index, 1)
+          }
+        }else{
+          this.$http.post(this.URL.deleteCoreTeam, {
+             user_id: sessionStorage.user_id,
+             project_id: this.project_id,
+             project_ct_id: item.project_ct_id
+           })
+           .then(res => {
             this.success("删除成功");
-            let index = this.team.core_users.indexOf(item);
-            if (index !== -1) {
-              this.team.core_users.splice(index, 1)
-            }
-          })
-          .catch(err => {
-            alert("删除失败");
-            console.log(err);
-          })
-
+             let index = this.team.core_users.indexOf(item);
+             if (index !== -1) {
+               this.team.core_users.splice(index, 1)
+             }
+           })
+           .catch(err => {
+             this.alert("删除失败");
+             console.log(err);
+           })
+        }
       },
       addMember() {
         this.team.core_users.push({
@@ -1714,56 +1707,73 @@
 
       /*添加历史融资信息*/
       removeHistory(item) {
-        this.$http.post(this.URL.deleteFinance, {
-          user_id: sessionStorage.user_id,
-          project_id: this.project_id,
-          history_id: item.history_id
-        })
-          .then(res => {
-            this.success("删除成功");
+          if(item.history_id==""){
             let index = this.financing.pro_history_finance.indexOf(item)
             if (index !== -1) {
               this.financing.pro_history_finance.splice(index, 1)
             }
-          })
-          .catch(err => {
-            alert("删除失败");
-            console.log(err);
-          })
+          }else{
+            this.$http.post(this.URL.deleteFinance, {
+              user_id: sessionStorage.user_id,
+              project_id: this.project_id,
+              history_id: item.history_id
+            })
+              .then(res => {
+                this.success("删除成功");
+                let index = this.financing.pro_history_finance.indexOf(item);
+                if (index !== -1) {
+                  this.financing.pro_history_finance.splice(index, 1)
+                }
+              })
+              .catch(err => {
+                this.alert("删除失败");
+                console.log(err);
+              })
+          }
+
       },
       addHistory() {
         this.financing.pro_history_finance.push({
           created_at: '',
           pro_finance_stage: '',
           pro_finance_scale: '',
-          pro_finance_investor: ''
+          pro_finance_investor: '',
+          history_id:''
         });
       },
 
       /*添加里程碑*/
       removemilePost(item) {
-        this.$http.post(this.URL.deleteDevelop, {
-          user_id: sessionStorage.user_id,
-          project_id: this.project_id,
-          project_dh_id: item.project_dh_id
-        })
-          .then(res => {
-            this.success("删除成功");
+          if(item.project_dh_id==""){
             let index = this.milepost.pro_develop.indexOf(item)
             if (index !== -1) {
               this.milepost.pro_develop.splice(index, 1)
             }
-          })
-          .catch(err => {
-            alert("删除失败");
-            console.log(err);
-          })
+          }else{
+            this.$http.post(this.URL.deleteDevelop, {
+              user_id: sessionStorage.user_id,
+              project_id: this.project_id,
+              project_dh_id: item.project_dh_id
+            })
+              .then(res => {
+                this.success("删除成功");
+                let index = this.milepost.pro_develop.indexOf(item)
+                if (index !== -1) {
+                  this.milepost.pro_develop.splice(index, 1)
+                }
+              })
+              .catch(err => {
+                this.alert("删除失败");
+                console.log(err);
+              })
+          }
       },
       addmilePost() {
         this.milepost.pro_develop.push({
           dh_start_time: '',
           dh_event: '',
-          history_id: ''
+          history_id: '',
+          project_dh_id:''
         });
       },
 
@@ -1787,7 +1797,9 @@
 
       /*全部保存按钮*/
       allSave(){
-        if (this.planList.length === 0) this.fileMust = true
+        console.log(this.$tool.getToObject(this.financing));
+        console.log(this.$tool.getToObject(this.milepost));
+        if (this.planList.length === 0) this.fileMust = true;
         else this.fileMust = false
         this.projectMust = !this.submitForm('project');
         this.teamMust = !this.submitForm('team');
@@ -1799,14 +1811,16 @@
         else if (this.financingMust) this.alert("融资信息必填项不能为空")
         else if (this.milepostMust) this.alert("里程碑必填项不能为空")
         else {
-            console.log(this.$tool.getToObject(this.financing))
-            console.log(this.$tool.getToObject(this.milepost))
+
           let allData = {};
-          this.takeData(allData, this.project)
-          this.takeData(allData, this.team)
-          this.takeData(allData, this.financing)
-          this.takeData(allData, this.milepost)
-          this.takeData(allData, this.pro_FA)
+          this.takeData(allData, this.project);
+          this.takeData(allData, this.team);
+          this.takeData(allData, this.financing);
+          this.takeData(allData, this.milepost);
+          this.takeData(allData, this.pro_FA);
+          this.setDateTime3(allData.pro_history_finance);
+          this.setDateTime4(allData.pro_develop);
+
           allData.is_exclusive = this.is_exclusive;
           allData.project_id = this.project_id;
           allData.pro_area_province = this.project.pro_area.pid;
@@ -1817,7 +1831,7 @@
 
           allData.pro_core_team = this.team.core_users;
           allData.pro_finance_stage = this.project.pro_stage.stage_id;
-          allData.pro_company_scale = this.project.pro_company_scale.comp_scale_id;
+           allData.pro_company_scale = this.project.pro_company_scale.comp_scale_id;
           allData.user_id = sessionStorage.user_id
           for (let key in allData) {
             if (allData[key] == "-") {
@@ -1829,10 +1843,8 @@
               allData.contact[key] = "";
             }
           }
-          this.setDateTime3(allData.pro_history_finance);
-          this.setDateTime4(allData.pro_develop);
+          console.log(allData,2);
 
-          console.log(allData,1);
           this.$http.post(this.URL.editProject, allData)
             .then(res => {
               this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '继续编辑')
@@ -1862,7 +1874,8 @@
       alert(text) {
         this.$notify.error({
           message: text,
-          offset: 300
+          offset: 300,
+          duration:2000
         });
       },
       /*成功弹窗*/
@@ -1870,7 +1883,8 @@
         this.$notify({
           message: text,
           type: 'success',
-          offset: 300
+          offset: 300,
+          duration:2000
         })
       },
       /*编辑成功弹窗*/
@@ -1886,7 +1900,7 @@
             type: 'success',
             message: '继续编辑'
           });
-
+          this.getOneProject();
         });
       },
       /*锚点跳转*/
