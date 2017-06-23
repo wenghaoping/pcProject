@@ -24,10 +24,13 @@
             <div class="item" style="margin-top:18px;">
               <span class="big-tag">{{project.pro_scale.scale_money}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_area.area_title}}</span><span class="split">｜</span>
-              <span class="big-tag">{{project.pro_schedule.schedule_name}}</span><span class="split">｜</span>
+              <span class="big-tag">{{project.pro_finance_stock_after}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               <span class="flower">跟进人 : {{project.follow_up}}</span>
-              <span class="flower">来源 : {{project.pro_source}}　</span>
+
+            </div>
+            <div class="item"  style="margin-top:18px;">
+              <span class="flower2">来源 : {{project.pro_source}}　</span>
             </div>
             <div class="item" style="margin-top:18px;">
             <span class="project">
@@ -93,9 +96,9 @@
               <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
             </div>
             <div class="item" style="margin-top:24px;">
-              <div class="paper" v-for="file in project.pro_file">
+              <div class="paper" >
                 <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
-                <span class="pt">{{file.file_title}}</span>
+                <span class="pt">{{project.pro_BP.file_title}}</span>
                 <el-button type="text" size="mini">查看</el-button>
                 <el-button type="text" size="mini"><a href="">下载</a></el-button>
               </div>
@@ -159,13 +162,13 @@
                 </div>
               </div>
             </div>
-            <div class="item" style="margin-top:35px;" v-if="project.pro_history_finance=''">
+            <div class="item" style="margin-top:35px;" v-if="project.pro_history_finance.length!=0">
               <span class="sec-title">资金用途</span>
               <div class="yt-doc">
                 {{project.pro_finance_use}}
               </div>
             </div>
-            <div class="item" style="margin-top:6px;" v-if="project.pro_history_finance=''">
+            <div class="item" style="margin-top:6px;" v-if="project.pro_history_finance.length!=0">
               <div>
                 <div class="v-progress" style="height: 121px;">
                   <span class="circle circle-s">&nbsp;</span>
@@ -174,9 +177,9 @@
                 </div>
                 <div class="v-progress-table">
                   <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
-                    <span class="pro-txt-1">{{finance.created_time}}</span>
+                    <span class="pro-txt-1">{{finance.created_at}}</span>
                     <span class="pro-txt-2">{{finance.pro_finance_scale}}万</span>
-                    <span class="pro-txt-3">{{finance.pro_finance_stage_name}}</span>
+                    <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
                     <span class="pro-txt-4">{{finance.pro_finance_investor}}</span>
                     <div class="line"></div>
                   </div>
@@ -578,14 +581,10 @@
           pro_finance_scale: "100.00",//金额
           pro_finance_investor: "周杰伦",//投资人
           created_time: null,
-          updated_time: null
-        },{
-          project_id: 37,
-          pro_finance_stage: 2,
-          pro_finance_scale: "200.00",
-          pro_finance_investor: "小哥",
-          created_time: null,
-          updated_time: null
+          updated_time: null,
+          belongs_to_stage:{
+
+          }
         }],
         /*自定义标签*/
           tag: [
@@ -859,7 +858,10 @@
           .then(res=>{
             this.loading=false
             let data = res.data.data;
-
+            console.log(this.$tool.getToObject(data))
+//            for(let key in data){
+//              if(data[key]=="") data[key]="-"
+//            }
             for(let i=0; i<data.core_users.length; i++){
                 if(data.core_users[i].stock_scale==null){
                   data.core_users[i].stock_scale="－"
@@ -874,12 +876,13 @@
             this.getLocalTime(data.pro_develop);
             this.getLocalTime2(data.pro_history_finance);
 
-//            console.log(this.$tool.getToObject(data))
+
             this.project=data;
             this.project.pro_source=this.getProjectTag(data.tag);
+
           })
           .catch(err=>{
-            this.loading=false
+            this.loading=false;
             console.log(err,2)
           })
       },//获取项目详情数据

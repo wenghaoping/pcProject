@@ -1,46 +1,94 @@
 <template>
-  <div id="samllRoutine">
+  <div id="samllRoutine" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
       <div class="scan">
         <p class="title">微天使，帮您成交的项目管理工具</p>
         <p class="samll">扫一扫，快速创建融资项目</p>
-        <div class="img">
-          <vue-q-art :config="config" :downloadButton="downloadButton"></vue-q-art>
+        <div class="img" v-html="qr">
+          {{qr}}
         </div>
-        <br/>
-        <br/>
-        <br/>
-        <el-input v-model="input" placeholder="请输入内容"></el-input>
-        <el-button type="primary" @click="change">更换验证码尝试</el-button>
       </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import VueQArt from 'vue-qart'
 export default {
   data () {
     return {
       input: '',
-      config: {
-        value: 'https://www.baidu.com',
-        imagePath: '../../../static/170.png',
-        filter: 'color'
-      },
-      downloadButton: false
+      loading:false,
+      timeout: null,
+      num:0,
+      qr:""
     }
   },
   methods: {
+    /*警告弹窗*/
+    alert(text) {
+      this.$notify.error({
+        message: text,
+        offset: 300,
+        duration:0
+      });
+    },
     change(){
       this.config.value=this.input
-    }
+    },
+    getUserId(){
+      this.num++;
+      if(this.num>30) clearInterval(this.timeout);
+      this.$http.post(this.URL.ajaxPolling,{credential:sessionStorage.credential})
+        .then(res=>{
+//          clearInterval(this.timeout);
+          let data=res.data;
+          console.log(res);
+          if(data.status_msg=="success"){
+            clearInterval(this.timeout);
+            if(data.type=="create") this.$router.push({ name: 'creatproject'});
+
+            if(data.type=="update") this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});
+            console.log(data.project_id);
+            console.log(data.user_info);
+            sessionStorage.user_id=data.user_info.user_id;
+            sessionStorage.user_real_name=data.user_info.user_real_name;
+          }else if(data.status_msg=="timeout"){
+            clearInterval(this.timeout);
+            this.alert("超时,请刷新页面");
+          }else if(data.status_msg=="continue") {
+            console.log("等待登陆")
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    }//获取id
+
   },
-  components: {
-      VueQArt
+  created(){
+
+  },
+  mounted(){
+    this.loading=true;
+    this.$http.get(this.URL.returnQrCredential)
+      .then(res => {
+        console.log(res);
+        let data=res.data;
+        this.qr=data.qr;
+        sessionStorage.credential=data.credential;
+        this.loading=false;
+      })
+      .catch(err => {
+        console.log(err);
+        this.alert("请刷新页面");
+      })
+    this.timeout = setInterval(() => {
+      this.getUserId();
+    }, 1000);
   }
 }
 </script>
 
 <style scoped lang="less">
+  svg{width: 200px;height: 200px;}
 #samllRoutine{
   background: #f3f4f8;
   font-family:PingFangSC-Regular;

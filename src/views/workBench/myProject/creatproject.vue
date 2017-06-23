@@ -190,7 +190,7 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item
-                    label="运营状态"
+                    label="是否独家"
                     prop="is_exclusive">
                     <el-radio class="radio" v-model="project.is_exclusive" :label=2>非独家FA签约</el-radio>
                     <el-radio class="radio" v-model="project.is_exclusive" :label=1>独家FA签约</el-radio>
@@ -557,6 +557,35 @@ export default {
 //      if(this.queryData.pro_finance_scale==0) this.project.pro_finance_scale="";
 
     },
+    getprojectId(){
+      this.project.project_id = this.$route.query.project_id;
+      console.log(this.$route.query.project_id);
+    },
+    getWxosProjectData(){
+        console.log("我登陆啦")
+      if(sessionStorage.credential!=""){
+        console.log("我进来啦")
+        this.$http.post(this.URL.getWxosProjectData,{credential:sessionStorage.credential})
+          .then(res=>{
+            let data=res.data.project;
+            console.log(this.$tool.getToObject(data));
+            this.project.pro_industry=data.industry;
+            if(data.is_exclusive==4) data.is_exclusive=0;
+            this.project.is_exclusive=data.is_exclusive;
+            this.project.pro_finance_scale=data.pro_finance_scale;
+            this.project.pro_finance_stage=data.pro_finance_stage;
+            this.project.pro_goodness=data.pro_goodness;
+            this.project.pro_intro=data.pro_intro;
+            sessionStorage.credential="";
+            console.log(this.$tool.getToObject(this.project))
+          })
+          .catch(err=>{
+            this.alert("获取失败");
+            console.log(err);
+          });
+      }
+
+    }//微信进入的时候获取
   },
   mounted() {
 
@@ -564,9 +593,14 @@ export default {
   created(){
     if(this.planList.length!=0) this.planButton=false;
     else this.planButton=true;
-
+    this.getprojectId();
     this.getWxProjectCategory();
-  }
+    this.getWxosProjectData();
+  },
+/*watch: {
+  // 如果路由有变化，会再次执行该方法
+  "$route": "getWxosProjectData"
+}*/
 
 }
 </script>

@@ -10,6 +10,12 @@
 
 export default
 {
+  /*登陆接口*/
+  returnQrCredential:"api/auth/returnQrCredential",   //(获取生成二维码的uuid接口)，返回值
+  ajaxPolling:"api/auth/ajaxPolling",   //获取登陆信息
+  getWxosProjectData:"project/getWxosProjectData",   //创建页面获取微信信息
+
+
   /*项目列表页*/
   getNodeCount:"project/getNodeCount", //项目节点数量
   deleteUpload:"project/deleteUpload",  //删除批量上传的文件

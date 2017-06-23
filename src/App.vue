@@ -20,9 +20,8 @@
               <img src="./assets/images/arrow.png">
             </div>
           </div>
-
-        <li style="margin-left: 490px;">
-          张三
+        <li style="float: right">
+          {{user_name}}
         </li>
       </ul>
     </header>
@@ -53,9 +52,10 @@
 /*          {type: '首页',jump:'/index'},*/
           {type: '工作台',jump:'/workBench/myProject'},
           {type: '扫码登陆',jump:'/smallRoutine'},
-          {type: '测试页面',jump:'/test'},
-          {type: '测试页面2',jump:'/test2'}
-        ]
+/*          {type: '测试页面',jump:'/test'},
+          {type: '测试页面2',jump:'/test2'}*/
+        ],
+        user_name:sessionStorage.user_real_name
       }
     },
     methods: {
@@ -94,8 +94,9 @@
   }*/
   #app {
     /*min-width: 1903px;*/
-    mian{
-      min-width: 1336px;
+    background: #f3f4f8;
+    main{
+      width: 1336px;
       margin: 0 auto;
     }
     font-family: "Helvetica Neue","PingFang SC",Arial,sans-serif;
@@ -134,6 +135,9 @@
   }
   #samllrou:hover + .weixin{
     display: block;
+  }
+  #samllrou{
+
   }
   .weixin{
     display: none;

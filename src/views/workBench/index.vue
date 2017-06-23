@@ -1,11 +1,11 @@
 <template>
   <div id="workBench">
     <!--左侧导航-->
-    <div class="center_header main-left">
+ <!--   <div class="center_header main-left">
       <el-menu default-active="1" class="el-menu-vertical-demo" >
         <el-menu-item index="1" style="color:#475669;"><i class="el-icon-message"></i>个人工作台</el-menu-item>
       </el-menu>
-    </div>
+    </div>-->
     <!-- 右侧主内容区 -->
     <div class="main-right clearfix">
       <transition name="fade">
@@ -44,10 +44,10 @@ export default {
 <style scoped lang="less">
 #workBench{
   background-color: #eff2f7;
-  padding-top: 24px;
+  margin-top: 24px;
   .el-menu-item{height:50px;line-height: 50px;background-color: #d3dce6;width: 200px;}
   .main-left{width: 224px;position: absolute;font-size: 14px;background-color: #eff2f7;height: 100%;}
-  .main-right{padding-left: 224px;}
+/*  .main-right{padding-left: 224px;}*/
 }
 /* 路由切换动效 */
 .fade-enter-active, .fade-leave-active {

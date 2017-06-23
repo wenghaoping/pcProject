@@ -1,7 +1,6 @@
 <template>
   <div id="dialog">
-    12312321
-    <el-dialog
+    <!--<el-dialog
       title="提示"
       :visible.sync="dialogVisible"
       size="tiny"
@@ -16,7 +15,7 @@
         </el-button>
         <el-button type="primary" @click="doing">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 

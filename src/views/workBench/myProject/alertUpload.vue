@@ -12,7 +12,7 @@
                    :before-upload="beforeUpload"
                    :on-progress="handleProgress"
                    :data="uploadDate"
-                   :show-file-list="showList"
+                   :show-file-list="showList"_
                    ref="upload"
                    accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                    drag multiple>
@@ -60,7 +60,7 @@
                   v-for="(domain, index) in dateForm.domains"
                   :key="domain.index"
                   :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'}]">
-                  <el-input v-model="domain.bp_title"></el-input>
+                  <el-input v-model="domain.pro_name"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
@@ -79,7 +79,7 @@
                   :prop="'domains.' + index + '.pro_name'"
                   v-for="(domain, index) in dateForm.domains"
                   :key="domain.index">
-                  <el-input v-model="domain.pro_name" :disabled="true"></el-input>
+                  <el-input v-model="domain.bp_title" :disabled="true"></el-input>
                 </el-form-item>
 
               </el-col>
@@ -146,7 +146,7 @@ export default {
         let data=response.data
         if(response.status_code==2000000) {
           this.success("上传成功");
-          this.addDomain(data.bp_title,data.pro_desc,data.pro_name,data.project_id)
+          this.addDomain(data.pro_desc,data.pro_name,data.bp_title,data.project_id);
           this.loading=false;
           this.loadingcheck=false;
         }

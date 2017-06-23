@@ -381,13 +381,13 @@
 
       handleIconClick(){
         this.loading=true;
+
         this.$http.post(this.getProjectListURL,{user_id: sessionStorage.user_id,search:this.searchinput})
           .then(res=>{
-            this.searchinput="";
             let data = res.data.data
-//            console.log(data)
             this.tableData=this.getProjectList(data)
             this.loading=false;
+            this.currentPage=1;
           })
           .catch(err=>{
             this.loading=false;
@@ -398,7 +398,6 @@
       filterChange(filters){
         console.log(filters)
         this.loading=true;
-        this.currentPage=1;
         this.currentPage=1;
         if(filters.pro_schedule) {
             if(parseInt(filters.pro_schedule)){
@@ -429,7 +428,6 @@
             delete this.getPra[key];
           }
         }//删除空的查询项
-        console.log(this.getPra)
         this.getPra.user_id=sessionStorage.user_id;
         this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{

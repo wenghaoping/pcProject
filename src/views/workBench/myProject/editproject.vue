@@ -3,7 +3,7 @@
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
-        <div class="left-wrap">
+        <div class="left-wrap" ref="left">
           <!--=================================项目文件=================================-->
           <div class="d_jump"></div>
           <div class="item-block" style="margin-top:0; padding-bottom: 5px">
@@ -245,8 +245,15 @@
                       <el-form-item
                         label="项目来源"
                         prop="pro_source">
-                        <el-select v-model="project.pro_source" multiple placeholder="请选择项目来源" class="width360" filterable
-                                   allow-create default-first-option @change="addChangesource">
+                        <el-select v-model="project.pro_source"
+                                   multiple
+                                   placeholder="请选择项目来源"
+                                   class="width360"
+                                   filterable
+                                   allow-create
+                                   default-first-option
+                                   @change="addChangesource"
+                                   :multiple-limit="multiplelimit">
                           <el-option
                             v-for="item in tags_source"
                             :key="item.value"
@@ -274,7 +281,7 @@
                       <el-form-item
                         label="项目标签"
                         prop="tags_pro">
-                        <el-select v-model="project.tags_pro" multiple placeholder="请选择" class="width360" filterable
+                        <el-select v-model="project.tags_pro" multiple placeholder="请选择" class="width360" :multiple-limit="multiplelimit" filterable
                                    allow-create default-first-option @change="addChangepro">
                           <el-option
                             v-for="item in tags_pro"
@@ -326,6 +333,7 @@
                           allow-create
                           placeholder="请添加（最多5个)" class="width360"
                           default-first-option
+                          :multiple-limit="multiplelimit"
                           @change="addChangeTeam">
                           <el-option
                             v-for="item in tags_team"
@@ -629,7 +637,7 @@
           </el-button>
           <div style="height: 50px;"></div>
         </div>
-        <div class="right-wrap">
+        <div class="right-wrap" ref="right">
           <div class="command-box">
             <div class="command-title">
               项目完整度：<span class="command-val">{{proportion}}%</span>
@@ -784,6 +792,7 @@
   export default {
     data(){
       return {
+        screenWidth: document.body.clientWidth,  // 屏幕大小变动
         num:0,//一次上传最多选5个
         project_id: "",//项目Id全局保存
         planList: [],//商业计划书上传列表
@@ -991,22 +1000,22 @@
             if (value.length === 0) {
               number++;
               inner++
-            }
-            ;
+            };
           } else {
             for (let key in value) {
               if (isArray(value[key])) {
-                if (value[key].length == 0) {
+                if (value[key].length === 0) {
                   number++;
                   inner++
-                } else {
+                }
+/*                else {
                   for (let key2 in value[key][0]) {
                     if (value[key][0][key2] == "") {
                       number++;
                       inner++;
                     }
                   }
-                }
+                }*/
               } else if (value[key] == "") {
                 number++;
                 inner++
@@ -1056,7 +1065,11 @@
         return parseInt(((sum - number) / sum) * 100)
       },
     },
-    mounted() {},
+    mounted() {
+        let leftWidth=document.getElementsByClassName("main-box")[0].offsetLeft+900;
+console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
+      this.$refs.right.style.left = leftWidth +'px';
+    },
     methods: {
       /*获取列表各种数据*/
       getCity(data){
@@ -1231,6 +1244,7 @@
       getOneProject () {
         this.$http.post(this.URL.getOneProject, {user_id: sessionStorage.user_id, project_id: this.project_id})
           .then(res => {
+            this.uploadShow2.lists=[];
             let data = res.data.data;
             this.area1Change(data.pro_area.pid);//设置市级
             this.setDateTime(data.pro_history_finance);//时间格式设置
@@ -1293,21 +1307,11 @@
 
             this.financing.pro_history_finance = data.pro_history_finance;
 
-            if (data.pro_history_finance == "") this.financing.pro_history_finance = [{
-              pro_finance_stage: "",
-              pro_finance_scale: "",
-              pro_finance_investor: "",
-              created_at: ""
-            }];
+            if (data.pro_history_finance == "") this.financing.pro_history_finance = [];
 
             this.milepost.pro_develop = data.pro_develop;
 
-            if (data.core_users == "") this.team.core_users = [{
-              ct_member_name: "",
-              ct_member_career: "",
-              ct_member_intro: "",
-              stock_scale: ""
-            }];
+            if (data.core_users == "") this.team.core_users = [];
 
 
             this.is_exclusive = data.is_exclusive;//FA运营状态
@@ -1489,7 +1493,7 @@
               type_name: this.groups.input
             })
               .then(res => {
-                  let data =res.data.data;
+                  let data =res.data;
                   let newObj = {};
                   newObj.type = this.groups.input;
                   newObj.label = this.groups.input;
@@ -1843,8 +1847,9 @@
 
           allData.pro_core_team = this.team.core_users;
           allData.pro_finance_stage = this.project.pro_stage.stage_id;
-           allData.pro_company_scale = this.project.pro_company_scale.comp_scale_id;
+          allData.pro_company_scale = this.project.pro_company_scale.comp_scale_id;
           allData.user_id = sessionStorage.user_id
+          allData.pro_total_score=this.proportion;
           for (let key in allData) {
             if (allData[key] == "-") {
               allData[key] = "";
@@ -1992,21 +1997,16 @@
       /*一键同步按钮*/
       sync(){
         this.dialogVisible = false;
-        this.project.pro_intro = this.queryData.pro_intro;
-        this.project.pro_area.area_id = this.queryData.pro_area_city;
-        this.project.pro_area.pid = this.queryData.pro_area_province;
-        this.project.open_status = this.queryData.open_status.toString();
-        this.project.pro_scale.scale_id = this.queryData.pro_finance_scale;
-        this.project.pro_website = this.queryData.pro_website;
-        this.project.contact.user_name = this.queryData.contact_user_name;
-        this.project.contact.user_mobile = this.queryData.contact_user_mobile;
-        this.project.pro_source = this.queryData.pro_source;
-        this.project.pro_stage.stage_id = this.queryData.pro_finance_stage;
+        if(this.project.pro_intro=="") this.project.pro_intro = this.queryData.pro_intro;
+        if(this.team.core_users.length==0) this.team.core_users=this.queryData.team;
+        if(this.financing.pro_history_finance.length==0) this.financing.pro_history_finance = this.queryData.history_finance;
+        if(this.milepost.pro_develop.length==0) this.milepost.pro_develop=this.queryData.milestone_list;
 
       },
       getprojectId(){
         this.project_id = this.$route.query.project_id;
-        console.log(this.$route.query.project_id);
+        console.log(this.$route.query.project_id,1);
+        console.log(this.project_id,2);
       }
     },
     //    当dom一创建时
@@ -2016,6 +2016,10 @@
       this.getWxProjectCategory();
       this.getOneProject();
       this.setFileType();
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      "$route": "getprojectId"
     }
   }
 </script>
