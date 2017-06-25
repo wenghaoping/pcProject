@@ -43,15 +43,13 @@
 <script>
 
   export default {
-
-    name: 'app',
     data () {
       return {
         active: 0,
         tabs: [
 /*          {type: '首页',jump:'/index'},*/
           {type: '工作台',jump:'/workBench/myProject'},
-          {type: '扫码登陆',jump:'/smallRoutine'},
+          {type: '扫码登陆',jump:'/qr'},
 /*          {type: '测试页面',jump:'/test'},
           {type: '测试页面2',jump:'/test2'}*/
         ],
@@ -68,11 +66,25 @@
     },
 //    当dom一创建时
     created(){
-      this.$router.push('/workBench/myproject');
+      console.log(sessionStorage.user_id);
+/*      if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
+        this.$router.push({ name: 'SmallRoutine'});
+      }else{
+        this.$router.push('/workBench/myproject');
+      }*/
+
 //      this.$router.push({ name: 'editproject'})
+      this.$router.push('/workBench/myproject');
       this.setUserId();
 
     },
+    watch : {
+      user_name : function(e){
+        console.log(e,1);
+      }
+
+
+    }
   }
 </script>
 

@@ -7,6 +7,25 @@
           {{qr}}
         </div>
       </div>
+    <el-dialog
+      title="超时"
+      :visible.sync="dialogVisible"
+      size="large"
+      :show-close="close">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <el-button @click="reload" size="large" style="display: block;margin: 0 auto">点击刷新页面</el-button>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+    </el-dialog>
   </div>
 </template>
 
@@ -18,10 +37,15 @@ export default {
       loading:false,
       timeout: null,
       num:0,
-      qr:""
+      qr:"",
+      dialogVisible:false,
+      close:false
     }
   },
   methods: {
+    reload(){
+      window.location.reload();
+    },
     /*警告弹窗*/
     alert(text) {
       this.$notify.error({
@@ -52,7 +76,7 @@ export default {
             sessionStorage.user_real_name=data.user_info.user_real_name;
           }else if(data.status_msg=="timeout"){
             clearInterval(this.timeout);
-            this.alert("超时,请刷新页面");
+            this.dialogVisible=true;
           }else if(data.status_msg=="continue") {
             console.log("等待登陆")
           }
@@ -82,7 +106,7 @@ export default {
       })
     this.timeout = setInterval(() => {
       this.getUserId();
-    }, 1000);
+    }, 1000,30);
   }
 }
 </script>

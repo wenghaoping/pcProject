@@ -5,23 +5,23 @@
       <div class="main-box clearfix">
         <div class="item-lists item-lists-top clearfix">
           <div class="item-lists-inner-left fl">
-            <div class="item">
+            <div class="item height">
               <el-tag type="primary" v-if="project.open_status==0">私密</el-tag>
               <el-tag type="success" v-if="project.open_status==1">公开</el-tag>
-              <el-tooltip class="item" effect="dark" placement="top-start">
+              <el-tooltip class="item height" effect="dark" placement="top-start">
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
               <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
               <span class="title">{{project.pro_name}}</span>
               <span class="company">{{project.pro_company_name}}</span>
             </div>
-            <div class="item" style="margin-top: 14px;">
+            <div class="item height" style="margin-top: 14px;">
               <div class="doc">{{project.pro_intro}}</div>
             </div>
-            <div class="item" style="margin-top:18px;">
+            <div class="item height" style="margin-top:18px;">
               <span class="mid-tag" v-for="industry in project.pro_industry">{{industry.industry_name}}</span>
             </div>
-            <div class="item" style="margin-top:18px;">
+            <div class="item height" style="margin-top:18px;">
               <span class="big-tag">{{project.pro_scale.scale_money}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_area.area_title}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_finance_stock_after}}</span><span class="split">｜</span>
@@ -29,17 +29,17 @@
               <span class="flower">跟进人 : {{project.follow_up}}</span>
 
             </div>
-            <div class="item"  style="margin-top:18px;">
+            <div class="item height"  style="margin-top:18px;">
               <span class="flower2">来源 : {{project.pro_source}}　</span>
             </div>
-            <div class="item" style="margin-top:18px;">
+            <div class="item height">
             <span class="project">
               <span class="title">项目完整度:</span>
               <span class="number">{{project.pro_total_score}}%</span>
               <span class="more">超过60%的项目更易被投资人关注</span>
             </span>
               <span class="project" style="width: 291px;">
-              <div class="item progress">
+              <div class="item progress height">
                 <div class="txt begin">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
@@ -150,7 +150,7 @@
               <div class="rz-details">
                 <div class="rz-detail">
                   <p class="det-title">期望融资</p>
-                  <p class="det-info">{{project.pro_finance_scale}}万</p>
+                  <p class="det-info">{{project.pro_scale.scale_money}}</p>
                 </div>
                 <div class="rz-detail">
                   <p class="det-title">投后股份</p>
@@ -170,13 +170,18 @@
             </div>
             <div class="item" style="margin-top:6px;" v-if="project.pro_history_finance.length!=0">
               <div>
-                <div class="v-progress" style="height: 121px;">
+
+<!--                <div class="v-progress" style="height: 121px;">
                   <span class="circle circle-s">&nbsp;</span>
                   <span class="v-line v-line-1">&nbsp;</span>
                   <span class="circle circle-e">&nbsp;</span>
-                </div>
+                </div>-->
                 <div class="v-progress-table">
                   <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
                     <span class="pro-txt-1">{{finance.created_at}}</span>
                     <span class="pro-txt-2">{{finance.pro_finance_scale}}万</span>
                     <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
@@ -242,7 +247,7 @@
                 </div>
                 <div class="rz-detail" style="width: 25%">
                   <p class="det-title">跟投权</p>
-                  <p class="det-info">{{project.pro_FA.stock_follow}}</p>
+                  <p class="det-info">{{project.pro_FA.stock_follow}}%</p>
                 </div>
               </div>
             </div>

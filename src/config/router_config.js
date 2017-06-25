@@ -61,7 +61,7 @@ export default [
     path: '/index', name: 'index', component: index
   },
   {
-    path: '/SmallRoutine', name: 'SmallRoutine', component: SmallRoutine
+    path: '/qr', name: 'SmallRoutine', component: SmallRoutine
   },
   {
     path: '/test', name: 'test', component: projectDetails

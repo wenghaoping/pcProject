@@ -2,13 +2,13 @@
   <div>
     <el-tabs v-model="conmanyName" @tab-click="handleClick">
       <el-tab-pane label="公司信息" name="1">
-        <div class="block" style="margin-bottom: 22px;">
+<!--        <div class="block" style="margin-bottom: 22px;">
           <span class="tag-bottom" style="margin-right: 11px;"><img src="../../../assets/images/tag2.png"></span>
           <span class="tag-bottom">融资</span>
           <span class="tag-bottom">创业</span>
           <span class="tag-bottom">大数据</span>
           <span class="tag-bottom">人工智能</span>
-        </div>
+        </div>-->
         <div class="block" >
           <el-row :span="24">
             <el-col :span="4"><div class="content left">公司名称</div></el-col>
@@ -37,13 +37,13 @@
       <el-tab-pane :label="productMessage" name="2">
         <div class="block">
           <div class="inner fl" v-for="project in company.company_project">
-            <div class="img fl"><img src="../../../assets/images/message.png"/></div>
+            <!--<div class="img fl"><img src="../../../assets/images/message.png"/></div>-->
             <p class="type fl" style="margin-bottom: 7px;">{{project.company_project_name}}<span>{{project.company_project_type}}</span></p>
             <p class="sec">{{project.company_project_introduce}}</p>
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane :label="recruitMessage" name="3">
+      <!--<el-tab-pane :label="recruitMessage" name="3">
         <div class="bloack">
           <el-table
             :data="recruitData"
@@ -76,7 +76,7 @@
           </el-table>
           <el-button type="text" style="display: block;margin: 0 auto;color:#5e6d82;margin-top:16px;margin-bottom: 24px;" @click="loadMore">查看全部<i class="el-icon-arrow-right"></i></el-button>
         </div>
-      </el-tab-pane>
+      </el-tab-pane>-->
     </el-tabs>
   </div>
 </template>

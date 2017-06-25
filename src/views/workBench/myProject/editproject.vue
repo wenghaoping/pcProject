@@ -48,7 +48,7 @@
                     :file-list="fileList"
                     :data="fileuploadDate"
                     :show-file-list="showList"
-                     accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg, .pptx"
+                     accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx"
                     multiple>
                     <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
                   </el-upload>
@@ -272,8 +272,8 @@
                         prop="open_status">
                         <el-select v-model="project.open_status" placeholder="请选择" class="width360">
                           <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="0"></el-option>
-                          <el-option label="公开项.目（投放到交易易市场参与融资匹配，投资.人可以申请查看bp，每.日
-限公开.一次)" value="1"></el-option>
+                          <el-option label="公开项目（投放到交易易市场参与融资匹配，投资人可以申请查看bp，每日
+限公开一次)" value="1"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -585,11 +585,11 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item
-                        label="运营状态"
+                        label="是否独家"
                         prop="is_exclusive">
-                        <el-radio class="radio" v-model="is_exclusive" :label=2>非独家FA签约</el-radio>
-                        <el-radio class="radio" v-model="is_exclusive" :label=1>独家FA签约</el-radio>
-                        <el-radio class="radio" v-model="is_exclusive" :label=0>其他</el-radio>
+                        <el-radio v-model="is_exclusive" :label=2 style="margin-right: 12px;">非独家FA签约</el-radio>
+                        <el-radio v-model="is_exclusive" :label=1>独家FA签约</el-radio>
+                        <el-radio v-model="is_exclusive" :label=0>其他</el-radio>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -763,7 +763,6 @@
           <el-radio v-for="group in groups.group" class="radio"
                     :label="group.value"
                     :key="group.value"
-                    style="width: 90px;"
           >{{group.label}}
           </el-radio>
         </el-radio-group>
@@ -1067,7 +1066,6 @@
     },
     mounted() {
         let leftWidth=document.getElementsByClassName("main-box")[0].offsetLeft+900;
-console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
       this.$refs.right.style.left = leftWidth +'px';
     },
     methods: {
@@ -1394,19 +1392,18 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
       /*批量上传*/
       beforeUpload(file){
         this.num++;
-        console.log(this.num);
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
-        if(parseInt(file.size) > parseInt(31457280)){
+        if(parseInt(file.size) > parseInt(31457281)){
           this.alert("请上传小于30MB的文件");
           return false;
         };
-        if(parseInt(this.num) > parseInt(5)){
+        if(parseInt(this.num) > parseInt(6)){
           this.alert("一次最多选择5个文件");
           this.num=0;
           return false;
         }
-      },
+      },//上传前的验证
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
 //          console.log(this.fileuploadDate)
@@ -1484,7 +1481,7 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
           }
         }
       },
-      //添加分组设置的分组
+
       addGroup(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -1498,7 +1495,7 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
                   newObj.type = this.groups.input;
                   newObj.label = this.groups.input;
                   newObj.value = data.type_id;
-                  this.groups.type = this.groups.input;
+                  this.groups.type = data.type_id;
                   this.groups.group.push(newObj);
                   this.groups.input = ''
               })
@@ -1510,7 +1507,7 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
             return false;
           }
         });
-      },
+      },//添加分组设置的分组选项
 
       saveGroupChange(){//file_id type_id user_id
         let type = this.groups.bp_type;
@@ -1533,6 +1530,7 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
 
       },//发送分组设置请求
       toGroup(item){
+        console.log(item);
         this.groups.type=item.type;
         var index = this.uploadShow2.lists.indexOf(item)
         this.groups.index = index;
@@ -1617,6 +1615,7 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
 
 
       },//判断是否重复
+
       /*添加运营状态*/
       addState(){
         this.$http.post(this.URL.createStatusPro, {user_id: sessionStorage.user_id, status_name: this.form.state})
@@ -1628,6 +1627,8 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
             this.project.companystate = this.form.state;
             this.company_status.splice(length - 1, 0, newState);
             this.dialogFormVisible = false;
+            this.project.pro_status=data.status_id;;
+            this.form.state="";
           })
           .catch(err => {
             alert("添加失败");
@@ -1645,6 +1646,10 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
               newState.label = tagName;
               newState.value = res.data.tag_id;
               this.tags_pro.push(newState);
+              let arr = this.project.tags_pro;
+
+              this.project.tags_pro.pop();
+              this.project.tags_pro.push(res.data.tag_id);
             })
             .catch(err => {
               alert("添加失败");
@@ -1661,6 +1666,8 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
               newState.label = tagName;
               newState.value = res.data.tag_id;
               this.tags_team.push(newState);
+              this.team.tags_team.pop();
+              this.team.tags_team.push(res.data.tag_id);
             })
             .catch(err => {
               alert("添加失败");
@@ -1848,18 +1855,15 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
           allData.pro_core_team = this.team.core_users;
           allData.pro_finance_stage = this.project.pro_stage.stage_id;
           allData.pro_company_scale = this.project.pro_company_scale.comp_scale_id;
-          allData.user_id = sessionStorage.user_id
+          allData.user_id = sessionStorage.user_id;
           allData.pro_total_score=this.proportion;
-          for (let key in allData) {
-            if (allData[key] == "-") {
-              allData[key] = "";
-            }
-          }
-          for (let key in allData.contact) {
-            if (allData.contact[key] == "-") {
-              allData.contact[key] = "";
-            }
-          }
+          if(allData.pro_finance_stock_after=="" || allData.pro_finance_stock_after==undefined) allData.pro_finance_stock_after=0;
+          if(allData.pro_finance_value=="" || allData.pro_finance_value==undefined) allData.pro_finance_value=0;
+          if(allData.commission=="" || allData.commission==undefined) allData.commission=0;
+          if(allData.stock_right=="" || allData.stock_right==undefined) allData.stock_right=0;
+          if(allData.stock_follow=="" || allData.stock_follow==undefined) allData.stock_follow=0;
+          if(allData.stock_other=="" || allData.stock_other==undefined) allData.stock_other=0;
+
           console.log(allData,2);
 
           this.$http.post(this.URL.editProject, allData)
@@ -2026,6 +2030,13 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
 
 <style lang="less">
   @import '../../../assets/css/edit.less';
+.el-radio-group{
+  line-height: 3!important;
+}
+  .el-radio{
+    margin-left:0px!important;
+
+  }
 
   .planUpload {
     .el-upload {
@@ -2047,6 +2058,9 @@ console.log(document.getElementsByClassName("main-box")[0].offsetLeft)
       display: block;
       margin: 0 auto;
     }
+  .el-radio{
+    width:111px
+  }
   }
 
 

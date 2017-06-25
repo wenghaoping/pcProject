@@ -20,13 +20,13 @@
                     <span class="block-title fl">{{project1.company_name}}</span>
                     <span class="line1 fl"> | </span>
                     <span class="block-company fl">{{project1.project_name}}</span>
-                    <span class="block-tag fl"><el-tag type="primary">{{project1.project_score}}</el-tag><el-tag type="success">{{project1.project_industry}}</el-tag></span>
+                    <span class="block-tag fl"><el-tag type="primary" v-if="project1.project_state!=null">{{project1.project_state}}</el-tag><!--<el-tag type="success">{{project1.project_industry}}</el-tag>--></span>
                   </div>
                   <div class="block">
-                    <span class="doc fl">这里是这个项目的一句话介绍，字数在40字以内，要全部显示这里是这个项目的一句话介。</span>
+                    <span class="doc fl">{{project1.project_industry}}</span>
                   </div>
                   <div class="block" style="height: 24px">
-                    <span class="mid-tag" v-for="pro in project1.project_label">{{pro}}</span>
+<!--                    <span class="mid-tag" v-for="pro in project1.project_label">{{pro}}</span>-->
 <!--                    <span class="big-tag" style="margin-left: 191px;">-&#45;&#45;</span><span class="split">｜</span>
                     <span class="big-tag">&#45;&#45;</span><span class="split">｜</span>
                     <span class="big-tag">&#45;&#45;</span>-->
@@ -34,24 +34,24 @@
                 </div>
                 <div class="tag clearfix">
                   <span class="tag-bottom" style="margin-right: 11px;"><img src="../../../assets/images/tag2.png"></span>
-                  <span class="tag-bottom">融资</span>
-                  <span class="tag-bottom">创业</span>
+                  <span class="tag-bottom">{{project1.project_label}}</span>
+<!--                  <span class="tag-bottom">创业</span>
                   <span class="tag-bottom">大数据</span>
-                  <span class="tag-bottom">人工智能</span>
-                  <span class="url"><img src="../../../assets/images/tag3.png">{{project1.project_website}}</span>
+                  <span class="tag-bottom">人工智能</span>-->
+                  <span class="url fr"><img src="../../../assets/images/tag3.png">{{project1.project_website}}</span>
                 </div>
                 <div class="linewidth"></div>
                 <div class="file">
                   {{project1.project_introduce}}
                 </div>
               </div>
-              <div class="picture">
+             <!-- <div class="picture">
                 <el-carousel :interval="4000" type="card" height="200px">
                   <el-carousel-item v-for="image in images" :key="image">
                     <img :src="image.url">
                   </el-carousel-item>
                 </el-carousel>
-              </div>
+              </div>-->
 
             </div>
             <!--公司信息-->
@@ -73,7 +73,7 @@
                       <span class="block-title fl clearfix">{{teamin.team_member_name}}</span>
                       <span class="block-company fl">{{teamin.team_member_position}}</span>
                       <span class="block-tag fl"><el-tag type="primary">{{teamin.team_member_position}}</el-tag></span>
-                      <span class="bloack-right fr">股权占比：12%</span>
+<!--                      <span class="bloack-right fr">股权占比：12%</span>-->
                     </div>
                     <div class="block">
                       <span class="doc fl">{{teamin.team_member_introduce}}</span>
@@ -113,7 +113,6 @@
                         </div>
                       </div>
                     </div>
-
                   </div>-->
                 </div>
               </div>
@@ -132,7 +131,6 @@
                   </div>
                 </div>
               </div>-->
-
             </div>
             <!--图表-->
             <div class="item">
@@ -179,7 +177,7 @@
                     </span>
                   <span class="date">{{new1.project_news_time}}<el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
                   <span class="blood blood3">{{new1.project_news_title}}</span>
-                  <span class="main mian2">{{new1.source}}</span>
+                  <span class="mian2">{{new1.source}}</span>
                 </div>
               </div>
             </div>
@@ -189,7 +187,7 @@
               <ul class="ulfl h-table">
                 <li class="table1">项目</li>
                 <li class="table2">领域</li>
-                <li class="table3">投资方</li>
+                <!--<li class="table3">投资方</li>-->
                 <li class="table4">融资事件</li>
                 <li class="table5">融资轮次</li>
                 <li class="table6">融资金额</li>
@@ -206,7 +204,7 @@
                     <div class="bo fl">{{compet.competing_goods_region}}<span style="margin-left: 20px;">{{compet.competing_goods_Set_up}}</span></div>
                   </li>
                   <li class="table2">{{compet.competing_goods_industry}}</li>
-                  <li class="table3">华兴资本</li>
+<!--                  <li class="table3">华兴资本</li>-->
                   <li class="table4">{{compet.competing_goods_Financing_time}}</li>
                   <li class="table5">{{compet.competing_goods_Financing_rounds}}</li>
                   <li class="table6">{{compet.competing_goods_Financing_amount}}</li>
@@ -464,7 +462,7 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
-          this.getCrawLerLbel(res.data.data);
+//          this.getCrawLerLbel(res.data.data);
           this.project = res.data.data;
           this.loading=false;
         })

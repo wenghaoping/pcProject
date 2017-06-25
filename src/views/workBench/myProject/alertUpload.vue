@@ -42,7 +42,7 @@
           :data="uploadDate"
           :before-upload="beforeUpload"
           :show-file-list="showList"
-          accept=".doc, .ppt, .pdf, .zip, .rar, .png, .txt, .docx, .jpg"
+          accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
           multiple>
           <div class="inner">
             <el-button slot="trigger" type="primary" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>

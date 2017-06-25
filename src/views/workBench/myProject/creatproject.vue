@@ -24,7 +24,7 @@
                            :on-error="planuploaderror"
                            :file-list="planList"
                            :before-upload="beforeUpload"
-                            accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
+                           accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
                   <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、png，jpg，jpeg文件格式</div>
@@ -74,7 +74,7 @@
               <span class="b-line"></span>
             </div>
             <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
-              <el-row :span="24" :gutter="10">
+              <el-row :span="24" :gutter="32">
                 <el-col :span="12">
                   <el-form-item
                     label="项目介绍"
@@ -105,7 +105,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :span="24" :gutter="10">
+              <el-row :span="24" :gutter="32">
                 <el-col :span="12">
                   <el-form-item
                     label="项目轮次"
@@ -153,7 +153,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :span="24" :gutter="10">
+              <el-row :span="24" :gutter="32">
                 <el-col :span="12">
                   <el-form-item
                     label="期望融资"
@@ -177,7 +177,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :span="24" :gutter="10">
+              <el-row :span="24" :gutter="32">
                 <el-col :span="12">
                   <el-form-item
                     label="私密设置"
@@ -198,7 +198,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :span="24" :gutter="10">
+              <el-row :span="24" :gutter="32">
                 <el-col :span="24">
                   <el-form-item label="项目亮点"
                                 prop="pro_goodness"
@@ -411,11 +411,11 @@ export default {
         })
     },//点击下载
     beforeUpload(file){
-      if(parseInt(file.size) > parseInt(31457280)){
+      if(parseInt(file.size) > parseInt(31457281)){
         this.alert("请上传小于30MB的文件");
         return false;
       }
-    },//上传前
+    },//上传前的验证
 
 
     /*警告弹窗*/
@@ -563,6 +563,7 @@ export default {
     },
     getWxosProjectData(){
         console.log("我登陆啦")
+      console.log(sessionStorage.credential);
       if(sessionStorage.credential!=""){
         console.log("我进来啦")
         this.$http.post(this.URL.getWxosProjectData,{credential:sessionStorage.credential})
@@ -632,9 +633,6 @@ export default {
       margin-top: 0;
     }
 
-  }
-  .el-radio{
-    width:102px
   }
   .el-dialog--tiny{
     width: 390px;

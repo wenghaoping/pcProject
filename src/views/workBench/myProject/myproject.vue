@@ -275,7 +275,7 @@
           <div class="pagenav" v-if="totalData>10">
             <el-pagination
               small
-              @current-change="filterChange"
+              @current-change="filterChangeCurrent"
               :current-page.sync="currentPage"
               :page-size="10"
               layout="total, prev, pager, next"
@@ -396,7 +396,6 @@
       },//搜索===首次进入页面加载的数据
 
       filterChange(filters){
-        console.log(filters)
         this.loading=true;
         this.currentPage=1;
         if(filters.pro_schedule) {
@@ -406,7 +405,6 @@
               this.setNode(0)
             }
         }//设置顶部样式
-        if(!isNaN(filters)) this.getPra.page=filters;//控制当前页码
         if(filters.order){
           if(filters.order=="ascending") filters.order="asc"//升降序
           else filters.order="desc"
@@ -428,20 +426,38 @@
             delete this.getPra[key];
           }
         }//删除空的查询项
-        this.getPra.user_id=sessionStorage.user_id;
+
         this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{
-            this.loading=false
-            let data = res.data.data
-            this.tableData=this.getProjectList(data)
-            this.totalData=res.data.count
+            this.loading=false;
+            let data = res.data.data;
+            this.tableData=this.getProjectList(data);
+            this.totalData=res.data.count;
           })
           .catch(err=>{
             this.loading=false
             console.log(err,2)
           })
-      },//筛选 ascending升/descending降/页码.
+      },//筛选 ascending升/descending降/
+      filterChangeCurrent(page){
+        delete this.getPra.page;
+        this.loading=true;
+        this.getPra.user_id=sessionStorage.user_id;
+        this.getPra.page=page;//控制当前页码
+        this.$http.post(this.getProjectListURL,this.getPra)
+          .then(res=>{
+            this.loading=false;
+            let data = res.data.data;
+            console.log(res)
+            this.tableData=this.getProjectList(data);
+          })
+          .catch(err=>{
+            this.loading=false
+            console.log(err,2)
+          })
+      },//控制页码
       setNode(v){
+        this.currentPage=1;
         this.loading=true  ;
         this.node0 = false ;
         this.node1 = false ;
@@ -596,7 +612,6 @@
       },//列表期望金额处理
 
       getProjectList(list){
-        this.currentPage=1;
         let arr = new Array;
         for(let i=0; i<list.length; i++){
           let obj=new Object;
