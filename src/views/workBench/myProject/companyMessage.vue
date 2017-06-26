@@ -18,9 +18,9 @@
           </el-row>
           <el-row :span="24">
             <el-col :span="4"><div class="content left">所属行业</div></el-col>
-            <el-col :span="8"><div class="content right"></div></el-col>
+            <el-col :span="8"><div class="content right">暂无收入</div></el-col>
             <el-col :span="4"><div class="content left">公司规模</div></el-col>
-            <el-col :span="8"><div class="content right">{{company.team_now_size}}</div></el-col>
+            <el-col :span="8"><div class="content right">{{company.company_team_size}}</div></el-col>
           </el-row>
           <el-row :span="24">
             <el-col :span="4"><div class="content left">邮箱地址</div></el-col>
@@ -88,7 +88,7 @@ export default {
     return {
       compaName:"", //搜索用的公司名称
       conmanyName: '1',
-      productMessage:'产品信息(3)',
+      productMessage:'产品信息',
       recruitMessage:'招聘信息(29)',
       recruitData: [{
         position: 'JAVA',
@@ -106,22 +106,22 @@ export default {
       /*公司信息*/
       company: {
         com_id: 4,
-        company_name: "杭州投着乐网络科技有限公司",//公司名称
-        company_type: "dd",//企业类型
-        company_registered_capital: "ff",//注册资本
-        company_Operating_state: "ss",//经营状态
-        company_business_number: "123",//工商注册号
-        company_legal_representative: "jdjjf",//法定代表人
-        company_address: "浙江省杭州市西湖区文三路90号东部软件园一楼之韵社",//公司地址
-        company_empirical_range: "科技推广和应用服务业",//经营范围
-        company_register_date: "2014-03-23",//成立日期
-        company_organization_code: "111",//统一社会信用代码
-        company_contact: "0571-86427664",//联系方式
-        company_email: "HR@weitianshi.cn",//邮箱地址
-        company_unified_code: "111",//统一社会信用代码
-        company_register_office: "111",//登记机关
-        team_now_size: "500-2000人",//团队规模
-        company_business_term: "111",//营业期限
+        company_name: "",//公司名称杭州投着乐网络科技有限公司
+        company_type: "",//企业类型企业类型：有限责任公司(自然人投资或控股)
+        company_registered_capital: "",//注册资本ff
+        company_Operating_state: "",//经营状态ss
+        company_business_number: "",//工商注册号123
+        company_legal_representative: "",//法定代表人jdjjf
+        company_address: "",//公司地址浙江省杭州市西湖区文三路90号东部软件园一楼之韵社
+        company_empirical_range: "",//科技推广和应用服务业
+        company_register_date: "",//成立日期2014-03-23
+        company_organization_code: "",//统一社会信用代码111
+        company_contact: "",//联系方式0571-86427664
+        company_email: "",//邮箱地址HR@weitianshi.cn
+        company_unified_code: "",//统一社会信用代码111
+        company_register_office: "",//登记机关111
+        team_now_size: "",//团队规模500-2000人
+        company_business_term: "",//营业期限111
         company_project:[
           {
             project_id: 1,
@@ -164,10 +164,13 @@ export default {
     getCrawlerCompany(){
       this.$http.post(this.URL.getCrawlerCompany, {
         user_id: sessionStorage.user_id,
-        company_name: this.compaName
+        company_name: this.compName
       })
         .then(res => {
-          this.company=res.data.data;
+          let data=res.data.data
+          this.company=data.company;
+          this.company.company_project=data.project_product;
+          this.productMessage="产品信息"+"("+data.project_product.length+")";
         })
         .catch(err => {
           console.log(err);
@@ -179,12 +182,12 @@ export default {
     this.getCrawlerCompany();
   },
  watch: {
- /*     compName: function(e){
+    compName: function(e){
       console.log(e);
       this.compaName=e;
       console.log(this.compaName)
-      this.getCrawlerCompany();
-    }//获取公司id*/
+//      this.getCrawlerCompany();
+    }//获取公司名称
   }
 
 }

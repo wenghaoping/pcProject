@@ -45,7 +45,7 @@
   export default {
     data () {
       return {
-        active: 0,
+        active: 1,
         tabs: [
 /*          {type: '首页',jump:'/index'},*/
           {type: '工作台',jump:'/workBench/myProject'},
@@ -71,6 +71,7 @@
         this.$router.push({ name: 'SmallRoutine'});
       }else{
         this.$router.push('/workBench/myproject');
+        this.active=0;
       }
 
 //      this.$router.push({ name: 'editproject'})

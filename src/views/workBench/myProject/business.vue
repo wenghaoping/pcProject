@@ -18,7 +18,7 @@
             </div>
             <div class="rz-detail">
               <p class="det-title">经营状态</p>
-              <p class="det-info">{{business.company.company_Operating_state}}</p>
+              <p class="det-info">{{business.company.company_operating_state}}</p>
             </div>
           </div>
         </div>
@@ -27,7 +27,7 @@
             <el-col :span="4"><div class="content left">企业类型</div></el-col>
             <el-col :span="8"><div class="content right">{{business.company.company_type}}</div></el-col>
             <el-col :span="4"><div class="content left">统一社会信用代码</div></el-col>
-            <el-col :span="8"><div class="content right">{{business.company.unified_code}}</div></el-col>
+            <el-col :span="8"><div class="content right">{{business.company.company_unified_code}}</div></el-col>
           </el-row>
           <el-row :span="24">
             <el-col :span="4"><div class="content left">工商注册号</div></el-col>
@@ -171,7 +171,7 @@ export default {
   data () {
     return {
       bussinessName: '1',
-      trademarkMessage:'商标信息(3)',
+      trademarkMessage:'商标信息',
       patentMessage:'专利信息(12)',
       patentData:[{
         name:"用于培训驾驶技术的自动化实现方法、装置和系统",
@@ -229,7 +229,11 @@ export default {
         com_id: this.comid
       })
         .then(res => {
-          this.business=res.data.data;
+          let data=res.data.data;
+          console.log(this.$tool.getToObject(res))
+          this.business=data;
+          this.trademarkMessage="商标信息"+"("+data.brand.length+")"
+
         })
         .catch(err => {
           alert("获取失败");

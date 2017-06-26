@@ -59,7 +59,10 @@ export default {
     },
     getUserId(){
       this.num++;
-//      if(this.num>30) clearInterval(this.timeout);
+      if(this.num>60) {
+        clearInterval(this.timeout)
+        this.dialogVisible=true;
+      }
       this.$http.post(this.URL.ajaxPolling,{credential:sessionStorage.credential})
         .then(res=>{
 //          clearInterval(this.timeout);
@@ -70,8 +73,6 @@ export default {
             if(data.type=="create") this.$router.push({ name: 'creatproject'});
 
             if(data.type=="update") this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});
-            console.log(data.project_id);
-            console.log(data.user_info);
             sessionStorage.user_id=data.user_info.user_id;
             sessionStorage.user_real_name=data.user_info.user_real_name;
           }else if(data.status_msg=="timeout"){

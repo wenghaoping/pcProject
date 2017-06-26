@@ -458,29 +458,29 @@
         },
         loading: false,
         project: {
-          project_id: "59W2a0GE",//项目id
-          pro_name: "HoopEASY商业计划PPT+for+pitch",//项目名称
-          pro_company_name: "HoopEASY",//公司名称
+          project_id: "",//项目id59W2a0GE
+          pro_name: "",//项目名称HoopEASY商业计划PPT+for+pitch
+          pro_company_name: "",//HoopEASY
           pro_company_scale: {
             comp_scale_id: 1,
             comp_scale_value: "1-20"
           },//公司规模
-          pro_source: "微天使项目",//项目来源
-          pro_intro: "一款最酷的篮球社交软件",//项目简介
-          pro_total_score: "98.00",//信息完整度
-          pro_finance_value: "10.00",//项目估值
+          pro_source: "",//项目来源微天使项目
+          pro_intro: "",//项目简介一款最酷的篮球社交软件
+          pro_total_score: "",//98.00
+          pro_finance_value: "",//项目估值10.00
           is_exclusive: 0,//0其他 1独家 2非独家
           open_status: 1,//0私密  1公开
-          pro_goodness: "专注于篮球项目的移动端社交平台。在基于用户所处的地理位置基础上，将用户个人，球队，比赛，场馆等资源有机整合，形成一个以用户为核心的垂直网络社区，带给篮球爱好者全新的社交方式和运动体验。",//项目介绍
-          pro_website: "www.baidu.com",//官方网址
+          pro_goodness: "",//项目介绍专注于篮球项目的移动端社交平台。在基于用户所处的地理位置基础上，将用户个人，球队，比赛，场馆等资源有机整合，形成一个以用户为核心的垂直网络社区，带给篮球爱好者全新的社交方式和运动体验。
+          pro_website: "",//官方网址www.baidu.com
           contact: {
-            user_name: "赵工佐",
-            user_mobile: "18551711000"
+            user_name: "",//赵工佐
+            user_mobile: ""//18551711000
           },//项目联系人
 
           pro_schedule: {
             "schedule_id": 3,
-            "schedule_name": "考察",
+            "schedule_name": "",//考察
             "created_at": null,
             "updated_at": "2017-06-06 11:00:21",
             "user_id": 0
@@ -488,7 +488,7 @@
 
           pro_status: {
             "status_id": 3,
-            "status_name": "上线",
+            "status_name": "",//上线
             "created_at": null,
             "updated_at": null
           },//运营状态
@@ -560,24 +560,13 @@
               ct_index: "9bd0c8d7d615832340340aab0c0625b7",
               project_id: 37,
               project_index: "275fa4f135eecf08e5660d23e294e6cd",
-              ct_member_name: "赵工佐",
-              ct_member_career: "创始人兼首席执行官",
-              ct_member_intro: "前高中和大学校队主力球员，城市街头篮球战队知名成员，热爱篮球运动与健身，球龄16年。美国南加州大学景观建筑硕士，加州大学洛杉矶分校运动学与训练科学在读。曾任职于美国著名设计公司AECOM和SWA从事设计师工作。HoopEASY开创性的开发理念源于Joe对篮球十几年如一日的热爱以及对行业痛点问题的深刻认识。其贯穿中美的设计背景与经验帮助团队打造出与众不同的产品及一流的用户体验。",
+              ct_member_name: "",//赵工佐
+              ct_member_career: "",
+              ct_member_intro: "",
               created_at: null,
               updated_at: null,
               stock_scale: null
-            },{
-              "project_ct_id": 31,
-              "ct_index": "952e903cabf7b4a5e82d106c33c646ec",
-              "project_id": 37,
-              "project_index": "275fa4f135eecf08e5660d23e294e6cd",
-              "ct_member_name": "王勇越",
-              "ct_member_career": "首席技术官",
-              "ct_member_intro": "前高中和大学校队主力球员，城市街头篮球战队知名成员，热爱篮球运动Brian高中时期开始研究电脑网络技术并打下扎实技术功底。大学时期开始创业，主要从事网络安全服务业务，在2001年带领团队远赴韩国，菲律宾等海外国家开发市场，早年的团队成员已成为360网络公司的项目负责人。其至今已积累了10年前台与后台的开发经验，5年项目管理经验，以及多次创业实战经验。通过招募经验丰富，能力出众的技术开发人员，Brian为产品量身打造了一支出色的技术开发团队。\n",
-              "created_at": null,
-              "updated_at": null,
-              "stock_scale": null
-            },
+            }
           ],
         /*//历史融资信息*/
         pro_history_finance: [{
@@ -601,15 +590,6 @@
               created_time: null,
               updated_time: null,
               type: 0//项目标签
-            },
-            {
-              tag_id: 3,
-              tag_name: "全职猎人",
-              user_id: 0,
-              project_id: 37,
-              created_time: null,
-              updated_time: null,
-              type: 1//团队标签
             }
           ],
         /*文件列表*/
@@ -619,16 +599,6 @@
               project_id: 37,
               file_title: "项目文件1",
               file_ext: "doc",
-              file_url: "/data/url",
-              created_at: null,
-              updated_at: null,
-              deleted_at: null
-            },
-            {
-              file_id: 2,
-              project_id: 37,
-              file_title: "项目文件2",
-              file_ext: "git",
               file_url: "/data/url",
               created_at: null,
               updated_at: null,
@@ -662,7 +632,7 @@
             bp_id: 34,
             project_id: 37,
             user_id: 181391,
-            bp_title: "HoopEASY商业计划PPT+for+pitch",
+            bp_title: "",
             bp_ext: "pptx",
             bp_url: "20161201/e6b499c3e94ed4247147cdbfd50ca319.pptx",
             created_at: "2017-06-01 18:14:38",
@@ -863,14 +833,14 @@
           .then(res=>{
             this.loading=false
             let data = res.data.data;
-            for(let key in data){
+            /*            for(let key in data){
               if(data[key]=="") data[key]="-"
             }
             for(let i=0; i<data.core_users.length; i++){
                 if(data.core_users[i].stock_scale==null){
                   data.core_users[i].stock_scale="－"
                 }
-            }
+            }*/
 
             if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
             if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
