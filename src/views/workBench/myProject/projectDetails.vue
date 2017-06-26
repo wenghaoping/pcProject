@@ -6,8 +6,8 @@
         <div class="item-lists item-lists-top clearfix">
           <div class="item-lists-inner-left fl">
             <div class="item height">
-              <el-tag type="primary" v-if="project.open_status==0">私密</el-tag>
               <el-tag type="success" v-if="project.open_status==1">公开</el-tag>
+              <el-tag type="primary" v-else>私密</el-tag>
               <el-tooltip class="item height" effect="dark" placement="top-start">
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
               <span class="icon"><img src="../../../assets/images/why.png"/></span>
@@ -863,10 +863,9 @@
           .then(res=>{
             this.loading=false
             let data = res.data.data;
-            console.log(this.$tool.getToObject(data))
-//            for(let key in data){
-//              if(data[key]=="") data[key]="-"
-//            }
+            for(let key in data){
+              if(data[key]=="") data[key]="-"
+            }
             for(let i=0; i<data.core_users.length; i++){
                 if(data.core_users[i].stock_scale==null){
                   data.core_users[i].stock_scale="－"
@@ -895,8 +894,7 @@
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },
       getprojectId(){
-        this.project.project_id=this.$route.query.project_id
-        console.log(this.$route.query.project_id)
+        this.project.project_id=this.$route.query.project_id;
       }
     },
     created () {

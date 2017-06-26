@@ -1239,6 +1239,16 @@
           this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title, data[i].file_id, data[i].belongs_to_type.type_id);
         }
       },//设置批量上传文件显示
+      setMemberScale(data){
+          for(let i=0; i<data.length; i++){
+            if(data[i].stock_scale==0)  data[i].stock_scale="";
+          }
+      },//核心成员股权比例
+      setFinance(data){
+        for(let i=0; i<data.length; i++){
+          if(data[i].pro_finance_scale==0)  data[i].pro_finance_scale="";
+        }
+      },//期望融资,融资金额
       getOneProject () {
         this.$http.post(this.URL.getOneProject, {user_id: sessionStorage.user_id, project_id: this.project_id})
           .then(res => {
@@ -1295,14 +1305,18 @@
             };
 
             this.team.tags_team = this.getTag(data.tag, 1);//团队标签
+            this.setMemberScale(data.core_users);
+
             this.team.core_users = data.core_users;
 
             this.financing.pro_finance_scale = data.pro_finance_scale;
             this.financing.pro_finance_use = data.pro_finance_use;
+            if(data.pro_finance_stock_after==0) data.pro_finance_stock_after="";
             this.financing.pro_finance_stock_after = data.pro_finance_stock_after;
+            if(data.pro_finance_value==0) data.pro_finance_value="";
             this.financing.pro_finance_value = data.pro_finance_value;
 
-
+            this.setFinance(data.pro_history_finance);
             this.financing.pro_history_finance = data.pro_history_finance;
 
             if (data.pro_history_finance == "") this.financing.pro_history_finance = [];
@@ -1315,6 +1329,12 @@
             this.is_exclusive = data.is_exclusive;//FA运营状态
 
             if (data.pro_FA == "") data.pro_FA = {commission: "", stock_right: "", stock_follow: "", stock_other: ""};
+
+
+            if(data.pro_FA.commission==0) data.pro_FA.commission="";
+            if(data.pro_FA.stock_right==0) data.pro_FA.stock_right="";
+            if(data.pro_FA.stock_follow==0) data.pro_FA.stock_follow="";
+            if(data.pro_FA.stock_other==0) data.pro_FA.stock_other="";
 
             this.pro_FA = data.pro_FA;
             if (this.planList.length != 0) this.planButton = false;
@@ -1818,10 +1838,19 @@
         }
       },
 
+      getMemberScale(data){
+        for(let i=0; i<data.length; i++){
+          if(data[i].stock_scale=="") data[i].stock_scale=0;
+        }
+      },//核心成员股权比例
+      getFinance(data){
+        for(let i=0; i<data.length; i++){
+          if(data[i].pro_finance_scale=="")  data[i].pro_finance_scale=0;
+        }
+      },//期望融资,融资金额
       /*全部保存按钮*/
       allSave(){
-        console.log(this.$tool.getToObject(this.financing));
-        console.log(this.$tool.getToObject(this.milepost));
+          this.loading=true;
         if (this.planList.length === 0) this.fileMust = true;
         else this.fileMust = false
         this.projectMust = !this.submitForm('project');
@@ -1864,10 +1893,13 @@
           if(allData.stock_follow=="" || allData.stock_follow==undefined) allData.stock_follow=0;
           if(allData.stock_other=="" || allData.stock_other==undefined) allData.stock_other=0;
 
+          this.getMemberScale(allData.pro_core_team);
+          this.getFinance(allData.pro_history_finance)
           console.log(allData,2);
 
           this.$http.post(this.URL.editProject, allData)
             .then(res => {
+              this.loading=false;
               this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '继续编辑')
             })
             .catch(err => {
@@ -2009,8 +2041,6 @@
       },
       getprojectId(){
         this.project_id = this.$route.query.project_id;
-        console.log(this.$route.query.project_id,1);
-        console.log(this.project_id,2);
       }
     },
     //    当dom一创建时

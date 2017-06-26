@@ -562,9 +562,11 @@ export default {
       console.log(this.$route.query.project_id);
     },
     getWxosProjectData(){
-        console.log("我登陆啦")
+      console.log("我登陆啦")
       console.log(sessionStorage.credential);
-      if(sessionStorage.credential!=""){
+      if(sessionStorage.credential==undefined || sessionStorage.credential==""){
+
+      }else{
         console.log("我进来啦")
         this.$http.post(this.URL.getWxosProjectData,{credential:sessionStorage.credential})
           .then(res=>{
@@ -585,7 +587,6 @@ export default {
             console.log(err);
           });
       }
-
     }//微信进入的时候获取
   },
   mounted() {

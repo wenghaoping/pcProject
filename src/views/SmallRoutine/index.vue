@@ -59,7 +59,7 @@ export default {
     },
     getUserId(){
       this.num++;
-      if(this.num>30) clearInterval(this.timeout);
+//      if(this.num>30) clearInterval(this.timeout);
       this.$http.post(this.URL.ajaxPolling,{credential:sessionStorage.credential})
         .then(res=>{
 //          clearInterval(this.timeout);
@@ -106,7 +106,7 @@ export default {
       })
     this.timeout = setInterval(() => {
       this.getUserId();
-    }, 1000,30);
+    }, 1000);
   }
 }
 </script>
