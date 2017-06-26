@@ -79,13 +79,22 @@
 
 
   .item-lists{
-    .toButton{
-      position: fixed;bottom:40px;right: 0px;left: 0px;margin:auto;
-      background:#ffffff;
-      box-shadow:0 -2px 4px 0 rgba(64,88,122,0.10);
-      width:880px;
-      height:60px;
+    .list{
+      display:table-cell;
+      vertical-align:middle;
+      text-align: center;
+      .toButton{
+        position: fixed;bottom:40px;right: 0px;left: 0px;margin:auto;
+        background:#ffffff;
+        box-shadow:0 -2px 4px 0 rgba(64,88,122,0.10);
+        width:830px;
+        height: 68px;
+        display: inline-block;
+        padding-top: 15px;
+
+      }
     }
+
     padding:24px;
 
     .item-lists-inner-left{
@@ -477,7 +486,7 @@
           left:calc(~"100% - 5px");
         }
         .bar-bg1{
-          width:80px;
+          width:170px;
           height: 2px;
           background: #c0ccda;
         }

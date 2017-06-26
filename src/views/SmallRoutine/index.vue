@@ -1,13 +1,21 @@
 <template>
   <div id="samllRoutine" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+    <div class="titleTo">
+
+    </div>
       <div class="scan">
         <p class="title">微天使，帮您成交的项目管理工具</p>
         <p class="samll">扫一扫，快速创建融资项目</p>
-        <div class="img" v-html="qr">
+        <div class="img" v-html="qr" v-if="checkout">
           {{qr}}
         </div>
+        <div class="img" v-if="!checkout">
+          <br>
+          <br>
+          <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面</el-button>
+        </div>
       </div>
-    <el-dialog
+<!--    <el-dialog
       title="超时"
       :visible.sync="dialogVisible"
       size="large"
@@ -25,7 +33,7 @@
       <br>
       <br>
       <br>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 
@@ -39,7 +47,8 @@ export default {
       num:0,
       qr:"",
       dialogVisible:false,
-      close:false
+      close:false,
+      checkout:false
     }
   },
   methods: {
@@ -71,13 +80,13 @@ export default {
           if(data.status_msg=="success"){
             clearInterval(this.timeout);
             if(data.type=="create") this.$router.push({ name: 'creatproject'});
-
             if(data.type=="update") this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});
             sessionStorage.user_id=data.user_info.user_id;
             sessionStorage.user_real_name=data.user_info.user_real_name;
           }else if(data.status_msg=="timeout"){
             clearInterval(this.timeout);
             this.dialogVisible=true;
+            this.checkout=false;
           }else if(data.status_msg=="continue") {
             console.log("等待登陆")
           }
@@ -93,6 +102,7 @@ export default {
   },
   mounted(){
     this.loading=true;
+    this.checkout=true;
     this.$http.get(this.URL.returnQrCredential)
       .then(res => {
         console.log(res);
@@ -115,6 +125,7 @@ export default {
 <style scoped lang="less">
   svg{width: 200px;height: 200px;}
 #samllRoutine{
+
   background: #f3f4f8;
   font-family:PingFangSC-Regular;
   padding-top: 156px;
@@ -146,6 +157,14 @@ export default {
       display: block;
       margin: 24px auto 0;
     }
+  }
+  .titleTo{
+    height: 60px;
+    width: 100%;
+    background: #40587a;
+    position: absolute;
+    top: 0px;
+    left: 0px;
   }
 
 }

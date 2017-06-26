@@ -6,8 +6,6 @@
 
 /*项目详情URL*/
 
-
-
 export default
 {
   /*登陆接口*/

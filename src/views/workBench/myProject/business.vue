@@ -49,8 +49,8 @@
             &lt;!&ndash;<el-col :span="8"><div class="content right"></div></el-col>&ndash;&gt;
           </el-row>-->
           <el-row :span="24">
-            <el-col :span="4" style="height: 109px;line-height: 109px;"><div class="left" >经营范围</div></el-col>
-            <el-col :span="20" style="height: 136px;"><div style="padding: 14px 12px 12px 15px;border:1px solid #e0e6ed;margin-right: -12px;background: #ffffff">{{business.company.company_empirical_range}}</div></el-col>
+            <el-col :span="4" style="height: 136px;line-height: 136px;"><div class="left" >经营范围</div></el-col>
+            <el-col :span="20" style="min-height: 136px;"><div style="padding: 14px 12px 12px 15px;border:1px solid #e0e6ed;margin-right: -12px;background: #ffffff">{{business.company.company_empirical_range}}</div></el-col>
           </el-row>
         </div>
       </el-tab-pane>
@@ -230,12 +230,11 @@ export default {
       })
         .then(res => {
           let data=res.data.data;
+          data.company.company_type=data.company.company_type.substring(5);
           this.business=data;
           this.trademarkMessage="商标信息"+"("+data.brand.length+")"
-
         })
         .catch(err => {
-          alert("获取失败");
           console.log(err);
         })
     }//获取商标信息

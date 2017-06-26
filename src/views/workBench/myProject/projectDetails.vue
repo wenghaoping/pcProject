@@ -40,11 +40,10 @@
             </span>
               <span class="project" style="width: 291px;">
               <div class="item progress height">
-                <div class="txt begin">项目线索</div>
+                <div class="txt begin" :style="styleObject">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
                   <span class="bar-bg1">&nbsp;</span>
-                  <span class="bar-bg2">&nbsp;</span>
                   <span  class="txt state">{{project.pro_status.status_name}}</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
@@ -100,7 +99,7 @@
                 <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
                 <span class="pt">{{project.pro_BP.file_title}}</span>
                 <!--<el-button type="text" size="mini">查看</el-button>-->
-                <el-button type="text" size="mini" @click="download">下载</el-button>
+                <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
               </div>
             </div>
             <div class="item" style="margin-top:24px;height: 49px;" v-if="project.pro_status!=''">
@@ -252,7 +251,7 @@
               </div>
             </div>
           </div>
-          <div class="ul-lists">
+          <div class="ul-lists list">
             <div class="toButton">
               <button style="margin:0 auto;display: block;width: 88px;background:#009eff;border-radius:2px;height: 36px;color:#ffffff;cursor: pointer" @click="toEdit">编辑</button>
             </div>
@@ -644,7 +643,10 @@
           }
 
         },
-        seachCompanys:[]
+        seachCompanys:[],
+        styleObject: {
+          color: '',
+        }
       }
     },
     computed:{
@@ -753,8 +755,19 @@
       myPie.setOption(option);*/
     },
     methods:{
-      download(){
-
+      download(e){
+        this.$http.get(this.URL.download,{ params:{user_id: sessionStorage.user_id,file_id:e}})
+          .then(res=>{
+            if(res.data.status_code===4004004){
+              this.loading=false;
+              this.alert("下载失败,请联系管理员")
+            }
+            console.log(res)
+          })
+          .catch(err=>{
+            console.log(err)
+            this.opealertn("网络出错,请联系管理员")
+          })
       },//下载文件
       searchChange(queryString){
         this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
@@ -852,13 +865,14 @@
             if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
             if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-"}
             if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-
+            if(data.pro_status=="") this.styleObject={color:"#20a0ff"};
             this.getLocalTime(data.pro_develop);
             this.getLocalTime2(data.pro_history_finance);
 
 
             this.project=data;
             this.project.pro_source=this.getProjectTag(data.tag);
+
 
           })
           .catch(err=>{
@@ -871,7 +885,15 @@
       },
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
-      }
+      },
+      /*警告弹窗*/
+      alert(text) {
+        this.$notify.error({
+          message: text,
+          offset: 300,
+          duration:1000
+        });
+      },
     },
     created () {
       // 组件创建完后获取数据，

@@ -108,6 +108,7 @@
   #app {
     /*min-width: 1903px;*/
     background: #f3f4f8;
+  padding-bottom:60px;
     main{
       width: 1336px;
       margin: 0 auto;

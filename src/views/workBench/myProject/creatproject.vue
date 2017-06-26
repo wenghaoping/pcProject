@@ -398,7 +398,7 @@ export default {
       this.uploadShow=object;
     },//添加上传文件时,保存返回的数据
     planPreview(file){
-        console.log(this.uploadShow);
+      console.log(this.uploadShow);
       const download=this.URL.download;
       this.$http.get(download,{ params:{user_id: sessionStorage.user_id,file_id:this.uploadShow.file_id}})//this.uploadShow.file_id
         .then(res=>{
@@ -533,7 +533,7 @@ export default {
         .then(res=>{
           let data=res.data.data;
           this.queryData=data;
-          console.log(this.$tool.getToObject(data));
+//          console.log(this.$tool.getToObject(data));
         })
         .catch(err=>{
           this.alert("获取失败");
@@ -543,22 +543,9 @@ export default {
     },
     /*一键同步按钮*/
     sync(){
-      let data=this.project;
-      for(let key in data){
-          if(data[key]!=""){
-
-          }
-      }
       this.dialogVisible = false;
-      data.pro_goodness=this.queryData.pro_goodness;
-      data.pro_area_province=this.queryData.pro_area_province;
-      data.pro_area_city=this.queryData.pro_area_city;
-      data.open_status=this.queryData.open_status.toString();
-      data.pro_finance_scale=this.queryData.pro_finance_scale;
-      data.pro_intro=this.queryData.pro_intro;
-
-//      if(this.queryData.pro_finance_scale==0) this.project.pro_finance_scale="";
-
+      this.project.pro_intro=this.queryData.project_info.project_introduce;
+      this.project.pro_company_name=this.queryData.company_name;
     },
     getprojectId(){
       this.project.project_id = this.$route.query.project_id;

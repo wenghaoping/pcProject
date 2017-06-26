@@ -75,7 +75,7 @@
                     <div class="block">
                       <span class="block-title fl clearfix">{{teamin.team_member_name}}</span>
                       <span class="block-company fl">{{teamin.team_member_position}}</span>
-                      <span class="block-tag fl"><el-tag type="primary">{{teamin.team_member_position}}</el-tag></span>
+                      <!--<span class="block-tag fl"><el-tag type="primary">{{teamin.team_member_position}}</el-tag></span>-->
 <!--                      <span class="bloack-right fr">股权占比：12%</span>-->
                     </div>
                     <div class="block">

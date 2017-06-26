@@ -118,7 +118,7 @@
                       <el-form-item
                         label="项目介绍"
                         prop="pro_intro"
-                        :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
+                        :rules="[{min: 3, message: '最少2个字符',required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
                         <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
                       </el-form-item>
                     </el-col>
@@ -298,7 +298,7 @@
                     <el-col :span="24">
                       <el-form-item label="项目亮点"
                                     prop="pro_goodness"
-                                    :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'}]">
+                                    :rules="[{min: 3, message: '最少2个字符',required: true, message: '项目亮点不能为空', trigger: 'blur'}]">
                         <el-input type="textarea"
                                   v-model="project.pro_goodness"
                                   :autosize="{ minRows: 4, maxRows: 7}"></el-input>
@@ -352,7 +352,7 @@
                         :prop="'core_users.' + index + '.ct_member_name'"
                         v-for="(member, index) in team.core_users"
                         :key="member.index"
-                        :rules="[{required: true, message: '成员姓名不能为空', trigger: 'blur'}]">
+                        :rules="[{min: 3, message: '最少2个字符',required: true, message: '成员姓名不能为空', trigger: 'blur'}]">
                         <el-input v-model="member.ct_member_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -550,7 +550,7 @@
                         :prop="'pro_develop.' + index + '.dh_event'"
                         v-for="(milePostSomeThing, index) in milepost.pro_develop"
                         :key="milePostSomeThing.index"
-                        :rules="[{required: true, message: '请输入事件', trigger: 'blur'}]">
+                        :rules="[{min: 3, message: '最少2个字符',required: true, message: '请输入事件', trigger: 'blur'}]">
                         <el-input v-model="milePostSomeThing.dh_event" placeholder="请添加"></el-input>
                       </el-form-item>
                     </el-col>
@@ -747,7 +747,7 @@
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible">
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
-                      :rules="[{required: true, message: '分组不能为空', trigger: 'blur'}]">
+                      :rules="[{min: 3, message: '最少2个字符',required: true, message: '分组不能为空', trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
               <el-input v-model="groups.input" auto-complete="off"></el-input>
@@ -1405,7 +1405,6 @@
         this.$http.get(download, {
           params: {
             user_id: sessionStorage.user_id,
-            type: "project_bp",
             file_id: this.uploadShow.file_id
           }
         })//this.uploadShow.file_id
@@ -1454,22 +1453,19 @@
         if (index !== -1) {
           let file_id = this.uploadShow2.lists[index].file_id;
           const download = this.URL.download;
-          /*this.$http.get(download, {params: {user_id: sessionStorage.user_id, type: "project_file", file_id: file_id}})
+          this.$http.get(download, {params: {user_id: sessionStorage.user_id,file_id: file_id}})
             .then(res => {
               if (res.data.status_code === 4004004) {
                 this.loading = false;
                 this.alert("下载失败,请联系管理员");
               }
-//              console.log(res)
             })
             .catch(err => {
-//              console.log(err)
               this.alert("网络出错,请联系管理员")
-            })*/
-//          console.log(file_id)
+            })
         }
       },//点击下载
-      //删除当前上传文件
+
       removeList(item) {
         var index = this.uploadShow2.lists.indexOf(item)
         if (index !== -1) {
@@ -1492,8 +1488,8 @@
               this.alert("删除失败,请联系管理员")
             })
         }
-      },
-      //添加上传文件时,加入显示列表
+      },//删除当前上传文件
+
       addDomain(type_name, file_title, file_id, type)  {
         let object = {};
         object.bp_type = type_name;
@@ -1502,8 +1498,8 @@
         object.type = type;//文件类型
         this.uploadShow2.lists.push(object);
 
-      },
-      //点击分组设置中的单选框
+      },//添加上传文件时,加入显示列表
+
       groupchange(label){
         let index = this.groups.index;
         let data = this.groups.group;
@@ -1513,7 +1509,7 @@
               this.uploadShow2.lists[index].type=label;
           }
         }
-      },
+      },//点击分组设置中的单选框
 
       addGroup(formName) {
         this.$refs[formName].validate((valid) => {
@@ -1623,6 +1619,7 @@
         this.$http.post(this.URL.getOneCompany, {user_id: sessionStorage.user_id, com_id: item.address})
           .then(res => {
             let data = res.data.data;
+            console.log(this.$tool.getToObject(data))
             this.queryData = data;
           })
           .catch(err => {
@@ -1861,7 +1858,14 @@
           if(data[i].pro_finance_scale=="")  data[i].pro_finance_scale=0;
         }
       },//期望融资,融资金额
-      /*全部保存按钮*/
+      getNull(data) {
+        var patt1 = new RegExp(/\s+/g);
+          if (patt1.test(data)) {
+            return true;;
+          }
+        alert(t.replace(/\s+/g, ""));
+      },
+  /*全部保存按钮*/
       allSave(){
 
 //        if (this.planList.length === 0) this.fileMust = true;
@@ -2047,7 +2051,8 @@
       /*一键同步按钮*/
       sync(){
         this.dialogVisible = false;
-        if(this.project.pro_intro=="") this.project.pro_intro = this.queryData.pro_intro;
+        if(this.project.pro_intro=="") this.project.pro_intro = this.queryData.project_info.project_introduce;
+        if(this.project.pro_website=="") this.project.pro_website = this.queryData.project_info.project_website;
         if(this.team.core_users.length==0) this.team.core_users=this.queryData.team;
         if(this.financing.pro_history_finance.length==0) this.financing.pro_history_finance = this.queryData.history_finance;
         if(this.milepost.pro_develop.length==0) this.milepost.pro_develop=this.queryData.milestone_list;

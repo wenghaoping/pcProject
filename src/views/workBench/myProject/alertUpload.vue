@@ -17,7 +17,7 @@
                    accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                    drag multiple>
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__text"><!--将文件拖到此处，或<em>-->点击上传</em></div>
           <div class="el-upload__tip" slot="tip" >BP私密保护，投资人可通过申请查看来了解项目价值<br>支持pdf、ppt、doc、zip、rar文件格式</div>
         </el-upload>
 
