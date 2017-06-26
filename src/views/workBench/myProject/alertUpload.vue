@@ -56,7 +56,7 @@
               <el-col :span="6">
                 <el-form-item
                   label="项目名称"
-                  :prop="'domains.' + index + '.bp_title'"
+                  :prop="'domains.' + index + '.file_title'"
                   v-for="(domain, index) in dateForm.domains"
                   :key="domain.index"
                   :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'}]">
@@ -79,7 +79,7 @@
                   :prop="'domains.' + index + '.pro_name'"
                   v-for="(domain, index) in dateForm.domains"
                   :key="domain.index">
-                  <el-input v-model="domain.bp_title" :disabled="true"></el-input>
+                  <el-input v-model="domain.file_title" :disabled="true"></el-input>
                 </el-form-item>
 
               </el-col>
@@ -143,10 +143,10 @@ export default {
     },
     uploadsuccess(response, file, fileList){
         this.loadingcheck=true;
-        let data=response.data
+        let data=response.data;
         if(response.status_code==2000000) {
           this.success("上传成功");
-          this.addDomain(data.pro_desc,data.pro_name,data.bp_title,data.project_id);
+          this.addDomain(data.pro_desc,data.pro_name,data.file_title,data.project_id);
           this.loading=false;
           this.loadingcheck=false;
         }
@@ -213,8 +213,8 @@ export default {
       this.$http.post(deleteUpload,{user_id: sessionStorage.user_id,project_id:item.project_id})
         .then(res=>{
           if(res.status===200){
-//            this.loading=false;
-            this.alert("删除成功");
+            this.loading=false;
+            this.success("删除成功");
           }
             console.log(res)
         })
@@ -224,9 +224,9 @@ export default {
         })
     },
     //添加上传文件时,加入显示列表
-    addDomain(bp_title,pro_desc,pro_name,project_id) {
+    addDomain(file_title,pro_desc,pro_name,project_id) {
       let object ={};
-      object.bp_title=bp_title;
+      object.file_title=file_title;
       object.pro_desc=pro_desc;
       object.pro_name=pro_name;
       object.project_id=project_id;

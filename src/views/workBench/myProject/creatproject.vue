@@ -20,6 +20,7 @@
                            action="/project/projectUpload"
                            :on-change="planChange"
                            :on-success="planuploadsuccess"
+                           :on-preview="planPreview"
                            :on-remove="planRemove"
                            :on-error="planuploaderror"
                            :file-list="planList"
@@ -361,9 +362,10 @@ export default {
       else this.planButton=false;
     },
     planuploadsuccess(response, file, fileList){
-      this.success("上传成功")
+      this.success("上传成功");
+      console.log(response)
       let data = response.data;
-      this.addplan(data.bp_title,data.pro_desc,data.pro_name,data.project_id,data.bp_id)
+      this.addplan(data.file_title,data.pro_desc,data.pro_name,data.project_id,data.file_id)
     },//上传成功后添加字段
     planuploaderror(err, file, fileList){
       this.alert("上传失败,请联系管理员")
@@ -386,24 +388,25 @@ export default {
         })
 
     },//删除文件
-    addplan(bp_title,pro_desc,pro_name,project_id,bp_id) {
+    addplan(file_title,pro_desc,pro_name,project_id,file_id) {
       let object ={};
-      object.bp_title=bp_title;
+      object.file_title=file_title;
       object.pro_desc=pro_desc;
       object.pro_name=pro_name;
       object.project_id=project_id;
-      object.bp_id=bp_id;
+      object.file_id=file_id;
       this.uploadShow=object;
     },//添加上传文件时,保存返回的数据
     planPreview(file){
+        console.log(this.uploadShow);
       const download=this.URL.download;
-      this.$http.get(download,{ params:{user_id: sessionStorage.user_id,type:"project_bp",bp_id:this.uploadShow.bp_id}})//this.uploadShow.bp_id
+      this.$http.get(download,{ params:{user_id: sessionStorage.user_id,file_id:this.uploadShow.file_id}})//this.uploadShow.file_id
         .then(res=>{
           if(res.data.status_code===4004004){
             this.loading=false;
             this.alert("下载失败,请联系管理员")
           }
-//          console.log(res)
+          console.log(res)
         })
         .catch(err=>{
           console.log(err)

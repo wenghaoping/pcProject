@@ -96,11 +96,11 @@
               <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
             </div>
             <div class="item" style="margin-top:24px;">
-              <div class="paper" >
+              <div class="paper" v-if="project.pro_BP.length!=0">
                 <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
                 <span class="pt">{{project.pro_BP.file_title}}</span>
-                <el-button type="text" size="mini">查看</el-button>
-                <el-button type="text" size="mini"><a href="">下载</a></el-button>
+                <!--<el-button type="text" size="mini">查看</el-button>-->
+                <el-button type="text" size="mini" @click="download">下载</el-button>
               </div>
             </div>
             <div class="item" style="margin-top:24px;height: 49px;" v-if="project.pro_status!=''">
@@ -137,7 +137,7 @@
             <div class="item" v-for="user in project.core_users" style="margin-top:10px;">
               <span class="p-name">{{user.ct_member_name}}</span>
               <span class="p-mg">{{user.ct_member_career}}</span>
-              <div class="p-gf">占股比例 : <span>{{user.stock_scale}}%</span></div>
+              <div class="p-gf">股权占比 : <span>{{user.stock_scale}}%</span></div>
               <div class="p-doc">{{user.ct_member_intro}}</div>
               <div class="line"></div>
             </div>
@@ -252,9 +252,12 @@
               </div>
             </div>
           </div>
-          <div class="toButton">
-            <button style="margin:0 auto;display: block;width: 88px;background:#009eff;border-radius:2px;height: 36px;color:#ffffff;cursor: pointer" @click="toEdit">编辑</button>
+          <div class="ul-lists">
+            <div class="toButton">
+              <button style="margin:0 auto;display: block;width: 88px;background:#009eff;border-radius:2px;height: 36px;color:#ffffff;cursor: pointer" @click="toEdit">编辑</button>
+            </div>
           </div>
+
         </div>
 
       </div>
@@ -629,10 +632,10 @@
           },
          /*BP文件*/
           pro_BP: {
-            bp_id: 34,
+            file_id: 34,
             project_id: 37,
             user_id: 181391,
-            bp_title: "",
+            file_title: "",
             bp_ext: "pptx",
             bp_url: "20161201/e6b499c3e94ed4247147cdbfd50ca319.pptx",
             created_at: "2017-06-01 18:14:38",
@@ -750,6 +753,9 @@
       myPie.setOption(option);*/
     },
     methods:{
+      download(){
+
+      },//下载文件
       searchChange(queryString){
         this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
           .then(res=>{

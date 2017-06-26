@@ -4,13 +4,13 @@
       <!--App下载量-->
       <el-tab-pane label="App下载量" name="1"></el-tab-pane>
       <!--活跃用户-->
-      <el-tab-pane label="活跃用户" name="2"></el-tab-pane>
+<!--      <el-tab-pane label="活跃用户" name="2"></el-tab-pane>-->
       <!--浏览页面-->
-      <el-tab-pane label="浏览页面" name="3"></el-tab-pane>
+      <el-tab-pane label="浏览页面" name="2"></el-tab-pane>
       <!--访问用户-->
-      <el-tab-pane label="访问用户" name="4"></el-tab-pane>
+      <el-tab-pane label="访问用户" name="3"></el-tab-pane>
       <!--访问时长-->
-      <el-tab-pane label="访问时长" name="5"></el-tab-pane>
+      <el-tab-pane label="访问时长" name="4"></el-tab-pane>
 
     </el-tabs>
     <div id="pieBox" style="width:803px;height:432px;"></div>
@@ -21,35 +21,345 @@
 <script type="text/ecmascript-6">
 var echarts = require('echarts');
 export default {
+  props: ["comid"],
   data () {
     return {
       downloadEchartName:'1',
       title:"累计下载量",
       main:"综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。",
-      xdata:['20170224', '20170225', '20170226', '20170227', '20170228', '20170229'],
-      ydata1:[20000, 40000, 60000, 10000, 80000, 10000],
-      ydata2:[10000, 30000, 10000, 11000, 20000, 40000]
+      xdata:["20170322",
+        "20170323",
+        "20170324",
+        "20170325",
+        "20170326",
+        "20170327",
+        "20170328",
+        "20170329",
+        "20170330",
+        "20170331",
+        "20170401",
+        "20170402",
+        "20170403",
+        "20170404",
+        "20170405",
+        "20170406",
+        "20170407",
+        "20170408",
+        "20170409",
+        "20170410",
+        "20170411",
+        "20170412",
+        "20170413",
+        "20170414",
+        "20170415",
+        "20170416",
+        "20170417",
+        "20170418",
+        "20170419",
+        "20170420",
+        "20170421",
+        "20170422",
+        "20170423",
+        "20170424",
+        "20170425",
+        "20170426",
+        "20170427",
+        "20170428",
+        "20170429",
+        "20170430",
+        "20170501",
+        "20170502",
+        "20170503",
+        "20170504",
+        "20170505",
+        "20170506",
+        "20170507",
+        "20170508",
+        "20170509",
+        "20170510",
+        "20170511",
+        "20170512",
+        "20170513",
+        "20170514",
+        "20170515",
+        "20170516",
+        "20170517",
+        "20170518",
+        "20170519",
+        "20170520",
+        "20170521",
+        "20170522",
+        "20170523",
+        "20170524",
+        "20170525",
+        "20170526",
+        "20170527",
+        "20170528",
+        "20170529",
+        "20170530",
+        "20170531",
+        "20170601",
+        "20170602",
+        "20170603",
+        "20170604",
+        "20170605",
+        "20170606",
+        "20170607",
+        "20170608",
+        "20170609",
+        "20170610",
+        "20170611",
+        "20170612",
+        "20170613",
+        "20170614",
+        "20170615",
+        "20170616",
+        "20170617",
+        "20170618",
+        "20170619"],//时间
+      download:{
+        ydataTotal:[498,
+          497,
+          497,
+          497,
+          496,
+          496,
+          495,
+          494,
+          492,
+          490,
+          488,
+          487,
+          486,
+          485,
+          484,
+          483,
+          482,
+          481,
+          481,
+          482,
+          481,
+          481,
+          481,
+          481,
+          481,
+          481,
+          480,
+          479,
+          475,
+          474,
+          464,
+          455,
+          462,
+          473,
+          119,
+          123,
+          128,
+          128,
+          133,
+          138,
+          138,
+          341,
+          354,
+          308,
+          332,
+          348,
+          329,
+          311,
+          351,
+          338,
+          332,
+          360,
+          323,
+          308,
+          308,
+          348,
+          317,
+          366,
+          323,
+          341,
+          332,
+          360,
+          344,
+          351,
+          332,
+          335,
+          348,
+          344,
+          332,
+          314,
+          323,
+          366,
+          363,
+          357,
+          323,
+          323,
+          351,
+          351,
+          332,
+          341,
+          329,
+          329,
+          335,
+          335,
+          308,
+          338,
+          314,
+          348,
+          360,
+          363],//获取的数据
+        ydataAverage:[498,
+          497,
+          497,
+          497,
+          496,
+          496,
+          495,
+          494,
+          492,
+          490,
+          488,
+          487,
+          486,
+          485,
+          484,
+          483,
+          482,
+          481,
+          481,
+          482,
+          481,
+          481,
+          481,
+          481,
+          481,
+          481,
+          480,
+          479,
+          475,
+          474,
+          464,
+          455,
+          462,
+          473,
+          119,
+          123,
+          128,
+          128,
+          133,
+          138,
+          138,
+          341,
+          354,
+          308,
+          332,
+          348,
+          329,
+          311,
+          351,
+          338,
+          332,
+          360,
+          323,
+          308,
+          308,
+          348,
+          317,
+          366,
+          323,
+          341,
+          332,
+          360,
+          344,
+          351,
+          332,
+          335,
+          348,
+          344,
+          332,
+          314,
+          323,
+          366,
+          363,
+          357,
+          323,
+          323,
+          351,
+          351,
+          332,
+          341,
+          329,
+          329,
+          335,
+          335,
+          308,
+          338,
+          314,
+          348,
+          360,
+          363]//平均数据
+      },//APP下载量
+      dau:{
+        ydataTotal:[],
+        ydataAverage:[]
+      },//活跃用户
+      pv:{
+        ydataTotal:[],
+        ydataAverage:[]
+      },//浏览页面
+      uv:{
+        ydataTotal:[],
+        ydataAverage:[]
+      },//访问用户数
+      time:{
+        ydataTotal:[],
+        ydataAverage:[]
+      },//访问时长
     }
   },
+  computed:{
+
+  },
   methods: {
+    getChart(data){
+      for(let i=0; i<data.length; i++){
+          if(data[i].project_views!=""){
+              return JSON.parse(data[i].project_views);
+          }
+      }
+    },//获取图表数据
+    getAverage(data){
+        let arr=[];
+      let index=this.xdata.length;
+        for(let i=0; i<index; i++){
+          arr[i]=data;
+        };
+        return arr;
+    },//获取平均数
+    getTotal(data){
+      for(let i=0; i<data.length; i++){
+        if(data[i]=="") data[i]=0;
+      };
+      return data
+    },//获取爬来的数据
     handleClick(tab, event) {
       let index=tab.index
 //      console.log(tab.index);
       switch (index){
         case '0':
-          this.get0();
+          this.getdownload();
           break;
+/*        case '1':
+          this.getdau();
+          break;*/
         case '1':
-          this.get1();
+          this.getpv();
           break;
         case '2':
-          this.get2();
+          this.getuv();
           break;
         case '3':
-          this.get3();
-          break;
-        case '4':
-          this.get4();
+          this.gettime();
           break;
         default:
           alert("你瞎按了吧")
@@ -57,10 +367,7 @@ export default {
       };
     },
     eChart(xdata,ydata1,ydata2){
-        let myChart = echarts.init(document.getElementById('pieBox'));
-        this.xdata=xdata
-        this.ydata1=ydata1
-        this.ydata2=ydata2
+      let myChart = echarts.init(document.getElementById('pieBox'));
       let option = {
           title: {},
           color: ['#28DC41', '#009eff'],
@@ -72,8 +379,8 @@ export default {
             extraCssText:'border-radius:8px;',
             formatter: function(e){
               let res = e[0].axisValue.slice(0,4)+'.'+e[0].axisValue.slice(4,6)+'.'+e[0].axisValue.slice(6,8)+'</br>'
-              res+='行业平均:　'+e[1].value/1000+'K'+'</br>'
-              res+='环比增长:　'+e[0].value/1000+'K'
+              res+='行业平均:　'+e[1].value+'</br>'
+              res+='环比增长:　'+e[0].value
               return res;
             }
           },
@@ -86,7 +393,13 @@ export default {
             bottom: '3%',
             containLabel: true
           },
-          toolbox: {
+//        dataZoom:{
+//          orient:"vertical", //水平显示
+//          show:true, //显示滚动条
+//          start:0, //起始值为20%
+//          end:100,  //结束值为60%
+//        },
+        toolbox: {
             feature: {
               saveAsImage: {}
             }
@@ -118,52 +431,75 @@ export default {
         };
       myChart.setOption(option);
       },
-    get0(){
+    getdownload(){
       this.title="累计下载量",
-      this.main="综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。"
-      this.xdata=['20170301', '201703012', '20170303', '20170304', '20170305', '20170306']
-      this.ydata1=[70000, 30000, 50000, 70000, 10200, 90060];
-      this.ydata2=[30000, 9000,30000, 71000, 50000, 70000];
-      this.eChart(this.xdata,this.ydata1,this.ydata2);
-    },
-    get1(){
+      this.main="综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。";
+      this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
+    },//累计下载量
+    getdau(){
       this.title="累计用户",
-      this.main="累计用户。"
-      this.xdata=['20170401', '201704012', '20170403', '20170404', '20170405', '20170406']
-      this.ydata1=[200000, 50000, 90000, 40000, 10201, 40060];
-      this.ydata2=[40000, 80000,60000, 21000, 40000, 60000];
-      this.eChart(this.xdata,this.ydata1,this.ydata2);
-    },
-    get2(){
+      this.main="日活跃用户量";
+      this.eChart(this.xdata,this.dau.ydataTotal,this.dau.ydataAverage);
+    },//累计用户
+    getpv(){
       this.title="浏览页面数(PV)",
       this.main="对目标公司网站在全网的日均访问量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了用户对目标公司官方网站的访问情况,是可以表明目标公司网站内容受访问热度的指标."
-      this.xdata=['20170301', '201705012', '20170503', '20170504', '20170505', '20170506']
-      this.ydata1=[80000, 40000, 50000, 70000, 10200, 90060];
-      this.ydata2=[50000, 60000,70000, 71000, 50000, 70000];
-      this.eChart(this.xdata,this.ydata1,this.ydata2);
-    },
-    get3(){
+      this.eChart(this.xdata,this.pv.ydataTotal,this.pv.ydataAverage);
+    },//浏览页面数
+    getuv(){
       this.title="访问用户数(UV)",
       this.main="对目标公司网站在全网的日均独立访问用户量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了木不熬公司官方网站吸引用户的能力,是可以表明目标公司网站的获客能力的指标."
-      this.xdata=['20170301', '201703012', '20170303', '20170304', '20170305', '20170306']
-      this.ydata1=[10000, 40000, 50000, 80000, 10200, 90060];
-      this.ydata2=[50000, 50000,80000, 71000, 50000, 70000];
-      this.eChart(this.xdata,this.ydata1,this.ydata2);
-    },
-    get4(){
+      this.eChart(this.xdata,this.uv.ydataTotal,this.uv.ydataAverage);
+    },//访问用户数
+    gettime(){
       this.title="访问时长",
       this.main="所有访问用户在统计时间段内,从进入到离开该网站的时长平均值,是可以表现公司网站用户粘性的指标."
-      this.xdata=['20170301', '201703012', '20170303', '20170304', '20170305', '20170306']
-      this.ydata1=[10000, 80000, 50000, 70000, 10200, 90060];
-      this.ydata2=[50000, 40000,30000, 71000, 70000, 40000];
-      this.eChart(this.xdata,this.ydata1,this.ydata2);
-    }
+      this.eChart(this.xdata,this.time.ydataTotal,this.time.ydataAverage);
+    },//访问时长
+    getCrawlerProject(){
+      this.$http.post(this.URL.getCrawlerProject, {
+        user_id: sessionStorage.user_id,
+        com_id: this.comid
+      })
+        .then(res => {
+            let data=this.getChart(res.data.data).data;
+            console.log(data);
+            this.xdata=data.three_month;
+            this.download.ydataTotal=this.getAverage(data.download_mid);
+            this.download.ydataAverage=this.getTotal(data.download[0].value);
+
+/*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
+            this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
+
+            this.pv.ydataTotal=this.getAverage(data.pv_mid);
+            this.pv.ydataAverage=this.getTotal(data.pv[0].value);
+
+            this.uv.ydataTotal=this.getAverage(data.uv_mid);
+            this.uv.ydataAverage=this.getTotal(data.uv[0].value);
+
+            this.time.ydataTotal=this.getAverage(data.time_mid);
+            this.time.ydataAverage=this.getTotal(data.time[0].value);
+
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },//获取项目
 
   },
   //Echart组件
   mounted(){
-      this.eChart(this.xdata,this.ydata1,this.ydata2);
-  }
+//      this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
+      this.getdownload();
+  },
+  watch : {
+    comid : function(e){
+      this.getCrawlerProject();
+    }//获取公司id
+  },
+  created(){
+    this.getCrawlerProject();
+  },
 }
 </script>
 

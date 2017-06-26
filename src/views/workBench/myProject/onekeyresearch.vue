@@ -16,17 +16,20 @@
 
                 <div class="portrait fl"><img :src="project1.project_logo"></div>
                 <div class="portrait-right fl ">
-                  <div class="block">
-                    <span class="block-title fl">{{project1.company_name}}</span>
+                  <div class="block clearfix">
+                    <span class="block-title fl">{{project1.project_name}}</span>
                     <span class="line1 fl"> | </span>
-                    <span class="block-company fl">{{project1.project_name}}</span>
+                    <span class="block-company fl">{{project1.company_name}}</span>
                     <span class="block-tag fl"><el-tag type="primary" v-if="project1.project_state!=null">{{project1.project_state}}</el-tag><!--<el-tag type="success">{{project1.project_industry}}</el-tag>--></span>
                   </div>
-                  <div class="block">
-                    <span class="doc fl">{{project1.project_industry}}</span>
+                  <div class="block clearfix" style="margin-bottom: 20px;">
+                    <div class="doc fl">{{project1.project_introduce}}</div>
                   </div>
-                  <div class="block" style="height: 24px">
-<!--                    <span class="mid-tag" v-for="pro in project1.project_label">{{pro}}</span>-->
+<!--                  <div class="block">
+                    <span class="doc fl">{{project1.project_industry}}</span>
+                  </div>-->
+                  <div class="block clearfix" style="height: 24px">
+                    <span class="mid-tag" v-for="pro in project1.project_industry">{{pro}}</span>
 <!--                    <span class="big-tag" style="margin-left: 191px;">-&#45;&#45;</span><span class="split">｜</span>
                     <span class="big-tag">&#45;&#45;</span><span class="split">｜</span>
                     <span class="big-tag">&#45;&#45;</span>-->
@@ -41,9 +44,9 @@
                   <span class="url fr"><img src="../../../assets/images/tag3.png">{{project1.project_website}}</span>
                 </div>
                 <div class="linewidth"></div>
-                <div class="file">
+<!--                <div class="file">
                   {{project1.project_introduce}}
-                </div>
+                </div>-->
               </div>
              <!-- <div class="picture">
                 <el-carousel :interval="4000" type="card" height="200px">
@@ -63,7 +66,7 @@
               <business style="position: relative" :comid="com_id"></business>
             </div>
             <!--核心成员-->
-            <div class="item clearfix">
+            <div class="item clearfix" v-if="team.length!=0">
               <div class="clearfix">
                 <div class="title">核心成员</div>
                 <div class="border" v-for="teamin in team">
@@ -134,10 +137,10 @@
             </div>
             <!--图表-->
             <div class="item">
-              <downloadechart></downloadechart>
+              <downloadechart :comid="com_id"></downloadechart>
             </div>
             <!--历史融资-->
-            <div class="item">
+            <div class="item" v-if="history_finance.length!=0">
               <div class="title">历史融资</div>
               <div class="lists">
                   <div class="list" v-for="history in history_finance">
@@ -153,7 +156,7 @@
               </div>
             </div>
             <!--里程碑-->
-            <div class="item">
+            <div class="item"  v-if="milestone_list.length!=0">
               <div class="title">里程碑</div>
               <div class="lists">
                 <div class="list" v-for="milestone in milestone_list">
@@ -167,7 +170,7 @@
               </div>
             </div>
             <!--新闻-->
-            <div class="item">
+            <div class="item" v-if="news.length!=0">
               <div class="title">新闻</div>
               <div class="lists">
                 <div class="list" v-for="new1 in news">
@@ -462,7 +465,7 @@ export default {
         com_id: this.com_id
       })
         .then(res => {
-//          this.getCrawLerLbel(res.data.data);
+          this.getProjectIndustry(res.data.data);
           this.project = res.data.data;
           this.loading=false;
         })
@@ -470,11 +473,11 @@ export default {
           console.log(err);
         })
     },//获取项目
-    getCrawLerLbel(data){
+    getProjectIndustry(data){
       for(let i=0; i<data.length; i++){
-        data[i].project_label=data[i].project_label.split(",");
+        data[i].project_industry=data[i].project_industry.split(",");
       }
-    },//设置项目中的投资
+    },//设置数据
   },
   computed: {},
   components: {

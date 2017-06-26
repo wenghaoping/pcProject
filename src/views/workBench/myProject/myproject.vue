@@ -398,6 +398,7 @@
       filterChange(filters){
         this.loading=true;
         this.currentPage=1;
+        this.getPra.user_id=sessionStorage.user_id;
         if(filters.pro_schedule) {
             if(parseInt(filters.pro_schedule)){
               this.setNode(parseInt(filters.pro_schedule))
@@ -407,9 +408,9 @@
         }//设置顶部样式
         if(filters.order){
           if(filters.order=="ascending") filters.order="asc"//升降序
-          else filters.order="desc"
-          this.getPra.order=filters.prop
-          this.getPra.sort=filters.order
+          else filters.order="desc";
+          this.getPra.order=filters.prop;
+          this.getPra.sort=filters.order;
         }else{
           let para="";
           for(let key in filters){

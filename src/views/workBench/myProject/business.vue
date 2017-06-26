@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="mark">
+<!--    <div class="mark">
       <img src="../../../assets/images/mark.png">
-    </div>
+    </div>-->
     <el-tabs v-model="bussinessName">
 
       <el-tab-pane label="工商信息" name="1">
@@ -230,7 +230,6 @@ export default {
       })
         .then(res => {
           let data=res.data.data;
-          console.log(this.$tool.getToObject(res))
           this.business=data;
           this.trademarkMessage="商标信息"+"("+data.brand.length+")"
 
@@ -247,6 +246,7 @@ export default {
   watch : {
     comid : function(e){
       this.com_id=e;
+      this.getCrawlerBrand();
       console.log(e);
     }//获取公司id
   }

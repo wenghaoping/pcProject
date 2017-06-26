@@ -128,7 +128,7 @@
                         prop="pro_area.pid"
 
                         :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
-                        <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change">
+                        <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change2">
                           <el-option
                             v-for="item in area"
                             :key="item.value"
@@ -1191,7 +1191,20 @@
             console.log(err)
           })
 
-      },//设置二级城市下拉列表
+      },//设置二级城市下拉列表1
+      area1Change2(data){
+        this.project.pro_area.area_id="";
+        this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})
+          .then(res => {
+            let data = res.data.data;
+            this.area2 = this.getCity(data);
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+      },//设置二级城市下拉列表2
+
 
       /*获取项目详情*/
 
@@ -1260,11 +1273,11 @@
 
             this.planList = [{name: data.pro_BP.file_title, url: data.pro_BP.bp_url}];
             this.uploadShow = {
-              bp_title: data.pro_BP.file_title,
+              file_title: data.pro_BP.file_title,
               pro_desc: data.pro_BP.file_title,
               pro_name: data.pro_BP.file_title,
               project_id: this.project_id,
-              bp_id: data.pro_BP.file_id
+              file_id: data.pro_BP.file_id
             };//设置计划书上传列表
 
             if(data.pro_BP.length=="") {
@@ -1356,7 +1369,7 @@
       planuploadsuccess(response, file, fileList){
         this.success("上传成功")
         let data = response.data
-        this.addplan(data.bp_title, data.pro_desc, data.pro_name, data.project_id, data.bp_id)
+        this.addplan(data.bp_title, data.pro_desc, data.pro_name, data.project_id, data.file_id)
       },//上传成功后添加字段
       planuploaderror(err, file, fileList){
         this.alert("上传失败,请联系管理员")
@@ -1393,9 +1406,9 @@
           params: {
             user_id: sessionStorage.user_id,
             type: "project_bp",
-            bp_id: this.uploadShow.file_id
+            file_id: this.uploadShow.file_id
           }
-        })//this.uploadShow.bp_id
+        })//this.uploadShow.file_id
           .then(res => {
             if (res.data.status_code === 4004004) {
               this.loading = false;
@@ -1850,20 +1863,21 @@
       },//期望融资,融资金额
       /*全部保存按钮*/
       allSave(){
-          this.loading=true;
-        if (this.planList.length === 0) this.fileMust = true;
-        else this.fileMust = false
+
+//        if (this.planList.length === 0) this.fileMust = true;
+//        else this.fileMust = false;
         this.projectMust = !this.submitForm('project');
         this.teamMust = !this.submitForm('team');
         this.financingMust = !this.submitForm('financing');
         this.milepostMust = !this.submitForm('milepost');
-        if (this.fileMust) this.alert("请添加商业计划书")
-        else if (this.projectMust) this.alert("项目介绍必填项不能为空")
+//        if (this.fileMust) this.alert("请添加商业计划书")
+//        else
+            if (this.projectMust) this.alert("项目介绍必填项不能为空")
         else if (this.teamMust) this.alert("核心团队必填项不能为空")
         else if (this.financingMust) this.alert("融资信息必填项不能为空")
         else if (this.milepostMust) this.alert("里程碑必填项不能为空")
         else {
-
+          this.loading=true;
           let allData = {};
           this.takeData(allData, this.project);
           this.takeData(allData, this.team);

@@ -7,6 +7,7 @@
         <el-upload class="uploadProjec"
                    action="/api/upload"
                    :auto-upload="false"
+                   :on-success="uploadsuccess"
                    :on-change="handleChange"
                    :file-list="fileList"
                    ref="upload"
@@ -123,29 +124,15 @@ export default {
         this.addDomain(file.name,file.name,file.name)
       }
       this.fileList.push(file)
-/*      console.log(this.fileList)
-      console.log("file")
-      console.log(this.$tool.getToObject(file))
-      console.log(this.$tool.getToObject(fileList))*/
     },
     //2号当添加文件时,添加入上传列表
     handleChange2(file, fileList){
       if(file.status=="ready"){
         this.addDomain(file.name,file.name,file.name)
       }
-      console.log(fileList)
-      console.log(this.fileList)
- /*     console.log(this.$tool.getToObject(file))
-      console.log(this.$tool.getToObject(fileList))*/
-/*      let newArr = new Array;
-      for(let i=0; i<fileList.length; i++){
-        newArr[i]=this.$tool.getToObject(fileList[i])
-        this.fileList=newArr;
-      }
-      console.log(newArr)*/
     },
     uploadsuccess(response, file, fileList){
-//        this.success=false;
+      console.log(response);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -155,26 +142,13 @@ export default {
     },
     //上传到服务器时
     submitUpload(formName,formData) {
-/*        console.log(this.fileList)
-/!*        this.uploadDate={data:"我是额外的参数啊"}*!/
-      console.log("formData")
-        console.log(formData)*/
       let obj = formData.domains;
         for(let i=0; i<obj.length; i++){
           this.uploadDate=obj[i]
-//          console.log(obj[i])
         }
         this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
-
-/*          console.log("obj")
-          console.log(obj)
-
-          console.log("uploadDate")
-          console.log(this.uploadDate)*/
           this.$refs.upload.submit();
-
         } else {
           console.log('error submit!!');
           return false;

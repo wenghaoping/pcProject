@@ -186,7 +186,7 @@ export default {
       console.log(e);
       this.compaName=e;
       console.log(this.compaName)
-//      this.getCrawlerCompany();
+      this.getCrawlerCompany();
     }//获取公司名称
   }
 
