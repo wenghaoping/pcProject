@@ -12,7 +12,7 @@
         <div class="img" v-if="!checkout">
           <br>
           <br>
-          <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面</el-button>
+          <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面继续操作</el-button>
         </div>
       </div>
 <!--    <el-dialog

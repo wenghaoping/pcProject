@@ -2592,7 +2592,7 @@ if (typeof __DEV__ === 'undefined') {
 
     var zrUtil = __webpack_require__(0);
 
-    var pathTool = __webpack_require__(846);
+    var pathTool = __webpack_require__(845);
     var round = Math.round;
     var Path = __webpack_require__(18);
     var colorTool = __webpack_require__(36);
@@ -2609,29 +2609,29 @@ if (typeof __DEV__ === 'undefined') {
 
     graphic.Text = __webpack_require__(295);
 
-    graphic.Circle = __webpack_require__(837);
+    graphic.Circle = __webpack_require__(836);
 
-    graphic.Sector = __webpack_require__(843);
+    graphic.Sector = __webpack_require__(842);
 
-    graphic.Ring = __webpack_require__(842);
+    graphic.Ring = __webpack_require__(841);
 
-    graphic.Polygon = __webpack_require__(839);
+    graphic.Polygon = __webpack_require__(838);
 
-    graphic.Polyline = __webpack_require__(840);
+    graphic.Polyline = __webpack_require__(839);
 
-    graphic.Rect = __webpack_require__(841);
+    graphic.Rect = __webpack_require__(840);
 
-    graphic.Line = __webpack_require__(838);
+    graphic.Line = __webpack_require__(837);
 
-    graphic.BezierCurve = __webpack_require__(836);
+    graphic.BezierCurve = __webpack_require__(835);
 
-    graphic.Arc = __webpack_require__(835);
+    graphic.Arc = __webpack_require__(834);
 
-    graphic.CompoundPath = __webpack_require__(830);
+    graphic.CompoundPath = __webpack_require__(829);
 
     graphic.LinearGradient = __webpack_require__(292);
 
-    graphic.RadialGradient = __webpack_require__(831);
+    graphic.RadialGradient = __webpack_require__(830);
 
     graphic.BoundingRect = BoundingRect;
 
@@ -8178,7 +8178,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
     var Displayable = __webpack_require__(105);
     var zrUtil = __webpack_require__(0);
     var PathProxy = __webpack_require__(67);
-    var pathContain = __webpack_require__(827);
+    var pathContain = __webpack_require__(826);
 
     var Pattern = __webpack_require__(293);
     var getCanvasPattern = Pattern.prototype.getCanvasPattern;
@@ -69349,7 +69349,7 @@ __webpack_require__(569);
 __webpack_require__(583);
 __webpack_require__(593);
 
-__webpack_require__(850);
+__webpack_require__(849);
 
 
 /***/ }),
@@ -77637,7 +77637,7 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
     var guid = __webpack_require__(291);
     var Eventful = __webpack_require__(56);
     var Transformable = __webpack_require__(168);
-    var Animatable = __webpack_require__(844);
+    var Animatable = __webpack_require__(843);
     var zrUtil = __webpack_require__(0);
 
     /**
@@ -77901,7 +77901,7 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
  */
 
 
-    var Clip = __webpack_require__(823);
+    var Clip = __webpack_require__(822);
     var color = __webpack_require__(36);
     var util = __webpack_require__(0);
     var isArrayLike = util.isArrayLike;
@@ -79510,8 +79510,8 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
 
 
-    var smoothSpline = __webpack_require__(834);
-    var smoothBezier = __webpack_require__(833);
+    var smoothSpline = __webpack_require__(833);
+    var smoothBezier = __webpack_require__(832);
 
     module.exports = {
         buildPath: function (ctx, shape, closePath) {
@@ -79779,15 +79779,15 @@ if (!__webpack_require__(16).canvasSupported) {
     var env = __webpack_require__(16);
     var zrUtil = __webpack_require__(0);
 
-    var Handler = __webpack_require__(818);
-    var Storage = __webpack_require__(821);
-    var Animation = __webpack_require__(822);
-    var HandlerProxy = __webpack_require__(829);
+    var Handler = __webpack_require__(817);
+    var Storage = __webpack_require__(820);
+    var Animation = __webpack_require__(821);
+    var HandlerProxy = __webpack_require__(828);
 
     var useVML = !env.canvasSupported;
 
     var painterCtors = {
-        canvas: __webpack_require__(820)
+        canvas: __webpack_require__(819)
     };
 
     var instances = {};    // ZRender实例map索引
@@ -134953,8 +134953,7 @@ module.exports = function (object, opts) {
 /* 813 */,
 /* 814 */,
 /* 815 */,
-/* 816 */,
-/* 817 */
+/* 816 */
 /***/ (function(module, exports) {
 
 /**
@@ -134987,7 +134986,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 818 */
+/* 817 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -135002,7 +135001,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
     var util = __webpack_require__(0);
-    var Draggable = __webpack_require__(845);
+    var Draggable = __webpack_require__(844);
 
     var Eventful = __webpack_require__(56);
 
@@ -135310,7 +135309,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 819 */
+/* 818 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -135545,7 +135544,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 820 */
+/* 819 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -135565,7 +135564,7 @@ module.exports = function listToStyles (parentId, list) {
     var BoundingRect = __webpack_require__(12);
     var timsort = __webpack_require__(166);
 
-    var Layer = __webpack_require__(819);
+    var Layer = __webpack_require__(818);
 
     var requestAnimationFrame = __webpack_require__(284);
 
@@ -136633,7 +136632,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 821 */
+/* 820 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -136892,7 +136891,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 822 */
+/* 821 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -137153,7 +137152,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 823 */
+/* 822 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -137172,7 +137171,7 @@ module.exports = function listToStyles (parentId, list) {
  */
 
 
-    var easingFuncs = __webpack_require__(824);
+    var easingFuncs = __webpack_require__(823);
 
     function Clip(options) {
 
@@ -137282,7 +137281,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 824 */
+/* 823 */
 /***/ (function(module, exports) {
 
 /**
@@ -137633,7 +137632,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 825 */
+/* 824 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -137699,7 +137698,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 826 */
+/* 825 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -137746,7 +137745,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 827 */
+/* 826 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -137755,9 +137754,9 @@ module.exports = function listToStyles (parentId, list) {
 
     var CMD = __webpack_require__(67).CMD;
     var line = __webpack_require__(285);
-    var cubic = __webpack_require__(826);
+    var cubic = __webpack_require__(825);
     var quadratic = __webpack_require__(287);
-    var arc = __webpack_require__(825);
+    var arc = __webpack_require__(824);
     var normalizeRadian = __webpack_require__(288).normalizeRadian;
     var curve = __webpack_require__(44);
 
@@ -138153,7 +138152,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 828 */
+/* 827 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -138280,7 +138279,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 829 */
+/* 828 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -138289,7 +138288,7 @@ module.exports = function listToStyles (parentId, list) {
     var zrUtil = __webpack_require__(0);
     var Eventful = __webpack_require__(56);
     var env = __webpack_require__(16);
-    var GestureMgr = __webpack_require__(828);
+    var GestureMgr = __webpack_require__(827);
 
     var addEventListener = eventTool.addEventListener;
     var removeEventListener = eventTool.removeEventListener;
@@ -138664,7 +138663,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 830 */
+/* 829 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CompoundPath to improve performance
@@ -138727,7 +138726,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 831 */
+/* 830 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -138777,7 +138776,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 832 */
+/* 831 */
 /***/ (function(module, exports) {
 
 
@@ -138872,7 +138871,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 833 */
+/* 832 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -138979,7 +138978,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 834 */
+/* 833 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -139055,7 +139054,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 835 */
+/* 834 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -139109,7 +139108,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 836 */
+/* 835 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -139251,7 +139250,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 837 */
+/* 836 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -139294,7 +139293,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 838 */
+/* 837 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -139359,7 +139358,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 839 */
+/* 838 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -139389,7 +139388,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 840 */
+/* 839 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -139424,7 +139423,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 841 */
+/* 840 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -139433,7 +139432,7 @@ module.exports = function listToStyles (parentId, list) {
  */
 
 
-    var roundRectHelper = __webpack_require__(832);
+    var roundRectHelper = __webpack_require__(831);
 
     module.exports = __webpack_require__(18).extend({
 
@@ -139472,7 +139471,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 842 */
+/* 841 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -139506,7 +139505,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 843 */
+/* 842 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -139625,7 +139624,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 844 */
+/* 843 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -139900,7 +139899,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 845 */
+/* 844 */
 /***/ (function(module, exports) {
 
 // TODO Draggable for group
@@ -139992,14 +139991,14 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 846 */
+/* 845 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 
     var Path = __webpack_require__(18);
     var PathProxy = __webpack_require__(67);
-    var transformPath = __webpack_require__(847);
+    var transformPath = __webpack_require__(846);
 
     // command chars
     var cc = [
@@ -140406,7 +140405,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 847 */
+/* 846 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -140509,7 +140508,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 848 */
+/* 847 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -140706,7 +140705,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 849 */
+/* 848 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // http://www.w3.org/TR/NOTE-VML
@@ -141767,16 +141766,16 @@ if (!__webpack_require__(16).canvasSupported) {
 
 
 /***/ }),
-/* 850 */
+/* 849 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-    __webpack_require__(849);
-    __webpack_require__(299).registerPainter('vml', __webpack_require__(848));
+    __webpack_require__(848);
+    __webpack_require__(299).registerPainter('vml', __webpack_require__(847));
 
 
 /***/ }),
-/* 851 */
+/* 850 */
 /***/ (function(module, exports) {
 
 /*
@@ -141858,7 +141857,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 852 */
+/* 851 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -141877,7 +141876,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(817)
+var listToStyles = __webpack_require__(816)
 
 /*
 type StyleObject = {

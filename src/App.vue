@@ -155,11 +155,10 @@
   }
   .weixin{
     display: none;
-
-    position: absolute;
+    position: fixed;
     z-index: 100;
-    top:53px;
-    right:808px;
+    top: 53px;
+    left: 730px;
     background:#ffffff;
     box-shadow:0 4px 4px 0 rgba(64,88,122,0.10);
     border-radius:4px;
