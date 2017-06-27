@@ -12,13 +12,15 @@
         <div class="block" >
           <el-row :span="24">
             <el-col :span="4"><div class="content left">公司名称</div></el-col>
-            <el-col :span="8"><div class="content right">{{company.company_name}}</div></el-col>
-            <el-col :span="4"><div class="content left">成立日期</div></el-col>
-            <el-col :span="8"><div class="content right">{{company.company_register_date}}</div></el-col>
+            <el-col :span="20"><div class="content" style="padding-left: 12px;margin-right: -8px;">{{company.company_name}}</div></el-col>
           </el-row>
           <el-row :span="24">
-            <el-col :span="4"><div class="content left">所属行业</div></el-col>
-            <el-col :span="8"><div class="content right">暂无收入</div></el-col>
+            <el-col :span="4"><div class="content left">公司地址</div></el-col>
+            <el-col :span="20"><div class="content" style="padding-left: 12px;margin-right: -8px;">{{company.company_address}}</div></el-col>
+          </el-row>
+          <el-row :span="24">
+            <el-col :span="4"><div class="content left">成立日期</div></el-col>
+            <el-col :span="8"><div class="content right">{{company.company_register_date}}</div></el-col>
             <el-col :span="4"><div class="content left">公司规模</div></el-col>
             <el-col :span="8"><div class="content right">{{company.company_team_size}}</div></el-col>
           </el-row>
@@ -28,16 +30,13 @@
             <el-col :span="4"><div class="content left">联系电话</div></el-col>
             <el-col :span="8"><div class="content right">{{company.company_contact}}</div></el-col>
           </el-row>
-          <el-row :span="24">
-            <el-col :span="4"><div class="content left">公司地址</div></el-col>
-            <el-col :span="20"><div class="content" style="padding-left: 12px;margin-right: -12px;">{{company.company_address}}</div></el-col>
-          </el-row>
+
         </div>
       </el-tab-pane>
       <el-tab-pane :label="productMessage" name="2">
         <div class="block">
           <div class="inner fl" v-for="project in company.company_project">
-            <!--<div class="img fl"><img src="../../../assets/images/message.png"/></div>-->
+            <div class="img fl"><img src="../../../assets/images/logo.png"/></div>
             <p class="type fl" style="margin-bottom: 7px;">{{project.company_project_name}}<span>{{project.company_project_type}}</span></p>
             <p class="sec">{{project.company_project_introduce}}</p>
           </div>

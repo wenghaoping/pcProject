@@ -16,7 +16,7 @@ axios.interceptors.request.use((config) => {
   }
   return config;
 },(error) =>{
-  alert("错误的传参");
+  console.log("错误的传参");
   return Promise.reject(error);
 });
 
@@ -27,7 +27,7 @@ axios.interceptors.response.use((res) =>{
   }
   return res;
 }, (error) => {
-  alert("网络异常");
+  console.log("网络异常");
   return Promise.reject(error);
 });
 

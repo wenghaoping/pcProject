@@ -536,7 +536,7 @@
 
           })
           .catch(err=>{
-            alert(err)
+
 //            this.loading=false;
           })
       },// 获取项目节点数量

@@ -122,12 +122,12 @@
                         <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="6" >
                       <el-form-item
                         label="所属地区"
                         prop="pro_area.pid"
 
-                        :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
+                        :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]" style="width: 170px;">
                         <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change2">
                           <el-option
                             v-for="item in area"
@@ -139,10 +139,10 @@
                         </el-select>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="6" >
                       <el-form-item label="所属市级"
                                     prop="pro_area.area_id"
-                                    :rules="[{required: true, message: '所属市级不能为空', trigger: 'change',type: 'number'}]">
+                                    :rules="[{required: true, message: '所属市级不能为空', trigger: 'change',type: 'number'}]" style="width: 160px;">
                         <el-select v-model="project.pro_area.area_id" placeholder="请选择">
                           <el-option
                             v-for="item in area2"
@@ -352,7 +352,7 @@
                         :prop="'core_users.' + index + '.ct_member_name'"
                         v-for="(member, index) in team.core_users"
                         :key="member.index"
-                        :rules="[{min: 3, message: '最少2个字符',required: true, message: '成员姓名不能为空', trigger: 'blur'}]">
+                        :rules="[{min: 2, message: '最少2个字符',required: true, message: '成员姓名不能为空', trigger: 'blur'}]">
                         <el-input v-model="member.ct_member_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -453,12 +453,12 @@
                     <el-col :span="4">
                       <el-form-item
                         label="历史融资时间"
-                        :prop="'pro_history_finance.' + index + '.created_at'"
+                        :prop="'pro_history_finance.' + index + '.finance_time'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
                         :rules="[{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }]">
                         <el-date-picker
-                          v-model="history.created_at"
+                          v-model="history.finance_time"
                           type="date"
                           placeholder="选择日期" style="width: 125px;">
                         </el-date-picker>
@@ -483,7 +483,7 @@
                     </el-col>
                     <el-col :span="4">
                       <el-form-item
-                        label="融资金额(万)"
+                        label="融资金额"
                         :prop="'pro_history_finance.' + index + '.pro_finance_scale'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index">
@@ -747,7 +747,7 @@
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible">
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
-                      :rules="[{min: 3, message: '最少2个字符',required: true, message: '分组不能为空', trigger: 'blur'}]">
+                      :rules="[{min: 2, message: '最少2个字符',required: true, message: '分组不能为空', trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
               <el-input v-model="groups.input" auto-complete="off"></el-input>
@@ -974,7 +974,8 @@
         companyTitle: "微天使",
         queryData: {},
         timeout: null,
-        showList: false
+        showList: false,
+        loadingcheck:false,
       }
     },
     computed: {
@@ -1184,6 +1185,7 @@
       area1Change(data){
         this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})
           .then(res => {
+
             let data = res.data.data;
             this.area2 = this.getCity(data);
           })
@@ -1193,7 +1195,8 @@
 
       },//设置二级城市下拉列表1
       area1Change2(data){
-        this.project.pro_area.area_id="";
+
+//        this.project.pro_area.area_id="";
         this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})
           .then(res => {
             let data = res.data.data;
@@ -1226,7 +1229,7 @@
       },//设置领域标签
       setDateTime(data){
         for (let i = 0; i < data.length; i++) {
-          data[i].created_at = new Date(data[i].created_at*1000);
+          data[i].finance_time = new Date(data[i].finance_time*1000);
         }
       },//时间转化接受从时间戳转化为中国标准时间
       setDateTime2(data){
@@ -1236,7 +1239,7 @@
       },//时间转化接受从时间戳转化为中国标准时间
       setDateTime3(data){
         for (let i = 0; i < data.length; i++) {
-          data[i].created_at1=Date.parse(data[i].created_at);
+          data[i].finance_time=Date.parse(data[i].finance_time);
         }
       },//时间转化中国标准时间发送转换回时间戳
       setDateTime4(data){
@@ -1244,6 +1247,16 @@
           data[i].dh_start_time1=Date.parse(data[i].dh_start_time);
         }
       },//时间转化中国标准时间发送转换回时间戳
+      setDateTime5(data){
+        for (let i = 0; i < data.length; i++) {
+          data[i].history_financing_time = new Date(data[i].history_financing_time*1000);
+        }
+      },//时间转化接受从时间戳转化为中国标准时间(同步用)
+      setDateTime6(data){
+        for (let i = 0; i < data.length; i++) {
+          data[i].milestone_time = new Date(data[i].milestone_time*1000);
+        }
+      },//时间转化接受从时间戳转化为中国标准时间(同步用)
       setUploadShow2(data){
         for (let i = 0; i < data.length; i++) {
           if(data[i].belongs_to_type==null) {
@@ -1401,24 +1414,8 @@
         this.uploadShow = object;
       },//添加上传文件时,保存返回的数据
       planPreview(file){
-        const download = this.URL.download;
-        this.$http.get(download, {
-          params: {
-            user_id: sessionStorage.user_id,
-            file_id: this.uploadShow.file_id
-          }
-        })//this.uploadShow.file_id
-          .then(res => {
-            if (res.data.status_code === 4004004) {
-              this.loading = false;
-              this.alert("下载失败,请联系管理员")
-            }
-//          console.log(res)
-          })
-          .catch(err => {
-            console.log(err)
-            this.opealertn("网络出错,请联系管理员")
-          })
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+sessionStorage.user_id+"&file_id="+this.uploadShow.file_id
+        window.location.href=url;
       },//点击下载
 
       /*批量上传*/
@@ -1438,32 +1435,31 @@
       },//上传前的验证
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
-//          console.log(this.fileuploadDate)
+        this.loading=true;
+        if(this.loadingcheck){
+          this.loading=false;
+          this.loadingcheck=false;
+        }
       },
       uploadsuccess(response, file, fileList){
         let data = response.data
         this.success("上传成功")
-        this.addDomain(data.type_name, data.file_title, data.file_id, data.type)
+        this.addDomain(data.type_name, data.file_title, data.file_id, data.type);
+        this.loadingcheck=true;
       },
       uploaderror(err, file, fileList){
         this.alert("上传失败,请联系管理员")
+        this.loadingcheck=false;
+        this.loading=false;
       },//上传失败
       download(item){
         let index = this.uploadShow2.lists.indexOf(item);
-        if (index !== -1) {
-          let file_id = this.uploadShow2.lists[index].file_id;
-          const download = this.URL.download;
-          this.$http.get(download, {params: {user_id: sessionStorage.user_id,file_id: file_id}})
-            .then(res => {
-              if (res.data.status_code === 4004004) {
-                this.loading = false;
-                this.alert("下载失败,请联系管理员");
-              }
-            })
-            .catch(err => {
-              this.alert("网络出错,请联系管理员")
-            })
-        }
+         if (index !== -1) {
+         let file_id = this.uploadShow2.lists[index].file_id;
+         const url=this.URL.weitianshi+this.URL.download+"?user_id="+sessionStorage.user_id+"&file_id="+file_id;
+         window.location.href=url;
+         }
+
       },//点击下载
 
       removeList(item) {
@@ -1724,7 +1720,7 @@
 
       /*添加团队成员*/
       removeMember(item) {
-        if(item.project_ct_id=="") {
+        if(item.project_ct_id=="" || item.project_ct_id==null) {
           let index = this.team.core_users.indexOf(item);
           if (index !== -1) {
             this.team.core_users.splice(index, 1)
@@ -1760,7 +1756,7 @@
 
       /*添加历史融资信息*/
       removeHistory(item) {
-          if(item.history_id==""){
+          if(item.history_id=="" || item.history_id==null){
             let index = this.financing.pro_history_finance.indexOf(item)
             if (index !== -1) {
               this.financing.pro_history_finance.splice(index, 1)
@@ -1787,7 +1783,7 @@
       },
       addHistory() {
         this.financing.pro_history_finance.push({
-          created_at: '',
+          finance_time: '',
           pro_finance_stage: '',
           pro_finance_scale: '',
           pro_finance_investor: '',
@@ -1797,7 +1793,7 @@
 
       /*添加里程碑*/
       removemilePost(item) {
-          if(item.project_dh_id==""){
+          if(item.project_dh_id=="" || item.project_dh_id==null){
             let index = this.milepost.pro_develop.indexOf(item)
             if (index !== -1) {
               this.milepost.pro_develop.splice(index, 1)
@@ -1912,7 +1908,8 @@
           if(allData.stock_other=="" || allData.stock_other==undefined) allData.stock_other=0;
 
           this.getMemberScale(allData.pro_core_team);
-          this.getFinance(allData.pro_history_finance)
+          this.getFinance(allData.pro_history_finance);
+
           console.log(allData,2);
 
           this.$http.post(this.URL.editProject, allData)
@@ -2048,15 +2045,57 @@
           }
         }
       },
+      getTeamSync(data){
+        let arr = [];
+        for(let i=0; i<data.length; i++){
+          let obj=new Object;
+          obj.ct_member_name=data[i].team_member_name;
+          obj.ct_member_intro=data[i].team_member_introduce;
+          obj.ct_member_career=data[i].team_member_position;
+          obj.project_ct_id="";
+          obj.stock_scale="";
+          arr.push(obj);
+        }
+        return arr;
+      },//team同步数据修改
+      getFinancingMoney(data){
+        let arr = [];
+        this.setDateTime5(data);
+        for(let i=0; i<data.length; i++){
+          let obj=new Object;
+          obj.pro_finance_scale=data[i].history_financing_money;
+          obj.pro_finance_stage="";
+          obj.finance_time=data[i].history_financing_time;
+          obj.pro_finance_investor=data[i].history_financing_who;
+          obj.history_id="";
+          arr.push(obj);
+        }
+        return arr;
+      },//历史融资同步数据修改
+      getMilestone(data){
+        let arr = [];
+        this.setDateTime6(data);
+        for(let i=0; i<data.length; i++){
+          let obj=new Object;
+          obj.dh_event=data[i].milestone_event;
+
+          obj.dh_start_time=data[i].milestone_time;
+          obj.project_dh_id="";
+          arr.push(obj);
+        }
+        return arr;
+      },//里程碑同步数据修改
+
       /*一键同步按钮*/
       sync(){
+        this.loading=true;
         this.dialogVisible = false;
         if(this.project.pro_intro=="") this.project.pro_intro = this.queryData.project_info.project_introduce;
         if(this.project.pro_website=="") this.project.pro_website = this.queryData.project_info.project_website;
-        if(this.team.core_users.length==0) this.team.core_users=this.queryData.team;
-        if(this.financing.pro_history_finance.length==0) this.financing.pro_history_finance = this.queryData.history_finance;
-        if(this.milepost.pro_develop.length==0) this.milepost.pro_develop=this.queryData.milestone_list;
-
+        if(this.team.core_users.length==0) this.team.core_users=this.getTeamSync(this.queryData.team);
+        if(this.financing.pro_history_finance.length==0) this.financing.pro_history_finance = this.getFinancingMoney(this.queryData.history_finance);
+        if(this.milepost.pro_develop.length==0) this.milepost.pro_develop=this.getMilestone(this.queryData.milestone_list);
+        this.loading=false;
       },
       getprojectId(){
         this.project_id = this.$route.query.project_id;
@@ -2069,6 +2108,11 @@
       this.getWxProjectCategory();
       this.getOneProject();
       this.setFileType();
+      this.ProjectShow=false;
+      this.teamShow=false;
+      this.financingShow=false;
+      this.milepostShow=false;
+      this.SignShow=false;
     },
     watch: {
       // 如果路由有变化，会再次执行该方法

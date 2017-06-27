@@ -6,13 +6,13 @@
       <div class="scan">
         <p class="title">微天使，帮您成交的项目管理工具</p>
         <p class="samll">扫一扫，快速创建融资项目</p>
-        <div class="img" v-html="qr" v-if="checkout">
+        <div class="img" v-html="qr" v-if="checkout" v-loading.body="loadIn">
           {{qr}}
         </div>
         <div class="img" v-if="!checkout">
           <br>
           <br>
-          <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面继续操作</el-button>
+          <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面</el-button>
         </div>
       </div>
 <!--    <el-dialog
@@ -48,7 +48,8 @@ export default {
       qr:"",
       dialogVisible:false,
       close:false,
-      checkout:false
+      checkout:false,
+      loadIn:false
     }
   },
   methods: {
@@ -68,7 +69,7 @@ export default {
     },
     getUserId(){
       this.num++;
-      if(this.num>60) {
+      if(parseInt(this.num)>30) {
         clearInterval(this.timeout)
         this.dialogVisible=true;
       }
@@ -101,23 +102,28 @@ export default {
 
   },
   mounted(){
-    this.loading=true;
+
     this.checkout=true;
-    this.$http.get(this.URL.returnQrCredential)
-      .then(res => {
-        console.log(res);
-        let data=res.data;
-        this.qr=data.qr;
-        sessionStorage.credential=data.credential;
-        this.loading=false;
-      })
-      .catch(err => {
-        console.log(err);
-        this.alert("请刷新页面");
-      })
-    this.timeout = setInterval(() => {
-      this.getUserId();
-    }, 1000);
+    this.loadIn=true;
+    setTimeout(() => {
+      this.$http.get(this.URL.returnQrCredential)
+        .then(res => {
+          console.log(res);
+          let data=res.data;
+          this.qr=data.qr;
+          sessionStorage.credential=data.credential;
+          this.loadIn=false;
+        })
+        .catch(err => {
+          console.log(err);
+          this.alert("请刷新页面");
+        });
+      this.timeout = setInterval(() => {
+        this.getUserId();
+      }, 2000);
+    },2000);
+
+
   }
 }
 </script>

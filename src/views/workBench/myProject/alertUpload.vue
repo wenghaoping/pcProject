@@ -1,5 +1,5 @@
 <template>
-  <div id="alertUpload" >
+  <div id="alertUpload" v-loading.fullscreen.lock="loading" element-loading-text="上传中">
     <el-dialog title="批量上传创建项目" :visible="dialogUploadVisible" :before-close="handleClose" :show-close="showList">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
@@ -17,7 +17,7 @@
                    accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                    drag multiple>
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text"><!--将文件拖到此处，或<em>-->点击上传</em></div>
+          <div class="el-upload__text"><!--将文件拖到此处，或--><em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip" >BP私密保护，投资人可通过申请查看来了解项目价值<br>支持pdf、ppt、doc、zip、rar文件格式</div>
         </el-upload>
 
@@ -28,7 +28,7 @@
 
 
     <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose" :show-close="showList">
-      <div class="loadmodel" v-loading.fullscreen.lock="loading" element-loading-text="上传中">
+      <div class="loadmodel">
         <el-upload
           class="upload-demo"
           ref="upload"
@@ -121,7 +121,7 @@ export default {
       },
       loading:false,
       uploadDate:{user_id: sessionStorage.user_id},//上传所带的额外的参数
-      loadingcheck:'',
+      loadingcheck:false,
       showList:false
     }
   },
@@ -133,26 +133,24 @@ export default {
     handleChange(file, fileList) {
       this.loading=true;
       let type=file.name.substr(file.name.length-3,3)
-//      console.log(fileList)
       this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
-      if(!this.loadingcheck){
+      if(this.loadingcheck){
         this.loading=false;
+        this.loadingcheck=false;
       }
-      console.log("change")
     },
     uploadsuccess(response, file, fileList){
-        this.loadingcheck=true;
         let data=response.data;
         if(response.status_code==2000000) {
           this.success("上传成功");
           this.addDomain(data.pro_desc,data.pro_name,data.file_title,data.project_id);
-          this.loading=false;
-          this.loadingcheck=false;
+          this.loadingcheck=true;
         }
     },
     uploaderror(err, file, fileList){
       this.loading=false;
+      this.loadingcheck=false;
       this.alert("上传失败");
     },
     handlePreview(file) {

@@ -49,8 +49,8 @@
             &lt;!&ndash;<el-col :span="8"><div class="content right"></div></el-col>&ndash;&gt;
           </el-row>-->
           <el-row :span="24">
-            <el-col :span="4" style="min-height: 175px;line-height: 175px"><div class="left" >经营范围</div></el-col>
-            <el-col :span="20" style="min-height: 175px;"><div style="padding: 14px 12px 12px 15px;border:1px solid #e0e6ed;margin-right: -12px;background: #ffffff">{{business.company.company_empirical_range}}</div></el-col>
+            <el-col :span="4"><div class="left hei">经营范围</div></el-col>
+            <el-col :span="20"><div class="hei2" style="padding: 14px 12px 12px 15px;border:1px solid #e0e6ed;margin-right: -12px;background: #ffffff">{{business.company.company_empirical_range}}</div></el-col>
           </el-row>
         </div>
       </el-tab-pane>
@@ -58,7 +58,7 @@
         <div class="bloack change">
           <el-table
             :data="business.company_change"
-            stripe
+
             border
             style="width: 100%">
             <el-table-column
@@ -89,7 +89,7 @@
         <div class="block">
           <el-table
             :data="business.brand"
-            stripe
+
             border
             style="width: 100%">
             <el-table-column

@@ -432,7 +432,7 @@
     <el-dialog title="一键尽调" :visible.sync="dialogSearchVisible">
       <el-form label-position="top" label-width="140px">
         <el-form-item label="请输入你要尽调的公司">
-          <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick" @change="searchChange"></el-input>
+          <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick" ></el-input><!--@change="searchChange"-->
         </el-form-item>
       </el-form>
       <ul class="onsearch">
@@ -756,20 +756,11 @@
     },
     methods:{
       download(e){
-        this.$http.get(this.URL.download,{ params:{user_id: sessionStorage.user_id,file_id:e}})
-          .then(res=>{
-            if(res.data.status_code===4004004){
-              this.loading=false;
-              this.alert("下载失败,请联系管理员")
-            }
-            console.log(res)
-          })
-          .catch(err=>{
-            console.log(err)
-            this.opealertn("网络出错,请联系管理员")
-          })
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+sessionStorage.user_id+"&file_id="+e
+        window.location.href=url;
       },//下载文件
       searchChange(queryString){
+          console.log(queryString)
         this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
           .then(res=>{
             this.seachCompanys=[];
@@ -813,7 +804,7 @@
         }
       },//点击下拉选择公司后
       handleIconClick(){
-        this.searchChange(this.companyname);
+        this.searchChange(this.searchName);
       },//输入搜索
       handleClick:function(tab, event){
         this.show = tab.name ;

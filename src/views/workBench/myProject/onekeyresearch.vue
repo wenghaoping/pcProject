@@ -11,16 +11,17 @@
             <!--项目信息-->
             <div class="item2">
               <div class="title">项目信息</div>
-              <div v-for="project1 in project">
-
-
-                <div class="portrait fl"><img :src="project1.project_logo"></div>
+              <div v-for="project1 in project" class="clearfix" style="margin-bottom: 20px;">
+                <div class="portrait fl">
+                  <img src="../../../assets/images/logo12.png" v-if="project1.project_logo==''">
+                  <img :src="project1.project_logo" v-else>
+                </div>
                 <div class="portrait-right fl ">
                   <div class="block clearfix">
                     <span class="block-title fl">{{project1.project_name}}</span>
                     <span class="line1 fl"> | </span>
                     <span class="block-company fl">{{project1.company_name}}</span>
-                    <span class="block-tag fl"><el-tag type="primary" v-if="project1.project_state!=null">{{project1.project_state}}</el-tag><!--<el-tag type="success">{{project1.project_industry}}</el-tag>--></span>
+                    <span class="block-tag fl" v-if="project1.project_state!=null"><el-tag type="primary" v-if="project1.project_state!=''" >{{project1.project_state}}</el-tag><!--<el-tag type="success">{{project1.project_industry}}</el-tag>--></span>
                   </div>
                   <div class="block clearfix" style="margin-bottom: 20px;">
                     <div class="doc fl">{{project1.project_introduce}}</div>
@@ -29,21 +30,20 @@
                     <span class="doc fl">{{project1.project_industry}}</span>
                   </div>-->
                   <div class="block clearfix" style="height: 24px">
-                    <span class="mid-tag" v-for="pro in project1.project_industry">{{pro}}</span>
+                    <span class="mid-tag" v-for="pro in project1.project_industry" v-if="project1.project_industry!=''">{{pro}}</span>
 <!--                    <span class="big-tag" style="margin-left: 191px;">-&#45;&#45;</span><span class="split">｜</span>
                     <span class="big-tag">&#45;&#45;</span><span class="split">｜</span>
                     <span class="big-tag">&#45;&#45;</span>-->
                   </div>
                 </div>
-                <div class="tag clearfix">
-                  <span class="tag-bottom" style="margin-right: 11px;"><img src="../../../assets/images/tag2.png"></span>
-                  <span class="tag-bottom">{{project1.project_label}}</span>
+                <div class="tag" style="padding-top: 120px;">
+                  <span class="tag-bottom" style="margin-right: 11px;" v-if="project1.project_label!=''"><img src="../../../assets/images/tag2.png"></span>
+                  <span class="tag-bottom" v-if="project1.project_label!=''">{{project1.project_label}}</span>
 <!--                  <span class="tag-bottom">创业</span>
                   <span class="tag-bottom">大数据</span>
                   <span class="tag-bottom">人工智能</span>-->
-                  <span class="url fr"><img src="../../../assets/images/tag3.png">{{project1.project_website}}</span>
+                  <span class="url fr" v-if="project1.project_website!=''"><img src="../../../assets/images/tag3.png" >{{project1.project_website}}</span>
                 </div>
-                <div class="linewidth"></div>
 <!--                <div class="file">
                   {{project1.project_introduce}}
                 </div>-->
@@ -70,9 +70,12 @@
               <div class="clearfix">
                 <div class="title">核心成员</div>
                 <div class="border clearfix" v-for="teamin in team">
-                  <div class="portrait fl clearfix"><img :src="teamin.team_member_photo"></div>
+                  <div class="portrait fl clearfix">
+                    <img :src="teamin.team_member_photo" v-if="teamin.team_member_photo!=''">
+                    <img src="../../../assets/images/logo.png" v-else>
+                  </div>
                   <div class="portrait-right fl ">
-                    <div class="block">
+                    <div class="block clearfix">
                       <span class="block-title fl clearfix">{{teamin.team_member_name}}</span>
                       <span class="block-company fl">{{teamin.team_member_position}}</span>
                       <!--<span class="block-tag fl"><el-tag type="primary">{{teamin.team_member_position}}</el-tag></span>-->
@@ -150,7 +153,7 @@
                     </span>
                     <span class="date">{{history.history_financing_time}}</span>
                     <span class="blood">{{history.history_financing_money}}</span>
-                    <span class="blood">{{history.history_financing_rounds}}</span>
+                    <span class="blood1">{{history.history_financing_rounds}}</span>
                     <span class="main">{{history.history_financing_who}}</span>
                   </div>
               </div>
@@ -185,7 +188,7 @@
               </div>
             </div>
             <!--竞品-->
-            <div class="item">
+            <div class="item" v-if="competing.length!=0">
               <div class="title">竞品</div>
               <ul class="ulfl h-table">
                 <li class="table1">项目</li>
@@ -197,7 +200,7 @@
               </ul>
               <div v-for="compet in competing">
                 <ul  class="ulfl m-table">
-                  <li class="table1">
+                  <!--<li class="table1">
                     <div class="img fl">
                       <img :src="compet.competing_goods_logo">
                     </div>
@@ -205,7 +208,27 @@
                       {{compet.competing_goods_name}}
                     </div>
                     <div class="bo fl">{{compet.competing_goods_region}}<span style="margin-left: 20px;">{{compet.competing_goods_Set_up}}</span></div>
+                  </li>-->
+                  <li class="table1">
+                    <div class="img fl">
+                      <img :src="compet.competing_goods_logo" v-if="compet.competing_goods_logo!=''">
+                      <img src="../../../assets/images/logo.png" v-else>
+                    </div>
+                    <div class="clearfix" style="margin-left: 70px;">
+                      <div class="title2">
+                        {{compet.competing_goods_name}}
+                      </div>
+                      <div class="bo">
+                        <span style="margin-left: 5px;">
+                          {{compet.competing_goods_region}}
+                        </span>
+                        <span style="margin-left: 5px;">
+                          {{compet.competing_goods_Set_up}}
+                        </span>
+                      </div>
+                    </div>
                   </li>
+
                   <li class="table2">{{compet.competing_goods_industry}}</li>
 <!--                  <li class="table3">华兴资本</li>-->
                   <li class="table4">{{compet.competing_goods_Financing_time}}</li>

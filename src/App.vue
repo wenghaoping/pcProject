@@ -14,7 +14,7 @@
             <p style="margin-top: 25px;">微信扫一扫</p>
             <p>发现更多精选资源</p>
             <div class="img">
-              <img src="./assets/images/weixin.png">
+              <img src="./assets/images/weixin.jpg">
             </div>
             <div class="arrow">
               <img src="./assets/images/arrow.png">
@@ -49,8 +49,8 @@
         tabs: [
 /*          {type: '首页',jump:'/index'},*/
           {type: '工作台',jump:'/workBench/myProject'},
-          {type: '扫码登陆',jump:'/qr'},
-/*          {type: '测试页面',jump:'/test'},
+                   {type: '扫码登陆',jump:'/qr'},
+           /*      {type: '测试页面',jump:'/test'},
           {type: '测试页面2',jump:'/test2'}*/
         ],
         user_name:sessionStorage.user_real_name
@@ -66,25 +66,22 @@
     },
 //    当dom一创建时
     created(){
-      console.log(sessionStorage.user_id);
-/*      if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
+      if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
         this.$router.push({ name: 'SmallRoutine'});
       }else{
         this.$router.push('/workBench/myproject');
         this.active=0;
-      }*/
+      }
 
 //      this.$router.push({ name: 'editproject'})
-      this.$router.push('/workBench/myproject');
-      this.setUserId();
+//      this.$router.push('/workBench/myproject');
+//      this.setUserId();
 
     },
     watch : {
       user_name : function(e){
         console.log(e,1);
       }
-
-
     }
   }
 </script>
@@ -158,7 +155,7 @@
     position: fixed;
     z-index: 100;
     top: 53px;
-    left: 730px;
+    left: 582px;
     background:#ffffff;
     box-shadow:0 4px 4px 0 rgba(64,88,122,0.10);
     border-radius:4px;
@@ -172,7 +169,12 @@
 
     }
     .img{
-      margin: 32px;
+      margin: 0px 32px 32px;
+      width: 162px;
+      height: 162px;
+      img{
+        width: 100%;
+      }
     }
     .arrow{
       position: absolute;

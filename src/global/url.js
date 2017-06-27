@@ -8,6 +8,9 @@
 
 export default
 {
+  /*总地址,下载用的*/
+  weitianshi:"http://dev.weitianshi.cn/",//下载用
+
   /*登陆接口*/
   returnQrCredential:"api/auth/returnQrCredential",   //(获取生成二维码的uuid接口)，返回值
   ajaxPolling:"api/auth/ajaxPolling",   //获取登陆信息
@@ -26,7 +29,7 @@ export default
   deleteAtUpload:"project/deleteAtUpload",  //bp文件软删除
   deleteAtFile:"project/deleteAtFile",  //项目文件软删除
   download:"project/download",  //文件下载
-  uploadFile:"project/uploadFile",  //文件下载
+  uploadFile:"project/uploadFile",  //文件上传
   deleteCoreTeam:"project/deleteCoreTeam",  //删除核心成员
   deleteFinance:"project/deleteFinance",  //删除历史融资
   deleteDevelop:"project/deleteDevelop",  //删除里程碑

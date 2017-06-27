@@ -28,13 +28,13 @@
                            accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
-                  <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、png，jpg，jpeg文件格式</div>
+                  <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、zip、rar文件格式</div>
                 </el-upload>
               </span>
 
             </div>
             <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
-              <el-row :span="24" :gutter="10">
+              <el-row :span="24" :gutter="32">
                 <el-col :span="12">
                   <span class="justIlook">(仅自己可见)</span>
                   <el-form-item
@@ -398,22 +398,16 @@ export default {
       this.uploadShow=object;
     },//添加上传文件时,保存返回的数据
     planPreview(file){
-      console.log(this.uploadShow);
-      const download=this.URL.download;
-      this.$http.get(download,{ params:{user_id: sessionStorage.user_id,file_id:this.uploadShow.file_id}})//this.uploadShow.file_id
-        .then(res=>{
-          if(res.data.status_code===4004004){
-            this.loading=false;
-            this.alert("下载失败,请联系管理员")
-          }
-          console.log(res)
-        })
-        .catch(err=>{
-          console.log(err)
-          this.opealertn("网络出错,请联系管理员")
-        })
+      const url=this.URL.weitianshi+this.URL.download+"?user_id="+sessionStorage.user_id+"&file_id="+this.uploadShow.file_id
+      window.location.href=url;
     },//点击下载
     beforeUpload(file){
+      let check=[".doc",".ppt",".pdf",".zip",".rar",".docx",".pptx"];
+      let index = file.name.indexOf(".");
+      console.log(index)
+      let type=file.name.substr(index,file.name.length)
+      console.log(file);
+      console.log(type);
       if(parseInt(file.size) > parseInt(31457281)){
         this.alert("请上传小于30MB的文件");
         return false;
@@ -544,7 +538,7 @@ export default {
     /*一键同步按钮*/
     sync(){
       this.dialogVisible = false;
-      this.project.pro_intro=this.queryData.project_info.project_introduce;
+      if(this.project.pro_intro=="") this.project.pro_intro=this.queryData.project_info.project_introduce;
       this.project.pro_company_name=this.queryData.company_name;
     },
     getprojectId(){
@@ -554,7 +548,7 @@ export default {
     getWxosProjectData(){
       console.log("我登陆啦")
       console.log(sessionStorage.credential);
-      if(sessionStorage.credential==undefined || sessionStorage.credential==""){
+      if(sessionStorage.credential==undefined || sessionStorage.credential=="" || sessionStorage.credential==null){
 
       }else{
         console.log("我进来啦")
@@ -565,12 +559,13 @@ export default {
             this.project.pro_industry=data.industry;
             if(data.is_exclusive==4) data.is_exclusive=0;
             this.project.is_exclusive=data.is_exclusive;
+            if(data.pro_finance_scale==0) data.pro_finance_scale="";
             this.project.pro_finance_scale=data.pro_finance_scale;
+            if(data.pro_finance_stage==0) data.pro_finance_stage={stage_id:""};
             this.project.pro_finance_stage=data.pro_finance_stage;
             this.project.pro_goodness=data.pro_goodness;
             this.project.pro_intro=data.pro_intro;
             sessionStorage.credential="";
-            console.log(this.$tool.getToObject(this.project))
           })
           .catch(err=>{
             this.alert("获取失败");
@@ -587,7 +582,10 @@ export default {
     else this.planButton=true;
     this.getprojectId();
     this.getWxProjectCategory();
-    this.getWxosProjectData();
+    setTimeout(() => {
+      this.getWxosProjectData();
+    },1000)
+
   },
 /*watch: {
   // 如果路由有变化，会再次执行该方法

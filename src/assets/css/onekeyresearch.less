@@ -11,7 +11,7 @@
   .cell{
     font-weight: normal;
     font-size: 12px;
-    padding-right:0px;
+    padding-right:18px;
   }
   .el-dialog__header{
     padding-top: 0px;
@@ -83,7 +83,7 @@
             width: 671px;
             margin-left: 13px;
           }
-          .block{margin-bottom: 10px;color:#e0e6ed}
+          .block{color:#e0e6ed}
           .block-title{
             font-size:18px;
             color:#4e4563;
@@ -170,17 +170,33 @@
               font-size:14px;
               background: #ffffff;
               border:1px solid #e0e6ed;
+              border-bottom: 0px;
               line-height: 41px;
             }
             .left{
               color:#5e6d82;
               text-align: center;
               background:#eff2f7;
+              height: 100%;
             }
             .right{
               color:#2f3c4b;
               padding-left: 12px;
-              width: 273px;
+              width: 269px;
+              display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+            }
+            .hei{
+              height:100%;
+              overflow:hidden;
+              padding-bottom:9999px;
+              margin-bottom:-9999px;
+              vertical-align:middle;
+              line-height: 100px;
+              border: 1px solid #e0e6ed;
+
+            }
+            .hei2{
+              height:auto;
             }
             .inner{
               width: 392px;
@@ -189,6 +205,9 @@
                 width: 60px;
                 height: 60px;
                 margin-right: 12px;
+                background: #ffffff;
+                overflow: hidden;
+                img{width: 100%}
               }
               .type{
                 font-size:16px;
@@ -252,7 +271,7 @@
             margin-left: 13px;
             padding-bottom: 20px;
             .doc{
-              width: 692px;font-size:12px;color:#475669;margin-top: 5px;line-height: 20px;
+              width: 660px;font-size:12px;color:#475669;margin-top: 5px;line-height: 20px;
             }
             .bloack-right{
               font-size:12px;
@@ -377,16 +396,24 @@
             }
             .date{
               margin-left:15px;
-              width: 150px;
+              width: 149px;
             }
             .blood{
-              width: 120px;
+              width: 155px;
+              font-size:14px;
+              color:#1f2d3d;
+              font-weight: 500;
+            }
+            .blood1{
+              width: 90px;
               font-size:14px;
               color:#1f2d3d;
               font-weight: 500;
             }
             .main{
               //margin-left: 100px;
+              width: 355px;
+              display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
             }
             .blood2{
               width: 535px;
@@ -414,45 +441,50 @@
           }
           .table1{
             margin-left: 24px;
-            width: 205px;
+            width: 230px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
           }
           .table2{
-            width: 201px;
+            width: 201px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
           }
           .table3{
-            width: 106px;
+            width: 106px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
           }
           .table4{
-            width: 100px;
+            width: 100px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
           }
           .table5{
-            width: 100px;
+            width: 100px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+          }
+          .table6{
+            width: 129px;display: inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
           }
          .m-table{
            line-height: 101px;
            height: 101px;
            background: #ffffff;
-           li{
+/*           li{
              height: 101px;
-           }
+           }*/
            .table1{
+             margin-top: 20px;
              .img{
               width: 60px;
               height: 60px;
-              margin-top: 20px;
+               background: #ffffff;
+               overflow: hidden;
                img{width: 100%;}
              }
              .title2{
                font-size:14px;
                color:#1f2d3d;
-               margin-top: 33px;
-               margin-left: 32px;
+               //margin-top: 33px;
+               //margin-left: 32px;
                line-height: 14px;
              }
              .bo{
                font-size:12px;
                color:#99a9bf;
-               margin-left: 12px;
+               //margin-left: 12px;
                line-height:35px;
              }
            }
