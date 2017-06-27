@@ -379,8 +379,8 @@ export default {
             extraCssText:'border-radius:8px;',
             formatter: function(e){
               let res = e[0].axisValue.slice(0,4)+'.'+e[0].axisValue.slice(4,6)+'.'+e[0].axisValue.slice(6,8)+'</br>'
-              res+='行业平均:　'+e[1].value+'</br>'
-              res+='环比增长:　'+e[0].value
+              res+='环比增长:　'+e[0].value+'</br>'
+              res+='行业平均:　'+e[1].value
               return res;
             }
           },
@@ -420,13 +420,13 @@ export default {
             type: 'line',
             smooth: true,
             symbolSize: 8,
-            data: ydata1
+            data: ydata2
           }, {
             name: '微天使乐投平台',
             type: 'line',
             symbolSize: 8,
             smooth: true,
-            data: ydata2
+            data: ydata1
           }]
         };
       myChart.setOption(option);

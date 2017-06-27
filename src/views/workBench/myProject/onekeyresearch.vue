@@ -69,7 +69,7 @@
             <div class="item clearfix" v-if="team.length!=0">
               <div class="clearfix">
                 <div class="title">核心成员</div>
-                <div class="border" v-for="teamin in team">
+                <div class="border clearfix" v-for="teamin in team">
                   <div class="portrait fl clearfix"><img :src="teamin.team_member_photo"></div>
                   <div class="portrait-right fl ">
                     <div class="block">
