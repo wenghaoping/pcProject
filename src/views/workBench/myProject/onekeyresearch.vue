@@ -148,10 +148,10 @@
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
                     </span>
-                    <span class="date">{{history.History_financing_time}}</span>
-                    <span class="blood">{{history.History_financing_money}}</span>
-                    <span class="blood">{{history.History_financing_rounds}}</span>
-                    <span class="main">{{history.History_financing_who}}</span>
+                    <span class="date">{{history.history_financing_time}}</span>
+                    <span class="blood">{{history.history_financing_money}}</span>
+                    <span class="blood">{{history.history_financing_rounds}}</span>
+                    <span class="main">{{history.history_financing_who}}</span>
                   </div>
               </div>
             </div>
