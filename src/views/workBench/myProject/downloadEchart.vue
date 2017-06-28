@@ -21,9 +21,10 @@
 <script type="text/ecmascript-6">
 var echarts = require('echarts');
 export default {
-  props: ["comid"],
+  props: ["comid","compName"],
   data () {
     return {
+      compaName:"",
       downloadEchartName:'1',
       title:"累计下载量",
       main:"综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。",
@@ -385,7 +386,7 @@ export default {
             }
           },
           legend: {
-            data: ['行业平均', '微天使乐投平台']
+            data: ['行业平均','尽调公司']
           },
           grid: {
             left: '3%',
@@ -400,9 +401,7 @@ export default {
 //          end:100,  //结束值为60%
 //        },
         toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
+
           },
           xAxis: {
             type: 'category',
@@ -416,13 +415,13 @@ export default {
             type: 'value'
           },
           series: [{
-            name: '行业平均',
+            name: '尽调公司',
             type: 'line',
             smooth: true,
             symbolSize: 8,
             data: ydata2
           }, {
-            name: '微天使乐投平台',
+            name: '行业平均',
             type: 'line',
             symbolSize: 8,
             smooth: true,
@@ -465,8 +464,8 @@ export default {
             let data=this.getChart(res.data.data).data;
             console.log(data);
             this.xdata=data.three_month;
-            this.download.ydataTotal=this.getAverage(data.download_mid);
-            this.download.ydataAverage=this.getTotal(data.download[0].value);
+            this.download.ydataTotal=this.getAverage(data.total_download_mid);
+            this.download.ydataAverage=this.getTotal(data.total_download[0].value);
 
 /*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
             this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
@@ -495,7 +494,11 @@ export default {
   watch : {
     comid : function(e){
       this.getCrawlerProject();
-    }//获取公司id
+    },//获取公司id
+    compName: function(e){
+      this.compaName=e;
+      this.getdownload();
+    }//获取公司名称
   },
   created(){
     this.getCrawlerProject();

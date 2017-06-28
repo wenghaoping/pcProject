@@ -140,7 +140,7 @@
             </div>
             <!--图表-->
             <div class="item">
-              <downloadechart :comid="com_id"></downloadechart>
+              <downloadechart :comid="com_id" :comp-name="compname"></downloadechart>
             </div>
             <!--历史融资-->
             <div class="item" v-if="history_finance.length!=0">
@@ -194,7 +194,7 @@
                 <li class="table1">项目</li>
                 <li class="table2">领域</li>
                 <!--<li class="table3">投资方</li>-->
-                <li class="table4">融资事件</li>
+                <li class="table4">融资时间</li>
                 <li class="table5">融资轮次</li>
                 <li class="table6">融资金额</li>
               </ul>
@@ -229,11 +229,11 @@
                     </div>
                   </li>
 
-                  <li class="table2">{{compet.competing_goods_industry}}</li>
+                  <li class="table2" style="height: 101px;">{{compet.competing_goods_industry}}</li>
 <!--                  <li class="table3">华兴资本</li>-->
-                  <li class="table4">{{compet.competing_goods_Financing_time}}</li>
-                  <li class="table5">{{compet.competing_goods_Financing_rounds}}</li>
-                  <li class="table6">{{compet.competing_goods_Financing_amount}}</li>
+                  <li class="table4" style="height: 101px;">{{compet.competing_goods_Financing_time}}</li>
+                  <li class="table5" style="height: 101px;">{{compet.competing_goods_Financing_rounds}}</li>
+                  <li class="table6" style="height: 101px;">{{compet.competing_goods_Financing_amount}}</li>
                 </ul>
                 <div class="line2"></div>
               </div>

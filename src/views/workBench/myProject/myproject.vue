@@ -63,9 +63,9 @@
           </el-tooltip>
 
         </div>
-        <div class="pp-item pp-node" v-bind:class="{'pp-cur':node9}">
+        <div class="pp-item pp-node" :class="{'pp-cur':node9}" @click="setNode('9')">
           <p class="pp-num pp-txt">{{nodeCount.revenue}}</p>
-          <span class="pp-sec-title"  @click="setNode('9')">佣金收讫</span>
+          <span class="pp-sec-title"  >佣金收讫</span>
         </div>
       </div>
       <div class="clearfx"></div>
@@ -83,7 +83,7 @@
           <el-button type="primary" @click="dialogUploadVisible = true">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
 
-          <alertUpload :dialog-upload-visible="dialogUploadVisible" v-on:changeupload="dialogUploadVisiblechange">
+          <alertUpload :dialog-upload-visible="dialogUploadVisible" v-on:changeupload="dialogUploadVisiblechange" @reload="handleIconClick">
 
           </alertUpload>
         </div>
@@ -378,16 +378,18 @@
       },//控制弹窗
 
       /*请求函数*/
-
       handleIconClick(){
         this.loading=true;
-
-        this.$http.post(this.getProjectListURL,{user_id: sessionStorage.user_id,search:this.searchinput})
+        this.getPra.user_id=sessionStorage.user_id;
+        this.getPra.search=this.searchinput;
+        this.currentPage=1;
+        this.getPra.page=1;
+        this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{
             let data = res.data.data
             this.tableData=this.getProjectList(data)
             this.loading=false;
-            this.currentPage=1;
+            this.totalData=res.data.count;
           })
           .catch(err=>{
             this.loading=false;
@@ -630,7 +632,6 @@
           obj.project_id=list[i].project_id;
           arr.push(obj)
         }
-//        console.log(arr)
         return arr
       }//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
     },
@@ -644,6 +645,10 @@
       this.getNodeCount();
       this.titleSift();
       this.handleIconClick();
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      "$route": "handleIconClick"
     }
 
   }

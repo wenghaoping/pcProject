@@ -41,11 +41,11 @@ import upload from '@/test/upload.vue'
 export default [
 
   {
-    path: '/workBench',component: workBench,
+    path: '',component: workBench,
 
     children:[
-      { path: '', component: indexmyProject},
-      { path: '/workBench/myProject', component: indexmyProject,
+      // { path: '', component: indexmyProject},
+      { path: '/', component: indexmyProject,
         children:[
           { path: '', component: myProject, name:"myProject"},
           { path: 'myContacts', component: myContacts, name:"myContacts"},
@@ -61,7 +61,7 @@ export default [
     path: '/index', name: 'index', component: index
   },
   {
-    path: '/qr', name: 'SmallRoutine', component: SmallRoutine
+    path: '/logining', name: 'SmallRoutine', component: SmallRoutine
   },
   {
     path: '/test', name: 'test', component: projectDetails

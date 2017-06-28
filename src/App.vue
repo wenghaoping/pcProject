@@ -48,8 +48,8 @@
         active: 1,
         tabs: [
 /*          {type: '首页',jump:'/index'},*/
-          {type: '工作台',jump:'/workBench/myProject'},
-                   {type: '扫码登陆',jump:'/qr'},
+          {type: '工作台',jump:'/'},
+//                   {type: '扫码登陆',jump:'/logining'},
            /*      {type: '测试页面',jump:'/test'},
           {type: '测试页面2',jump:'/test2'}*/
         ],
@@ -69,12 +69,11 @@
       if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
         this.$router.push({ name: 'SmallRoutine'});
       }else{
-        this.$router.push('/workBench/myproject');
+//        this.$router.push('/');
         this.active=0;
       }
 
-//      this.$router.push({ name: 'editproject'})
-//      this.$router.push('/workBench/myproject');
+//      this.$router.push('/');
 //      this.setUserId();
 
     },

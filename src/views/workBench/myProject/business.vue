@@ -230,7 +230,6 @@ export default {
       })
         .then(res => {
           let data=res.data.data;
-          data.company.company_type=data.company.company_type.substring(5);
           this.business=data;
           this.trademarkMessage="商标信息"+"("+data.brand.length+")"
         })

@@ -1,6 +1,6 @@
 <template>
   <div id="alertUpload" v-loading.fullscreen.lock="loading" element-loading-text="上传中">
-    <el-dialog title="批量上传创建项目" :visible="dialogUploadVisible" :before-close="handleClose" :show-close="showList">
+    <el-dialog title="批量上传BP" :visible="dialogUploadVisible" :before-close="handleClose" :show-close="showList">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
                    action="/project/projectUpload"
@@ -15,10 +15,11 @@
                    :show-file-list="showList"_
                    ref="upload"
                    accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
+
                    drag multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text"><!--将文件拖到此处，或--><em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip" >BP私密保护，投资人可通过申请查看来了解项目价值<br>支持pdf、ppt、doc、zip、rar文件格式</div>
+          <div class="el-upload__tip" slot="tip" >BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</div>
         </el-upload>
 
       <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
@@ -27,11 +28,12 @@
     </el-dialog>
 
 
-    <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose" :show-close="showList">
+    <el-dialog title="批量上传BP" :visible="dialogUpload2Visible" :before-close="handleClose" :show-close="showList">
       <div class="loadmodel">
         <el-upload
           class="upload-demo"
           ref="upload"
+          size="large"
           action="/project/projectUpload"
           :on-preview="handlePreview"
           :on-change="handleChange"
@@ -46,7 +48,7 @@
           multiple>
           <div class="inner">
             <el-button slot="trigger" type="primary" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
-            <p class="bp fl">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、png，jpg，jpeg文件格式</p>
+            <p class="bp fl">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</p>
           </div>
 
         </el-upload>
@@ -66,11 +68,11 @@
               <el-col :span="6">
                 <el-form-item
                   label="项目介绍"
-                  :prop="'domains.' + index + '.pro_desc'"
+                  :prop="'domains.' + index + '.pro_intro'"
                   v-for="(domain, index) in dateForm.domains"
                   :key="domain.index"
                   :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
-                  <el-input v-model="domain.pro_desc"></el-input>
+                  <el-input v-model="domain.pro_intro"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
@@ -94,9 +96,12 @@
             </el-row>
           </el-form>
         </div>
-        <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitUpload('dateForm',dateForm)">确 定</el-button>
+        <p class="alertIn">{{alentTitle}}</p>
+        <div slot="footer" class="dialog-footer clearfix" style="padding-top: 40px;">
+          <div class="fr">
+            <el-button type="primary" @click="submitUpload('dateForm',dateForm)">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -122,53 +127,76 @@ export default {
       loading:false,
       uploadDate:{user_id: sessionStorage.user_id},//上传所带的额外的参数
       loadingcheck:false,
-      showList:false
+      showList:false,
+      alentTitle:""
     }
   },
   methods: {
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
     //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
     handleChange(file, fileList) {
       this.loading=true;
+      console.log(file);
       let type=file.name.substr(file.name.length-3,3)
       this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
+
       if(this.loadingcheck){
         this.loading=false;
         this.loadingcheck=false;
+        this.alentTitle="";
       }
     },
     uploadsuccess(response, file, fileList){
         let data=response.data;
         if(response.status_code==2000000) {
           this.success("上传成功");
-          this.addDomain(data.pro_desc,data.pro_name,data.file_title,data.project_id);
+          this.addDomain(data.pro_intro,data.pro_name,data.file_title,data.project_id);
           this.loadingcheck=true;
         }
     },
     uploaderror(err, file, fileList){
       this.loading=false;
-      this.loadingcheck=false;
+      this.loadingcheck=true;
       this.alert("上传失败");
     },
     handlePreview(file) {
       console.log(file);
     },
     beforeUpload(file){
+      this.alentTitle="上传中.....";
       this.num++;
-      if(parseInt(file.size) > parseInt(31457280)){
-        this.alert("请上传小于30MB的文件");
-        console.log("超过啦")
+      let filetypes=[".doc",".docx",".ppt",".pptx",".pdf",".zip",".rar"];
+      let name=file.name;
+      console.log(name)
+      let fileend=name.substring(name.indexOf("."));
+      let isnext = false;
+      if(filetypes && filetypes.length>0){
+        for(var i =0; i<filetypes.length;i++){
+          if(filetypes[i]==fileend){
+            isnext = true;
+            break;
+          }
+        }
+      }
+      this.loading=false;
+      if(!isnext){
+        this.alert("不支持的文件格式");
+        this.alentTitle="不支持的文件格式";
+        return false;
+      };
+
+      if(parseInt(file.size) > parseInt(31457281)){
+        this.alert("暂不支持超过30m文件上传哦");
+        this.alentTitle="暂不支持超过30M文件上传哦";
         return false;
       };
       if(parseInt(this.num) > parseInt(5)){
         this.alert("一次最多选择5个文件");
+        this.alentTitle="一次最多选择5个文件";
         this.num=0;
         return false;
-      }
-//      this.loading=true;
+      };
+
     },
     handleProgress(event, file, fileList){
       this.percentage=parseInt(event.percent);
@@ -184,6 +212,9 @@ export default {
               console.log(res)
               if(res.status===200){
                 this.dialogUpload2Visible=false;
+                this.$emit('reload', true);
+                this.dateForm.domains=[];
+                this.fileList=[];
               }
             }).catch(err=>{
             console.log(err)
@@ -222,23 +253,25 @@ export default {
         })
     },
     //添加上传文件时,加入显示列表
-    addDomain(file_title,pro_desc,pro_name,project_id) {
+    addDomain(pro_intro,pro_name,file_title,project_id) {
       let object ={};
       object.file_title=file_title;
-      object.pro_desc=pro_desc;
+      object.pro_intro=pro_intro;
       object.pro_name=pro_name;
       object.project_id=project_id;
       this.dateForm.domains.push(object);
     },
     //当取消时,清空上传列表
     cancel(){
-      this.$confirm('确认关闭？关闭后所有数据清空')
+      this.$confirm('确认关闭？关闭后所有数据清空?')
         .then(_ => {
           this.$emit('changeupload',false);
           this.dialogUpload2Visible=false;
-          this.dateForm.domains.splice(0,this.dateForm.domains.length)
+          this.dateForm.domains=[];
+          this.fileList=[];
         })
-        .catch(_ => {});
+        .catch(_ => {
+        });
     },
 //    dialogVisiblechange() {
 //      this.$emit('changeupload',false)
@@ -274,6 +307,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+  .alertIn{
+    color: red;
+  }
   .el-notification{
     z-index: 2005;
   }
@@ -296,11 +332,9 @@ export default {
 }
 .bp{
   display: inline-block;
-  width: 549px;
   font-size:12px;
   color:#5e6d82;
   letter-spacing:0;
-  line-height: 36px;
   padding-left: 10px;
 }
   .el-progress--circle{

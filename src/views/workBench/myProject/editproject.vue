@@ -6,57 +6,57 @@
         <div class="left-wrap" ref="left">
           <!--=================================项目文件=================================-->
           <div class="d_jump"></div>
-          <div class="item-block" style="margin-top:0; padding-bottom: 5px">
+          <div class="item-block">
             <div class="block-tt-line">
               <span class="b-title">项目文件</span>
               <span class="b-line"></span>
               <span class="b-hander" @click="closeDiv('fileShow')" v-show="fileShow">收起</span>
               <span class="b-hander" @click="openDiv('fileShow')" v-show="!fileShow">展开</span>
             </div>
-            <div class="block-info block-cc-file">
-              <span class="f-title fl">商业计划书</span>
-              <span style="margin-left: 20px;" class="fl">
-                <el-upload class="planUpload"
-                           action="/project/projectUpload"
-                           :on-preview="planPreview"
-                           :on-change="planChange"
-                           :on-success="planuploadsuccess"
-                           :on-error="planuploaderror"
-                           :on-remove="planRemove"
-                           :before-upload="beforeUpload"
-                           :file-list="planList"
-                           accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
-                           :data="uploadDate">
-                  <el-button slot="trigger" type="primary" v-show="planButton"><i
-                    class="el-icon-plus"></i>计划书上传</el-button>
-
-                </el-upload>
-              </span>
-
-            </div>
-            <div class="block-info block-cc-pro">
-              <span class="f-title fl">项目文件</span>
-              <span style="margin-left: 34px;" class="fl">
-                  <el-upload
-                    class="upload"
-                    ref="upload"
-                    action="/project/uploadFile"
-                    :on-change="handleChange"
-                    :on-success="uploadsuccess"
-                    :on-error="uploaderror"
-                    :before-upload="beforeUpload"
-                    :file-list="fileList"
-                    :data="fileuploadDate"
-                    :show-file-list="showList"
-                     accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx"
-                    multiple>
-                    <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
-                  </el-upload>
-              </span>
-              <span class="f-tips fl" style="margin-left: 8px;">（仅自己可见）</span>
-            </div>
             <el-collapse-transition>
               <div v-show="fileShow">
+                <div class="block-info block-cc-file">
+                  <span class="f-title fl">商业计划书</span>
+                  <span style="margin-left: 20px;" class="fl">
+                    <el-upload class="planUpload"
+                               action="/project/projectUpload"
+                               :on-preview="planPreview"
+                               :on-change="planChange"
+                               :on-success="planuploadsuccess"
+                               :on-error="planuploaderror"
+                               :on-remove="planRemove"
+                               :before-upload="beforeUpload"
+                               :file-list="planList"
+                               accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
+                               :data="uploadDate">
+                      <el-button slot="trigger" type="primary" v-show="planButton"><i
+                        class="el-icon-plus"></i>计划书上传</el-button>
+
+                    </el-upload>
+                  </span>
+
+                </div>
+                <div class="block-info block-cc-pro">
+                  <span class="f-title fl">项目文件</span>
+                  <span style="margin-left: 34px;" class="fl">
+                      <el-upload
+                        class="upload"
+                        ref="upload"
+                        action="/project/uploadFile"
+                        :on-change="handleChange"
+                        :on-success="uploadsuccess"
+                        :on-error="uploaderror"
+                        :before-upload="beforeUpload1"
+                        :file-list="fileList"
+                        :data="fileuploadDate"
+                        :show-file-list="showList"
+                         accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .txt, .jpeg"
+                        multiple>
+                        <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
+                      </el-upload>
+                  </span>
+                  <span class="f-tips fl" style="margin-left: 8px;">（仅自己可见）</span>
+                </div>
                 <div class="block-info block-cc-other" style="margin-bottom: 15px;"
                      v-for="(list, index) in uploadShow2.lists"
                      :key="list.index">
@@ -437,7 +437,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="投后股份( % )"
-                        prop="pro_finance_stock_after">
+                        prop="pro_finance_stock_after"
+                        :rules="finance">
                         <el-input v-model="financing.pro_finance_stock_after" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
@@ -486,7 +487,8 @@
                         label="融资金额"
                         :prop="'pro_history_finance.' + index + '.pro_finance_scale'"
                         v-for="(history, index) in financing.pro_history_finance"
-                        :key="history.index">
+                        :key="history.index"
+                        :rules="[{required: true, message: '融资金额不能为空', trigger: 'change'}]">
                         <el-input v-model="history.pro_finance_scale" placeholder="输入金额"></el-input>
                       </el-form-item>
                     </el-col>
@@ -739,7 +741,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="cancelGroupChange">取 消</el-button>
         <el-button type="primary" @click="addState">确 定</el-button>
       </div>
     </el-dialog>
@@ -820,7 +822,11 @@
         milepostShow: true,
         SignShow: true,
         multiplelimit: 5,
-
+        tags:{
+          changepro:[],//项目标签
+          changeTeam:[],//团队标签
+          changesource:[]//项目来源
+        },
         project: {
           pro_name: 'HoopEASY商业计划PPT+for+pitch',//项目名称
           pro_company_name: '',//公司名称
@@ -976,7 +982,31 @@
         timeout: null,
         showList: false,
         loadingcheck:false,
-      }
+        statusLast:0,
+        finance:[
+          { validator: checkFinance, trigger: 'blur' }
+        ],
+
+
+
+      };
+      var checkFinance = (rule, value, callback) => {
+          console.log(value);
+         if (!value) {
+          return callback(new Error('不能为空'));
+         }
+         /*setTimeout(() => {
+           if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+           } else {
+             if (value < 18) {
+              callback(new Error('必须年满18岁'));
+             } else {
+              callback();
+             }
+           }
+         }, 1000);*/
+       };
     },
     computed: {
       /*项目完整度判断*/
@@ -1230,6 +1260,7 @@
       setDateTime(data){
         for (let i = 0; i < data.length; i++) {
           data[i].finance_time = new Date(data[i].finance_time*1000);
+          data[i].pro_finance_scale = parseInt(data[i].pro_finance_scale);
         }
       },//时间转化接受从时间戳转化为中国标准时间
       setDateTime2(data){
@@ -1262,7 +1293,7 @@
           if(data[i].belongs_to_type==null) {
               data[i].belongs_to_type={type_name:"其他"};
           };
-          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title, data[i].file_id, data[i].belongs_to_type.type_id);
+          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title+'.'+data[i].file_ext, data[i].file_id, data[i].belongs_to_type.type_id);
         }
       },//设置批量上传文件显示
       setMemberScale(data){
@@ -1284,10 +1315,10 @@
             this.setDateTime(data.pro_history_finance);//时间格式设置
             this.setDateTime2(data.pro_develop);//时间格式设置2
 
-            this.planList = [{name: data.pro_BP.file_title, url: data.pro_BP.bp_url}];
+            this.planList = [{name: data.pro_BP.file_title+'.'+data.pro_BP.file_ext, url: data.pro_BP.bp_url}];
             this.uploadShow = {
               file_title: data.pro_BP.file_title,
-              pro_desc: data.pro_BP.file_title,
+              pro_intro: data.pro_BP.file_title,
               pro_name: data.pro_BP.file_title,
               project_id: this.project_id,
               file_id: data.pro_BP.file_id
@@ -1316,6 +1347,7 @@
 
             this.project.pro_industry = this.getindustry(data.pro_industry);//领域标签
             this.project.pro_status = data.pro_status.status_id;//运营状态
+            this.statusLast = data.pro_status.status_id;//运营状态多余的
             this.project.pro_scale = data.pro_scale;
             this.project.pro_website = data.pro_website;
             this.project.contact = data.contact;
@@ -1324,6 +1356,8 @@
             this.project.tags_pro = this.getTag(data.tag, 0);//项目标签
             this.project.pro_goodness = data.pro_goodness;
             this.project.pro_source = this.getTag(data.tag, 2);//项目来源标签
+            this.tags.changepro = this.getTag(data.tag, 0);//项目标签
+            this.tags.changesource = this.getTag(data.tag, 2);//项目来源标签
 
             this.project.pro_company_scale = data.pro_company_scale;
             if (data.pro_company_scale == "") {
@@ -1332,7 +1366,7 @@
 
             this.team.tags_team = this.getTag(data.tag, 1);//团队标签
             this.setMemberScale(data.core_users);
-
+            this.tags.changeTeam = this.getTag(data.tag, 1);//团队标签
             this.team.core_users = data.core_users;
 
             this.financing.pro_finance_scale = data.pro_finance_scale;
@@ -1382,7 +1416,7 @@
       planuploadsuccess(response, file, fileList){
         this.success("上传成功")
         let data = response.data
-        this.addplan(data.bp_title, data.pro_desc, data.pro_name, data.project_id, data.file_id)
+        this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id)
       },//上传成功后添加字段
       planuploaderror(err, file, fileList){
         this.alert("上传失败,请联系管理员")
@@ -1395,19 +1429,19 @@
           .then(res => {
             if (res.status === 200) {
               this.loading = false;
-              this.success("删除成功")
+//              this.success("删除成功")
             }
           })
           .catch(err => {
             console.log(err)
-            this.alert("删除失败,请联系管理员")
+//            this.alert("删除失败,请联系管理员")
           })
 
       },//删除文件
-      addplan(file_title, pro_desc, pro_name, project_id, file_id) {
+      addplan(file_title, pro_intro, pro_name, project_id, file_id) {
         let object = {};
         object.file_title = file_title;
-        object.pro_desc = pro_desc;
+        object.pro_intro = pro_intro;
         object.pro_name = pro_name;
         object.project_id = project_id;
         object.file_id = file_id;
@@ -1420,19 +1454,61 @@
 
       /*批量上传*/
       beforeUpload(file){
+        this.fileuploadDate.project_id = this.project_id;
+        this.uploadDate.project_id = this.project_id;
+        let filetypes=[".doc",".docx",".ppt",".pptx",".pdf",".zip",".rar"];
+        let name=file.name;
+        let fileend=name.substring(name.indexOf("."));
+        let isnext = false;
+        if(filetypes && filetypes.length>0){
+          for(var i =0; i<filetypes.length;i++){
+            if(filetypes[i]==fileend){
+              isnext = true;
+              break;
+            }
+          }
+        }
+        this.loading=false;
+        if(!isnext){
+          this.alert("不支持的文件格式");
+          return false;
+        }
+        if(parseInt(file.size) > parseInt(31457281)){
+          this.alert("暂不支持超过30m文件上传哦");
+          return false;
+        };
+      },//上传前的验证
+      beforeUpload1(file){
         this.num++;
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
+        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".txt",".png",".jpg",".docx",".jpeg"];
+        let name=file.name;
+        let fileend=name.substring(name.indexOf("."));
+        let isnext = false;
+        if(filetypes && filetypes.length>0){
+          for(var i =0; i<filetypes.length;i++){
+            if(filetypes[i]==fileend){
+              isnext = true;
+              break;
+            }
+          }
+        }
+        this.loading=false;
+        if(!isnext){
+          this.alert("不支持的文件格式");
+          return false;
+        }
         if(parseInt(file.size) > parseInt(31457281)){
-          this.alert("请上传小于30MB的文件");
+          this.alert("暂不支持超过30m文件上传哦");
           return false;
         };
-        if(parseInt(this.num) > parseInt(6)){
+        if(parseInt(this.num) > parseInt(5)){
           this.alert("一次最多选择5个文件");
           this.num=0;
           return false;
         }
-      },//上传前的验证
+      },//项目文件上传验证
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
         this.loading=true;
@@ -1533,7 +1609,10 @@
           }
         });
       },//添加分组设置的分组选项
-
+      cancelGroupChange(){
+        this.dialogFormVisible = false;
+        this.project.pro_status = this.statusLast;
+      },//取消后
       saveGroupChange(){//file_id type_id user_id
         let type = this.groups.bp_type;
         let index = this.groups.index;
@@ -1672,19 +1751,19 @@
               newState.label = tagName;
               newState.value = res.data.tag_id;
               this.tags_pro.push(newState);
-              let arr = this.project.tags_pro;
-
-              this.project.tags_pro.pop();
-              this.project.tags_pro.push(res.data.tag_id);
+              this.tags.changepro.push(res.data.tag_id);
             })
             .catch(err => {
               alert("添加失败");
               console.log(err);
             })
+        }else{
+          this.tags.changepro=this.project.tags_pro.slice(0);
         }
       },//添加项目标签
       addChangeTeam(e){
         let tagName = this.checkArr(e, this.tags_team);
+
         if (tagName != undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 1, tag_name: tagName})
             .then(res => {
@@ -1692,17 +1771,19 @@
               newState.label = tagName;
               newState.value = res.data.tag_id;
               this.tags_team.push(newState);
-              this.team.tags_team.pop();
-              this.team.tags_team.push(res.data.tag_id);
+              this.tags.changeTeam.push(res.data.tag_id);
             })
             .catch(err => {
               alert("添加失败");
               console.log(err);
             })
+        }else{
+          this.tags.changeTeam=this.team.tags_team.slice(0);
         }
       },//添加团队标签
       addChangesource(e){
         let tagName = this.checkArr(e, this.tags_source);
+
         if (tagName != undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 2, tag_name: tagName})
             .then(res => {
@@ -1710,11 +1791,14 @@
               newState.label = tagName;
               newState.value = res.data.tag_id;
               this.tags_source.push(newState);
+              this.tags.changesource.push(res.data.tag_id);
             })
             .catch(err => {
               alert("添加失败");
               console.log(err);
             })
+        }else{
+          this.tags.changesource=this.project.pro_source.slice(0);
         }
       },//添加项目来源
 
@@ -1849,18 +1933,70 @@
           if(data[i].stock_scale=="") data[i].stock_scale=0;
         }
       },//核心成员股权比例
+      getMemberHunder(data){
+        let check=true;
+        for(let i=0; i<data.length; i++){
+          if(this.checkNumber(parseInt(data[i].stock_scale))){
+            if(parseInt(data[i].stock_scale)>100) {
+              this.alert("核心团队股权比例不能大于100");
+              check=false;
+            }
+          }else{
+            this.alert("核心团队股权比例必须为数字");
+            check=false;
+          }
+        }
+        return check;
+      },//判断成员股权比例
+      getNumberFull(data,title1,title2){
+        let check=true;
+          if(this.checkNumber(parseInt(data))){
+            if(parseInt(data)>100) {
+              this.alert(title1);
+              check=false;
+            }
+          }else{
+            this.alert(title2);
+            check=false;
+          }
+        return check;
+      },//1大于100,2必须为数字
       getFinance(data){
         for(let i=0; i<data.length; i++){
           if(data[i].pro_finance_scale=="")  data[i].pro_finance_scale=0;
         }
       },//期望融资,融资金额
       getNull(data) {
-        var patt1 = new RegExp(/\s+/g);
-          if (patt1.test(data)) {
-            return true;;
+        let reg=/\S/;
+        if (!reg.test(data))
+        {
+          return true;
+        }else{
+          return false;
+        }
+
+      },//判断是不是空
+      getNumber(data){
+        let check=true;
+        console.log(data);
+        if(this.checkNumber(parseInt(data))){
+          if(parseInt(data)>99999999) {
+            this.alert("项目估值必须小于99999999");
+            check=false;
           }
-        alert(t.replace(/\s+/g, ""));
-      },
+        }else{
+          this.alert("项目估值必须为数字");
+          check=false;
+        }
+        return check;
+      },//判断是数字
+      checkNumber(theObj) {
+        let reg = /^[0-9]+.?[0-9]*$/;
+        if (reg.test(theObj)) {
+          return true;
+        }
+          return false;
+      },//判断是不是数字
   /*全部保存按钮*/
       allSave(){
 
@@ -1870,15 +2006,32 @@
         this.teamMust = !this.submitForm('team');
         this.financingMust = !this.submitForm('financing');
         this.milepostMust = !this.submitForm('milepost');
+        console.log(this.$tool.getToObject(this.project))
+        console.log(this.$tool.getToObject(this.team))
+        console.log(this.$tool.getToObject(this.financing))
+        console.log(this.$tool.getToObject(this.milepost))
+        console.log(this.$tool.getToObject(this.pro_FA))
 //        if (this.fileMust) this.alert("请添加商业计划书")
 //        else
             if (this.projectMust) this.alert("项目介绍必填项不能为空")
         else if (this.teamMust) this.alert("核心团队必填项不能为空")
         else if (this.financingMust) this.alert("融资信息必填项不能为空")
         else if (this.milepostMust) this.alert("里程碑必填项不能为空")
-        else {
+        else if (!this.getMemberHunder(this.team.core_users)) {}
+        else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){}
+        else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字")){}
+        else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字")){}
+        else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字")){}
+        else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字")){}
+        else if (!this.getNumber(this.financing.pro_finance_value)){}
+        else{
           this.loading=true;
           let allData = {};
+
+          this.project.tags_pro=this.tags.changepro.slice(0);
+          this.team.tags_team=this.tags.changeTeam.slice(0);
+          this.project.pro_source=this.tags.changesource.slice(0);
+
           this.takeData(allData, this.project);
           this.takeData(allData, this.team);
           this.takeData(allData, this.financing);

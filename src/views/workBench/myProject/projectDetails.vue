@@ -181,7 +181,7 @@
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
                     </span>
-                    <span class="pro-txt-1">{{finance.created_at}}</span>
+                    <span class="pro-txt-1">{{finance.finance_time}}</span>
                     <span class="pro-txt-2">{{finance.pro_finance_scale}}万</span>
                     <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
                     <span class="pro-txt-4">{{finance.pro_finance_investor}}</span>
@@ -760,12 +760,14 @@
         window.location.href=url;
       },//下载文件
       searchChange(queryString){
-          console.log(queryString)
+        console.log(queryString)
         this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
           .then(res=>{
             this.seachCompanys=[];
             let data =res.data.data;
-            this.seachCompanys=data;
+            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
+            else this.seachCompanys=data;
+            console.log(res);
           })
           .catch(err=>{
             console.log(err);
@@ -782,7 +784,7 @@
                 this.dialogSearchVisible = true;
                 this.searchName=this.project.pro_company_name;
                 this.companyname=this.project.pro_company_name;
-                this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请输入",com_id:-1}];
+                this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
               }else{//搜索到了
                 this.dialogVisible = true;
                 this.companyid=data.company.com_id;
@@ -826,7 +828,7 @@
       },//设置时间1
       getLocalTime2(data) {
         for(let i=0; i<data.length; i++){
-          data[i].created_at=new Date(parseInt(data[i].created_at) * 1000).toLocaleString().substr(0, 9)
+          data[i].finance_time=new Date(parseInt(data[i].finance_time) * 1000).toLocaleString().substr(0, 9)
         }
       },//设置时间2
       getProjectTag(arr){
@@ -863,7 +865,7 @@
 
             this.project=data;
             this.project.pro_source=this.getProjectTag(data.tag);
-
+            this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
 
           })
           .catch(err=>{

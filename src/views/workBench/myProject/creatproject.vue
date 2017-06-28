@@ -28,7 +28,7 @@
                            accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
-                  <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，投资人可通过申请查看来了解项目价值支持pdf、ppt、doc、zip、rar文件格式</div>
+                  <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</div>
                 </el-upload>
               </span>
 
@@ -93,7 +93,6 @@
                       v-model="project.pro_industry"
                       multiple
                       filterable
-                      allow-create
                       :multiple-limit="multiplelimit"
                       placeholder="请添加(最多5个)" class="width360" >
                       <el-option
@@ -185,7 +184,7 @@
                     prop="open_status">
                     <el-select v-model="project.open_status" placeholder="请选择" class="width360">
                       <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="0"></el-option>
-                      <el-option label="公开" value="1"></el-option>
+                      <el-option label="公开项目（投放到交易市场参与融资匹配，投资人可以申请查看bp，每日限公开一次）" value="1"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -365,7 +364,7 @@ export default {
       this.success("上传成功");
       console.log(response)
       let data = response.data;
-      this.addplan(data.file_title,data.pro_desc,data.pro_name,data.project_id,data.file_id)
+      this.addplan(data.file_title,data.pro_intro,data.pro_name,data.project_id,data.file_id)
     },//上传成功后添加字段
     planuploaderror(err, file, fileList){
       this.alert("上传失败,请联系管理员")
@@ -388,10 +387,10 @@ export default {
         })
 
     },//删除文件
-    addplan(file_title,pro_desc,pro_name,project_id,file_id) {
+    addplan(file_title,pro_intro,pro_name,project_id,file_id) {
       let object ={};
       object.file_title=file_title;
-      object.pro_desc=pro_desc;
+      object.pro_intro=pro_intro;
       object.pro_name=pro_name;
       object.project_id=project_id;
       object.file_id=file_id;
@@ -402,14 +401,24 @@ export default {
       window.location.href=url;
     },//点击下载
     beforeUpload(file){
-      let check=[".doc",".ppt",".pdf",".zip",".rar",".docx",".pptx"];
-      let index = file.name.indexOf(".");
-      console.log(index)
-      let type=file.name.substr(index,file.name.length)
-      console.log(file);
-      console.log(type);
+      let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".docx",".pptx"];
+      let name=file.name;
+      let fileend=name.substring(name.indexOf("."));
+      let isnext = false;
+      if(filetypes && filetypes.length>0){
+        for(var i =0; i<filetypes.length;i++){
+          if(filetypes[i]==fileend){
+            isnext = true;
+            break;
+          }
+        }
+      }
+      if(!isnext){
+        this.alert("不支持的文件格式");
+        return false;
+      }
       if(parseInt(file.size) > parseInt(31457281)){
-        this.alert("请上传小于30MB的文件");
+        this.alert("暂不支持超过30m文件上传哦");
         return false;
       }
     },//上传前的验证
@@ -461,8 +470,7 @@ export default {
         });
         this.$router.push({ name: 'editproject', query: {project_id:this.project.project_id}})
       }).catch(() => {
-          console.log()
-        this.$router.push({ path: '/workBench/myProject'})
+        this.$router.push({ path: '/'})
       });
     },
     /*全部保存按钮*/
@@ -614,7 +622,6 @@ export default {
       width:539px;
       margin-left: 19px;
       height: 36px;
-      line-height: 36px;
       font-size:12px;
       color:#5e6d82;
     }
