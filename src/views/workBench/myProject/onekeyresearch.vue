@@ -421,7 +421,20 @@ export default {
         date: '2016-05-04'
       })
     },
-
+  getTimeMilestone(data){
+    for(let i=0; i<data.length; i++){
+      var newDate = new Date();
+      newDate.setTime(data[i].milestone_time * 1000);
+      data[i].milestone_time=newDate.toLocaleDateString();
+    }
+  },//里程碑时间
+    getTimeFinancing(data){
+      for(let i=0; i<data.length; i++){
+        var newDate = new Date();
+        newDate.setTime(data[i].history_financing_time * 1000);
+        data[i].history_financing_time=newDate.toLocaleDateString();
+      }
+    },//里程碑时间
     getCrawlerTeam(){
       this.$http.post(this.URL.getCrawlerTeam, {
         user_id: sessionStorage.user_id,
@@ -441,6 +454,7 @@ export default {
       })
         .then(res => {
           this.history_finance = res.data.data;
+          this.getTimeFinancing(this.history_finance);
         })
         .catch(err => {
           console.log(err);
@@ -453,6 +467,7 @@ export default {
       })
         .then(res => {
           this.milestone_list = res.data.data;
+          this.getTimeMilestone(this.milestone_list);
         })
         .catch(err => {
           console.log(err);

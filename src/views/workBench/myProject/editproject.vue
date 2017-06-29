@@ -452,7 +452,7 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="4">
                       <el-form-item
-                        label="时间"
+                        label="历史融资时间"
                         :prop="'pro_history_finance.' + index + '.finance_time'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
@@ -530,7 +530,7 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
-                        label="历史融资时间"
+                        label="时间"
                         :prop="'pro_develop.' + index + '.dh_start_time'"
                         v-for="(milePostSomeThing, index) in milepost.pro_develop"
                         :key="milePostSomeThing.index"
@@ -1407,6 +1407,8 @@
             else this.planButton = true;
             this.loading = false;
             this.tags_pro=this.tags.changepro.slice(0);
+            this.tags_team=this.tags.changeTeam.slice(0);
+            this.tags_source=this.tags.changesource.slice(0);
           })
           .catch(err => {
             this.loading = false
