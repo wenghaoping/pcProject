@@ -277,12 +277,11 @@ export default {
     cancel(){
       this.$confirm('确认关闭？关闭后所有数据清空?')
         .then(_ => {
-          this.$emit('changeupload',false);
-          this.dialogUpload2Visible=false;
+
           let arr=this.dateForm.domains
           console.log(this.dateForm.domains);
           for(let i=0; i<arr.length; i++){
-            this.$http.post(deleteUpload,{user_id: sessionStorage.user_id,project_id:arr[i].project_id})
+            this.$http.post(this.URL.deleteUpload,{user_id: sessionStorage.user_id,project_id:arr[i].project_id})
             .then(res=>{
               if(res.status===200){
               this.loading=false;
@@ -294,11 +293,14 @@ export default {
               console.log(err)
             })
           }
+          this.$emit('changeupload',false);
+          this.dialogUpload2Visible=false;
           this.dateForm.domains=[];
           this.fileList=[];
-
+          conosle.log("删除啦")
         })
         .catch(_ => {
+
         });
     },
 //    dialogVisiblechange() {

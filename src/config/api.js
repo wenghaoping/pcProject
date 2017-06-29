@@ -6,7 +6,7 @@ import qs from 'qs'
 
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = 'https://dev.weitianshi.cn';
+axios.defaults.baseURL = 'https://www.weitianshi.cn';
 // axios.defaults.baseURL = 'http://www.local.app';
 
 //POST传参序列化
