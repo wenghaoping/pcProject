@@ -559,7 +559,7 @@
             this.pro_industryFilters=this.$tool.getTitleSift(pro_industry);
             this.pro_scaleFilters=this.$tool.getTitleSift(pro_scale);
             this.pro_scheduleFilters=this.$tool.getTitleSift(pro_schedule);
-            this.pro_sourceFilters=this.getTitleSiftpro_source(pro_source);
+            this.pro_sourceFilters=this.$tool.getTitleSift(pro_source);
             this.pro_stageFilters=this.$tool.getTitleSift(pro_stage);
             this.loading=false;
           })
@@ -613,6 +613,13 @@
         }
         return str
       },//列表期望金额处理
+      getProjectPro_source(arr){
+        let str=""
+        for(let i=0;i<arr.length;i++){
+          str+=arr[i].tag_name+'.'
+        }
+        return str
+      },//列表项目来源处理
 
       getProjectList(list){
         let arr = new Array;
@@ -621,7 +628,7 @@
           obj.pro_name=list[i].pro_name;
           obj.pro_intro=list[i].pro_intro;
           obj.pro_company_name=list[i].pro_company_name;
-          obj.pro_source=list[i].pro_source;
+          obj.pro_source=this.getProjectPro_source(list[i].pro_source);
           obj.pro_follow_up_user=list[i].pro_follow_up_user;
           obj.pro_schedule=list[i].pro_schedule;
           obj.pro_industry=this.getProjectPro_industry(list[i].pro_industry)
@@ -631,7 +638,9 @@
           obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale)
           obj.project_id=list[i].project_id;
           arr.push(obj)
+
         }
+        console.log(arr)
         return arr
       }//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
     },

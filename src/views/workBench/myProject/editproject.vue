@@ -86,7 +86,8 @@
                       <span class="justIlook">(仅自己可见)</span>
                       <el-form-item
                         label="项目名称"
-                        prop="name">
+                        prop="name"
+                        :rules="[{min: 1, max:30,message: '最大30个字符',trigger: 'blur'}]">
                         <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -118,7 +119,7 @@
                       <el-form-item
                         label="项目介绍"
                         prop="pro_intro"
-                        :rules="[{min: 3, message: '最少2个字符',required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
+                        :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},{min: 1, max:30,message: '最大30个字符'}]">
                         <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
                       </el-form-item>
                     </el-col>
@@ -126,7 +127,6 @@
                       <el-form-item
                         label="所属地区"
                         prop="pro_area.pid"
-
                         :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]" style="width: 170px;">
                         <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change2">
                           <el-option
@@ -1936,29 +1936,38 @@
       getMemberHunder(data){
         let check=true;
         for(let i=0; i<data.length; i++){
-          if(this.checkNumber(parseInt(data[i].stock_scale))){
-            if(parseInt(data[i].stock_scale)>100) {
-              this.alert("核心团队股权比例不能大于100");
+          if(this.getNull(data[i].stock_scale)){
+
+          }else{
+            if(this.checkNumber(parseInt(data[i].stock_scale))){
+              if(parseInt(data[i].stock_scale)>100) {
+                this.alert("核心团队股权比例不能大于100");
+                check=false;
+              }
+            }else{
+              this.alert("核心团队股权比例必须为数字");
               check=false;
             }
-          }else{
-            this.alert("核心团队股权比例必须为数字");
-            check=false;
           }
+
         }
         return check;
       },//判断成员股权比例
       getNumberFull(data,title1,title2){
         let check=true;
-          if(this.checkNumber(parseInt(data))){
-            if(parseInt(data)>100) {
+        if(this.getNull(data)){
+
+        }else {
+          if (this.checkNumber(parseInt(data))) {
+            if (parseInt(data) > 100) {
               this.alert(title1);
-              check=false;
+              check = false;
             }
-          }else{
+          } else {
             this.alert(title2);
-            check=false;
+            check = false;
           }
+        }
         return check;
       },//1大于100,2必须为数字
       getFinance(data){
@@ -1979,16 +1988,21 @@
       getNumber(data){
         let check=true;
         console.log(data);
-        if(this.checkNumber(parseInt(data))){
-          if(parseInt(data)>99999999) {
-            this.alert("项目估值必须小于99999999");
+        if(this.getNull(data)){
+
+        }else{
+          if(this.checkNumber(parseInt(data))){
+            if(parseInt(data)>99999999) {
+              this.alert("项目估值必须小于99999999");
+              check=false;
+            }
+          }else{
+            this.alert("项目估值必须为数字");
             check=false;
           }
-        }else{
-          this.alert("项目估值必须为数字");
-          check=false;
+          return check;
         }
-        return check;
+
       },//判断是数字
       checkNumber(theObj) {
         let reg = /^[0-9]+.?[0-9]*$/;
@@ -2006,11 +2020,11 @@
         this.teamMust = !this.submitForm('team');
         this.financingMust = !this.submitForm('financing');
         this.milepostMust = !this.submitForm('milepost');
-        console.log(this.$tool.getToObject(this.project))
-        console.log(this.$tool.getToObject(this.team))
-        console.log(this.$tool.getToObject(this.financing))
-        console.log(this.$tool.getToObject(this.milepost))
-        console.log(this.$tool.getToObject(this.pro_FA))
+/*        console.log(this.$tool.getToObject(this.project));
+        console.log(this.$tool.getToObject(this.team));
+        console.log(this.$tool.getToObject(this.financing));
+        console.log(this.$tool.getToObject(this.milepost));
+        console.log(this.$tool.getToObject(this.pro_FA));*/
 //        if (this.fileMust) this.alert("请添加商业计划书")
 //        else
             if (this.projectMust) this.alert("项目介绍必填项不能为空")
@@ -2024,6 +2038,7 @@
         else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字")){}
         else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字")){}
         else if (!this.getNumber(this.financing.pro_finance_value)){}
+        else if (this.getNull(this.project.pro_intro)){this.alert("项目介绍不能为空")}
         else{
           this.loading=true;
           let allData = {};
