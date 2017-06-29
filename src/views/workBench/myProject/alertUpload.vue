@@ -22,7 +22,7 @@
           <div class="el-upload__tip" slot="tip" >BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</div>
         </el-upload>
 
-      <div slot="footer" class="dialog-footer" style="padding-top: 40px;">
+      <div slot="footer" class="dialog-footer" style="padding-top: 40px;padding-right: 44px;padding-bottom: 15px;">
         <el-button @click="handleClose">取 消</el-button>
       </div>
     </el-dialog>

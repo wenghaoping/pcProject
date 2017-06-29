@@ -17,13 +17,13 @@
           <span class="lp-line">&nbsp;</span>
           <el-tooltip placement="top" :class="{'pp-cur':node2}" >
             <div slot="content">
-              <div style="width:50px;">约谈 : {{nodeCount.interview}} </div>
+              <div style="width:50px;text-align: center;">约谈 : {{nodeCount.interview}} </div>
             </div>
             <span class="circle circle-0" @click="setNode('2')">&nbsp;</span>
           </el-tooltip>
           <el-tooltip placement="top" :class="{'pp-cur':node3}" >
             <div slot="content">
-              <div style="width:50px;">考察 : {{nodeCount.investigate}} </div>
+              <div style="width:50px;text-align: center;">考察 : {{nodeCount.investigate}} </div>
             </div>
             <span class="circle circle-5" @click="setNode('3')">&nbsp;</span>
           </el-tooltip>
@@ -36,28 +36,28 @@
           <span class="lp-line">&nbsp;</span>
           <el-tooltip placement="top" :class="{'pp-cur':node5}" >
             <div slot="content">
-              <div style="width:100px;">引荐投资方 : {{nodeCount.recommended}} </div>
+              <div style="width:100px;text-align: center;">引荐投资方 : {{nodeCount.recommended}} </div>
             </div>
             <span class="circle circle-1" @click="setNode('5')">&nbsp;</span>
           </el-tooltip>
 
           <el-tooltip placement="top" :class="{'pp-cur':node6}" >
             <div slot="content">
-              <div style="width:80px;">投资协议 : {{nodeCount.agreement}} </div>
+              <div style="width:80px;text-align: center;">投资协议 : {{nodeCount.agreement}} </div>
             </div>
             <span class="circle circle-2" @click="setNode('6')">&nbsp;</span>
           </el-tooltip>
 
           <el-tooltip placement="top" :class="{'pp-cur':node7}" >
             <div slot="content">
-              <div style="width:50px;">交割 : {{nodeCount.delivery}} </div>
+              <div style="width:50px;text-align: center;">交割 : {{nodeCount.delivery}} </div>
             </div>
             <span class="circle circle-3" @click="setNode('7')">&nbsp;</span>
           </el-tooltip>
 
           <el-tooltip placement="top" :class="{'pp-cur':node8}">
             <div slot="content">
-              <div style="width:80px;">待收佣金 : {{nodeCount.collect}} </div>
+              <div style="width:80px;text-align: center;">待收佣金 : {{nodeCount.collect}} </div>
             </div>
             <span class="circle circle-4"  @click="setNode('8')">&nbsp;</span>
           </el-tooltip>
@@ -135,7 +135,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.pro_company_name.length === 0">
-                  —
+                  -
                 </div>
               </template>
             </el-table-column>
@@ -146,7 +146,7 @@
                              show-overflow-tooltip	>
               <template scope="scope">
                 <div v-if="scope.row.pro_source.length === 0">
-                  —
+                  -
                 </div>
                 <div v-if="scope.row.pro_source.length > 0">
                   {{scope.row.pro_source}}
@@ -164,7 +164,7 @@
                              sortable="custom">
               <template scope="scope">
                 <div v-if="scope.row.pro_schedule==''">
-                  —
+                  -
                 </div>
                 <div else>
                   {{scope.row.pro_schedule}}
@@ -187,7 +187,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.pro_industry==''">
-                  —
+                  -
                 </div>
               </template>
             </el-table-column>
@@ -198,7 +198,7 @@
 
                 <el-tag :type="scope.row.is_exclusive === '独家' ? 'primary' : scope.row.is_exclusive === '非独家'  ? 'success':'gray' " close-transition>
                      <div v-if="scope.row.is_exclusive.length === 0">
-                       —
+                       -
                      </div>
                      <div else>
                        {{scope.row.is_exclusive}}
@@ -212,7 +212,7 @@
                              sortable="custom" column-key="pro_stage">
               <template scope="scope">
                 <div v-if="scope.row.pro_stage.length === 0">
-                  —
+                  -
                 </div>
                 <div v-if="scope.row.pro_stage.length > 0">
                   {{scope.row.pro_stage}}
@@ -226,7 +226,7 @@
                              sortable="custom">
               <template scope="scope">
                 <div v-if="scope.row.pro_area.length === 0">
-                  —
+                  -
                 </div>
                 <div v-if="scope.row.pro_area.length > 0">
                   {{scope.row.pro_area}}
@@ -240,7 +240,7 @@
                              :filter-multiple="stateCheck">
               <template scope="scope">
                 <div v-if="scope.row.pro_scale.length === 0">
-                  —
+                  -
                 </div>
                 <div v-if="scope.row.pro_scale.length > 0">
                   {{scope.row.pro_scale}}
@@ -671,6 +671,21 @@
     overflow-x: hidden;
   }
   .el-table-filter__list{
-  min-width: 130px!important;;
-}
+    min-width: 130px!important;;
+  }
+  .el-table-filter__bottom button:first-child{
+    color:#20a0ff;
+  }
+  .cell{
+    text-align: center;
+  }
+  .el-dialog{
+    .el-dialog__header{
+      padding-left: 64px;
+      padding-top: 32px;
+    }
+  }
+
+
+
 </style>

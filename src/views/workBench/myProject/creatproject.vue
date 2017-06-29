@@ -5,12 +5,12 @@
       <div class="main-box">
         <div class="left-wrap">
           <!--=================================基本资料=================================-->
-          <div class="item-block" style="margin-top:0;">
+          <div class="item-block" style="margin-top:0;padding-bottom: 10px;">
             <div class="block-tt-line">
               <span class="b-title">基本资料</span>
-              <span class="b-line"></span>
+              <span class="b-line" style="width: 624px;"></span>
             </div>
-            <div class="block-info block-cc-file">
+            <div class="block-info block-cc-file" style="margin-top: 48px;">
               <span class="f-title fl">商业计划书</span>
               <!--<span class="f-name">微天使商业计划书</span>
               <span class="del-btn"><i class="el-icon-delete"></i></span>-->
@@ -69,10 +69,10 @@
             </el-form>
           </div>
           <!--=================================项目介绍=================================-->
-          <div class="item-block" style="margin-top:16px;">
-            <div class="block-tt-line">
+          <div class="item-block" style="margin-top:16px;padding-bottom: 10px;">
+            <div class="block-tt-line" style="margin-bottom: 32px;">
               <span class="b-title">项目介绍</span>
-              <span class="b-line"></span>
+              <span class="b-line" style="width: 624px;"></span>
             </div>
             <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
               <el-row :span="24" :gutter="32">
@@ -121,7 +121,7 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="6" style="padding-right: 5px;">
                   <el-form-item
                     label="所属省级"
                     prop="pro_area_province"
@@ -138,7 +138,7 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="6" style="padding-left: 5px;">
                   <el-form-item label="所属市级"
                                 prop="pro_area_city"
                                 :rules="[{required: true, message: '所属市级不能为空', trigger: 'change',type: 'number'}]">
@@ -212,7 +212,7 @@
 
             </el-form>
           </div>
-          <el-button type="primary" size="large" style="float: right;" @click="allSave">提交</el-button>
+          <el-button type="primary" size="large" style="float: right;margin-top: 32px;" @click="allSave">提交</el-button>
           <div style="height: 50px;"></div>
           <el-dialog
             :title="companyTitle"
@@ -678,4 +678,15 @@ export default {
     margin-top:0px;
     line-height:1;
   }
+  .el-radio{
+    padding-right: 15px;
+  }
+
+  .edit-page .right-wrap{
+   left: 936px !important;
+  }
+  .el-form-item{
+    margin-bottom: 32px !important;
+  }
+
 </style>
