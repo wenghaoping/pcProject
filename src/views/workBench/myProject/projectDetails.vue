@@ -24,7 +24,7 @@
             <div class="item height" style="margin-top:18px;">
               <span class="big-tag">{{project.pro_scale.scale_money}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_area.area_title}}</span><span class="split">｜</span>
-              <span class="big-tag">{{project.pro_finance_stock_after}}</span><span class="split">｜</span>
+              <span class="big-tag">{{project.pro_finance_stock_after}}%</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               <span class="flower" v-if="project.follow_up!=''">跟进人 : {{project.follow_up}}</span>
 
@@ -35,7 +35,7 @@
             <div class="item height">
             <span class="project" >
               <span class="title">项目完整度:</span>
-              <span class="number" v-if="project.pro_source!=''">{{project.pro_total_score}}%</span>
+              <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
               <span class="number" v-else>去完善</span>
               <span class="more">超过60%的项目更易被投资人关注</span>
             </span>
@@ -54,7 +54,8 @@
             </div>
             <div class="onlyone">
               <img v-if="project.is_exclusive==1" src="../../../assets/images/onlyonedark.png"/>
-              <img v-else="project.is_exclusive==0" src="../../../assets/images/onlyonelight.png"/>
+              <img v-else-if="project.is_exclusive==2" src="../../../assets/images/onlyonelight.png"/>
+
             </div>
           </div>
           <div class="item-lists-inner-right fl">
@@ -103,7 +104,7 @@
                 <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
               </div>
             </div>
-            <div class="item" style="margin-top:24px;height: 49px;" v-if="project.pro_status!=''">
+            <div class="item" style="margin-top:24px;height: 49px;">
               <div class="bot-det" v-if="project.pro_status!=''">
                 <span class="det-title">运营状态：</span>
                 <span class="del-info">{{project.pro_status.status_name}}</span>
@@ -902,6 +903,9 @@
 <style lang="less">
   @import '../../../assets/css/index.less';
   #projectDetails{
+    .el-dialog__header{
+      padding-left:21px;
+    }
     .onsearch{
       width: 100%;
       max-height: 320px;

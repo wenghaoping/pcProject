@@ -508,6 +508,8 @@ export default {
     /*全部保存按钮*/
     allSave(){
         if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){console.log("投后没过")}
+        if(!this.getNull(this.project.pro_intro)){this.alert("项目介绍不能为空")}
+        if(!this.getNull(this.project.pro_goodness)){this.alert("项目亮点不能为空")}
         else if(this.submitForm('project')) {
         this.project.user_id=sessionStorage.user_id;
         this.project.project_id=this.uploadShow.project_id;
@@ -683,10 +685,10 @@ export default {
   }
 
   .edit-page .right-wrap{
-   left: 936px !important;
+
   }
   .el-form-item{
-    margin-bottom: 32px !important;
+    /*margin-bottom: 32px !important;*/
   }
 
 </style>

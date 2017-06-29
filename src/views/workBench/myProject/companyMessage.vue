@@ -25,10 +25,10 @@
             <el-col :span="8"><div class="content right">{{company.company_team_size}}</div></el-col>
           </el-row>
           <el-row :span="24">
-            <el-col :span="4"><div class="content left">邮箱地址</div></el-col>
-            <el-col :span="8"><div class="content right">{{company.company_email}}</div></el-col>
-            <el-col :span="4"><div class="content left">联系电话</div></el-col>
-            <el-col :span="8"><div class="content right">{{company.company_contact}}</div></el-col>
+            <el-col :span="4"><div class="content left" style="border-bottom:1px solid #e0e6ed;">邮箱地址</div></el-col>
+            <el-col :span="8"><div class="content right" style="border-bottom:1px solid #e0e6ed;">{{company.company_email}}</div></el-col>
+            <el-col :span="4"><div class="content left" style="border-bottom:1px solid #e0e6ed;">联系电话</div></el-col>
+            <el-col :span="8"><div class="content right" style="border-bottom:1px solid #e0e6ed;">{{company.company_contact}}</div></el-col>
           </el-row>
 
         </div>

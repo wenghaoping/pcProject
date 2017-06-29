@@ -153,7 +153,7 @@ export default {
               return JSON.parse(data[i].project_views);
           }
       }
-    },//获取图表数据
+    },//获取图表数据变成json
     getAverage(data){
         let arr=[];
       let index=this.xdata.length;
@@ -286,8 +286,10 @@ export default {
         com_id: this.comid
       })
         .then(res => {
+
+
             let data=this.getChart(res.data.data).data;
-            console.log(data);
+//            console.log(data);
             this.xdata=data.three_month;
             this.download.ydataTotal=this.getAverage(data.total_download_mid);
             this.download.ydataAverage=this.getTotal(data.total_download[0].value);
@@ -313,17 +315,29 @@ export default {
   },
   //Echart组件
   mounted(){
-//      this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
-      this.getdownload();
+    this.getCrawlerProject();
+
+    this.getdownload();
   },
   watch : {
     comid : function(e){
+      this.download.ydataTotal=[];
+      this.download.ydataAverage=[];
+      this.pv.ydataTotal=[];
+      this.pv.ydataAverage=[];
+      this.uv.ydataTotal=[];
+      this.uv.ydataAverage=[];
+      this.time.ydataTotal=[];
+      this.time.ydataAverage=[];
       this.getCrawlerProject();
+      this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
     },//获取公司id
     compName: function(e){
       this.compaName=e;
       this.getdownload();
-    }//获取公司名称
+
+    },//获取公司名称
+
   },
   created(){
     this.getCrawlerProject();

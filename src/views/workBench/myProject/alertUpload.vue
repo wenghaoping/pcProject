@@ -114,6 +114,7 @@ export default {
   data () {
     return {
       num:0,//控制一次最多选择个数
+      number:0,//用来和选择数字做对比
 //      dialogUploadVisible: false,//第一个弹窗的控制
       dialogUpload2Visible:false,//第二个弹窗的控制
       status:"",//状态success/exception
@@ -135,18 +136,26 @@ export default {
     //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
     handleChange(file, fileList) {
       this.loading=true;
-      console.log(file);
-      let type=file.name.substr(file.name.length-3,3)
+//      console.log(file);
+//      let type=file.name.substr(file.name.length-3,3)
       this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
 
       if(this.loadingcheck){
         this.loading=false;
         this.loadingcheck=false;
+//        this.number=0;
+      }
+      console.log(this.num,this.number);
+      if(parseInt(this.num)==parseInt(this.number)){
         this.alentTitle="";
+        this.number=0;
+        this.num=0;
       }
     },
     uploadsuccess(response, file, fileList){
+        this.number++;
+
         let data=response.data;
         if(response.status_code==2000000) {
           this.success("上传成功");
@@ -167,7 +176,6 @@ export default {
       this.num++;
       let filetypes=[".doc",".docx",".ppt",".pptx",".pdf",".zip",".rar"];
       let name=file.name;
-      console.log(name)
       let fileend=name.substring(name.indexOf("."));
       let isnext = false;
       if(filetypes && filetypes.length>0){
@@ -182,20 +190,25 @@ export default {
       if(!isnext){
         this.alert("不支持的文件格式");
         this.alentTitle="不支持的文件格式";
+        this.number=0;
+        this.num=0;
         return false;
-      };
+      }
 
       if(parseInt(file.size) > parseInt(31457281)){
         this.alert("暂不支持超过30m文件上传哦");
         this.alentTitle="暂不支持超过30M文件上传哦";
+        this.number=0;
+        this.num=0;
         return false;
-      };
+      }
       if(parseInt(this.num) > parseInt(5)){
         this.alert("一次最多选择5个文件");
         this.alentTitle="一次最多选择5个文件";
         this.num=0;
+        this.number=0;
         return false;
-      };
+      }
 
     },
     handleProgress(event, file, fileList){

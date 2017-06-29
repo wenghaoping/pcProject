@@ -46,7 +46,7 @@ const tool={
   fileChange(target) {
   let isIE = /msie/i.test(navigator.userAgent) && !window.opera;
   let fileSize = 0;
-  const filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
+  const filetypes =[".jpg","why.png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
   const filepath = target.value;
   const filemaxsize = 1024*2;//2M
   if(filepath){

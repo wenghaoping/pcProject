@@ -50,7 +50,7 @@
           </el-row>-->
           <el-row :span="24">
             <el-col :span="4"><div class="left hei">经营范围</div></el-col>
-            <el-col :span="20"><div class="hei2" style="padding: 14px 12px 12px 15px;border:1px solid #e0e6ed;margin-right: -12px;background: #ffffff">{{business.company.company_empirical_range}}</div></el-col>
+            <el-col :span="20"><div class="hei2" style="padding: 14px 12px 12px 15px;border:1px solid #e0e6ed;margin-right: -8px;background: #ffffff">{{business.company.company_empirical_range}}</div></el-col>
           </el-row>
         </div>
       </el-tab-pane>

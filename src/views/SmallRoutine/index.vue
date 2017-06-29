@@ -15,25 +15,6 @@
           <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面</el-button>
         </div>
       </div>
-<!--    <el-dialog
-      title="超时"
-      :visible.sync="dialogVisible"
-      size="large"
-      :show-close="close">
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <el-button @click="reload" size="large" style="display: block;margin: 0 auto">点击刷新页面</el-button>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-    </el-dialog>-->
   </div>
 </template>
 
@@ -46,7 +27,6 @@ export default {
       timeout: null,
       num:0,
       qr:"",
-      dialogVisible:false,
       close:false,
       checkout:false,
       loadIn:false

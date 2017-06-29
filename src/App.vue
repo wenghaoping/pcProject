@@ -36,6 +36,7 @@
       </transition>
     </main>
 
+<p class="Infooter">© 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</p>
   </div>
 
 </template>
@@ -68,7 +69,9 @@
     created(){
       if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
         this.$router.push({ name: 'SmallRoutine'});
+        this.user_name=sessionStorage.user_real_name;
       }else{
+        this.user_name=sessionStorage.user_real_name;
 //        this.$router.push('/');
         this.active=0;
       }
@@ -86,7 +89,16 @@
 </script>
 
 <style lang="less">
-
+.Infooter{
+  font-size:12px;
+  color:#cccccc;
+  line-height:12px;
+  text-align:left;
+  width:1336px;
+  margin: 0 auto;
+  margin-top: 60px;
+  text-align: center;
+}
   *{
     padding:0;
     margin:0;
@@ -105,6 +117,7 @@
     /*min-width: 1903px;*/
     background: #f3f4f8;
   padding-bottom:60px;
+
     main{
       width: 1336px;
       margin: 0 auto;

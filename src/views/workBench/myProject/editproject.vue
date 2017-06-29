@@ -1,6 +1,6 @@
 <template>
   <div id="editproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="contain-center edit-page">
+    <div id="wid" class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
         <div class="left-wrap" ref="left" style="margin-top:24px;">
@@ -36,7 +36,7 @@
                   </span>
 
                 </div>
-                <div class="block-info block-cc-pro" style="margin-top:24px;">
+                <div class="block-info block-cc-pro" style="margin-top:15px;">
                   <span class="f-title fl">项目文件</span>
                   <span style="margin-left: 34px;" class="fl">
                       <el-upload
@@ -391,7 +391,6 @@
                     </el-col>
                   </el-row>
                 </el-form>
-                <br>
                 <el-button type="text" @click="addMember" class="addMember"><i class="el-icon-plus"></i> 新增成员
                 </el-button>
               </div>
@@ -511,7 +510,6 @@
                     </el-col>
                   </el-row>
                 </el-form>
-                <br>
                 <el-button type="text" @click="addHistory" class="addMember"><i class="el-icon-plus"></i> 添加历史融资
                 </el-button>
               </div>
@@ -565,7 +563,6 @@
                     </el-col>
                   </el-row>
                 </el-form>
-                <br>
                 <el-button type="text" @click="addmilePost" class="addMember"><i class="el-icon-plus"></i> 添加里程碑
                 </el-button>
               </div>
@@ -635,7 +632,7 @@
               </div>
             </el-collapse-transition>
           </div>
-          <el-button type="primary" size="large" style="margin-top:32px;float: right;margin-right: 64px; display: block;" @click="allSave">保存
+          <el-button type="primary" size="large" style="margin-top:32px;float: right;display: block;" @click="allSave">保存
           </el-button>
           <div style="height: 50px;"></div>
         </div>
@@ -734,7 +731,7 @@
       </div>
     </div>
     <!--添加运营状态的弹窗-->
-    <el-dialog title="添加运营状态" :visible.sync="dialogFormVisible">
+    <el-dialog title="添加运营状态" :visible.sync="dialogFormVisible" :show-close="showList">
       <el-form :model="form">
         <el-form-item label="运营状态" :label-width="formLabelWidth">
           <el-input v-model="form.state" auto-complete="off"></el-input>
@@ -746,7 +743,7 @@
       </div>
     </el-dialog>
     <!--文件分组的弹窗-->
-    <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible">
+    <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
                       :rules="[{min: 2, message: '最少2个字符',required: true, message: '分组不能为空', trigger: 'blur'}]">
@@ -987,6 +984,7 @@
         finance:[
           { validator: checkFinance, trigger: 'blur' }
         ],
+        one:false//第一次进来的时候
 
 
 
@@ -1039,7 +1037,7 @@
                   number++;
                   inner++
                 }
-/*                else {
+                /*else {
                   for (let key2 in value[key][0]) {
                     if (value[key][0][key2] == "") {
                       number++;
@@ -1090,15 +1088,14 @@
         else this.signPerfect = false;
 
 
-        /*      console.log(parseInt(((sum-number)/sum)*100))
+/*              console.log(parseInt(((sum-number)/sum)*100))
          console.log(parseInt(number/sum))*/
 
         return parseInt(((sum - number) / sum) * 100)
       },
     },
     mounted() {
-        let leftWidth=document.getElementsByClassName("main-box")[0].offsetLeft+900;
-        console.log(leftWidth)
+        let leftWidth=document.getElementById("wid").offsetLeft+936;
       this.$refs.right.style.left = leftWidth +'px';
     },
     methods: {
@@ -1227,17 +1224,18 @@
 
       },//设置二级城市下拉列表1
       area1Change2(data){
-
-//        this.project.pro_area.area_id="";
         this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})
           .then(res => {
             let data = res.data.data;
             this.area2 = this.getCity(data);
+            if(this.one){
+              this.project.pro_area.area_id=""
+            }
           })
           .catch(err => {
             console.log(err)
           })
-
+        this.one=true;
       },//设置二级城市下拉列表2
 
 
@@ -1475,7 +1473,7 @@
           return false;
         }
         if(parseInt(file.size) > parseInt(31457281)){
-          this.alert("暂不支持超过30m文件上传哦");
+          this.alert("暂不支持超过30M文件上传哦");
           return false;
         };
       },//上传前的验证
@@ -1483,7 +1481,7 @@
         this.num++;
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
-        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
+        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx","why.png",".jpg",".docx",".jpeg"];
         let name=file.name;
         let fileend=name.substring(name.indexOf("."));
         let isnext = false;
@@ -1635,7 +1633,6 @@
 
       },//发送分组设置请求
       toGroup(item){
-        console.log(item);
         this.groups.type=item.type;
         var index = this.uploadShow2.lists.indexOf(item)
         this.groups.index = index;

@@ -2,7 +2,7 @@
   <div id="research" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================一键尽调弹窗=============================================-->
     <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose" close-on-press-escape close-on-click-modal >
-      <div class="contain-grid" style="width: 881px;">
+      <div class="contain-grid" style="width: 893px;">
         <div class="contain-position">
           <p>您要尽调的公司：<span>{{compname}}</span><button class="fr button" @click="goToEdit">修改公司</button></p>
         </div>
@@ -13,7 +13,7 @@
               <div class="title">项目信息</div>
               <div v-for="project1 in project" class="clearfix" style="margin-bottom: 20px;">
                 <div class="portrait fl">
-                  <img src="../../../assets/images/logo12.png" v-if="project1.project_logo==''">
+                  <img src="../../../assets/images/logo.png" v-if="project1.project_logo==''">
                   <img :src="project1.project_logo" v-else>
                 </div>
                 <div class="portrait-right fl ">
@@ -36,7 +36,7 @@
                     <span class="big-tag">&#45;&#45;</span>-->
                   </div>
                 </div>
-                <div class="tag" style="padding-top: 120px;">
+                <div class="tag" style="padding-top: 100px;">
                   <span class="tag-bottom" style="margin-right: 11px;" v-if="project1.project_label!=''"><img src="../../../assets/images/tag2.png"></span>
                   <span class="tag-bottom" v-if="project1.project_label!=''">{{project1.project_label}}</span>
 <!--                  <span class="tag-bottom">创业</span>

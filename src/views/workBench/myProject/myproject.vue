@@ -676,9 +676,8 @@
   .el-table-filter__bottom button:first-child{
     color:#20a0ff;
   }
-  .cell{
-    text-align: center;
-  }
+
+
   .el-dialog{
     .el-dialog__header{
       padding-left: 64px;
