@@ -1356,8 +1356,7 @@
             this.project.tags_pro = this.getTag(data.tag, 0);//项目标签
             this.project.pro_goodness = data.pro_goodness;
             this.project.pro_source = this.getTag(data.tag, 2);//项目来源标签
-            this.tags.changepro = this.getTag(data.tag, 0);//项目标签
-            this.tags.changesource = this.getTag(data.tag, 2);//项目来源标签
+
 
             this.project.pro_company_scale = data.pro_company_scale;
             if (data.pro_company_scale == "") {
@@ -1366,7 +1365,6 @@
 
             this.team.tags_team = this.getTag(data.tag, 1);//团队标签
             this.setMemberScale(data.core_users);
-            this.tags.changeTeam = this.getTag(data.tag, 1);//团队标签
             this.team.core_users = data.core_users;
 
             this.financing.pro_finance_scale = data.pro_finance_scale;
