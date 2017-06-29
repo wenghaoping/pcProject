@@ -1229,7 +1229,7 @@
             let data = res.data.data;
             this.area2 = this.getCity(data);
             if(this.one){
-              this.project.pro_area.area_id=""
+              this.project.pro_area.area_id="";
             }
           })
           .catch(err => {
@@ -1308,6 +1308,7 @@
       getOneProject () {
         this.$http.post(this.URL.getOneProject, {user_id: sessionStorage.user_id, project_id: this.project_id})
           .then(res => {
+
             this.uploadShow2.lists=[];
             let data = res.data.data;
             this.area1Change(data.pro_area.pid);//设置市级
@@ -1457,7 +1458,7 @@
         this.uploadDate.project_id = this.project_id;
         let filetypes=[".doc",".docx",".ppt",".pptx",".pdf",".zip",".rar"];
         let name=file.name;
-        let fileend=name.substring(name.indexOf("."));
+        let fileend=name.substring(name.lastIndexOf("."));
         let isnext = false;
         if(filetypes && filetypes.length>0){
           for(var i =0; i<filetypes.length;i++){
@@ -1472,8 +1473,8 @@
           this.alert("不支持的文件格式");
           return false;
         }
-        if(parseInt(file.size) > parseInt(31457281)){
-          this.alert("暂不支持超过30M文件上传哦");
+        if(parseInt(file.size) > parseInt(20971521)){
+          this.alert("暂不支持超过20M文件上传哦");
           return false;
         };
       },//上传前的验证
@@ -1483,7 +1484,7 @@
         this.uploadDate.project_id = this.project_id;
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx","why.png",".jpg",".docx",".jpeg"];
         let name=file.name;
-        let fileend=name.substring(name.indexOf("."));
+        let fileend=name.substring(name.lastIndexOf("."));
         let isnext = false;
         if(filetypes && filetypes.length>0){
           for(var i =0; i<filetypes.length;i++){
@@ -1498,7 +1499,7 @@
           this.alert("不支持的文件格式");
           return false;
         }
-        if(parseInt(file.size) > parseInt(31457281)){
+        if(parseInt(file.size) > parseInt(20971521)){
           this.alert("暂不支持超过30m文件上传哦");
           return false;
         };

@@ -435,7 +435,7 @@ export default {
     beforeUpload(file){
       let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".docx",".pptx"];
       let name=file.name;
-      let fileend=name.substring(name.indexOf("."));
+      let fileend=name.substring(name.lastIndexOf("."));
       let isnext = false;
       if(filetypes && filetypes.length>0){
         for(var i =0; i<filetypes.length;i++){
@@ -449,8 +449,8 @@ export default {
         this.alert("不支持的文件格式");
         return false;
       }
-      if(parseInt(file.size) > parseInt(31457281)){
-        this.alert("暂不支持超过30m文件上传哦");
+      if(parseInt(file.size) > parseInt(20971521)){
+        this.alert("暂不支持超过20m文件上传哦");
         return false;
       }
     },//上传前的验证
@@ -508,8 +508,8 @@ export default {
     /*全部保存按钮*/
     allSave(){
         if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){console.log("投后没过")}
-        if(!this.getNull(this.project.pro_intro)){this.alert("项目介绍不能为空")}
-        if(!this.getNull(this.project.pro_goodness)){this.alert("项目亮点不能为空")}
+        else if(this.getNull(this.project.pro_intro)){this.alert("项目介绍不能为空")}
+        else if(this.getNull(this.project.pro_goodness)){this.alert("项目亮点不能为空")}
         else if(this.submitForm('project')) {
         this.project.user_id=sessionStorage.user_id;
         this.project.project_id=this.uploadShow.project_id;

@@ -49,7 +49,7 @@ export default {
     },
     getUserId(){
       this.num++;
-      if(parseInt(this.num)>30) {
+      if(parseInt(this.num)>45) {
         clearInterval(this.timeout)
         this.dialogVisible=true;
       }

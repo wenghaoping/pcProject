@@ -29,14 +29,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/project': {
-        target: 'https://www.weitianshi.cn',
+        target: 'https://dev.weitianshi.cn',
         changeOrigin: true,
         pathRewrite: {
           '^/project': '/project'
         }
       },
       '/api': {
-        target: 'https://www.weitianshi.cn',
+        target: 'https://dev.weitianshi.cn',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

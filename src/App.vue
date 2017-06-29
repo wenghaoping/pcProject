@@ -69,9 +69,7 @@
     created(){
       if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
         this.$router.push({ name: 'SmallRoutine'});
-        this.user_name=sessionStorage.user_real_name;
       }else{
-        this.user_name=sessionStorage.user_real_name;
 //        this.$router.push('/');
         this.active=0;
       }

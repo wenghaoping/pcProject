@@ -155,7 +155,6 @@ export default {
     },
     uploadsuccess(response, file, fileList){
         this.number++;
-
         let data=response.data;
         if(response.status_code==2000000) {
           this.success("上传成功");
@@ -176,7 +175,7 @@ export default {
       this.num++;
       let filetypes=[".doc",".docx",".ppt",".pptx",".pdf",".zip",".rar"];
       let name=file.name;
-      let fileend=name.substring(name.indexOf("."));
+      let fileend=name.substring(name.lastIndexOf("."));
       let isnext = false;
       if(filetypes && filetypes.length>0){
         for(var i =0; i<filetypes.length;i++){
@@ -195,9 +194,9 @@ export default {
         return false;
       }
 
-      if(parseInt(file.size) > parseInt(31457281)){
-        this.alert("暂不支持超过30m文件上传哦");
-        this.alentTitle="暂不支持超过30M文件上传哦";
+      if(parseInt(file.size) > parseInt(20971521)){
+        this.alert("暂不支持超过20m文件上传哦");
+        this.alentTitle="暂不支持超过20M文件上传哦";
         this.number=0;
         this.num=0;
         return false;
@@ -280,8 +279,24 @@ export default {
         .then(_ => {
           this.$emit('changeupload',false);
           this.dialogUpload2Visible=false;
+          let arr=this.dateForm.domains
+          console.log(this.dateForm.domains);
+          for(let i=0; i<arr.length; i++){
+            this.$http.post(deleteUpload,{user_id: sessionStorage.user_id,project_id:arr[i].project_id})
+            .then(res=>{
+              if(res.status===200){
+              this.loading=false;
+              this.success("删除成功");
+            }
+              console.log(res)
+            })
+            .catch(err=>{
+              console.log(err)
+            })
+          }
           this.dateForm.domains=[];
           this.fileList=[];
+
         })
         .catch(_ => {
         });
