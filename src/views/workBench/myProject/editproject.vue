@@ -3,10 +3,10 @@
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
-        <div class="left-wrap" ref="left">
+        <div class="left-wrap" ref="left" style="margin-top:24px;">
           <!--=================================项目文件=================================-->
           <div class="d_jump"></div>
-          <div class="item-block">
+          <div class="item-block" style="margin-top:0;">
             <div class="block-tt-line">
               <span class="b-title">项目文件</span>
               <span class="b-line"></span>
@@ -36,7 +36,7 @@
                   </span>
 
                 </div>
-                <div class="block-info block-cc-pro">
+                <div class="block-info block-cc-pro" style="margin-top:24px;">
                   <span class="f-title fl">项目文件</span>
                   <span style="margin-left: 34px;" class="fl">
                       <el-upload
@@ -63,7 +63,7 @@
                   <span class="f-title">{{list.bp_type}} : </span>
                   <span class="f-name" @click.prevent="download(list)"
                         style="cursor: pointer">{{list.file_title}}</span>
-                  <span class="del-btn" @click.prevent="removeList(list)"><i class="el-icon-delete"></i></span>
+                  <span class="del-btn" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
                   <span class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
                 </div>
               </div>
@@ -345,7 +345,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="32">
+                  <el-row :span="24" :gutter="10">
                     <el-col :span="4">
                       <el-form-item
                         label="成员姓名"
@@ -635,7 +635,7 @@
               </div>
             </el-collapse-transition>
           </div>
-          <el-button type="primary" size="large" style="margin: 0px auto; display: block;" @click="allSave">保存
+          <el-button type="primary" size="large" style="margin-top:32px;float: right;margin-right: 64px; display: block;" @click="allSave">保存
           </el-button>
           <div style="height: 50px;"></div>
         </div>
@@ -2319,10 +2319,12 @@
       display: block;
       margin: 0 auto;
     }
-  .el-radio{
-    width:111px
+    .el-radio{
+      width:111px
+    }
   }
+  .edit-page .item-block .block-tt-line{
+    margin-bottom:17px !important;
   }
-
 
 </style>

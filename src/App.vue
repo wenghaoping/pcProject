@@ -11,8 +11,8 @@
         </li>
           <li id="samllrou">小程序</li>
           <div class="weixin">
-            <p style="margin-top: 25px;">微信扫一扫</p>
-            <p>发现更多精选资源</p>
+            <p style="margin-top: 34px;">微信扫一扫</p>
+            <p style="margin-bottom: 15px">发现更多精选资源</p>
             <div class="img">
               <img src="./assets/images/weixin.jpg">
             </div>
