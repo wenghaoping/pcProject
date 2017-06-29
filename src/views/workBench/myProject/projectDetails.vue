@@ -184,7 +184,7 @@
                       <!--<span class="l-line"></span>-->
                     </span>
                     <span class="pro-txt-1">{{finance.finance_time}}</span>
-                    <span class="pro-txt-2">{{finance.pro_finance_scale}}万</span>
+                    <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                     <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
                     <span class="pro-txt-4">{{finance.pro_finance_investor}}</span>
                     <div class="line"></div>

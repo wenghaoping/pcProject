@@ -125,7 +125,7 @@
                     </el-col>
                     <el-col :span="6" >
                       <el-form-item
-                        label="所属地区"
+                        label="所属省级"
                         prop="pro_area.pid"
                         :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]" style="width: 170px;">
                         <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change2">
@@ -452,7 +452,7 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="4">
                       <el-form-item
-                        label="历史融资时间"
+                        label="时间"
                         :prop="'pro_history_finance.' + index + '.finance_time'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
@@ -823,7 +823,6 @@
           changepro:[],//项目标签新增
           changeTeam:[],//团队标签
           changesource:[],//项目来源
-          changepro2:[],//项目标签原始concat
         },
         project: {
           pro_name: 'HoopEASY商业计划PPT+for+pitch',//项目名称
@@ -1202,8 +1201,11 @@
             this.industry = this.getIndustry(data.industry);//设置轮次信息
             this.company_status = this.getCompanyStatus(data.company_status);//设置运营状态
             this.tags_pro = this.getTags_pro(data.tags_pro);//设置项目标签
+            this.tags.changepro = this.getTags_pro(data.tags_pro);//设置项目标签2另外的========
             this.tags_team = this.getTags_pro(data.tags_team);//设置团队标签
+            this.tags.changeTeam = this.getTags_pro(data.tags_team);//设置团队标签
             this.tags_source = this.getTags_pro(data.pro_source);//设置项目来源
+            this.tags.changesource = this.getTags_pro(data.pro_source);//设置项目来源
             this.company_scale = this.getCompany_scale(data.company_scale);//设置公司规模几人
           })
           .catch(err => {
@@ -1212,9 +1214,8 @@
           })
       },//获取所有下拉框的数据
       area1Change(data){
-        this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})
+        this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
           .then(res => {
-
             let data = res.data.data;
             this.area2 = this.getCity(data);
           })
@@ -1224,18 +1225,22 @@
 
       },//设置二级城市下拉列表1
       area1Change2(data){
-        this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})
+        let newData = data;
+        let pid=sessionStorage.pid;
+        this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
           .then(res => {
             let data = res.data.data;
             this.area2 = this.getCity(data);
-            if(this.one){
+            if(parseInt(newData)===parseInt(pid)){
+            }else{
               this.project.pro_area.area_id="";
             }
+
           })
           .catch(err => {
             console.log(err)
           })
-        this.one=true;
+//
       },//设置二级城市下拉列表2
 
 
@@ -1335,12 +1340,14 @@
             this.project.pro_intro = data.pro_intro;
 
             this.project.pro_area = data.pro_area;
+            sessionStorage.pid=data.pro_area.pid;
             if (data.pro_area == "") {
               this.project.pro_area = {area_id: "", pid: "", area_title: ""}
             };
 
 
             this.project.pro_stage = data.pro_stage;
+
             if (data.pro_stage == "") {
               this.project.pro_stage = {stage_id: ""}
             };
@@ -1354,6 +1361,7 @@
             this.project.pro_source = data.pro_source;
             this.project.open_status = data.open_status.toString();//运营状态
             this.project.tags_pro = this.getTag(data.tag, 0);//项目标签
+
             this.project.pro_goodness = data.pro_goodness;
             this.project.pro_source = this.getTag(data.tag, 2);//项目来源标签
 
@@ -1397,7 +1405,8 @@
             this.pro_FA = data.pro_FA;
             if (this.planList.length != 0) this.planButton = false;
             else this.planButton = true;
-            this.loading = false
+            this.loading = false;
+            this.tags_pro=this.tags.changepro.slice(0);
           })
           .catch(err => {
             this.loading = false
@@ -1498,7 +1507,7 @@
           return false;
         }
         if(parseInt(file.size) > parseInt(20971521)){
-          this.alert("暂不支持超过30m文件上传哦");
+          this.alert("暂不支持超过20m文件上传哦");
           return false;
         };
         if(parseInt(this.num) > parseInt(5)){
@@ -1741,7 +1750,7 @@
       },
       addChangepro(e){
         let tagName = this.checkArr(e, this.tags_pro);
-//        this.tags.changepro=this.project.tags_pro.slice(0);
+
         if (tagName != undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 0, tag_name: tagName})
             .then(res => {
@@ -1749,7 +1758,8 @@
               newState.label = tagName;
               newState.value = res.data.tag_id;
 //              this.project.tags_pro.pop();//删除并返回;
-              this.tags_pro.push(newState);
+//              this.tags_pro.push(newState);
+              this.tags.changepro.push(newState);
               /*this.tags.changepro.push(res.data.tag_id);*/
             })
             .catch(err => {
@@ -1757,19 +1767,6 @@
               console.log(err);
             })
         }
-        /*else{
-/!*            let newArr = this.project.tags_pro;
-
-            if(this.tags.checkPro){
-              this.tags.changepro.push(newArr[newArr.length - 1]);
-              console.log("选有的")
-            }
-            this.tags.checkPro=true;*!/
-          this.tags.changepro=this.project.tags_pro.slice(0);
-
-        }
-        console.log(this.tags.changepro);
-        console.log(this.$tool.getToObject(this.tags_pro));*/
       },//添加项目标签
       addChangeTeam(e){
         let tagName = this.checkArr(e, this.tags_team);
@@ -1780,7 +1777,8 @@
               let newState = {};
               newState.label = tagName;
               newState.value = res.data.tag_id;
-              this.tags_team.push(newState);
+//              this.tags_team.push(newState);
+              this.tags.changeTeam.push(newState);
               /*this.tags.changeTeam.push(res.data.tag_id);*/
             })
             .catch(err => {
@@ -1801,7 +1799,8 @@
               let newState = {};
               newState.label = tagName;
               newState.value = res.data.tag_id;
-              this.tags_source.push(newState);
+//              this.tags_source.push(newState);
+              this.tags.changesource.push(newState);
               /*this.tags.changesource.push(res.data.tag_id);*/
             })
             .catch(err => {
@@ -2025,8 +2024,6 @@
       },//判断是不是数字
 
       setTag(arr,pro){
-//        let arr = this.project.tags_pro;//
-//        let pro = this.tags_pro;
         for(let i=0; i<pro.length; i++){
           for(let j=0; j<arr.length; j++){
             if(arr[j]==pro[i].label){
@@ -2034,6 +2031,7 @@
             }
           }
         }
+
       },//标签取数据arr//放值的地方,pro总值
   /*全部保存按钮*/
       allSave(){
@@ -2065,9 +2063,10 @@
 /*          this.project.tags_pro=this.tags.changepro.slice(0);
           this.team.tags_team=this.tags.changeTeam.slice(0);
           this.project.pro_source=this.tags.changesource.slice(0);*/
-          this.setTag(this.project.tags_pro,this.tags_pro);
-          this.setTag(this.team.tags_team,this.tags_team);
-          this.setTag(this.project.pro_source,this.tags_source);
+          this.setTag(this.project.tags_pro,this.tags.changepro);
+
+          this.setTag(this.team.tags_team,this.tags.changeTeam);
+          this.setTag(this.project.pro_source,this.tags.changesource);
 
           this.takeData(allData, this.project);
           this.takeData(allData, this.team);

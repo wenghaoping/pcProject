@@ -9,7 +9,7 @@
 export default
 {
   /*总地址,下载用的*/
-  weitianshi:"http://dev.weitianshi.cn/",//下载用
+  weitianshi:"http://www.weitianshi.cn/",//下载用
 
   /*登陆接口*/
   returnQrCredential:"api/auth/returnQrCredential",   //(获取生成二维码的uuid接口)，返回值
