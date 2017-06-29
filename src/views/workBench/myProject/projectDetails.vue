@@ -26,16 +26,17 @@
               <span class="big-tag">{{project.pro_area.area_title}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_finance_stock_after}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_stage.stage_name}}</span>
-              <span class="flower">跟进人 : {{project.follow_up}}</span>
+              <span class="flower" v-if="project.follow_up!=''">跟进人 : {{project.follow_up}}</span>
 
             </div>
-            <div class="item height"  style="margin-top:18px;">
-              <span class="flower2">来源 : {{project.pro_source}}　</span>
+            <div class="item height"  style="margin-top:18px;" v-if="project.pro_source!=''">
+              <span class="flower2">来源 : {{project.pro_source}}</span>
             </div>
             <div class="item height">
-            <span class="project">
+            <span class="project" >
               <span class="title">项目完整度:</span>
-              <span class="number">{{project.pro_total_score}}%</span>
+              <span class="number" v-if="project.pro_source!=''">{{project.pro_total_score}}%</span>
+              <span class="number" v-else>去完善</span>
               <span class="more">超过60%的项目更易被投资人关注</span>
             </span>
               <span class="project" style="width: 291px;">
@@ -44,7 +45,7 @@
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
                   <span class="bar-bg1">&nbsp;</span>
-                  <span  class="txt state">{{project.pro_status.status_name}}</span>
+<!--                  <span  class="txt state">{{project.pro_status.status_name}}</span>-->
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
                 <div class="txt end">佣金收讫</div>
@@ -85,7 +86,7 @@
           <div class="ul-lists">
             <div class="item">
               <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
-              <div class="person-info">
+              <div class="person-info" v-if="project.contact.user_name!=''">
                 <span>项目联系人 : </span>
                 <span>{{project.contact.user_name}}</span>
                 <span>{{project.contact.user_mobile}}</span>
@@ -161,8 +162,8 @@
                 </div>
               </div>
             </div>
-            <div class="item" style="margin-top:35px;" v-if="project.pro_history_finance.length!=0">
-              <span class="sec-title">资金用途</span>
+            <div class="item" style="margin-top:35px;" >
+              <span class="sec-title" v-if="project.pro_finance_use!=''">资金用途</span>
               <div class="yt-doc">
                 {{project.pro_finance_use}}
               </div>

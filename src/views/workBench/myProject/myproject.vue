@@ -414,22 +414,23 @@
           this.getPra.order=filters.prop;
           this.getPra.sort=filters.order;
         }else{
-          let para="";
+//          let para="";
           for(let key in filters){
-            for(let i=0;i<filters[key].length; i++){
-              if(key=="pro_source") para+=filters[key][i]+',';
-              else  para+=parseInt(filters[key][i])+',';
-            }
-            this.getPra[key]=para.substr(0, para.length - 1);
+            /*             for(let i=0;i<filters[key].length; i++){
+             if(key=="pro_source") para+=filters[key][i]+',';
+              else*/
+                /*para+=parseInt(filters[key][i])+',';
+            }*/
+//            this.getPra[key]=parseInt(para.substr(0, para.length - 1));
+            this.getPra[key]=filters[key];
+
           }
         } //筛选
-
         for(let key in this.getPra){
-          if(this.getPra[key]==''){
+          if(this.getPra[key]=='' || this.getPra[key]=='NaN'){
             delete this.getPra[key];
           }
         }//删除空的查询项
-
         this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{
             this.loading=false;
@@ -640,7 +641,6 @@
           arr.push(obj)
 
         }
-        console.log(arr)
         return arr
       }//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
     },

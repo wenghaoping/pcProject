@@ -50,7 +50,7 @@
                         :file-list="fileList"
                         :data="fileuploadDate"
                         :show-file-list="showList"
-                         accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .txt, .jpeg"
+                         accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
                         multiple>
                         <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
                       </el-upload>
@@ -119,7 +119,7 @@
                       <el-form-item
                         label="项目介绍"
                         prop="pro_intro"
-                        :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},{min: 1, max:30,message: '最大30个字符'}]">
+                        :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]">
                         <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
                       </el-form-item>
                     </el-col>
@@ -823,9 +823,10 @@
         SignShow: true,
         multiplelimit: 5,
         tags:{
-          changepro:[],//项目标签
+          changepro:[],//项目标签新增
           changeTeam:[],//团队标签
-          changesource:[]//项目来源
+          changesource:[],//项目来源
+          changepro2:[],//项目标签原始concat
         },
         project: {
           pro_name: 'HoopEASY商业计划PPT+for+pitch',//项目名称
@@ -1097,6 +1098,7 @@
     },
     mounted() {
         let leftWidth=document.getElementsByClassName("main-box")[0].offsetLeft+900;
+        console.log(leftWidth)
       this.$refs.right.style.left = leftWidth +'px';
     },
     methods: {
@@ -1260,7 +1262,6 @@
       setDateTime(data){
         for (let i = 0; i < data.length; i++) {
           data[i].finance_time = new Date(data[i].finance_time*1000);
-          data[i].pro_finance_scale = parseInt(data[i].pro_finance_scale);
         }
       },//时间转化接受从时间戳转化为中国标准时间
       setDateTime2(data){
@@ -1482,7 +1483,7 @@
         this.num++;
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
-        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".txt",".png",".jpg",".docx",".jpeg"];
+        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
         let name=file.name;
         let fileend=name.substring(name.indexOf("."));
         let isnext = false;
@@ -1673,10 +1674,10 @@
             this.restaurants=this.loadData(data);
              if(queryString=="") this.restaurants=[];
              let restaurants = this.restaurants;
-             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+/*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
              clearTimeout(this.timeout);
              this.timeout = setTimeout(() => {
-              cb(results);
+              cb(restaurants);
              }, 300);
           })
           .catch(err => {
@@ -1744,22 +1745,35 @@
       },
       addChangepro(e){
         let tagName = this.checkArr(e, this.tags_pro);
+//        this.tags.changepro=this.project.tags_pro.slice(0);
         if (tagName != undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 0, tag_name: tagName})
             .then(res => {
               let newState = {};
               newState.label = tagName;
               newState.value = res.data.tag_id;
+//              this.project.tags_pro.pop();//删除并返回;
               this.tags_pro.push(newState);
-              this.tags.changepro.push(res.data.tag_id);
+              /*this.tags.changepro.push(res.data.tag_id);*/
             })
             .catch(err => {
               alert("添加失败");
               console.log(err);
             })
-        }else{
-          this.tags.changepro=this.project.tags_pro.slice(0);
         }
+        /*else{
+/!*            let newArr = this.project.tags_pro;
+
+            if(this.tags.checkPro){
+              this.tags.changepro.push(newArr[newArr.length - 1]);
+              console.log("选有的")
+            }
+            this.tags.checkPro=true;*!/
+          this.tags.changepro=this.project.tags_pro.slice(0);
+
+        }
+        console.log(this.tags.changepro);
+        console.log(this.$tool.getToObject(this.tags_pro));*/
       },//添加项目标签
       addChangeTeam(e){
         let tagName = this.checkArr(e, this.tags_team);
@@ -1771,15 +1785,16 @@
               newState.label = tagName;
               newState.value = res.data.tag_id;
               this.tags_team.push(newState);
-              this.tags.changeTeam.push(res.data.tag_id);
+              /*this.tags.changeTeam.push(res.data.tag_id);*/
             })
             .catch(err => {
               alert("添加失败");
               console.log(err);
             })
-        }else{
-          this.tags.changeTeam=this.team.tags_team.slice(0);
         }
+//        else{
+//          this.tags.changeTeam=this.team.tags_team.slice(0);
+//        }
       },//添加团队标签
       addChangesource(e){
         let tagName = this.checkArr(e, this.tags_source);
@@ -1791,15 +1806,16 @@
               newState.label = tagName;
               newState.value = res.data.tag_id;
               this.tags_source.push(newState);
-              this.tags.changesource.push(res.data.tag_id);
+              /*this.tags.changesource.push(res.data.tag_id);*/
             })
             .catch(err => {
               alert("添加失败");
               console.log(err);
             })
-        }else{
-          this.tags.changesource=this.project.pro_source.slice(0);
         }
+        /*else{
+          this.tags.changesource=this.project.pro_source.slice(0);
+        }*/
       },//添加项目来源
 
       /*添加团队成员*/
@@ -1939,8 +1955,8 @@
           if(this.getNull(data[i].stock_scale)){
 
           }else{
-            if(this.checkNumber(parseInt(data[i].stock_scale))){
-              if(parseInt(data[i].stock_scale)>100) {
+            if(this.checkNumber(parseFloat(data[i].stock_scale))){
+              if(parseFloat(data[i].stock_scale)>100) {
                 this.alert("核心团队股权比例不能大于100");
                 check=false;
               }
@@ -1958,8 +1974,8 @@
         if(this.getNull(data)){
 
         }else {
-          if (this.checkNumber(parseInt(data))) {
-            if (parseInt(data) > 100) {
+          if (this.checkNumber(parseFloat(data))) {
+            if (parseFloat(data) > 100) {
               this.alert(title1);
               check = false;
             }
@@ -1991,7 +2007,7 @@
         if(this.getNull(data)){
 
         }else{
-          if(this.checkNumber(parseInt(data))){
+          if(this.checkNumber(parseFloat(data))){
             if(parseInt(data)>99999999) {
               this.alert("项目估值必须小于99999999");
               check=false;
@@ -2000,10 +2016,10 @@
             this.alert("项目估值必须为数字");
             check=false;
           }
-          return check;
-        }
 
-      },//判断是数字
+        }
+        return check;
+      },//判断是数字小雨99999
       checkNumber(theObj) {
         let reg = /^[0-9]+.?[0-9]*$/;
         if (reg.test(theObj)) {
@@ -2011,6 +2027,18 @@
         }
           return false;
       },//判断是不是数字
+
+      setTag(arr,pro){
+//        let arr = this.project.tags_pro;//
+//        let pro = this.tags_pro;
+        for(let i=0; i<pro.length; i++){
+          for(let j=0; j<arr.length; j++){
+            if(arr[j]==pro[i].label){
+              arr[j]=pro[i].value;
+            }
+          }
+        }
+      },//标签取数据arr//放值的地方,pro总值
   /*全部保存按钮*/
       allSave(){
 
@@ -2020,11 +2048,6 @@
         this.teamMust = !this.submitForm('team');
         this.financingMust = !this.submitForm('financing');
         this.milepostMust = !this.submitForm('milepost');
-/*        console.log(this.$tool.getToObject(this.project));
-        console.log(this.$tool.getToObject(this.team));
-        console.log(this.$tool.getToObject(this.financing));
-        console.log(this.$tool.getToObject(this.milepost));
-        console.log(this.$tool.getToObject(this.pro_FA));*/
 //        if (this.fileMust) this.alert("请添加商业计划书")
 //        else
             if (this.projectMust) this.alert("项目介绍必填项不能为空")
@@ -2032,20 +2055,23 @@
         else if (this.financingMust) this.alert("融资信息必填项不能为空")
         else if (this.milepostMust) this.alert("里程碑必填项不能为空")
         else if (!this.getMemberHunder(this.team.core_users)) {}
-        else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){}
-        else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字")){}
-        else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字")){}
-        else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字")){}
-        else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字")){}
-        else if (!this.getNumber(this.financing.pro_finance_value)){}
+        else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){console.log("投后股份没过")}
+        else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字")){console.log("签约没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字")){console.log("股权赠与没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字")){console.log("跟投权没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字")){console.log("其他权益没过")}
+        else if (!this.getNumber(this.financing.pro_finance_value)){console.log("pro_finance_value没过")}
         else if (this.getNull(this.project.pro_intro)){this.alert("项目介绍不能为空")}
         else{
           this.loading=true;
           let allData = {};
 
-          this.project.tags_pro=this.tags.changepro.slice(0);
+/*          this.project.tags_pro=this.tags.changepro.slice(0);
           this.team.tags_team=this.tags.changeTeam.slice(0);
-          this.project.pro_source=this.tags.changesource.slice(0);
+          this.project.pro_source=this.tags.changesource.slice(0);*/
+          this.setTag(this.project.tags_pro,this.tags_pro);
+          this.setTag(this.team.tags_team,this.tags_team);
+          this.setTag(this.project.pro_source,this.tags_source);
 
           this.takeData(allData, this.project);
           this.takeData(allData, this.team);

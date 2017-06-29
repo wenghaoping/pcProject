@@ -80,7 +80,7 @@
                   <el-form-item
                     label="项目介绍"
                     prop="pro_intro"
-                    :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
+                    :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]">
                     <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
                   </el-form-item>
                 </el-col>
@@ -202,7 +202,7 @@
                 <el-col :span="24">
                   <el-form-item label="项目亮点"
                                 prop="pro_goodness"
-                                :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'}]">
+                                :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'},{min: 1, max:400,message: '最大400个字符'}]">
                     <el-input type="textarea"
                               v-model="project.pro_goodness"
                               :autosize="{ minRows: 4, maxRows: 7}"></el-input>
@@ -352,8 +352,40 @@ export default {
           console.log(err)
         })
     },//设置二级城市下拉列表
+    getNumberFull(data,title1,title2){
+      let check=true;
+      if(this.getNull(data)){
 
+      }else {
+        if (this.checkNumber(parseFloat(data))) {
+          if (parseFloat(data) > 100) {
+            this.alert(title1);
+            check = false;
+          }
+        } else {
+          this.alert(title2);
+          check = false;
+        }
+      }
+      return check;
+    },//1大于100,2必须为数字
+    getNull(data) {
+      let reg=/\S/;
+      if (!reg.test(data))
+      {
+        return true;
+      }else{
+        return false;
+      }
 
+    },//判断是不是空
+    checkNumber(theObj) {
+      let reg = /^[0-9]+.?[0-9]*$/;
+      if (reg.test(theObj)) {
+        return true;
+      }
+      return false;
+    },//判断是不是数字
     /*商业计划书*/
     planChange(file, fileList){
       this.planList=fileList
@@ -475,7 +507,8 @@ export default {
     },
     /*全部保存按钮*/
     allSave(){
-      if(this.submitForm('project')) {
+        if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){console.log("投后没过")}
+        else if(this.submitForm('project')) {
         this.project.user_id=sessionStorage.user_id;
         this.project.project_id=this.uploadShow.project_id;
         this.$http.post(this.URL.editProject,this.project)
@@ -491,7 +524,6 @@ export default {
           })
 
       }
-      console.log(this.$tool.getToObject(this.project));
     },
     /*获取数据*/
     loadData(arr){
@@ -513,10 +545,10 @@ export default {
           this.restaurants=this.loadData(data);
           if(queryString=="") this.restaurants=[];
           let restaurants = this.restaurants;
-          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+/*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
           clearTimeout(this.timeout);
           this.timeout = setTimeout(() => {
-            cb(results);
+            cb(restaurants);
           }, 300);
         })
         .catch(err=>{
