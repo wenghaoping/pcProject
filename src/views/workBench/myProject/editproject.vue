@@ -380,7 +380,7 @@
                         :prop="'core_users.' + index + '.ct_member_intro'"
                         v-for="(member, index) in team.core_users"
                         :key="member.index">
-                        <el-input v-model.number="member.ct_member_intro" placeholder="请输入"></el-input>
+                        <el-input v-model.number="member.ct_member_intro" placeholder="请输入" class="width360"> </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
@@ -497,13 +497,13 @@
                         :prop="'pro_history_finance.' + index + '.pro_finance_investor'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
-                        :rules="[{required: true, message: '投资方不能为空', trigger: 'blur'}]">
+                        :rules="[{required: true, message: '投资方不能为空', trigger: 'blur'}]" class="width360">
                         <el-input v-model="history.pro_finance_investor" placeholder="请添加"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
                       <el-form-item label="　　" v-for="(history, index) in financing.pro_history_finance"
-                                    :key="history.index">
+                                    :key="history.index" style="padding-left: 13px;">
                         <span class="imgdele" @click.prevent="removeHistory(history)"><img
                           src="../../../assets/images/delete.png"></span>
                       </el-form-item>
@@ -550,13 +550,13 @@
                         :prop="'pro_develop.' + index + '.dh_event'"
                         v-for="(milePostSomeThing, index) in milepost.pro_develop"
                         :key="milePostSomeThing.index"
-                        :rules="[{min: 3, message: '最少2个字符',required: true, message: '请输入事件', trigger: 'blur'}]">
+                        :rules="[{min: 3, message: '最少2个字符',required: true, message: '请输入事件', trigger: 'blur'}]" class="width360">
                         <el-input v-model="milePostSomeThing.dh_event" placeholder="请添加"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
                       <el-form-item label="　　" v-for="(milePostSomeThing, index) in milepost.pro_develop"
-                                    :key="milePostSomeThing.index">
+                                    :key="milePostSomeThing.index" style="padding-left: 13px;">
                         <span class="imgdele" @click.prevent="removemilePost(milePostSomeThing)"><img
                           src="../../../assets/images/delete.png"></span>
                       </el-form-item>
