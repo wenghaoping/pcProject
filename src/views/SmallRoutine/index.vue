@@ -146,11 +146,12 @@ export default {
   }
   .titleTo{
     height: 60px;
-    width: 100%;
+    width: 90%;
     background: #40587a;
     position: absolute;
     top: 0px;
     left: 0px;
+    margin-left: 136px;
   }
 
 }

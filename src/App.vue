@@ -67,7 +67,7 @@
     },
 //    当dom一创建时
     created(){
-      if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
+       if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
         this.$router.push({ name: 'SmallRoutine'});
       }else{
 //        this.$router.push('/');

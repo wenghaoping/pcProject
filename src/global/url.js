@@ -35,28 +35,28 @@ export default
   deleteDevelop:"project/deleteDevelop",  //删除里程碑
   editProject:"project/editProject",  //项目编辑、新建
 
-  getOneCompany:"api/crawler/getOneCompany",  //获取公司信息
+  getOneCompany:"api/dataTeam/getOneCompany",  //获取公司信息
   setFileType:"project/setFileType",  //文件分组设置
 
   getWxProjectCategory:"api/category/getWxProjectCategory",  //编辑项目各种标签接口
   getArea:"api/category/getArea",  //二级城市接口
   createStatusPro:"api/category/createStatusPro",  //添加自定义运营状态
   createCustomTag:"api/category/createCustomTag",  //添加自定义标签/个人,团队
-  selectCompany:"api/crawler/selectCompany",  //公司名称提示
+  selectCompany:"api/dataTeam/selectCompany",  //公司名称提示
   getFileType:"api/category/getFileType",  //文件分组设置选项
   createFileType:"api/category/createFileType",  //添加文件分组设置
 
 
 
-  getCrawlerCompany:"api/crawler/getCrawlerCompany",  //一键尽调-公司
-  getCrawlerLeader:"api/crawler/getCrawlerLeader",  //一键尽调-公司高管
-  getCrawlerBrand:"api/crawler/getCrawlerBrand",  //一键尽调-商标
-  getCrawlerTeam:"api/crawler/getCrawlerTeam",  //一键尽调-核心成员
+  getCrawlerCompany:"api/dataTeam/getCrawlerCompany",  //一键尽调-公司
+  getCrawlerLeader:"api/dataTeam/getCrawlerLeader",  //一键尽调-公司高管
+  getCrawlerBrand:"api/dataTeam/getCrawlerBrand",  //一键尽调-商标
+  getCrawlerTeam:"api/dataTeam/getCrawlerTeam",  //一键尽调-核心成员
   getCrawlerHistoryFinance:"api/crawler/getCrawlerHistoryFinance",  //一键尽调-历史融资
-  getCrawlerMilestone:"api/crawler/getCrawlerMilestone",  //一键尽调-里程碑
-  getCrawlerNews:"api/crawler/getCrawlerNews",  //一键尽调-新闻
-  getCrawlerCompeting:"api/crawler/getCrawlerCompeting",  //一键尽调-竞品
-  getCrawlerProject:"api/crawler/getCrawlerProject",  //一键尽调-项目
+  getCrawlerMilestone:"api/dataTeam/getCrawlerMilestone",  //一键尽调-里程碑
+  getCrawlerNews:"api/dataTeam/getCrawlerNews",  //一键尽调-新闻
+  getCrawlerCompeting:"api/dataTeam/getCrawlerCompeting",  //一键尽调-竞品
+  getCrawlerProject:"api/dataTeam/getCrawlerProject",  //一键尽调-项目
 
 
 }

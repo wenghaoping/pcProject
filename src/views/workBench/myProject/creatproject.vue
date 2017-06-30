@@ -474,7 +474,7 @@ export default {
       })
     },
     goBack(){//返回上一层
-      this.$router.go(-1);
+      this.$router.push('/');
     },
     /*检查所有必填项目以及获取所有数据*/
     submitForm(formName) {

@@ -363,6 +363,7 @@ export default {
     color:#5e6d82;
     margin-top:48px;
     line-height: 23px;
+    margin-bottom: 24px;
     i{
       color:#475669;
       font-weight: bolder;

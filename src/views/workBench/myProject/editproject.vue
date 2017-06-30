@@ -1657,7 +1657,7 @@
         this[v] = false;
       },
       goBack(){//返回上一层
-        this.$router.go(-1);
+        this.$router.push('/');
       },
 
 
