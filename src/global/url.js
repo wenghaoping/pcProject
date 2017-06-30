@@ -52,7 +52,7 @@ export default
   getCrawlerLeader:"api/dataTeam/getCrawlerLeader",  //一键尽调-公司高管
   getCrawlerBrand:"api/dataTeam/getCrawlerBrand",  //一键尽调-商标
   getCrawlerTeam:"api/dataTeam/getCrawlerTeam",  //一键尽调-核心成员
-  getCrawlerHistoryFinance:"api/crawler/getCrawlerHistoryFinance",  //一键尽调-历史融资
+  getCrawlerHistoryFinance:"api/dataTeam/getCrawlerHistoryFinance",  //一键尽调-历史融资
   getCrawlerMilestone:"api/dataTeam/getCrawlerMilestone",  //一键尽调-里程碑
   getCrawlerNews:"api/dataTeam/getCrawlerNews",  //一键尽调-新闻
   getCrawlerCompeting:"api/dataTeam/getCrawlerCompeting",  //一键尽调-竞品
