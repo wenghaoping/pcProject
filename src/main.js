@@ -13,6 +13,7 @@ import { Notification } from 'element-ui';
 import './assets/css/base.css'
 import './assets/css/animate.css'
 import $ from 'jquery'
+import './global/jquery.fullPage'
 import tool from './global/tool.js';
 
 import axios from './config/api.js'//axios请求配置

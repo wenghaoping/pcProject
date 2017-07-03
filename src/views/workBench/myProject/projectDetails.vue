@@ -901,7 +901,7 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/index.less';
+  @import '../../../assets/css/projectDetail.less';
   #projectDetails{
     .el-dialog__header{
       padding-left:21px;
