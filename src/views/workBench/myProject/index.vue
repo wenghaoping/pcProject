@@ -30,8 +30,8 @@
     },
     methods: {
       handleIconClick(ev) {
-        console.log(ev);
-        console.log(this.input2);
+        this.$tool.console(ev);
+        this.$tool.console(this.input2);
       }
     }
   };

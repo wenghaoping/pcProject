@@ -57,7 +57,7 @@ export default {
         .then(res=>{
 //          clearInterval(this.timeout);
           let data=res.data;
-          console.log(res);
+          this.$tool.console(res);
           if(data.status_msg=="success"){
             clearInterval(this.timeout);
             if(data.type=="create") this.$router.push({ name: 'creatproject'});
@@ -69,11 +69,11 @@ export default {
             this.dialogVisible=true;
             this.checkout=false;
           }else if(data.status_msg=="continue") {
-            console.log("等待登陆")
+            this.$tool.console("等待登陆")
           }
         })
         .catch(err=>{
-          console.log(err)
+          this.$tool.console(err)
         })
     }//获取id
 
@@ -88,14 +88,14 @@ export default {
     setTimeout(() => {
       this.$http.get(this.URL.returnQrCredential)
         .then(res => {
-          console.log(res);
+          this.$tool.console(res);
           let data=res.data;
           this.qr=data.qr;
           sessionStorage.credential=data.credential;
           this.loadIn=false;
         })
         .catch(err => {
-          console.log(err);
+          this.$tool.console(err);
           this.alert("请刷新页面");
         });
       this.timeout = setInterval(() => {

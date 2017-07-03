@@ -393,7 +393,7 @@
           })
           .catch(err=>{
             this.loading=false;
-            console.log(err,2)
+            this.$tool.console(err,2)
           })
       },//搜索===首次进入页面加载的数据
 
@@ -440,7 +440,7 @@
           })
           .catch(err=>{
             this.loading=false
-            console.log(err,2)
+            this.$tool.console(err,2)
           })
       },//筛选 ascending升/descending降/
       filterChangeCurrent(page){
@@ -452,12 +452,12 @@
           .then(res=>{
             this.loading=false;
             let data = res.data.data;
-            console.log(res)
+            this.$tool.console(res)
             this.tableData=this.getProjectList(data);
           })
           .catch(err=>{
             this.loading=false
-            console.log(err,2)
+            this.$tool.console(err,2)
           })
       },//控制页码
       setNode(v){
@@ -482,7 +482,7 @@
           })
           .catch(err=>{
             this.loading=false
-            console.log(err,2)
+            this.$tool.console(err,2)
           })
 
       },//控制顶部样式并且筛选
@@ -549,7 +549,7 @@
         this.$http.post(titleSiftURL,{user_id: sessionStorage.user_id})
           .then(res=>{
             let data = res.data.data
-//            console.log(data)
+//            this.$tool.console(data)
             let pro_area=data.pro_area;//地区
             let pro_industry=data.pro_industry;//领域
             let pro_scale=data.pro_scale;//期望融资
@@ -566,20 +566,9 @@
           })
           .catch(err=>{
             this.loading=false;
-            console.log(err,2)
+            this.$tool.console(err,2)
           })
       },// 获取表头
-
-      getTitleSiftpro_source(data){
-        let arr = [];
-        for(let key in data){
-          let obj=new Object;
-          obj.text=data[key]
-          obj.value=data[key]
-          arr.push(obj)
-        }
-        return arr
-      },//设置表头项目来源,与其他不同单独设置
 
       /*以下都是辅助函数*/
       getProjectPro_industry(arr){

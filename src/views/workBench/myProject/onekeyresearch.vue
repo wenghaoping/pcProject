@@ -286,9 +286,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import companyMessage from './companyMessage.vue'
-import business from './business.vue'
-import downloadechart from './downloadEchart.vue'
+import companyMessage from './onkeyresearch/companyMessage.vue'
+import business from './onkeyresearch/business.vue'
+import downloadechart from './onkeyresearch/downloadEchart.vue'
 export default {
   props: ["dialogVisible","companyId","compName"],
   data () {
@@ -296,8 +296,8 @@ export default {
       compname: "",//一键尽调公司的名称
       com_id: 0,//公司Id
       conmanyName: '3',
-      productMessage: '产品信息(3)',
-      recruitMessage: '招聘信息(29)',
+      productMessage: '产品信息',
+      recruitMessage: '招聘信息',
       recruitData: [{
         position: 'JAVA',
         money: '20-30K',
@@ -311,13 +311,6 @@ export default {
         address: "北京",
         date: '2016-05-04'
       }],
-      images: [
-        {url: "../../../../static/lanren_01.jpg"},
-        {url: "../../../../static/lanren_02.jpg"},
-        {url: "../../../../static/lanren_03.jpg"},
-        {url: "../../../../static/lanren_04.jpg"},
-        {url: "../../../../static/lanren_05.jpg"}
-      ],
 
       /*项目信息*/
       project: [
@@ -390,7 +383,6 @@ export default {
       ],
       loading:false
 
-
     }
   },
   methods: {
@@ -421,7 +413,7 @@ export default {
         date: '2016-05-04'
       })
     },
-  getTimeMilestone(data){
+    getTimeMilestone(data){
     for(let i=0; i<data.length; i++){
       var newDate = new Date();
       newDate.setTime(data[i].milestone_time * 1000);
@@ -444,7 +436,7 @@ export default {
           this.team = res.data.data;
         })
         .catch(err => {
-          console.log(err);
+          this.$tool.console(err);
         })
     },//获取核心成员
     getCrawlerHistoryFinance(){
@@ -457,7 +449,7 @@ export default {
           this.getTimeFinancing(this.history_finance);
         })
         .catch(err => {
-          console.log(err);
+          this.$tool.console(err);
         })
     },//获取历史融资
     getCrawlerMilestone(){
@@ -470,7 +462,7 @@ export default {
           this.getTimeMilestone(this.milestone_list);
         })
         .catch(err => {
-          console.log(err);
+          this.$tool.console(err);
         })
     },//获取里程碑
     getCrawlerNews(){
@@ -482,7 +474,7 @@ export default {
           this.news = res.data.data;
         })
         .catch(err => {
-          console.log(err);
+          this.$tool.console(err);
         })
     },//获取新闻
     getCrawlerCompeting(){
@@ -494,7 +486,7 @@ export default {
           this.competing = res.data.data;
         })
         .catch(err => {
-          console.log(err);
+          this.$tool.console(err);
         })
     },//获取竞品
     getCrawlerProject(){
@@ -508,7 +500,7 @@ export default {
           this.loading=false;
         })
         .catch(err => {
-          console.log(err);
+          this.$tool.console(err);
         })
     },//获取项目
     getProjectIndustry(data){

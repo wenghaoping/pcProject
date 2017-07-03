@@ -136,7 +136,7 @@ export default {
     //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
     handleChange(file, fileList) {
       this.loading=true;
-//      console.log(file);
+//      this.$tool.console(file);
 //      let type=file.name.substr(file.name.length-3,3)
       this.$emit('changeupload',false)
       this.dialogUpload2Visible=true;
@@ -146,7 +146,7 @@ export default {
         this.loadingcheck=false;
 //        this.number=0;
       }
-      console.log(this.num,this.number);
+      this.$tool.console(this.num,this.number);
       if(parseInt(this.num)==parseInt(this.number)){
         this.alentTitle="";
         this.number=0;
@@ -157,7 +157,7 @@ export default {
         this.number++;
         let data=response.data;
         if(response.status_code==2000000) {
-          this.success("上传成功");
+          this.$tool.success("上传成功");
           this.addDomain(data.pro_intro,data.pro_name,data.file_title,data.project_id);
           this.loadingcheck=true;
         }
@@ -165,10 +165,10 @@ export default {
     uploaderror(err, file, fileList){
       this.loading=false;
       this.loadingcheck=true;
-      this.alert("上传失败");
+      this.$tool.error("上传失败");
     },
     handlePreview(file) {
-      console.log(file);
+      this.$tool.console(file);
     },
     beforeUpload(file){
       this.alentTitle="上传中.....";
@@ -187,7 +187,7 @@ export default {
       }
       this.loading=false;
       if(!isnext){
-        this.alert("不支持的文件格式");
+        this.$tool.error("不支持的文件格式");
         this.alentTitle="不支持的文件格式";
         this.number=0;
         this.num=0;
@@ -195,14 +195,14 @@ export default {
       }
 
       if(parseInt(file.size) > parseInt(20971521)){
-        this.alert("暂不支持超过20m文件上传哦");
+        this.$tool.error("暂不支持超过20m文件上传哦");
         this.alentTitle="暂不支持超过20M文件上传哦";
         this.number=0;
         this.num=0;
         return false;
       }
       if(parseInt(this.num) > parseInt(5)){
-        this.alert("一次最多选择5个文件");
+        this.$tool.error("一次最多选择5个文件");
         this.alentTitle="一次最多选择5个文件";
         this.num=0;
         this.number=0;
@@ -221,7 +221,7 @@ export default {
           const saveUploadURL=this.URL.saveUpload
           this.$http.post(saveUploadURL,obj)
             .then(res=>{
-              console.log(res)
+              this.$tool.console(res)
               if(res.status===200){
                 this.dialogUpload2Visible=false;
                 this.$emit('reload', true);
@@ -229,12 +229,12 @@ export default {
                 this.fileList=[];
               }
             }).catch(err=>{
-            console.log(err)
+            this.$tool.console(err)
 //            this.closeLoading();
           })
           this.$refs.upload.submit();
         } else {
-          console.log('error submit!!');
+          this.$tool.console('error submit!!');
           return false;
         }
       });
@@ -255,12 +255,12 @@ export default {
         .then(res=>{
           if(res.status===200){
             this.loading=false;
-            this.success("删除成功");
+            this.$tool.success("删除成功");
           }
-            console.log(res)
+            this.$tool.console(res)
         })
         .catch(err=>{
-          console.log(err)
+          this.$tool.console(err)
 
         })
     },
@@ -279,18 +279,18 @@ export default {
         .then(_ => {
 
           let arr=this.dateForm.domains
-          console.log(this.dateForm.domains);
+          this.$tool.console(this.dateForm.domains);
           for(let i=0; i<arr.length; i++){
             this.$http.post(this.URL.deleteUpload,{user_id: sessionStorage.user_id,project_id:arr[i].project_id})
             .then(res=>{
               if(res.status===200){
               this.loading=false;
-              this.success("删除成功");
+              this.$tool.success("删除成功");
             }
-              console.log(res)
+              this.$tool.console(res)
             })
             .catch(err=>{
-              console.log(err)
+              this.$tool.console(err)
             })
           }
           this.$emit('changeupload',false);
@@ -314,23 +314,6 @@ export default {
           done()
         })
         .catch(_ => {});
-    },
-    /*警告弹窗*/
-    alert(text) {
-      this.$notify.error({
-        message: text,
-        offset: 300,
-        duration:2000
-      });
-    },
-    /*成功弹窗*/
-    success(text) {
-      this.$notify({
-        message: text,
-        type: 'success',
-        offset: 300,
-        duration:2000
-      })
     },
   }
 }

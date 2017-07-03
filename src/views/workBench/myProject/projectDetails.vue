@@ -762,17 +762,17 @@
         window.location.href=url;
       },//下载文件
       searchChange(queryString){
-        console.log(queryString)
+        this.$tool.console(queryString)
         this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
           .then(res=>{
             this.seachCompanys=[];
             let data =res.data.data;
             if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
             else this.seachCompanys=data;
-            console.log(res);
+            this.$tool.console(res);
           })
           .catch(err=>{
-            console.log(err);
+            this.$tool.console(err);
           })
       },
       goOnkey(){
@@ -795,12 +795,12 @@
             })
             .catch(err => {
 //          this.alert("加载失败");
-              console.log(err);
+              this.$tool.console(err);
             })
         }
       },//一键尽调按钮
       search(data){
-        if(data.com_id==-1) alert("请输入公司")
+        if(data.com_id==-1) this.$tool.error("请输入公司")
         else {
           this.companyid=data.com_id;
           this.companyname=data.company_name;
@@ -813,14 +813,13 @@
       handleClick:function(tab, event){
         this.show = tab.name ;
       },
-      goBack(){//返回上一层
+      goBack(){
         this.$router.go(-1);
-      },
+      },//返回上一层
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
       },//传递给一键尽调窗口
       dialogVisiblechangeIn(msg){
-          console.log(msg);
         this.dialogSearchVisible=msg;
       },//传递给一键尽调搜索窗口
       getLocalTime(data) {
@@ -872,7 +871,7 @@
           })
           .catch(err=>{
             this.loading=false;
-            console.log(err,2)
+            this.$tool.console(err,2)
           })
       },//获取项目详情数据
       toEdit(){
@@ -880,14 +879,6 @@
       },
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
-      },
-      /*警告弹窗*/
-      alert(text) {
-        this.$notify.error({
-          message: text,
-          offset: 300,
-          duration:1000
-        });
       },
     },
     created () {
