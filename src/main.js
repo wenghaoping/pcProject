@@ -7,7 +7,6 @@ import router_config from './config/router_config.js'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
-import { Notification } from 'element-ui';
 
 //引入自己的CSS,格式化样式
 import './assets/css/base.css'
@@ -21,9 +20,6 @@ Vue.prototype.$http = axios;
 
 import URL_ from './global/url.js'//URL请求地址汇总
 Vue.prototype.URL = URL_;
-
-// import qrCode from './global/qrCode.js'//生成二维码地址
-// Vue.prototype.$QRCode = qrCode;
 
 
 Vue.use(Element);//UI库

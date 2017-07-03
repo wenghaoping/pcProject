@@ -4,28 +4,8 @@
 /**
  * 总的工具类
  */
+import { Notification } from 'element-ui';
 const tool={
-
-  bindFormData (data) {
-    if ((data == null) || (data == "") || (data == undefined)) {
-      return;
-    }
-    if (typeof (data) != "object") {
-      return;
-    }
-    for ( var key in data) {
-      var element=$("#"+key) ;
-
-      if (element.length==0) {
-        continue ;
-      }
-      if (element.attr("type")=="checkbox"){
-        element.attr("checked",true);
-        continue;
-      }
-      element.val(data[key]);
-    }
-  }, //*数组封装将对象中无用的参数去除
 
   getToObject (data) {
     let object={};
@@ -41,7 +21,7 @@ const tool={
       newArr[i]=tool.getToObject(data[i])
     }
     return newArr;
-  },
+  },//*数组封装将对象中无用的参数去除
 
   fileChange(target) {
   let isIE = /msie/i.test(navigator.userAgent) && !window.opera;
@@ -105,16 +85,52 @@ const tool={
     return arr
   },//设置表格表头的筛选内容======表格页都用的到
 
-  getSelectValue(data){
-    let arr = [];
-    for(let key in data){
-      let obj=new Object;
-      obj.label=data[key]
-      obj.value=key
-      arr.push(obj)
+  getNull(data) {
+    let reg=/\S/;
+    if (!reg.test(data))
+    {
+      return true;
+    }else{
+      return false;
     }
-    return arr
-  }//设置选择器的内容=====选择器远程设置内容用的到
+
+  },//判断是不是空(空字符串也算是空)
+
+  checkNumber(data) {
+    let reg = /^[0-9]+.?[0-9]*$/;
+    if (reg.test(data)) {
+      return true;
+    }
+    return false;
+  },//判断是不是数字
+
+  error(text) {
+    Notification.error({
+      message: text,
+      offset: 300,
+      duration:1000
+    })
+  },//错误弹窗(所有的错误调用,红色叉)
+  success(text) {
+    Notification.success({
+      message: text,
+      offset: 300,
+      duration:1000
+    })
+  },//成功弹窗(绿钩)
+  warning(text) {
+    Notification.warning({
+      message: text,
+      offset: 300,
+      duration:1000
+    })
+  },//警告弹窗,(黄色叹号)
+
+  console(text) {
+    let type=true;//true代表开发环境,false代表上线环境
+    if(type) console.log(text);
+  },//console控制
+
 }
 
 export default{

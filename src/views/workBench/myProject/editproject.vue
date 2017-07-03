@@ -989,7 +989,7 @@
 
       };
       var checkFinance = (rule, value, callback) => {
-          console.log(value);
+          this.$tool.console(value);
          if (!value) {
           return callback(new Error('不能为空'));
          }
@@ -1087,8 +1087,8 @@
         else this.signPerfect = false;
 
 
-/*              console.log(parseInt(((sum-number)/sum)*100))
-         console.log(parseInt(number/sum))*/
+/*              this.$tool.console(parseInt(((sum-number)/sum)*100))
+         this.$tool.console(parseInt(number/sum))*/
 
         return parseInt(((sum - number) / sum) * 100)
       },
@@ -1188,7 +1188,7 @@
             this.groups.group = this.getFileType(data);
           })
           .catch(err => {
-            console.log(err)
+            this.$tool.console(err)
           })
       },//设置文件分组标签
       getWxProjectCategory(){
@@ -1209,7 +1209,7 @@
             this.company_scale = this.getCompany_scale(data.company_scale);//设置公司规模几人
           })
           .catch(err => {
-            console.log(err)
+            this.$tool.console(err)
             //            this.loading=false;
           })
       },//获取所有下拉框的数据
@@ -1220,7 +1220,7 @@
             this.area2 = this.getCity(data);
           })
           .catch(err => {
-            console.log(err)
+            this.$tool.console(err)
           })
 
       },//设置二级城市下拉列表1
@@ -1238,7 +1238,7 @@
 
           })
           .catch(err => {
-            console.log(err)
+            this.$tool.console(err)
           })
 //
       },//设置二级城市下拉列表2
@@ -1412,7 +1412,7 @@
           })
           .catch(err => {
             this.loading = false
-            console.log(err, 2)
+            this.$tool.console(err, 2)
           })
       },//获取项目详情数据
 
@@ -1423,12 +1423,12 @@
         else this.planButton = false;
       },
       planuploadsuccess(response, file, fileList){
-        this.success("上传成功")
+        this.$tool.success("上传成功")
         let data = response.data
         this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id)
       },//上传成功后添加字段
       planuploaderror(err, file, fileList){
-        this.alert("上传失败,请联系管理员")
+        this.$tool.error("上传失败,请联系管理员")
       },//上传失败
       planRemove(file, fileList) {
         const deleteAtUpload = this.URL.deleteAtUpload;
@@ -1442,7 +1442,7 @@
             }
           })
           .catch(err => {
-            console.log(err)
+            this.$tool.console(err)
 //            this.alert("删除失败,请联系管理员")
           })
 
@@ -1479,11 +1479,11 @@
         }
         this.loading=false;
         if(!isnext){
-          this.alert("不支持的文件格式");
+          this.$tool.error("不支持的文件格式");
           return false;
         }
         if(parseInt(file.size) > parseInt(20971521)){
-          this.alert("暂不支持超过20M文件上传哦");
+          this.$tool.error("暂不支持超过20M文件上传哦");
           return false;
         };
       },//上传前的验证
@@ -1505,15 +1505,15 @@
         }
         this.loading=false;
         if(!isnext){
-          this.alert("不支持的文件格式");
+          this.$tool.error("不支持的文件格式");
           return false;
         }
         if(parseInt(file.size) > parseInt(20971521)){
-          this.alert("暂不支持超过20m文件上传哦");
+          this.$tool.error("暂不支持超过20m文件上传哦");
           return false;
         };
         if(parseInt(this.num) > parseInt(5)){
-          this.alert("一次最多选择5个文件");
+          this.$tool.error("一次最多选择5个文件");
           this.num=0;
           return false;
         }
@@ -1528,12 +1528,12 @@
       },
       uploadsuccess(response, file, fileList){
         let data = response.data
-        this.success("上传成功")
+        this.$tool.success("上传成功")
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type);
         this.loadingcheck=true;
       },
       uploaderror(err, file, fileList){
-        this.alert("上传失败,请联系管理员")
+        this.$tool.error("上传失败,请联系管理员")
         this.loadingcheck=false;
         this.loading=false;
       },//上传失败
@@ -1561,12 +1561,12 @@
               if (res.status === 200) {
                 this.loading = false;
                 this.uploadShow2.lists.splice(index, 1)
-                this.success("删除成功")
+                this.$tool.success("删除成功")
               }
             })
             .catch(err => {
-              console.log(err)
-              this.alert("删除失败,请联系管理员")
+              this.$tool.console(err)
+              this.$tool.error("删除失败,请联系管理员")
             })
         }
       },//删除当前上传文件
@@ -1610,10 +1610,10 @@
                   this.groups.input = ''
               })
               .catch(err => {
-                console.log(err)
+                this.$tool.console(err)
               })
           } else {
-            console.log('error submit!!');
+            this.$tool.console('error submit!!');
             return false;
           }
         });
@@ -1638,7 +1638,7 @@
             }
           })
           .catch(err => {
-            console.log(err)
+            this.$tool.console(err)
           })
 
       },//发送分组设置请求
@@ -1689,7 +1689,7 @@
           })
           .catch(err => {
 //          this.alert("加载失败");
-            console.log(this.restaurants);
+            this.$tool.console(this.restaurants);
           })
       },
       createStateFilter(queryString) {
@@ -1702,12 +1702,12 @@
         this.$http.post(this.URL.getOneCompany, {user_id: sessionStorage.user_id, com_id: item.address})
           .then(res => {
             let data = res.data.data;
-            console.log(this.$tool.getToObject(data))
+            this.$tool.console(this.$tool.getToObject(data))
             this.queryData = data;
           })
           .catch(err => {
-            this.alert("获取失败");
-            console.log(err);
+            this.$tool.error("获取失败");
+            this.$tool.console(err);
           });
         this.dialogVisible = true;
       },//选择了搜索出来的数据后
@@ -1744,8 +1744,8 @@
             this.form.state="";
           })
           .catch(err => {
-            alert("添加失败");
-            console.log(err);
+            this.$tool.error("添加失败");
+            this.$tool.console(err);
           })
 
 
@@ -1765,8 +1765,8 @@
               /*this.tags.changepro.push(res.data.tag_id);*/
             })
             .catch(err => {
-              alert("添加失败");
-              console.log(err);
+              this.$tool.error("添加失败");
+              this.$tool.console(err);
             })
         }
       },//添加项目标签
@@ -1784,8 +1784,8 @@
               /*this.tags.changeTeam.push(res.data.tag_id);*/
             })
             .catch(err => {
-              alert("添加失败");
-              console.log(err);
+              this.$tool.error("添加失败");
+              this.$tool.console(err);
             })
         }
 //        else{
@@ -1806,8 +1806,8 @@
               /*this.tags.changesource.push(res.data.tag_id);*/
             })
             .catch(err => {
-              alert("添加失败");
-              console.log(err);
+              this.$tool.error("添加失败");
+              this.$tool.console(err);
             })
         }
         /*else{
@@ -1829,15 +1829,15 @@
              project_ct_id: item.project_ct_id
            })
            .then(res => {
-            this.success("删除成功");
+             this.$tool.success("删除成功");
              let index = this.team.core_users.indexOf(item);
              if (index !== -1) {
                this.team.core_users.splice(index, 1)
              }
            })
            .catch(err => {
-             this.alert("删除失败");
-             console.log(err);
+             this.$tool.error("删除失败");
+             this.$tool.console(err);
            })
         }
       },
@@ -1865,15 +1865,15 @@
               history_id: item.history_id
             })
               .then(res => {
-                this.success("删除成功");
+                this.$tool.success("删除成功");
                 let index = this.financing.pro_history_finance.indexOf(item);
                 if (index !== -1) {
                   this.financing.pro_history_finance.splice(index, 1)
                 }
               })
               .catch(err => {
-                this.alert("删除失败");
-                console.log(err);
+                this.$tool.error("删除失败");
+                this.$tool.console(err);
               })
           }
 
@@ -1902,15 +1902,15 @@
               project_dh_id: item.project_dh_id
             })
               .then(res => {
-                this.success("删除成功");
+                this.$tool.success("删除成功");
                 let index = this.milepost.pro_develop.indexOf(item)
                 if (index !== -1) {
                   this.milepost.pro_develop.splice(index, 1)
                 }
               })
               .catch(err => {
-                this.alert("删除失败");
-                console.log(err);
+                this.$tool.error("删除失败");
+                this.$tool.console(err);
               })
           }
       },
@@ -1949,16 +1949,16 @@
       getMemberHunder(data){
         let check=true;
         for(let i=0; i<data.length; i++){
-          if(this.getNull(data[i].stock_scale)){
+          if(this.$tool.getNull(data[i].stock_scale)){
 
           }else{
-            if(this.checkNumber(parseFloat(data[i].stock_scale))){
+            if(this.$tool.checkNumber(parseFloat(data[i].stock_scale))){
               if(parseFloat(data[i].stock_scale)>100) {
-                this.alert("核心团队股权比例不能大于100");
+                this.$tool.error("核心团队股权比例不能大于100");
                 check=false;
               }
             }else{
-              this.alert("核心团队股权比例必须为数字");
+              this.$tool.error("核心团队股权比例必须为数字");
               check=false;
             }
           }
@@ -1968,16 +1968,16 @@
       },//判断成员股权比例
       getNumberFull(data,title1,title2){
         let check=true;
-        if(this.getNull(data)){
+        if(this.$tool.getNull(data)){
 
         }else {
-          if (this.checkNumber(parseFloat(data))) {
+          if (this.$tool.checkNumber(parseFloat(data))) {
             if (parseFloat(data) > 100) {
-              this.alert(title1);
+              this.$tool.error(title1);
               check = false;
             }
           } else {
-            this.alert(title2);
+            this.$tool.error(title2);
             check = false;
           }
         }
@@ -1988,42 +1988,24 @@
           if(data[i].pro_finance_scale=="")  data[i].pro_finance_scale=0;
         }
       },//期望融资,融资金额
-      getNull(data) {
-        let reg=/\S/;
-        if (!reg.test(data))
-        {
-          return true;
-        }else{
-          return false;
-        }
-
-      },//判断是不是空
       getNumber(data){
         let check=true;
-        console.log(data);
-        if(this.getNull(data)){
+        if(this.$tool.getNull(data)){
 
         }else{
-          if(this.checkNumber(parseFloat(data))){
+          if(this.$tool.checkNumber(parseFloat(data))){
             if(parseInt(data)>99999999) {
-              this.alert("项目估值必须小于99999999");
+              this.$tool.error("项目估值必须小于99999999");
               check=false;
             }
           }else{
-            this.alert("项目估值必须为数字");
+            this.$tool.error("项目估值必须为数字");
             check=false;
           }
 
         }
         return check;
       },//判断是数字小雨99999
-      checkNumber(theObj) {
-        let reg = /^[0-9]+.?[0-9]*$/;
-        if (reg.test(theObj)) {
-          return true;
-        }
-          return false;
-      },//判断是不是数字
 
       setTag(arr,pro){
         for(let i=0; i<pro.length; i++){
@@ -2046,18 +2028,18 @@
         this.milepostMust = !this.submitForm('milepost');
 //        if (this.fileMust) this.alert("请添加商业计划书")
 //        else
-            if (this.projectMust) this.alert("项目介绍必填项不能为空")
-        else if (this.teamMust) this.alert("核心团队必填项不能为空")
-        else if (this.financingMust) this.alert("融资信息必填项不能为空")
-        else if (this.milepostMust) this.alert("里程碑必填项不能为空")
+            if (this.projectMust) this.$tool.error("项目介绍必填项不能为空")
+        else if (this.teamMust) this.$tool.error("核心团队必填项不能为空")
+        else if (this.financingMust) this.$tool.error("融资信息必填项不能为空")
+        else if (this.milepostMust) this.$tool.error("里程碑必填项不能为空")
         else if (!this.getMemberHunder(this.team.core_users)) {}
-        else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){console.log("投后股份没过")}
-        else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字")){console.log("签约没过")}
-        else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字")){console.log("股权赠与没过")}
-        else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字")){console.log("跟投权没过")}
-        else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字")){console.log("其他权益没过")}
-        else if (!this.getNumber(this.financing.pro_finance_value)){console.log("pro_finance_value没过")}
-        else if (this.getNull(this.project.pro_intro)){this.alert("项目介绍不能为空")}
+        else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){this.$tool.console("投后股份没过")}
+        else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字")){this.$tool.console("签约没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字")){this.$tool.console("股权赠与没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字")){this.$tool.console("跟投权没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字")){this.$tool.console("其他权益没过")}
+        else if (!this.getNumber(this.financing.pro_finance_value)){this.$tool.console("pro_finance_value没过")}
+        else if (this.$tool.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else{
           this.loading=true;
           let allData = {};
@@ -2101,7 +2083,7 @@
           this.getMemberScale(allData.pro_core_team);
           this.getFinance(allData.pro_history_finance);
 
-          console.log(allData,2);
+          this.$tool.console(allData,2);
 
           this.$http.post(this.URL.editProject, allData)
             .then(res => {
@@ -2109,8 +2091,8 @@
               this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '继续编辑')
             })
             .catch(err => {
-              alert("编辑失败");
-              console.log(err);
+              this.$tool.error("编辑失败");
+              this.$tool.console(err);
             })
 
         }
@@ -2129,23 +2111,6 @@
           }]*/
       },
 
-      /*警告弹窗*/
-      alert(text) {
-        this.$notify.error({
-          message: text,
-          offset: 300,
-          duration:1000
-        });
-      },
-      /*成功弹窗*/
-      success(text) {
-        this.$notify({
-          message: text,
-          type: 'success',
-          offset: 300,
-          duration:1000
-        })
-      },
       /*编辑成功弹窗*/
       open2(title, main, confirm, cancel) {
         this.$confirm(main, title, {

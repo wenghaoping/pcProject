@@ -48,11 +48,11 @@
       return {
         active: 1,
         tabs: [
-/*          {type: '首页',jump:'/index'},*/
+          {type: '首页',jump:'/index'},
           {type: '工作台',jump:'/'},
 //                   {type: '扫码登陆',jump:'/logining'},
-           /*      {type: '测试页面',jump:'/test'},
-          {type: '测试页面2',jump:'/test2'}*/
+              {type: '测试页面',jump:'/test'},
+            /*           {type: '测试页面2',jump:'/test2'}*/
         ],
         user_name:sessionStorage.user_real_name
       }
@@ -67,20 +67,20 @@
     },
 //    当dom一创建时
     created(){
-       if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
+/*       if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
         this.$router.push({ name: 'SmallRoutine'});
       }else{
 //        this.$router.push('/');
         this.active=0;
-      }
+      }*/
 
-//      this.$router.push('/');
-//      this.setUserId();
+      this.$router.push('/');
+      this.setUserId();
 
     },
     watch : {
       user_name : function(e){
-        console.log(e,1);
+        this.$tool.console(e,1);
       }
     }
   }
