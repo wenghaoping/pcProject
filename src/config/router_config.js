@@ -1,6 +1,12 @@
 /*路由配置*/
 /*===============================首页路由配置=======================================*/
 import index from '@/views/index/index.vue'
+/*===============================登录路由配置=======================================*/
+import login from '@/views/login/login.vue'
+import forgetPassword from '@/views/login/forgetPassword.vue'
+import bindTelephone from '@/views/login/bindTelephone.vue'
+import telephoneLogin from '@/views/login/telephoneLogin.vue'
+import codeLogin from '@/views/login/codeLogin.vue'
 
 
 /*===============================工作台首页路由配置=================================*/
@@ -45,7 +51,6 @@ export default [
 
   {
     path: '',component: workBench,
-
     children:[
       // { path: '', component: indexmyProject},
       { path: '/', component: indexmyProject,
@@ -61,10 +66,23 @@ export default [
     ]
   },
   {
-    path: '/index', name: 'index', component: index
+    path: '/index', name: 'index', component: index,
+    children:[
+      { path:'telephoneLogin',name:'telephonePhone',component:telephoneLogin},
+      { path:'codeLogin',name:'codeLogin',component:codeLogin},
+    ]
   },
   {
     path: '/logining', name: 'SmallRoutine', component: SmallRoutine
+  },
+  {
+    path: '/login', name: 'login', component:login
+  },
+  {
+    path: '/forgetPassword', name: 'forgetPassword', component:forgetPassword
+  },
+  {
+    path: '/bindTelephone', name: 'bindTelephone', component:bindTelephone
   },
   {
     path: '/test', name: 'test', component: checkone
