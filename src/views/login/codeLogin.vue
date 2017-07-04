@@ -1,7 +1,12 @@
 <template>
     <div id="codeLogin">
-      <h1>我是密码登录</h1>
-    </div>
+        <input class="telephone" placeholder="请输入常用手机号码">
+        <input class="code" placeholder="请输入密码">
+        <div class="clearfix">
+          <el-button class="fr" type="text" @click="forgetPassword">忘记密码?</el-button>
+        </div>
+        <el-button class="loginBtn tc">登录</el-button>
+      </div>
 </template>
 
 
@@ -10,10 +15,14 @@
         data () {
             return {}
         },
-        methods: {}
+        methods: {
+            forgetPassword(){
+              this.$router.push('/forgetPassword')
+            },
+        }
     }
 </script>
 
 <style scoped lang="less">
-
+  @import "../../assets/css/login.less";
 </style>

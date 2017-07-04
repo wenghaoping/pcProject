@@ -1,6 +1,11 @@
 <template>
     <div id="telephoneLogin">
-      <h1>我是验证码登录</h1>
+        <input class="telephone" placeholder="请输入常用手机号码">
+      <div class="codeFrame">
+        <input class="code" placeholder="请输入验证码">
+        <el-button type="text" @click="getCode">获取验证码</el-button>
+      </div>
+      <el-button class="loginBtn tc">登录/注册</el-button>
     </div>
 </template>
 
@@ -10,10 +15,14 @@
         data () {
             return {}
         },
-        methods: {}
+        methods: {
+            getCode(){
+
+            },
+        }
     }
 </script>
 
 <style scoped lang="less">
-
+  @import "../../assets/css/login.less";
 </style>

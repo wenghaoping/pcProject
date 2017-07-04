@@ -20,10 +20,10 @@
               <img src="./assets/images/arrow.png">
             </div>
           </div>
-        <li v-if="user_name" style="float: right">
+        <li v-if="user_name" style="float: right;margin-right: 359px;">
           {{user_name}}
         </li>
-        <li v-else style="float: right" @click="login">
+        <li v-else style="float: right;margin-right: 359px;" @click="login">
           登录
         </li>
       </ul>
@@ -68,7 +68,7 @@
         sessionStorage.user_id='2rzyz5vp';
       },
       login(){
-          this.$router.push('login')
+          this.$router.push('/login')
       }
     },
 //    当dom一创建时
@@ -80,7 +80,7 @@
         this.active=0;
       }*/
 
-      this.$router.push('index');
+      this.$router.push('/identityDetail');
       this.setUserId();
 
     },
