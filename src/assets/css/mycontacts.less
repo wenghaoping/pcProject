@@ -1,128 +1,40 @@
 @charset "utf-8";
-#myproject{
-
+#mycontacts{
+  .el-dialog__header{
+    padding-left: 20px;
+  }
   .wrap-left{
     width:1336px;
     background: #fff;
-    .top-menus{
-      padding:4px 24px;
-      .el-tabs{
-        .el-tabs__header{
-          border:none;
-        }
-      }
-    }
-    .top-big-progress{
-      .pp-item{
-        float: left;
-      }
-      .pp-num{
-        font-size: 26px;
-        color: #1f2d3d;
-      }
-      .pp-node{
-        width: 90px;
-        margin:10px 0;
-        border-radius:4px;
-        height:68px;
-        text-align: center;
-        color:#000;
-        cursor: pointer;
-        .pp-txt{
-          width:100%;
-          padding-top:10px;
-          line-height: 26px;
-        }
-        .pp-sec-title{
-          display: inline-block;
-          font-size: 14px;
-          line-height: 14px;
-          margin-top: 5px;
-          color:#475669;
-        }
-      }
-      .pp-start{
-        margin: 10px 0 10px 24px;
-      }
-      .pp-cur{
-        background:#40587a!important;
-        color:#fff;
-        .pp-num,.pp-sec-title{
-          color:#fff ;
-        }
-      }
-      .pp-lines{
-        margin-left: 7px;
-        margin-right: 7px;
-        position: relative;
-        .lp-line{
-          width:296px;
-          height: 1px;
-          display: inline-block;
-          background: #e0e6ed;
-          margin-top:43.5px;
-        }
-        .circle{
-          position: absolute;
-          width:8px;
-          height: 8px;
-          z-index: 2;
-          top:40.5px;
-          left:0;
-          border-radius: 10px;
-          border:1px solid #c0ccda;
-          background: #fff;
-          cursor: pointer;
-        }
-        .circle-0{
-          left:28%;
-        }
-        .circle-1{
-          left:19.9%;
-        }
-        .circle-2{
-          left:39.9%;
-        }
-        .circle-3{
-          left:59.9%;
-        }
-        .circle-4{
-          left:79.9%;
-        }
-        .circle-5{
-          left:68.9%;
-        }
-      }
-    }
-    .clearfx{
-      clear: both;
-      height: 0;
-    }
-    .top-search-box{
-      padding: 10px 24px;
-      .input-box{
-        height: 36px;
-        line-height: 36px;
-        width:336px;
-        border-radius:5px;
-        .el-input{
-          .el-input__inner{
-            font-size: 14px;
-            background:#e5e9f2;
-            border:0px;
-            border-radius: 2px;
-          }
-        }
-      }
-      .btns-box{
-        float: right;
-        margin-top: -36px;
-        .el-button--primary{
-          border-radius: 2px;
-        }
-      }
-    }
+
     .top-lists{
+      .img{
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background:#eff2f7;
+        line-height: 36px;
+        text-align: center;
+        font-size:14px;
+        color:#40587a;
+        img{
+          width: 100%;
+        }
+      }
+      .add{
+        width: 35px;
+        height: 25px;
+        margin-top: 11px;
+        padding-left: 8px;
+        img{
+          width: 100%;
+        }
+      }
+      .name{
+        margin-left: 16px;
+        line-height: 36px;
+      }
+
       .table-thead{
         background:#e5e9f2;
         width:100%;
@@ -138,8 +50,8 @@
         }
       }
       .item-1{
-        width:184px;
-        max-width: 184px;
+        width:211px;
+        max-width: 211px;
         padding-left: 24px !important;
       }
       .item-2{
@@ -265,10 +177,16 @@
             padding-left:24px;
           }
         }
-        .el-table_1_column_12{
+        .el-table_1_column_11{
           .cell{
             color:#20a0ff;
             cursor: pointer;
+          }
+        }
+
+        .el-table_1_column_1{
+          .cell{
+            margin-left: 53px;
           }
         }
       }
@@ -336,61 +254,99 @@
         }
       }
     }
-    .pagenav{
-      text-align: right;
-      height: 45px;
-      padding-top: 10px;
-      background: #f3f4f8;
-      button,.number{
-        background: transparent;
-      }
-      .active{
-        background: #20a0ff;
+    .top-search-box {
+      padding: 10px 24px;
+      .input-box {
+        height: 36px;
+        line-height: 36px;
+        width: 320px;
+        border-radius: 5px;
+        .el-input {
+          .el-input__inner {
+            font-size: 14px;
+            background: #e5e9f2;
+            border: 0px;
+            border-radius: 2px;
+          }
+        }
       }
     }
-  }
-  .wrap-right{
-    width:336px;
-    background: #fff;
-  }
-  .el-tag--primary{
-    color:#20a0ff;
+
   }
   .pagenav{
-    margin-top: 2px;
-    .el-pagination{
-      text-align: right;
+    text-align: right;
+    height: 45px;
+    padding-top: 10px;
+    background: #f3f4f8;
+    button,.number{
+      background: transparent;
+    }
+    .active{
+      background: #20a0ff;
     }
   }
-  .contain-right-2{
-    width: 321px;
-    height: 1000px;
-    margin-left: 22px;
-    margin-top: -71px;
-    background: #fff;
-    .main-box{
-      .title-box{
-        margin-top: 17px;
-        text-align: center;
-        span{
-          display: inline-block;
-          vertical-align: middle;
-        }
-        .title{
-          font-size:16px;
-          color:#475669;
-          margin:0 5px;
-          // font-weight: bold;
-        }
-        .lit-line{
-          width:25px;
-          height: 1px ;
-          background: #c0ccda;
-        }
+}
+
+#projectPush{
+  .el-dialog--small{
+    width: 690px;
+    padding: 48px 30px;
+  }
+  .el-dialog__headerbtn{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  .el-dialog__header{
+    padding-top:0px;
+  }
+  .dialog-title{
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 48px;
+    .lines{
+      background:#40587a;
+      width:2px;
+      height:20px;
+    }
+    .title{
+      font-size:20px;
+      color:#1f2d3d;
+      margin-left: 8px;
+    }
+    .lost{
+      font-size:16px;
+      color:#475669;
+      margin-left: 28px;
+      i{
+        color: #FC703E;
       }
     }
+    .img{
+      width: 16px;
+      height: 16px;
+      margin-left: 8px;
+      margin-top: 3px;
+      img{
+        width: 100%;
+      }
+    }
+
   }
-  .el-table__row{
-    font-size: 20px!important;
+  .message{
+    font-size:14px;
+    color:#1f2d3d;
+    height:14px;
+    line-height: 14px;
+    position: absolute;
+    right: 50px;
+    top: 98px;
+    .lines{
+      background:#40587a;
+      width:1px;
+      height:14px;
+      margin: 0 8px;
+      display: block;
+    }
   }
 }

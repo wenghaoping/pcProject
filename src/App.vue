@@ -65,7 +65,7 @@
         this.active = i
       },
       setUserId(){
-        sessionStorage.user_id='2rzyz5vp';
+        sessionStorage.user_id='z0anXzdW';
       },
       login(){
           this.$router.push('login')
@@ -80,7 +80,7 @@
         this.active=0;
       }*/
 
-      this.$router.push('index');
+        this.$router.push({name:"myContacts"});
       this.setUserId();
 
     },
