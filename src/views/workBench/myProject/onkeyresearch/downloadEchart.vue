@@ -22,7 +22,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-var echarts = require('echarts');
 export default {
   props: ["comid","compName"],
   data () {
@@ -31,96 +30,7 @@ export default {
       downloadEchartName:'1',
       title:"累计下载量",
       main:"综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。",
-      xdata:["20170322",
-        "20170323",
-        "20170324",
-        "20170325",
-        "20170326",
-        "20170327",
-        "20170328",
-        "20170329",
-        "20170330",
-        "20170331",
-        "20170401",
-        "20170402",
-        "20170403",
-        "20170404",
-        "20170405",
-        "20170406",
-        "20170407",
-        "20170408",
-        "20170409",
-        "20170410",
-        "20170411",
-        "20170412",
-        "20170413",
-        "20170414",
-        "20170415",
-        "20170416",
-        "20170417",
-        "20170418",
-        "20170419",
-        "20170420",
-        "20170421",
-        "20170422",
-        "20170423",
-        "20170424",
-        "20170425",
-        "20170426",
-        "20170427",
-        "20170428",
-        "20170429",
-        "20170430",
-        "20170501",
-        "20170502",
-        "20170503",
-        "20170504",
-        "20170505",
-        "20170506",
-        "20170507",
-        "20170508",
-        "20170509",
-        "20170510",
-        "20170511",
-        "20170512",
-        "20170513",
-        "20170514",
-        "20170515",
-        "20170516",
-        "20170517",
-        "20170518",
-        "20170519",
-        "20170520",
-        "20170521",
-        "20170522",
-        "20170523",
-        "20170524",
-        "20170525",
-        "20170526",
-        "20170527",
-        "20170528",
-        "20170529",
-        "20170530",
-        "20170531",
-        "20170601",
-        "20170602",
-        "20170603",
-        "20170604",
-        "20170605",
-        "20170606",
-        "20170607",
-        "20170608",
-        "20170609",
-        "20170610",
-        "20170611",
-        "20170612",
-        "20170613",
-        "20170614",
-        "20170615",
-        "20170616",
-        "20170617",
-        "20170618",
-        "20170619"],//时间
+      xdata:[],//时间
       download:{
         ydataTotal:[],//获取的数据
         ydataAverage:[]//平均数据
@@ -141,6 +51,7 @@ export default {
         ydataTotal:[],
         ydataAverage:[]
       },//访问时长
+
     }
   },
   computed:{
@@ -170,7 +81,7 @@ export default {
     },//获取爬来的数据
     handleClick(tab, event) {
       let index=tab.index
-//      this.$tool.console(tab.index);
+//      console.log(tab.index);
       switch (index){
         case '0':
           this.getdownload();
@@ -193,7 +104,7 @@ export default {
       };
     },
     eChart(xdata,ydata1,ydata2){
-      let myChart = echarts.init(document.getElementById('pieBox'));
+      let myChart = this.$echart.init(document.getElementById('pieBox'))
       let option = {
           title: {},
           color: ['#28DC41', '#009eff'],
@@ -219,12 +130,6 @@ export default {
             bottom: '3%',
             containLabel: true
           },
-//        dataZoom:{
-//          orient:"vertical", //水平显示
-//          show:true, //显示滚动条
-//          start:0, //起始值为20%
-//          end:100,  //结束值为60%
-//        },
         toolbox: {
 
           },
@@ -286,10 +191,8 @@ export default {
         com_id: this.comid
       })
         .then(res => {
-
-
             let data=this.getChart(res.data.data).data;
-//            this.$tool.console(data);
+//            console.log(data);
             this.xdata=data.three_month;
             this.download.ydataTotal=this.getAverage(data.total_download_mid);
             this.download.ydataAverage=this.getTotal(data.total_download[0].value);
@@ -308,16 +211,14 @@ export default {
 
         })
         .catch(err => {
-          this.$tool.console(err);
+          console.log(err);
         })
     },//获取项目
 
   },
   //Echart组件
   mounted(){
-    this.getCrawlerProject();
-
-    this.getdownload();
+    this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
   },
   watch : {
     comid : function(e){
@@ -329,8 +230,11 @@ export default {
       this.uv.ydataAverage=[];
       this.time.ydataTotal=[];
       this.time.ydataAverage=[];
+      this.downloadEchartName='1';
       this.getCrawlerProject();
-      this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
+      setTimeout(() =>{
+        this.getdownload();
+      },500)
     },//获取公司id
     compName: function(e){
       this.compaName=e;
@@ -341,6 +245,10 @@ export default {
   },
   created(){
     this.getCrawlerProject();
+    setTimeout(() =>{
+      this.getdownload();
+    },500)
+
   },
 }
 </script>

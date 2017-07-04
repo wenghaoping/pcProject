@@ -5,7 +5,7 @@
     </div>-->
     <el-tabs v-model="bussinessName">
 
-      <el-tab-pane label="工商信息" name="1">
+      <el-tab-pane label="工商信息" name="1" style="margin-top: -30px;">
         <div class="block">
           <div class="rz-details" style="width: 795px;">
             <div class="rz-detail">

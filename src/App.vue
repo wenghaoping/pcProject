@@ -55,7 +55,7 @@
           {type: '工作台',jump:'/'},
 //                   {type: '扫码登陆',jump:'/logining'},
               {type: '测试页面',jump:'/test'},
-            /*           {type: '测试页面2',jump:'/test2'}*/
+                       {type: '测试页面2',jump:'/test2'}
         ],
         user_name:sessionStorage.user_real_name
       }

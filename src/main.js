@@ -21,6 +21,8 @@ Vue.prototype.$http = axios;
 import URL_ from './global/url.js'//URL请求地址汇总
 Vue.prototype.URL = URL_;
 
+import echarts from 'echarts'//echart封装
+Vue.prototype.$echart = echarts
 
 Vue.use(Element);//UI库
 Vue.use(tool);//自己的库
