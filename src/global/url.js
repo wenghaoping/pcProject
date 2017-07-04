@@ -46,17 +46,22 @@ export default
   getFileType:"api/category/getFileType",  //文件分组设置选项
   createFileType:"api/category/createFileType",  //添加文件分组设置
 
-
-
   getCrawlerCompany:"api/dataTeam/getCrawlerCompany",  //一键尽调-公司
   getCrawlerLeader:"api/dataTeam/getCrawlerLeader",  //一键尽调-公司高管
   getCrawlerBrand:"api/dataTeam/getCrawlerBrand",  //一键尽调-商标
   getCrawlerTeam:"api/dataTeam/getCrawlerTeam",  //一键尽调-核心成员
-  getCrawlerHistoryFinance:"api/dataTeam/getCrawlerHistoryFinance",  //一键尽调-历史融资
+  getCrawlerHistoryFinance:"api/dataTeam/getCrawlerHistoryFinance",
+
+  //一键尽调-历史融资
   getCrawlerMilestone:"api/dataTeam/getCrawlerMilestone",  //一键尽调-里程碑
   getCrawlerNews:"api/dataTeam/getCrawlerNews",  //一键尽调-新闻
   getCrawlerCompeting:"api/dataTeam/getCrawlerCompeting",  //一键尽调-竞品
   getCrawlerProject:"api/dataTeam/getCrawlerProject",  //一键尽调-项目
+
+
+  /*我的人脉*/
+  userTitleSift:"user/userTitleSift",//人脉列表表头
+  getConnectUser:"user/getConnectUser",//获取人脉列表
 
 
 }

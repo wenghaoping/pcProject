@@ -1,30 +1,644 @@
 <template>
-  <div id="mycontacts">
+  <div id="mycontacts" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!-- 右侧底部主内容区 -->
-      <h1>我是我的人脉页面</h1>
+    <div class="wrap-left">
+      <div class="top-search-box clearfix">
+        <div class="input-box fl">
+          <el-input
+            placeholder="搜索姓名、手机、公司名称"
+            icon="search"
+            v-model="searchinput"
+            :on-icon-click="handleIconClick"
+            @keyup.native.enter="handleIconClick">
+          </el-input>
+        </div>
+        <div class="btns-box fr">
+          <el-button type="primary" @click="dialogUploadVisible = true">添加人脉</el-button>
+        </div>
+      </div>
+      <div class="top-lists" style="height:690px;background: #f3f4f8;cursor: pointer">
+        <template>
+          <el-table :data="tableData" style="width: 100%"
+                    @row-click="handleSelect"
+                    @header-click="headerClick"
+                    @sort-change="filterChange"
+                    @filter-change="filterChange" stripe>
+            <el-table-column prop="user_real_name" label="姓名" width="184">
+              <template scope="scope">
+                <div class="img fl">
+                  <img v-if="scope.row.user_avatar_url!=''" :src="scope.row.user_avatar_url">
+                  <span v-else class="header">{{scope.row.user_avatar_url_change}}</span>
+                </div>
+                <el-tooltip class="fl name" placement="top" :disabled="scope.row.user_real_name.length > 4 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_real_name}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.user_real_name}}
+                  </div>
+                </el-tooltip>
+                <span class="fl add" v-if="scope.row.is_add==true"><img src="../../../assets/images/add.png"></span>
+                <div v-if="scope.row.user_real_name.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="user_company_career" label="职位" show-overflow-tooltip width="80">
+              <template scope="scope">
+                <div v-if="scope.row.user_company_career==''">
+                  --
+                </div>
+                <div else>
+                  {{scope.row.user_company_career}}
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="card_company_name" label="公司" show-overflow-tooltip width="144">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.user_company_name.length > 10 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_company_name}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.user_company_name}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.user_company_name.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="user_brand" label="品牌" show-overflow-tooltip width="80">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.user_brand.length > 5 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_brand}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.user_brand}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.user_brand.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="user_mobile" label="手机" show-overflow-tooltip width="112">
+              <template scope="scope">
+                <div v-if="scope.row.user_mobile==''">
+                  --
+                </div>
+                <div else>
+                  {{scope.row.user_mobile}}
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="user_mail" label="邮箱" show-overflow-tooltip width="148">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.user_mail.length > 17 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_mail}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.user_mail}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.user_mail.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="user_invest_industry" label="投资领域"
+                             show-overflow-tooltip
+                             width="144"
+                             column-key="user_invest_industry"
+                             :filters="user_invest_industryFilters"
+                             filter-placement="bottom-end">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.user_invest_industry.length > 10 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_invest_industry}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.user_invest_industry}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.user_invest_industry.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="user_invest_stage" label="投资轮次" show-overflow-tooltip
+                             width="140"
+                             column-key="user_invest_stage"
+                             :filters="user_invest_stageFilters"
+                             filter-placement="bottom-end">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.user_invest_stage.length > 10 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_invest_stage}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.user_invest_stage}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.user_invest_stage.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="tag" label="标签" show-overflow-tooltip
+                             width="74"
+                             column-key="tag"
+                             :filters="tagFilters"
+                             filter-placement="bottom-end">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.tag.length > 4 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.tag}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.tag}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.tag.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="login_time" label="最近活跃" show-overflow-tooltip
+                             width="100"
+                             column-key="login_time"
+
+                             sortable="custom">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.login_time.length > 4 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.login_time}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.login_time}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.login_time.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="reset"
+              label="重置"
+              width="130" class="set-th">
+              <template scope="scope">
+                <el-button
+                  @click="handlePush(scope.$index, scope.row)"
+                  type="text"
+                  size="small" class="edits-btn btn-cur">
+                  推送
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small" class="flow-btn btn-cur" v-if="scope.row.is_bind==0"
+                  @click="handleEdit(scope.$index, scope.row)">
+                  编辑
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small" class="flow-btn btn-cur"
+                  v-if="scope.row.is_bind==1"
+                  @click="handleTag(scope.$index, scope.row)">
+                  标签
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small" class="send-btn btn-cur"
+                  @click="handleDelete(scope.$index, scope.row)">
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagenav" v-if="totalData>10">
+            <el-pagination
+              small
+              @current-change="filterChangeCurrent"
+              :current-page.sync="currentPage"
+              :page-size="10"
+              layout="total, prev, pager, next"
+              :total="totalData">
+            </el-pagination>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!--标签设置弹框-->
+    <el-dialog
+      title="标签设置"
+      :visible.sync="dialogVisible"
+      :show-close="close"
+      size="tiny">
+      <el-select
+        v-model="tagsValue"
+        multiple
+        filterable
+        allow-create
+        style="width:100%"
+        placeholder="请输入标签">
+        <el-option
+          v-for="item in addTags"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!--项目推送弹窗-->
+    <projectpush :dialog-push="dialogPushVisible" @changeall="dialogVisiblechange"></projectpush>
+
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import projectpush from './projectPush.vue'
 export default {
-  name: 'hello',
   data () {
     return {
-      msg: '',
-      activeName:'second'
+      close:false,
+      activeName:'second',
+      loading: false,//加载
+      dialogUploadVisible:false,//控制添加人脉弹窗
+      searchinput:'',//搜索绑定
+      dialogVisible:false,//标签弹框设置
+      dialogPushVisible:true,//项目推送弹框设置
+      totalData:100,//总页数
+      currentPage:1,//当前页数
+      getPra:{},//筛选的请求参数
+      tagsValue:[],//标签弹框数据绑定
+      addTags:[{
+        value: 'HTML',
+        label: 'HTML'
+      }],//标签展示数据
+      tableData:[
+          {
+            user_avatar_url:"https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epia77Br2Wk8RiaR8hMAxMG9DerJfzuRCGr5Pf0s2MNDj1FU6dwnpKycchqTRck13S0RTQ6Cg3qZy4A/0",//头像
+            user_avatar_url_change:"翁",//代替图片
+            user_real_name:'翁浩平',//姓名
+            is_add: true,//标签,true显示,false不显示
+            user_company_career:'投资总监',//职位
+            user_company_name:'杭州投着乐网络科技有限公司',//公司名称
+            user_brand:'微天使,FA',//品牌
+            user_mobile: "18910359282",//手机
+            user_mail: "123@168.com",//邮箱
+            user_invest_industry: "电子商务"
+/*              [
+              {
+                "industry_id": 13,
+                "industry_name": "电子商务",
+                "parent_id": 0,
+                "created_at": null,
+                "updated_at": null,
+                "pivot": {
+                  "item_id": 1311,
+                  "industry_id": 13,
+                  "created_at": "2017-06-01 16:21:51",
+                  "updated_at": "2017-06-20 13:13:45",
+                  "priority": 1
+                }
+              }]*/
+            ,//投资领域
+            user_invest_stage: "种子轮 "
+/*              [
+              {
+                "stage_id": 10,
+                "stage_name": "种子轮 ",
+                "sort": 1,
+                "created_at": null,
+                "updated_at": null,
+                "pivot": {
+                  "item_id": 1311,
+                  "stage_id": 10,
+                  "created_at": "2017-06-01 16:23:05",
+                  "updated_at": "2017-06-01 16:23:05",
+                  "priority": 1
+                }
+              }]*/
+            ,//投资轮次
+            tag:"海龟"
+/*              [
+                  {
+                    "tag_id": 384,
+                    "tag_name": "海龟",
+                    "user_id": 182078,
+                    "created_at": "2017-06-28 20:19:28",
+                    "updated_at": "2017-06-28 20:19:28",
+                    "type": 3,
+                    "deleted_at": null,
+                    "pivot": {
+                    "item_id": 513,
+                    "tag_id": 384,
+                    "created_at": null,
+                    "updated_at": null,
+                  }
+              }]*/
+            ,//标签
+            login_time:"刚刚活跃",//最近活跃
+            is_bind:0,//编辑
+        },
+        {
+          user_avatar_url: "",//头像
+          user_avatar_url_change: "翁",//代替图片
+          user_real_name: '翁浩平',//姓名
+          is_add: false,//标签,true显示,false不显示
+          user_company_career: '',//职位
+          user_company_name: '',//公司名称
+          user_brand: '',//品牌
+          user_mobile: "",//手机
+          user_mail: "wenghaoping@sina.com",//邮箱
+          user_invest_industry: "电子商务"
+          /*              [
+           {
+           "industry_id": 13,
+           "industry_name": "电子商务",
+           "parent_id": 0,
+           "created_at": null,
+           "updated_at": null,
+           "pivot": {
+           "item_id": 1311,
+           "industry_id": 13,
+           "created_at": "2017-06-01 16:21:51",
+           "updated_at": "2017-06-20 13:13:45",
+           "priority": 1
+           }
+           }]*/
+          ,//投资领域
+          user_invest_stage: "种子轮 "
+          /*              [
+           {
+           "stage_id": 10,
+           "stage_name": "种子轮 ",
+           "sort": 1,
+           "created_at": null,
+           "updated_at": null,
+           "pivot": {
+           "item_id": 1311,
+           "stage_id": 10,
+           "created_at": "2017-06-01 16:23:05",
+           "updated_at": "2017-06-01 16:23:05",
+           "priority": 1
+           }
+           }]*/
+          ,//投资轮次
+          tag: "海龟"
+          /*              [
+           {
+           "tag_id": 384,
+           "tag_name": "海龟",
+           "user_id": 182078,
+           "created_at": "2017-06-28 20:19:28",
+           "updated_at": "2017-06-28 20:19:28",
+           "type": 3,
+           "deleted_at": null,
+           "pivot": {
+           "item_id": 513,
+           "tag_id": 384,
+           "created_at": null,
+           "updated_at": null,
+           }
+           }]*/
+          ,//标签
+          login_time: "刚刚活跃",//最近活跃
+          is_bind: 1,//编辑
+        }
+      ],//列表数据
+      user_invest_industryFilters:[{ text: '', value: '' }],//投资领域筛选条件
+      user_invest_stageFilters:[],//投资轮次筛选
+      tagFilters:[],//标签筛选条件
+      login_timeFilters:[],//最近活跃
+
     }
   },
   components: {
-
+    projectpush
   },
   methods: {
-    handleClick(tab, event) {
-      this.$tool.console(tab, event);
-    }
+
+    handleSelect(row, event, column) {
+      /*if(column.label!="重置"){
+        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id}})
+      }*/
+    },//跳转到人脉详情页面传参数
+    handleEdit(index, row){
+//      this.$router.push({ name: 'editproject', query: { project_id:row.project_id}})
+    },//点击编辑按钮,跳转
+    handleTag(index,row){
+        this.dialogVisible = true;
+    },//点击标签按钮
+    handleDelete(index,row){
+      this.$confirm('此操作将永久删除该人脉, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },//点击删除按钮
+    headerClick(column, event){
+      if(column.label==="重置"){
+        window.location.reload();
+      }
+    },//点击重置按钮时
+    handlePush(index,row){
+      this.dialogPushVisible=true;
+    },//点击推送
+
+    dialogVisiblechange(msg){
+      this.dialogPushVisible=msg;
+    },
+    /*请求函数*/
+    handleIconClick(){
+      this.loading=true;
+      this.getPra.user_id=sessionStorage.user_id;
+      this.getPra.search=this.searchinput;
+      this.currentPage=1;
+      this.getPra.page=1;
+      this.$http.post(this.URL.getConnectUser,this.getPra)
+        .then(res=>{
+          let data = res.data.data;
+//          this.tableData=this.getProjectList(data);
+          this.getProjectList(data);
+           /*          this.loading=false;
+          this.totalData=res.data.count;*/
+        })
+        .catch(err=>{
+          this.loading=false;
+          this.$tool.console(err,2)
+        })
+    },//搜索===首次进入页面加载的数据
+
+    filterChange(filters){
+      /*this.loading=true;
+      this.currentPage=1;
+      this.getPra.user_id=sessionStorage.user_id;
+      if(filters.order){
+        if(filters.order=="ascending") filters.order="asc"//升降序
+        else filters.order="desc";
+        this.getPra.order=filters.prop;
+        this.getPra.sort=filters.order;
+      }else{
+        for(let key in filters){
+          this.getPra[key]=filters[key];
+        }
+      } //筛选
+      for(let key in this.getPra){
+        if(this.getPra[key]=='' || this.getPra[key]=='NaN'){
+          delete this.getPra[key];
+        }
+      }//删除空的查询项
+      this.$http.post(this.getProjectListURL,this.getPra)
+        .then(res=>{
+          this.loading=false;
+          let data = res.data.data;
+          this.tableData=this.getProjectList(data);
+          this.totalData=res.data.count;
+        })
+        .catch(err=>{
+          this.loading=false
+          this.$tool.console(err,2)
+        })*/
+    },//筛选 ascending升/descending降/
+    filterChangeCurrent(page){
+      /*delete this.getPra.page;
+      this.loading=true;
+      this.getPra.user_id=sessionStorage.user_id;
+      this.getPra.page=page;//控制当前页码
+      this.$http.post(this.getProjectListURL,this.getPra)
+        .then(res=>{
+          this.loading=false;
+          let data = res.data.data;
+          this.$tool.console(res)
+          this.tableData=this.getProjectList(data);
+        })
+        .catch(err=>{
+          this.loading=false
+          this.$tool.console(err,2)
+        })*/
+    },//控制页码
+
+
+    titleSift(){
+      this.loading=true;
+      this.$http.post(this.URL.userTitleSift,{user_id: sessionStorage.user_id})
+        .then(res=>{
+          let data = res.data.data;
+          let card_industry=data.card_industry;//投资领域
+          let card_stage=data.card_stage;//投资轮次
+          let card_tag=data.card_tag;//标签
+          this.user_invest_industryFilters=this.$tool.getTitleSift(card_industry);
+          this.user_invest_stageFilters=this.$tool.getTitleSift(card_stage);
+          this.tagFilters=this.$tool.getTitleSift(card_tag);
+          this.loading=false;
+        })
+        .catch(err=>{
+          this.loading=false;
+          this.$tool.console(err,2)
+        })
+    },// 获取表头
+
+    setUrlChange(url,name){
+        let string='';
+        if(url=='') string = name.charAt(0);
+        else string='';
+        return string;
+    },//判断要不要用文字显示头像
+
+    /*以下都是辅助函数*/
+    getUser_invest_industry(arr){
+      let str="";
+      if(arr.length==0) {
+          str="";
+      } else{
+        for(let i=0;i<arr.length;i++){
+          str+=arr[i].industry_name+'.'
+        }
+      }
+      return str
+    },//投资领域处理
+    getUser_invest_stage(arr){
+      let str="";
+      if(arr.length==0) {
+        str="";
+      } else {
+        for (let i = 0; i < arr.length; i++) {
+          str += arr[i].stage_name + '.'
+        }
+      }
+      return str
+    },//投资轮次处理
+    getUser_invest_tag(arr){
+      let str="";
+      if(arr.length==0) {
+        str="";
+      } else {
+        for (let i = 0; i < arr.length; i++) {
+          str += arr[i].tag_name + '.'
+        }
+      }
+      return str
+    },//标签处理
+    getProjectList(list){
+      let arr = new Array;
+      for(let i=0; i<list.length; i++){
+        let obj=new Object;
+        obj.user_id=list[i].user_id;
+        obj.user_avatar_url=list[i].user_avatar_url;
+        obj.user_real_name=list[i].user_real_name;//姓名
+        obj.user_avatar_url_change=this.setUrlChange(list[i].user_avatar_url,list[i].user_real_name);//代替名称
+        obj.is_add=list[i].is_add;//标签
+        obj.user_company_career=list[i].user_company_career;//职位
+        obj.user_company_name=list[i].user_company_name;//公司名称
+        obj.user_brand=list[i].user_brand;//品牌
+        obj.user_mobile=list[i].user_mobile;//手机
+        obj.user_mail=list[i].user_mail;//邮箱
+        obj.user_invest_industry=this.getUser_invest_industry(list[i].user_invest_industry);//投资领域
+        obj.user_invest_stage=this.getUser_invest_stage(list[i].user_invest_stage);//投资轮次
+        obj.user_invest_stage=this.getUser_invest_tag(list[i].user_invest_tag);//标签
+        arr.push(obj);
+      }
+      console.log(arr)
+      return arr;
+    }//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
+
+  },
+  created(){
+    this.titleSift();
+    this.handleIconClick();
   }
 }
 </script>
 
-<style scoped>
-
+<style type="text/css" lang="less">
+  @import '../../../assets/css/mycontacts';
 </style>
