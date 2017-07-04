@@ -8,7 +8,7 @@
     </div>-->
     <!-- 右侧主内容区 -->
     <div class="main-right clearfix">
-      <transition name="fade">
+      <transition name="el-fade-in-linear">
         <router-view class="view">
 
         </router-view>
@@ -41,8 +41,10 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 #workBench{
+  width: 1336px;
+  margin: 0 auto;
   background-color: #eff2f7;
   margin-top: 24px;
   .el-menu-item{height:50px;line-height: 50px;background-color: #d3dce6;width: 200px;}

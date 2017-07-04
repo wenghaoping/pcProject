@@ -35,6 +35,8 @@ import dialog2 from '@/test/dialog2.vue'
 import alertUpload from '@/test/alertUpload.vue'
 import upload from '@/test/upload.vue'
 import open from '@/test/open.vue'
+import checkone from '@/test/checkone.vue'
+import checkArray from '@/test/checkArray.vue'
 
 
 
@@ -65,10 +67,10 @@ export default [
     path: '/logining', name: 'SmallRoutine', component: SmallRoutine
   },
   {
-    path: '/test', name: 'test', component: open
+    path: '/test', name: 'test', component: checkone
   },
   {
-    path: '/test2', name: 'test2', component: dialog2
+    path: '/test2', name: 'test2', component: checkArray
   }
   ]
 
