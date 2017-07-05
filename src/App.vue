@@ -65,7 +65,7 @@
         this.active = i
       },
       setUserId(){
-        sessionStorage.user_id='z0anXzdW';
+        sessionStorage.user_id='V0VznXa0';
       },
       login(){
           this.$router.push('/login')

@@ -1,10 +1,18 @@
 /**
  * Created by WengHaoping on 2017/7/3.
  */
-this.$http.post(this.URL.getCrawlerProject, {user_id: sessionStorage.user_id})
+this.$http.post(this.URL.getCrawlerBrand, {
+  user_id: sessionStorage.user_id,
+  com_id: this.comid
+})
   .then(res => {
-    //dosomething
-})//请求函数
+    let data=res.data.data;
+    this.business=data;
+    this.trademarkMessage="商标信息"+"("+data.brand.length+")"
+  })
+  .catch(err => {
+    this.$tool.console(err);
+  })//请求函数
 
 this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}})//路由传参
 

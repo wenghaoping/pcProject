@@ -97,17 +97,17 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="user_mail" label="邮箱" show-overflow-tooltip width="148">
+            <el-table-column prop="user_email" label="邮箱" show-overflow-tooltip width="148">
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.user_mail.length > 17 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.user_email.length > 17 ? false:true">
                   <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_mail}}</div>
+                    <div class="tips-txt">{{scope.row.user_email}}</div>
                   </div>
                   <div>
-                    {{scope.row.user_mail}}
+                    {{scope.row.user_email}}
                   </div>
                 </el-tooltip>
-                <div v-if="scope.row.user_mail.length === 0">
+                <div v-if="scope.row.user_email.length === 0">
                   --
                 </div>
               </template>
@@ -253,6 +253,7 @@
         filterable
         allow-create
         style="width:100%"
+        @change="addChangeTag"
         placeholder="请输入标签">
         <el-option
           v-for="item in addTags"
@@ -261,14 +262,15 @@
           :value="item.value">
         </el-option>
       </el-select>
+      <div class="tagTitle">准确设置项目标签便于查找，并参与项目匹配度计算</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="addTag">确 定</el-button>
       </span>
     </el-dialog>
 
     <!--项目推送弹窗-->
-    <projectpush :dialog-push="dialogPushVisible" @changeall="dialogVisiblechange"></projectpush>
+    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange"></projectpush>
 
   </div>
 </template>
@@ -303,7 +305,7 @@ export default {
             user_company_name:'杭州投着乐网络科技有限公司',//公司名称
             user_brand:'微天使,FA',//品牌
             user_mobile: "18910359282",//手机
-            user_mail: "123@168.com",//邮箱
+            user_email: "123@168.com",//邮箱
             user_invest_industry: "电子商务",//投资领域
             user_invest_stage: "种子轮 ",//投资轮次
             tag:"海龟",//标签
@@ -319,7 +321,7 @@ export default {
           user_company_name: '',//公司名称
           user_brand: '',//品牌
           user_mobile: "",//手机
-          user_mail: "wenghaoping@sina.com",//邮箱
+          user_email: "wenghaoping@sina.com",//邮箱
           user_invest_industry: "电子商务",//投资领域
           user_invest_stage: "种子轮 ",//投资轮次
           tag: "海龟",//标签
@@ -331,6 +333,12 @@ export default {
       user_invest_stageFilters:[],//投资轮次筛选
       tagFilters:[],//标签筛选条件
       login_timeFilters:[],//最近活跃
+      userMessage:{
+        user_real_name:'翁浩平',//姓名
+        user_company_career:'投资总监',//职位
+        user_company_name:'杭州投着乐网络科技有限公司',//公司名称
+      },//传递给推送的数据
+      userEmail:'',
 
     }
   },
@@ -373,8 +381,12 @@ export default {
       }
     },//点击重置按钮时
     handlePush(index,row){
+      this.userMessage.user_real_name=row.user_real_name;
+      this.userMessage.user_company_career=row.user_company_career;
+      this.userMessage.user_company_name=row.user_company_name;
+      this.userEmail=row.user_email;
       this.dialogPushVisible=true;
-    },//点击推送
+    },//点击推送,并且传送数据给推送弹框
 
     dialogVisiblechange(msg){
       this.dialogPushVisible=msg;
@@ -418,6 +430,7 @@ export default {
           delete this.getPra[key];
         }
       }//删除空的查询项
+      this.$tool.console(this.getPra);
       this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
           this.loading=false;
@@ -435,6 +448,7 @@ export default {
       this.loading=true;
       this.getPra.user_id=sessionStorage.user_id;
       this.getPra.page=page;//控制当前页码
+      this.$tool.console(this.getPra);
       this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
           this.loading=false;
@@ -523,7 +537,7 @@ export default {
         obj.user_company_name=list[i].user_company_name;//公司名称
         obj.user_brand=list[i].user_brand;//品牌
         obj.user_mobile=list[i].user_mobile;//手机
-        obj.user_mail=list[i].user_mail;//邮箱
+        obj.user_email=list[i].user_email;//邮箱
         obj.user_invest_industry=this.getUser_invest_industry(list[i].user_invest_industry);//投资领域
         obj.user_invest_stage=this.getUser_invest_stage(list[i].user_invest_stage);//投资轮次
         obj.tag=this.getUser_invest_tag(list[i].user_invest_tag);//标签
@@ -531,7 +545,48 @@ export default {
         arr.push(obj);
       }
       return arr;
-    }//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
+    },//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
+
+
+    checkArr(arr, arr2){
+      let newArr = []
+      let data = arr[arr.length - 1]
+      for (let i = 0; i < arr2.length; i++) {
+        newArr.push(arr2[i].value);
+      }
+      if (newArr.indexOf(data) == -1) return data
+
+
+    },//判断是否重复
+    setTag(arr,pro){
+      for(let i=0; i<pro.length; i++){
+        for(let j=0; j<arr.length; j++){
+          if(arr[j]==pro[i].label){
+            arr[j]=pro[i].value;
+          }
+        }
+      }
+    },//标签取数据arr//放值的地方,pro总值
+    addChangeTag(e){
+/*      let tagName = this.checkArr(e, this.tags_pro);
+      if (tagName != undefined) {
+        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 0, tag_name: tagName})
+          .then(res => {
+            let newState = {};
+            newState.label = tagName;
+            newState.value = res.data.tag_id;
+            this.tags.changepro.push(newState);
+          })
+          .catch(err => {
+            this.$tool.error("添加失败");
+            this.$tool.console(err);
+          })
+      }*/
+    },//添加项目标签
+    addTag(){
+/*      this.setTag(this.project.tags_pro,this.tags.changepro);*/
+
+    },//保存标签选择
 
   },
   created(){

@@ -104,6 +104,14 @@ const tool={
     return false;
   },//判断是不是数字
 
+  checkEmail(data){
+    let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    if (reg.test(data)) {
+      return true;
+    }
+    return false;
+  },//邮箱验证
+
   error(text) {
     Notification.error({
       message: text,
