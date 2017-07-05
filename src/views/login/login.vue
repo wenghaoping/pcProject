@@ -1,16 +1,24 @@
 <template>
   <div id="login">
-    <div class="title">微天使,帮您成交的项目管理工具</div>
-    <div class="loginBox">
+    <div class="title tc">微天使,帮您成交的项目管理工具</div>
+    <div class="loginBox flex">
       <div class="loginBox-left">
-        <div @click="toggle(index)" v-for="(tab,index) in tabs">
-          <router-link :to=" tab.jump " :class="{border:active===index}">
-            {{tab.type}}
-          </router-link>
+        <div class="flex">
+          <div class="tab" @click="toggle(index)" v-for="(tab,index) in tabs">
+            <router-link :to="tab.jump "  class="tabIndex" :class="{border:active===index}" tag="div">
+              {{tab.type}}
+            </router-link>
+          </div>
         </div>
-        <router-vier></router-vier>
+        <router-view></router-view>
       </div>
-      <div class="loginBox-right"></div>
+      <div class="loginBox-right">
+        <div class="wx-title tc">
+          <img src=""/>
+          微信扫码登录
+        </div>
+        <img class="qrCode" src="">
+      </div>
     </div>
   </div>
 </template>
@@ -21,12 +29,12 @@
     data () {
       return {
         tabs: [{
-          type: "验证码登录", jump: "telephoneLogin"
+          type: "验证码登录", jump: "/login"
         }, {
-          type: "密码登录", jump: "codeLogin"
+          type: "密码登录", jump: "/login/codeLogin"
         }]
         ,
-        active:1
+        active:0
       }
     },
     methods: {

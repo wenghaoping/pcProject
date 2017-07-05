@@ -1,13 +1,16 @@
 /*路由配置*/
 /*===============================首页路由配置=======================================*/
 import index from '@/views/index/index.vue'
-/*===============================登录路由配置=======================================*/
+/*===============================登录相关页面路由配置=======================================*/
 import login from '@/views/login/login.vue'
 import forgetPassword from '@/views/login/forgetPassword.vue'
 import bindTelephone from '@/views/login/bindTelephone.vue'
 import telephoneLogin from '@/views/login/telephoneLogin.vue'
 import codeLogin from '@/views/login/codeLogin.vue'
 
+/*===============================用户身份路由配置=================================*/
+import identityChoose from '@/views/identity/identityChoose.vue'
+import identityDetail from '@/views/identity/identityDetail.vue'
 
 /*===============================工作台首页路由配置=================================*/
 import workBench from '@/views/workBench/index.vue'
@@ -67,22 +70,28 @@ export default [
   },
   {
     path: '/index', name: 'index', component: index,
-    children:[
-      { path:'telephoneLogin',name:'telephonePhone',component:telephoneLogin},
-      { path:'codeLogin',name:'codeLogin',component:codeLogin},
-    ]
   },
   {
     path: '/logining', name: 'SmallRoutine', component: SmallRoutine
   },
   {
-    path: '/login', name: 'login', component:login
+    path: '/login', component:login,
+    children:[
+      { path:'',name:'telephonePhone',component:telephoneLogin},
+      { path:'codeLogin',name:'codeLogin',component:codeLogin},
+    ]
   },
   {
     path: '/forgetPassword', name: 'forgetPassword', component:forgetPassword
   },
   {
     path: '/bindTelephone', name: 'bindTelephone', component:bindTelephone
+  },
+  {
+    path: '/identityChoose', name: 'identityChoose', component:identityChoose
+  },
+  {
+    path: '/identityDetail', name: 'identityDetail', component:identityDetail
   },
   {
     path: '/test', name: 'test', component: checkone
