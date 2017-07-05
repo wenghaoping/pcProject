@@ -24,8 +24,11 @@ Vue.prototype.URL = URL_;
 import echarts from 'echarts'//echart封装
 Vue.prototype.$echart = echarts
 
+import Vuex from 'vuex'
+
 Vue.use(Element);//UI库
 Vue.use(tool);//自己的库
+Vue.use(Vuex);
 
 
 Vue.config.productionTip = false;
