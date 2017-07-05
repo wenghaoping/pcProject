@@ -1,38 +1,37 @@
 /*路由配置*/
 /*===============================首页路由配置=======================================*/
-import index from '@/views/index/index.vue'
+const index = r => require.ensure([], () => r(require('@/views/index/index.vue')), 'index')
 /*===============================登录相关页面路由配置=======================================*/
-import login from '@/views/login/login.vue'
-import forgetPassword from '@/views/login/forgetPassword.vue'
-import bindTelephone from '@/views/login/bindTelephone.vue'
-import telephoneLogin from '@/views/login/telephoneLogin.vue'
-import codeLogin from '@/views/login/codeLogin.vue'
+const login = r => require.ensure([], () => r(require('@/views/login/login.vue')), 'login')
+const forgetPassword = r => require.ensure([], () => r(require('@/views/login/forgetPassword.vue')), 'forgetPassword')
+const bindTelephone = r => require.ensure([], () => r(require('@/views/login/bindTelephone.vue')), 'bindTelephone')
+const telephoneLogin = r => require.ensure([], () => r(require('@/views/login/telephoneLogin.vue')), 'telephoneLogin')
+const codeLogin = r => require.ensure([], () => r(require('@/views/login/codeLogin.vue')), 'codeLogin')
 
 /*===============================用户身份路由配置=================================*/
-import identityChoose from '@/views/identity/identityChoose.vue'
-import identityDetail from '@/views/identity/identityDetail.vue'
+const identityChoose = r => require.ensure([], () => r(require('@/views/identity/identityChoose.vue')), 'identityChoose')
+const identityDetail = r => require.ensure([], () => r(require('@/views/identity/identityDetail.vue')), 'identityDetail')
 
 /*===============================工作台首页路由配置=================================*/
-import workBench from '@/views/workBench/index.vue'
+const workBench = r => require.ensure([], () => r(require('@/views/workBench/index.vue')), 'workBench')
 
 //我的项目主页路由
-import indexmyProject from '@/views/workBench/myProject/index.vue'
-import myProject from '@/views/workBench/myProject/myProject.vue'    //我的项目
-import projectDetails from '@/views/workBench/myProject/projectDetails.vue'   //项目详情
+const indexmyProject = r => require.ensure([], () => r(require('@/views/workBench/myProject/index.vue')), 'indexmyProject')
+const myProject = r => require.ensure([], () => r(require('@/views/workBench/myProject/myProject.vue')), 'myProject')
+const projectDetails = r => require.ensure([], () => r(require('@/views/workBench/myProject/projectDetails.vue')), 'projectDetails')
 
-import editproject from '@/views/workBench/myProject/editproject.vue'   //编辑项目
-import creatproject from '@/views/workBench/myProject/creatproject.vue'   //创建项目
+const editproject = r => require.ensure([], () => r(require('@/views/workBench/myProject/editproject.vue')), 'editproject')
+const creatproject = r => require.ensure([], () => r(require('@/views/workBench/myProject/creatproject.vue')), 'creatproject')
 
+// import myContacts from '@/views/workBench/myContacts/mycontacts.vue'//我的人脉
+const myContacts = r => require.ensure([], () => r(require('@/views/workBench/myContacts/mycontacts.vue')), 'myContacts')
 
-import myContacts from '@/views/workBench/myContacts/mycontacts.vue'//我的人脉
-
-import followUp from '@/views/workBench/followUp/followup.vue'     //跟进记录
+const followUp = r => require.ensure([], () => r(require('@/views/workBench/followUp/followup.vue')), 'followUp')  //跟进记录
 
 
 /*===============================小程序页面路由配置===============================*/
 //小程序页面
-import SmallRoutine from '@/views/SmallRoutine/index.vue'
-
+const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRoutine/index.vue')), 'SmallRoutine')
 
 
 //测试路由
@@ -44,9 +43,8 @@ import dialog2 from '@/test/dialog2.vue'
 import alertUpload from '@/test/alertUpload.vue'
 import upload from '@/test/upload.vue'
 import open from '@/test/open.vue'
-import checkone from '@/test/checkone.vue'
-import checkArray from '@/test/checkArray.vue'
-
+const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
+const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vue')), 'checkArray')
 
 
 /*配置路由*/

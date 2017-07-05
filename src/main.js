@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
 import router_config from './config/router_config.js'
+import store from './store/'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
@@ -24,8 +25,11 @@ Vue.prototype.URL = URL_;
 import echarts from 'echarts'//echart封装
 Vue.prototype.$echart = echarts
 
+import Vuex from 'vuex'
+
 Vue.use(Element);//UI库
 Vue.use(tool);//自己的库
+Vue.use(Vuex);
 
 
 Vue.config.productionTip = false;
@@ -39,6 +43,7 @@ const router = new VueRouter({
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 });
