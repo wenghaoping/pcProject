@@ -97,7 +97,7 @@ export default [
     path: '/test', name: 'test', component: checkone
   },
   {
-    path: '/test2', name: 'test2', component: checkArray
+    path: '/test2', name: 'test2', component: dialog2
   }
   ]
 

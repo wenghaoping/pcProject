@@ -116,7 +116,7 @@
             <el-table-column prop="user_invest_industry" label="投资领域"
                              show-overflow-tooltip
                              width="144"
-                             column-key="user_invest_industry"
+                             column-key="industry"
                              :filters="user_invest_industryFilters"
                              filter-placement="bottom-end">
               <template scope="scope">
@@ -136,7 +136,7 @@
 
             <el-table-column prop="user_invest_stage" label="投资轮次" show-overflow-tooltip
                              width="140"
-                             column-key="user_invest_stage"
+                             column-key="stage"
                              :filters="user_invest_stageFilters"
                              filter-placement="bottom-end">
               <template scope="scope">
@@ -285,7 +285,7 @@ export default {
       searchinput:'',//搜索绑定
       dialogVisible:false,//标签弹框设置
       dialogPushVisible:true,//项目推送弹框设置
-      totalData:100,//总页数
+      totalData:1,//总页数
       currentPage:1,//当前页数
       getPra:{},//筛选的请求参数
       tagsValue:[],//标签弹框数据绑定
@@ -304,58 +304,9 @@ export default {
             user_brand:'微天使,FA',//品牌
             user_mobile: "18910359282",//手机
             user_mail: "123@168.com",//邮箱
-            user_invest_industry: "电子商务"
-/*              [
-              {
-                "industry_id": 13,
-                "industry_name": "电子商务",
-                "parent_id": 0,
-                "created_at": null,
-                "updated_at": null,
-                "pivot": {
-                  "item_id": 1311,
-                  "industry_id": 13,
-                  "created_at": "2017-06-01 16:21:51",
-                  "updated_at": "2017-06-20 13:13:45",
-                  "priority": 1
-                }
-              }]*/
-            ,//投资领域
-            user_invest_stage: "种子轮 "
-/*              [
-              {
-                "stage_id": 10,
-                "stage_name": "种子轮 ",
-                "sort": 1,
-                "created_at": null,
-                "updated_at": null,
-                "pivot": {
-                  "item_id": 1311,
-                  "stage_id": 10,
-                  "created_at": "2017-06-01 16:23:05",
-                  "updated_at": "2017-06-01 16:23:05",
-                  "priority": 1
-                }
-              }]*/
-            ,//投资轮次
-            tag:"海龟"
-/*              [
-                  {
-                    "tag_id": 384,
-                    "tag_name": "海龟",
-                    "user_id": 182078,
-                    "created_at": "2017-06-28 20:19:28",
-                    "updated_at": "2017-06-28 20:19:28",
-                    "type": 3,
-                    "deleted_at": null,
-                    "pivot": {
-                    "item_id": 513,
-                    "tag_id": 384,
-                    "created_at": null,
-                    "updated_at": null,
-                  }
-              }]*/
-            ,//标签
+            user_invest_industry: "电子商务",//投资领域
+            user_invest_stage: "种子轮 ",//投资轮次
+            tag:"海龟",//标签
             login_time:"刚刚活跃",//最近活跃
             is_bind:0,//编辑
         },
@@ -369,58 +320,9 @@ export default {
           user_brand: '',//品牌
           user_mobile: "",//手机
           user_mail: "wenghaoping@sina.com",//邮箱
-          user_invest_industry: "电子商务"
-          /*              [
-           {
-           "industry_id": 13,
-           "industry_name": "电子商务",
-           "parent_id": 0,
-           "created_at": null,
-           "updated_at": null,
-           "pivot": {
-           "item_id": 1311,
-           "industry_id": 13,
-           "created_at": "2017-06-01 16:21:51",
-           "updated_at": "2017-06-20 13:13:45",
-           "priority": 1
-           }
-           }]*/
-          ,//投资领域
-          user_invest_stage: "种子轮 "
-          /*              [
-           {
-           "stage_id": 10,
-           "stage_name": "种子轮 ",
-           "sort": 1,
-           "created_at": null,
-           "updated_at": null,
-           "pivot": {
-           "item_id": 1311,
-           "stage_id": 10,
-           "created_at": "2017-06-01 16:23:05",
-           "updated_at": "2017-06-01 16:23:05",
-           "priority": 1
-           }
-           }]*/
-          ,//投资轮次
-          tag: "海龟"
-          /*              [
-           {
-           "tag_id": 384,
-           "tag_name": "海龟",
-           "user_id": 182078,
-           "created_at": "2017-06-28 20:19:28",
-           "updated_at": "2017-06-28 20:19:28",
-           "type": 3,
-           "deleted_at": null,
-           "pivot": {
-           "item_id": 513,
-           "tag_id": 384,
-           "created_at": null,
-           "updated_at": null,
-           }
-           }]*/
-          ,//标签
+          user_invest_industry: "电子商务",//投资领域
+          user_invest_stage: "种子轮 ",//投资轮次
+          tag: "海龟",//标签
           login_time: "刚刚活跃",//最近活跃
           is_bind: 1,//编辑
         }
@@ -487,10 +389,9 @@ export default {
       this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
           let data = res.data.data;
-//          this.tableData=this.getProjectList(data);
-          this.getProjectList(data);
-           /*          this.loading=false;
-          this.totalData=res.data.count;*/
+          this.tableData=this.getProjectList(data);
+          this.loading=false;
+          this.totalData=res.data.count;
         })
         .catch(err=>{
           this.loading=false;
@@ -499,7 +400,7 @@ export default {
     },//搜索===首次进入页面加载的数据
 
     filterChange(filters){
-      /*this.loading=true;
+      this.loading=true;
       this.currentPage=1;
       this.getPra.user_id=sessionStorage.user_id;
       if(filters.order){
@@ -517,7 +418,7 @@ export default {
           delete this.getPra[key];
         }
       }//删除空的查询项
-      this.$http.post(this.getProjectListURL,this.getPra)
+      this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
           this.loading=false;
           let data = res.data.data;
@@ -527,14 +428,14 @@ export default {
         .catch(err=>{
           this.loading=false
           this.$tool.console(err,2)
-        })*/
+        })
     },//筛选 ascending升/descending降/
     filterChangeCurrent(page){
-      /*delete this.getPra.page;
+      delete this.getPra.page;
       this.loading=true;
       this.getPra.user_id=sessionStorage.user_id;
       this.getPra.page=page;//控制当前页码
-      this.$http.post(this.getProjectListURL,this.getPra)
+      this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
           this.loading=false;
           let data = res.data.data;
@@ -544,7 +445,7 @@ export default {
         .catch(err=>{
           this.loading=false
           this.$tool.console(err,2)
-        })*/
+        })
     },//控制页码
 
 
@@ -617,6 +518,7 @@ export default {
         obj.user_real_name=list[i].user_real_name;//姓名
         obj.user_avatar_url_change=this.setUrlChange(list[i].user_avatar_url,list[i].user_real_name);//代替名称
         obj.is_add=list[i].is_add;//标签
+        obj.is_bind=list[i].is_bind;//编辑
         obj.user_company_career=list[i].user_company_career;//职位
         obj.user_company_name=list[i].user_company_name;//公司名称
         obj.user_brand=list[i].user_brand;//品牌
@@ -624,10 +526,10 @@ export default {
         obj.user_mail=list[i].user_mail;//邮箱
         obj.user_invest_industry=this.getUser_invest_industry(list[i].user_invest_industry);//投资领域
         obj.user_invest_stage=this.getUser_invest_stage(list[i].user_invest_stage);//投资轮次
-        obj.user_invest_stage=this.getUser_invest_tag(list[i].user_invest_tag);//标签
+        obj.tag=this.getUser_invest_tag(list[i].user_invest_tag);//标签
+        obj.login_time=list[i].login_time;//活跃时间
         arr.push(obj);
       }
-      console.log(arr)
       return arr;
     }//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
 
