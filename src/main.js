@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
 import router_config from './config/router_config.js'
+import store from './store/'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
@@ -42,6 +43,7 @@ const router = new VueRouter({
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 });
