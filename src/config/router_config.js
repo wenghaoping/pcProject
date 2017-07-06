@@ -82,7 +82,7 @@ export default [
   {
     path: '/login', component:login,
     children:[
-      { path:'',name:'telephonePhone',component:telephoneLogin},
+      { path:'',name:'telephoneLogin',component:telephoneLogin},
       { path:'codeLogin',name:'codeLogin',component:codeLogin},
     ]
   },

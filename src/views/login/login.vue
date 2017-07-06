@@ -1,11 +1,11 @@
 <template>
   <div id="login">
-    <div class="title tc">微天使,帮您成交的项目管理工具</div>
+    <div class="title tc">微天使，FA的智能工作站</div>
     <div class="loginBox flex">
       <div class="loginBox-left">
         <div class="flex">
           <div class="tab" @click="toggle(index)" v-for="(tab,index) in tabs">
-            <router-link :to="tab.jump "  class="tabIndex" :class="{border:active===index}" tag="div">
+            <router-link :to="tab.jump " class="tabIndex" :class="{border:active===index}" tag="div">
               {{tab.type}}
             </router-link>
           </div>
@@ -17,7 +17,9 @@
           <img src=""/>
           微信扫码登录
         </div>
-        <img class="qrCode" src="">
+        <!--<img class="qrCode" src="">-->
+        <!--<iframe class="qrCode" src="https://www.weitianshi.cn/auth/oauth" scrolling="no"></iframe>-->
+        <div id="qrCode"></div>
       </div>
     </div>
   </div>
@@ -34,14 +36,26 @@
           type: "密码登录", jump: "/login/codeLogin"
         }]
         ,
-        active:0
+        active: 0
       }
     },
     methods: {
       toggle(i){
         this.active = i
       },
-    }
+      creatObj(){
+        var obj = new WxLogin({
+          id: "qrCode",
+          appid: "wx9de571b0aa850c03",
+          scope: "snsapi_login",
+          redirect_uri: "https://www.weitianshi.cn/auth/weixin/callback",
+          href: 'https://www.weitianshi.cn/static/css/qrCode.css'
+        });
+      }
+    },
+    mounted(){
+      this.creatObj()
+    },
   }
 </script>
 

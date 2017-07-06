@@ -58,6 +58,16 @@ export default
   getCrawlerCompeting:"api/dataTeam/getCrawlerCompeting",  //一键尽调-竞品
   getCrawlerProject:"api/dataTeam/getCrawlerProject",  //一键尽调-项目
 
+  //身份认证相关
+  getGroupIdentify:'api/category/getGroupIdentify',//身份类型列表
+  setUserGroup:'user/setUserGroup',//设置身份类型
+
+  //登录方面相关
+  authCaptcha:'api/auth/authCaptcha',//用户注册,登录获取验证码接口
+  loginForCaptcha:'api/auth/loginForCaptcha',//用户注册/登录接口(验证码登录)
+  loginForPassword:'api/auth/loginForPassword',//用户登录接口(账号密码)
+  resetPasswordCaptcha:'api/auth/resetPasswordCaptcha',//重置密码获取验证码接口
+  resetPassword:'api/auth/resetPassword',//重置密码接口
 
   /*我的人脉*/
   userTitleSift:"user/userTitleSift",//人脉列表表头
