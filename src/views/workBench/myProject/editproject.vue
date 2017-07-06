@@ -19,7 +19,7 @@
                   <span class="f-title fl">商业计划书</span>
                   <span style="margin-left: 20px;" class="fl">
                     <el-upload class="planUpload"
-                               action="/project/projectUpload"
+                               action="api/v/project/projectUpload"
                                :on-preview="planPreview"
                                :on-change="planChange"
                                :on-success="planuploadsuccess"
@@ -42,7 +42,7 @@
                       <el-upload
                         class="upload"
                         ref="upload"
-                        action="/project/uploadFile"
+                        action="api/v/project/uploadFile"
                         :on-change="handleChange"
                         :on-success="uploadsuccess"
                         :on-error="uploaderror"
@@ -50,7 +50,7 @@
                         :file-list="fileList"
                         :data="fileuploadDate"
                         :show-file-list="showList"
-                         accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
+                        accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
                         multiple>
                         <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
                       </el-upload>
@@ -1099,46 +1099,6 @@
     },
     methods: {
       /*获取列表各种数据*/
-      getCity(data){
-        let arr = [];
-        for (let i = 0; i < data.length; i++) {
-          let obj = {};
-          obj.label = data[i].area_title;
-          obj.value = data[i].area_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取城市列表
-      getScale(data){
-        let arr = [];
-        for (let i = 0; i < data.length; i++) {
-          let obj = {};
-          obj.label = data[i].scale_money;
-          obj.value = data[i].scale_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取期望融资
-      getStage(data){
-        let arr = [];
-        for (let i = 0; i < data.length; i++) {
-          let obj = {};
-          obj.label = data[i].stage_name;
-          obj.value = data[i].stage_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取轮次信息
-      getIndustry(data){
-        let arr = [];
-        for (let i = 0; i < data.length; i++) {
-          let obj = {};
-          obj.label = data[i].industry_name;
-          obj.value = data[i].industry_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取项目领域
       getCompanyStatus(data){
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -1192,32 +1152,26 @@
           })
       },//设置文件分组标签
       getWxProjectCategory(){
-        this.$http.post(this.URL.getWxProjectCategory, {user_id: sessionStorage.user_id, project_id: this.project_id})
-          .then(res => {
-            let data = res.data.data;
-            this.area = this.getCity(data.area);//设置城市1列表
-            this.scale = this.getScale(data.scale);//设置期望融资
-            this.stage = this.getStage(data.stage);//设置轮次信息
-            this.industry = this.getIndustry(data.industry);//设置轮次信息
-            this.company_status = this.getCompanyStatus(data.company_status);//设置运营状态
-            this.tags_pro = this.getTags_pro(data.tags_pro);//设置项目标签
-            this.tags.changepro = this.getTags_pro(data.tags_pro);//设置项目标签2另外的========
-            this.tags_team = this.getTags_pro(data.tags_team);//设置团队标签
-            this.tags.changeTeam = this.getTags_pro(data.tags_team);//设置团队标签
-            this.tags_source = this.getTags_pro(data.pro_source);//设置项目来源
-            this.tags.changesource = this.getTags_pro(data.pro_source);//设置项目来源
-            this.company_scale = this.getCompany_scale(data.company_scale);//设置公司规模几人
-          })
-          .catch(err => {
-            this.$tool.console(err)
-            //            this.loading=false;
-          })
+        let data = this.$tool.selectValue;
+        this.area = this.$tool.getCity(data.area);//设置城市1列表
+        this.scale = this.$tool.getScale(data.scale);//设置期望融资
+        this.stage = this.$tool.getStage(data.stage);//设置轮次信息
+        this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
+        this.company_status = this.getCompanyStatus(data.company_status);//设置运营状态
+        this.tags_pro = this.getTags_pro(data.tags_pro);//设置项目标签
+        this.tags.changepro = this.getTags_pro(data.tags_pro);//设置项目标签2另外的
+        this.tags_team = this.getTags_pro(data.tags_team);//设置团队标签
+        this.tags.changeTeam = this.getTags_pro(data.tags_team);//设置团队标签
+        this.tags_source = this.getTags_pro(data.pro_source);//设置项目来源
+        this.tags.changesource = this.getTags_pro(data.pro_source);//设置项目来源
+        this.company_scale = this.getCompany_scale(data.company_scale);//设置公司规模几人
+
       },//获取所有下拉框的数据
       area1Change(data){
         this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
           .then(res => {
             let data = res.data.data;
-            this.area2 = this.getCity(data);
+            this.area2 = this.$tool.getCity(data);
           })
           .catch(err => {
             this.$tool.console(err)
@@ -1230,7 +1184,7 @@
         this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
           .then(res => {
             let data = res.data.data;
-            this.area2 = this.getCity(data);
+            this.area2 = this.$tool.getCity(data);
             if(parseInt(newData)===parseInt(pid)){
             }else{
               this.project.pro_area.area_id="";
@@ -1310,8 +1264,8 @@
           if(data[i].pro_finance_scale==0)  data[i].pro_finance_scale="";
         }
       },//期望融资,融资金额
-      getOneProject () {
-        this.$http.post(this.URL.getOneProject, {user_id: sessionStorage.user_id, project_id: this.project_id})
+      getProjectDetail () {
+        this.$http.post(this.URL.getProjectDetail, {user_id: sessionStorage.user_id, project_id: this.project_id})
           .then(res => {
 
             this.uploadShow2.lists=[];
@@ -2044,9 +1998,6 @@
           this.loading=true;
           let allData = {};
 
-/*          this.project.tags_pro=this.tags.changepro.slice(0);
-          this.team.tags_team=this.tags.changeTeam.slice(0);
-          this.project.pro_source=this.tags.changesource.slice(0);*/
           this.setTag(this.project.tags_pro,this.tags.changepro);
 
           this.setTag(this.team.tags_team,this.tags.changeTeam);
@@ -2124,7 +2075,7 @@
             type: 'success',
             message: '继续编辑'
           });
-          this.getOneProject();
+          this.getProjectDetail();
         });
       },
       /*锚点跳转*/
@@ -2262,7 +2213,7 @@
       this.loading = true;
       this.getprojectId();
       this.getWxProjectCategory();
-      this.getOneProject();
+      this.getProjectDetail();
       this.setFileType();
       this.ProjectShow=false;
       this.teamShow=false;
