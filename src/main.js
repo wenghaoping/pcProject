@@ -24,7 +24,7 @@ import URL_ from './global/url.js'//URL请求地址汇总
 Vue.prototype.URL = URL_;
 
 import echarts from 'echarts'//echart封装
-Vue.prototype.$echart = echarts
+Vue.prototype.$echart = echarts;
 
 import Vuex from 'vuex'
 import global from './global/global.js'

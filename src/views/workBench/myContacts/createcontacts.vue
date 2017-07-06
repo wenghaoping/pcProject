@@ -3,69 +3,290 @@
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
-        <div class="left-wrap">
+        <div class="left-wrap" ref="left" style="margin-top:24px;">
           <!--=================================基本资料=================================-->
-          <div class="item-block" style="margin-top:0;padding-bottom: 10px;">
+          <div class="item-block" style="margin-top:0;margin-bottom: 16px;">
+            <div class="bigTitle">添加人脉</div>
             <div class="block-tt-line">
               <span class="b-title">基本资料</span>
-              <span class="b-line" style="width: 624px;"></span>
+              <span class="b-line"></span>
+              <span class="b-hander" @click="closeDiv('contactShow')" v-show="contactShow">收起</span>
+              <span class="b-hander" @click="openDiv('contactShow')" v-show="!contactShow">展开</span>
             </div>
-            <div class="block-info block-cc-file" style="margin-top: 48px;">
-              <span class="f-title fl">商业计划书</span>
-              <span style="margin-left: 20px;" class="fl">
-                <el-upload class="Upload"
-                           ref="upload"
-                           action="/project/projectUpload"
-                           :on-change="planChange"
-                           :on-success="planuploadsuccess"
-                           :on-preview="planPreview"
-                           :on-remove="planRemove"
-                           :on-error="planuploaderror"
-                           :file-list="planList"
-                           :before-upload="beforeUpload"
-                           accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
-                           :data="uploadDate">
-                  <el-button slot="trigger" type="primary" v-show="planButton" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
-                  <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</div>
-                </el-upload>
-              </span>
+            <el-collapse-transition>
+              <div v-show="contactShow">
+                <div class="block-info block-cc-file clearfix">
+                  <span class="f-title fl">名片</span>
+                  <span style="margin-left: 20px;" class="fl">
+                    <el-upload class="Upload"
+                               ref="upload"
+                               action="api/v/project/projectUpload"
+                               :on-change="planChange"
+                               :on-success="planuploadsuccess"
+                               :on-remove="planRemove"
+                               :on-error="planuploaderror"
+                               :file-list="planList"
+                               :before-upload="beforeUpload"
+                               accept=".jpg, .png, .jpeg"
+                               :data="uploadDate">
+                      <el-button slot="trigger" type="primary" v-show="planButton" class="fl button"><i class="el-icon-plus"></i>上传名片</el-button>
+                      <div slot="tip" class="el-upload__tip fr" v-show="planButton">支持JPG、PNG、JPEG</div>
+                    </el-upload>
+                  </span>
 
-            </div>
-            <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
-              <el-row :span="24" :gutter="32">
-                <el-col :span="12">
-                  <span class="justIlook">(仅自己可见)</span>
-                  <el-form-item
-                    label="项目名称"
-                    prop="pro_name">
-                    <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <span class="justIlook2">(仅自己可见)</span>
-                  <el-form-item
-                    label="公司名称"
-                    prop="pro_company_name">
-                    <el-autocomplete v-model="project.pro_company_name"
-                                     :fetch-suggestions="querySearchAsync"
-                                     placeholder="请输入内容"
-                                     @select="handleSelect" class="width360">
-
-                    </el-autocomplete>
-                  </el-form-item>
-                </el-col>
-                <span class="ques">
-                  <el-tooltip placement="bottom-end">
-                      <div slot="content">
-                        <div class="tips-txt">1、一键同步公司信息，快速创建项目</div>
-                        <div class="tips-txt" style="margin-top:5px;">2、可在项目详情查看尽调报告</div>
-                      </div>
-                      <img src="../../../assets/images/question.png" alt="" />
-                  </el-tooltip>
-              </span>
-              </el-row>
-            </el-form>
+                </div>
+                <el-form :model="contacts" ref="project" label-width="100px" class="padding" label-position="top">
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="姓名"
+                        prop="card_name" :rules="nullRule">
+                        <el-input v-model="contacts.card_name" placeholder="请输入姓名"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="昵称"
+                        prop="card_nickname">
+                        <el-input v-model="contacts.card_nickname" placeholder="请输入昵称"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="手机"
+                        prop="card_name">
+                        <el-input v-model="contacts.card_mobile" placeholder="请输入手机"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="邮箱"
+                        prop="card_nickname">
+                        <el-input v-model="contacts.card_email" placeholder="请输入邮箱"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="公司"
+                        prop="card_company_name">
+                        <el-input v-model="contacts.card_company_name" placeholder="请输入公司名称"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="品牌"
+                        prop="card_brand">
+                        <el-input v-model="contacts.card_brand" placeholder="请输入品牌名、如：微天使"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="职位"
+                        prop="card_company_career">
+                        <el-input v-model="contacts.card_company_career" placeholder="请输入职位"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="人脉标签"
+                        prop="contacts_tag">
+                        <el-select v-model="contacts.contacts_tag"
+                                   multiple placeholder="请添加" class="width360"
+                                   :multiple-limit="multiplelimit"
+                                   filterable allow-create
+                                   default-first-option
+                                   @change="addChangeTag">
+                          <el-option
+                            v-for="item in tags_con"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+              </div>
+            </el-collapse-transition>
           </div>
+          <!--=================================投资需求=================================-->
+          <div class="item-block" style="margin-top:0;margin-bottom: 16px;">
+            <div class="block-tt-line">
+              <span class="b-title">投资需求</span>
+              <span class="b-line"></span>
+              <span class="b-hander" @click="closeDiv('InvestmentShow')" v-show="InvestmentShow">收起</span>
+              <span class="b-hander" @click="openDiv('InvestmentShow')" v-show="!InvestmentShow">展开</span>
+            </div>
+            <el-collapse-transition>
+              <div v-show="InvestmentShow">
+                <el-form :model="contacts" ref="project" label-width="100px" class="padding" label-position="top">
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="投资领域"
+                        prop="pro_industry">
+                        <el-select
+                          v-model="contacts.pro_industry"
+                          multiple
+                          :multiple-limit="multiplelimit"
+                          placeholder="请选择(最多5个)" class="width360">
+                          <el-option
+                            v-for="item in industry"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="项目轮次"
+                        prop="pro_stage.stage_id">
+                        <el-select v-model="contacts.pro_stage.stage_id" placeholder="请选择" class="width360">
+                          <el-option
+                            v-for="item in stage"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="期望融资"
+                        prop="pro_finance_scale">
+                        <el-select v-model="contacts.pro_finance_scale" placeholder="请选择" class="width360">
+                          <el-option
+                            v-for="item in scale"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6" >
+                      <el-form-item
+                        label="投资地区"
+                        prop="pro_area.pid"
+                        style="width: 170px;">
+                        <el-select v-model="contacts.pro_area.pid" placeholder="请选择" @change="area1Change">
+                          <el-option
+                            v-for="item in area"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6" >
+                      <el-form-item label="　　"
+                                    prop="pro_area.area_id">
+                        <el-select v-model="contacts.pro_area.area_id" placeholder="请选择">
+                          <el-option
+                            v-for="item in area2"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="24">
+                      <el-form-item label="投资需求描述"
+                                    prop="main">
+                        <el-input type="textarea"
+                                  v-model="contacts.main"
+                                  :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+              </div>
+            </el-collapse-transition>
+          </div>
+
+          <!--=================================资源需求=================================-->
+          <div class="item-block" style="margin-top:0;margin-bottom: 16px;">
+            <div class="block-tt-line">
+              <span class="b-title">资源需求</span>
+              <span class="b-line"></span>
+              <span class="b-hander" @click="closeDiv('resourcesShow')" v-show="resourcesShow">收起</span>
+              <span class="b-hander" @click="openDiv('resourcesShow')" v-show="!resourcesShow">展开</span>
+            </div>
+            <el-collapse-transition>
+              <div v-show="resourcesShow">
+                <el-form :model="contacts" ref="project" label-width="100px" class="padding" label-position="top">
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="他能提供的资源"
+                        prop="give">
+                        <el-select
+                          v-model="contacts.give"
+                          multiple
+                          :multiple-limit="multiplelimit"
+                          placeholder="请选择(最多5个)" class="width360">
+                          <el-option
+                            v-for="item in giveTo"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="寻求对接的资源"
+                        prop="push">
+                        <el-select v-model="contacts.push"
+                                   multiple
+                                   :multiple-limit="multiplelimit"
+                                   placeholder="请选择(最多5个)" class="width360">
+                          <el-option
+                            v-for="item in pushTo"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="24">
+                      <el-form-item label="资源需求描述"
+                                    prop="describe">
+                        <el-input type="textarea"
+                                  v-model="contacts.describe"
+                                  :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+              </div>
+            </el-collapse-transition>
+          </div>
+
+          <button class="button save" style="margin-top:15px;float: right;display: block;" @click="allSave">保存
+          </button>
         </div>
       </div>
     </div>
@@ -75,16 +296,243 @@
 <script type="text/ecmascript-6">
 export default {
   data () {
+    var checkNull = (rule, value, callback) => {
+      if (this.$tool.getNull(value)) {
+        return callback(new Error('不能为空'));
+      }else{
+        callback();
+      }
+    };//不为空判断
     return {
-      msg: ''
+      nullRule: { validator: checkNull, trigger: 'blur' },
+      multiplelimit: 5,//一次最多选5个,下拉表
+
+      planList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],//名片上传列表
+      planButton: true,//控制上传按钮的显示
+      uploadShow: {},//计划书上传列表,需要存数据啦
+      uploadDate: {user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
+      contacts: {
+        card_name:'',//姓名
+        card_nickname:'',//昵称
+        card_mobile:'',//名片手机号
+        card_email:'',//邮箱
+        card_company_name:'',//公司名称
+        card_brand:'',//品牌
+        card_company_career:'',//职位
+        contacts_tag:[],//人脉标签
+
+        pro_industry: [],//领域标签
+        pro_stage: {
+          "stage_id": '',
+          "stage_name": "",
+          "sort": 2,
+          "created_at": null,
+          "updated_at": null
+        },//轮次
+        pro_finance_scale: '',//投资金额
+        pro_area: {
+          area_id: '',
+          area_title: "",//市级
+          pid: ''//省级
+        },//所属地区1省级单位
+        main:'',//资源需求描述
+        give:[],//提供的资源
+        push:[],//寻求对接的资源
+        describe:'',//描述
+      },//人脉参数
+
+
+
+      tags_con: [],//人脉标签选项
+      industry: [],//领域标签选项
+      stage: [],//轮次标签选项
+      scale:[],//投资金额100-500选项
+      /*所属地区1省级选项*/
+      area: [],
+      /*所属地区2市级选项*/
+      area2: [],
+      giveTo:[],//能提供的资源
+      pushTo:[],//对接的资源
+      contactShow: true,//基本资料框
+      InvestmentShow: true,//投资需求框
+      resourcesShow: true,//资源需求框
     }
   },
   methods: {
+    openDiv(v){
+      this[v] = true;
+    },
+    closeDiv(v){
+      this[v] = false;
+    },
+    goBack(){//返回上一层
+      this.$router.push('/');
+    },
+    /*商业计划书*/
+    planChange(file, fileList){
+      this.planList = fileList
+      if (file.status === "fail") this.planButton = true;
+      else this.planButton = false;
+    },
+    planuploadsuccess(response, file, fileList){
+      this.$tool.success("上传成功")
+      let data = response.data
+      this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id)
+    },//上传成功后添加字段
+    planuploaderror(err, file, fileList){
+      this.$tool.error("上传失败,请联系管理员")
+    },//上传失败
+    planRemove(file, fileList) {
+      const deleteAtUpload = this.URL.deleteAtUpload;
+      if (fileList.length == 0) this.planButton = true;
+      else this.planButton = true;
+      this.$http.post(deleteAtUpload, {user_id: sessionStorage.user_id, project_id: this.uploadShow.project_id})
+        .then(res => {
+          if (res.status === 200) {
+            this.loading = false;
+//              this.success("删除成功")
+          }
+        })
+        .catch(err => {
+          this.$tool.console(err)
+//            this.alert("删除失败,请联系管理员")
+        })
 
+    },//删除文件
+    addplan(file_title, pro_intro, pro_name, project_id, file_id) {
+      let object = {};
+      object.file_title = file_title;
+      object.pro_intro = pro_intro;
+      object.pro_name = pro_name;
+      object.project_id = project_id;
+      object.file_id = file_id;
+      this.uploadShow = object;
+    },//添加上传文件时,保存返回的数据
+    beforeUpload(file){
+      this.uploadDate.project_id = this.project_id;
+      let filetypes=[".jpg",".png",".jpeg"];
+      let name=file.name;
+      let fileend=name.substring(name.lastIndexOf("."));
+      let isnext = false;
+      if(filetypes && filetypes.length>0){
+        for(var i =0; i<filetypes.length;i++){
+          if(filetypes[i]==fileend){
+            isnext = true;
+            break;
+          }
+        }
+      }
+      this.loading=false;
+      if(!isnext){
+        this.$tool.error("不支持的文件格式");
+        return false;
+      }
+      if(parseInt(file.size) > parseInt(20971521)){
+        this.$tool.error("暂不支持超过20M文件上传哦");
+        return false;
+      };
+    },//上传前的验证
+
+    /*添加人脉标签*/
+    addChangeTag(e){
+      let tagName = this.checkArr(e, this.tags_pro);
+
+      if (tagName != undefined) {
+        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 0, tag_name: tagName})
+          .then(res => {
+            let newState = {};
+            newState.label = tagName;
+            newState.value = res.data.tag_id;
+//              this.project.tags_pro.pop();//删除并返回;
+//              this.tags_pro.push(newState);
+            this.tags.changepro.push(newState);
+            /*this.tags.changepro.push(res.data.tag_id);*/
+          })
+          .catch(err => {
+            this.$tool.error("添加失败");
+            this.$tool.console(err);
+          })
+      }
+    },//添加人脉标签
+    area1Change(data){
+      let newData = data;
+      let pid=sessionStorage.pid;
+      this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
+        .then(res => {
+          let data = res.data.data;
+          this.area2 = this.$tool.getCity(data);
+          if(parseInt(newData)===parseInt(pid)){
+          }else{
+            this.project.pro_area.area_id="";
+          }
+        })
+        .catch(err => {
+          this.$tool.console(err)
+        })
+//
+    },//设置二级城市下拉列表
+    allSave(){
+
+    },//保存所有项目
+    getWxProjectCategory(){
+      let data = this.$tool.selectValue;
+      this.area = this.$tool.getCity(data.area);//设置城市1列表
+      this.scale = this.$tool.getScale(data.scale);//设置期望融资
+      this.stage = this.$tool.getStage(data.stage);//设置轮次信息
+      this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
+    },//获取所有下拉框的数据
+
+  },
+  created(){
+    if (this.planList.length != 0) this.planButton = false;
+    else this.planButton = true;
+
+    this.getWxProjectCategory();
   }
 }
 </script>
 
 <style lang="less">
+  @import '../../../assets/css/edit.less';
 
+   #createcontacts{
+     .button{
+       background:#40587a;
+       border-radius:4px;
+       height:37px;
+       font-size:14px;
+       color:#ffffff;
+     }
+     .save{
+       width:88px;
+       margin-bottom: 30px;
+     }
+     .bigTitle{
+       font-size:22px;
+       color:#1f2d3d;
+       margin-bottom: 32px;
+     }
+    .el-upload__tip{
+      margin-left: 16px;
+      font-size:14px;
+      color:#5e6d82;
+      line-height: 18px;
+    }
+     .Upload {
+       .el-upload-list__item {
+         line-height: 1.8;
+          margin-top: 0px;
+       }
+       .el-upload-list__item-name {
+         font-size: 14px;
+         color: #475669;
+         letter-spacing: 0;
+         text-decoration: underline
+       }
+       .el-upload-list__item:first-child{
+          margin-top: 0px;
+       }
+
+     }
+   }
 </style>

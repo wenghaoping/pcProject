@@ -841,8 +841,8 @@
         }
         return str
       },//项目来源编辑
-      getOneProject () {
-        this.$http.post(this.URL.getOneProject,{user_id:sessionStorage.user_id,project_id:this.project.project_id})
+      getProjectDetail () {
+        this.$http.post(this.URL.getProjectDetail,{user_id:sessionStorage.user_id,project_id:this.project.project_id})
           .then(res=>{
             this.loading=false
             let data = res.data.data;
@@ -885,7 +885,7 @@
       // 组件创建完后获取数据，
       this.loading=true
       this.getprojectId();
-      this.getOneProject();
+      this.getProjectDetail();
     }
 
   }
