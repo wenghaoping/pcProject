@@ -35,7 +35,7 @@
                   </span>
 
                 </div>
-                <el-form :model="contacts" ref="project" label-width="100px" class="padding" label-position="top">
+                <el-form :model="contacts" ref="contacts" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
@@ -47,7 +47,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="昵称"
-                        prop="card_nickname">
+                        prop="card_nickname"
+                        :rules="[{max: 20, message: '长度不能大于20个字符', trigger: 'blur' }]">
                         <el-input v-model="contacts.card_nickname" placeholder="请输入昵称"></el-input>
                       </el-form-item>
                     </el-col>
@@ -56,14 +57,16 @@
                     <el-col :span="12">
                       <el-form-item
                         label="手机"
-                        prop="card_name">
-                        <el-input v-model="contacts.card_mobile" placeholder="请输入手机"></el-input>
+                        prop="card_mobile"
+                        :rules="PhoneRule">
+                        <el-input v-model.number="contacts.card_mobile" placeholder="请输入手机"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="邮箱"
-                        prop="card_nickname">
+                        prop="card_email"
+                        :rules="[{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }]">
                         <el-input v-model="contacts.card_email" placeholder="请输入邮箱"></el-input>
                       </el-form-item>
                     </el-col>
@@ -72,14 +75,16 @@
                     <el-col :span="12">
                       <el-form-item
                         label="公司"
-                        prop="card_company_name">
+                        prop="card_company_name"
+                        :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
                         <el-input v-model="contacts.card_company_name" placeholder="请输入公司名称"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="品牌"
-                        prop="card_brand">
+                        prop="card_brand"
+                        :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
                         <el-input v-model="contacts.card_brand" placeholder="请输入品牌名、如：微天使"></el-input>
                       </el-form-item>
                     </el-col>
@@ -88,7 +93,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="职位"
-                        prop="card_company_career">
+                        prop="card_company_career"
+                        :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
                         <el-input v-model="contacts.card_company_career" placeholder="请输入职位"></el-input>
                       </el-form-item>
                     </el-col>
@@ -126,7 +132,7 @@
             </div>
             <el-collapse-transition>
               <div v-show="InvestmentShow">
-                <el-form :model="contacts" ref="project" label-width="100px" class="padding" label-position="top">
+                <el-form :model="contacts" ref="contacts1" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
@@ -209,7 +215,8 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item label="投资需求描述"
-                                    prop="main">
+                                    prop="main"
+                                    :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                         <el-input type="textarea"
                                   v-model="contacts.main"
                                   :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
@@ -231,7 +238,7 @@
             </div>
             <el-collapse-transition>
               <div v-show="resourcesShow">
-                <el-form :model="contacts" ref="project" label-width="100px" class="padding" label-position="top">
+                <el-form :model="contacts" ref="contacts2" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
@@ -273,7 +280,8 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item label="资源需求描述"
-                                    prop="describe">
+                                    prop="describe"
+                                    :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                         <el-input type="textarea"
                                   v-model="contacts.describe"
                                   :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
@@ -303,8 +311,27 @@ export default {
         callback();
       }
     };//不为空判断
+    var checkPhoneNumber = (rule, value, callback) => {
+      if (!this.$tool.getNull(value)) {
+        setTimeout(() => {
+          if (!this.$tool.checkNumber(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+            if (!this.$tool.checkPhoneNubmer(value)) {
+              callback(new Error('请输入正确的手机号'));
+            }else{
+              callback();
+            }
+          }
+        }, 100);
+      }else{
+        callback();
+      }
+    };//电话号码正则判断
     return {
+      contactsId:'',//名片ID
       nullRule: { validator: checkNull, trigger: 'blur' },
+      PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
       multiplelimit: 5,//一次最多选5个,下拉表
 
       planList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],//名片上传列表
@@ -354,8 +381,8 @@ export default {
       giveTo:[],//能提供的资源
       pushTo:[],//对接的资源
       contactShow: true,//基本资料框
-      InvestmentShow: true,//投资需求框
-      resourcesShow: true,//资源需求框
+      InvestmentShow: false,//投资需求框
+      resourcesShow: false,//资源需求框
     }
   },
   methods: {
@@ -376,7 +403,7 @@ export default {
     },
     planuploadsuccess(response, file, fileList){
       this.$tool.success("上传成功")
-      let data = response.data
+      let data = response.data;
       this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id)
     },//上传成功后添加字段
     planuploaderror(err, file, fileList){
@@ -409,7 +436,7 @@ export default {
       this.uploadShow = object;
     },//添加上传文件时,保存返回的数据
     beforeUpload(file){
-      this.uploadDate.project_id = this.project_id;
+      this.uploadDate.contactsId = this.contactsId;
       let filetypes=[".jpg",".png",".jpeg"];
       let name=file.name;
       let fileend=name.substring(name.lastIndexOf("."));
@@ -427,8 +454,8 @@ export default {
         this.$tool.error("不支持的文件格式");
         return false;
       }
-      if(parseInt(file.size) > parseInt(20971521)){
-        this.$tool.error("暂不支持超过20M文件上传哦");
+      if(parseInt(file.size) > parseInt(1048580)){
+        this.$tool.error("暂不支持超过1M文件上传哦");
         return false;
       };
     },//上传前的验证
@@ -463,7 +490,7 @@ export default {
           this.area2 = this.$tool.getCity(data);
           if(parseInt(newData)===parseInt(pid)){
           }else{
-            this.project.pro_area.area_id="";
+            this.contacts.pro_area.area_id="";
           }
         })
         .catch(err => {
@@ -472,22 +499,57 @@ export default {
 //
     },//设置二级城市下拉列表
     allSave(){
+        let contacts=this.submitForm('contacts');
+        let contacts1=this.submitForm('contacts1');
+        let contacts2=this.submitForm('contacts2');
+        if(!contacts) {}
+      else if(!contacts1) this.$tool.error("投资需求过长")
+      else if(!contacts2) this.$tool.error("资源需求过长")
+      else{
+/*          this.$http.post(this.URL.editProject, allData)
+            .then(res => {
+              this.loading=false;
+              this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '继续编辑')
+            })
+            .catch(err => {
+              this.$tool.error("编辑失败");
+              this.$tool.console(err);
+            })*/
+        }
 
-    },//保存所有项目
+    },//保存人脉
+    submitForm(formName) {
+      let check = true
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          return
+        } else {
+          check = false;
+        }
+      });
+      return check;
+    },//提交用
     getWxProjectCategory(){
-      let data = this.$tool.selectValue;
+      let data = this.$global.data.categoryData;
       this.area = this.$tool.getCity(data.area);//设置城市1列表
       this.scale = this.$tool.getScale(data.scale);//设置期望融资
       this.stage = this.$tool.getStage(data.stage);//设置轮次信息
       this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
     },//获取所有下拉框的数据
 
+    getContactsId(){
+      this.contactsId = this.$route.query.contactsId;
+    }
+
   },
   created(){
-    if (this.planList.length != 0) this.planButton = false;
-    else this.planButton = true;
 
     this.getWxProjectCategory();
+    setTimeout(() =>{
+      this.getContactsId();
+      if (this.planList.length != 0) this.planButton = false;
+      else this.planButton = true;
+    },200)
   }
 }
 </script>
@@ -502,6 +564,7 @@ export default {
        height:37px;
        font-size:14px;
        color:#ffffff;
+       cursor: pointer;
      }
      .save{
        width:88px;

@@ -71,18 +71,7 @@
       },
       login(){
         this.$router.push('/login')
-      },
-      getWxProjectCategory(){
-        this.$http.post(this.URL.getWxProjectCategory, {user_id: sessionStorage.user_id})
-          .then(res => {
-            let data = res.data.data;
-            this.$tool.selectValue=data;
-          })
-          .catch(err => {
-            this.$tool.console(err)
-            //            this.loading=false;
-          })
-      },//获取所有下拉框的数据
+      }
     },
 //    当dom一创建时
     created(){
@@ -94,10 +83,9 @@
        }*/
 //        this.$router.push({name:"telephoneLogin"});
 
-        this.$router.push({name:"identityDetail"});
+        this.$router.push({name:"myContacts"});
 
         this.setUserId();
-        this.getWxProjectCategory();//获取所有下拉框数据
 
     },
     watch: {
