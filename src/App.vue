@@ -66,13 +66,11 @@
         this.active = i
       },
       setUserId(){
-        sessionStorage.user_id = 'V0VznXa0';
+//        sessionStorage.user_id = 'V0VznXa0';
+        sessionStorage.user_id='2rzyz5vp';
       },
       login(){
         this.$router.push('/login')
-      }
-//        sessionStorage.user_id='V0VznXa0';
-        sessionStorage.user_id='2rzyz5vp';
       },
       getWxProjectCategory(){
         this.$http.post(this.URL.getWxProjectCategory, {user_id: sessionStorage.user_id})
