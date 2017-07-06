@@ -74,6 +74,4 @@ export default
   /*我的人脉*/
   userTitleSift:"api/v/user/userTitleSift",//人脉列表表头
   getConnectUser:"api/v/user/getConnectUser",//获取人脉列表
-
-
 }

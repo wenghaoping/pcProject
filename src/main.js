@@ -16,6 +16,7 @@ import $ from 'jquery'
 import './global/jquery.fullPage'
 import tool from './global/tool.js';
 
+
 import axios from './config/api.js'//axios请求配置
 Vue.prototype.$http = axios;
 
@@ -26,6 +27,8 @@ import echarts from 'echarts'//echart封装
 Vue.prototype.$echart = echarts;
 
 import Vuex from 'vuex'
+import global from './global/global.js'
+Vue.prototype.$global= global
 
 Vue.use(Element);//UI库
 Vue.use(tool);//自己的库
