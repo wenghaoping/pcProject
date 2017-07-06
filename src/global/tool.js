@@ -134,6 +134,57 @@ const tool={
     })
   },//警告弹窗,(黄色叹号)
 
+  getCity(data){
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+      let obj = {};
+      obj.label = data[i].area_title;
+      obj.value = data[i].area_id;
+      arr.push(obj);
+    }
+    return arr
+  },//获取城市列表
+  getScale(data){
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+      let obj = {};
+      obj.label = data[i].scale_money;
+      obj.value = data[i].scale_id;
+      arr.push(obj)
+    }
+    return arr
+  },//获取期望融资
+  getStage(data){
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+      let obj = {};
+      obj.label = data[i].stage_name;
+      obj.value = data[i].stage_id;
+      arr.push(obj)
+    }
+    return arr
+  },//获取轮次信息
+  getIndustry(data){
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+      let obj = {};
+      obj.label = data[i].industry_name;
+      obj.value = data[i].industry_id;
+      arr.push(obj)
+    }
+    return arr
+  },//获取领域
+
+
+  selectValue:{},//下拉框数据保存
+
+
+
+
+
+
+
+
   console(text) {
     let type=true;//true代表开发环境,false代表上线环境
     if(type) console.log(text);

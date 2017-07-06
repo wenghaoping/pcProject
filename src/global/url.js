@@ -25,7 +25,7 @@ export default
   getProjectList:"api/v/project/getProjectList",  //获取項目列表
 
   /*项目详情页*/
-  getOneProject:"api/v/project/getOneProject",  //获取項目詳情
+  getProjectDetail:"api/project/getProjectDetail",  //获取項目詳情
   deleteAtUpload:"api/v/project/deleteAtUpload",  //bp文件软删除
   deleteAtFile:"api/v/project/deleteAtFile",  //项目文件软删除
   download:"api/v/project/download",  //文件下载
