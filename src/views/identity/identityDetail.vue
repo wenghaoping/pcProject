@@ -178,7 +178,7 @@
     mounted(){
     },
     created(){
-
+      console.log(this.$global.data.categoryData)
     }
   }
 </script>
