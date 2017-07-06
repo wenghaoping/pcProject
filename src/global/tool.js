@@ -6,7 +6,7 @@
  */
 import { Notification } from 'element-ui';
 const tool={
-
+/*数据封装类*/
   getToObject (data) {
     let object={};
     for(let key in data){
@@ -14,7 +14,6 @@ const tool={
     }
     return object;
   }, //对象封装 将数组中无用的参数去除
-
   getToArrObject(data) {
     let newArr = new Array;
     for(let i=0;i<data.length; i++){
@@ -84,18 +83,17 @@ const tool={
     }
     return arr
   },//设置表格表头的筛选内容======表格页都用的到
-
+/*验证类*/
   getNull(data) {
     let reg=/\S/;
     if (!reg.test(data))
     {
-      return true;
+      return true;//是空
     }else{
-      return false;
+      return false;//不是空
     }
 
   },//判断是不是空(空字符串也算是空)
-
   checkNumber(data) {
     let reg = /^[0-9]+.?[0-9]*$/;
     if (reg.test(data)) {
@@ -103,7 +101,6 @@ const tool={
     }
     return false;
   },//判断是不是数字
-
   checkEmail(data){
     let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
     if (reg.test(data)) {
@@ -111,7 +108,15 @@ const tool={
     }
     return false;
   },//邮箱验证
+  checkPhoneNubmer(data){
+    let reg = /^1(3|4|5|7|8)\d{9}$/;
+    if (reg.test(data)) {
+      return true;
+    }
+    return false;
+  },//电话号码验证
 
+  /*弹框类*/
   error(text) {
     Notification.error({
       message: text,
@@ -133,7 +138,7 @@ const tool={
       duration:1000
     })
   },//警告弹窗,(黄色叹号)
-
+/*请求类*/
   getCity(data){
     let arr = [];
     for (let i = 0; i < data.length; i++) {
@@ -174,10 +179,6 @@ const tool={
     }
     return arr
   },//获取领域
-
-
-  selectValue:{},//下拉框数据保存
-
 
 
 
