@@ -43,7 +43,17 @@
           },
           next(){
               this.$router.push('/identityDetail')
+          },
+          getIdentity(){
+              this.$http.post(this.URL.getGroupIdentify,{}).then(
+                  res=>{
+                      console.log(res)
+                  }
+              )
           }
+        },
+        created(){
+//          this.getIdentity()
         }
     }
 </script>

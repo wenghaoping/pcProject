@@ -31,7 +31,6 @@
                   <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</div>
                 </el-upload>
               </span>
-
             </div>
             <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
               <el-row :span="24" :gutter="32">

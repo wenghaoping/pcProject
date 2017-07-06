@@ -17,6 +17,7 @@
       <el-collapse-transition>
         <div v-show="baseInfo">
           <!--上传头像-->
+          名片
           <upload></upload>
           <!--基本资料Form-->
           <el-form :model="ruleForm1" :rules="rule1" ref="ruleForm1" label-width="100px" class="demo-ruleForm">
@@ -45,6 +46,12 @@
           </el-form>
         </div>
       </el-collapse-transition>
+    </div>
+    <div class="item-block" style="margin-top:0;padding-bottom: 10px;">
+      <div class="block-tt-line">
+        <span class="b-title">基本资料</span>
+        <span class="b-line" style="width: 624px;"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -106,4 +113,5 @@
 
 <style scoped lang="less">
   @import "../../assets/css/indentity.less";
+  @import "../../assets/css/edit.less";
 </style>
