@@ -25,8 +25,8 @@ const creatproject = r => require.ensure([], () => r(require('@/views/workBench/
 
 
 /*===============================人脉路由配置=================================*/
-const myContacts = r => require.ensure([], () => r(require('@/views/workBench/myContacts/mycontacts.vue')), 'myContacts');
-const createContacts = r => require.ensure([], () => r(require('@/views/workBench/myContacts/createcontacts.vue')), 'createContacts');
+const myContacts = r => require.ensure([], () => r(require('@/views/workBench/myContacts/mycontacts.vue')), 'myContacts');//人脉列表
+const createContacts = r => require.ensure([], () => r(require('@/views/workBench/myContacts/createcontacts.vue')), 'createContacts');//创建人脉
 
 
 /*===============================跟进记录首页路由配置=================================*/
@@ -70,7 +70,7 @@ export default [
       { path: 'editproject', component: editproject, name:"editproject"},//编辑项目
       { path: 'creatproject', component: creatproject, name:"creatproject"},//创建项目
 
-      // { path: 'createContacts', component: createContacts, name:"createContacts"},//创建人脉
+      { path: 'createContacts', component: createContacts, name:"createContacts"},//创建人脉
     ]
   },
   {

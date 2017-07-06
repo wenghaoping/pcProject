@@ -13,7 +13,7 @@
           </el-input>
         </div>
         <div class="btns-box fr">
-          <el-button type="primary" @click="dialogUploadVisible = true">添加人脉</el-button>
+          <el-button type="primary" @click="addContacts">添加人脉</el-button>
         </div>
       </div>
       <div class="top-lists" style="height:690px;background: #f3f4f8;cursor: pointer">
@@ -286,7 +286,7 @@ export default {
       dialogUploadVisible:false,//控制添加人脉弹窗
       searchinput:'',//搜索绑定
       dialogVisible:false,//标签弹框设置
-      dialogPushVisible:true,//项目推送弹框设置
+      dialogPushVisible:false,//项目推送弹框设置
       totalData:1,//总页数
       currentPage:1,//当前页数
       getPra:{},//筛选的请求参数
@@ -387,7 +387,9 @@ export default {
       this.userEmail=row.user_email;
       this.dialogPushVisible=true;
     },//点击推送,并且传送数据给推送弹框
-
+    addContacts(){
+      this.$router.push({name: 'createContacts'})//路由传参
+    },//添加人脉
     dialogVisiblechange(msg){
       this.dialogPushVisible=msg;
     },

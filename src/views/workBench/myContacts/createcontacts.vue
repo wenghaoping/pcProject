@@ -1,10 +1,10 @@
 <template>
   <div id="createcontacts">
-<!--    <div class="contain-center edit-page">
+    <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
         <div class="left-wrap">
-          &lt;!&ndash;=================================基本资料=================================&ndash;&gt;
+          <!--=================================基本资料=================================-->
           <div class="item-block" style="margin-top:0;padding-bottom: 10px;">
             <div class="block-tt-line">
               <span class="b-title">基本资料</span>
@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-    </div>-->
+    </div>
   </div>
 </template>
 

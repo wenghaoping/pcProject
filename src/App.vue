@@ -80,9 +80,10 @@
         this.active=0;
       }*/
 
-        this.$router.push({name:"telephoneLogin"});
+//        this.$router.push({name:"telephoneLogin"});
+        this.$router.push({name:"myContacts"});
 
-      this.setUserId();
+        this.setUserId();
 
     },
     watch : {
