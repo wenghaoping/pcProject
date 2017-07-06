@@ -9,6 +9,7 @@ const data = {
   scale: '',
   stage: '',
   industry: '',
+  hotCity:'',
 }
 
 
@@ -54,6 +55,16 @@ var func = {
     }
     return arr
   },//获取项目领域
+  getHotCity(data){
+    let arr=[];
+    data.forEach((x)=>{
+      let obj={};
+      obj.label = x.area_title;
+      obj.value=x.area_id;
+      arr.push(obj)
+    })
+    return arr
+  },//获取热门城市
   getWxProjectCategory() {
     axios.post(URL.getWxProjectCategory, {user_id: sessionStorage.user_id})
     .then(res => {
@@ -63,6 +74,7 @@ var func = {
       global.data.scale = global.func.getScale(data.scale);//设置期望融资
       global.data.stage = global.func.getStage(data.stage);//设置轮次信息
       global.data.industry = global.func.getIndustry(data.industry);//设置轮次信息
+      global.data.hotCity = global.func.getHotCity(data.hotCity);//设置热门城市
     })
     .catch(err => {
       console.log(err)

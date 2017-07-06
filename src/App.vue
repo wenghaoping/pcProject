@@ -94,7 +94,7 @@
        }*/
 //        this.$router.push({name:"telephoneLogin"});
 
-        this.$router.push({name:"createContacts"});
+        this.$router.push({name:"identityDetail"});
 
         this.setUserId();
         this.getWxProjectCategory();//获取所有下拉框数据

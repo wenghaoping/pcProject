@@ -2044,6 +2044,7 @@
       },
 
       /*编辑成功弹窗*/
+      /*编辑成功弹窗*/
       open2(title, main, confirm, cancel) {
         this.$confirm(main, title, {
           confirmButtonText: confirm,
