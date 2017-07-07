@@ -65,13 +65,14 @@
           <!--投资偏好Form-->
           <el-form :model="ruleForm2" :rules="rule2" ref="ruleForm2" label-width="100px" class="demo-ruleForm"
                    label-position="top">
+            <!--投资领域与轮次-->
             <div class="flex">
-              <el-form-item label="投资领域" prop="investIndustry">
+              <el-form-item label="投资领域" prop="investIndustry" class="mr32">
                 <el-select v-model="ruleForm2.investIndustry"
                            multiple filterable
                            :multiple-limit="multiplelimit"
                            placeholder="请添加(最多5个)"
-                           class="mr32">
+                           class="width360">
                   <el-option v-for="item in industry"
                              :key="item.value"
                              :label="item.label"
@@ -79,12 +80,13 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="投资领域" prop="investIndustry">
-                <el-select v-model="ruleForm2.investIndustry"
+              <el-form-item label="投资轮次" prop="investStage">
+                <el-select v-model="ruleForm2.investStage"
                            multiple filterable
                            :multiple-limit="multiplelimit"
-                           placeholder="请添加(最多5个)">
-                  <el-option v-for="item in industry"
+                           placeholder="请添加(最多5个)"
+                            class="width360">
+                  <el-option v-for="item in stage"
                              :key="item.value"
                              :label="item.label"
                              :value="item.value">
@@ -92,7 +94,46 @@
                 </el-select>
               </el-form-item>
             </div>
-
+            <!--投资金额和地区-->
+            <div class="flex">
+              <el-form-item label="投资金额" prop="investScale" class="mr32">
+                <el-select v-model="ruleForm2.investScale"
+                           multiple filterable
+                           :multiple-limit="multiplelimit"
+                           placeholder="请添加(最多5个)"
+                           class="width360">
+                  <el-option v-for="item in scale"
+                             :key="item.value"
+                             :label="item.label"
+                             :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="投资地区" prop="investArea">
+                <el-select v-model="ruleForm2.investArea"
+                           multiple filterable
+                           :multiple-limit="multiplelimit"
+                           placeholder="请添加(最多5个)"
+                           class="width360">
+                  <el-option v-for="item in hotCity"
+                             :key="item.value"
+                             :label="item.label"
+                             :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+            <!--成功案例-->
+            <div class="flex">
+              <el-form-item label="成功案例">
+                <el-button v-show="!hasSuccessCase">添加</el-button>
+                <el-button v-show="hasSuccessCase">继续添加</el-button>
+              </el-form-item>
+            </div>
+            <!--完成-->
+            <div>
+              <el-button class="fr next" @click="next">完成</el-button>
+            </div>
           </el-form>
         </div>
       </el-collapse-transition>
@@ -104,6 +145,7 @@
 
 <script type="text/ecmascript-6">
   import cardUpload from '../../components/cardUpload.vue'
+  import investSuccessCase from '../../components/investSuccessCase'
   export default {
     data () {
       return {
@@ -112,6 +154,7 @@
         area: '',
         stage: '',
         scale: '',
+        hotCity:'',
 //      控制展开收起
         baseInfo: false,
         investPrefer: true,
@@ -128,6 +171,9 @@
         },
         ruleForm2: {
           investIndustry: '',
+          investStage:'',
+          investScale:'',
+          investArea:''
         },
 //      表单验证规则
         rule1: {
@@ -161,24 +207,36 @@
           ],
         },
         rule2: {
-          investIndustry: [{type: 'array', required: true, message: '投资领域不能为空', trigger: 'change'}]
-        }
+          investIndustry: [{type: 'array', required: false, message: '投资领域不能为空', trigger: 'change'}],
+          investStage: [{type: 'array', required: false, message: '投资轮次不能为空', trigger: 'change'}],
+          investScale: [{type: 'array', required: false, message: '投资金额不能为空', trigger: 'change'}],
+          investArea: [{type: 'array', required: false, message: '投资地区不能为空', trigger: 'change'}],
+        },
+//      是否添加过成功案例
+        hasSuccessCase:false,
       }
     },
     components: {
-      cardUpload
+      cardUpload,investSuccessCase
     },
     methods: {
-      //跳过
+//      跳过
       skip(){
         this.$router.push('/index')
       },
-      //获取所有下拉框的数据
+//      完成
+      next(){
+          console.log(this.ruleForm1,this.ruleForm2)
+      }
+
     },
     mounted(){
     },
     created(){
-      console.log(this.$global.data.categoryData)
+      this.industry=this.$global.data.industry;
+      this.scale=this.$global.data.scale;
+      this.stage=this.$global.data.stage;
+      this.hotCity=this.$global.data.hotCity;
     }
   }
 </script>
