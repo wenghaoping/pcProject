@@ -83,8 +83,8 @@
        }*/
 //        this.$router.push({name:"telephoneLogin"});
 
-
         this.$router.push({name:"identityDetail"});
+
 
         this.setUserId();
 
