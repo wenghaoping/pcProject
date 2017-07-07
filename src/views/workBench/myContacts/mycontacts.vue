@@ -576,7 +576,7 @@ export default {
 
   },
   created(){
-
+    this.loading=true;
     this.titleSift();
     this.handleIconClick();
   }

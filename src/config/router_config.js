@@ -21,6 +21,7 @@ const myProject = r => require.ensure([], () => r(require('@/views/workBench/myP
 const projectDetails = r => require.ensure([], () => r(require('@/views/workBench/myProject/projectDetails.vue')), 'projectDetails');
 
 const editproject = r => require.ensure([], () => r(require('@/views/workBench/myProject/editproject.vue')), 'editproject');
+
 const creatproject = r => require.ensure([], () => r(require('@/views/workBench/myProject/creatproject.vue')), 'creatproject');
 
 
