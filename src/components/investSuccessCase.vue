@@ -1,18 +1,50 @@
 <template>
-  <div id="investSuccessCase">
-    <el-form :model="investSuccessCase" ref="investSuccessCase" label-width="100px" class="demo-dynamic">
-      <el-form-item
-        v-for="(item, index) in investSuccessCase"
-        :key="item.key"
-        :prop="'domains.' + index + '.value'"
-        :rules="{required: true, message: '域名不能为空', trigger: 'blur'}">
+  <el-dialog title="| 添加成功案例"  id="investSuccessCase" :visible.sync="dialogShow">
+    <!--单个成功案例的表单-->
+    <el-form :model="caseForm" ref="investSuccessCase" :rules="rule" label-width="100px" class="demo-dynamic" label-position="top">
+      <el-form-item v-for="(item, index) in caseForm.investSuccessCase" :key="item.index">
+        <!--项目名称和投资时间-->
         <div class="flex">
-          <el-input v-model="investSuccessCase.value"></el-input>
-          <el-input v-model="investSuccessCase.value"></el-input>
+          <el-form-item label="项目名称" prop="name">
+            <el-input v-model="item.name">项目名称</el-input>
+          </el-form-item>
+          <el-form-item label="投资时间" prop="time">
+            <el-date-picker v-model="item.time" type="date" placeholder="选择日期" class="width360"></el-date-picker>
+          </el-form-item>
+        </div>
+        <!--投资领域和投资轮次-->
+        <div class="flex">
+          <el-form-item label="投资领域" prop="industry">
+            <el-input v-model="item.industry">项目名称</el-input>
+          </el-form-item>
+          <el-form-item label="投资轮次" prop="stage">
+            <el-input v-model="item.stage">投资时间</el-input>
+          </el-form-item>
+        </div>
+        <!--投资地区和投资金额-->
+        <div class="flex">
+          <el-form-item label="投资地区" prop="area1">
+            <el-select v-model="item.area1" placeholad="请选择">
+              <el-option v-for="area1Item in area1List" :key="area1Item.value" :label="area1Item.label" :value="area1Item.value"></el-option>
+            </el-select>
+            <el-select v-model="item.area2" placeholad="请选择">
+              <el-option v-for="area2Item in area2List" :key="area2Item.value" :label="area2Item.label" :value="area2Item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="投资金额(万)" prop="scale" >
+            <el-input v-model="item.scale">投资金额</el-input>
+          </el-form-item>
         </div>
       </el-form-item>
+      <div class="tc">
+        <el-button type="text primy" @click="continueAdd">+ 继续添加</el-button>
+      </div>
     </el-form>
-  </div>
+    <div class="clearfix">
+      <el-button class="fr">确定</el-button>
+      <el-button class="fr" style="margin-right: 23px">取消</el-button>
+    </div>
+  </el-dialog>
 </template>
 
 
@@ -20,13 +52,51 @@
   export default {
     data () {
       return {
-        investSuccessCase: {}
+          caseForm:{
+            investSuccessCase: [{
+              name:'',
+              time:'',
+              industry:'',
+              stage:'',
+              area1:'',
+              area2:'',
+              scale:''
+            }]
+          }
+        ,
+        rule:{
+          name:{},
+          time:{},
+          industry:{},
+          stage:{},
+          area1:{},
+          area2:{},
+          scale:{},
+        },
+        area1List:[],
+        area2List:[],
+        dialogShow:true
       }
     },
-    methods: {}
+    methods: {
+      continueAdd(){
+          this.caseForm.investSuccessCase.push({
+            name:'',time:'',industry:'',stage:'',area1:'',area2:'',scale:''
+          })
+      },
+    },
+    created(){
+        this.area1List=this.$global.data.area
+    }
   }
 </script>
 
 <style scoped lang="less">
-
+  #investSuccessCase{
+    padding:32px 61px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
 </style>

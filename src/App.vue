@@ -81,11 +81,9 @@
        //        this.$router.push('/');
        this.active=0;
        }*/
-
-//        this.$router.push({name:"telephoneLogin"});
+        //this.$router.push({name:"identityDetail"});
 
         this.$router.push({name:"contactsDetails"});
-
         this.setUserId();
 
     },
