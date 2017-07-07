@@ -23,7 +23,7 @@
                     @header-click="headerClick"
                     @sort-change="filterChange"
                     @filter-change="filterChange" stripe>
-            <el-table-column prop="user_real_name" label="姓名" width="184">
+            <el-table-column prop="user_real_name" label="姓名" width="200">
               <template scope="scope">
                 <div class="img fl">
                   <img v-if="scope.row.user_avatar_url!=''" :src="scope.row.user_avatar_url">
@@ -115,7 +115,7 @@
 
             <el-table-column prop="user_invest_industry" label="投资领域"
                              show-overflow-tooltip
-                             width="144"
+                             width="128"
                              column-key="industry"
                              :filters="user_invest_industryFilters"
                              filter-placement="bottom-end">
@@ -311,22 +311,6 @@ export default {
             tag:"海龟",//标签
             login_time:"刚刚活跃",//最近活跃
             is_bind:0,//编辑
-        },
-        {
-          user_avatar_url: "",//头像
-          user_avatar_url_change: "翁",//代替图片
-          user_real_name: '翁浩平',//姓名
-          is_add: false,//标签,true显示,false不显示
-          user_company_career: '',//职位
-          user_company_name: '',//公司名称
-          user_brand: '',//品牌
-          user_mobile: "",//手机
-          user_email: "wenghaoping@sina.com",//邮箱
-          user_invest_industry: "电子商务",//投资领域
-          user_invest_stage: "种子轮 ",//投资轮次
-          tag: "海龟",//标签
-          login_time: "刚刚活跃",//最近活跃
-          is_bind: 1,//编辑
         }
       ],//列表数据
       user_invest_industryFilters:[{ text: '', value: '' }],//投资领域筛选条件
@@ -348,9 +332,9 @@ export default {
   methods: {
 
     handleSelect(row, event, column) {
-      /*if(column.label!="重置"){
-        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id}})
-      }*/
+      if(column.label!="重置"){
+        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id}})
+      }
     },//跳转到人脉详情页面传参数
     handleEdit(index, row){
 //      this.$router.push({ name: 'editproject', query: { project_id:row.project_id}})
@@ -592,6 +576,7 @@ export default {
 
   },
   created(){
+
     this.titleSift();
     this.handleIconClick();
   }

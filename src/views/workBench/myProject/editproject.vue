@@ -128,7 +128,7 @@
                         label="所属省级"
                         prop="pro_area.pid"
                         :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]" style="width: 170px;">
-                        <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change2">
+                        <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change">
                           <el-option
                             v-for="item in area"
                             :key="item.value"
@@ -1152,7 +1152,8 @@
           })
       },//设置文件分组标签
       getWxProjectCategory(){
-        let data = this.$tool.selectValue;
+
+        let data = this.$global.data.categoryData;
         this.area = this.$tool.getCity(data.area);//设置城市1列表
         this.scale = this.$tool.getScale(data.scale);//设置期望融资
         this.stage = this.$tool.getStage(data.stage);//设置轮次信息
@@ -1168,17 +1169,6 @@
 
       },//获取所有下拉框的数据
       area1Change(data){
-        this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
-          .then(res => {
-            let data = res.data.data;
-            this.area2 = this.$tool.getCity(data);
-          })
-          .catch(err => {
-            this.$tool.console(err)
-          })
-
-      },//设置二级城市下拉列表1
-      area1Change2(data){
         let newData = data;
         let pid=sessionStorage.pid;
         this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
@@ -1194,8 +1184,9 @@
           .catch(err => {
             this.$tool.console(err)
           })
-//
-      },//设置二级城市下拉列表2
+
+      },//设置二级城市下拉列表
+
 
 
       /*获取项目详情*/
