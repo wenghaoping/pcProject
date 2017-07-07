@@ -8,7 +8,7 @@
         <div class="img fl"><img src="../../../assets/images/why.png"></div>
       </span>
 
-      <el-form label-position="top" :model="email2" label-width="80px" style="position: relative" ref="emain2">
+      <el-form label-position="top" :model="email2" label-width="80px" style="position: relative" ref="email2">
         <el-form-item label="推送人脉"
                       prop="nameEmail"
                       :rules="emailRule">
@@ -87,8 +87,7 @@
           <el-input v-model="email.title" placeholder="请输入邮件标题"></el-input>
         </el-form-item>
         <el-form-item label="正文"
-                      prop="main"
-                      :rules="titleRule">
+                      prop="main">
           <el-input type="textarea"
                     v-model="email.main"
                     placeholder="请输入邮件正文"
@@ -139,7 +138,7 @@ export default {
         nameEmail:'',//人脉的邮箱(一个)
       },
       email:{
-        title:'',//邮件标题
+        title:'有人给您推荐一个项目,赶紧看看吧',//邮件标题
         main:'',//邮件正文
       },
       user:{
@@ -191,7 +190,6 @@ export default {
             this.$tool.console(err);
           })*/
       }else if(type==2){//继续
-
           if(check1 && check2) this.$emit('changeall',false)
 /*        this.$http.post(this.URL.getCrawlerBrand, {
           user_id: sessionStorage.user_id,
@@ -236,14 +234,15 @@ export default {
         }
     },
     submitForm(formName) {
+      let check = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          return true;
+          return
         } else {
-          this.$tool.console('error submit!!');
-          return false;
+          check = false;
         }
       });
+      return check;
     },
   },
   mounted() {
