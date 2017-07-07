@@ -138,7 +138,10 @@
         </div>
       </el-collapse-transition>
     </div>
+    <!--成功案例弹窗-->
+    <invest-success-case>
 
+    </invest-success-case>
   </div>
 </template>
 
@@ -243,5 +246,4 @@
 
 <style scoped lang="less">
   @import "../../assets/css/indentity.less";
-  @import "../../assets/css/edit.less";
 </style>
