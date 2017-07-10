@@ -1,41 +1,38 @@
 <template>
   <div id="jump">
-    <div class="border">
-      <el-transfer
-        filterable
-        :filter-method="filterMethod"
-        filter-placeholder="请输入城市拼音"
-        v-model="value2"
-        :data="data2"
-        class="inner">
-      </el-transfer>
-    </div>
+    <el-select v-model="value" placeholder="请选择">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
     data() {
-      const generateData2 = _ => {
-        const data = [];
-        const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
-        const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
-        cities.forEach((city, index) => {
-          data.push({
-            label: city,
-            key: index,
-            pinyin: pinyin[index]
-          });
-        });
-        return data;
-      };
       return {
-        data2: generateData2(),
-        value2: [],
-        filterMethod(query, item) {
-          return item.pinyin.indexOf(query) > -1;
-        }
-      };
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: ''
+      }
     }
   };
 </script>

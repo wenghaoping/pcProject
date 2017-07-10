@@ -83,6 +83,25 @@ const tool={
     }
     return arr
   },//设置表格表头的筛选内容======表格页都用的到
+  checkArr(arr, arr2){
+    let newArr = []
+    let data = arr[arr.length - 1]
+    for (let i = 0; i < arr2.length; i++) {
+      newArr.push(arr2[i].value);
+    }
+    if (newArr.indexOf(data) == -1) return data
+
+
+  },//判断是否重复.在动态添加标签的地方使用
+  setTag(arr,pro){
+    for(let i=0; i<pro.length; i++){
+      for(let j=0; j<arr.length; j++){
+        if(arr[j]==pro[i].label){
+          arr[j]=pro[i].value;
+        }
+      }
+    }
+  },//标签取数据arr//放值的地方,pro总值/标签最后保存的时候,把文字标签替换成id
 /*验证类*/
   getNull(data) {
     let reg=/\S/;

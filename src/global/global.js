@@ -65,16 +65,30 @@ var func = {
     })
     return arr
   },//获取热门城市
+  getTags_pro(data){
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+      let obj = {};
+      obj.label = data[i].tag_name;
+      obj.value = data[i].tag_id;
+      arr.push(obj)
+    }
+    return arr
+  },//获取项目/团队/人脉标签
   getWxProjectCategory() {
     axios.post(URL.getWxProjectCategory, {user_id: sessionStorage.user_id})
     .then(res => {
       let data = res.data.data;
-      global.data.categoryData=data
+      global.data.categoryData=data;
       global.data.area = global.func.getCity(data.area);//设置城市1列表
       global.data.scale = global.func.getScale(data.scale);//设置期望融资
       global.data.stage = global.func.getStage(data.stage);//设置轮次信息
       global.data.industry = global.func.getIndustry(data.industry);//设置轮次信息
       global.data.hotCity = global.func.getHotCity(data.hotCity);//设置热门城市
+      global.data.tags_pro = global.func.getTags_pro(data.tags_pro);//设置项目标签
+      global.data.tags_team = global.func.getTags_pro(data.tags_team);//设置团队标签
+      global.data.tags_user = global.func.getTags_pro(data.tags_user);//设置人脉标签
+      global.data.pro_source = global.func.getTags_pro(data.pro_source);//设置项目来源
     })
     .catch(err => {
       console.log(err)

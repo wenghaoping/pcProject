@@ -254,6 +254,7 @@
         allow-create
         style="width:100%"
         @change="addChangeTag"
+        default-first-option
         placeholder="请输入标签">
         <el-option
           v-for="item in addTags"
@@ -292,9 +293,9 @@ export default {
       getPra:{},//筛选的请求参数
       tagsValue:[],//标签弹框数据绑定
       addTags:[{
-        value: 'HTML',
-        label: 'HTML'
-      }],//标签展示数据
+        value: '',
+        label: ''
+      }],//人脉标签展示数据
       tableData:[
           {
             user_avatar_url:"https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epia77Br2Wk8RiaR8hMAxMG9DerJfzuRCGr5Pf0s2MNDj1FU6dwnpKycchqTRck13S0RTQ6Cg3qZy4A/0",//头像
@@ -309,6 +310,7 @@ export default {
             user_invest_industry: "电子商务",//投资领域
             user_invest_stage: "种子轮 ",//投资轮次
             tag:"海龟",//标签
+            tagArray:[],//原版标签,设置标签用的
             login_time:"刚刚活跃",//最近活跃
             is_bind:0,//编辑
         }
@@ -323,6 +325,12 @@ export default {
         user_company_name:'杭州投着乐网络科技有限公司',//公司名称
       },//传递给推送的数据
       userEmail:'',
+      tags:{
+        changecont:[],//项目标签新增
+        index:'',//取数据保存的位置
+        card_id:''//人脉id
+      }
+
 
     }
   },
@@ -339,8 +347,19 @@ export default {
     handleEdit(index, row){
 //      this.$router.push({ name: 'editproject', query: { project_id:row.project_id}})
     },//点击编辑按钮,跳转
+
+    getTagId(data){
+      let arr = [];
+      for(let i=0; i<data.length; i++){
+        arr.push(data[i].tag_id);
+      }
+      return arr;
+    },//将标签的id循环取出来
     handleTag(index,row){
         this.dialogVisible = true;
+        this.tags.index=index;
+        this.tags.card_id=row.card_id;
+        this.tagsValue=this.getTagId(this.tableData[index].tagArray);
     },//点击标签按钮
     handleDelete(index,row){
       this.$confirm('此操作将永久删除该人脉, 是否继续?', '提示', {
@@ -527,57 +546,56 @@ export default {
         obj.user_invest_industry=this.getUser_invest_industry(list[i].user_invest_industry);//投资领域
         obj.user_invest_stage=this.getUser_invest_stage(list[i].user_invest_stage);//投资轮次
         obj.tag=this.getUser_invest_tag(list[i].user_invest_tag);//标签
+        obj.tagArray=list[i].user_invest_tag;//标签
         obj.login_time=list[i].login_time;//活跃时间
+        obj.card_id=list[i].card_id;//活跃时间
         arr.push(obj);
       }
       return arr;
     },//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
 
-
-    checkArr(arr, arr2){
-      let newArr = []
-      let data = arr[arr.length - 1]
-      for (let i = 0; i < arr2.length; i++) {
-        newArr.push(arr2[i].value);
-      }
-      if (newArr.indexOf(data) == -1) return data
-
-
-    },//判断是否重复
-    setTag(arr,pro){
-      for(let i=0; i<pro.length; i++){
-        for(let j=0; j<arr.length; j++){
-          if(arr[j]==pro[i].label){
-            arr[j]=pro[i].value;
-          }
-        }
-      }
-    },//标签取数据arr//放值的地方,pro总值
+    getWxProjectCategory(){
+        this.addTags = this.$global.data.tags_user;//设置人脉标签
+        this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
+    },//获取所有下拉框的数据
     addChangeTag(e){
-/*      let tagName = this.checkArr(e, this.tags_pro);
+      let tagName = this.$tool.checkArr(e, this.addTags);
       if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 0, tag_name: tagName})
+        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 3, tag_name: tagName})
           .then(res => {
             let newState = {};
             newState.label = tagName;
             newState.value = res.data.tag_id;
-            this.tags.changepro.push(newState);
+            this.tags.changecont.push(newState);
           })
           .catch(err => {
             this.$tool.error("添加失败");
             this.$tool.console(err);
           })
-      }*/
+      }
     },//添加项目标签
     addTag(){
-/*      this.setTag(this.project.tags_pro,this.tags.changepro);*/
+      this.loading=true;
+      this.$tool.setTag(this.tagsValue,this.tags.changecont);
+      this.$http.post(this.URL.setConnectTag, {user_id:sessionStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
+        .then(res => {
+          this.loading=false;
+          this.dialogVisible = true;
+          this.$tool.success("设置成功");
+        })
+        .catch(err => {
+          this.loading=false;
+          this.$tool.error("添加失败");
+          this.$tool.console(err);
 
+        })
     },//保存标签选择
 
   },
   created(){
     this.loading=true;
     this.titleSift();
+    this.getWxProjectCategory();
     this.handleIconClick();
   }
 }

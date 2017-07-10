@@ -42,7 +42,7 @@ export default
   getWxProjectCategory:"api/category/getWxProjectCategory",  //编辑项目各种标签接口
   getArea:"api/category/getArea",  //二级城市接口
   createStatusPro:"api/category/createStatusPro",  //添加自定义运营状态
-  createCustomTag:"api/category/createCustomTag",  //添加自定义标签/个人,团队
+  createCustomTag:"api/category/createCustomTag",  //添加自定义标签/个人,团队,人脉
   selectCompany:"api/dataTeam/selectCompany",  //公司名称提示
   getFileType:"api/category/getFileType",  //文件分组设置选项
   createFileType:"api/category/createFileType",  //添加文件分组设置
@@ -74,4 +74,6 @@ export default
   /*我的人脉*/
   userTitleSift:"api/v/user/userTitleSift",//人脉列表表头
   getConnectUser:"api/v/user/getConnectUser",//获取人脉列表
+  setConnectTag:"api/v/user/setConnectTag",//给人脉设置标签
+
 }
