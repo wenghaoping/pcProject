@@ -48,7 +48,7 @@
           id: "qrCode",
           appid: "wx9de571b0aa850c03",
           scope: "snsapi_login",
-          redirect_uri: "https://www.weitianshi.cn/auth/weixin/callback",
+          redirect_uri: "www.local.app/auth/weixin/callback",
           href: 'https://www.weitianshi.cn/static/css/qrCode.css'
         });
       }
