@@ -128,7 +128,7 @@
                         label="所属省级"
                         prop="pro_area.pid"
                         :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]" style="width: 170px;">
-                        <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change">
+                        <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change2">
                           <el-option
                             v-for="item in area"
                             :key="item.value"
@@ -1159,16 +1159,28 @@
         this.stage = this.$tool.getStage(data.stage);//设置轮次信息
         this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
         this.company_status = this.getCompanyStatus(data.company_status);//设置运营状态
-        this.tags_pro = this.getTags_pro(data.tags_pro);//设置项目标签
-        this.tags.changepro = this.getTags_pro(data.tags_pro);//设置项目标签2另外的
-        this.tags_team = this.getTags_pro(data.tags_team);//设置团队标签
-        this.tags.changeTeam = this.getTags_pro(data.tags_team);//设置团队标签
-        this.tags_source = this.getTags_pro(data.pro_source);//设置项目来源
-        this.tags.changesource = this.getTags_pro(data.pro_source);//设置项目来源
         this.company_scale = this.getCompany_scale(data.company_scale);//设置公司规模几人
+        this.tags_pro = this.$global.data.tags_pro;//设置项目标签
+        this.tags.changepro = this.$global.data.tags_pro;//设置项目标签2另外的
+        this.tags_team = this.$global.data.tags_team;//设置团队标签
+        this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
+        this.tags_source = this.$global.data.pro_source;//设置项目来源
+        this.tags.changesource = this.$global.data.pro_source;//设置项目来源
+
 
       },//获取所有下拉框的数据
       area1Change(data){
+        this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
+          .then(res => {
+            let data = res.data.data;
+            this.area2 = this.$tool.getCity(data);
+          })
+          .catch(err => {
+            this.$tool.console(err)
+          })
+
+      },//设置二级城市下拉列表
+      area1Change2(data){
         let newData = data;
         let pid=sessionStorage.pid;
         this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
@@ -1185,7 +1197,8 @@
             this.$tool.console(err)
           })
 
-      },//设置二级城市下拉列表
+      },//设置二级城市下拉列表2
+
 
 
 
@@ -1662,18 +1675,6 @@
           this.dialogFormVisible = true;
         }
       },//*控制添加radio
-
-      checkArr(arr, arr2){
-        let newArr = []
-        let data = arr[arr.length - 1]
-        for (let i = 0; i < arr2.length; i++) {
-          newArr.push(arr2[i].value);
-        }
-        if (newArr.indexOf(data) == -1) return data
-
-
-      },//判断是否重复
-
       /*添加运营状态*/
       addState(){
         this.$http.post(this.URL.createStatusPro, {user_id: sessionStorage.user_id, status_name: this.form.state})
@@ -1696,7 +1697,7 @@
 
       },
       addChangepro(e){
-        let tagName = this.checkArr(e, this.tags_pro);
+        let tagName = this.$tool.checkArr(e, this.tags_pro);
 
         if (tagName != undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 0, tag_name: tagName})
@@ -1704,10 +1705,7 @@
               let newState = {};
               newState.label = tagName;
               newState.value = res.data.tag_id;
-//              this.project.tags_pro.pop();//删除并返回;
-//              this.tags_pro.push(newState);
               this.tags.changepro.push(newState);
-              /*this.tags.changepro.push(res.data.tag_id);*/
             })
             .catch(err => {
               this.$tool.error("添加失败");
@@ -1716,7 +1714,7 @@
         }
       },//添加项目标签
       addChangeTeam(e){
-        let tagName = this.checkArr(e, this.tags_team);
+        let tagName = this.$tool.checkArr(e, this.tags_team);
 
         if (tagName != undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 1, tag_name: tagName})
@@ -1738,7 +1736,7 @@
 //        }
       },//添加团队标签
       addChangesource(e){
-        let tagName = this.checkArr(e, this.tags_source);
+        let tagName = this.$tool.checkArr(e, this.tags_source);
 
         if (tagName != undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 2, tag_name: tagName})
@@ -1952,16 +1950,6 @@
         return check;
       },//判断是数字小雨99999
 
-      setTag(arr,pro){
-        for(let i=0; i<pro.length; i++){
-          for(let j=0; j<arr.length; j++){
-            if(arr[j]==pro[i].label){
-              arr[j]=pro[i].value;
-            }
-          }
-        }
-
-      },//标签取数据arr//放值的地方,pro总值
   /*全部保存按钮*/
       allSave(){
 
@@ -1989,10 +1977,10 @@
           this.loading=true;
           let allData = {};
 
-          this.setTag(this.project.tags_pro,this.tags.changepro);
+          this.$tool.setTag(this.project.tags_pro,this.tags.changepro);
 
-          this.setTag(this.team.tags_team,this.tags.changeTeam);
-          this.setTag(this.project.pro_source,this.tags.changesource);
+          this.$tool.setTag(this.team.tags_team,this.tags.changeTeam);
+          this.$tool.setTag(this.project.pro_source,this.tags.changesource);
 
           this.takeData(allData, this.project);
           this.takeData(allData, this.team);

@@ -84,6 +84,8 @@
         //this.$router.push({name:"identityDetail"});
 
         this.$router.push({name:"contactsDetails"});
+//        this.$router.push({name:"telephoneLogin"});
+//        this.$router.push({name:"myContacts"});
         this.setUserId();
 
     },
