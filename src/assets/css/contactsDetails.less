@@ -343,8 +343,9 @@
         background: #ffffff;
       }
       .selectIn{
+        height: 46px;
         .el-input{
-          width: 87px;
+          width: 100px;
         }
         .el-input__inner{
           font-size:14px;
@@ -359,7 +360,7 @@
       .item_lists{
         clear: both;
         .item_list{
-
+          background:#ffffff;
           .list_header{
             padding-left: 16px;
             background:#e5e9f2;
@@ -381,14 +382,59 @@
             }
           }
           .list_main{
+            position: relative;
+            margin: 16px ;
             .main{
               font-size:16px;
               color:#333333;
+              width: 298px;
             }
             .big-tag{
               font-size:13px;
               color:#5e6d82;
               line-height:14px;
+            }
+            .split{
+              height: 14px;
+              line-height: 14px;
+              color:#e0e6ed;
+              //margin:0 10px;
+            }
+            .img{
+              width:52px;
+              height:16px;
+              position: absolute;
+              top: 3px;
+              right: -6px;
+              img{width: 100%}
+            }
+            .change_li{
+              margin-top: 16px;
+              height:44px;
+              border-top: 1px solid #eff2f7;
+              padding-top: 21px;
+              span{
+                display: block;
+              }
+              .all{
+                background:#e0e6ed;
+                border-radius:1px;
+                width:70px;//10*97
+                height:2px;
+                .all_inner{
+                  background:#009eff;
+                  border-radius:2px;
+                  height:2px;
+                }
+              }
+              .selectIn{
+                .el-input__inner{
+                  font-size:14px;
+                  color:#009eff;
+                  border:none;
+                  background: #ffffff;
+                }
+              }
             }
           }
         }

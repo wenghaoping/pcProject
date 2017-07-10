@@ -188,9 +188,9 @@
     </el-tooltip>
             </span>
             <div class="main_left">
-              <div class="echart"></div>
-              <div class="selectIn fr" style="height: 46px;">
-                <el-select v-model="value" placeholder="请选择">
+              <div class="echart" id="echart"></div>
+              <div class="selectIn fr">
+                <el-select v-model="value1" placeholder="请选择">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -210,16 +210,45 @@
                     <div class="main">
                       项目一句话介绍，这里字数会有点，可能要换行显示，两行肯定能显示的下
                     </div>
-                    <div class="li" style="margin-top: 16px;">
+                    <div class="li" style="margin-top: 18px;">
+                      <span class="big-tag">人工智能、大数据、理财、企业服务台</span>
+                    </div>
+                    <div class="li" style="margin-top: 12px;">
                       <span class="big-tag">100-300万</span><span class="split">｜</span>
                       <span class="big-tag">10%</span><span class="split">｜</span>
                       <span class="big-tag">天使轮</span><span class="split">｜</span>
                       <span class="big-tag">杭州</span>
                     </div>
+                    <div class="li change_li">
+                      <span class="all fl">
+                        <span class="all_inner" :style="{width:widthInner + 'px' }"></span>
+                      </span>
+                      <div class="selectIn fl" style="margin-left: 13px;margin-top: -17px;">
+                        <el-select v-model="value" placeholder="请选择" @change="selectChange">
+                          <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </div>
+                    </div>
+
+                    <div class="img"><img src="../../../assets/images/dujia.png"></div>
+                    <!--<div class="img"><img src="../../../assets/images/feidujia.png"></div>-->
                   </div>
                 </div>
-
               </div>
+              <el-pagination
+                class="pagination fr"
+                small
+                @current-change="filterChangeCurrent"
+                :current-page.sync="currentPage"
+                layout="prev, pager, next"
+                :page-size="10"
+                :total="totalData">
+              </el-pagination>
             </div>
           </el-tab-pane>
           <el-tab-pane name="2">
@@ -282,18 +311,38 @@ export default {
       currentPage:1,//当前第几页
       totalData:50,//总数
       activeName:'1',
-      options: [{
-        value: '全部',
-        label: '全部'
-      },{
-        value: 'Reject',
-        label: 'Reject'
-      }, {
-        value: 'Hold',
-        label: 'Hold'
-      }],
-      value: '全部'
 
+      options: [{
+        value: 1,
+        label: '项目推进中'
+      }, {
+        value: 2,
+        label: '前期调研'
+      }, {
+        value: 3,
+        label: '投决'
+      }, {
+        value: 4,
+        label: '签署TS'
+      }, {
+        value: 5,
+        label: '尽调'
+      }, {
+        value: 6,
+        label: '签署投资协议'
+      }, {
+        value: 7,
+        label: '交割'
+      }, {
+        value: 8,
+        label: 'Hold'
+      }, {
+        value: 9,
+        label: 'Reject'
+      }],
+      value: 1,
+      value1:'全部',
+      widthInner:10,//进度条的长度
     }
   },
   methods: {
@@ -329,11 +378,102 @@ export default {
     },//控制页码
     handleClick(tab, event) {
       console.log(tab);
-    }//点击标签
+    },//点击标签
+    selectChange(e){
+      let width = 0;
+      switch (e){
+        case 1:
+          width=10;
+          break;
+        case 2:
+          width=20;
+          break;
+        case 3:
+          width=30;
+          break;
+        case 4:
+          width=40;
+          break;
+        case 5:
+          width=50;
+          break;
+        case 6:
+          width=60;
+          break;
+        case 7:
+          width=70;
+          break;
+        case 8:
+          width=0;
+          break;
+        case 9:
+          width=0;
+          break;
+        default:
+          alert("错误")
+          break;
+      }
+      this.widthInner=width;
+      return width;
+    },//hold切换后
+    eChart(){
+      let myChart = this.$echart.init(document.getElementById('echart'))
+      let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+          orient: 'vertical',
+          x: 'left',
+          data:['推进中','Hold','Rejcet']
+        },
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            selectedMode: 'single',
+            radius: ['100%', '70%'],
+            label: {
+              normal: {
+                show: true,
+                position: 'center'
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: '20',
+                  fontWeight: 'bold'
+                }
+              }
+            },
+            data: [
+              {value: 4, name: '推进中'},
+              {value: 16, name: 'Hold'},
+              {value: 10, name: 'Rejcet'},
+            ],
+            itemStyle:{
+              normal:{
+                label:{
+                  show: true,
+                  formatter: '{b} : {c}'
+                },
+                labelLine :{show:true}
+              }
+            }
+          }
+        ]
+      };
+      myChart.setOption(option);
+    },
   },
   created(){
       this.getUserId();
-  }
+  },
+  //Echart组件
+  mounted(){
+    this.eChart();
+  },
 }
 </script>
 
