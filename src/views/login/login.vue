@@ -44,12 +44,14 @@
         this.active = i
       },
       creatObj(){
+        var time=Date.now();
         var obj = new WxLogin({
           id: "qrCode",
           appid: "wx9de571b0aa850c03",
           scope: "snsapi_login",
           redirect_uri: "www.local.app/auth/weixin/callback",
-          href: 'https://www.weitianshi.cn/static/css/qrCode.css'
+          href: 'https://www.weitianshi.cn/static/css/qrCode.css',
+          state:time
         });
       }
     },
