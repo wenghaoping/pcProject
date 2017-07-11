@@ -1,6 +1,6 @@
 <template>
   <div id="projectDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="contain-grid contain-center">
+    <div class="contain-grid contain-center fl">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
         <div class="item-lists item-lists-top clearfix">
@@ -29,33 +29,43 @@
               <span class="flower" v-if="project.follow_up!=''">跟进人 : {{project.follow_up}}</span>
 
             </div>
-            <div class="item height"  style="margin-top:18px;" v-if="project.pro_source!=''">
+            <div class="item height" style="margin-top:18px;" v-if="project.pro_source!=''">
               <span class="flower2">来源 : {{project.pro_source}}</span>
             </div>
-            <div class="item height">
+            <div class="item height" style="margin-top:35px;">
             <span class="project" >
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
               <span class="number" v-else>去完善</span>
               <span class="more">超过60%的项目更易被投资人关注</span>
             </span>
-              <span class="project" style="width: 291px;">
+              <span class="project" style="width: 292px;">
               <div class="item progress height">
                 <div class="txt begin" :style="styleObject">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
                   <span class="bar-bg1">&nbsp;</span>
-<!--                  <span  class="txt state">{{project.pro_status.status_name}}</span>-->
+                  <span  class="txt state">{{status_name}}</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
                 <div class="txt end">佣金收讫</div>
+                <div class="img"><img src="../../../assets/images/editTo.png"></div>
+                 <div class="selectIn fr">
+                    <el-select v-model="value1" placeholder="请选择" @change="selectChange">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </div>
               </div>
             </span>
             </div>
             <div class="onlyone">
               <img v-if="project.is_exclusive==1" src="../../../assets/images/onlyonedark.png"/>
               <img v-else-if="project.is_exclusive==2" src="../../../assets/images/onlyonelight.png"/>
-
             </div>
           </div>
           <div class="item-lists-inner-right fl">
@@ -70,7 +80,6 @@
             一键尽调
           </div>
           </div>
-
           <!--===========================================一键尽调弹窗=============================================-->
           <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" v-on:changeall="dialogVisiblechange" v-on:changeallin="dialogVisiblechangeIn" lock-scroll>
 
@@ -80,355 +89,338 @@
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
         <div class="item-lists clearfix" style="padding-top: 10px;">
           <el-tabs v-model="show" @tab-click="handleClick">
-            <el-tab-pane label="项目详情" name="detail"></el-tab-pane>
-<!--            <el-tab-pane label="跟进记录" name="flow"></el-tab-pane>
-            <el-tab-pane label="文件管理" name="files"></el-tab-pane>-->
-          </el-tabs>
-          <div class="ul-lists">
-            <div class="item">
-              <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
-              <div class="person-info" v-if="project.contact.user_name!=''">
-                <span>项目联系人 : </span>
-                <span>{{project.contact.user_name}}</span>
-                <span>{{project.contact.user_mobile}}</span>
-              </div>
-            </div>
-            <div class="item" style="margin-top:33px;">
-              <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
-            </div>
-            <div class="item" style="margin-top:24px;">
-              <div class="paper" v-if="project.pro_BP.length!=0">
-                <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
-                <span class="pt">{{project.pro_BP.file_title}}</span>
-                <!--<el-button type="text" size="mini">查看</el-button>-->
-                <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
-              </div>
-            </div>
-            <div class="item" style="margin-top:24px;height: 49px;">
-              <div class="bot-det" v-if="project.pro_status!=''">
-                <span class="det-title">运营状态：</span>
-                <span class="del-info">{{project.pro_status.status_name}}</span>
-              </div>
-              <div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">
-                <span class="det-title">产品链接：</span>
-                <span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}</a></span>
-              </div>
-              <div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">
-                <span class="det-title">公司规模：</span>
-                <span class="del-info">{{project.pro_company_scale.comp_scale_value}} 人</span>
-              </div>
-            </div>
-            <div class="line"></div>
-            <div class="ul-lists" style="margin-top:16px;padding: 0">
-              <div class="item">
-                <span class="title" style="font-size: 16px;">项目亮点</span>
-                <div class="prod-doc" style="font-size: 13px;">{{project.pro_goodness}}</div>
-              </div>
-            </div>
-          </div>
-          <!--核心团队-->
-          <div class="ul-lists" style="margin-top:16px;" v-if="project.core_users!=''">
-            <div class="item">
-              <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
-            </div>
-            <div class="item" style="margin-top:33px;">
-              <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
-            </div>
-            <div style="margin-top:32px;"></div>
-            <div class="item" v-for="user in project.core_users" style="margin-top:10px;">
-              <span class="p-name">{{user.ct_member_name}}</span>
-              <span class="p-mg">{{user.ct_member_career}}</span>
-              <div class="p-gf">股权占比 : <span>{{user.stock_scale}}%</span></div>
-              <div class="p-doc">{{user.ct_member_intro}}</div>
-              <div class="line"></div>
-            </div>
-
-          </div>
-          <!--融资信息-->
-          <div class="ul-lists" style="margin-top:16px;">
-            <div class="item">
-              <span class="title"><img class="img" src="../../../assets/images/money.png">融资信息</span>
-              <div class="rz-details">
-                <div class="rz-detail">
-                  <p class="det-title">期望融资</p>
-                  <p class="det-info">{{project.pro_scale.scale_money}}</p>
+            <el-tab-pane label="项目详情" name="detail">
+              <div class="ul-lists">
+                <div class="item">
+                  <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
+                  <div class="person-info" v-if="project.contact.user_name!=''">
+                    <span>项目联系人 : </span>
+                    <span>{{project.contact.user_name}}</span>
+                    <span>{{project.contact.user_mobile}}</span>
+                  </div>
                 </div>
-                <div class="rz-detail">
-                  <p class="det-title">投后股份</p>
-                  <p class="det-info">{{project.pro_finance_stock_after}}%</p>
+                <div class="item" style="margin-top:33px;">
+                  <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
                 </div>
-                <div class="rz-detail">
-                  <p class="det-title">估值</p>
-                  <p class="det-info">{{project.pro_finance_value}}万</p>
+                <div class="item" style="margin-top:24px;">
+                  <div class="paper" v-if="project.pro_BP.length!=0">
+                    <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
+                    <span class="pt">{{project.pro_BP.file_title}}</span>
+                    <!--<el-button type="text" size="mini">查看</el-button>-->
+                    <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="item" style="margin-top:35px;" >
-              <span class="sec-title" v-if="project.pro_finance_use!=''">资金用途</span>
-              <div class="yt-doc">
-                {{project.pro_finance_use}}
-              </div>
-            </div>
-            <div class="item" style="margin-top:6px;" v-if="project.pro_history_finance.length!=0">
-              <div>
-
-<!--                <div class="v-progress" style="height: 121px;">
-                  <span class="circle circle-s">&nbsp;</span>
-                  <span class="v-line v-line-1">&nbsp;</span>
-                  <span class="circle circle-e">&nbsp;</span>
-                </div>-->
-                <div class="v-progress-table">
-                  <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
-                    <span class="radio_line">
-                      <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
-                    </span>
-                    <span class="pro-txt-1">{{finance.finance_time}}</span>
-                    <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
-                    <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
-                    <span class="pro-txt-4">{{finance.pro_finance_investor}}</span>
-                    <div class="line"></div>
+                <div class="item" style="margin-top:24px;height: 49px;">
+                  <div class="bot-det" v-if="project.pro_status!=''">
+                    <span class="det-title">运营状态：</span>
+                    <span class="del-info">{{project.pro_status.status_name}}</span>
+                  </div>
+                  <div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">
+                    <span class="det-title">产品链接：</span>
+                    <span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}</a></span>
+                  </div>
+                  <div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">
+                    <span class="det-title">公司规模：</span>
+                    <span class="del-info">{{project.pro_company_scale.comp_scale_value}} 人</span>
+                  </div>
+                </div>
+                <div class="line"></div>
+                <div class="ul-lists" style="margin-top:16px;padding: 0">
+                  <div class="item">
+                    <span class="title" style="font-size: 16px;">项目亮点</span>
+                    <div class="prod-doc" style="font-size: 13px;">{{project.pro_goodness}}</div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <!--里程碑-->
-          <div class="ul-lists" style="margin-top:16px;" v-if="project.pro_develop!=''">
-            <div class="item">
-              <span class="title"><img class="img" src="../../../assets/images/Milepost.png">里程碑</span>
-            </div>
-            <div class="item" style="margin-top:6px;">
-              <div>
-<!--                <div class="v-progress" style="height: 182px;">
-                  <span class="circle circle-s">&nbsp;</span>
+              <!--核心团队-->
+              <div class="ul-lists" style="margin-top:16px;" v-if="project.core_users!=''">
+                <div class="item">
+                  <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
+                </div>
+                <div class="item" style="margin-top:33px;">
+                  <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
+                </div>
+                <div style="margin-top:32px;"></div>
+                <div class="item" v-for="user in project.core_users" style="margin-top:10px;">
+                  <span class="p-name">{{user.ct_member_name}}</span>
+                  <span class="p-mg">{{user.ct_member_career}}</span>
+                  <div class="p-gf">股权占比 : <span>{{user.stock_scale}}%</span></div>
+                  <div class="p-doc">{{user.ct_member_intro}}</div>
+                  <div class="line"></div>
+                </div>
 
-                  <span class="v-line v-line-1">&nbsp;</span>
-                  <span class="circle circle-c">&nbsp;</span>
-                  <span class="v-line v-line-2">&nbsp;</span>
+              </div>
+              <!--融资信息-->
+              <div class="ul-lists" style="margin-top:16px;">
+                <div class="item">
+                  <span class="title"><img class="img" src="../../../assets/images/money.png">融资信息</span>
+                  <div class="rz-details">
+                    <div class="rz-detail">
+                      <p class="det-title">期望融资</p>
+                      <p class="det-info">{{project.pro_scale.scale_money}}</p>
+                    </div>
+                    <div class="rz-detail">
+                      <p class="det-title">投后股份</p>
+                      <p class="det-info">{{project.pro_finance_stock_after}}%</p>
+                    </div>
+                    <div class="rz-detail">
+                      <p class="det-title">估值</p>
+                      <p class="det-info">{{project.pro_finance_value}}万</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="margin-top:35px;" >
+                  <span class="sec-title" v-if="project.pro_finance_use!=''">资金用途</span>
+                  <div class="yt-doc">
+                    {{project.pro_finance_use}}
+                  </div>
+                </div>
+                <div class="item" style="margin-top:6px;" v-if="project.pro_history_finance.length!=0">
+                  <div>
 
-                  <span class="circle circle-e">&nbsp;</span>
-                </div>-->
-                <div class="v-progress-table">
-                  <div class="v-progress-txt" v-for="develop in project.pro_develop">
+                    <!--                <div class="v-progress" style="height: 121px;">
+                                      <span class="circle circle-s">&nbsp;</span>
+                                      <span class="v-line v-line-1">&nbsp;</span>
+                                      <span class="circle circle-e">&nbsp;</span>
+                                    </div>-->
+                    <div class="v-progress-table">
+                      <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
                     <span class="radio_line">
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
                     </span>
-                    <span class="pro-txt-1">
+                        <span class="pro-txt-1">{{finance.finance_time}}</span>
+                        <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
+                        <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
+                        <span class="pro-txt-4">{{finance.pro_finance_investor}}</span>
+                        <div class="line"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--里程碑-->
+              <div class="ul-lists" style="margin-top:16px;" v-if="project.pro_develop!=''">
+                <div class="item">
+                  <span class="title"><img class="img" src="../../../assets/images/Milepost.png">里程碑</span>
+                </div>
+                <div class="item" style="margin-top:6px;">
+                  <div>
+                    <!--                <div class="v-progress" style="height: 182px;">
+                                      <span class="circle circle-s">&nbsp;</span>
+
+                                      <span class="v-line v-line-1">&nbsp;</span>
+                                      <span class="circle circle-c">&nbsp;</span>
+                                      <span class="v-line v-line-2">&nbsp;</span>
+
+                                      <span class="circle circle-e">&nbsp;</span>
+                                    </div>-->
+                    <div class="v-progress-table">
+                      <div class="v-progress-txt" v-for="develop in project.pro_develop">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                        <span class="pro-txt-1">
                       {{develop.dh_start_time}}
                     </span>
-                    <span class="pro-txt-2"  style="color:#5e6d82;">
+                        <span class="pro-txt-2"  style="color:#5e6d82;">
                       {{develop.dh_event}}
                     </span>
-                    <div class="line"></div>
+                        <div class="line"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+              <!--FA签约协议-->
+              <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
+                <div class="item">
+                  <span class="title"><img class="img" src="../../../assets/images/money.png">FA签约协议</span>
+                  <div class="rz-details" >
+                    <div class="rz-detail" style="width: 25%">
+                      <p class="det-title">签约佣金</p>
+                      <p class="det-info">{{project.pro_FA.commission}}%</p>
+                    </div>
+                    <div class="rz-detail" style="width: 25%">
+                      <p class="det-title">股权赠与</p>
+                      <p class="det-info">{{project.pro_FA.stock_right}}%</p>
+                    </div>
+                    <div class="rz-detail" style="width: 25%">
+                      <p class="det-title">其他权益</p>
+                      <p class="det-info">{{project.pro_FA.stock_other}}%</p>
+                    </div>
+                    <div class="rz-detail" style="width: 25%">
+                      <p class="det-title">跟投权</p>
+                      <p class="det-info">{{project.pro_FA.stock_follow}}%</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-            </div>
+            </el-tab-pane>
 
-          </div>
-          <!--FA签约协议-->
-          <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
-            <div class="item">
-              <span class="title"><img class="img" src="../../../assets/images/money.png">FA签约协议</span>
-              <div class="rz-details" >
-                <div class="rz-detail" style="width: 25%">
-                  <p class="det-title">签约佣金</p>
-                  <p class="det-info">{{project.pro_FA.commission}}%</p>
-                </div>
-                <div class="rz-detail" style="width: 25%">
-                  <p class="det-title">股权赠与</p>
-                  <p class="det-info">{{project.pro_FA.stock_right}}%</p>
-                </div>
-                <div class="rz-detail" style="width: 25%">
-                  <p class="det-title">其他权益</p>
-                  <p class="det-info">{{project.pro_FA.stock_other}}%</p>
-                </div>
-                <div class="rz-detail" style="width: 25%">
-                  <p class="det-title">跟投权</p>
-                  <p class="det-info">{{project.pro_FA.stock_follow}}%</p>
-                </div>
-              </div>
-            </div>
-          </div>
+            <el-tab-pane label="跟进记录" name="flow">
+              <folowup :proid="project.project_id">
+
+              </folowup>
+            </el-tab-pane>
+
+            <el-tab-pane label="文件管理" name="files">
+              <filemanagement :proid="project.project_id">
+
+              </filemanagement>
+            </el-tab-pane>
+          </el-tabs>
           <div class="ul-lists list">
-            <div class="toButton">
-              <button style="margin:0 auto;display: block;width: 88px;background:#009eff;border-radius:2px;height: 36px;color:#ffffff;cursor: pointer" @click="toEdit">编辑</button>
+            <div class="toButton" style="">
+              <button  @click="toEdit" class="btn1">编辑</button>
+              <button  @click="toEdit" class="btn1">写跟近</button>
+              <button  @click="toEdit" class="btn1">项目推送</button>
             </div>
           </div>
-
         </div>
-
       </div>
     </div>
-    <!--<div class="contain-grid contain-right-1">
+    <div class="contain-grid contain-right-1 fl">
       <div class="main-box">
-        <el-tabs v-model="show" @tab-click="handleClick">
-          <el-tab-pane label="潜在买家" name="detail"></el-tab-pane>
-          <el-tab-pane label="人脉匹配" name="flow"></el-tab-pane>
-          <el-tab-pane label="全网人脉匹配" name="files"></el-tab-pane>
+        <el-tabs v-model="activeName" @tab-click="handleClick2">
+          <el-tab-pane name="1">
+            <span slot="label">意向投资人
+                <el-tooltip class="item" effect="dark" placement="top-start">
+                  <div slot="content">用户可以主动推送项目／添加跟进意向投资人，维护<br/>意向投资人不同阶段对应的跟进状态</div>
+                  <div class="img"><img src="../../../assets/images/why.png"></div>
+                </el-tooltip>
+            </span>
+            <el-collapse-transition>
+              <div v-show="tabs">
+                <div class="main_left">
+                  <div class="echart" id="echart"></div>
+                  <div class="selectIn fr">
+                    <el-select v-model="value2" placeholder="请选择">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div class="item_lists">
+                    <div class="item_list">
+                      <div class="list_header">
+                        <span class="pipei">匹配度 : </span>
+                        <span class="bili">100%</span>
+                        <span class="pro fr">我跟进关联的用户</span>
+                      </div>
+                      <div class="list_main">
+                        <div @click="toDetail" class="click">
+                          <div class="block">
+                            <span class="name">张鑫</span>
+                            <span class="zhiwei">投资总监</span>
+                            <span class="imgs"><img src="../../../assets/images/renzhen.png"/></span>
+                            <span class="ren">买方FA</span>
+                          </div>
+                          <div class="block" style="margin-top: 5px;">
+                            <span class="company">杭州投着乐网络科技有限公司</span>
+                          </div>
+                          <div class="block" style="margin-top: 42px;">
+                            <span class="company ft13">投资领域：智能服务、电商</span>
+                          </div>
+                          <div class="block" style="margin-top: 5px;">
+                            <span class="company ft13">投资轮次：种子轮、天使轮、A轮、B轮</span>
+                          </div>
+                        </div>
+                        <div class="li change_li">
+                      <span class="all fl">
+                        <span class="all_inner" :style="{width:widthInner + 'px' }"></span>
+                      </span>
+                          <div class="selectIn fl" style="margin-left: 13px;margin-top: -17px;">
+                            <el-select v-model="value3" placeholder="请选择" @change="selectChange2">
+                              <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
+                          </div>
+                        </div>
+
+                        <div class="img"><img src="../../../assets/images/header3.png"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <el-pagination
+                    class="pagination fr"
+                    small
+                    @current-change="filterChangeCurrent"
+                    :current-page.sync="currentPage"
+                    layout="prev, pager, next"
+                    :page-size="10"
+                    :total="totalData">
+                  </el-pagination>
+                </div>
+              </div>
+            </el-collapse-transition>
+          </el-tab-pane>
+          <el-tab-pane name="2">
+            <span slot="label">买家图谱
+              <el-tooltip class="item" effect="dark" placement="top-start">
+                <div slot="content">根据微天使匹配算法从您的人脉库，全网人脉库算出<br/>该项目的意向投资人</div>
+                <div class="img"><img src="../../../assets/images/why.png"></div>
+    </el-tooltip>
+            </span>
+            <el-collapse-transition>
+              <div v-show="!tabs">
+                <div class="main_right main_left">
+                  <div class="item_lists">
+                    <div class="item_list">
+                      <div class="list_header">
+                        <span class="pipei">匹配度 : </span>
+                        <span class="bili">100%</span>
+                        <span class="pro fr">我的/团队人脉</span>
+                      </div>
+                      <div class="list_main">
+                        <div @click="toDetail" class="click">
+                          <div class="block">
+                            <span class="name">张鑫</span>
+                            <span class="zhiwei">投资总监</span>
+                            <span class="imgs"><img src="../../../assets/images/renzhen.png"/></span>
+                            <span class="ren">买方FA</span>
+                          </div>
+                          <div class="block" style="margin-top: 5px;">
+                            <span class="company">杭州投着乐网络科技有限公司</span>
+                          </div>
+                          <div class="block" style="margin-top: 42px;">
+                            <span class="company ft13">投资领域：智能服务、电商</span>
+                          </div>
+                          <div class="block" style="margin-top: 5px;">
+                            <span class="company ft13">投资轮次：种子轮、天使轮、A轮、B轮</span>
+                          </div>
+                        </div>
+                        <div class="li clearfix" style="margin-top: 12px;">
+                          <button class="button fl">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+                          <button class="button fl">
+                            <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
+                        </div>
+
+                        <div class="img"><img src="../../../assets/images/header3.png"></div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-collapse-transition>
+          </el-tab-pane>
         </el-tabs>
-        <div class="item-lists" style="height:290px;">
-          <div id="pieBox" style="width:392px;height:290px;"></div>
-        </div>
-        <div class="item-lists">
-          <div class="item">
-            <div class="card-title">
-              <span class="card-tag">匹配度：</span>
-              <span class="card-val">90%</span>
-              <el-dropdown trigger="click">
-                <span class="el-dropdown-link">
-                  目标线索<i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>目标线索1</el-dropdown-item>
-                  <el-dropdown-item>目标线索2</el-dropdown-item>
-                  <el-dropdown-item>目标线索3</el-dropdown-item>
-                  <el-dropdown-item>目标线索4</el-dropdown-item>
-                  <el-dropdown-item>目标线索5</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-            <div class="card-container">
-              <div class="card-person">
-                <span class="name">张三</span>
-                <span class="manger">总监</span>
-                <span class="flag"><img src="../../../assets/images/flag.png" />买方FA </span>
-              </div>
-              <div class="head-img"><img src="../../../assets/images/header.png" alt="" /></div>
-              <div class="card-txt">杭州投着乐网络科技有限公司</div>
-              <div class="card-doc doc1">投资领域：<span>智能服务、电商</span></div>
-              <div class="card-doc doc2">投资轮次：<span>种子轮、天使轮、A轮、B轮</span></div>
-              <div class="line">&nbsp;</div>
-              <div class="card-bottom">我跟进的用户：<span>感兴趣</span>
-                <span class="handler"><img src="../../../assets/images/slice.png" alt="" />移除</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="card-title">
-              <span class="card-tag">匹配度：</span>
-              <span class="card-val">90%</span>
-              <el-dropdown trigger="click">
-                <span class="el-dropdown-link">
-                  佣金收讫<i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>目标线索1</el-dropdown-item>
-                  <el-dropdown-item>目标线索2</el-dropdown-item>
-                  <el-dropdown-item>目标线索3</el-dropdown-item>
-                  <el-dropdown-item>目标线索4</el-dropdown-item>
-                  <el-dropdown-item>目标线索5</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-            <div class="card-container">
-              <div class="card-person">
-                <span class="name">张三</span>
-                <span class="manger">总监</span>
-                <span class="flag"><img src="../../../assets/images/flag.png" />买方FA </span>
-              </div>
-              <div class="head-img"><img src="../../../assets/images/header.png" alt="" /></div>
-              <div class="card-txt">杭州投着乐网络科技有限公司</div>
-              <div class="card-doc doc1">投资领域：<span>智能服务、电商</span></div>
-              <div class="card-doc doc2">投资轮次：<span>种子轮、天使轮、A轮、B轮</span></div>
-              <div class="line">&nbsp;</div>
-              <div class="card-bottom">我跟进的用户：<span>感兴趣</span>
-                <span class="handler"><img src="../../../assets/images/slice.png" alt="" />移除</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="card-title">
-              <span class="card-tag">匹配度：</span>
-              <span class="card-val">90%</span>
-              <el-dropdown trigger="click">
-                <span class="el-dropdown-link">
-                  FA签约<i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>目标线索1</el-dropdown-item>
-                  <el-dropdown-item>目标线索2</el-dropdown-item>
-                  <el-dropdown-item>目标线索3</el-dropdown-item>
-                  <el-dropdown-item>目标线索4</el-dropdown-item>
-                  <el-dropdown-item>目标线索5</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-            <div class="card-container">
-              <div class="card-person">
-                <span class="name">张三</span>
-                <span class="manger">总监</span>
-                <span class="flag"><img src="../../../assets/images/flag.png" />买方FA </span>
-              </div>
-              <div class="head-img"><img src="../../../assets/images/header.png" alt="" /></div>
-              <div class="card-txt">杭州投着乐网络科技有限公司</div>
-              <div class="card-doc doc1">投资领域：<span>智能服务、电商</span></div>
-              <div class="card-doc doc2">投资轮次：<span>种子轮、天使轮、A轮、B轮</span></div>
-              <div class="line">&nbsp;</div>
-              <div class="card-bottom">我跟进的用户：<span>感兴趣</span>
-                <span class="handler"><img src="../../../assets/images/slice.png" alt="" />移除</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="card-title">
-              <span class="card-tag">匹配度：</span>
-              <span class="card-val">90%</span>
-              <el-dropdown trigger="click">
-                <span class="el-dropdown-link">
-                  FA买方<i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>目标线索1</el-dropdown-item>
-                  <el-dropdown-item>目标线索2</el-dropdown-item>
-                  <el-dropdown-item>目标线索3</el-dropdown-item>
-                  <el-dropdown-item>目标线索4</el-dropdown-item>
-                  <el-dropdown-item>目标线索5</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-            <div class="card-container">
-              <div class="card-person">
-                <span class="name">张三</span>
-                <span class="manger">总监</span>
-                <span class="flag"><img src="../../../assets/images/flag.png" />买方FA </span>
-              </div>
-              <div class="head-img"><img src="../../../assets/images/header.png" alt="" /></div>
-              <div class="card-txt">杭州投着乐网络科技有限公司</div>
-              <div class="card-doc doc1">投资领域：<span>智能服务、电商</span></div>
-              <div class="card-doc doc2">投资轮次：<span>种子轮、天使轮、A轮、B轮</span></div>
-              <div class="line">&nbsp;</div>
-              <div class="card-bottom">我跟进的用户：<span>感兴趣</span>
-                <span class="handler"><img src="../../../assets/images/slice.png" alt="" />移除</span>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="pagenav">
-              <el-pagination small layout="prev, pager, next"
-                             :total="50">
-              </el-pagination>
-            </div>
-          </div>
-
-        </div>
+        <button class="btn">添加意向投资人</button>
       </div>
     </div>
-    <div class="contain-grid contain-right-2 clearfix">
-      <div class="main-box">
-        <div class="title-box">
-          <span class="lit-line"></span>
-          <span class="title">动态记录</span>
-          <span class="lit-line"></span>
-        </div>
-      </div>
-    </div>-->
 
     <!--尽调搜索弹窗-->
     <el-dialog title="一键尽调" :visible.sync="dialogSearchVisible">
@@ -441,12 +433,17 @@
         <li v-for="seachCompany in seachCompanys" @click="search(seachCompany)">{{seachCompany.company_name}}</li>
       </ul>
     </el-dialog>
+
+    <!--人脉详情弹窗-->
+    <alertcontactsdetail :dialog-con-visible="dialogConVisible" :proid="project.project_id" v-on:changeCon="dialogConchange"></alertcontactsdetail>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import research from './onekeyresearch.vue'
-  const echarts = require('echarts');
+  import folowup from './followUpDetail.vue'
+  import filemanagement from './fileManagement.vue'
+  import alertcontactsdetail from './alertContactsDetail.vue'
   export default {
     data(){
       return {
@@ -648,113 +645,59 @@
         seachCompanys:[],
         styleObject: {
           color: '',
-        }
+        },
+        value1:'',////一键尽调边上绑定是数据
+        options: [{
+          value: '项目推进中',
+          label: '项目推进中'
+        }, {
+          value: '前期调研',
+          label: '前期调研'
+        }, {
+          value: '投决',
+          label: '投决'
+        }, {
+          value: '签署TS',
+          label: '签署TS'
+        }, {
+          value: '尽调',
+          label: '尽调'
+        }, {
+          value: '签署投资协议',
+          label: '签署投资协议'
+        }, {
+          value: '交割',
+          label: '交割'
+        }, {
+          value: 'Hold',
+          label: 'Hold'
+        }, {
+          value: 'Reject',
+          label: 'Reject'
+        }],
+        value: 1,
+        status_name:'',//一键尽调边上那个按钮线里的字
+        activeName:'1',
+        value2: 1,//右边筛选的下拉框
+        value3:'全部',//最下面的框
+        widthInner:10,//进度条的长度
+        tabs:true,//标签切换
+        currentPage:1,//当前第几页
+        totalData:50,//总数
+        dialogConVisible:true,
       }
     },
     computed:{
     },
     components: {
-      research
+      research,
+      folowup,
+      filemanagement,
+      alertcontactsdetail
     },
     //Echart组件
-    mounted:function(){
-      /*let myPie = echarts.init(document.getElementById('pieBox'));
-      let colors = ["#13ce66","#f7ba2a","#20a0ff"];
-      let option = {
-        legend: {
-          orient: 'horizontal',
-          bottom: '5',
-          data: ['佣金收讫','FA签约','项目线索'],
-        },
-        series : [
-          {
-            name: '',
-            type: 'pie',
-            radius : '72%',
-            startAngle:0,
-            legendHoverLink:"false",
-            markPoint:"",
-            center: ['50%', '45%'],
-            data:[
-              {
-                value:315,
-                name:'佣金收讫',
-                label:{
-                  normal:{
-                    show:false
-                  }
-                },
-                labelLine:{
-                  normal:{
-                    show:false
-                  },
-                  emphasis:{
-                    show:false
-                  }
-                },
-                itemStyle:{
-                  normal:{
-                    color:'#20a0ff'
-                  }
-                }
-              },
-              {
-                value:95,
-                name:'FA签约',
-                label:{
-                  normal:{
-                    show:false
-                  }
-                },
-                labelLine:{
-                  normal:{
-                    show:false
-                  },
-                  emphasis:{
-                    show:false
-                  }
-                },
-                itemStyle:{
-                  normal:{
-                    color:'#13ce66'
-                  }
-                }
-              },
-              {
-                value:55,
-                name:'项目线索',
-                label:{
-                  normal:{
-                    show:false
-                  }
-                },
-                labelLine:{
-                  normal:{
-                    show:false
-                  },
-                  emphasis:{
-                    show:false
-                  }
-                },
-                itemStyle:{
-                  normal:{
-                    color:'#f7ba2a'
-                  }
-                }
-              },
-
-            ],
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
-          }
-        ]
-      };
-      myPie.setOption(option);*/
+    mounted(){
+      this.eChart();
     },
     methods:{
       download(e){
@@ -822,6 +765,9 @@
       dialogVisiblechangeIn(msg){
         this.dialogSearchVisible=msg;
       },//传递给一键尽调搜索窗口
+      dialogConchange(msg){
+        this.dialogConVisible=msg;
+      },//人脉详情弹窗
       getLocalTime(data) {
         for(let i=0; i<data.length; i++){
           data[i].dh_start_time=new Date(parseInt(data[i].dh_start_time) * 1000).toLocaleString().substr(0, 9)
@@ -880,6 +826,131 @@
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
       },
+      selectChange(e){
+        this.status_name=e;
+
+      },
+      eChart(){
+        let myChart = this.$echart.init(document.getElementById('echart'))
+        let option = {
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+          },
+          legend: {
+            orient: 'vertical',
+            x: 'right',
+
+            top:'30%',
+            data:['推进中','Hold','Rejcet'],
+            textStyle:{
+              fontSize:"16",
+            }
+          },
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              selectedMode: 'single',
+              radius: ['70%','90%'],
+              center: ['35%', '55%'],
+              label: {
+                normal: {
+                  show: true,
+                  position: 'center',
+                  textStyle:{
+                    fontSize:"16",
+                  }
+                },
+                emphasis: {
+                  show: true,
+                  textStyle: {
+                    fontSize: '20',
+                    fontWeight: 'bold'
+                  }
+                }
+              },
+              data: [
+                {value: 4, name: '推进中'},
+                {value: 16, name: 'Hold'},
+                {value: 10, name: 'Rejcet'},
+              ],
+              itemStyle:{
+                normal:{
+                  label:{
+                    show: true,
+                    formatter: '{b} : {c}'
+                  },
+                  labelLine :{show:true}
+                }
+              }
+            }
+          ]
+        };
+        myChart.setOption(option);
+      },
+      toDetail(){
+        this.dialogConVisible=true;
+      },//项目详情弹窗
+      selectChange2(e){
+        let width = 0;
+        switch (e){
+          case 1:
+            width=10;
+            break;
+          case 2:
+            width=20;
+            break;
+          case 3:
+            width=30;
+            break;
+          case 4:
+            width=40;
+            break;
+          case 5:
+            width=50;
+            break;
+          case 6:
+            width=60;
+            break;
+          case 7:
+            width=70;
+            break;
+          case 8:
+            width=0;
+            break;
+          case 9:
+            width=0;
+            break;
+          default:
+            alert("错误")
+            break;
+        }
+        this.widthInner=width;
+        return width;
+      },//hold切换后
+      filterChangeCurrent(page){
+        /*      delete this.getPra.page;
+         this.loading=true;
+         this.getPra.user_id=sessionStorage.user_id;
+         this.getPra.page=page;//控制当前页码
+         this.$http.post(this.getProjectListURL,this.getPra)
+         .then(res=>{
+         this.loading=false;
+         let data = res.data.data;
+         this.$tool.console(res)
+         this.tableData=this.getProjectList(data);
+         })
+         .catch(err=>{
+         this.loading=false
+         this.$tool.console(err,2)
+         })*/
+      },//控制页码
+      handleClick2(tab, event) {
+
+        if(tab.name=="1") this.tabs=true;
+        else this.tabs=false
+      },//点击标签
     },
     created () {
       // 组件创建完后获取数据，
@@ -894,6 +965,12 @@
 <style lang="less">
   @import '../../../assets/css/projectDetail.less';
   #projectDetails{
+    .btn1{
+      background:#40587a;
+      border-radius:2px;
+      width:88px;
+      height:36px;color:#ffffff;cursor: pointer;margin-left: 16px;
+    }
     .el-dialog__header{
       padding-left:21px;
     }

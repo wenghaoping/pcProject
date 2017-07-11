@@ -1,30 +1,6 @@
 @charset "utf-8";
 
-/* ==================顶部样式===================== */
-/*.header{
-  width: 100%;
-  position: relative;
-  .el-menu-demo{
-    .header-title{
-      &:nth-child(1){
-        margin-left: 440px;
-      }
-      font-size: 16px;
-    }
-  }
-  .loginBox{
-    position: absolute;
-    top:12px;
-    left:1440px;
-    button{
-      background: transparent;
-      color:#fff;
-    }
-    .el-button--small{
-      padding:6px 12px;
-    }
-  }
-}*/
+
 /* ==================左侧样式===================== */
 
 /*.aside-menu{
@@ -56,11 +32,14 @@
   margin: 10px 0;
 }
 /* ==================右侧样式 第一部分===================== */
+.contain-grid{
 
+  background:#f9fafc;
+}
 .contain-center{
   width:865px;
   background: #eff2f7;
-  margin: 0 auto;
+  //margin: 0 auto;
   .back-tag{
     font-size: 14px;
     color: #20a0ff;
@@ -88,6 +67,7 @@
         height: 68px;
         display: inline-block;
         padding-top: 15px;
+        padding-left: 270px;
 
       }
     }
@@ -95,11 +75,9 @@
     padding:24px;
 
     .item-lists-inner-left{
-
       position: relative;
       width: 630px;
       height: 249px;
-      border-right:1px #ccc solid;
     }
     .item-lists-inner-right{
       position: relative;
@@ -107,11 +85,14 @@
         width: 88px;
         height: 108px;
         margin: 36px 0px 0 55px;
+        img{
+          width: 100%;
+        }
       }
       .icon2{
         position: absolute;
-        right: -42px;
-        top: -11px;
+        right: -30px;
+        bottom: 12px;
         width: 16px;
         height: 16px;
         img{
@@ -120,15 +101,15 @@
       }
       .button-float{
         float:right;
-        width:90px;
-        height: 36px;
+        background:#40587a;
+        border-radius:2px;
+        width:88px;
+        height:36px;
         line-height: 36px;
         box-sizing: border-box;
         font-size:14px;
         color:#ffffff;
         text-align:center;
-        background:#20a0ff;
-        border-radius:2px;
         margin-top: 45px;
       }
     }
@@ -138,7 +119,7 @@
       width:64px;
       height: 64px;
       position: absolute;
-      right: -5px;
+      right: -200px;
       top: -28px;
 /*      background: #ffffff;*/
     }
@@ -458,6 +439,7 @@
       }
     }
     .progress{
+      position: relative;
       .begin,.end{
         display: inline-block;
       }
@@ -469,6 +451,36 @@
       }
       .end{
         color:#99a9bf;
+      }
+      .img{
+        width: 36px;
+        height: 36px;
+        display: inline-block;
+        cursor: pointer;
+        img{
+          width: 50%;
+          vertical-align: middle;
+          line-height: 36px;
+        }
+      }
+      .selectIn{
+        position: absolute;
+        opacity: 0;
+        top: 0px;
+        right: 0px;
+        height: 46px;
+        .el-input{
+          width: 100px;
+        }
+        .el-input__inner{
+          font-size:14px;
+          color:#009eff;
+          border:none;
+          background: #f9fafc;
+        }
+        .el-input__icon{
+          color:#009eff;
+        }
       }
       .progress-bar{
         position: relative;
@@ -494,7 +506,7 @@
           left:calc(~"100% - 5px");
         }
         .bar-bg1{
-          width:170px;
+          width:137px;
           height: 2px;
           background: #c0ccda;
         }
@@ -516,7 +528,7 @@
           position: absolute;
           z-index: 3;
           top:12px;
-          left:70px;
+          left:40px;
           font-size:14px;
           color:#20a0ff;
           letter-spacing:0;
@@ -538,7 +550,7 @@
 }
 /* ==================右侧样式 第二部分===================== */
 
-.contain-right-1{
+/*.contain-right-1{
   width:440px;
   background:#f9fafc;
   margin-top: 33px;
@@ -655,6 +667,181 @@
           .active{
             background: #20a0ff;
           }
+        }
+      }
+    }
+  }
+}*/
+.contain-right-1{
+  margin: 35px 0 0 10px;
+  width:440px;
+  .main-box{
+    position: relative;
+    margin: 14px 25px 25px ;
+    .click{
+      cursor: pointer;
+    }
+    .btn{
+      border:1px solid #40587a;
+      border-radius:2px;
+      width:114px;
+      height:34px;
+      font-size:14px;
+      color:#40587a;
+      cursor: pointer;
+      position: absolute;
+      right: 0px;
+      top:0px;
+    }
+    .back-tag{
+      height: 14px;
+    }
+    .img{
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      margin-left: 8px;
+      img{
+        width: 100%;
+      }
+    }
+  }
+  .main_left{
+    .echart{
+      width:392px;
+      height:172px;
+      background: #ffffff;
+    }
+    .selectIn{
+      height: 46px;
+      .el-input{
+        width: 100px;
+      }
+      .el-input__inner{
+        font-size:14px;
+        color:#009eff;
+        border:none;
+        background: #f9fafc;
+      }
+      .el-input__icon{
+        color:#009eff;
+      }
+    }
+    .item_lists{
+      clear: both;
+      .item_list{
+        background:#ffffff;
+        .list_header{
+          padding-left: 16px;
+          background:#e5e9f2;
+          width:393px;
+          height:44px;
+          line-height: 44px;
+          .pipei{
+            font-size:14px;
+            color:#5e6d82;
+          }
+          .bili{
+            font-size:14px;
+            color:#fc703e;
+          }
+          .pro{
+            font-size:12px;
+            color:#99a9bf;
+            padding-right: 17px;
+          }
+        }
+        .list_main{
+          position: relative;
+          margin: 16px ;
+          .block{
+            display: block;
+            .name{
+              font-size:18px;
+              color:#1f2d3d;
+            }
+            .zhiwei{
+              font-size:14px;
+              color:#5e6d82;
+            }
+            .imgs{
+              width: 12px;
+              height: 12px;
+              display: inline-block;
+              img{
+                width: 100%;
+              }
+            }
+            .ren{
+              font-size:10px;
+              color:#d3b987;
+            }
+            .company{
+              font-size:12px;
+              color:#99a9bf;
+            }
+            .ft13{
+              font-size: 13px;
+            }
+
+          }
+          .img{
+            width:52px;
+            height:16px;
+            position: absolute;
+            top: 3px;
+            right: -6px;
+            img{width: 100%}
+          }
+          .change_li{
+            margin-top: 16px;
+            height:44px;
+            border-top: 1px solid #eff2f7;
+            padding-top: 21px;
+            span{
+              display: block;
+            }
+            .all{
+              background:#e0e6ed;
+              border-radius:1px;
+              width:70px;//10*97
+              height:2px;
+              .all_inner{
+                background:#009eff;
+                border-radius:2px;
+                height:2px;
+              }
+            }
+            .selectIn{
+              .el-input__inner{
+                font-size:14px;
+                color:#009eff;
+                border:none;
+                background: #ffffff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .main_right{
+    .button{
+      width: 179px;
+      background:#ffffff;
+      height:44px;
+      font-size:14px;
+      color:#40587a;
+      cursor: pointer;
+      .img1{
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        margin-right: 9px;
+        line-height: 44px;
+        img{
+          width: 100%;
+
         }
       }
     }
