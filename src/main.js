@@ -35,6 +35,7 @@ Vue.use(tool);//自己的库
 Vue.use(Vuex);
 
 
+
 Vue.config.productionTip = false;
 //设置路由
 Vue.use(VueRouter);

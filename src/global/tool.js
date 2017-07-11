@@ -134,6 +134,11 @@ const tool={
     }
     return false;
   },//电话号码验证
+  checkPassword(data){
+    if (data.length>20 || data.length<6){
+      return true
+    }
+  },//密码长度认证
 
   /*弹框类*/
   error(text) {

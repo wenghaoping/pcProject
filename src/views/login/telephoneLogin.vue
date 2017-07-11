@@ -26,14 +26,8 @@
     methods: {
 //    获取验证码
       getCode(){
-        var myreg = /^(1+\d{10})|(159+\d{8})|(153+\d{8})$/;
-        if (!myreg.test(this.telephone)) {
-          this.$notify.error({
-            title: '错误',
-            message: '请输入有效的手机号码',
-            offset: 400,
-            duration: 1000
-          });
+        if (!this.$tool.checkPhoneNubmer(this.telephone)) {
+          this.$tool.error('请正确输入手机号码')
         } else {
           this.$http.post(this.URL.authCaptcha, {
             user_mobile: this.telephone
@@ -48,14 +42,9 @@
                 this.captchaNum = 60;
                 this.is_getCode = 0;
               }, 60000)
-              console.log('验证码发送成功')
+              this.$tool.console('验证码发送成功')
             } else {
-              this.$notify.error({
-                title: '错误',
-                message: res.data.error_msg,
-                offset: 400,
-                duration: 1000
-              });
+              this.$tool.error(res.data.error_msg)
             }
           })
         }
