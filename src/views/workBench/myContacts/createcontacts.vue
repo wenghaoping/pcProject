@@ -20,7 +20,7 @@
                   <span style="margin-left: 20px;" class="fl">
                     <el-upload class="Upload"
                                ref="upload"
-                               action="api/v/project/projectUpload"
+                               action="api/v/user/uploadConnectCard"
                                :on-change="planChange"
                                :on-success="planuploadsuccess"
                                :on-remove="planRemove"
@@ -66,7 +66,7 @@
                       <el-form-item
                         label="邮箱"
                         prop="card_email"
-                        :rules="[{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }]">
+                        :rules="[{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }]">
                         <el-input v-model="contacts.card_email" placeholder="请输入邮箱"></el-input>
                       </el-form-item>
                     </el-col>
@@ -101,8 +101,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="人脉标签"
-                        prop="contacts_tag">
-                        <el-select v-model="contacts.contacts_tag"
+                        prop="card_tag">
+                        <el-select v-model="contacts.card_tag"
                                    multiple placeholder="请添加" class="width360"
                                    :multiple-limit="multiplelimit"
                                    filterable allow-create
@@ -137,9 +137,9 @@
                     <el-col :span="12">
                       <el-form-item
                         label="投资领域"
-                        prop="pro_industry">
+                        prop="industry">
                         <el-select
-                          v-model="contacts.pro_industry"
+                          v-model="contacts.industry"
                           multiple
                           :multiple-limit="multiplelimit"
                           placeholder="请选择(最多5个)" class="width360">
@@ -155,8 +155,11 @@
                     <el-col :span="12">
                       <el-form-item
                         label="项目轮次"
-                        prop="pro_stage.stage_id">
-                        <el-select v-model="contacts.pro_stage.stage_id" placeholder="请选择" class="width360">
+                        prop="stage">
+                        <el-select v-model="contacts.stage"
+                                   multiple
+                                   :multiple-limit="multiplelimit"
+                                   placeholder="请选择(最多5个)" class="width360">
                           <el-option
                             v-for="item in stage"
                             :key="item.value"
@@ -172,8 +175,12 @@
                     <el-col :span="12">
                       <el-form-item
                         label="期望融资"
-                        prop="pro_finance_scale">
-                        <el-select v-model="contacts.pro_finance_scale" placeholder="请选择" class="width360">
+                        prop="scale">
+                        <el-select v-model="contacts.scale"
+                                   multiple
+                                   :multiple-limit="multiplelimit"
+                                   placeholder="请选择(最多5个)"
+                                   class="width360">
                           <el-option
                             v-for="item in scale"
                             :key="item.value"
@@ -183,27 +190,16 @@
                         </el-select>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="6" >
+                    <el-col :span="12">
                       <el-form-item
                         label="投资地区"
-                        prop="pro_area.pid"
-                        style="width: 170px;">
-                        <el-select v-model="contacts.pro_area.pid" placeholder="请选择" @change="area1Change">
+                        prop="area">
+                        <el-select v-model="contacts.area" multiple
+                                   :multiple-limit="multiplelimit"
+                                   placeholder="请选择(最多5个)"
+                                   class="width360">
                           <el-option
                             v-for="item in area"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6" >
-                      <el-form-item label="　　"
-                                    prop="pro_area.area_id">
-                        <el-select v-model="contacts.pro_area.area_id" placeholder="请选择">
-                          <el-option
-                            v-for="item in area2"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -215,10 +211,10 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item label="投资需求描述"
-                                    prop="main"
+                                    prop="investor_desc"
                                     :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                         <el-input type="textarea"
-                                  v-model="contacts.main"
+                                  v-model="contacts.investor_desc"
                                   :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -243,9 +239,9 @@
                     <el-col :span="12">
                       <el-form-item
                         label="他能提供的资源"
-                        prop="give">
+                        prop="resource_give">
                         <el-select
-                          v-model="contacts.give"
+                          v-model="contacts.resource_give"
                           multiple
                           :multiple-limit="multiplelimit"
                           placeholder="请选择(最多5个)" class="width360">
@@ -261,8 +257,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="寻求对接的资源"
-                        prop="push">
-                        <el-select v-model="contacts.push"
+                        prop="resource_find">
+                        <el-select v-model="contacts.resource_find"
                                    multiple
                                    :multiple-limit="multiplelimit"
                                    placeholder="请选择(最多5个)" class="width360">
@@ -280,10 +276,10 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item label="资源需求描述"
-                                    prop="describe"
+                                    prop="res_desc"
                                     :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                         <el-input type="textarea"
-                                  v-model="contacts.describe"
+                                  v-model="contacts.res_desc"
                                   :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -329,12 +325,14 @@ export default {
       }
     };//电话号码正则判断
     return {
-      contactsId:'',//名片ID
+      card_id:'',//名片ID
       nullRule: { validator: checkNull, trigger: 'blur' },
       PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
       multiplelimit: 5,//一次最多选5个,下拉表
 
-      planList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],//名片上传列表
+      planList: [
+/*          {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}*/
+          ],//名片上传列表
       planButton: true,//控制上传按钮的显示
       uploadShow: {},//计划书上传列表,需要存数据啦
       uploadDate: {user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
@@ -346,26 +344,16 @@ export default {
         card_company_name:'',//公司名称
         card_brand:'',//品牌
         card_company_career:'',//职位
-        contacts_tag:[],//人脉标签
+        card_tag:[],//人脉标签
 
-        pro_industry: [],//领域标签
-        pro_stage: {
-          "stage_id": '',
-          "stage_name": "",
-          "sort": 2,
-          "created_at": null,
-          "updated_at": null
-        },//轮次
-        pro_finance_scale: '',//投资金额
-        pro_area: {
-          area_id: '',
-          area_title: "",//市级
-          pid: ''//省级
-        },//所属地区1省级单位
-        main:'',//资源需求描述
-        give:[],//提供的资源
-        push:[],//寻求对接的资源
-        describe:'',//描述
+        industry: [],//领域标签
+        stage: [],//轮次
+        scale: [],//投资金额
+        area: [],//所属地区1省级单位
+        investor_desc:'',//资源需求描述
+        resource_give:[],//提供的资源
+        resource_find:[],//寻求对接的资源
+        res_desc:'',//描述
       },//人脉参数
 
 
@@ -376,13 +364,16 @@ export default {
       scale:[],//投资金额100-500选项
       /*所属地区1省级选项*/
       area: [],
-      /*所属地区2市级选项*/
-      area2: [],
       giveTo:[],//能提供的资源
       pushTo:[],//对接的资源
       contactShow: true,//基本资料框
       InvestmentShow: false,//投资需求框
       resourcesShow: false,//资源需求框
+      tags:{
+        changecont:[],//项目标签新增
+        index:'',//取数据保存的位置
+        card_id:''//人脉id
+      }
     }
   },
   methods: {
@@ -393,7 +384,7 @@ export default {
       this[v] = false;
     },
     goBack(){//返回上一层
-      this.$router.push('/');
+      this.$router.go(-1);
     },
     /*商业计划书*/
     planChange(file, fileList){
@@ -403,40 +394,34 @@ export default {
     },
     planuploadsuccess(response, file, fileList){
       this.$tool.success("上传成功")
-      let data = response.data;
-      this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id)
+      this.addplan(response.image_id);
     },//上传成功后添加字段
     planuploaderror(err, file, fileList){
       this.$tool.error("上传失败,请联系管理员")
     },//上传失败
     planRemove(file, fileList) {
-      const deleteAtUpload = this.URL.deleteAtUpload;
       if (fileList.length == 0) this.planButton = true;
       else this.planButton = true;
-      this.$http.post(deleteAtUpload, {user_id: sessionStorage.user_id, project_id: this.uploadShow.project_id})
+      this.$http.post(this.URL.deleteConnectCard, {user_id: sessionStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
         .then(res => {
           if (res.status === 200) {
             this.loading = false;
-//              this.success("删除成功")
+              this.$tool.success("删除成功");
           }
         })
         .catch(err => {
-          this.$tool.console(err)
-//            this.alert("删除失败,请联系管理员")
+          this.$tool.console(err);
+          this.$tool.error("删除失败,请联系管理员");
         })
 
     },//删除文件
-    addplan(file_title, pro_intro, pro_name, project_id, file_id) {
+    addplan(image_id) {
       let object = {};
-      object.file_title = file_title;
-      object.pro_intro = pro_intro;
-      object.pro_name = pro_name;
-      object.project_id = project_id;
-      object.file_id = file_id;
+      object.image_id = image_id;
       this.uploadShow = object;
     },//添加上传文件时,保存返回的数据
     beforeUpload(file){
-      this.uploadDate.contactsId = this.contactsId;
+      this.uploadDate.user_id = sessionStorage.user_id;
       let filetypes=[".jpg",".png",".jpeg"];
       let name=file.name;
       let fileend=name.substring(name.lastIndexOf("."));
@@ -462,18 +447,15 @@ export default {
 
     /*添加人脉标签*/
     addChangeTag(e){
-      let tagName = this.checkArr(e, this.tags_pro);
+      let tagName = this.$tool.checkArr(e,this.tags_con);
 
       if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 0, tag_name: tagName})
+        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 3, tag_name: tagName})
           .then(res => {
             let newState = {};
             newState.label = tagName;
             newState.value = res.data.tag_id;
-//              this.project.tags_pro.pop();//删除并返回;
-//              this.tags_pro.push(newState);
-            this.tags.changepro.push(newState);
-            /*this.tags.changepro.push(res.data.tag_id);*/
+            this.tags.changecont.push(newState);
           })
           .catch(err => {
             this.$tool.error("添加失败");
@@ -481,23 +463,6 @@ export default {
           })
       }
     },//添加人脉标签
-    area1Change(data){
-      let newData = data;
-      let pid=sessionStorage.pid;
-      this.$http.post(this.URL.getArea, {user_id: sessionStorage.user_id, pid: data})//pid省
-        .then(res => {
-          let data = res.data.data;
-          this.area2 = this.$tool.getCity(data);
-          if(parseInt(newData)===parseInt(pid)){
-          }else{
-            this.contacts.pro_area.area_id="";
-          }
-        })
-        .catch(err => {
-          this.$tool.console(err)
-        })
-//
-    },//设置二级城市下拉列表
     allSave(){
         let contacts=this.submitForm('contacts');
         let contacts1=this.submitForm('contacts1');
@@ -506,18 +471,43 @@ export default {
       else if(!contacts1) this.$tool.error("投资需求过长")
       else if(!contacts2) this.$tool.error("资源需求过长")
       else{
-/*          this.$http.post(this.URL.editProject, allData)
+          this.$tool.setTag(this.contacts.card_tag,this.tags.changecont);
+          let allData=new Object;
+          allData=this.contacts;
+          allData.user_id=sessionStorage.user_id;
+          allData.image_id=this.uploadShow.image_id || '';
+
+
+          this.$tool.console(this.$tool.getToObject(allData),2);
+          this.$http.post(this.URL.createUserCard, allData)
             .then(res => {
+              this.card_id=res.data.card_id;
               this.loading=false;
-              this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '继续编辑')
+              this.open2('名片编辑成功', "是否继续编辑", '查看详情', '继续编辑')
             })
             .catch(err => {
               this.$tool.error("编辑失败");
               this.$tool.console(err);
-            })*/
+            })
         }
 
     },//保存人脉
+    /*编辑成功弹窗*/
+    open2(title, main, confirm, cancel) {
+      this.$confirm(main, title, {
+        confirmButtonText: confirm,
+        cancelButtonText: cancel,
+        type: 'success'
+      }).then(() => {
+        this.$router.push({name: 'contactsDetails', query: {card_id: this.card_id}})
+      }).catch(() => {
+        this.$message({
+          type: 'success',
+          message: '继续编辑'
+        });
+//        this.getProjectDetail();
+      });
+    },
     submitForm(formName) {
       let check = true
       this.$refs[formName].validate((valid) => {
@@ -531,14 +521,18 @@ export default {
     },//提交用
     getWxProjectCategory(){
       let data = this.$global.data.categoryData;
-      this.area = this.$tool.getCity(data.area);//设置城市1列表
+      this.area = this.$global.data.hotCity;//设置热门城市
       this.scale = this.$tool.getScale(data.scale);//设置期望融资
       this.stage = this.$tool.getStage(data.stage);//设置轮次信息
       this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
+      this.tags_con = this.$global.data.tags_user;//设置人脉标签
+      this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
+      this.giveTo=this.$global.data.resource;//设置提供的资源和对接的资源
+      this.pushTo=this.$global.data.resource;//设置提供的资源和对接的资源
     },//获取所有下拉框的数据
 
     getContactsId(){
-      this.contactsId = this.$route.query.contactsId;
+      this.card_id = this.$route.query.card_id || '';
     }
 
   },

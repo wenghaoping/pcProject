@@ -93,7 +93,10 @@
 //        this.$router.push({name:"projectDetails"});
 
 //        this.$router.push({name:"telephoneLogin"});
-        this.$router.push({name:"identityDetail"});
+
+//        this.$router.push({name:"myContacts"});
+          this.$router.push({name:"createContacts"});
+
         this.setUserId();
 
     },

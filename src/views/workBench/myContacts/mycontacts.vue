@@ -341,11 +341,11 @@ export default {
 
     handleSelect(row, event, column) {
       if(column.label!="重置"){
-        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id}})
+        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id,card_id:row.card_id}})
       }
     },//跳转到人脉详情页面传参数
     handleEdit(index, row){
-//      this.$router.push({ name: 'editproject', query: { project_id:row.project_id}})
+      this.$router.push({ name: 'createContacts', query: { card_id:row.card_id}})
     },//点击编辑按钮,跳转
 
     getTagId(data){
@@ -589,7 +589,6 @@ export default {
       this.$http.post(this.URL.setConnectTag, {user_id:sessionStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
         .then(res => {
           this.loading=false;
-          this.dialogVisible = true;
           this.$tool.success("设置成功");
           this.dialogVisible = false;
           this.handleIconClick();

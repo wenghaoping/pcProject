@@ -39,59 +39,37 @@
                 </div>
               </div>
               <!--项目库-->
-              <div class="item">
+              <!--项目库-->
+              <div class="item" >
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img" src="../../../assets/images/projectColl.png">项目库</span>
                 </div>
-                <el-collapse-transition>
-                  <div v-show="listShow">
-                    <div class="ul_lists clearfix" >
-                      <div class="list">
-                        <div class="li title">微天使乐投平台</div>
-                        <div class="img"><img src="../../../assets/images/dujia.png"></div>
-                        <!--<div class="img"><img src="../../../assets/images/feidujia.png"></div>-->
-                        <div class="li">
-                          <span class="tags">教育培训</span>
-                          <span class="tags">教育培训</span>
-                          <span class="tags">教育培训</span>
-                          <span class="tags">教育培训</span>
-                        </div>
-                        <div class="li" style="margin-top: 16px;">
-                          <span class="big-tag">100-300万</span><span class="split">｜</span>
-                          <span class="big-tag">10%</span><span class="split">｜</span>
-                          <span class="big-tag">天使轮</span><span class="split">｜</span>
-                          <span class="big-tag">杭州</span>
-                        </div>
-                      </div>
-                      <div class="list">
-                        <div class="li title">微天使乐投平台</div>
-                        <div class="img"><img src="../../../assets/images/feidujia.png"></div>
-                        <div class="li">
-                          <span class="tags">教育培训</span>
-                          <span class="tags">教育培训</span>
-                          <span class="tags">教育培训</span>
-                          <span class="tags">教育培训</span>
-                        </div>
-                        <div class="li" style="margin-top: 16px;">
-                          <span class="big-tag">100-300万</span><span class="split">｜</span>
-                          <span class="big-tag">10%</span><span class="split">｜</span>
-                          <span class="big-tag">天使轮</span><span class="split">｜</span>
-                          <span class="big-tag">杭州</span>
-                        </div>
-                      </div>
+                <div class="ul_lists clearfix" v-loading.body="loading1" element-loading-text="拼命加载中">
+                  <div class="list" v-for="projectList in projectLists">
+                    <div class="li title">{{projectList.pro_intro}}</div>
+                    <div class="img" v-show="projectList.is_exclusive=='独家'"><img src="../../../assets/images/dujia.png"></div>
+                    <div class="img" v-show="projectList.is_exclusive=='非独家'"><img src="../../../assets/images/feidujia.png"></div>
+                    <div class="li">
+                      <span class="tags" v-for="industry in projectList.pro_industry">{{industry}}</span>
                     </div>
-                    <el-pagination
-                      class="pagination fr"
-                      small
-                      @current-change="filterChangeCurrent"
-                      :current-page.sync="currentPage"
-                      layout="prev, pager, next"
-                      :page-size="10"
-                      :total="totalData">
-                    </el-pagination>
+                    <div class="li" style="margin-top: 16px;">
+                      <span class="big-tag" v-show="projectList.pro_scale!='-'">{{projectList.pro_scale}}</span><span class="split"  v-show="projectList.pro_scale!='-'">｜</span>
+                      <span class="big-tag" v-show="projectList.pro_finance_stock_after!='-'">{{projectList.pro_finance_stock_after}}%</span><span class="split" v-show="projectList.pro_finance_stock_after!='-'">｜</span>
+                      <span class="big-tag" v-show="projectList.pro_stage!='-'">{{projectList.pro_stage}}</span><span class="split" v-show="projectList.pro_stage!='-'">｜</span>
+                      <span class="big-tag" v-show="projectList.pro_area!='-'">{{projectList.pro_area}}</span>
+                    </div>
                   </div>
-
-                </el-collapse-transition>
+                </div>
+                <el-pagination
+                  class="pagination fr"
+                  small
+                  @current-change="filterChangeCurrent"
+                  :current-page.sync="currentPage"
+                  layout="prev, pager, next"
+                  :page-size="10"
+                  :total="totalData"
+                  v-show="listShow">
+                </el-pagination>
                 <span class="b-hander" @click="closeDiv('listShow')" v-show="listShow">收起</span>
                 <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow">展开</span>
               </div>
@@ -185,7 +163,8 @@
     props: ["dialogConVisible","proid"],
     data () {
       return {
-        loading:false,
+        loading:false,//加载动画
+        loading1:false,//加载动画2
         pro_id:'',
         listShow:true,//项目库
         currentPage:1,//当前第几页
@@ -219,8 +198,20 @@
           give:[],//提供的资源
           push:[],//寻求对接的资源
           describe:'',//描述
-
-        },        //人脉参数
+        },//人脉参数
+        projectLists:[
+          {
+            pro_intro:"暂无数据",
+            is_exclusive:"",
+            pro_industry:[],
+            pro_scale:"暂无数据",
+            pro_area:"暂无数据",
+            pro_stage:"暂无数据",
+            pro_finance_stock_after:"暂无数据"
+          }
+        ],//项目列表
+        projectListsSmall:[],//默认2个的表
+        projectListsAll:[],//默认全部的表
       }
     },
     methods: {
@@ -230,32 +221,42 @@
       dialogVisibleTo(){
         this.$emit('changeCon', false)
       },
-      filterChangeCurrent(page){
-        /*      delete this.getPra.page;
-         this.loading=true;
-         this.getPra.user_id=sessionStorage.user_id;
-         this.getPra.page=page;//控制当前页码
-         this.$http.post(this.getProjectListURL,this.getPra)
-         .then(res=>{
-         this.loading=false;
-         let data = res.data.data;
-         this.$tool.console(res)
-         this.tableData=this.getProjectList(data);
-         })
-         .catch(err=>{
-         this.loading=false
-         this.$tool.console(err,2)
-         })*/
-      },//控制页码
       openDiv(v){
         this[v] = true;
+        this.projectLists=this.projectListsAll.slice(0);
       },
       closeDiv(v){
         this[v] = false;
+        this.projectLists=this.projectListsSmall.slice(0);
       },
+      filterChangeCurrent(page){
+        this.getProjectList(page);
+      },//控制项目页码1
+      getProjectList(page){
+        this.loading1=true;
+        this.getPra.user_id=this.contacts.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+        this.currentPage=page;
+        this.getPra.page=page;
+        this.$http.post(this.URL.getProjectList,this.getPra)
+          .then(res=>{
+            let data = res.data.data;
+            this.projectListsAll=this.setProjectList(data);
+            this.projectListsSmall=this.setProjectList(data).slice(0,2);
+            if(this.listShow) this.projectLists=this.projectListsAll.slice(0);
+            else this.projectLists=this.projectListsSmall.slice(0);
+            this.loading1=false;
+            this.totalData=res.data.count;
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.loading1=false;
+            this.$tool.error("加载超时")
+          })
+      },//项目列表
     },
     created(){
-
+      this.getWxProjectCategory();
     },
     watch : {
       proid : function(e){
