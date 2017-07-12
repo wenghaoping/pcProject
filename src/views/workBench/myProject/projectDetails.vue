@@ -32,7 +32,7 @@
             <div class="item height" style="margin-top:18px;" v-if="project.pro_source!=''">
               <span class="flower2">来源 : {{project.pro_source}}</span>
             </div>
-            <div class="item height" style="margin-top:35px;">
+            <div class="item height" style="margin-top:18px;">
             <span class="project" >
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
@@ -790,7 +790,7 @@
       getProjectDetail () {
         this.$http.post(this.URL.getProjectDetail,{user_id:sessionStorage.user_id,project_id:this.project.project_id})
           .then(res=>{
-            this.loading=false
+            this.loading=false;
             let data = res.data.data;
             /*            for(let key in data){
               if(data[key]=="") data[key]="-"

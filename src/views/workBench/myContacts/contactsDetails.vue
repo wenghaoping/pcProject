@@ -13,7 +13,7 @@
               <div class="title">{{contacts.card_nickname}}</div>
             </div>
             <div class="header fr">
-              <img src="../../../assets/images/header.png">
+              <img :src="contacts.user_avatar_url">
             </div>
             <div class="item com"><img src="../../../assets/images/company.png">{{contacts.card_company_name}} | {{contacts.card_brand}}</div>
             <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.card_mobile}}</div>
@@ -23,14 +23,13 @@
                 来源: 灰狼
               </div>
             </div>
-
           </div>
           <div class="item-list item-list-main">
             <!--个人标签-->
             <div class="item">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img" src="../../../assets/images/tag.png">个人标签</span>
-                <span class="edit fr"><img class="img" src="../../../assets/images/editTo.png">修改</span>
+                <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editTo.png">修改</span>
               </div>
               <div class="block">
                 <div class="tag ">90后创业者</div>
@@ -38,44 +37,23 @@
               </div>
             </div>
             <!--项目库-->
-            <div class="item">
+            <div class="item" >
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img" src="../../../assets/images/projectColl.png">项目库</span>
               </div>
-              <el-collapse-transition>
-                <div v-show="listShow">
-                  <div class="ul_lists clearfix" >
-                    <div class="list">
-                      <div class="li title">微天使乐投平台</div>
-                      <div class="img"><img src="../../../assets/images/dujia.png"></div>
-                      <!--<div class="img"><img src="../../../assets/images/feidujia.png"></div>-->
+                  <div class="ul_lists clearfix" v-loading.body="loading1" element-loading-text="拼命加载中">
+                    <div class="list" v-for="projectList in projectLists" >
+                      <div class="li title">{{projectList.pro_intro}}</div>
+                      <div class="img" v-show="projectList.is_exclusive=='独家'"><img src="../../../assets/images/dujia.png"></div>
+                      <div class="img" v-show="projectList.is_exclusive=='非独家'"><img src="../../../assets/images/feidujia.png"></div>
                       <div class="li">
-                        <span class="tags">教育培训</span>
-                        <span class="tags">教育培训</span>
-                        <span class="tags">教育培训</span>
-                        <span class="tags">教育培训</span>
+                        <span class="tags" v-for="industry in projectList.pro_industry">{{industry}}</span>
                       </div>
                       <div class="li" style="margin-top: 16px;">
-                        <span class="big-tag">100-300万</span><span class="split">｜</span>
-                        <span class="big-tag">10%</span><span class="split">｜</span>
-                        <span class="big-tag">天使轮</span><span class="split">｜</span>
-                        <span class="big-tag">杭州</span>
-                      </div>
-                    </div>
-                    <div class="list">
-                      <div class="li title">微天使乐投平台</div>
-                      <div class="img"><img src="../../../assets/images/feidujia.png"></div>
-                      <div class="li">
-                        <span class="tags">教育培训</span>
-                        <span class="tags">教育培训</span>
-                        <span class="tags">教育培训</span>
-                        <span class="tags">教育培训</span>
-                      </div>
-                      <div class="li" style="margin-top: 16px;">
-                        <span class="big-tag">100-300万</span><span class="split">｜</span>
-                        <span class="big-tag">10%</span><span class="split">｜</span>
-                        <span class="big-tag">天使轮</span><span class="split">｜</span>
-                        <span class="big-tag">杭州</span>
+                        <span class="big-tag" v-show="projectList.pro_scale!='-'">{{projectList.pro_scale}}</span><span class="split"  v-show="projectList.pro_scale!='-'">｜</span>
+                        <span class="big-tag" v-show="projectList.pro_finance_stock_after!='-'">{{projectList.pro_finance_stock_after}}%</span><span class="split" v-show="projectList.pro_finance_stock_after!='-'">｜</span>
+                        <span class="big-tag" v-show="projectList.pro_stage!='-'">{{projectList.pro_stage}}</span><span class="split" v-show="projectList.pro_stage!='-'">｜</span>
+                        <span class="big-tag" v-show="projectList.pro_area!='-'">{{projectList.pro_area}}</span>
                       </div>
                     </div>
                   </div>
@@ -86,11 +64,9 @@
                     :current-page.sync="currentPage"
                     layout="prev, pager, next"
                     :page-size="10"
-                    :total="totalData">
+                    :total="totalData"
+                    v-show="listShow">
                   </el-pagination>
-                </div>
-
-              </el-collapse-transition>
                 <span class="b-hander" @click="closeDiv('listShow')" v-show="listShow">收起</span>
                 <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow">展开</span>
               </div>
@@ -169,8 +145,8 @@
 
             <div class="button_list">
               <div class="lis">
-                <button class="button">编辑</button>
-                <button class="button" style="margin-left: 16px;">项目推送</button>
+                <button class="button" @click="goEdit">编辑</button>
+                <button class="button" @click="handlePush" style="margin-left: 16px;">项目推送</button>
               </div>
             </div>
           </div>
@@ -247,7 +223,7 @@
                   <el-pagination
                     class="pagination fr"
                     small
-                    @current-change="filterChangeCurrent"
+                    @current-change="filterChangeCurrent1"
                     :current-page.sync="currentPage"
                     layout="prev, pager, next"
                     :page-size="10"
@@ -309,17 +285,68 @@
       <button class="btn">添加意向项目</button>
       </div>
     </div>
-    <alertprojectdetail :dialog-pro-visible="dialogVisible" v-on:changeall="dialogVisiblechangeIn" :proid="pro_id"></alertprojectdetail>
+
+    <!--标签设置弹框-->
+    <el-dialog
+      title="标签设置"
+      :visible.sync="dialogVisibleTag"
+      :show-close="close"
+      size="tiny">
+      <el-select
+        v-model="tagsValue"
+        multiple
+        filterable
+        allow-create
+        style="width:100%"
+        @change="addChangeTag"
+        default-first-option
+        placeholder="请输入标签">
+        <el-option
+          v-for="item in addTags"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <div class="tagTitle">准确设置项目标签便于查找，并参与项目匹配度计算</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisibleTag = false">取 消</el-button>
+        <el-button type="primary" @click="addTag">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!--项目详情弹窗-->
+    <alertprojectdetail :dialog-pro-visible="dialogVisiblePro" v-on:changeall="dialogVisiblechangeIn" :proid="pro_id"></alertprojectdetail>
+
+    <!--项目推送弹窗-->
+    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange"></projectpush>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import alertprojectdetail from './alertProjectDetail.vue'
+import projectpush from './projectPush.vue'
 export default {
   data () {
     return {
+      close:false,
+
+      /*设置标签*/
+      dialogVisibleTag:false,//标签弹框设置
+      tagsValue:[],//标签弹框数据绑定
+      addTags:[{
+        value: '',
+        label: ''
+      }],//人脉标签展示数据
+      tags:{
+        changecont:[],//项目标签新增
+        index:'',//取数据保存的位置
+        card_id:''//人脉id
+      },
+
       contacts:{
-        user_id:'',//id
+        card_id:'',//id
+        user_id:'',//user_id
         card_name:'张三',//姓名
         card_nickname:'昵称',//昵称
         card_mobile:'18758307033',//名片手机号
@@ -328,7 +355,7 @@ export default {
         card_brand:'投着乐',//品牌
         card_company_career:'投资经理',//职位
         contacts_tag:[],//人脉标签
-
+        user_avatar_url:'',//头像URL
         pro_industry: [],//领域标签
         pro_stage: {
           "stage_id": '',
@@ -347,12 +374,18 @@ export default {
         give:[],//提供的资源
         push:[],//寻求对接的资源
         describe:'',//描述
-
-      },        //人脉参数
-
-      dialogVisible:false,//控制项目详情弹窗
+      },//人脉参数
+      userMessage:{
+        user_real_name:'翁浩平',//姓名
+        user_company_career:'投资总监',//职位
+        user_company_name:'杭州投着乐网络科技有限公司',//公司名称
+      },//传递给推送的数据
+      dialogPushVisible:false,//项目推送弹框设置
+      userEmail:'',
+      dialogVisiblePro:false,//控制项目详情弹窗
       loading:false,//加载动画
-      listShow:true,//项目库
+      loading1:false,//加载动画2
+      listShow:false,//项目库
       currentPage:1,//当前第几页
       totalData:50,//总数
       activeName:'1',
@@ -390,46 +423,66 @@ export default {
       widthInner:10,//进度条的长度
       tabs:true,//标签切换
       pro_id:'123',//项目详情
+      getPra:{},//筛选的请求参数
+      projectLists:[
+        {
+        pro_intro:"暂无数据",
+        is_exclusive:"",
+        pro_industry:[],
+        pro_scale:"暂无数据",
+        pro_area:"暂无数据",
+        pro_stage:"暂无数据",
+        pro_finance_stock_after:"暂无数据"
+        }
+      ],//项目列表
+      projectListsSmall:[],//默认2个的表
+      projectListsAll:[],//默认全部的表
     }
   },
   methods: {
 
     goBack(){
-      this.$router.go(-1);
+      this.$router.push({name: 'myContacts'})//路由传参
     },//返回上一层
+    goEdit(){
+      this.$router.push({name: 'createContacts', query: {card_id: this.contacts.card_id}})//路由传参
+    },//跳转到编辑页
     openDiv(v){
       this[v] = true;
+      this.projectLists=this.projectListsAll.slice(0);
     },
     closeDiv(v){
       this[v] = false;
+      this.projectLists=this.projectListsSmall.slice(0);
     },
     getUserId(){
       this.contacts.user_id=this.$route.query.user_id;
-    },
+      this.contacts.card_id=this.$route.query.card_id;
+      this.tags.card_id=this.$route.query.card_id;
+    },//获取userid/card_id
+    handlePush(){
+      this.userMessage.user_real_name=this.contacts.card_name;
+      this.userMessage.user_company_career=this.contacts.card_company_career;
+      this.userMessage.user_company_name=this.contacts.card_company_name;
+      this.userEmail=this.contacts.card_email;
+      this.dialogPushVisible=true;
+    },//点击推送,并且传送数据给推送弹框
+    dialogVisiblechange(msg){
+      this.dialogPushVisible=msg;
+    },//关闭项目推送弹框
     filterChangeCurrent(page){
-/*      delete this.getPra.page;
-      this.loading=true;
-      this.getPra.user_id=sessionStorage.user_id;
-      this.getPra.page=page;//控制当前页码
-      this.$http.post(this.getProjectListURL,this.getPra)
-        .then(res=>{
-          this.loading=false;
-          let data = res.data.data;
-          this.$tool.console(res)
-          this.tableData=this.getProjectList(data);
-        })
-        .catch(err=>{
-          this.loading=false
-          this.$tool.console(err,2)
-        })*/
-    },//控制页码
+      this.getProjectList(page);
+    },//控制项目页码1
+    filterChangeCurrent1(page){
+
+    },//控制右边页码
     handleClick(tab, event) {
-      console.log(tab);
       if(tab.name=="1") this.tabs=true;
       else this.tabs=false
     },//点击标签
+
     toDetail(){
-      this.dialogVisible=true;
+      this.dialogVisiblePro=true;
     },//项目详情弹窗
     selectChange(e){
       let width = 0;
@@ -528,18 +581,122 @@ export default {
       myChart.setOption(option);
     },
     dialogVisiblechangeIn(msg){
-      this.dialogVisible=msg;
-    },//传递给一键尽调搜索窗口
+      this.dialogVisiblePro=msg;
+    },//项目详情弹窗关闭函数
+
+    setProjectList(data){
+      let arr = new Array;
+      for(let i=0; i<data.length; i++){
+        let obj = new Object;
+        obj.pro_intro=data[i].pro_intro || "暂无信息";//项目介绍
+        obj.is_exclusive=data[i].is_exclusive;//独家/非独家
+        obj.pro_industry=this.setIndustry(data[i].pro_industry) || [];//项目标签
+        obj.pro_scale =data[i].scale_money || '-';//项目估值
+        obj.pro_area =data[i].pro_area.area_title || '-';//地区
+        obj.pro_stage =data[i].pro_stage.stage_name || '-';//投资轮次
+        obj.pro_finance_stock_after =data[i].pro_finance_stock_after || '-';//股权
+        arr.push(obj);
+      }
+      return arr;
+    },//设置项目库函数
+    setIndustry(data){
+        let arr = new Array;
+        for(let i=0; i<data.length; i++){
+            arr.push(data[i].industry_name)
+        }
+        return arr;
+    },//设置项目库项目的标签
+    /*请求函数*/
+    getProjectList(page){
+        this.loading1=true;
+      this.getPra.user_id=this.contacts.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+      this.currentPage=page;
+      this.getPra.page=page;
+      this.$http.post(this.URL.getProjectList,this.getPra)
+        .then(res=>{
+          let data = res.data.data;
+          this.projectListsAll=this.setProjectList(data);
+          this.projectListsSmall=this.setProjectList(data).slice(0,2);
+          if(this.listShow) this.projectLists=this.projectListsAll.slice(0);
+          else this.projectLists=this.projectListsSmall.slice(0);
+          this.loading1=false;
+          this.totalData=res.data.count;
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading1=false;
+          this.$tool.error("加载超时")
+        })
+    },//项目列表
+    getOneUserInfo(){
+      this.loading=true;
+      this.$http.post(this.URL.getOneUserInfo,{user_id:sessionStorage.user_id,card_id: this.contacts.card_id})
+        .then(res=>{
+          let data = res.data.data;
+          this.loading=false;
+          this.$tool.console(this.$tool.getToObject(data));
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading=false;
+          this.$tool.error("加载超时");
+        })
+    },//获取个人详情
+
+    getWxProjectCategory(){
+      this.addTags = this.$global.data.tags_user;//设置人脉标签
+      this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
+      console.log()
+    },//获取所有下拉框的数据
+    addChangeTag(e){
+      let tagName = this.$tool.checkArr(e, this.addTags);
+      if (tagName != undefined) {
+        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 3, tag_name: tagName})
+          .then(res => {
+            let newState = {};
+            newState.label = tagName;
+            newState.value = res.data.tag_id;
+            this.tags.changecont.push(newState);
+          })
+          .catch(err => {
+            this.$tool.error("添加失败");
+            this.$tool.console(err);
+          })
+      }
+    },//添加项目标签
+    addTag(){
+      this.loading=true;
+      this.$tool.setTag(this.tagsValue,this.tags.changecont);
+      this.$http.post(this.URL.setConnectTag, {user_id:sessionStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
+        .then(res => {
+          this.loading=false;
+          this.$tool.success("设置成功");
+          this.dialogVisiblePro = false;
+          this.handleIconClick();
+        })
+        .catch(err => {
+          this.loading=false;
+          this.$tool.error("添加失败");
+          this.$tool.console(err);
+          this.dialogVisiblePro = false;
+
+        })
+    },//保存标签选择
   },
   created(){
       this.getUserId();
+      this.getProjectList(1);
+      this.getOneUserInfo();
+      this.getWxProjectCategory();
   },
   //Echart组件
   mounted(){
     this.eChart();
   },
   components: {
-    alertprojectdetail
+    alertprojectdetail,
+    projectpush
   },
 }
 </script>

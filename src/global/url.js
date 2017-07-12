@@ -76,6 +76,9 @@ export default
   getConnectUser:"api/v/user/getConnectUser",//获取人脉列表
   setConnectTag:"api/v/user/setConnectTag",//给人脉设置标签
   deleteConnectUser:"api/v/user/deleteConnectUser",//.删除人脉
+  createUserCard:"api/v/user/createUserCard",//添加人脉
+  deleteConnectCard:"api/v/user/deleteConnectCard",//删除人脉名片(图片)
+  getOneUserInfo:"api/v/user/getOneUserInfo",//人脉详情
 
 
 }
