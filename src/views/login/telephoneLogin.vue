@@ -17,10 +17,11 @@
       return {
         telephone: '',
         captcha: '',
-//      是否点击过获取验证码标识
+        // 是否点击过获取验证码标识
         is_getCode: 0,
-//      获取验证码的倒计时
+        // 获取验证码的倒计时
         captchaNum: 60
+        //
       }
     },
     methods: {
@@ -32,7 +33,8 @@
           this.$http.post(this.URL.authCaptcha, {
             user_mobile: this.telephone
           }).then(res => {
-            if (res.data.status_code == 2000000) {
+
+            if (res.data.status_code === 2000000) {
               this.is_getCode = 1;
               var timer = setInterval(() => {
                 this.captchaNum--
@@ -57,27 +59,20 @@
             captcha: this.captcha
           }).then(res => {
             console.log(res)
-            //is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
-            if (this.is_exist == 0) {
-              //this.$http.post(this.URL.)
-            } else if (this.is_exist == 1) {
-
-            } else {
-              this.$notify.error({
-                title: '错误',
-                message: '',
-                offset: 400,
-                duration: 1000
-              });
+            if(res.data.status_code===2000000){
+              sessionStorage.user_id=res.data.user_id;
+              //is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
+              if (res.data.is_exist === 0) {
+                this.$router.push({name:'identityChoose'})
+              }else if (res.data.is_exist === 1) {
+                this.$router.push({name:sessionStorage.entrance})
+              }
+            }else{
+              this.$tool.error(res.data.error_msg)
             }
           })
         } else {
-          this.$notify.error({
-            title: '错误',
-            message: '请填写完整手机号码和验证码',
-            offset: 400,
-            duration: 1000
-          });
+          this.$tool.error('请正确填写手机号码和验证码')
         }
       },
     }

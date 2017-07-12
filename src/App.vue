@@ -21,6 +21,9 @@
             <img src="./assets/images/arrow.png">
           </div>
         </div>
+        <li>
+          <a href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>
+        </li>
         <li v-if="user_name" style="float: right;margin-right: 359px;">
           {{user_name}}
         </li>
@@ -29,6 +32,7 @@
         </li>
       </ul>
     </header>
+    <div style="height: 60px;"></div>
 
     <!--下方主内容切换区-->
     <main>
@@ -70,7 +74,8 @@
         sessionStorage.user_id='2rzyz5vp';
       },
       login(){
-        this.$router.push('/login')
+        sessionStorage.entrance='index';
+        this.$router.push('/login');
       }
     },
 //    当dom一创建时
@@ -88,7 +93,7 @@
 //        this.$router.push({name:"projectDetails"});
 
 //        this.$router.push({name:"telephoneLogin"});
-        this.$router.push({name:"myContacts"});
+        this.$router.push({name:"identityDetail"});
         this.setUserId();
 
     },
@@ -121,6 +126,7 @@
 
   body {
     margin: 0;
+    position: relative;
   }
 
   /*  .is-light{
@@ -142,6 +148,8 @@
       width: 100%;
       background: #40587a;
       height: 60px;
+      position: fixed;
+      z-index: 99999999;
     }
     .select {
       cursor: pointer;

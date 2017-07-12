@@ -63,6 +63,8 @@ export default
   //身份认证相关
   getGroupIdentify:'api/category/getGroupIdentify',//身份类型列表
   setUserGroup:'api/v/user/setUserGroup',//设置身份类型
+  saveUserIdentity:'api/v/user/saveUserIdentify',//保存身份认证信息
+  createUserProjectCase:'api/v/project/createUserProjectCase',//保存投资成功案例
 
   //登录方面相关
   authCaptcha:'api/auth/authCaptcha',//用户注册,登录获取验证码接口
@@ -70,12 +72,12 @@ export default
   loginForPassword:'api/auth/loginForPassword',//用户登录接口(账号密码)
   resetPasswordCaptcha:'api/auth/resetPasswordCaptcha',//重置密码获取验证码接口
   resetPassword:'api/auth/resetPassword',//重置密码接口
+  bindTelephone:'/api/user/bingUser',//绑定手机号码
 
   /*我的人脉*/
   userTitleSift:"api/v/user/userTitleSift",//人脉列表表头
   getConnectUser:"api/v/user/getConnectUser",//获取人脉列表
   setConnectTag:"api/v/user/setConnectTag",//给人脉设置标签
   deleteConnectUser:"api/v/user/deleteConnectUser",//.删除人脉
-
 
 }

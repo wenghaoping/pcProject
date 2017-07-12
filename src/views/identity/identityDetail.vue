@@ -17,7 +17,9 @@
       <el-collapse-transition>
         <div v-show="baseInfo">
           <!--上传头像-->
-          <cardUpload></cardUpload>
+          <cardUpload>
+
+          </cardUpload>
           <!--基本资料Form-->
           <el-form :model="ruleForm1" :rules="rule1" ref="ruleForm1" label-width="100px" class="demo-ruleForm"
                    label-position="top">
@@ -33,7 +35,7 @@
               <el-form-item label="职位" prop="career" class="mr32">
                 <el-input v-model="ruleForm1.career" placeholder="请输入职位"></el-input>
               </el-form-item>
-              <el-form-item label="邮箱" prop="name">
+              <el-form-item label="邮箱" prop="email">
                 <el-input v-model="ruleForm1.email" placeholder="请输入常用邮箱"></el-input>
               </el-form-item>
             </div>
@@ -126,20 +128,20 @@
             <!--成功案例-->
             <div class="flex">
               <el-form-item label="成功案例">
-                <el-button v-show="!hasSuccessCase">添加</el-button>
+                <el-button v-show="!hasSuccessCase" @click="addInvestCase">添加</el-button>
                 <el-button v-show="hasSuccessCase">继续添加</el-button>
               </el-form-item>
-            </div>
-            <!--完成-->
-            <div>
-              <el-button class="fr next" @click="next">完成</el-button>
             </div>
           </el-form>
         </div>
       </el-collapse-transition>
     </div>
+    <!--完成-->
+    <div>
+      <el-button class="fr next" @click="next">完成</el-button>
+    </div>
     <!--成功案例弹窗-->
-    <invest-success-case>
+    <invest-success-case :dialog-show="dialogShow" @closeInvestCase="closeInvestCase">
 
     </invest-success-case>
   </div>
@@ -159,7 +161,7 @@
         scale: '',
         hotCity:'',
 //      控制展开收起
-        baseInfo: false,
+        baseInfo: true,
         investPrefer: true,
 //      多选数量设定
         multiplelimit: 5,
@@ -170,6 +172,7 @@
           career: '',
           email: '',
           weixin: '',
+          brand:'',
           desc: '人民广告派发活动传单大型商场超市内举办相关活动，吸引人流量的同时，通过活动宣传单上的二维码和品牌活动引导用户下载，从而提升装机量和品牌形象人民广告派发活动传单大型商场超市内举办相关活动，吸引人流量的同时，通过活动宣传单上的二维码和品牌活动引导用户下载，从而提升装机量和品牌形象'
         },
         ruleForm2: {
@@ -181,32 +184,32 @@
 //      表单验证规则
         rule1: {
           name: [
-            {required: true, message: '请输入活动名称', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            {required: true, message: '请输入姓名', trigger: 'blur'},
+            {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
           ],
           company: [
             {required: true, message: '请输入公司名称', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
           ],
           career: [
             {required: true, message: '请输入您的职位', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
           ],
           email: [
-            {required: true, message: '请输入您的邮箱', trigger: 'blur'},
+            {required: false, message: '请输入您的邮箱', trigger: 'blur'},
             {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
           ],
           weixin: [
-            {required: true, message: '请输入微信号码', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            {required: false, message: '请输入微信号码', trigger: 'blur'},
+            {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
           ],
           brand: [
-            {required: true, message: '请输入品牌名称', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            {required: false, message: '请输入品牌名称', trigger: 'blur'},
+            {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
           ],
           desc: [
-            {required: true, message: '请输入个人描述', trigger: 'blur'},
-            {min: 0, max: 500, message: '长度在 0 到 500 个字符', trigger: 'blur'}
+            {required: false, message: '请输入个人描述', trigger: 'blur'},
+            {min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur'}
           ],
         },
         rule2: {
@@ -217,6 +220,8 @@
         },
 //      是否添加过成功案例
         hasSuccessCase:false,
+//      控制成功案例弹窗显示/隐藏
+        dialogShow:false,
       }
     },
     components: {
@@ -225,13 +230,49 @@
     methods: {
 //      跳过
       skip(){
-        this.$router.push('/index')
+        this.$router.push({name:sessionStorage.entrance})
       },
 //      完成
       next(){
+        if(!this.ruleForm1.name){
+          this.$tool.error('请正确填写姓名')
+        }else if(!this.ruleForm1.company){
+          this.$tool.error('请正确填写公司名称')
+        }else if(!this.ruleForm1.career){
+          this.$tool.error('请正确填写职位')
+        }else{
           console.log(this.ruleForm1,this.ruleForm2)
+          this.$http.post(this.URL.saveUserIdentity,{
+            id:sessionStorage.id,
+            user_id:sessionStorage.user_id,
+            iden_name:this.ruleForm1.name,
+            iden_company_name:this.ruleForm1.company,
+            iden_company_career:this.ruleForm1.career,
+            iden_email:this.ruleForm1.email,
+            iden_wx:this.ruleForm1.weixin,
+            iden_desc:this.ruleForm1.desc,
+            iden_brand:this.ruleForm1.brand,
+            industry:this.ruleForm2.investIndustry,
+            area:this.ruleForm2.investArea,
+            stage:this.ruleForm2.investStage,
+            scale:this.ruleForm2.investScale
+          }).then(res=>{
+            if(res.data.status_code===2000000){
+              this.$router.push({name:sessionStorage.entrance})
+            }else{
+              this.$tool.error(res.data.error_msg)
+            }
+          })
+        }
+      },
+//      显示成功案例弹窗
+      addInvestCase(){
+        this.dialogShow=true
+      },
+//      关闭成功案例弹窗
+      closeInvestCase(e){
+        this.dialogShow=false
       }
-
     },
     mounted(){
     },
@@ -246,4 +287,13 @@
 
 <style scoped lang="less">
   @import "../../assets/css/indentity.less";
+  #investSuccessCase {
+    width: 900px !important;
+    height: auto;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+  }
 </style>
