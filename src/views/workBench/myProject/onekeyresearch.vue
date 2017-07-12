@@ -1,7 +1,7 @@
 <template>
   <div id="research" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================一键尽调弹窗=============================================-->
-    <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose" close-on-press-escape close-on-click-modal >
+    <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <div class="contain-grid" style="width: 893px;">
         <div class="contain-position">
           <p>您要尽调的公司：<span>{{compname}}</span><button class="fr button" @click="goToEdit">修改公司</button></p>

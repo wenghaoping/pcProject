@@ -75,5 +75,7 @@ export default
   userTitleSift:"api/v/user/userTitleSift",//人脉列表表头
   getConnectUser:"api/v/user/getConnectUser",//获取人脉列表
   setConnectTag:"api/v/user/setConnectTag",//给人脉设置标签
+  deleteConnectUser:"api/v/user/deleteConnectUser",//.删除人脉
+
 
 }

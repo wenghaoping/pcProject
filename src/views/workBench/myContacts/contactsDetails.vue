@@ -182,74 +182,80 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane name="1">
             <span slot="label">意向项目
-              <el-tooltip class="item" effect="dark" placement="top-start">
-                <div slot="content">用户可以主动推送项目／添加跟进关联项目，维护意<br/>向投资人对项目跟进状态</div>
-                <div class="img"><img src="../../../assets/images/why.png"></div>
-    </el-tooltip>
+                <el-tooltip class="item" effect="dark" placement="top-start">
+                  <div slot="content">用户可以主动推送项目／添加跟进关联项目，维护意<br/>向投资人对项目跟进状态</div>
+                  <div class="img"><img src="../../../assets/images/why.png"></div>
+      </el-tooltip>
             </span>
-            <div class="main_left">
-              <div class="echart" id="echart"></div>
-              <div class="selectIn fr">
-                <el-select v-model="value1" placeholder="请选择">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div class="item_lists">
-                <div class="item_list">
-                  <div class="list_header">
-                    <span class="pipei">匹配度 : </span>
-                    <span class="bili">100%</span>
-                    <span class="pro fr">我的项目</span>
+            <el-collapse-transition>
+              <div v-show="tabs">
+                <div class="main_left">
+                  <div class="echart" id="echart"></div>
+                  <div class="selectIn fr">
+                    <el-select v-model="value1" placeholder="请选择">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
                   </div>
-                  <div class="list_main">
-                    <div class="main">
-                      项目一句话介绍，这里字数会有点，可能要换行显示，两行肯定能显示的下
-                    </div>
-                    <div class="li" style="margin-top: 18px;">
-                      <span class="big-tag">人工智能、大数据、理财、企业服务台</span>
-                    </div>
-                    <div class="li" style="margin-top: 12px;">
-                      <span class="big-tag">100-300万</span><span class="split">｜</span>
-                      <span class="big-tag">10%</span><span class="split">｜</span>
-                      <span class="big-tag">天使轮</span><span class="split">｜</span>
-                      <span class="big-tag">杭州</span>
-                    </div>
-                    <div class="li change_li">
+                  <div class="item_lists">
+                    <div class="item_list">
+                      <div class="list_header">
+                        <span class="pipei">匹配度 : </span>
+                        <span class="bili">100%</span>
+                        <span class="pro fr">我的项目</span>
+                      </div>
+                      <div class="list_main">
+                        <div @click="toDetail" class="click">
+                          <div class="main">
+                            项目一句话介绍，这里字数会有点，可能要换行显示，两行肯定能显示的下
+                          </div>
+                          <div class="li" style="margin-top: 18px;">
+                            <span class="big-tag">人工智能、大数据、理财、企业服务台</span>
+                          </div>
+                          <div class="li" style="margin-top: 12px;">
+                            <span class="big-tag">100-300万</span><span class="split">｜</span>
+                            <span class="big-tag">10%</span><span class="split">｜</span>
+                            <span class="big-tag">天使轮</span><span class="split">｜</span>
+                            <span class="big-tag">杭州</span>
+                          </div>
+                        </div>
+                        <div class="li change_li">
                       <span class="all fl">
                         <span class="all_inner" :style="{width:widthInner + 'px' }"></span>
                       </span>
-                      <div class="selectIn fl" style="margin-left: 13px;margin-top: -17px;">
-                        <el-select v-model="value" placeholder="请选择" @change="selectChange">
-                          <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
+                          <div class="selectIn fl" style="margin-left: 13px;margin-top: -17px;">
+                            <el-select v-model="value" placeholder="请选择" @change="selectChange">
+                              <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
+                          </div>
+                        </div>
+
+                        <div class="img"><img src="../../../assets/images/dujia.png"></div>
+                        <!--<div class="img"><img src="../../../assets/images/feidujia.png"></div>-->
                       </div>
                     </div>
-
-                    <div class="img"><img src="../../../assets/images/dujia.png"></div>
-                    <!--<div class="img"><img src="../../../assets/images/feidujia.png"></div>-->
                   </div>
+                  <el-pagination
+                    class="pagination fr"
+                    small
+                    @current-change="filterChangeCurrent"
+                    :current-page.sync="currentPage"
+                    layout="prev, pager, next"
+                    :page-size="10"
+                    :total="totalData">
+                  </el-pagination>
                 </div>
               </div>
-              <el-pagination
-                class="pagination fr"
-                small
-                @current-change="filterChangeCurrent"
-                :current-page.sync="currentPage"
-                layout="prev, pager, next"
-                :page-size="10"
-                :total="totalData">
-              </el-pagination>
-            </div>
+            </el-collapse-transition>
           </el-tab-pane>
           <el-tab-pane name="2">
             <span slot="label">匹配推荐项目
@@ -258,18 +264,57 @@
                 <div class="img"><img src="../../../assets/images/why.png"></div>
     </el-tooltip>
             </span>
-            <div class="main_right">
+            <el-collapse-transition>
+              <div v-show="!tabs">
+                <div class="main_right main_left">
+                  <div class="item_lists">
+                    <div class="item_list">
+                      <div class="list_header">
+                        <span class="pipei">匹配度 : </span>
+                        <span class="bili">100%</span>
+                        <span class="pro fr">我的项目</span>
+                      </div>
+                      <div class="list_main">
+                        <div @click="toDetail" class="click">
+                          <div class="main">
+                            项目一句话介绍，这里字数会有点，可能要换行显示，两行肯定能显示的下
+                          </div>
+                          <div class="li" style="margin-top: 18px;">
+                            <span class="big-tag">人工智能、大数据、理财、企业服务台</span>
+                          </div>
+                          <div class="li" style="margin-top: 12px;">
+                            <span class="big-tag">100-300万</span><span class="split">｜</span>
+                            <span class="big-tag">10%</span><span class="split">｜</span>
+                            <span class="big-tag">天使轮</span><span class="split">｜</span>
+                            <span class="big-tag">杭州</span>
+                          </div>
+                        </div>
+                        <div class="li clearfix" style="margin-top: 12px;">
+                          <button class="button fl">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+                          <button class="button fl">
+                            <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
+                        </div>
 
-            </div>
+                        <div class="img"><img src="../../../assets/images/dujia.png"></div>
+                        <!--<div class="img"><img src="../../../assets/images/feidujia.png"></div>-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-
+      <button class="btn">添加意向项目</button>
       </div>
     </div>
+    <alertprojectdetail :dialog-pro-visible="dialogVisible" v-on:changeall="dialogVisiblechangeIn" :proid="pro_id"></alertprojectdetail>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import alertprojectdetail from './alertProjectDetail.vue'
 export default {
   data () {
     return {
@@ -305,7 +350,7 @@ export default {
 
       },        //人脉参数
 
-
+      dialogVisible:false,//控制项目详情弹窗
       loading:false,//加载动画
       listShow:true,//项目库
       currentPage:1,//当前第几页
@@ -343,6 +388,8 @@ export default {
       value: 1,
       value1:'全部',
       widthInner:10,//进度条的长度
+      tabs:true,//标签切换
+      pro_id:'123',//项目详情
     }
   },
   methods: {
@@ -378,7 +425,12 @@ export default {
     },//控制页码
     handleClick(tab, event) {
       console.log(tab);
+      if(tab.name=="1") this.tabs=true;
+      else this.tabs=false
     },//点击标签
+    toDetail(){
+      this.dialogVisible=true;
+    },//项目详情弹窗
     selectChange(e){
       let width = 0;
       switch (e){
@@ -425,19 +477,28 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          x: 'left',
-          data:['推进中','Hold','Rejcet']
+          x: 'right',
+
+          top:'30%',
+          data:['推进中','Hold','Rejcet'],
+          textStyle:{
+            fontSize:"16",
+          }
         },
         series: [
           {
             name: '访问来源',
             type: 'pie',
             selectedMode: 'single',
-            radius: ['100%', '70%'],
+            radius: ['70%','90%'],
+            center: ['35%', '55%'],
             label: {
               normal: {
                 show: true,
-                position: 'center'
+                position: 'center',
+                textStyle:{
+                    fontSize:"16",
+                }
               },
               emphasis: {
                 show: true,
@@ -466,6 +527,9 @@ export default {
       };
       myChart.setOption(option);
     },
+    dialogVisiblechangeIn(msg){
+      this.dialogVisible=msg;
+    },//传递给一键尽调搜索窗口
   },
   created(){
       this.getUserId();
@@ -473,6 +537,9 @@ export default {
   //Echart组件
   mounted(){
     this.eChart();
+  },
+  components: {
+    alertprojectdetail
   },
 }
 </script>
