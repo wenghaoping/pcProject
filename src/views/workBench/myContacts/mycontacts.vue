@@ -297,7 +297,7 @@ export default {
         label: ''
       }],//人脉标签展示数据
       tableData:[
-          {
+          /*{
             user_avatar_url:"https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epia77Br2Wk8RiaR8hMAxMG9DerJfzuRCGr5Pf0s2MNDj1FU6dwnpKycchqTRck13S0RTQ6Cg3qZy4A/0",//头像
             user_avatar_url_change:"翁",//代替图片
             user_real_name:'翁浩平',//姓名
@@ -313,7 +313,7 @@ export default {
             tagArray:[],//原版标签,设置标签用的
             login_time:"刚刚活跃",//最近活跃
             is_bind:0,//编辑
-        }
+        }*/
       ],//列表数据
       user_invest_industryFilters:[{ text: '', value: '' }],//投资领域筛选条件
       user_invest_stageFilters:[],//投资轮次筛选
@@ -367,10 +367,19 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
+        this.loading=true;
+        this.$http.post(this.URL.deleteConnectUser, {user_id:sessionStorage.user_id,card_id: row.card_id})
+          .then(res => {
+            this.loading=false;
+            this.$tool.success("删除成功")
+            this.handleIconClick();
+          })
+          .catch(err => {
+            this.loading=false;
+            this.$tool.error("删除失败");
+            this.$tool.console(err);
+          })
+
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -582,11 +591,14 @@ export default {
           this.loading=false;
           this.dialogVisible = true;
           this.$tool.success("设置成功");
+          this.dialogVisible = false;
+          this.handleIconClick();
         })
         .catch(err => {
           this.loading=false;
           this.$tool.error("添加失败");
           this.$tool.console(err);
+          this.dialogVisible = false;
 
         })
     },//保存标签选择
