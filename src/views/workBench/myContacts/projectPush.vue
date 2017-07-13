@@ -1,6 +1,6 @@
 <template>
   <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中">
-    <el-dialog :visible="dialogPush">
+    <el-dialog :visible="dialogPush" :before-close="handleClose">
       <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
         <div class="title fl">项目推送</div>
@@ -95,15 +95,19 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancel">预览</el-button>
+        <el-button @click="preview">预览</el-button>
         <el-button type="primary" @click="push(2)">继续推送</el-button>
         <el-button type="primary" @click="push(1)">推送</el-button>
       </span>
     </el-dialog>
+
+
+<!--项目预览弹窗-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+
 export default {
   props: ["dialogPush","userMessage","userEmail"],
   data () {
@@ -117,7 +121,9 @@ export default {
       }else{
         callback();
       }
-    }, 100);
+    }, 300);
+
+
   };//邮箱判断
   var checkTitle = (rule, value, callback) => {
     if (this.$tool.getNull(value)) {
@@ -126,7 +132,8 @@ export default {
       callback();
     }
   };//不为空判断
-    return {
+
+  return {
       emailRule: { validator: checkEmail, trigger: 'blur' },
       titleRule: { validator: checkTitle, trigger: 'blur' },
       close:false,//默认关闭
@@ -134,12 +141,12 @@ export default {
       activeName:'first',
 //      dialogPush:false,//控制显不显示
 
-      email2:{
-        nameEmail:'',//人脉的邮箱(一个)
-      },
       email:{
         title:'有人给您推荐一个项目,赶紧看看吧',//邮件标题
         main:'',//邮件正文
+      },
+      email2:{
+        nameEmail:'',//人脉的邮箱(一个)
       },
       user:{
         user_real_name:'李欣欣',
@@ -166,7 +173,7 @@ export default {
     }
   },
   methods: {
-    cancel(){
+    preview(){
       this.$emit('changeall',false);
     },
     push(type){
@@ -174,8 +181,8 @@ export default {
       let check1 = this.submitForm('email');
       let check2 = this.submitForm('email2');
       if(this.projectRadio=='') this.$tool.error("请选择要推送的项目")
+        else if(!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
       else if(type==1){//关闭
-
         if(check1 && check2) this.$emit('changeall',false)
 
 /*        this.$http.post(this.URL.getCrawlerBrand, {
@@ -244,6 +251,9 @@ export default {
       });
       return check;
     },
+    handleClose(){
+      this.$emit('changeClose',false);
+    }
   },
   mounted() {
     this.list = this.states.map(item => {
@@ -262,6 +272,7 @@ export default {
     },
 
   },
+
 }
 </script>
 

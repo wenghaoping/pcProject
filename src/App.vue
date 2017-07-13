@@ -24,10 +24,10 @@
         <li>
           <a href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>
         </li>
-        <li v-if="user_name" style="float: right;margin-right: 359px;">
+        <li v-if="user_name" style="float: right;">
           {{user_name}}
         </li>
-        <li v-else style="float: right;margin-right: 359px;" @click="login">
+        <li v-else style="float: right;" @click="login">
           登录
         </li>
       </ul>
@@ -59,8 +59,8 @@
           {type: '首页', jump: '/index'},
           {type: '工作台', jump: '/'},
 //                   {type: '扫码登陆',jump:'/logining'},
-          {type: '测试页面', jump: '/test'},
-          {type: '测试页面2', jump: '/test2'}
+//          {type: '测试页面', jump: '/test'},
+//          {type: '测试页面2', jump: '/test2'}
         ],
         user_name: sessionStorage.user_real_name
       }
@@ -94,8 +94,8 @@
 
 //        this.$router.push({name:"telephoneLogin"});
 
-//        this.$router.push({name:"myContacts"});
-          this.$router.push({name:"createContacts"});
+        this.$router.push({name:"myContacts"});
+//          this.$router.push({name:"createContacts"});
 
         this.setUserId();
 
@@ -162,7 +162,7 @@
       line-height: 16px;
       height: 60px;
       li {
-        width: 150px;
+        width: 130px;
         height: 50px;
         line-height: 50px;
         a {

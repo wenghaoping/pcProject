@@ -40,16 +40,16 @@
                     <el-col :span="12">
                       <el-form-item
                         label="姓名"
-                        prop="card_name" :rules="nullRule">
-                        <el-input v-model="contacts.card_name" placeholder="请输入姓名"></el-input>
+                        prop="user_real_name" :rules="nullRule">
+                        <el-input v-model="contacts.user_real_name" placeholder="请输入姓名"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="昵称"
-                        prop="card_nickname"
+                        prop="user_nickname"
                         :rules="[{max: 20, message: '长度不能大于20个字符', trigger: 'blur' }]">
-                        <el-input v-model="contacts.card_nickname" placeholder="请输入昵称"></el-input>
+                        <el-input v-model="contacts.user_nickname" placeholder="请输入昵称"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -57,17 +57,17 @@
                     <el-col :span="12">
                       <el-form-item
                         label="手机"
-                        prop="card_mobile"
+                        prop="user_mobile"
                         :rules="PhoneRule">
-                        <el-input v-model.number="contacts.card_mobile" placeholder="请输入手机"></el-input>
+                        <el-input v-model.number="contacts.user_mobile" placeholder="请输入手机"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="邮箱"
-                        prop="card_email"
+                        prop="user_email"
                         :rules="[{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }]">
-                        <el-input v-model="contacts.card_email" placeholder="请输入邮箱"></el-input>
+                        <el-input v-model="contacts.user_email" placeholder="请输入邮箱"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -75,17 +75,17 @@
                     <el-col :span="12">
                       <el-form-item
                         label="公司"
-                        prop="card_company_name"
+                        prop="user_company_name"
                         :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-                        <el-input v-model="contacts.card_company_name" placeholder="请输入公司名称"></el-input>
+                        <el-input v-model="contacts.user_company_name" placeholder="请输入公司名称"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="品牌"
-                        prop="card_brand"
+                        prop="user_brand"
                         :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-                        <el-input v-model="contacts.card_brand" placeholder="请输入品牌名、如：微天使"></el-input>
+                        <el-input v-model="contacts.user_brand" placeholder="请输入品牌名、如：微天使"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -93,16 +93,16 @@
                     <el-col :span="12">
                       <el-form-item
                         label="职位"
-                        prop="card_company_career"
+                        prop="user_company_career"
                         :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-                        <el-input v-model="contacts.card_company_career" placeholder="请输入职位"></el-input>
+                        <el-input v-model="contacts.user_company_career" placeholder="请输入职位"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="人脉标签"
-                        prop="card_tag">
-                        <el-select v-model="contacts.card_tag"
+                        prop="user_invest_tag">
+                        <el-select v-model="contacts.user_invest_tag"
                                    multiple placeholder="请添加" class="width360"
                                    :multiple-limit="multiplelimit"
                                    filterable allow-create
@@ -137,9 +137,9 @@
                     <el-col :span="12">
                       <el-form-item
                         label="投资领域"
-                        prop="industry">
+                        prop="user_invest_industry">
                         <el-select
-                          v-model="contacts.industry"
+                          v-model="contacts.user_invest_industry"
                           multiple
                           :multiple-limit="multiplelimit"
                           placeholder="请选择(最多5个)" class="width360">
@@ -155,8 +155,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="项目轮次"
-                        prop="stage">
-                        <el-select v-model="contacts.stage"
+                        prop="user_invest_stage">
+                        <el-select v-model="contacts.user_invest_stage"
                                    multiple
                                    :multiple-limit="multiplelimit"
                                    placeholder="请选择(最多5个)" class="width360">
@@ -175,8 +175,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="期望融资"
-                        prop="scale">
-                        <el-select v-model="contacts.scale"
+                        prop="user_invest_scale">
+                        <el-select v-model="contacts.user_invest_scale"
                                    multiple
                                    :multiple-limit="multiplelimit"
                                    placeholder="请选择(最多5个)"
@@ -193,8 +193,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="投资地区"
-                        prop="area">
-                        <el-select v-model="contacts.area" multiple
+                        prop="user_invest_area">
+                        <el-select v-model="contacts.user_invest_area" multiple
                                    :multiple-limit="multiplelimit"
                                    placeholder="请选择(最多5个)"
                                    class="width360">
@@ -211,10 +211,10 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item label="投资需求描述"
-                                    prop="investor_desc"
+                                    prop="user_invest_desc"
                                     :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                         <el-input type="textarea"
-                                  v-model="contacts.investor_desc"
+                                  v-model="contacts.user_invest_desc"
                                   :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -239,9 +239,9 @@
                     <el-col :span="12">
                       <el-form-item
                         label="他能提供的资源"
-                        prop="resource_give">
+                        prop="user_resource_give">
                         <el-select
-                          v-model="contacts.resource_give"
+                          v-model="contacts.user_resource_give"
                           multiple
                           :multiple-limit="multiplelimit"
                           placeholder="请选择(最多5个)" class="width360">
@@ -257,8 +257,8 @@
                     <el-col :span="12">
                       <el-form-item
                         label="寻求对接的资源"
-                        prop="resource_find">
-                        <el-select v-model="contacts.resource_find"
+                        prop="user_resource_find">
+                        <el-select v-model="contacts.user_resource_find"
                                    multiple
                                    :multiple-limit="multiplelimit"
                                    placeholder="请选择(最多5个)" class="width360">
@@ -276,10 +276,10 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item label="资源需求描述"
-                                    prop="res_desc"
+                                    prop="user_resource_desc"
                                     :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                         <el-input type="textarea"
-                                  v-model="contacts.res_desc"
+                                  v-model="contacts.user_resource_desc"
                                   :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -337,26 +337,28 @@ export default {
       uploadShow: {},//计划书上传列表,需要存数据啦
       uploadDate: {user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
       contacts: {
-        card_name:'',//姓名
-        card_nickname:'',//昵称
-        card_mobile:'',//名片手机号
-        card_email:'',//邮箱
-        card_company_name:'',//公司名称
-        card_brand:'',//品牌
-        card_company_career:'',//职位
-        card_tag:[],//人脉标签
-
-        industry: [],//领域标签
-        stage: [],//轮次
-        scale: [],//投资金额
-        area: [],//所属地区1省级单位
-        investor_desc:'',//资源需求描述
-        resource_give:[],//提供的资源
-        resource_find:[],//寻求对接的资源
-        res_desc:'',//描述
+        card_id:'',//id
+        user_id:'',//user_id
+        user_real_name:'',//姓名
+        user_nickname:'',//昵称
+        user_mobile:'',//名片手机号
+        user_email:'',//邮箱
+        user_company_name:' ',//公司名称
+        import_user_name:'',//来源
+        user_brand:'',//品牌
+        user_company_career:'',//职位
+        user_invest_tag:[],//人脉标签
+        user_avatar_url:'',//头像URL
+        user_invest_industry: [],//领域标签
+        user_invest_stage: [],//轮次
+        user_invest_scale: [],//投资金额
+        user_invest_area: [],//所属地区1省级单位
+        user_intro:'',//个人描述
+        user_resource_give:[],//提供的资源
+        user_resource_find:[],//寻求对接的资源
+        user_invest_desc:'',//投资需求描述
+        user_resource_desc:'',//资源需求描述
       },//人脉参数
-
-
 
       tags_con: [],//人脉标签选项
       industry: [],//领域标签选项
@@ -463,21 +465,21 @@ export default {
           })
       }
     },//添加人脉标签
+
     allSave(){
         let contacts=this.submitForm('contacts');
         let contacts1=this.submitForm('contacts1');
         let contacts2=this.submitForm('contacts2');
-        if(!contacts) {}
+        if(!contacts) {this.$tool.error("姓名不能为空")}
       else if(!contacts1) this.$tool.error("投资需求过长")
-      else if(!contacts2) this.$tool.error("资源需求过长")
+       else if(!contacts2) this.$tool.error("资源需求过长")
       else{
-          this.$tool.setTag(this.contacts.card_tag,this.tags.changecont);
+          this.$tool.setTag(this.contacts.user_invest_tag,this.tags_con);
           let allData=new Object;
           allData=this.contacts;
           allData.user_id=sessionStorage.user_id;
+          allData.card_id=this.contacts.card_id || '';
           allData.image_id=this.uploadShow.image_id || '';
-
-
           this.$tool.console(this.$tool.getToObject(allData),2);
           this.$http.post(this.URL.createUserCard, allData)
             .then(res => {
@@ -492,6 +494,7 @@ export default {
         }
 
     },//保存人脉
+
     /*编辑成功弹窗*/
     open2(title, main, confirm, cancel) {
       this.$confirm(main, title, {
@@ -526,11 +529,77 @@ export default {
       this.stage = this.$tool.getStage(data.stage);//设置轮次信息
       this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
       this.tags_con = this.$global.data.tags_user;//设置人脉标签
-      this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
       this.giveTo=this.$global.data.resource;//设置提供的资源和对接的资源
       this.pushTo=this.$global.data.resource;//设置提供的资源和对接的资源
     },//获取所有下拉框的数据
 
+    /*以下都是辅助函数*/
+    set_industry(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        newArr.push(x.industry_id);
+      });
+      return newArr
+    },//列表领域处理
+    set_stage(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        newArr.push(x.stage_id);
+      });
+      return newArr
+    },//列表轮次处理
+    set_scale(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        newArr.push(x.scale_id);
+      });
+      return newArr
+    },//列表期望金额处理
+    set_GiveFind(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        newArr.push(x.resource_id);
+      });
+      return newArr
+    },//资源提供或者寻求处理
+    set_area(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        newArr.push(x.area_id);
+      });
+      return newArr
+    },//资源提供或者寻求处理
+    setTag(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        newArr.push(x.tag_id);
+      });
+      return newArr;
+    },//设置标签的函数
+
+    getOneUserInfo(){
+      this.loading=true;
+      this.$http.post(this.URL.getOneUserInfo,{user_id:sessionStorage.user_id,card_id: this.card_id})
+        .then(res => {
+          let data = res.data.data;
+          this.$tool.console(this.$tool.getToObject(data));
+          data.user_invest_industry=this.set_industry(data.user_invest_industry);
+          data.user_invest_stage=this.set_stage(data.user_invest_stage);
+          data.user_invest_scale=this.set_scale(data.user_invest_scale);
+          data.user_resource_find=this.set_GiveFind(data.user_resource_find);
+          data.user_resource_give=this.set_GiveFind(data.user_resource_give);
+          data.user_invest_area=this.set_area(data.user_invest_area);
+          data.user_invest_tag=this.setTag(data.user_invest_tag);
+          this.tags.changecont=this.setTag(data.user_invest_tag);
+          this.contacts=data;
+          this.loading=false;
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading=false;
+          this.$tool.error("加载超时");
+        })
+    },//获取个人详情
     getContactsId(){
       this.card_id = this.$route.query.card_id || '';
     }
@@ -541,6 +610,7 @@ export default {
     this.getWxProjectCategory();
     setTimeout(() =>{
       this.getContactsId();
+      this.getOneUserInfo();
       if (this.planList.length != 0) this.planButton = false;
       else this.planButton = true;
     },200)

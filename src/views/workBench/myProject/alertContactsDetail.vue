@@ -256,7 +256,7 @@
       },//项目列表
     },
     created(){
-      this.getWxProjectCategory();
+//      this.getWxProjectCategory();
     },
     watch : {
       proid : function(e){

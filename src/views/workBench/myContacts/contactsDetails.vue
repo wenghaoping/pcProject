@@ -6,8 +6,8 @@
         <div class="item-lists clearfix">
           <div class="item-list item-lists-top clearfix">
             <div class="item">
-              <div class="name fl">{{contacts.card_name}}</div>
-              <div class="career fl">{{contacts.card_company_career}}</div>
+              <div class="name fl">{{contacts.user_real_name}}</div>
+              <div class="career fl">{{contacts.user_company_career}}</div>
             </div>
             <div class="item" style="margin-bottom: 55px;">
               <div class="title">{{contacts.card_nickname}}</div>
@@ -15,12 +15,12 @@
             <div class="header fr">
               <img :src="contacts.user_avatar_url">
             </div>
-            <div class="item com"><img src="../../../assets/images/company.png">{{contacts.card_company_name}} | {{contacts.card_brand}}</div>
-            <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.card_mobile}}</div>
+            <div class="item com"><img src="../../../assets/images/company.png">{{contacts.user_company_name}} | {{contacts.user_brand}}</div>
+            <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.user_mobile}}</div>
             <div class="item com" style="width: 780px;">
-              <img src="../../../assets/images/email.png">{{contacts.card_email}}
-              <div class="fr">
-                来源: 灰狼
+              <img src="../../../assets/images/email.png">{{contacts.user_email}}
+              <div class="fr" v-if="contacts.import_user_name!=''">
+                来源: {{contacts.import_user_name}}
               </div>
             </div>
           </div>
@@ -32,12 +32,11 @@
                 <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editTo.png">修改</span>
               </div>
               <div class="block">
-                <div class="tag ">90后创业者</div>
-                <div class="tag ">90后创业者</div>
+                <div class="tag" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
               </div>
             </div>
             <!--项目库-->
-            <div class="item" >
+            <div class="item" v-if="projectLists.length!=0">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img" src="../../../assets/images/projectColl.png">项目库</span>
               </div>
@@ -86,60 +85,58 @@
               </div>
             </div>
             <!--个人描述-->
-            <div class="item">
+            <div class="item" v-if="contacts.user_intro!=''">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img" src="../../../assets/images/miaoshu.png">个人描述</span>
               </div>
               <div class="block">
                 <div class="main">
-                  我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。 2.行中：管家确保出现在用户出行过程中每一个重要和紧急的环节。 我们的管家分为线上的总部管家和线下的目的地管家。目前，我们在全球7个国家建立了分公司、办事处。飞机落地之后，对接当地管家。此外，用户在任何时候都可以通过微信公众号或者 24 小时待机的国内电话联系到总部管家，并得到总部管家的帮助。
+                  {{contacts.user_intro}}
                 </div>
               </div>
             </div>
             <!--投资需求-->
-            <div class="item">
+            <div class="item" v-if="contacts.user_invest_industry!='' && contacts.user_invest_stage!='' && contacts.user_invest_scale!='' && contacts.user_invest_desc!=''">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img" src="../../../assets/images/money2.png">投资需求</span>
               </div>
-              <div class="block tit clearfix">
+              <div class="block tit clearfix" v-if="contacts.user_invest_industry!=''">
                 <div class="tit_left fl">投资领域 ： </div>
-                <div class="tit_right fl">金融、saas、企业服务、智能、大数据</div>
+                <div class="tit_right fl">{{contacts.user_invest_industry}}</div>
               </div>
-              <div class="block tit clearfix">
+              <div class="block tit clearfix" v-if="contacts.user_invest_stage!=''">
                 <div class="tit_left fl">投资轮次 ： </div>
-                <div class="tit_right fl">种子及天使轮、Pre-A轮、A轮、B轮、少数股权转让</div>
+                <div class="tit_right fl">{{contacts.user_invest_stage}}</div>
               </div>
-              <div class="block tit clearfix">
+              <div class="block tit clearfix" v-if="contacts.user_invest_scale!=''">
                 <div class="tit_left fl">投资金额 ： </div>
-                <div class="tit_right fl">1000-3000万</div>
+                <div class="tit_right fl">{{contacts.user_invest_scale}}</div>
               </div>
-              <div class="block tit clearfix">
+              <div class="block tit clearfix" v-if="contacts.user_invest_desc!=''">
                 <div class="tit_left fl">具体描述 ： </div>
-
               </div>
-              <div class="block">
-                <div class="tit_mian">我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。</div>
+              <div class="block" v-if="contacts.user_invest_desc!=''">
+                <div class="tit_mian">{{contacts.user_invest_desc}}</div>
               </div>
             </div>
             <!--资源需求-->
-            <div class="item">
+            <div class="item" v-if="contacts.user_resource_desc!='' && contacts.user_resource_give!='' && contacts.user_resource_find!=''">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img" src="../../../assets/images/ziyuan.png">资源需求</span>
               </div>
-              <div class="block tit clearfix">
+              <div class="block tit clearfix" v-if="contacts.user_resource_give!=''">
                 <div class="tit_left fl">拥有的资源 ： </div>
-                <div class="tit_right fl">金融、saas、企业服务、智能、大数据</div>
+                <div class="tit_right fl">{{contacts.user_resource_give}}</div>
               </div>
-              <div class="block tit clearfix">
+              <div class="block tit clearfix" v-if="contacts.user_resource_find!=''">
                 <div class="tit_left fl">寻求的资源 ： </div>
-                <div class="tit_right fl">种子及天使轮、Pre-A轮、A轮、B轮、少数股权转让</div>
+                <div class="tit_right fl">{{contacts.user_resource_find}}</div>
               </div>
-              <div class="block tit clearfix">
+              <div class="block tit clearfix" v-if="contacts.user_resource_desc!=''">
                 <div class="tit_left fl">具体描述 ： </div>
-
               </div>
-              <div class="block">
-                <div class="tit_mian">我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。</div>
+              <div class="block" v-if="contacts.user_resource_desc!=''">
+                <div class="tit_mian">{{contacts.user_resource_desc}}</div>
               </div>
             </div>
 
@@ -295,6 +292,7 @@
       <el-select
         v-model="tagsValue"
         multiple
+        :multiple-limit="multiplelimit"
         filterable
         allow-create
         style="width:100%"
@@ -343,37 +341,33 @@ export default {
         index:'',//取数据保存的位置
         card_id:''//人脉id
       },
-
+      multiplelimit:5,//标签控制5个
       contacts:{
         card_id:'',//id
         user_id:'',//user_id
-        card_name:'张三',//姓名
-        card_nickname:'昵称',//昵称
-        card_mobile:'18758307033',//名片手机号
-        card_email:'zhangsan@weitianshi.cn',//邮箱
-        card_company_name:'杭州投着乐网络科技有限公司 ',//公司名称
-        card_brand:'投着乐',//品牌
-        card_company_career:'投资经理',//职位
-        contacts_tag:[],//人脉标签
+        user_real_name:'张三',//姓名
+        user_nickname:'昵称',//昵称
+        user_mobile:'18758307033',//名片手机号
+        user_email:'zhangsan@weitianshi.cn',//邮箱
+        user_company_name:'杭州投着乐网络科技有限公司 ',//公司名称
+        import_user_name:'',//来源
+        user_brand:'投着乐',//品牌
+        user_company_career:'投资经理',//职位
+        user_invest_tag:[],//人脉标签
         user_avatar_url:'',//头像URL
-        pro_industry: [],//领域标签
-        pro_stage: {
-          "stage_id": '',
-          "stage_name": "",
-          "sort": 2,
-          "created_at": null,
-          "updated_at": null
-        },//轮次
-        pro_finance_scale: '',//投资金额
-        pro_area: {
+        user_invest_industry: [],//领域标签
+        user_invest_stage: [],//轮次
+        user_invest_scale: [],//投资金额
+        user_invest_area: {
           area_id: '',
           area_title: "",//市级
           pid: ''//省级
         },//所属地区1省级单位
-        main:'',//资源需求描述
-        give:[],//提供的资源
-        push:[],//寻求对接的资源
-        describe:'',//描述
+        user_intro:'',//个人描述
+        user_resource_give:[],//提供的资源
+        user_resource_find:[],//寻求对接的资源
+        user_invest_desc:'',//投资需求描述
+        user_resource_desc:'',//资源需求描述
       },//人脉参数
       userMessage:{
         user_real_name:'翁浩平',//姓名
@@ -461,10 +455,10 @@ export default {
       this.tags.card_id=this.$route.query.card_id;
     },//获取userid/card_id
     handlePush(){
-      this.userMessage.user_real_name=this.contacts.card_name;
-      this.userMessage.user_company_career=this.contacts.card_company_career;
-      this.userMessage.user_company_name=this.contacts.card_company_name;
-      this.userEmail=this.contacts.card_email;
+      this.userMessage.user_real_name=this.contacts.user_real_name;
+      this.userMessage.user_company_career=this.contacts.user_company_career;
+      this.userMessage.user_company_name=this.contacts.user_company_name;
+      this.userEmail=this.contacts.user_email;
       this.dialogPushVisible=true;
     },//点击推送,并且传送数据给推送弹框
     dialogVisiblechange(msg){
@@ -479,7 +473,7 @@ export default {
     handleClick(tab, event) {
       if(tab.name=="1") this.tabs=true;
       else this.tabs=false
-    },//点击标签
+    },//点击切换标签
 
     toDetail(){
       this.dialogVisiblePro=true;
@@ -628,14 +622,75 @@ export default {
           this.loading1=false;
           this.$tool.error("加载超时")
         })
-    },//项目列表
+    },//获取项目列表
+    /*以下都是辅助函数*/
+    set_industry(arr){
+      let str=""
+      if(arr.length===0) {
+        str=""
+      } else {
+        arr.forEach((x)=> {
+          str += x.industry_name + '、'
+        })
+      }
+      return str
+    },//列表领域处理
+    set_stage(arr){
+      let str="";
+      if(arr.length===0) {
+        str=""
+      } else {
+        arr.forEach((x)=> {
+          str += x.stage_name + '、'
+        })
+      }
+      return str
+    },//列表轮次处理
+    set_scale(arr){
+      let str="";
+      if(arr.length===0) {
+        str=""
+      } else {
+        arr.forEach((x)=> {
+          str+=x.scale_money+'、'
+        })
+      }
+      return str
+    },//列表期望金额处理
+    set_GiveFind(arr){
+      let str="";
+      if(arr.length===0) {
+        str=""
+      } else {
+        arr.forEach((x)=> {
+          str+=x.resource_name+'、'
+        })
+      }
+      return str
+    },//资源提供或者寻求处理
+    setTag(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        newArr.push(x.tag_id);
+      });
+      return newArr;
+    },//设置标签的函数
     getOneUserInfo(){
       this.loading=true;
       this.$http.post(this.URL.getOneUserInfo,{user_id:sessionStorage.user_id,card_id: this.contacts.card_id})
-        .then(res=>{
+        .then(res => {
           let data = res.data.data;
-          this.loading=false;
           this.$tool.console(this.$tool.getToObject(data));
+          data.user_invest_industry=this.set_industry(data.user_invest_industry);
+          data.user_invest_stage=this.set_stage(data.user_invest_stage);
+          data.user_invest_scale=this.set_scale(data.user_invest_scale);
+          data.user_resource_find=this.set_GiveFind(data.user_resource_find);
+          data.user_resource_give=this.set_GiveFind(data.user_resource_give);
+
+          this.tagsValue=this.setTag(data.user_invest_tag);
+          this.tags.changecont=this.setTag(data.user_invest_tag);
+          this.contacts=data;
+          this.loading=false;
         })
         .catch(err=>{
           this.$tool.console(err,2);
@@ -647,7 +702,6 @@ export default {
     getWxProjectCategory(){
       this.addTags = this.$global.data.tags_user;//设置人脉标签
       this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
-      console.log()
     },//获取所有下拉框的数据
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
@@ -672,14 +726,14 @@ export default {
         .then(res => {
           this.loading=false;
           this.$tool.success("设置成功");
-          this.dialogVisiblePro = false;
-          this.handleIconClick();
+          this.dialogVisibleTag = false;
+          this.getOneUserInfo();
         })
         .catch(err => {
           this.loading=false;
           this.$tool.error("添加失败");
           this.$tool.console(err);
-          this.dialogVisiblePro = false;
+          this.dialogVisibleTag = false;
 
         })
     },//保存标签选择
