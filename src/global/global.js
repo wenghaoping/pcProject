@@ -10,6 +10,9 @@ const data = {
   stage: '',
   industry: '',
   hotCity:'',
+  entrance:'index',// 登录入口页面
+  user_id:'',//用户id
+  id:'',//用于上传和删除文件的id
 }
 
 

@@ -50,12 +50,11 @@
       next(){
         if (typeof this.active == "number") {
           this.$http.post(this.URL.setUserGroup, {
-            user_id: this.$global.data.user_id,
+            user_id: sessionStorage.user_id,
             group_id: this.active,
           }).then(res => {
             console.log(res)
-            this.$global.data.id = res.data.id.id;
-            console.log(this.$global.data.id)
+            sessionStorage.id=res.data.id
           })
           this.$router.push('/identityDetail')
         } else {

@@ -2,7 +2,7 @@
   <div id="forgetPassword">
     <div class="title tc">微天使,帮您成交的项目管理工具</div>
     <div class="loginBox">
-      <div class="backLogin">
+      <div class="backLogin" @click="backLogin">
         <img class="arrowLeft" src=""/>
         返回登录
       </div>
@@ -33,6 +33,10 @@
       }
     },
     methods: {
+      //backLogin
+      backLogin(){
+        this.$router.push({name:'telephoneLogin'})
+      },
       // 获取验证码
       getCode(){
         if (!this.$tool.checkPhoneNubmer(this.telephone)) {

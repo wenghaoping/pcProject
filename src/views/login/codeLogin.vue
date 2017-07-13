@@ -35,11 +35,10 @@
             user_passwd:this.password,
           }).then(res=>{
               this.$tool.console(res)
-            if(res.data.status_code==2000000){
-              //将user_id存入$global并跳转
-              console.log(res)
-              this.$global.data.user_id=res.data.user_id;
-              this.$router.push({name:'identityChoose'})
+            if(res.data.status_code===2000000){
+              //将user_id存入sessionStorge并跳转
+              sessionStorage.user_id=res.data.user_id;
+              this.$router.push({name:'index'})
             }else{
                 this.$tool.error(res.data.error_msg)
             }
