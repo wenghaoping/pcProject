@@ -6,7 +6,7 @@
     <el-tabs v-model="bussinessName">
 
       <el-tab-pane label="工商信息" name="1" style="margin-top: -30px;">
-        <div class="block">
+        <div class="block"  style="display: block">
           <div class="rz-details" style="width: 795px;">
             <div class="rz-detail">
               <p class="det-title">法定代表人</p>
@@ -22,7 +22,7 @@
             </div>
           </div>
         </div>
-        <div class="block" >
+        <div class="block"  style="display: block">
           <el-row :span="24">
             <el-col :span="4"><div class="content left">企业类型</div></el-col>
             <el-col :span="8"><div class="content right">{{business.company.company_type}}</div></el-col>
@@ -55,7 +55,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="工商变更" name="2">
-        <div class="bloack change">
+        <div class="bloack change" style="display: block">
           <el-table
             :data="business.company_change"
 
@@ -86,7 +86,7 @@
       </el-tab-pane>
       <!--商标信息-->
       <el-tab-pane :label="trademarkMessage" name="3">
-        <div class="block">
+        <div class="block" style="display: block">
           <el-table
             :data="business.brand"
 
@@ -230,7 +230,6 @@ export default {
       })
         .then(res => {
           let data=res.data.data;
-
           this.business=data;
           console.log(this.business);
           this.trademarkMessage="商标信息"+"("+data.brand.length+")"

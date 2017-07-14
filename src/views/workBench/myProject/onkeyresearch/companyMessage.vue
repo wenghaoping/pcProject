@@ -9,7 +9,7 @@
           <span class="tag-bottom">大数据</span>
           <span class="tag-bottom">人工智能</span>
         </div>-->
-        <div class="block" >
+        <div class="block" style="display: block">
           <el-row :span="24">
             <el-col :span="4"><div class="content left">公司名称</div></el-col>
             <el-col :span="20"><div class="content" style="padding-left: 12px;margin-right: -8px;">{{company.company_name}}</div></el-col>
@@ -34,7 +34,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane :label="productMessage" name="2">
-        <div class="block">
+        <div class="block"  style="display: block">
           <div class="inner fl" v-for="project in company.company_project">
             <div class="img fl"><img src="../../../../assets/images/logo.png"/></div>
             <p class="type fl" style="margin-bottom: 7px;">{{project.company_project_name}}<span>{{project.company_project_type}}</span></p>
