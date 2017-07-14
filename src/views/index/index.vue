@@ -8,7 +8,7 @@
       </div>
     </div>
     <h1>如果你是</h1>
-    <div class="content flex tc" style="width: 1088px;height:565px;margin: 0 auto;">
+    <div class="content flex content0 tc" >
       <div class="indentityPic" v-for="item in identityPic">
         <img :src='item.url' />
         <div v-if="item.text1">{{item.text1}}</div>
@@ -53,16 +53,7 @@
         <img src='../../assets/images/index3.png'/>
       </div>
     </div>
-    <!--<div class="content flex content4">
-      <div class="fullPagePic fullPagePic4">
-        <img src='../../assets/images/index2.png'/>
-      </div>
-      <div class="fullPageText fullPageText4">
-        <div>竞品分析、融资监测场景&#45;&#45;融资雷达</div>
-        <div>这里最好有几句方案的介绍,这里最好有几句方案的介绍,这里最好有几句方案的介绍,这里最好有几句方案的介绍</div>
-      </div>
-    </div>-->
-    <div class="qrCode">
+    <div class="qrCode" @click="clearSomething">
       <img src='../../assets/images/indexQr.png'/>
     </div>>
     <div class="qrCode-large">
@@ -121,6 +112,13 @@
         }else{
           this.$router.push({name:'telephoneLogin'})
         }
+      },
+      // 清除浏览器内存
+      clearSomething(){
+        console.log('清除sessionStorage部分key值完毕')
+        sessionStorage.removeItem('user_id');
+        sessionStorage.removeItem('id');
+        sessionStorage.removeItem('entrance');
       },
     }
   }

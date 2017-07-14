@@ -7,6 +7,9 @@
     background: grey;
     width: 100%;
     height: 691px;
+    @media screen and(max-width: 1400px){
+      height: 491px;
+    }
     position: relative;
     button {
       position: absolute;
@@ -14,6 +17,11 @@
       top: 458px;
       width: 133px;
       height: 56px;
+      @media screen and (max-width: 1400px){
+        width: 94px;
+        height: 40px;
+        top: 326px;
+      }
     }
     button:first-child {
       left: 18.75%;
@@ -35,8 +43,8 @@
         height: 100%;
       }
     }
-    .showQr:hover + .qrShow{
-      display: block;
+    .qrBlock{
+      display:block;
     }
   }
   h1 {
@@ -44,6 +52,10 @@
     text-align: center;
     margin-top: 77px;
     font-weight: normal;
+    @media screen and(max-width: 1400px){
+      margin-top: 61px;
+      font-size: 24px;
+    }
   }
   .content {
     width: 100%;
@@ -53,22 +65,33 @@
     .indentityPic{
       width: 25%;
       color: #8492a6;
+      @media screen and(max-width: 1400px){
+        font-size: 12px;
+      }
       img{
         width: 65px;
         height: 104px;
         margin-bottom: 15px;
         margin-top: 155px;
+        @media screen and(max-width: 1400px){
+          width: 46px;
+          height: 74px;
+          margin-top: 115px;
+          margin-bottom: 12px;
+        }
       }
       div:nth-child(2){
         font-size:24px;
         color:#1f2d3d;
         margin-bottom: 6px;
+        }
       }
     }
     .fullPageText{
       position: absolute;
       font-size: 16px;
       color: #8492a6;
+
     }
     .fullPageText div{
       margin-bottom: 4px;
@@ -88,17 +111,39 @@
       }
     }
   }
+  .content0{
+    width: 1088px !important;
+    height:565px !important;
+    margin: 0 auto;
+    @media screen and(max-width: 1400px){
+      width:760px !important;
+      height: 490px !important;
+    }
+    .indentityPic{
+      div:nth-child(2){
+        @media screen and(max-width: 1400px){
+          font-size: 16px;
+      }
+    }
+  }
   .content1{
     margin-top: 104px;
     .fullPageText1{
       width: 424px;
       left: 21.5%;
       text-align: right;
+      @media screen and(max-width: 1400px){
+        width: 321px;
+      }
     }
     .fullPagePic1{
       right: 18.75%;
       width: 600px;
       height: 315px;
+      @media screen and(max-width: 1400px){
+        width: 426px;
+        height: auto;
+      }
     }
   }
   .content2{
@@ -176,3 +221,4 @@
   }
 
 }
+
