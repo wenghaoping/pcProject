@@ -102,8 +102,7 @@
             case_city: '',
             case_money: '',
           }]
-        }
-        ,
+        },
         rule:  {
           name: {},
           time: {},
@@ -152,6 +151,7 @@
       certain(){
         var that=this;
         console.log(this.caseForm.investSuccessCase)
+        console.log(typeof this.caseForm.investSuccessCase)
 //      标准时间转化为毫秒数
         this.caseForm.investSuccessCase.forEach(x=>{
           x.case_deal_time=Date.parse(x.case_deal_time)
