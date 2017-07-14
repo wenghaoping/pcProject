@@ -59,10 +59,10 @@ const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vu
 export default [
 
   {
-    path: '',component: workBench,
+    path: '/workBench',component: workBench,
     children:[
       // { path: '', component: indexmyProject},
-      { path: '/', component: indexmyProject,
+      { path: '/workBench', component: indexmyProject,name:"indexmyProject",
         children:[
           { path: '', component: myProject, name:"myProject"},
           { path: 'myContacts', component: myContacts, name:"myContacts"},
@@ -77,7 +77,7 @@ export default [
     ]
   },
   {
-    path: '/index', name: 'index', component: index,
+    path: '/', name: 'index', component: index,
   },
   {
     path: '/qr', name: 'SmallRoutine', component: SmallRoutine

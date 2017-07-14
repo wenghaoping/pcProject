@@ -36,21 +36,14 @@ export default {
     reload(){
       window.location.reload();
     },
-    /*警告弹窗*/
-    alert(text) {
-      this.$notify.error({
-        message: text,
-        offset: 300,
-        duration:0
-      });
-    },
+
     change(){
       this.config.value=this.input
     },
     getUserId(){
       this.num++;
       if(parseInt(this.num)>45) {
-        clearInterval(this.timeout)
+        clearInterval(this.timeout);
         this.dialogVisible=true;
       }
       this.$http.post(this.URL.ajaxPolling,{credential:sessionStorage.credential})
@@ -69,11 +62,11 @@ export default {
             this.dialogVisible=true;
             this.checkout=false;
           }else if(data.status_msg=="continue") {
-            this.$tool.console("等待登陆")
+            this.$tool.console("等待登陆");
           }
         })
         .catch(err=>{
-          this.$tool.console(err)
+          this.$tool.console(err);
         })
     }//获取id
 
@@ -96,7 +89,7 @@ export default {
         })
         .catch(err => {
           this.$tool.console(err);
-          this.alert("请刷新页面");
+          this.$tool.error("请刷新页面");
         });
       this.timeout = setInterval(() => {
         this.getUserId();

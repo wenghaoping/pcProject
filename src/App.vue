@@ -24,9 +24,10 @@
         <li>
           <a href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>
         </li>
-        <li v-if="user_name" style="float: right;margin-right: 359px;">
+        <li v-if="user_name" style="float: right;">
           {{user_name}}
         </li>
+
         <li v-show="!user_id" style="float: right;margin-right: 18%;" @click="login">
           登录
         </li>
@@ -104,9 +105,14 @@
        this.active=0;
        }*/
         //this.$router.push({name:"identityDetail"});
-//          this.$router.push({name:"index"});
-//          this.setUserId();
+//        this.$router.push({name:"contactsDetails"});
+//        this.$router.push({name:"projectDetails"});
 
+//        this.$router.push({name:"telephoneLogin"});
+
+//        this.$router.push({name:"myContacts"});
+//          this.$router.push({name:"createContacts"});
+//        this.setUserId();
     },
     watch: {
       user_name: function (e) {
@@ -206,7 +212,7 @@
     position: fixed;
     z-index: 100;
     top: 53px;
-    left: 582px;
+    left: 683px;
     background: #ffffff;
     box-shadow: 0 4px 4px 0 rgba(64, 88, 122, 0.10);
     border-radius: 4px;
