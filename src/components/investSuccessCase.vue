@@ -155,12 +155,14 @@
 //      标准时间转化为毫秒数
         this.caseForm.investSuccessCase.forEach(x=>{
           x.case_deal_time=Date.parse(x.case_deal_time)
-        })
+        });
+        console.log(this.caseForm.investSuccessCase);
+
         this.$http.post(this.URL.createUserProjectCase,{
           user_id:sessionStorage.user_id,
           project_case:this.caseForm.investSuccessCase,
         }).then(res=>{
-          console.log(res)
+          console.log(res);
           if(res.data.status_code===2000000){
             that.$emit('closeInvestCase', false)
           }else{

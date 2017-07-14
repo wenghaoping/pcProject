@@ -32,7 +32,7 @@
             <div class="item height" style="margin-top:18px;" v-if="project.pro_source!=''">
               <span class="flower2">来源 : {{project.pro_source}}</span>
             </div>
-            <div class="item height" style="margin-top:18px;">
+            <div class="item height">
             <span class="project" >
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>

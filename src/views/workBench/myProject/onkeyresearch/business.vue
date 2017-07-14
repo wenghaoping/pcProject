@@ -230,7 +230,9 @@ export default {
       })
         .then(res => {
           let data=res.data.data;
+
           this.business=data;
+          console.log(this.business);
           this.trademarkMessage="商标信息"+"("+data.brand.length+")"
         })
         .catch(err => {

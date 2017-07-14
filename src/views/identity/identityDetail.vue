@@ -245,7 +245,7 @@
         }else if(!this.$tool.checkEmail(this.ruleForm1.email)){
           this.$tool.error('请正确填写邮箱')
         }else{
-          console.log(this.ruleForm1,this.ruleForm2)
+          console.log(this.ruleForm1,this.ruleForm2);
           this.$http.post(this.URL.saveUserIdentity,{
             id:sessionStorage.id,
             user_id:sessionStorage.user_id,

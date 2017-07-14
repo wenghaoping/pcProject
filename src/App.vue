@@ -73,11 +73,11 @@
         this.active = i
         // 控制点击工作台跳转情况
         if(this.active===1){
-          sessionStorage.entrance='myProject'
+          sessionStorage.entrance='myProject';
           if(sessionStorage.user_id){
-            this.$router.push({name:'myProject'})
+            this.$router.push({name:'myProject'});
           }else{
-            this.$router.push({name:"telephoneLogin"})
+            this.$router.push({name:"telephoneLogin"});
           }
         }
       },
@@ -85,6 +85,7 @@
       setUserId(){
 //        sessionStorage.user_id = 'V0VznXa0';
         sessionStorage.user_id='2rzyz5vp';
+        sessionStorage.user_real_name='杜兴国';
       },
       // 登录
       login(){

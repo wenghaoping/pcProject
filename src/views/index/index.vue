@@ -9,13 +9,33 @@
     </div>
     <h1>如果你是</h1>
     <div class="content flex content0 tc" >
-      <div class="indentityPic" v-for="item in identityPic">
-        <img :src='item.url' />
-        <div v-if="item.text1">{{item.text1}}</div>
-        <div v-if="item.text2">{{item.text2}}</div>
-        <div v-if="item.text3">{{item.text3}}</div>
-        <div v-if="item.text4">{{item.text4}}</div>
-        <div v-if="item.text5">{{item.text5}}</div>
+      <div class="indentityPic">
+        <img src='../../assets/images/maifangFA.png'/>
+        <div>卖方FA</div>
+        <div>项目精准推荐</div>
+        <div>微天使一手案源</div>
+        <div>大数据一键尽调</div>
+      </div>
+      <div class="indentityPic">
+        <img src='../../assets/images/maifangFA.png'/>
+        <div>买方FA</div>
+        <div>推荐精准匹配投资人</div>
+        <div>项目一键推送</div>
+        <div>微天使一手案源</div>
+        <div>大数据一键尽调</div>
+      </div>
+      <div class="indentityPic">
+        <img src='../../assets/images/touzifang.png'/>
+        <div>投资方</div>
+        <div>FA精选项目</div>
+        <div>项目管理</div>
+        <div>大数据一键尽调</div>
+      </div>
+      <div class="indentityPic">
+        <img src='../../assets/images/chuangyezhe.png'/>
+        <div>创业者</div>
+        <div>融资加速</div>
+        <div>优质FA组团服务</div>
       </div>
     </div>
     <h1>我们能提供</h1>
@@ -70,7 +90,7 @@
     data () {
       return {
         msg: '',
-        identityPic: [
+        /*identityPic: [
           {
             url: '/static/images/maifangFA.png',
             text1: "卖方FA",
@@ -99,7 +119,7 @@
             text2:"融资加速",
             text3:"优质FA组团服务",
           }
-        ],
+        ],*/
       }
     },
     methods: {
