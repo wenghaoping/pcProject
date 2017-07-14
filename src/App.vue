@@ -57,8 +57,8 @@
       return {
         active: 0,
         tabs: [
-          {type: '首页', jump: '/index'},
-          {type: '工作台', jump: '/'},
+          {type: '首页', jump: '/'},
+          {type: '工作台', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
 //          {type: '测试页面', jump: '/test'},
 //          {type: '测试页面2', jump: '/test2'}
@@ -73,11 +73,11 @@
         this.active = i
         // 控制点击工作台跳转情况
         if(this.active===1){
-          sessionStorage.entrance='myProject'
+          sessionStorage.entrance='myProject';
           if(sessionStorage.user_id){
-            this.$router.push({name:'myProject'})
+            this.$router.push({name:'myProject'});
           }else{
-            this.$router.push({name:"telephoneLogin"})
+            this.$router.push({name:"telephoneLogin"});
           }
         }
       },
@@ -85,6 +85,7 @@
       setUserId(){
 //        sessionStorage.user_id = 'V0VznXa0';
         sessionStorage.user_id='2rzyz5vp';
+        sessionStorage.user_real_name='杜兴国';
       },
       // 登录
       login(){

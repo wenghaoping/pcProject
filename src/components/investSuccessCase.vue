@@ -154,7 +154,8 @@
 //      标准时间转化为毫秒数
         this.caseForm.investSuccessCase.forEach(x=>{
           x.time=Date.parse(x.time)
-        })
+        });
+        console.log(this.caseForm.investSuccessCase);
         this.$http.post(this.URL.createUserProjectCase,{
           user_id:sessionStorage.user_id,
           project_case:this.caseForm.investSuccessCase
