@@ -113,7 +113,7 @@
 
 //        this.$router.push({name:"myContacts"});
 //          this.$router.push({name:"createContacts"});
-//        this.setUserId();
+        this.setUserId();
     },
     watch: {
       user_name: function (e) {

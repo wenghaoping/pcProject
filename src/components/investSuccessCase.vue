@@ -16,16 +16,16 @@
         <!--项目名称和投资时间-->
         <div class="flex">
           <el-form-item label="项目名称" prop="name" class="width360 mr32">
-            <el-input v-model="item.name">项目名称</el-input>
+            <el-input v-model="item.case_name">项目名称</el-input>
           </el-form-item>
           <el-form-item label="投资时间" prop="time" class="width360">
-            <el-date-picker v-model="item.time" type="date" placeholder="选择日期" class="width360"></el-date-picker>
+            <el-date-picker v-model="item.case_deal_time" type="date" placeholder="选择日期" class="width360"></el-date-picker>
           </el-form-item>
         </div>
         <!--投资领域和投资轮次-->
         <div class="flex">
           <el-form-item label="投资领域" prop="investIndustry" class="mr32">
-            <el-select v-model="item.industry"
+            <el-select v-model="item.case_industry"
                        multiple filterable
                        :multiple-limit="multiplelimit"
                        placeholder="请添加(最多5个)"
@@ -38,7 +38,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="投资轮次" prop="investStage">
-            <el-select v-model="item.stage"
+            <el-select v-model="item.case_stage"
                        multiple filterable
                        :multiple-limit="multiplelimit"
                        placeholder="请添加(最多5个)"
@@ -54,13 +54,13 @@
         <!--投资地区和投资金额-->
         <div class="flex">
           <el-form-item label="投资地区" prop="area1" class="width360 mr32">
-            <el-select v-model="item.area1" placeholad="请选择" class="width175" @change="area1Change(index)">
+            <el-select v-model="item.case_province" placeholad="请选择" class="width175" @change="area1Change(index)">
               <el-option v-for="area1Item in area1List"
                          :key="area1Item.value"
                          :label="area1Item.label"
                          :value="area1Item.value"></el-option>
             </el-select>
-            <el-select v-model="item.area2" placeholad="请选择" class="width175">
+            <el-select v-model="item.case_city" placeholad="请选择" class="width175">
               <el-option v-for="area2Item in area2List"
                          :key="area2Item.value"
                          :label="area2Item.label"
@@ -68,7 +68,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="投资金额(万)" prop="scale" class="width360">
-            <el-input v-model="item.scale">投资金额</el-input>
+            <el-input v-model="item.case_money">投资金额</el-input>
           </el-form-item>
         </div>
         <div>
@@ -94,17 +94,16 @@
       return {
         caseForm: {
           investSuccessCase: [{
-            name: '',
-            time: '',
-            industry: '',
-            stage: '',
-            area1: '',
-            area2: '',
-            scale: '',
+            case_name : '',
+            case_deal_time: '',
+            case_industry: '',
+            case_stage: '',
+            case_province: '',
+            case_city: '',
+            case_money: '',
           }]
-        }
-        ,
-        rule: {
+        },
+        rule:  {
           name: {},
           time: {},
           industry: {},
@@ -141,7 +140,7 @@
 //    继续添加
       continueAdd(){
         this.caseForm.investSuccessCase.push({
-          name: '', time: '', industry: '', stage: '', area1: '', area2: '', scale: ''
+          case_name: '', case_deal_time: '', case_industry: '', case_stage: '', case_province: '', case_city: '', case_money: ''
         })
       },
 //    删除本条
@@ -151,14 +150,17 @@
 //    确定
       certain(){
         var that=this;
+        console.log(this.caseForm.investSuccessCase)
+        console.log(typeof this.caseForm.investSuccessCase)
 //      标准时间转化为毫秒数
         this.caseForm.investSuccessCase.forEach(x=>{
-          x.time=Date.parse(x.time);
+          x.case_deal_time=Date.parse(x.case_deal_time)
         });
         console.log(this.caseForm.investSuccessCase);
+
         this.$http.post(this.URL.createUserProjectCase,{
           user_id:sessionStorage.user_id,
-          project_case:this.caseForm.investSuccessCase
+          project_case:this.caseForm.investSuccessCase,
         }).then(res=>{
           console.log(res);
           if(res.data.status_code===2000000){
