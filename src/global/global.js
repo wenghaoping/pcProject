@@ -95,7 +95,7 @@ var func = {
       global.data.resource = global.func.getResource(data.resource);//设置项目来源
     })
     .catch(err => {
-      console.log(err)
+      console.log(err);
       console.log('出现错误')
     })
   },//获取所有下拉框的数据
