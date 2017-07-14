@@ -415,7 +415,7 @@
         })
       },
       goBack(){//返回上一层
-        this.$router.push('/');
+        this.$router.push({name: 'indexmyProject'})//路由传参
       },
       /*检查所有必填项目以及获取所有数据*/
       submitForm(formName) {

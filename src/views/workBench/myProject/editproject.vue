@@ -1612,9 +1612,8 @@
         this[v] = false;
       },
       goBack(){//返回上一层
-        this.$router.push('/');
+        this.$router.push({name: 'indexmyProject'})//路由传参
       },
-
 
       /*获取远程数据模拟*/
       loadData(arr){
@@ -1625,7 +1624,7 @@
           obj.address = arr[i].com_id;
           newArr.push(obj)
         }
-        return newArr
+        return newArr;
       },
       /*自动搜索,接口写这里面*/
       querySearchAsync(queryString, cb) {
