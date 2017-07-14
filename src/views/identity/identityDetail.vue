@@ -27,8 +27,14 @@
               <el-form-item label="姓名" prop="name" class="mr32">
                 <el-input v-model="ruleForm1.name" placeholder="请输入姓名"></el-input>
               </el-form-item>
-              <el-form-item label="公司" prop="company">
-                <el-input v-model="ruleForm1.company" placeholder="请输入公司"></el-input>
+              <el-form-item
+                label="公司名称"
+                prop="company">
+                <el-autocomplete v-model="ruleForm1.company"
+                                 :fetch-suggestions="querySearchAsync"
+                                 placeholder="请输入公司"
+                                 @select="handleSelect" class="width360">
+                </el-autocomplete>
               </el-form-item>
             </div>
             <div class="flex">
@@ -41,7 +47,7 @@
             </div>
             <div class="flex">
               <el-form-item label="微信" prop="weixin" class="mr32">
-                <el-input v-model="ruleForm1.xeixin" placeholder="请输入微信"></el-input>
+                <el-input v-model="ruleForm1.weixin" placeholder="请输入微信"></el-input>
               </el-form-item>
               <el-form-item label="品牌" prop="brand">
                 <el-input v-model="ruleForm1.brand" placeholder="请输入品牌名 如:微天使"></el-input>
@@ -137,7 +143,7 @@
       </el-collapse-transition>
     </div>
     <!--完成-->
-    <div>
+    <div class="clearfix">
       <el-button class="fr next" @click="next">完成</el-button>
     </div>
     <!--成功案例弹窗-->
@@ -162,7 +168,7 @@
         hotCity:'',
 //      控制展开收起
         baseInfo: true,
-        investPrefer: true,
+        investPrefer: false,
 //      多选数量设定
         multiplelimit: 5,
 //      表单数据
@@ -173,7 +179,7 @@
           email: '',
           weixin: '',
           brand:'',
-          desc: '人民广告派发活动传单大型商场超市内举办相关活动，吸引人流量的同时，通过活动宣传单上的二维码和品牌活动引导用户下载，从而提升装机量和品牌形象人民广告派发活动传单大型商场超市内举办相关活动，吸引人流量的同时，通过活动宣传单上的二维码和品牌活动引导用户下载，从而提升装机量和品牌形象'
+          desc: '',
         },
         ruleForm2: {
           investIndustry: '',
@@ -194,10 +200,6 @@
           career: [
             {required: true, message: '请输入您的职位', trigger: 'blur'},
             {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
-          ],
-          email: [
-            {required: false, message: '请输入您的邮箱', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
           ],
           weixin: [
             {required: false, message: '请输入微信号码', trigger: 'blur'},
@@ -228,11 +230,11 @@
       cardUpload,investSuccessCase
     },
     methods: {
-//      跳过
+      // 跳过
       skip(){
         this.$router.push({name:sessionStorage.entrance})
       },
-//      完成
+      // 完成
       next(){
         if(!this.ruleForm1.name){
           this.$tool.error('请正确填写姓名')
@@ -240,6 +242,8 @@
           this.$tool.error('请正确填写公司名称')
         }else if(!this.ruleForm1.career){
           this.$tool.error('请正确填写职位')
+        }else if(!this.$tool.checkEmail(this.ruleForm1.email)){
+          this.$tool.error('请正确填写邮箱')
         }else{
           console.log(this.ruleForm1,this.ruleForm2)
           this.$http.post(this.URL.saveUserIdentity,{
@@ -265,14 +269,64 @@
           })
         }
       },
-//      显示成功案例弹窗
+      // 显示成功案例弹窗
       addInvestCase(){
         this.dialogShow=true
       },
-//      关闭成功案例弹窗
+      // 关闭成功案例弹窗
       closeInvestCase(e){
         this.dialogShow=false
-      }
+      },
+      // 公司搜索相关函数
+      handleSelect(item) {
+        this.companyTitle=item.value;
+        this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,com_id:item.address})
+        .then(res=>{
+          let data=res.data.data;
+          this.queryData=data;
+//          console.log(this.$tool.getToObject(data));
+        })
+        .catch(err=>{
+          this.alert("获取失败");
+          console.log(err);
+        });
+        this.dialogVisible=true;
+      },
+      querySearchAsync(queryString, cb) {
+        this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
+        .then(res=>{
+          this.restaurants=[];
+          let data=res.data.data;
+          this.restaurants=this.loadData(data);
+          if(queryString=="") this.restaurants=[];
+          let restaurants = this.restaurants;
+          /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(() => {
+            cb(restaurants);
+          }, 300);
+        })
+        .catch(err=>{
+          this.alert("加载失败");
+          console.log(err);
+        })
+      },
+      createStateFilter(queryString) {
+        return (state) => {
+          return (state.value.indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      loadData(arr){
+        let newArr=[];
+        for(let i=0; i<arr.length; i++){
+          let obj={};
+          obj.value=arr[i].company_name;
+          obj.address=arr[i].com_id;
+          newArr.push(obj)
+        }
+        return newArr
+      },
+
     },
     mounted(){
     },
@@ -287,13 +341,7 @@
 
 <style scoped lang="less">
   @import "../../assets/css/indentity.less";
-  #investSuccessCase {
-    width: 900px !important;
-    height: auto;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    overflow: auto;
+  .el-input__inner{
+    border-radius: 2px !important;
   }
 </style>

@@ -14,8 +14,7 @@
       </div>
       <div class="loginBox-right">
         <div class="wx-title tc">
-          <img src=""/>
-          微信扫码登录
+          <img src="../../assets/images/saoma.png"/>
         </div>
         <!--<img class="qrCode" src="">-->
         <!--<iframe class="qrCode" src="https://www.weitianshi.cn/auth/oauth" scrolling="no"></iframe>-->

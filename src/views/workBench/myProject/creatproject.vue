@@ -52,7 +52,6 @@
                                      :fetch-suggestions="querySearchAsync"
                                      placeholder="请输入内容"
                                      @select="handleSelect" class="width360">
-
                     </el-autocomplete>
                   </el-form-item>
                 </el-col>

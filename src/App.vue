@@ -27,7 +27,7 @@
         <li v-if="user_name" style="float: right;margin-right: 359px;">
           {{user_name}}
         </li>
-        <li v-else style="float: right;margin-right: 359px;" @click="login">
+        <li v-show="!user_id" style="float: right;margin-right: 18%;" @click="login">
           登录
         </li>
       </ul>
@@ -54,29 +54,46 @@
   export default {
     data () {
       return {
-        active: 1,
+        active: 0,
         tabs: [
           {type: '首页', jump: '/index'},
           {type: '工作台', jump: '/'},
-//                   {type: '扫码登陆',jump:'/logining'},
-          {type: '测试页面', jump: '/test'},
-          {type: '测试页面2', jump: '/test2'}
+//          {type: '扫码登陆',jump:'/logining'},
+//          {type: '测试页面', jump: '/test'},
+//          {type: '测试页面2', jump: '/test2'}
         ],
-        user_name: sessionStorage.user_real_name
+        user_name: sessionStorage.user_real_name,
+        user_id:'',
       }
     },
     methods: {
+      // 切换选项卡
       toggle(i){
         this.active = i
+        // 控制点击工作台跳转情况
+        if(this.active===1){
+          sessionStorage.entrance='myProject'
+          if(sessionStorage.user_id){
+            this.$router.push({name:'myProject'})
+          }else{
+            this.$router.push({name:"telephoneLogin"})
+          }
+        }
       },
+      // 伪造user_id
       setUserId(){
 //        sessionStorage.user_id = 'V0VznXa0';
         sessionStorage.user_id='2rzyz5vp';
       },
+      // 登录
       login(){
-        sessionStorage.entrance='index';
+        sessionStorage.entrance='myProject';
         this.$router.push('/login');
-      }
+      },
+      // 检查sessionStorage.user_id
+      checkUser(){
+        this.user_id=sessionStorage.user_id;
+      },
     },
 //    当dom一创建时
     created(){
@@ -87,23 +104,15 @@
        this.active=0;
        }*/
         //this.$router.push({name:"identityDetail"});
-
-
-//        this.$router.push({name:"contactsDetails"});
-//        this.$router.push({name:"projectDetails"});
-
-//        this.$router.push({name:"telephoneLogin"});
-
-//        this.$router.push({name:"myContacts"});
-          this.$router.push({name:"createContacts"});
-
-        this.setUserId();
+//          this.$router.push({name:"index"});
+//          this.setUserId();
 
     },
     watch: {
       user_name: function (e) {
         this.$tool.console(e, 1);
-      }
+      },
+      "$route": "checkUser"
     }
   }
 </script>
@@ -162,7 +171,7 @@
       line-height: 16px;
       height: 60px;
       li {
-        width: 150px;
+        width: 130px;
         height: 50px;
         line-height: 50px;
         a {
