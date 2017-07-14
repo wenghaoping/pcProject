@@ -17,7 +17,7 @@
       <el-collapse-transition>
         <div v-show="baseInfo">
           <!--上传头像-->
-          <cardUpload>
+          <cardUpload @uploadSuccess="uploadSuccess">
 
           </cardUpload>
           <!--基本资料Form-->
@@ -224,6 +224,8 @@
         hasSuccessCase:false,
 //      控制成功案例弹窗显示/隐藏
         dialogShow:false,
+//      上传图片成功的返回值
+        image_id:'',
       }
     },
     components: {
@@ -277,6 +279,7 @@
       },
       // 关闭成功案例弹窗
       closeInvestCase(e){
+        console.log(e)
         this.dialogShow=false
       },
       // 公司搜索相关函数
@@ -328,7 +331,12 @@
         }
         return newArr
       },
-
+      // 接收上传图片时返回的image_id
+      uploadSuccess(image_id){
+        console.log(3)
+        console.log(image_id)
+        this.image_id=image_id;
+      },
     },
     mounted(){
     },

@@ -45,7 +45,7 @@
     </main>
     <div style="height: 300px"></div>
     <div class="Infooter tc">
-      <p>关于我们 | 联第我们</p>
+      <p>关于我们 | 联系我们</p>
       <p> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</p>
     </div>
   </div>

@@ -14,7 +14,7 @@
       <el-form-item v-for="(item, index) in caseForm.investSuccessCase"
                     :key="item.index">
         <!--项目名称和投资时间-->
-        <div class="flex">
+        <div class="flex mb30">
           <el-form-item label="项目名称" prop="name" class="width360 mr32">
             <el-input v-model="item.case_name">项目名称</el-input>
           </el-form-item>
@@ -23,7 +23,7 @@
           </el-form-item>
         </div>
         <!--投资领域和投资轮次-->
-        <div class="flex">
+        <div class="flex mb30">
           <el-form-item label="投资领域" prop="investIndustry" class="mr32">
             <el-select v-model="item.case_industry"
                        multiple filterable
@@ -51,7 +51,7 @@
           </el-form-item>
         </div>
         <!--投资地区和投资金额-->
-        <div class="flex">
+        <div class="flex mb30">
           <el-form-item label="投资地区" prop="area1" class="width360 mr32">
             <el-select v-model="item.case_province" placeholad="请选择" class="width175" @change="area1Change(index)">
               <el-option v-for="area1Item in area1List"
@@ -103,13 +103,13 @@
           }]
         },
         rule:  {
-          name: {},
-          time: {},
-          industry: {},
-          stage: {},
-          area1: {},
-          area2: {},
-          scale: {},
+          name: {required: true, message: '请填写姓名', trigger: 'blur'},
+          time: {required: true, message: '请选择时间', trigger: 'blur'},
+          industry: {required: true, message: '请选择领域', trigger: 'blur'},
+          stage: {required: true, message: '请选择轮次', trigger: 'blur'},
+          area1: {required: true, message: '请选择省份', trigger: 'blur'},
+          area2: {required: true, message: '请选择市区', trigger: 'blur'},
+          scale: {required: true, message: '请填写金额', trigger: 'blur'},
         },
         area1List: [],
         area2List: [],
@@ -157,18 +157,21 @@
         })
         console.log(this.caseForm.investSuccessCase);
 
-        this.$http.post(this.URL.createUserProjectCase,{
-          user_id:sessionStorage.user_id,
-          project_case:this.caseForm.investSuccessCase,
-        }).then(res=>{
-          console.log(res);
-          if(res.data.status_code===2000000){
-
-            that.$emit('closeInvestCase', false)
-          }else{
-            that.$tool.error(res.data.error_msg)
-          }
-        })
+        if(this.caseForm.investSuccessCase.case_money>99999999){
+          this.$tool.error('投资金额数目过大')
+        }else{
+          this.$http.post(this.URL.createUserProjectCase,{
+            user_id:sessionStorage.user_id,
+            project_case:this.caseForm.investSuccessCase,
+          }).then(res=>{
+            console.log(res);
+            if(res.data.status_code===2000000){
+              that.$emit('closeInvestCase', false)
+            }else{
+              that.$tool.error(res.data.error_msg)
+            }
+          })
+        }
       },
 //    取消
       cancel(){
@@ -229,5 +232,14 @@
   /*隐藏滚动条*/
   #investSuccessCase::-webkit-scrollbar {
     display: none;
+  }
+  .el-form-item__content{
+    height: 36px !important;
+  }
+  .mb30{
+    margin-bottom: 30px;
+  }
+  .el-input{
+    margin-bottom: 0 !important;
   }
 </style>

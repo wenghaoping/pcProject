@@ -4,12 +4,14 @@
         <span class="card">名片</span>
         <el-upload
           class="upload-demo"
-          action="api/v/user/uploadCard"
+          action="https://dev.weitianshi.cn/api/v/user/uploadCard"
           :data="uploadData"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
-          :befor-upload="beforeUpload"
-          :file-list="fileList">
+          :before-upload="beforeUpload"
+          :file-list="fileList"
+          :on-success="uploadSuccess"
+        >
           <el-button size="small" type="primary" style="background:#40587a;border-color: #40587a ">
             <i class="el-icon-plus"></i>
             点击上传
@@ -30,21 +32,21 @@
                 id:sessionStorage.id,
               },
               fileList: [],
+              image_id:''
             }
         },
         methods: {
+          // 取消列表里的文件时触发
           handleRemove(file, fileList) {
             console.log(file, fileList);
           },
+          // 点击列表里的文件触发
           handlePreview(file) {
             console.log(file);
           },
+          // 上传文件之前触发
           beforeUpload(file){
-            console.log(1)
-            this.num++;
-            this.fileuploadDate.project_id = this.project_id;
-            this.uploadDate.project_id = this.project_id;
-            let filetypes=["why.png",".jpg",".jpeg"];
+            let filetypes=[".png",".jpg",".jpeg"];
             let name=file.name;
             let fileend=name.substring(name.lastIndexOf("."));
             let isnext = false;
@@ -70,7 +72,18 @@
               this.num=0;
               return false;
             }
-          },//项目文件上传验证
+          },
+          // 上传成功时触发
+          uploadSuccess(response, file, fileList){
+            console.log(response)
+            if(response.status_code===2000000){
+              console.log(2)
+              this.$emit('upLoadSuccess',response.image_id)
+            }else{
+              this.$tool.error('上传失败')
+              return '上传失败'
+            }
+          },
         },
         created(){
           console.log(sessionStorage.user_id,sessionStorage.id)
