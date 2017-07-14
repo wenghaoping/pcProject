@@ -75,8 +75,8 @@
     </div>
     <div class="qrCode" @click="clearSomething">
       <img src='../../assets/images/indexQr.png'/>
-    </div>>
-    <div class="qrCode-large">
+    </div>
+    <div class="qrCode-large tc">
       <img src="../../assets/images/index-qr.png">
       添加FA哥微信了解更多
     </div>

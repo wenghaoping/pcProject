@@ -138,8 +138,39 @@ const tool={
     if (data.length>20 || data.length<6){
       return true
     }
-  },//密码长度认证
-
+  },//密码长度认证(6-20)
+  checkLength20(data){
+    if(typeof data ==='array'){
+      data.forEach(x=>{
+        if(x.length>20){
+          return true
+        }
+      })
+      return false
+    }else{
+      if(data.length>20){
+        return true
+      }else{
+        return false
+      }
+    }
+  },//input框长度验证(超出20字就返回true)
+  checkLength40(data){
+    if(typeof data ==='array'){
+      data.forEach(x=>{
+        if(x.length>40){
+          return true
+        }
+      })
+      return false
+    }else{
+      if(data.length>40){
+        return true
+      }else{
+        return false
+      }
+    }
+  },//input框长度验证(超出40字就返回true)
   /*弹框类*/
   error(text) {
     Notification.error({

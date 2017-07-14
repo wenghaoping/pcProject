@@ -39,8 +39,7 @@
           </el-form-item>
           <el-form-item label="投资轮次" prop="investStage">
             <el-select v-model="item.case_stage"
-                       multiple filterable
-                       :multiple-limit="multiplelimit"
+                       filterable
                        placeholder="请添加(最多5个)"
                        class="width360">
               <el-option v-for="item in stageList"
@@ -68,7 +67,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="投资金额(万)" prop="scale" class="width360">
-            <el-input v-model="item.case_money">投资金额</el-input>
+            <el-input v-model="item.case_money" type="number">投资金额</el-input>
           </el-form-item>
         </div>
         <div>
@@ -123,7 +122,7 @@
 //    area1选项变更
       area1Change(index){
         this.$http.post(this.URL.getArea,{
-          pid:this.caseForm.investSuccessCase[index].area1
+          pid:this.caseForm.investSuccessCase[index].case_province
         }).then(res=>{
           let arr = [];
           let data=res.data.data
@@ -164,6 +163,7 @@
         }).then(res=>{
           console.log(res);
           if(res.data.status_code===2000000){
+
             that.$emit('closeInvestCase', false)
           }else{
             that.$tool.error(res.data.error_msg)

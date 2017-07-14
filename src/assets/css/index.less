@@ -62,6 +62,11 @@
     margin: 0 auto;
     height: 691px;
     position: relative;
+    background:  #f9fafc;
+    @media screen and(max-width: 1400px){
+      font-size: 12px !important;
+      height: 490px;
+    }
     .indentityPic{
       width: 25%;
       color: #8492a6;
@@ -86,12 +91,16 @@
         margin-bottom: 6px;
         }
       }
-    }
     .fullPageText{
       position: absolute;
       font-size: 16px;
       color: #8492a6;
-
+      @media screen and(max-width: 1400px){
+        font-size: 12px !important;
+        div:first-child{
+          font-size: 16px !important;
+        }
+      }
     }
     .fullPageText div{
       margin-bottom: 4px;
@@ -111,18 +120,20 @@
       }
     }
   }
-  .content0{
+  .content0 {
     width: 1088px !important;
-    height:565px !important;
+    height: 565px !important;
     margin: 0 auto;
-    @media screen and(max-width: 1400px){
-      width:760px !important;
+    background: white ;
+    @media screen and(max-width: 1400px) {
+      width: 760px !important;
       height: 490px !important;
     }
-    .indentityPic{
-      div:nth-child(2){
-        @media screen and(max-width: 1400px){
+    .indentityPic {
+      div:nth-child(2) {
+        @media screen and(max-width: 1400px) {
           font-size: 16px;
+        }
       }
     }
   }
@@ -134,6 +145,7 @@
       text-align: right;
       @media screen and(max-width: 1400px){
         width: 321px;
+        left: 20%;
       }
     }
     .fullPagePic1{
@@ -151,12 +163,20 @@
       width: 401px;
       right: 24%;
       top: 136px;
+      @media screen and(max-width: 1400px){
+        width: 321px;
+        right: 21.3%;
+      }
     }
     .fullPagePic2{
       width: 600px;
       height: 400px;
       left: 20%;
       top: 95px;
+      @media screen and(max-width: 1400px){
+        width: 426px;
+        height: auto;
+      }
     }
   }
   .content3{
@@ -165,25 +185,20 @@
       height: 400px;
       right: 18.75%;
       top:145px;
+      @media screen and(max-width: 1400px){
+        width: 426px;
+        height: auto;
+      }
     }
     .fullPageText3{
       width: 411px;
       left: 21.5%;
       top:145px;
       text-align: right;
-    }
-  }
-  .content4{
-    .fullPageText4{
-      width: 401px;
-      right: 24%;
-      top: 180px;
-    }
-    .fullPagePic4{
-      width: 600px;
-      height: 400px;
-      left: 20%;
-      top: 180px;
+      @media screen and(max-width: 1400px){
+        width: 293px;
+        left: 22.4%;
+      }
     }
   }
   .qrCode {
@@ -215,10 +230,19 @@
       height: 124px;
       margin-bottom: 11px;
     }
+    @media screen and(max-width: 1400px){
+      width: 146px;
+      height: 140px;
+      font-size: 12px;
+      padding: 0;
+      img{
+        height: 89px;
+        padding: 20px 31px 0 26px;
+      }
+    }
   }
   .qrCode:hover + .qrCode-large{
     display: block;
   }
-
 }
 

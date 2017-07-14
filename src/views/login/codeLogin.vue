@@ -51,4 +51,7 @@
 
 <style scoped lang="less">
   @import "../../assets/css/login.less";
+  ::-moz-placeholder { color: #99a9bf; }
+  ::-webkit-input-placeholder { color:#99a9bf; }
+  :-ms-input-placeholder { color:#99a9bf;}
 </style>

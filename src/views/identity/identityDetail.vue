@@ -236,14 +236,16 @@
       },
       // 完成
       next(){
-        if(!this.ruleForm1.name){
+        if(!this.ruleForm1.name.replace(/^\s+|\s+$/g,"")){
           this.$tool.error('请正确填写姓名')
-        }else if(!this.ruleForm1.company){
+        }else if(!this.ruleForm1.company.replace(/^\s+|\s+$/g,"")){
           this.$tool.error('请正确填写公司名称')
-        }else if(!this.ruleForm1.career){
+        }else if(!this.ruleForm1.career.replace(/^\s+|\s+$/g,"")){
           this.$tool.error('请正确填写职位')
-        }else if(!this.$tool.checkEmail(this.ruleForm1.email)){
-          this.$tool.error('请正确填写邮箱')
+        }else if(this.ruleForm1.email){
+          if(!this.$tool.checkEmail(this.ruleForm1.email)){
+            this.$tool.error('请正确填写邮箱')
+          }
         }else{
           console.log(this.ruleForm1,this.ruleForm2);
           this.$http.post(this.URL.saveUserIdentity,{

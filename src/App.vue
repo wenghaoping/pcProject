@@ -22,13 +22,12 @@
           </div>
         </div>
         <li>
-          <a href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>
+          <a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>
         </li>
         <li v-if="user_name" style="float: right;">
           {{user_name}}
         </li>
-
-        <li v-show="!user_id" style="float: right;margin-right: 18%;" @click="login">
+        <li v-show="!user_id" class="login" @click="login">
           登录
         </li>
       </ul>
@@ -44,8 +43,11 @@
         </router-view>
       </transition>
     </main>
-
-    <p class="Infooter">© 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</p>
+    <div style="height: 300px"></div>
+    <div class="Infooter tc">
+      <p>关于我们 | 联第我们</p>
+      <p> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</p>
+    </div>
   </div>
 
 </template>
@@ -113,7 +115,7 @@
 
 //        this.$router.push({name:"myContacts"});
 //          this.$router.push({name:"createContacts"});
-        this.setUserId();
+//        this.setUserId();
     },
     watch: {
       user_name: function (e) {
@@ -126,13 +128,17 @@
 
 <style lang="less">
   .Infooter {
+    background:#444444;
     font-size: 12px;
-    color: #cccccc;
+    color:#ffffff;
     line-height: 12px;
-    width: 1336px;
-    margin: 0 auto;
-    margin-top: 60px;
-    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    position: absolute;
+    width: 100%;
+    p:first-child{
+      margin-bottom: 10px;
+    }
   }
 
   * {
@@ -259,5 +265,11 @@
     right: 0;
     margin: auto;
   }
-
+  .login{
+    float: right !important;
+    margin-right: 18% !important;
+    @media screen and(max-width: 1400px){
+      margin-right: 0 !important;
+    }
+  }
 </style>
