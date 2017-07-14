@@ -19,7 +19,7 @@
   export default {
     data () {
       return {
-        active: NaN,
+        active: "none",
         identitys: [{
           url: '/static/images/maifangFa.png',
           group_title: '买方FA',
@@ -44,23 +44,27 @@
       }
     },
     methods: {
+      //选择身份
       toggle(i){
         this.active = i
       },
+      //下一步
       next(){
-        if (typeof this.active == "number") {
+        if (typeof this.active === "number") {
           this.$http.post(this.URL.setUserGroup, {
             user_id: sessionStorage.user_id,
             group_id: this.active,
           }).then(res => {
-            console.log(res)
-            sessionStorage.id=res.data.id
+            if(res.data.status_code===2000000){
+              sessionStorage.id=res.data.id;
+              this.$router.push('/identityDetail')
+            }else{
+              this.$tool.error(res.data.error_msg)
+            }
           })
-          this.$router.push('/identityDetail')
         } else {
           this.$tool.error('请选择身份')
         }
-
       },
       // 获取身份列表信息
       getIdentity(){
