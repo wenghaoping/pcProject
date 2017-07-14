@@ -286,69 +286,21 @@
     },
     methods: {
       /*获取列表各种数据*/
-      getCity(data){
-        let arr = [];
-        for(let i=0; i<data.length; i++){
-          let obj={};
-          obj.label=data[i].area_title;
-          obj.value=data[i].area_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取城市列表
-      getScale(data){
-        let arr = [];
-        for(let i=0; i<data.length; i++){
-          let obj={};
-          obj.label=data[i].scale_money;
-          obj.value=data[i].scale_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取期望融资
-      getStage(data){
-        let arr = [];
-        for(let i=0; i<data.length; i++){
-          let obj={};
-          obj.label=data[i].stage_name;
-          obj.value=data[i].stage_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取轮次信息
-      getIndustry(data){
-        let arr = [];
-        for(let i=0; i<data.length; i++){
-          let obj={};
-          obj.label=data[i].industry_name;
-          obj.value=data[i].industry_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取项目领域
       getWxProjectCategory(){
-        this.$http.post(this.URL.getWxProjectCategory,{user_id: sessionStorage.user_id})
-          .then(res=>{
-            let data = res.data.data;
-            this.area=this.getCity(data.area);//设置城市1列表
-            this.scale=this.getScale(data.scale);//设置期望融资
-            this.stage=this.getStage(data.stage);//设置轮次信息
-            this.industry=this.getIndustry(data.industry);//设置轮次信息
-          })
-          .catch(err=>{
-            console.log(err)
-            //            this.loading=false;
-          })
+        this.area=this.$global.data.area;//设置人脉标签
+        this.scale=this.$global.data.scale;//设置期望融资
+        this.stage=this.$global.data.stage;//设置轮次信息
+        this.industry=this.$global.data.industry;//设置轮次信息
       },//获取所有下拉框的数据
       area1Change(data){
         this.project.pro_area_city="";
         this.$http.post(this.URL.getArea,{user_id: sessionStorage.user_id, pid:data})
           .then(res=>{
             let data = res.data.data;
-            this.area2=this.getCity(data);
+            this.area2=this.$tool.getCity(data);
           })
           .catch(err=>{
-            console.log(err)
+            this.$tool.console(err)
           })
       },//设置二级城市下拉列表
       getNumberFull(data,title1,title2){
@@ -358,11 +310,11 @@
         }else {
           if (this.checkNumber(parseFloat(data))) {
             if (parseFloat(data) > 100) {
-              this.alert(title1);
+              this.$tool.error(title1);
               check = false;
             }
           } else {
-            this.alert(title2);
+            this.$tool.error(title2);
             check = false;
           }
         }
@@ -392,13 +344,12 @@
         else this.planButton=false;
       },
       planuploadsuccess(response, file, fileList){
-        this.success("上传成功");
-        console.log(response)
+        this.$tool.success("上传成功");
         let data = response.data;
         this.addplan(data.file_title,data.pro_intro,data.pro_name,data.project_id,data.file_id)
       },//上传成功后添加字段
       planuploaderror(err, file, fileList){
-        this.alert("上传失败,请联系管理员")
+        this.$tool.error("上传失败,请联系管理员")
       },//上传失败
       planRemove(file, fileList) {
         const deleteAtUpload=this.URL.deleteAtUpload;
@@ -408,13 +359,13 @@
           .then(res=>{
             if(res.status===200){
               this.loading=false;
-              this.success("删除成功")
+              this.$tool.success("删除成功")
             }
-            console.log(res)
+            this.$tool.console(res)
           })
           .catch(err=>{
-            console.log(err)
-            this.alert("删除失败,请联系管理员")
+            this.$tool.console(err)
+            this.$tool.error("删除失败,请联系管理员")
           })
 
       },//删除文件
@@ -445,25 +396,15 @@
           }
         }
         if(!isnext){
-          this.alert("不支持的文件格式");
+          this.$tool.error("不支持的文件格式");
           return false;
         }
         if(parseInt(file.size) > parseInt(20971521)){
-          this.alert("暂不支持超过20m文件上传哦");
+          this.$tool.error("暂不支持超过20m文件上传哦");
           return false;
         }
       },//上传前的验证
 
-
-      /*警告弹窗*/
-      alert(text) {
-        this.$notify.error({
-          message: text,
-          offset: 300,
-          duration:1000
-        });
-      },
-      /*成功弹窗*/
       success(text) {
         this.$notify({
           message: text,
@@ -473,7 +414,7 @@
         })
       },
       goBack(){//返回上一层
-        this.$router.push('/');
+        this.$router.push({name: 'indexmyProject'})//路由传参
       },
       /*检查所有必填项目以及获取所有数据*/
       submitForm(formName) {
@@ -482,7 +423,7 @@
           if (valid) {
             return
           } else {
-            this.alert('必填项不能为空')
+            this.$tool.error('必填项不能为空')
             check=false;
           }
         });
@@ -506,22 +447,22 @@
       },
       /*全部保存按钮*/
       allSave(){
-        if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){console.log("投后没过")}
-        else if(this.getNull(this.project.pro_intro)){this.alert("项目介绍不能为空")}
-        else if(this.getNull(this.project.pro_goodness)){this.alert("项目亮点不能为空")}
+        if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){}
+        else if(this.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
+        else if(this.getNull(this.project.pro_goodness)){this.$tool.error("项目亮点不能为空")}
         else if(this.submitForm('project')) {
           this.project.user_id=sessionStorage.user_id;
           this.project.project_id=this.uploadShow.project_id;
           this.$http.post(this.URL.editProject,this.project)
             .then(res=>{
-              console.log(res);
+              this.$tool.console(res);
               let data=res.data;
               this.project.project_id=data.project_id;
               this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过')
             })
             .catch(err=>{
-              this.alert("创建失败");
-              console.log(err);
+              this.$tool.error("创建失败");
+              this.$tool.console(err);
             })
 
         }
@@ -553,8 +494,8 @@
             }, 300);
           })
           .catch(err=>{
-            this.alert("加载失败");
-            console.log(err);
+            this.$tool.error("加载失败");
+            this.$tool.console(err);
           })
       },
       createStateFilter(queryString) {
@@ -568,11 +509,10 @@
           .then(res=>{
             let data=res.data.data;
             this.queryData=data;
-//          console.log(this.$tool.getToObject(data));
           })
           .catch(err=>{
-            this.alert("获取失败");
-            console.log(err);
+            this.$tool.error("获取失败");
+            this.$tool.console(err);
           });
         this.dialogVisible=true;
       },
@@ -584,19 +524,16 @@
       },
       getprojectId(){
         this.project.project_id = this.$route.query.project_id;
-        console.log(this.$route.query.project_id);
+        this.$tool.console(this.$route.query.project_id);
       },
       getWxosProjectData(){
-        console.log("我登陆啦")
-        console.log(sessionStorage.credential);
         if(sessionStorage.credential==undefined || sessionStorage.credential=="" || sessionStorage.credential==null){
 
         }else{
-          console.log("我进来啦")
           this.$http.post(this.URL.getWxosProjectData,{credential:sessionStorage.credential})
             .then(res=>{
               let data=res.data.project;
-              console.log(this.$tool.getToObject(data));
+              this.$tool.console(this.$tool.getToObject(data));
               this.project.pro_industry=data.industry;
               if(data.is_exclusive==4) data.is_exclusive=0;
               this.project.is_exclusive=data.is_exclusive;
@@ -610,7 +547,7 @@
             })
             .catch(err=>{
               this.alert("获取失败");
-              console.log(err);
+              this.$tool.console(err);
             });
         }
       }//微信进入的时候获取

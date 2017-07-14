@@ -435,7 +435,7 @@
     </el-dialog>
 
     <!--人脉详情弹窗-->
-    <alertcontactsdetail :dialog-con-visible="dialogConVisible" :proid="project.project_id" v-on:changeCon="dialogConchange"></alertcontactsdetail>
+    <!--<alertcontactsdetail :dialog-con-visible="dialogConVisible" :proid="project.project_id" v-on:changeCon="dialogConchange"></alertcontactsdetail>-->
   </div>
 </template>
 
