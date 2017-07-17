@@ -3,7 +3,7 @@
     <div class="contain-grid contain-center fl">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
-        <div class="item-lists clearfix">
+        <div class="item-lists2 clearfix">
           <div class="item-list item-lists-top clearfix">
             <div class="item">
               <div class="name fl">{{contacts.user_real_name}}</div>
@@ -28,7 +28,7 @@
             <!--个人标签-->
             <div class="item">
               <div class="block clearfix" style="margin-bottom: 33px;">
-                <span class="title fl"><img class="img" src="../../../assets/images/tag.png">个人标签</span>
+                <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
                 <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editTo.png">修改</span>
               </div>
               <div class="block">
@@ -38,7 +38,7 @@
             <!--项目库-->
             <div class="item" v-if="projectLists.length!=0">
               <div class="block clearfix" style="margin-bottom: 33px;">
-                <span class="title fl"><img class="img" src="../../../assets/images/projectColl.png">项目库</span>
+                <span class="title fl"><img class="img1" src="../../../assets/images/projectColl.png">项目库</span>
               </div>
                   <div class="ul_lists clearfix" v-loading.body="loading1" element-loading-text="拼命加载中">
                     <div class="list" v-for="projectList in projectLists" >
@@ -70,24 +70,24 @@
                 <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow">展开</span>
               </div>
             <!--投资案例-->
-            <div class="item">
+            <div class="item" v-if="contacts.project_case.length!=0">
               <div class="block clearfix" style="margin-bottom: 33px;">
-                <span class="title fl"><img class="img" src="../../../assets/images/anli.png">投资案例</span>
+                <span class="title fl"><img class="img1" src="../../../assets/images/anli.png">投资案例</span>
               </div>
-              <div class="block lh">
+              <div class="block lh" v-for="cased in contacts.project_case">
                 <span class="radio"><img src="../../../assets/images/radioTag.png"></span>
-                <span class="time">2017.5</span>
-                <span class="tag_To">IOP上市</span>
-                <span class="title1">微天使乐投平台</span>
-                <span class="title2">100-500万</span>
-                <span class="tags_To">人工智能、金融理财、在线教育、大大大大</span>
-                <span class="address">杭州市</span>
+                <span class="time">{{cased.case_deal_time}}</span>
+                <span class="tag_To">{{cased.case_stage_name}}</span>
+                <span class="title1">{{cased.case_name}}</span>
+                <span class="title2">{{cased.case_money}}万元</span>
+                <span class="tags_To">{{cased.has_many_industry}}</span>
+                <span class="address">{{cased.has_one_city}}</span>
               </div>
             </div>
             <!--个人描述-->
             <div class="item" v-if="contacts.user_intro!=''">
               <div class="block clearfix" style="margin-bottom: 33px;">
-                <span class="title fl"><img class="img" src="../../../assets/images/miaoshu.png">个人描述</span>
+                <span class="title fl"><img class="img1" src="../../../assets/images/miaoshu.png">个人描述</span>
               </div>
               <div class="block">
                 <div class="main">
@@ -98,7 +98,7 @@
             <!--投资需求-->
             <div class="item" v-if="contacts.user_invest_industry!='' && contacts.user_invest_stage!='' && contacts.user_invest_scale!='' && contacts.user_invest_desc!=''">
               <div class="block clearfix" style="margin-bottom: 33px;">
-                <span class="title fl"><img class="img" src="../../../assets/images/money2.png">投资需求</span>
+                <span class="title fl"><img class="img1" src="../../../assets/images/money2.png">投资需求</span>
               </div>
               <div class="block tit clearfix" v-if="contacts.user_invest_industry!=''">
                 <div class="tit_left fl">投资领域 ： </div>
@@ -122,7 +122,7 @@
             <!--资源需求-->
             <div class="item" v-if="contacts.user_resource_desc!='' && contacts.user_resource_give!='' && contacts.user_resource_find!=''">
               <div class="block clearfix" style="margin-bottom: 33px;">
-                <span class="title fl"><img class="img" src="../../../assets/images/ziyuan.png">资源需求</span>
+                <span class="title fl"><img class="img1" src="../../../assets/images/ziyuan.png">资源需求</span>
               </div>
               <div class="block tit clearfix" v-if="contacts.user_resource_give!=''">
                 <div class="tit_left fl">拥有的资源 ： </div>
@@ -142,7 +142,7 @@
 
             <div class="button_list">
               <div class="lis">
-                <button class="button" @click="goEdit">编辑</button>
+                <button class="button" @click="goEdit" v-if="contacts.is_bind==0">编辑</button>
                 <button class="button" @click="handlePush" style="margin-left: 16px;">项目推送</button>
               </div>
             </div>
@@ -368,6 +368,16 @@ export default {
         user_resource_find:[],//寻求对接的资源
         user_invest_desc:'',//投资需求描述
         user_resource_desc:'',//资源需求描述
+        project_case:[
+          {
+            case_deal_time:1503936000,//时间
+            case_stage_name:"pre-A轮",//轮次
+            case_name:"第三个项目",//名称
+            case_money:'15800000',//钱
+            has_many_industry:'金融',//金融,人工智能
+            has_one_city:'北京',//地区
+          }
+        ],//投资案例
       },//人脉参数
       userMessage:{
         user_real_name:'翁浩平',//姓名
@@ -668,6 +678,11 @@ export default {
       }
       return str
     },//资源提供或者寻求处理
+    setTime(string){
+        let newDate = new Date();
+        newDate.setTime(string * 1000);
+        string=newDate.toLocaleDateString();
+    },//设置时间
     setTag(arr){
       let newArr = new Array;
       arr.forEach((x)=> {
@@ -675,22 +690,37 @@ export default {
       });
       return newArr;
     },//设置标签的函数
+    setProjectCase(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        let obj = new Object;
+        obj.case_deal_time=this.setTime(x.case_deal_time);
+        obj.case_stage_name=x.case_stage_name;
+        obj.case_name=x.case_name;
+        obj.case_money=x.case_money;
+        obj.has_many_industry=this.set_industry(x.has_many_industry);
+        obj.has_one_city=x.has_one_city.area_title;
+        newArr.push(obj);
+
+      });
+      return newArr;
+    },//设置投资案例
     getOneUserInfo(){
       this.loading=true;
-      this.$http.post(this.URL.getOneUserInfo,{user_id:sessionStorage.user_id,card_id: this.contacts.card_id})
+      this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
         .then(res => {
           let data = res.data.data;
           this.$tool.console(this.$tool.getToObject(data));
-          data.user_invest_industry=this.set_industry(data.user_invest_industry);
-          data.user_invest_stage=this.set_stage(data.user_invest_stage);
-          data.user_invest_scale=this.set_scale(data.user_invest_scale);
-          data.user_resource_find=this.set_GiveFind(data.user_resource_find);
-          data.user_resource_give=this.set_GiveFind(data.user_resource_give);
-
-          this.tagsValue=this.setTag(data.user_invest_tag);
-          this.tags.changecont=this.setTag(data.user_invest_tag);
-          this.contacts=data;
-          this.loading=false;
+          data.user_invest_industry = this.set_industry(data.user_invest_industry);
+          data.user_invest_stage = this.set_stage(data.user_invest_stage);
+          data.user_invest_scale = this.set_scale(data.user_invest_scale);
+          data.user_resource_find = this.set_GiveFind(data.user_resource_find);
+          data.user_resource_give = this.set_GiveFind(data.user_resource_give);
+          data.project_case = this.setProjectCase(data.project_case);
+          this.tagsValue = this.setTag(data.user_invest_tag);
+          this.tags.changecont = this.setTag(data.user_invest_tag);
+          this.contacts = data;
+          this.loading = false;
         })
         .catch(err=>{
           this.$tool.console(err,2);
@@ -740,7 +770,9 @@ export default {
   },
   created(){
       this.getUserId();
-      this.getProjectList(1);
+      if(this.contacts.user_id!=0) this.getProjectList(1)
+      else this.projectLists=[];
+
       this.getOneUserInfo();
       this.getWxProjectCategory();
   },

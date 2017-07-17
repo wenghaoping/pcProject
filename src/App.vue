@@ -60,8 +60,8 @@
           {type: '首页', jump: '/'},
           {type: '工作台', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
-//          {type: '测试页面', jump: '/test'},
-//          {type: '测试页面2', jump: '/test2'}
+          {type: '测试页面', jump: '/test'},
+          {type: '测试页面2', jump: '/test2'}
         ],
         user_name: sessionStorage.user_real_name,
         user_id:'',
@@ -84,7 +84,8 @@
       // 伪造user_id
       setUserId(){
 //        sessionStorage.user_id = 'V0VznXa0';
-        sessionStorage.user_id='2rzyz5vp';
+//        sessionStorage.user_id='2rzyz5vp';
+        sessionStorage.user_id='2rzyJEwp';
         sessionStorage.user_real_name='杜兴国';
       },
       // 登录

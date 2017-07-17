@@ -435,7 +435,7 @@
     </el-dialog>
 
     <!--人脉详情弹窗-->
-    <!--<alertcontactsdetail :dialog-con-visible="dialogConVisible" :proid="project.project_id" v-on:changeCon="dialogConchange"></alertcontactsdetail>-->
+    <alertcontactsdetail :dialog-con-visible="dialogConVisible" :proid="project.project_id" v-on:changeCon="dialogConchange"></alertcontactsdetail>
   </div>
 </template>
 
@@ -808,8 +808,6 @@
             if(data.pro_status=="") this.styleObject={color:"#20a0ff"};
             this.getLocalTime(data.pro_develop);
             this.getLocalTime2(data.pro_history_finance);
-
-
             this.project=data;
             this.project.pro_source=this.getProjectTag(data.tag);
             this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
@@ -954,7 +952,7 @@
     },
     created () {
       // 组件创建完后获取数据，
-      this.loading=true
+      this.loading=true;
       this.getprojectId();
       this.getProjectDetail();
     }

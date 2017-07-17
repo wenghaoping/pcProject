@@ -1153,20 +1153,20 @@
       },//设置文件分组标签
       getWxProjectCategory(){
 
-        let data = this.$global.data.categoryData;
-        this.area = this.$tool.getCity(data.area);//设置城市1列表
-        this.scale = this.$tool.getScale(data.scale);//设置期望融资
-        this.stage = this.$tool.getStage(data.stage);//设置轮次信息
-        this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
-        this.company_status = this.getCompanyStatus(data.company_status);//设置运营状态
-        this.company_scale = this.getCompany_scale(data.company_scale);//设置公司规模几人
+//        let data = this.$global.data.categoryData;
+        this.area = this.$global.data.area;//设置热门城市
+        this.scale = this.$global.data.scale;//设置期望融资
+        this.stage = this.$global.data.stage;//设置轮次信息
+        this.industry = this.$global.data.industry;//设置轮次信息
+        this.company_status = this.$global.data.company_status;//设置运营状态
+        this.company_scale = this.$global.data.company_scale;//设置公司规模几人
+
         this.tags_pro = this.$global.data.tags_pro;//设置项目标签
         this.tags.changepro = this.$global.data.tags_pro;//设置项目标签2另外的
         this.tags_team = this.$global.data.tags_team;//设置团队标签
         this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
         this.tags_source = this.$global.data.pro_source;//设置项目来源
         this.tags.changesource = this.$global.data.pro_source;//设置项目来源
-
 
       },//获取所有下拉框的数据
       area1Change(data){
@@ -1317,7 +1317,7 @@
             this.project.open_status = data.open_status.toString();//运营状态
             this.project.tags_pro = this.getTag(data.tag, 0);//项目标签
 
-            this.project.pro_goodness = data.pro_goodness;
+                        this.project.pro_goodness = data.pro_goodness;
             this.project.pro_source = this.getTag(data.tag, 2);//项目来源标签
 
 
@@ -1337,7 +1337,7 @@
             if(data.pro_finance_value==0) data.pro_finance_value="";
             this.financing.pro_finance_value = data.pro_finance_value;
 
-            this.setFinance(data.pro_history_finance);
+           this.setFinance(data.pro_history_finance);
             this.financing.pro_history_finance = data.pro_history_finance;
 
             if (data.pro_history_finance == "") this.financing.pro_history_finance = [];
@@ -1446,7 +1446,7 @@
         this.num++;
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
-        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx","why.png",".jpg",".docx",".jpeg"];
+        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
         let name=file.name;
         let fileend=name.substring(name.lastIndexOf("."));
         let isnext = false;
@@ -2187,9 +2187,13 @@
     created(){
       this.loading = true;
       this.getprojectId();
-      this.getWxProjectCategory();
-      this.getProjectDetail();
-      this.setFileType();
+      setTimeout(()=> {
+        this.getWxProjectCategory();
+        this.getProjectDetail();
+        this.setFileType();
+      },100)
+
+
       this.ProjectShow=false;
       this.teamShow=false;
       this.financingShow=false;

@@ -47,7 +47,7 @@ const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRouti
 // import jump from '@/test/jump.vue'
 // import selectbox from '@/test/dialog.vue'
 import dialog2 from '@/test/dialog2.vue'
-// import alertUpload from '@/test/alertUpload.vue'
+import alertUpload from '@/test/alertUpload.vue'
 // import upload from '@/test/upload.vue'
 // import open from '@/test/open.vue'
 
@@ -108,7 +108,7 @@ export default [
     path: '/test', name: 'test', component: checkone
   },
   {
-    path: '/test2', name: 'test2', component: dialog2
+    path: '/test2', name: 'test2', component: alertUpload
   }
   ]
 

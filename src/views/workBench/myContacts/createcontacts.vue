@@ -343,7 +343,7 @@ export default {
         user_nickname:'',//昵称
         user_mobile:'',//名片手机号
         user_email:'',//邮箱
-        user_company_name:' ',//公司名称
+        user_company_name:'',//公司名称
         import_user_name:'',//来源
         user_brand:'',//品牌
         user_company_career:'',//职位
@@ -390,7 +390,7 @@ export default {
     },
     /*商业计划书*/
     planChange(file, fileList){
-      this.planList = fileList
+      this.planList = fileList;
       if (file.status === "fail") this.planButton = true;
       else this.planButton = false;
     },
@@ -404,6 +404,7 @@ export default {
     planRemove(file, fileList) {
       if (fileList.length == 0) this.planButton = true;
       else this.planButton = true;
+      if(this.card_id=='creat') this.card_id=0;
       this.$http.post(this.URL.deleteConnectCard, {user_id: sessionStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
         .then(res => {
           if (res.status === 200) {
@@ -424,6 +425,8 @@ export default {
     },//添加上传文件时,保存返回的数据
     beforeUpload(file){
       this.uploadDate.user_id = sessionStorage.user_id;
+      if(this.card_id='creat') this.card_id=0;
+      this.uploadDate.card_id = this.card_id;
       let filetypes=[".jpg",".png",".jpeg"];
       let name=file.name;
       let fileend=name.substring(name.lastIndexOf("."));
@@ -471,8 +474,8 @@ export default {
         let contacts1=this.submitForm('contacts1');
         let contacts2=this.submitForm('contacts2');
         if(!contacts) {this.$tool.error("姓名不能为空")}
-      else if(!contacts1) this.$tool.error("投资需求过长")
-       else if(!contacts2) this.$tool.error("资源需求过长")
+        else if(!contacts1) this.$tool.error("投资需求过长")
+        else if(!contacts2) this.$tool.error("资源需求过长")
       else{
           this.$tool.setTag(this.contacts.user_invest_tag,this.tags_con);
           let allData=new Object;
@@ -502,13 +505,13 @@ export default {
         cancelButtonText: cancel,
         type: 'success'
       }).then(() => {
-        this.$router.push({name: 'contactsDetails', query: {card_id: this.card_id}})
+        this.$router.push({name: 'contactsDetails', query: {card_id: this.card_id,user_id: this.contacts.user_id}})
       }).catch(() => {
         this.$message({
           type: 'success',
           message: '继续编辑'
         });
-//        this.getProjectDetail();
+        this.getOneUserInfo();
       });
     },
     submitForm(formName) {
@@ -523,11 +526,11 @@ export default {
       return check;
     },//提交用
     getWxProjectCategory(){
-      let data = this.$global.data.categoryData;
+
       this.area = this.$global.data.hotCity;//设置热门城市
-      this.scale = this.$tool.getScale(data.scale);//设置期望融资
-      this.stage = this.$tool.getStage(data.stage);//设置轮次信息
-      this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
+      this.scale = this.$global.data.scale;//设置期望融资
+      this.stage = this.$global.data.stage;//设置轮次信息
+      this.industry = this.$global.data.industry;//设置轮次信息
       this.tags_con = this.$global.data.tags_user;//设置人脉标签
       this.giveTo=this.$global.data.resource;//设置提供的资源和对接的资源
       this.pushTo=this.$global.data.resource;//设置提供的资源和对接的资源
@@ -601,16 +604,16 @@ export default {
         })
     },//获取个人详情
     getContactsId(){
-      this.card_id = this.$route.query.card_id || '';
+      this.card_id = this.$route.query.card_id;
     }
 
   },
   created(){
+    this.getContactsId();
 
-    this.getWxProjectCategory();
     setTimeout(() =>{
-      this.getContactsId();
-      this.getOneUserInfo();
+      this.getWxProjectCategory();
+      if(this.card_id!='creat') this.getOneUserInfo();
       if (this.planList.length != 0) this.planButton = false;
       else this.planButton = true;
     },200)
