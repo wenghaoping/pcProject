@@ -1,7 +1,7 @@
 <template>
   <div id="codeLogin">
     <input class="telephone" v-model="telephone" placeholder="请输入常用手机号码">
-    <input class="code" type="password" v-model="password" placeholder="请输入密码">
+    <input class="code" @keyup.enter="login" type="password" v-model="password" placeholder="请输入密码">
     <div class="clearfix">
       <el-button class="fr" type="text" @click="forgetPassword" style="color: #40587a">忘记密码?</el-button>
     </div>

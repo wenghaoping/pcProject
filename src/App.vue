@@ -96,9 +96,15 @@
       },
       // 检查sessionStorage.user_id
       checkUser(){
+        console.log(this.$route.path)
         this.user_id=sessionStorage.user_id;
-        if(!sessionStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady'){
+        //未登录状态下拦截
+        if(!sessionStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/' && this.$route.path!=='/bindTelephone'){
           this.$tool.error('请先登录')
+          this.$router.push({name:'index'})
+        }
+        //登录状态下拦截
+        if(sessionStorage.user_id && this.$route.path==='/identityChoose' && this.$route.path==='/identityDetail'){
           this.$router.push({name:'index'})
         }
       },
@@ -200,6 +206,10 @@
           width: 70px;
         }
 
+      }
+      li:hover{
+        color: white;
+        opacity: 0.5;
       }
       .border {
         border-bottom: 1px white solid;

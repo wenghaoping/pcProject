@@ -175,7 +175,7 @@
         console.log(item)
         // 前端验证表单
         item.forEach((x,index)=>{
-          if(x.case_deal_time && x.case_name.replace(/^\s+|\s+$/g, "").length<=16 && x.case_industry && x.case_stage && x.case_province && x.case_city && x.case_money.replace(/^\s+|\s+$/g, "").length<9){
+          if(x.case_deal_time && x.case_name.replace(/^\s+|\s+$/g, "").length<16 && x.case_industry && x.case_stage && x.case_province && x.case_city && x.case_money.replace(/^\s+|\s+$/g, "").length<9){
 
           }else{
             this.$tool.error('请完善表单');
@@ -213,15 +213,6 @@
 
 //    取消
       cancel(){
-        this.caseForm.investSuccessCase=[{
-          case_name : '',
-          case_deal_time: '',
-          case_industry: '',
-          case_stage: '',
-          case_province: '',
-          case_city: '',
-          case_money: '',
-        }]
         this.$emit('closeInvestCase', false)
       },
 //    关闭弹窗前的回调

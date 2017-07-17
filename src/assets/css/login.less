@@ -1,4 +1,11 @@
 #login{
+  input:focus{
+    transition: 0.2s;
+    border-bottom: 2px solid #40587a;
+  }
+  .loginBtn:active{
+    background: #294d7a;
+  }
   .title{
     font-size: 22px;
     margin-top: 147px;
@@ -26,6 +33,7 @@
     font-size: 16px;
   }
   .border{
+    padding-bottom: 6px;
     border-bottom: 1px #009eff solid;
     color: #009eff;
   }
@@ -66,7 +74,7 @@
       color: #40587a;
       position: absolute;
       right: 0;
-      bottom: 0;
+      bottom: 3px;
     }
   }
   .loginBtn{
@@ -103,6 +111,10 @@
 }
 
 #forgetPassword{
+  input:focus{
+    transition: 0.2s;
+    border-bottom: 2px solid #40587a;
+  }
   .title{
     font-size: 22px;
     margin-top: 147px;
@@ -143,7 +155,7 @@
       color: #40587a;
       position: absolute;
       right: 0;
-      bottom: 0;
+      bottom: 3px;
     }
   }
   .loginBtn{
@@ -154,6 +166,9 @@
     height: 46px;
     background: #40587a;
     border-radius: 2px;
+  }
+  .loginBtn:active{
+    background: #294d7a;
   }
 }
 
@@ -192,7 +207,7 @@
       color: #40587a;
       position: absolute;
       right: 0;
-      bottom: 0;
+      bottom: 3px;
     }
   }
   .loginBtn{

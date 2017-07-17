@@ -4,38 +4,40 @@
       <el-button class="showQr" type="primary" @click="showS">体验小程序</el-button>
       <el-button type="primary" @click="createProject">创建项目</el-button>
       <div class="qrShow" v-show="showQr">
-        <img src="../../assets/images/index-qr.png"/>
+        <img src="../../assets/images/weixin.png"/>
       </div>
     </div>
     <h1>如果你是</h1>
-    <div class="content flex content0 tc" >
-      <div class="indentityPic">
-        <img src='../../assets/images/maifangFA.png'/>
-        <div>卖方FA</div>
-        <div>项目精准推荐</div>
-        <div>微天使一手案源</div>
-        <div>大数据一键尽调</div>
-      </div>
-      <div class="indentityPic">
-        <img src='../../assets/images/maifangFA.png'/>
-        <div>买方FA</div>
-        <div>推荐精准匹配投资人</div>
-        <div>项目一键推送</div>
-        <div>微天使一手案源</div>
-        <div>大数据一键尽调</div>
-      </div>
-      <div class="indentityPic">
-        <img src='../../assets/images/touzifang.png'/>
-        <div>投资方</div>
-        <div>FA精选项目</div>
-        <div>项目管理</div>
-        <div>大数据一键尽调</div>
-      </div>
-      <div class="indentityPic">
-        <img src='../../assets/images/chuangyezhe.png'/>
-        <div>创业者</div>
-        <div>融资加速</div>
-        <div>优质FA组团服务</div>
+    <div style="background: white;">
+      <div class="content flex content0 tc" >
+        <div class="indentityPic">
+          <img src='../../assets/images/maifangFA.png'/>
+          <div>卖方FA</div>
+          <div>项目精准推荐</div>
+          <div>微天使一手案源</div>
+          <div>大数据一键尽调</div>
+        </div>
+        <div class="indentityPic">
+          <img src='../../assets/images/maifangFA.png'/>
+          <div>买方FA</div>
+          <div>推荐精准匹配投资人</div>
+          <div>项目一键推送</div>
+          <div>微天使一手案源</div>
+          <div>大数据一键尽调</div>
+        </div>
+        <div class="indentityPic">
+          <img src='../../assets/images/touzifang.png'/>
+          <div>投资方</div>
+          <div>FA精选项目</div>
+          <div>项目管理</div>
+          <div>大数据一键尽调</div>
+        </div>
+        <div class="indentityPic">
+          <img src='../../assets/images/chuangyezhe.png'/>
+          <div>创业者</div>
+          <div>融资加速</div>
+          <div>优质FA组团服务</div>
+        </div>
       </div>
     </div>
     <h1>我们能提供</h1>
