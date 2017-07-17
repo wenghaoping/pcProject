@@ -1,9 +1,9 @@
 <template>
   <div id="index">
     <div class="banner">
-      <el-button class="showQr" type="primary">体验小程序</el-button>
+      <el-button class="showQr" type="primary" @click="showS">体验小程序</el-button>
       <el-button type="primary" @click="createProject">创建项目</el-button>
-      <div class="qrShow">
+      <div class="qrShow" v-show="showQr">
         <img src="../../assets/images/index-qr.png"/>
       </div>
     </div>
@@ -90,6 +90,8 @@
     data () {
       return {
         msg: '',
+        // 控制二维码显示
+        showQr:false,
         /*identityPic: [
           {
             url: '/static/images/maifangFA.png',
@@ -140,6 +142,10 @@
         sessionStorage.removeItem('id');
         sessionStorage.removeItem('entrance');
       },
+      // 鼠标到体验小程序上悬浮触发二维码显示
+      showS(){
+        this.showQr = !this.showQr
+      }
     }
   }
 </script>

@@ -97,6 +97,10 @@
       // 检查sessionStorage.user_id
       checkUser(){
         this.user_id=sessionStorage.user_id;
+        if(!sessionStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady'){
+          this.$tool.error('请先登录')
+          this.$router.push({name:'index'})
+        }
       },
     },
 //    当dom一创建时

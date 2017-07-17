@@ -1,88 +1,106 @@
 <template>
-  <el-dialog title="| 添加成功案例"
-             id="investSuccessCase"
-             :visible.sync="dialogShow"
-             :before-close='closeInvestCase'
-             size="full">
-    <!--单个成功案例的表单-->
-    <el-form :model="caseForm"
-             ref="investSuccessCase"
-             :rules="rule"
-             label-width="100px"
-             class="demo-dynamic"
-             label-position="top">
-      <el-form-item v-for="(item, index) in caseForm.investSuccessCase"
-                    :key="item.index">
-        <!--项目名称和投资时间-->
-        <div class="flex mb30">
-          <el-form-item label="项目名称" prop="name" class="width360 mr32">
-            <el-input v-model="item.case_name">项目名称</el-input>
-          </el-form-item>
-          <el-form-item label="投资时间" prop="time" class="width360">
-            <el-date-picker v-model="item.case_deal_time" type="date" placeholder="选择日期" class="width360"></el-date-picker>
-          </el-form-item>
+  <div id="investSuccessCase">
+    <el-dialog title="| 添加成功案例"
+               :visible.sync="dialogShow"
+               :before-close='closeInvestCase'
+               close-on-click-modal>
+      <!--单个成功案例的表单-->
+      <el-form :model="caseForm"
+               ref="investSuccessCase"
+               label-width="100px"
+               class="demo-dynamic"
+               label-position="top">
+        <el-form-item v-for="(item, index) in caseForm.investSuccessCase"
+                      :prop="'investSuccessCase.' +index"
+                      :key="item.index">
+          <!--项目名称和投资时间-->
+          <div class="flex mb30">
+            <el-form-item label="项目名称"
+                          :prop="'investSuccessCase.'+ index +'.case_name'"
+                          class="width360 mr32"
+                          :rules="[{required: true, message: '请填写姓名', trigger: 'blur'},
+                         {min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur'}]">
+              <el-input v-model="item.case_name">项目名称</el-input>
+            </el-form-item>
+            <el-form-item label="投资时间"
+                          class="width360">
+              <el-date-picker v-model="item.case_deal_time" :editable="false" type="date" placeholder="选择日期" class="width360"></el-date-picker>
+            </el-form-item>
+          </div>
+          <!--投资领域和投资轮次-->
+          <div class="flex mb30">
+            <el-form-item label="投资领域"
+                          :prop="'investSuccessCase.'+ index +'.case_investIndustry'"
+                          class="mr32"
+                          :rules="{required: true, message: '请填写投资领域', trigger: 'blur'}">
+              <el-select v-model="item.case_industry"
+                         multiple filterable
+                         :multiple-limit="multiplelimit"
+                         placeholder="请添加(最多5个)"
+                         class="width360">
+                <el-option v-for="item in industryList"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="投资轮次"
+                          :prop="'investSuccessCase.'+ index +'.stage'"
+                          :rules="[{required: true, message: '请填写投资轮次', trigger: 'blur'}]">
+              <el-select v-model="item.case_stage"
+                         filterable
+                         placeholder="请添加(最多5个)"
+                         class="width360">
+                <el-option v-for="item in stageList"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <!--投资地区和投资金额-->
+          <div class="flex mb30">
+            <el-form-item label="投资地区"
+                          :prop="'investSuccessCase['+ index +'].case_city'"
+                          class="width360 mr32"
+                          :rules="{required: true, message: '请填写投资地区', trigger: 'blur'}">
+              <el-select v-model="item.case_province" placeholad="请选择" class="width175" @change="area1Change(index)">
+                <el-option v-for="area1Item in area1List"
+                           :key="area1Item.value"
+                           :label="area1Item.label"
+                           :value="area1Item.value"></el-option>
+              </el-select>
+              <el-select v-model="item.case_city" placeholad="请选择" class="width175">
+                <el-option v-for="area2Item in area2List"
+                           :key="area2Item.value"
+                           :label="area2Item.label"
+                           :value="area2Item.value"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="投资金额(万)"
+                          :prop="'investSuccessCase.'+ index + '.case_money'"
+                          class="width360"
+                          :rules="[{required: true, message: '请填写投资金额', trigger: 'blur'},
+                         {min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur'}]">
+              <el-input v-model="item.case_money" type="number">投资金额</el-input>
+            </el-form-item>
+          </div>
+          <div>
+            <el-button type="text" class="red fr" @click="deleteItem(index)">删除本条</el-button>
+          </div>
+        </el-form-item>
+        <div class="tc">
+          <el-button type="text primy" @click="continueAdd">+ 继续添加</el-button>
         </div>
-        <!--投资领域和投资轮次-->
-        <div class="flex mb30">
-          <el-form-item label="投资领域" prop="investIndustry" class="mr32">
-            <el-select v-model="item.case_industry"
-                       multiple filterable
-                       :multiple-limit="multiplelimit"
-                       placeholder="请添加(最多5个)"
-                       class="width360">
-              <el-option v-for="item in industryList"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="投资轮次" prop="investStage">
-            <el-select v-model="item.case_stage"
-                       filterable
-                       placeholder="请添加(最多5个)"
-                       class="width360">
-              <el-option v-for="item in stageList"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </div>
-        <!--投资地区和投资金额-->
-        <div class="flex mb30">
-          <el-form-item label="投资地区" prop="area1" class="width360 mr32">
-            <el-select v-model="item.case_province" placeholad="请选择" class="width175" @change="area1Change(index)">
-              <el-option v-for="area1Item in area1List"
-                         :key="area1Item.value"
-                         :label="area1Item.label"
-                         :value="area1Item.value"></el-option>
-            </el-select>
-            <el-select v-model="item.case_city" placeholad="请选择" class="width175">
-              <el-option v-for="area2Item in area2List"
-                         :key="area2Item.value"
-                         :label="area2Item.label"
-                         :value="area2Item.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="投资金额(万)" prop="scale" class="width360">
-            <el-input v-model="item.case_money" type="number">投资金额</el-input>
-          </el-form-item>
-        </div>
-        <div>
-          <el-button type="text" class="red fr" @click="deleteItem(index)">删除本条</el-button>
-        </div>
-      </el-form-item>
-      <div class="tc">
-        <el-button type="text primy" @click="continueAdd">+ 继续添加</el-button>
+      </el-form>
+      <div class="clearfix">
+        <el-button class="fr certain" @click="certain">确定</el-button>
+        <el-button class="fr cancel" @click="cancel" style="margin-right: 23px">取消</el-button>
       </div>
-    </el-form>
-    <div class="clearfix">
-      <el-button class="fr certain" @click="certain">确定</el-button>
-      <el-button class="fr cancel" @click="cancel" style="margin-right: 23px">取消</el-button>
-    </div>
-  </el-dialog>
+    </el-dialog>
+  </div>
 </template>
 
 
@@ -102,20 +120,22 @@
             case_money: '',
           }]
         },
-        rule:  {
-          name: {required: true, message: '请填写姓名', trigger: 'blur'},
+        /*rule:  [{
+          name: [{required: true, message: '请填写姓名', trigger: 'blur'},],
           time: {required: true, message: '请选择时间', trigger: 'blur'},
           industry: {required: true, message: '请选择领域', trigger: 'blur'},
           stage: {required: true, message: '请选择轮次', trigger: 'blur'},
           area1: {required: true, message: '请选择省份', trigger: 'blur'},
           area2: {required: true, message: '请选择市区', trigger: 'blur'},
-          scale: {required: true, message: '请填写金额', trigger: 'blur'},
-        },
+          scale: [{required: true, message: '请填写金额', trigger: 'blur'}],
+        }],*/
         area1List: [],
         area2List: [],
         industryList: '',
         stageList: '',
         multiplelimit: 5,
+        // 标准时间记录
+        caseTime:[],
       }
     },
     methods: {
@@ -133,6 +153,7 @@
             arr.push(obj)
           }
           this.area2List=arr;
+          this.caseForm.investSuccessCase[index].case_city='';
           console.log(this.area2List)
         })
       },
@@ -149,23 +170,39 @@
 //    确定
       certain(){
         var that=this;
-        console.log(this.caseForm.investSuccessCase)
-        console.log(typeof this.caseForm.investSuccessCase)
-//      标准时间转化为毫秒数
-        this.caseForm.investSuccessCase.forEach(x=>{
-          x.case_deal_time=Date.parse(x.case_deal_time)
-        })
-        console.log(this.caseForm.investSuccessCase);
+        var item=this.caseForm.investSuccessCase;
+        var is_complete=true;
+        console.log(item)
+        // 前端验证表单
+        item.forEach((x,index)=>{
+          if(x.case_deal_time && x.case_name.replace(/^\s+|\s+$/g, "").length<=16 && x.case_industry && x.case_stage && x.case_province && x.case_city && x.case_money.replace(/^\s+|\s+$/g, "").length<9){
 
-        if(this.caseForm.investSuccessCase.case_money>99999999){
-          this.$tool.error('投资金额数目过大')
-        }else{
+          }else{
+            this.$tool.error('请完善表单');
+            is_complete=false;
+            return
+          }
+        })
+        if(is_complete){
+          console.log('发送请求')
+          // 标准时间转化为毫秒数
+          this.caseForm.investSuccessCase.forEach(x=>{
+            this.caseTime.push(x.case_deal_time)
+            x.case_deal_time=Date.parse(x.case_deal_time)
+          })
+          console.log(this.caseForm.investSuccessCase);
+
+          // 发送请求
           this.$http.post(this.URL.createUserProjectCase,{
             user_id:sessionStorage.user_id,
             project_case:this.caseForm.investSuccessCase,
           }).then(res=>{
             console.log(res);
             if(res.data.status_code===2000000){
+              this.$tool.success('投资成功案例保存成功')
+              this.caseForm.investSuccessCase.forEach((x,index)=>{
+                x.case_deal_time=this.caseTime[index]
+              })
               that.$emit('closeInvestCase', false)
             }else{
               that.$tool.error(res.data.error_msg)
@@ -173,8 +210,18 @@
           })
         }
       },
+
 //    取消
       cancel(){
+        this.caseForm.investSuccessCase=[{
+          case_name : '',
+          case_deal_time: '',
+          case_industry: '',
+          case_stage: '',
+          case_province: '',
+          case_city: '',
+          case_money: '',
+        }]
         this.$emit('closeInvestCase', false)
       },
 //    关闭弹窗前的回调
@@ -190,16 +237,11 @@
   }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   #investSuccessCase {
-    width: 900px !important;
-    height: auto;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    overflow: auto;
-
+    .el-dialog--small{
+      width: 790px !important;
+    }
     .width360 {
       width: 360px;
     }

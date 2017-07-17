@@ -546,8 +546,6 @@ export default {
     width: 100%;
   }
   #research{
-
-
     .el-tabs__item{
       font-size:18px;
       color:#8492a6;
