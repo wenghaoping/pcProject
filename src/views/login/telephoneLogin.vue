@@ -4,7 +4,7 @@
     <div class="codeFrame">
       <input class="code" v-model="captcha" placeholder="请输入验证码">
       <el-button type="text" @click="getCode" v-show="is_getCode==0">获取验证码</el-button>
-      <el-button type="text" v-show="is_getCode!=0" :disabled="true">{{captchaNum}}后重新获取</el-button>
+      <el-button type="text" v-show="is_getCode!=0" :disabled="true">{{captchaNum}}</el-button>
     </div>
     <el-button class="loginBtn tc" @click="login">登录/注册</el-button>
   </div>

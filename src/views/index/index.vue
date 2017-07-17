@@ -4,7 +4,7 @@
       <el-button class="showQr" type="primary" @click="showS">体验小程序</el-button>
       <el-button type="primary" @click="createProject">创建项目</el-button>
       <div class="qrShow" v-show="showQr">
-        <img src="../../assets/images/weixin.png"/>
+        <img src="../../assets/images/weixin.jpg"/>
       </div>
     </div>
     <h1>如果你是</h1>
