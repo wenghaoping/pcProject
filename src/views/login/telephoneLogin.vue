@@ -4,7 +4,7 @@
     <div class="codeFrame">
       <input class="code" v-model="captcha" placeholder="请输入验证码">
       <el-button type="text" @click="getCode" v-show="is_getCode==0">获取验证码</el-button>
-      <el-button type="text" v-show="is_getCode!=0" :disabled="true">{{captchaNum}}</el-button>
+      <el-button type="text" v-show="is_getCode!=0" :disabled="true">{{captchaNum}}s</el-button>
     </div>
     <el-button class="loginBtn tc" @click="login">登录/注册</el-button>
   </div>
@@ -61,6 +61,7 @@
             console.log(res)
             if(res.data.status_code===2000000){
               sessionStorage.user_id=res.data.user_id;
+              sessionStorage.user_real_name=res.data.user_real_name;
               //is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
               if (res.data.is_exist === 0) {
                 this.$router.push({name:'identityChoose'})

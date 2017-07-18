@@ -1,7 +1,7 @@
 <template>
   <div id="identityDetail">
     <div class="title clearfix tc">
-      您的资料?
+      创建您的投资名片?
       <div class="fr">
         <el-button class="skip" type="text" @click="skip">跳过</el-button>
       </div>
@@ -51,7 +51,7 @@
                 <el-input v-model="ruleForm1.weixin" placeholder="请输入微信"></el-input>
               </el-form-item>
               <el-form-item class="item" label="品牌" prop="brand">
-                <el-input v-model="ruleForm1.brand" placeholder="请输入品牌名 如:微天使"></el-input>
+                <el-input v-model="ruleForm1.brand" placeholder="请输入品牌名 如：微天使"></el-input>
               </el-form-item>
             </div>
             <el-form-item label="个人描述" prop="desc" class="desc item">
@@ -339,10 +339,26 @@
     mounted(){
     },
     created(){
-      this.industry = this.$global.data.industry;
-      this.scale = this.$global.data.scale;
-      this.stage = this.$global.data.stage;
-      this.hotCity = this.$global.data.hotCity;
+      var that=this;
+      setTimeout(function(){
+        that.industry = that.$global.data.industry;
+        that.scale = that.$global.data.scale;
+        that.stage = that.$global.data.stage;
+        that.hotCity = that.$global.data.hotCity;
+      },200)
+
+      //核对是否认证过身份
+      this.$http.post(this.URL.getUserGroupByStatus, {
+        user_id: sessionStorage.user_id
+      }).then(res => {
+        if (res.data.status_code === 2000000) {
+          if (res.data.status === 1) {
+            this.$router.push({name: 'index'})
+          }
+        } else {
+          this.$tool.error('核对身份接口调用失败')
+        }
+      })
     }
   }
 </script>

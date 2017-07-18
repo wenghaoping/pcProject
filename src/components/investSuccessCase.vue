@@ -20,11 +20,15 @@
                           class="width360 mr32"
                           :rules="[{required: true, message: '请填写姓名', trigger: 'blur'},
                          {min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur'}]">
-              <el-input v-model="item.case_name">项目名称</el-input>
+              <el-input v-model="item.case_name" placeholder="请输入">项目名称</el-input>
             </el-form-item>
             <el-form-item label="投资时间"
                           class="width360">
-              <el-date-picker v-model="item.case_deal_time" :editable="false" type="date" placeholder="选择日期" class="width360"></el-date-picker>
+              <el-date-picker v-model="item.case_deal_time"
+                              :editable="false"
+                              type="date"
+                              placeholder="请选择"
+                              class="width360"></el-date-picker>
             </el-form-item>
           </div>
           <!--投资领域和投资轮次-->
@@ -32,11 +36,11 @@
             <el-form-item label="投资领域"
                           :prop="'investSuccessCase.'+ index +'.case_investIndustry'"
                           class="mr32"
-                          :rules="{required: true, message: '请填写投资领域', trigger: 'blur'}">
+                          :rules="[{required: true, message: '请填写投资领域', trigger: 'blur'}]">
               <el-select v-model="item.case_industry"
                          multiple filterable
                          :multiple-limit="multiplelimit"
-                         placeholder="请添加(最多5个)"
+                         placeholder="请选择"
                          class="width360">
                 <el-option v-for="item in industryList"
                            :key="item.value"
@@ -50,7 +54,7 @@
                           :rules="[{required: true, message: '请填写投资轮次', trigger: 'blur'}]">
               <el-select v-model="item.case_stage"
                          filterable
-                         placeholder="请添加(最多5个)"
+                         placeholder="请选择"
                          class="width360">
                 <el-option v-for="item in stageList"
                            :key="item.value"
@@ -84,7 +88,7 @@
                           class="width360"
                           :rules="[{required: true, message: '请填写投资金额', trigger: 'blur'},
                          {min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur'}]">
-              <el-input v-model="item.case_money" type="number">投资金额</el-input>
+              <el-input v-model="item.case_money" type="number" placeholder="请输入具体数值，如：100">投资金额</el-input>
             </el-form-item>
           </div>
           <div>
@@ -175,7 +179,7 @@
         console.log(item)
         // 前端验证表单
         item.forEach((x,index)=>{
-          if(x.case_deal_time && x.case_name.replace(/^\s+|\s+$/g, "").length<16 && x.case_industry && x.case_stage && x.case_province && x.case_city && x.case_money.replace(/^\s+|\s+$/g, "").length<9){
+          if(x.case_name.replace(/^\s+|\s+$/g, "") && x.case_name.replace(/^\s+|\s+$/g, "").length<16 && x.case_industry && x.case_stage && x.case_province && x.case_city && x.case_money.replace(/^\s+|\s+$/g, "") && x.case_money.replace(/^\s+|\s+$/g, "").length<9){
 
           }else{
             this.$tool.error('请完善表单');
@@ -203,6 +207,7 @@
               this.caseForm.investSuccessCase.forEach((x,index)=>{
                 x.case_deal_time=this.caseTime[index]
               })
+              this.caseTime=[];
               that.$emit('closeInvestCase', false)
             }else{
               that.$tool.error(res.data.error_msg)
@@ -221,9 +226,11 @@
       },
     },
     created(){
-      this.area1List = this.$global.data.area;
-      this.industryList = this.$global.data.industry;
-      this.stageList = this.$global.data.stage;
+      setTimeout(x=>{
+        this.area1List = this.$global.data.area;
+        this.industryList = this.$global.data.industry;
+        this.stageList = this.$global.data.stage;
+      },200)
     }
   }
 </script>

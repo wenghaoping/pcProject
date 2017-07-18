@@ -1154,18 +1154,18 @@
       getWxProjectCategory(){
 
         let data = this.$global.data.categoryData;
-        this.area = this.$tool.getCity(data.area);//设置城市1列表
-        this.scale = this.$tool.getScale(data.scale);//设置期望融资
-        this.stage = this.$tool.getStage(data.stage);//设置轮次信息
-        this.industry = this.$tool.getIndustry(data.industry);//设置轮次信息
-        this.company_status = this.getCompanyStatus(data.company_status);//设置运营状态
-        this.company_scale = this.getCompany_scale(data.company_scale);//设置公司规模几人
+        this.area = this.$global.data.area;//设置城市1列表
+        this.scale = this.$global.data.scale;//设置期望融资
+        this.stage = this.$global.data.stage;//设置轮次信息
+        this.industry = this.$global.data.industry;//设置轮次信息
         this.tags_pro = this.$global.data.tags_pro;//设置项目标签
         this.tags.changepro = this.$global.data.tags_pro;//设置项目标签2另外的
         this.tags_team = this.$global.data.tags_team;//设置团队标签
         this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
         this.tags_source = this.$global.data.pro_source;//设置项目来源
         this.tags.changesource = this.$global.data.pro_source;//设置项目来源
+        this.company_status = this.$global.data.company_status;//设置运营状态
+        this.company_scale = this.$global.data.company_scale;//设置公司规模几人
 
 
       },//获取所有下拉框的数据
@@ -1446,7 +1446,7 @@
         this.num++;
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
-        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx","why.png",".jpg",".docx",".jpeg"];
+        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
         let name=file.name;
         let fileend=name.substring(name.lastIndexOf("."));
         let isnext = false;

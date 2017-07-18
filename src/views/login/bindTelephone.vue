@@ -62,11 +62,17 @@
             if (this.telephone && this.captcha) {
               this.$http.post(this.URL.bindTelephone, {
                 user_mobile: this.telephone,
-                captcha: this.captcha
+                captcha: this.captcha,
+                open_session:this.open_session
               }).then(res => {
                 console.log(res)
                 if(res.data.status_code===2000000){
-                    this.$router.push({name:sessionStorage.entrance})
+                    sessionStorage.user_career=res.data.user_career;
+                    sessionStorage.user_company=res.data.user_company;
+                    sessionStorage.user_email=res.data.user_email;
+                    sessionStorage.user_id=res.data.user_id;
+                    sessionStorage.user_real_name=res.data.user_real_name;
+                    this.$router.push({name:'identityChoose'})
                 }else{
                   this.$tool.error(res.data.error_msg)
                 }
@@ -75,6 +81,10 @@
               this.$tool.error('请正确填写手机号码和验证码')
             }
           },
+        },
+        created:function(){
+          this.open_session=this.$route.query.open_session;
+          console.log(this.$route.query)
         }
     }
 </script>

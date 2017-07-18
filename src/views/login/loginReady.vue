@@ -16,7 +16,10 @@
 
     },
     created(){
-
+      console.log(this.$route.query)
+      sessionStorage.user_id=this.$route.query.id;
+      sessionStorage.user_real_name=this.$route.query.name;
+      this.$router.push({name:sessionStorage.entrance})
     }
   }
 </script>

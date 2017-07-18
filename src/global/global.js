@@ -1,6 +1,8 @@
 import axios from '../config/api.js'//axios请求配置
 import URL from './url.js'//URL请求地址汇总
 import global from './global.js'
+import $tool from './tool.js'
+
 
 //设定变量
 const data = {
@@ -78,6 +80,27 @@ var func = {
     });
     return arr
   },//获取提供的资源
+  getCompanyStatus(data){
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+      let obj = {};
+      obj.label = data[i].status_id;
+      obj.value = data[i].status_name;
+      arr.push(obj)
+    }
+    arr.push({label: '自定义添加', value: '自定义添加'})
+    return arr
+  },//获取运营状态
+  getCompany_scale(data){
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+      let obj = {};
+      obj.label = data[i].comp_scale_value;
+      obj.value = data[i].comp_scale_id;
+      arr.push(obj);
+    }
+    return arr
+  },//获取公司规模几人
   getWxProjectCategory() {
     axios.post(URL.getWxProjectCategory, {user_id: sessionStorage.user_id})
     .then(res => {
@@ -93,12 +116,15 @@ var func = {
       global.data.tags_user = global.func.getTags_pro(data.tags_user);//设置人脉标签
       global.data.pro_source = global.func.getTags_pro(data.pro_source);//设置项目来源
       global.data.resource = global.func.getResource(data.resource);//设置项目来源
+      global.data.company_status = global.func.getCompanyStatus(data.company_status);//设置运营状态
+      global.data.company_scale = global.func.getCompany_scale(data.company_scale);//设置公司规模几人
     })
     .catch(err => {
       console.log(err);
       console.log('出现错误')
     })
   },//获取所有下拉框的数据
+
 }
 
 

@@ -12,7 +12,7 @@
           :file-list="fileList"
           :on-success="uploadSuccess"
         >
-          <el-button size="small" type="primary" style="background:#40587a;border-color: #40587a ">
+          <el-button size="small" type="primary" style="background:#40587a;border-color: #40587a" v-show="btnShow" >
             <i class="el-icon-plus"></i>
             点击上传
           </el-button>
@@ -32,12 +32,14 @@
                 id:sessionStorage.id,
               },
               fileList: [],
-              image_id:''
+              image_id:'',
+              btnShow:true,
             }
         },
         methods: {
           // 取消列表里的文件时触发
           handleRemove(file, fileList) {
+            this.btnShow=true;
             console.log(file, fileList);
           },
           // 点击列表里的文件触发
@@ -46,6 +48,7 @@
           },
           // 上传文件之前触发
           beforeUpload(file){
+            console.log(file)
             let filetypes=[".png",".jpg",".jpeg"];
             let name=file.name;
             let fileend=name.substring(name.lastIndexOf("."));
@@ -63,7 +66,7 @@
               this.$tool.error("不支持的文件格式");
               return false;
             }
-            if(parseInt(file.size) > parseInt(1024)){
+            if(parseInt(file.size) > parseInt(1048576)){
               this.$tool.error("暂不支持超过1m文件上传哦");
               return false;
             };
@@ -77,8 +80,9 @@
           uploadSuccess(response, file, fileList){
             console.log(response)
             if(response.status_code===2000000){
-              console.log(2)
+              this.btnShow=false;
               this.$emit('upLoadSuccess',response.image_id)
+              this.btnShow=false;
             }else{
               this.$tool.error('上传失败')
               return '上传失败'

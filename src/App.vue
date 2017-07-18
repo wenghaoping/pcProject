@@ -104,9 +104,9 @@
           this.$router.push({name:'index'})
         }
         //登录状态下拦截
-        if(sessionStorage.user_id && this.$route.path==='/identityChoose' && this.$route.path==='/identityDetail'){
+        /*if(sessionStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
           this.$router.push({name:'index'})
-        }
+        }*/
       },
     },
 //    当dom一创建时

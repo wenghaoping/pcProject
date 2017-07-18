@@ -142,6 +142,7 @@
         console.log('清除sessionStorage部分key值完毕')
         sessionStorage.removeItem('user_id');
         sessionStorage.removeItem('id');
+        sessionStorage.removeItem('user_real_name');
         sessionStorage.removeItem('entrance');
       },
       // 鼠标到体验小程序上悬浮触发二维码显示
