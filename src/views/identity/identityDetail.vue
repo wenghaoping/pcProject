@@ -14,15 +14,15 @@
         <span class="b-hander" @click="baseInfo=!baseInfo" v-show="baseInfo">收起</span>
         <span class="b-hander" @click="baseInfo=!baseInfo" v-show="!baseInfo">展开</span>
       </div>
-      <el-collapse-transition>
-        <div v-show="baseInfo">
+      <el-collapse-transition >
+        <div v-show="baseInfo" >
           <!--上传头像-->
           <cardUpload @uploadSuccess="uploadSuccess">
 
           </cardUpload>
           <!--基本资料Form-->
           <el-form :model="ruleForm1" :rules="rule1" ref="ruleForm1" label-width="100px" class="demo-ruleForm"
-                   label-position="top">
+                   label-position="top" style="height: 520px;margin-top: 22px;">
             <div class="flex">
               <el-form-item label="姓名" prop="name" class="mr32 item">
                 <el-input v-model="ruleForm1.name" placeholder="请输入姓名"></el-input>
@@ -73,10 +73,10 @@
         <div v-show="investPrefer">
           <!--投资偏好Form-->
           <el-form :model="ruleForm2" :rules="rule2" ref="ruleForm2" label-width="100px" class="demo-ruleForm"
-                   label-position="top">
+                   label-position="top" style="margin-top: 18px;">
             <!--投资领域与轮次-->
             <div class="flex">
-              <el-form-item label="投资领域" prop="investIndustry" class="mr32 item">
+              <el-form-item label="投资领域" prop="investIndustry" class="mr32 item" >
                 <el-select v-model="ruleForm2.investIndustry"
                            multiple filterable
                            :multiple-limit="multiplelimit"

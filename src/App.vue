@@ -3,7 +3,7 @@
     <!--     头部导航 -->
     <header id="header">
       <ul class="select ulfl tc" style="position: relative">
-        <li style="width: 150px;margin-right: 320px;vertical-align: middle;display: table-cell;height: 60px;"><img
+        <li style="width: 150px;margin-right: 100px;vertical-align: middle;display: table-cell;height: 60px;"><img
           src="./assets/images/logoing.png" style="vertical-align:middle;"></li>
         <li @click="toggle(index)" v-for="(tab,index) in tabs">
           <router-link :to=" tab.jump " :class="{border:active===index}">
@@ -43,7 +43,7 @@
         </router-view>
       </transition>
     </main>
-    <div style="height: 300px"></div>
+
     <div class="Infooter tc">
       <p>关于我们 | 联系我们</p>
       <p> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</p>
@@ -87,7 +87,7 @@
       setUserId(){
         localStorage.user_id = 'V0VznXa0';
 //        localStorage.user_id='2rzyz5vp';
-        localStorage.user_real_name='杜兴国';
+//        localStorage.user_real_name='杜兴国';
       },
       // 登录
       login(){
@@ -146,9 +146,10 @@
 
 <style lang="less">
   .Infooter {
+
     background:#444444;
     font-size: 12px;
-    color:#ffffff;
+    color:#a1a1a1;
     line-height: 12px;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -182,7 +183,7 @@
     background: #f3f4f8;
 
     main {
-
+      min-height: 669px;
     }
     font-family: "Helvetica Neue", "PingFang SC", Arial, sans-serif;
     header {
@@ -194,13 +195,12 @@
     }
     .select {
       cursor: pointer;
-
       color: #ffffff;
       letter-spacing: 0;
       line-height: 16px;
       height: 60px;
       li {
-        width: 130px;
+        margin-right: 50px;
         height: 50px;
         line-height: 50px;
         a {
@@ -231,7 +231,6 @@
   }
 
   #samllrou {
-
   }
 
   .weixin {
@@ -239,7 +238,7 @@
     position: fixed;
     z-index: 100;
     top: 53px;
-    left: 683px;
+    left: 400px;
     background: #ffffff;
     box-shadow: 0 4px 4px 0 rgba(64, 88, 122, 0.10);
     border-radius: 4px;

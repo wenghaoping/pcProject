@@ -1,6 +1,6 @@
 <template>
   <div id="forgetPassword">
-    <div class="title tc">微天使，智能FA工作站</div>
+    <div class="title tc">微天使，FA的智能工作站</div>
     <div class="loginBox">
       <div class="backLogin" @click="backLogin">
         <img class="arrowLeft" src="../../assets/images/goback.png"/>

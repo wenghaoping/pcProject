@@ -4,8 +4,7 @@
   width: 100%;
   position: relative;
   .banner {
-    background: url("https://dev.weitianshi.cn/assets/images/banner.jpg") no-repeat;
-
+    background: url("https://dev.weitianshi.cn/assets/images/banner.jpg") no-repeat white;
     background-size:100%;
     width: 100%;
     height: 691px;
@@ -19,8 +18,6 @@
       top: 458px;
       width: 133px;
       height: 56px;
-      color: white;
-      background:#009eff;
       border-radius:4px;
       @media screen and (max-width: 1500px){
         width: 94px;
@@ -66,7 +63,7 @@
     text-align: center;
     padding-top: 77px;
     font-weight: normal;
-    background: white;
+    //background: white;
     @media screen and(max-width: 1500px){
       padding-top: 61px;
       font-size: 24px;
@@ -101,7 +98,7 @@
         }
       }
       div{
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         @media screen and(max-width: 1500px){
           margin-bottom: 5px;
         }
@@ -182,8 +179,8 @@
   }
   .content2{
     .fullPageText2{
-      width: 401px;
-      left: 55%;
+      width: 450px;
+      left: 58.3%;
       top: 136px;
       @media screen and(max-width: 1500px){
         width: 321px;
@@ -193,7 +190,7 @@
       width: 600px;
       height: 400px;
       left: 20%;
-      top: 95px;
+      top: 140px;
       @media screen and(max-width: 1500px){
         width: 426px;
         height: auto;
@@ -225,22 +222,30 @@
   .qrCode {
     position: fixed;
     right: 20px;
-    top: 60%;
-    width: 20px;
-    height: 20px;
+    top: 84%;
+    width:40px;
+    height:40px;
+    background: white;
     cursor: pointer;
+
     img {
-      width: 100%;
-      height: 100%;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top:0;
+      bottom: 0;
+      margin: auto;
     }
   }
   .qrCode-large{
     display: none;
     position: fixed;
     right: 68px;
-    top: 50%;
+    top: 71%;
     width: 210px;
-    height: 205px;
+    height: 210px;
     padding: 28px 35px;
     background: white;
     font-size:12px;
@@ -248,8 +253,10 @@
     border:1px solid #e0e6ed;
     img{
       width: 100%;
-      height: 124px;
       margin-bottom: 11px;
+    }
+    .add2{
+      margin-bottom: 10px;
     }
     @media screen and(max-width: 1500px){
       width: 146px;
@@ -257,8 +264,11 @@
       font-size: 12px;
       padding: 0;
       img{
-        height: 89px;
+        //height: 89px;
         padding: 20px 31px 0 26px;
+      }
+      .add2{
+        margin-bottom: 10px;
       }
     }
   }
