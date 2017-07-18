@@ -7,8 +7,9 @@
         <img src="../../assets/images/weixin.jpg"/>
       </div>
     </div>
-    <h1>如果你是</h1>
+
     <div style="background: white;">
+      <h1>如果你是</h1>
       <div class="content flex content0 tc" >
         <div class="indentityPic">
           <img src='../../assets/images/maifangFA.png'/>
@@ -40,8 +41,9 @@
         </div>
       </div>
     </div>
-    <h1>我们能提供</h1>
+
     <div class="content flex content1">
+      <h1>我们能提供</h1>
       <div class="fullPageText fullPageText1">
         <div>投资业务工作场景--团队/个人工作</div>
         <div>项目、人脉数据永久留存,人员流动带不走</div>
@@ -75,7 +77,7 @@
         <img src='../../assets/images/index3.png'/>
       </div>
     </div>
-    <div class="qrCode" @click="clearSomething">
+    <div class="qrCode">
       <img src='../../assets/images/indexQr.png'/>
     </div>
     <div class="qrCode-large tc">

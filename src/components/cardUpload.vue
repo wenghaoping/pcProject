@@ -8,6 +8,7 @@
           :data="uploadData"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
+          :on-error="handleError"
           :before-upload="beforeUpload"
           :file-list="fileList"
           :on-success="uploadSuccess"
@@ -53,6 +54,7 @@
             let name=file.name;
             let fileend=name.substring(name.lastIndexOf("."));
             let isnext = false;
+            this.btnShow=false;
             if(filetypes && filetypes.length>0){
               for(var i =0; i<filetypes.length;i++){
                 if(filetypes[i]===fileend){
@@ -82,12 +84,15 @@
             if(response.status_code===2000000){
               this.btnShow=false;
               this.$emit('upLoadSuccess',response.image_id)
-              this.btnShow=false;
             }else{
               this.$tool.error('上传失败')
               return '上传失败'
             }
           },
+          //上传失败
+          handleError(){
+            this.btnShow=true;
+          }
         },
         created(){
           console.log(localStorage.user_id,localStorage.id)

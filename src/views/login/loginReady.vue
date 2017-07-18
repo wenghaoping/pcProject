@@ -16,11 +16,12 @@
 
     },
     created(){
+      var that=this;
       console.log(this.$route.query)
       localStorage.user_id=this.$route.query.id;
       localStorage.user_real_name=this.$route.query.name;
       setTimeout(function(){
-        this.$router.push({name:localStorage.entrance})
+        that.$router.push({name:localStorage.entrance})
       },2000)
     }
   }

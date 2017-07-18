@@ -76,7 +76,7 @@
                            :label="area1Item.label"
                            :value="area1Item.value"></el-option>
               </el-select>
-              <el-select v-model="item.case_city" placeholad="请选择" class="width175">
+              <el-select v-model="item.case_city" placeholad="请选择" class="width175" style="margin-left: 5px;">
                 <el-option v-for="area2Item in area2List"
                            :key="area2Item.value"
                            :label="area2Item.label"
@@ -238,7 +238,7 @@
 <style lang="less">
   #investSuccessCase {
     .el-dialog--small{
-      width: 790px !important;
+      width: 880px !important;
     }
     .width360 {
       width: 360px;
@@ -282,4 +282,11 @@
   .el-input{
     margin-bottom: 0 !important;
   }
+  .el-dialog__body{
+    padding: 30px 64px;
+  }
+  .el-dialog__header{
+    padding-left: 64px;
+  }
+
 </style>
