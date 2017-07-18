@@ -1,8 +1,8 @@
 <template>
   <div id="index">
     <div class="banner">
-      <el-button class="showQr" type="primary" @click="showS">体验小程序</el-button>
-      <el-button type="primary" @click="createProject">创建项目</el-button>
+      <el-button style="z-index:99;" class="showQr" type="primary" @click="showS">体验小程序</el-button>
+      <el-button style="z-index:99;" type="primary" @click="createProject">创建项目</el-button>
       <div class="qrShow" v-show="showQr">
         <img src="../../assets/images/weixin.jpg"/>
       </div>
@@ -41,8 +41,7 @@
       </div>
     </div>
     <h1>我们能提供</h1>
-    <div class="content flex content1" style="height: 581px;">
-
+    <div class="content flex content1" style="height: 481px;">
       <div class="fullPageText fullPageText1">
         <div>投资业务工作场景--团队/个人工作</div>
         <div>项目、人脉数据永久留存,人员流动带不走</div>
@@ -77,7 +76,7 @@
       </div>
     </div>
     <div style="height: 300px;background:#f9fafc"></div>
-    <div class="qrCode" @click="clearSomething">
+    <div class="qrCode">
       <img src='../../assets/images/indexQr.png'/>
     </div>
     <div class="qrCode-large tc">

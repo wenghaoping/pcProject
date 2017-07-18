@@ -1,6 +1,5 @@
 <template>
-    <div id="loginReady">
-      <div>这里是loginReady</div>
+    <div id="loginReady" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     </div>
 </template>
 
@@ -9,20 +8,28 @@
   export default {
     data () {
       return {
-
+        loading:false,
       }
     },
     methods: {
 
     },
     created(){
+      this.loading=true;
       var that=this;
-      console.log(this.$route.query)
+      var a='';
+      if(localStorage.entrance){
+        a=localStorage.entrance
+      }else{
+        a='myProject'
+      }
+      console.log(this.$route.query);
       localStorage.user_id=this.$route.query.id;
       localStorage.user_real_name=this.$route.query.name;
       setTimeout(function(){
-        that.$router.push({name:localStorage.entrance})
-      },2000)
+        that.$router.push({name:a});
+        that.loading=false;
+      },100)
     }
   }
 </script>

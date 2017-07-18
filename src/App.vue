@@ -110,7 +110,7 @@
         //一小时不动后退出登录
         setTimeout(function(){
           localStorage.clear()
-        },300000)
+        },3600000)
         //登录状态下拦截
         /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
           this.$router.push({name:'index'})
@@ -288,7 +288,7 @@
     float: right !important;
     margin-right: 18% !important;
     @media screen and(max-width: 1400px){
-      margin-right: 0 !important;
+      margin-right: 10% !important;
     }
   }
 </style>

@@ -4,7 +4,7 @@
         <span class="card">名片</span>
         <el-upload
           class="upload-demo"
-          action="https://dev.weitianshi.cn/api/v/user/uploadCard"
+          action="https://www.weitianshi.cn/api/v/user/uploadCard"
           :data="uploadData"
           :on-preview="handlePreview"
           :on-remove="handleRemove"

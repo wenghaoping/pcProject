@@ -1,6 +1,6 @@
 <template>
   <div id="myproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="wrap-left fl">
+    <div class="wrap-left fl" style="height: 888px;">
       <div class="top-big-progress">
         <div class="pp-item pp-node pp-start" :class="{'pp-cur':node0}" @click="setNode('0')">
           <p class="pp-num pp-txt">{{nodeCount.whole}}</p>

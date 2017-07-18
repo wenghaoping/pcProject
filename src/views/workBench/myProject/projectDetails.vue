@@ -1,6 +1,6 @@
 <template>
   <div id="projectDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="contain-grid contain-center">
+    <div class="contain-grid contain-center1">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
         <div class="item-lists item-lists-top clearfix">
@@ -49,8 +49,8 @@
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
                 <div class="txt end">佣金收讫</div>
-                <div class="img"><img src="../../../assets/images/editTo.png"></div>
-                 <!--<div class="selectIn fr">-->
+                <!--<div class="img"><img src="../../../assets/images/editTo.png"></div>
+                 <div class="selectIn fr">-->
                     <!--<el-select v-model="value1" placeholder="请选择" @change="selectChange">-->
                       <!--<el-option-->
                         <!--v-for="item in options"-->
