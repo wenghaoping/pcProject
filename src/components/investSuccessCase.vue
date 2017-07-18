@@ -159,7 +159,7 @@
         console.log(this.caseForm.investSuccessCase);
 
         this.$http.post(this.URL.createUserProjectCase,{
-          user_id:sessionStorage.user_id,
+          user_id:localStorage.user_id,
           project_case:this.caseForm.investSuccessCase,
         }).then(res=>{
           console.log(res);

@@ -60,12 +60,12 @@
           }).then(res => {
             console.log(res)
             if(res.data.status_code===2000000){
-              sessionStorage.user_id=res.data.user_id;
+              localStorage.user_id=res.data.user_id;
               //is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
               if (res.data.is_exist === 0) {
                 this.$router.push({name:'identityChoose'})
               }else if (res.data.is_exist === 1) {
-                this.$router.push({name:sessionStorage.entrance})
+                this.$router.push({name:localStorage.entrance})
               }
             }else{
               this.$tool.error(res.data.error_msg)

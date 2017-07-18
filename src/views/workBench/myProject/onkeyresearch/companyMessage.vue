@@ -162,7 +162,7 @@ export default {
     },
     getCrawlerCompany(){
       this.$http.post(this.URL.getCrawlerCompany, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         company_name: this.compName
       })
         .then(res => {

@@ -126,7 +126,7 @@ export default {
         domains: [],
       },
       loading:false,
-      uploadDate:{user_id: sessionStorage.user_id},//上传所带的额外的参数
+      uploadDate:{user_id: localStorage.user_id},//上传所带的额外的参数
       loadingcheck:false,
       showList:false,
       alentTitle:""
@@ -251,7 +251,7 @@ export default {
         this.fileList.splice(index, 1)
       }
 
-      this.$http.post(deleteUpload,{user_id: sessionStorage.user_id,project_id:item.project_id})
+      this.$http.post(deleteUpload,{user_id: localStorage.user_id,project_id:item.project_id})
         .then(res=>{
           if(res.status===200){
             this.loading=false;
@@ -281,7 +281,7 @@ export default {
           let arr=this.dateForm.domains
           this.$tool.console(this.dateForm.domains);
           for(let i=0; i<arr.length; i++){
-            this.$http.post(this.URL.deleteUpload,{user_id: sessionStorage.user_id,project_id:arr[i].project_id})
+            this.$http.post(this.URL.deleteUpload,{user_id: localStorage.user_id,project_id:arr[i].project_id})
             .then(res=>{
               if(res.status===200){
               this.loading=false;

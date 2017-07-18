@@ -37,8 +37,8 @@
               this.$tool.console(res)
             if(res.data.status_code===2000000){
               //将user_id存入sessionStorge并跳转
-              sessionStorage.user_id=res.data.user_id;
-              this.$router.push({name:sessionStorage.entrance})
+              localStorage.user_id=res.data.user_id;
+              this.$router.push({name:localStorage.entrance})
             }else{
                 this.$tool.error(res.data.error_msg)
             }

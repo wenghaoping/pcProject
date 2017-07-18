@@ -232,7 +232,7 @@
     methods: {
       // 跳过
       skip(){
-        this.$router.push({name:sessionStorage.entrance})
+        this.$router.push({name:localStorage.entrance})
       },
       // 完成
       next(){
@@ -248,7 +248,7 @@
           console.log(this.ruleForm1,this.ruleForm2);
           this.$http.post(this.URL.saveUserIdentity,{
             id:sessionStorage.id,
-            user_id:sessionStorage.user_id,
+            user_id:localStorage.user_id,
             iden_name:this.ruleForm1.name,
             iden_company_name:this.ruleForm1.company,
             iden_company_career:this.ruleForm1.career,
@@ -262,7 +262,7 @@
             scale:this.ruleForm2.investScale
           }).then(res=>{
             if(res.data.status_code===2000000){
-              this.$router.push({name:sessionStorage.entrance})
+              this.$router.push({name:localStorage.entrance})
             }else{
               this.$tool.error(res.data.error_msg)
             }
@@ -280,7 +280,7 @@
       // 公司搜索相关函数
       handleSelect(item) {
         this.companyTitle=item.value;
-        this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,com_id:item.address})
+        this.$http.post(this.URL.getOneCompany,{user_id:localStorage.user_id,com_id:item.address})
         .then(res=>{
           let data=res.data.data;
           this.queryData=data;
@@ -293,7 +293,7 @@
         this.dialogVisible=true;
       },
       querySearchAsync(queryString, cb) {
-        this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
+        this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
         .then(res=>{
           this.restaurants=[];
           let data=res.data.data;

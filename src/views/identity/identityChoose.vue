@@ -52,7 +52,7 @@
       next(){
         if (typeof this.active === "number") {
           this.$http.post(this.URL.setUserGroup, {
-            user_id: sessionStorage.user_id,
+            user_id: localStorage.user_id,
             group_id: this.active,
           }).then(res => {
             if(res.data.status_code===2000000){

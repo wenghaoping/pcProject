@@ -43,6 +43,7 @@
             <el-table-column prop="card_name" label="意向投资人"
                              show-overflow-tooltip width="140"
                              :filters="card_nameFilters"
+                             column-key="card_name"
                              filter-placement="bottom-end">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.card_name.length > 3 ? false:true">
@@ -64,7 +65,7 @@
                              :filters="schedule_nameFilters"
                              :filter-multiple="stateCheck"
                              filter-placement="bottom-end"
-                             sortable="custom" column-key="schedule_name">
+                             sortable="custom" column-key="schedule_id">
               <template scope="scope">
                 <div v-if="scope.row.schedule_name==''">
                   --
@@ -108,6 +109,7 @@
                 </div>
               </template>
             </el-table-column>
+
             <el-table-column prop="user_real_name" label="跟进人" show-overflow-tooltip width="143">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.user_real_name.length > 3 ? false:true">
@@ -127,7 +129,9 @@
             <el-table-column prop="created_at" label="跟进时间"
                              show-overflow-tooltip
                              width="172"
-                             column-key="create_at_time"
+                             :filters="created_atFilters"
+                             :filter-multiple="stateCheck"
+                             column-key="create_at"
                              sortable="custom">
               <template scope="scope">
                 <div v-if="scope.row.created_at==''">
@@ -159,6 +163,17 @@
               </template>
             </el-table-column>
           </el-table>
+
+          <div class="timeCheck">
+            <el-date-picker
+              v-model="timeSelect"
+              type="date"
+              placeholder="选择日期"
+              :editable="false"
+              @change="timeChange"
+              :picker-options="pickerOptions">
+            </el-date-picker>
+          </div>
           <div class="pagenav" v-if="totalData>10">
             <el-pagination
               small
@@ -174,28 +189,25 @@
     </div>
 
     <!--写跟进弹框-->
-    <el-dialog
-      :visible.sync="dialogFollow"
-      size="tiny">
-      <div class="tagTitle">准确设置项目标签便于查找，并参与项目匹配度计算</div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogFollow = false">继续添加</el-button>
-        <el-button type="primary" @click="dialogFollow = false">提 交</el-button>
-      </span>
-    </el-dialog>
+  <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import addfollow from './addFollow.vue'
 export default {
+  components: {
+    addfollow
+  },
   data () {
     return {
+      dialogFollow:true,//控制写跟进弹框
+      followid:'',//跟进id
       loading: false,//加载动画
       searchinput:'',//搜索输入框
       totalData:1,//总页数
       currentPage:1,//当前页数
       getPra:{},//筛选的请求参数
-      dialogFollow:false,
       tableData:[
 /*        {
          follow_id: 15,
@@ -210,23 +222,29 @@ export default {
       ],//列表数据
       schedule_nameFilters:[],//跟进状态筛选
       card_nameFilters:[],//意向投资人
+      created_atFilters:[],//更近时间选择
       stateCheck:false,//跟进状态单选
+      timeSelect:'',//时间选择器
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now() - 8.64e7+3600 * 1000 * 24;
+        }
+      },
     }
   },
   methods: {
     handleIconClick(){
       this.loading=true;
-      this.getPra.user_id=sessionStorage.user_id;
-      this.getPra.search=this.searchinput;
+      this.getPra.user_id=localStorage.user_id;
+      this.getPra.pro_name=this.searchinput;
       this.currentPage=1;
       this.getPra.page=1;
       this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
           let data = res.data.data;
-          console.log(data);
-          this.tableData=data.follow_record_list;
+          this.tableData=data.follow_record;
           this.loading=false;
-          this.totalData=res.data.count;
+          this.totalData=data.count;
         })
         .catch(err=>{
           this.loading=false;
@@ -234,7 +252,7 @@ export default {
         })
     },//搜索===首次进入页面加载的数据
     addFollow(){
-
+      this.dialogFollow=true;
     },//点击写跟近按钮
     handleSelect(row, event, column) {
       if(column.label!="重置"){
@@ -256,7 +274,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.loading=true;
-        this.$http.post(this.URL.deleteConnectUser, {user_id:sessionStorage.user_id,card_id: row.card_id})
+        this.$http.post(this.URL.deleteConnectUser, {user_id:localStorage.user_id,card_id: row.card_id})
           .then(res => {
             this.loading=false;
             this.$tool.success("删除成功")
@@ -278,15 +296,16 @@ export default {
     filterChange(filters){
       this.loading=true;
       this.currentPage=1;
-      this.getPra.user_id=sessionStorage.user_id;
+      this.getPra.user_id=localStorage.user_id;
       if(filters.order){
         if(filters.order=="ascending") filters.order="asc"//升降序
         else filters.order="desc";
-        this.getPra.order=filters.prop;
-        this.getPra.sort=filters.order;
+//        this.getPra.order=filters.prop;
+        this.getPra[filters.prop]=filters.order;
       }else{
         for(let key in filters){
           this.getPra[key]=filters[key];
+          if(key === 'schedule_id') this.getPra[key]=filters[key][0];
         }
       } //筛选
       for(let key in this.getPra){
@@ -295,12 +314,12 @@ export default {
         }
       }//删除空的查询项
       this.$tool.console(this.getPra);
-      this.$http.post(this.URL.getConnectUser,this.getPra)
+      this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
           this.loading=false;
           let data = res.data.data;
-          this.tableData=this.getProjectList(data);
-          this.totalData=res.data.count;
+          this.tableData=data.follow_record;
+          this.totalData=data.count;
         })
         .catch(err=>{
           this.loading=false
@@ -310,29 +329,48 @@ export default {
     filterChangeCurrent(page){
       delete this.getPra.page;
       this.loading=true;
-      this.getPra.user_id=sessionStorage.user_id;
+      this.getPra.user_id=localStorage.user_id;
       this.getPra.page=page;//控制当前页码
       this.$tool.console(this.getPra);
-      this.$http.post(this.URL.getConnectUser,this.getPra)
+      this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
           this.loading=false;
           let data = res.data.data;
-          this.$tool.console(res)
-          this.tableData=this.getProjectList(data);
+
+          this.tableData=data.follow_record;
         })
         .catch(err=>{
           this.loading=false
           this.$tool.console(err,2)
         })
     },//控制页码
-
+    timeChange(time){
+      this.loading=true;
+      this.currentPage=1;
+      this.getPra.created_at_time=time;
+      this.$http.post(this.URL.get_follow_records,this.getPra)
+        .then(res=>{
+          this.loading=false;
+          let data = res.data.data;
+          this.tableData=data.follow_record;
+          this.totalData=data.count;
+        })
+        .catch(err=>{
+          this.loading=false
+          this.$tool.console(err,2)
+        })
+    },//筛选时间
+    closeFollow(msg){
+      this.dialogFollow=msg;
+    },//关闭添加跟进
 
     titleSift(){
       this.loading=true;
-      this.$http.post(this.URL.getToInvestor,{user_id: sessionStorage.user_id})
+      this.$http.post(this.URL.getToInvestor,{user_id: localStorage.user_id})
         .then(res=>{
           let data = res.data.data;
-          this.$tool.console(data);
+          this.schedule_nameFilters=this.$tool.getTitleSift(data.schedule_name);
+          this.card_nameFilters=this.$tool.getTitleSift(data.investors);
 /*          let pro_schedule=data.pro_schedule;//跟进状态
           this.schedule_nameFilters=this.$tool.getTitleSift(pro_schedule);*/
           this.loading=false;

@@ -17,19 +17,19 @@
                   <img :src="project1.project_logo" v-else>
                 </div>
                 <div class="portrait-right fl ">
-                  <div class="block clearfix">
+                  <div class="block clearfix" style="display: block">
                     <span class="block-title fl">{{project1.project_name}}</span>
                     <span class="line1 fl"> | </span>
                     <span class="block-company fl">{{project1.company_name}}</span>
                     <span class="block-tag fl" v-if="project1.project_state!=null"><el-tag type="primary" v-if="project1.project_state!=''" >{{project1.project_state}}</el-tag><!--<el-tag type="success">{{project1.project_industry}}</el-tag>--></span>
                   </div>
-                  <div class="block clearfix" style="margin-bottom: 20px;">
+                  <div class="block clearfix" style="margin-bottom: 20px;display: block">
                     <div class="doc fl">{{project1.project_introduce}}</div>
                   </div>
 <!--                  <div class="block">
                     <span class="doc fl">{{project1.project_industry}}</span>
                   </div>-->
-                  <div class="block clearfix" style="height: 24px">
+                  <div class="block clearfix" style="height: 24px;display: block">
                     <span class="mid-tag" v-for="pro in project1.project_industry" v-if="project1.project_industry!=''">{{pro}}</span>
 <!--                    <span class="big-tag" style="margin-left: 191px;">-&#45;&#45;</span><span class="split">｜</span>
                     <span class="big-tag">&#45;&#45;</span><span class="split">｜</span>
@@ -75,13 +75,13 @@
                     <img src="../../../assets/images/logo.png" v-else>
                   </div>
                   <div class="portrait-right fl ">
-                    <div class="block clearfix">
+                    <div class="block clearfix" style="display: block">
                       <span class="block-title fl clearfix">{{teamin.team_member_name}}</span>
                       <span class="block-company fl">{{teamin.team_member_position}}</span>
                       <!--<span class="block-tag fl"><el-tag type="primary">{{teamin.team_member_position}}</el-tag></span>-->
 <!--                      <span class="bloack-right fr">股权占比：12%</span>-->
                     </div>
-                    <div class="block">
+                    <div class="block" style="display: block">
                       <span class="doc fl">{{teamin.team_member_introduce}}</span>
                     </div>
                   </div>
@@ -429,7 +429,7 @@ export default {
     },//里程碑时间
     getCrawlerTeam(){
       this.$http.post(this.URL.getCrawlerTeam, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -441,7 +441,7 @@ export default {
     },//获取核心成员
     getCrawlerHistoryFinance(){
       this.$http.post(this.URL.getCrawlerHistoryFinance, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -454,7 +454,7 @@ export default {
     },//获取历史融资
     getCrawlerMilestone(){
       this.$http.post(this.URL.getCrawlerMilestone, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -467,7 +467,7 @@ export default {
     },//获取里程碑
     getCrawlerNews(){
       this.$http.post(this.URL.getCrawlerNews, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -479,7 +479,7 @@ export default {
     },//获取新闻
     getCrawlerCompeting(){
       this.$http.post(this.URL.getCrawlerCompeting, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -491,7 +491,7 @@ export default {
     },//获取竞品
     getCrawlerProject(){
       this.$http.post(this.URL.getCrawlerProject, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {

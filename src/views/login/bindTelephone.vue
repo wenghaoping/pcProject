@@ -66,7 +66,7 @@
               }).then(res => {
                 console.log(res)
                 if(res.data.status_code===2000000){
-                    this.$router.push({name:sessionStorage.entrance})
+                    this.$router.push({name:localStorage.entrance})
                 }else{
                   this.$tool.error(res.data.error_msg)
                 }

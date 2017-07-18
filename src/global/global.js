@@ -60,12 +60,12 @@ var func = {
   },//获取项目领域
   getTags_pro(data){
     let arr = [];
-    data.forEach((x)=>{
+    for(let i=0; i<data.length; i++){
       let obj = {};
-      obj.label = x.tag_name;
-      obj.value = x.tag_id;
-      arr.push(obj)
-    });
+      obj.label = data[i].tag_name;
+      obj.value = data[i].tag_id;
+      arr.push(obj);
+    }
     return arr
   },//获取项目/团队/人脉标签
   getResource(data){
@@ -80,30 +80,30 @@ var func = {
   },//获取提供的资源
   getCompanyStatus(data){
     let arr = [];
-    for (let i = 0; i < data.length; i++) {
+    data.forEach((x)=>{
       let obj = {};
-      obj.label = data[i].status_id;
-      obj.value = data[i].status_name;
+      obj.label = x.status_id;
+      obj.value = x.status_name;
       arr.push(obj)
-    }
-    arr.push({label: '自定义添加', value: '自定义添加'})
-    return arr
+    });
+    arr.push({label: '自定义添加', value: '自定义添加'});
+    return arr;
   },//获取运营状态
-  getCompany_scale(data){
+  getCompanyScale(data){
     let arr = [];
-    for (let i = 0; i < data.length; i++) {
+    data.forEach((x)=>{
       let obj = {};
-      obj.label = data[i].comp_scale_value;
-      obj.value = data[i].comp_scale_id;
+      obj.label = x.comp_scale_value;
+      obj.value = x.comp_scale_id;
       arr.push(obj);
-    }
-    return arr
+    });
+    return arr;
   },//获取公司规模几人
   getWxProjectCategory() {
-    axios.post(URL.getWxProjectCategory, {user_id: sessionStorage.user_id})
+    axios.post(URL.getWxProjectCategory, {user_id: localStorage.user_id})
     .then(res => {
       let data = res.data.data;
-      global.data.categoryData=data;
+      global.data.categoryData = data;
       global.data.area = global.func.getCity(data.area);//设置城市1列表
       global.data.scale = global.func.getScale(data.scale);//设置期望融资
       global.data.stage = global.func.getStage(data.stage);//设置轮次信息
@@ -113,9 +113,9 @@ var func = {
       global.data.tags_team = global.func.getTags_pro(data.tags_team);//设置团队标签
       global.data.tags_user = global.func.getTags_pro(data.tags_user);//设置人脉标签
       global.data.pro_source = global.func.getTags_pro(data.pro_source);//设置项目来源
-      global.data.resource = global.func.getResource(data.resource);//设置项目来源
+      global.data.resource = global.func.getResource(data.resource);//设置项目来源111
       global.data.company_status = global.func.getCompanyStatus(data.company_status);//设置运营状态
-      global.data.company_scale = global.func.getCompany_scale(data.company_scale);//设置公司规模几人
+      global.data.company_scale = global.func.getCompanyScale(data.company_scale);//设置公司规模几人
     })
     .catch(err => {
       console.log(err);

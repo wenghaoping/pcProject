@@ -241,7 +241,7 @@
 
         },
         close:false,
-        uploadDate:{user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
+        uploadDate:{user_id: localStorage.user_id},//商业计划书上传所带的额外的参数
         project: {
           project_id:'',
           pro_name : '',//项目名称
@@ -294,7 +294,7 @@
       },//获取所有下拉框的数据
       area1Change(data){
         this.project.pro_area_city="";
-        this.$http.post(this.URL.getArea,{user_id: sessionStorage.user_id, pid:data})
+        this.$http.post(this.URL.getArea,{user_id: localStorage.user_id, pid:data})
           .then(res=>{
             let data = res.data.data;
             this.area2=this.$tool.getCity(data);
@@ -355,7 +355,7 @@
         const deleteAtUpload=this.URL.deleteAtUpload;
         if (fileList.length == 0) this.planButton = true;
         else this.planButton = true;
-        this.$http.post(deleteAtUpload,{user_id: sessionStorage.user_id,project_id:this.uploadShow.project_id})
+        this.$http.post(deleteAtUpload,{user_id: localStorage.user_id,project_id:this.uploadShow.project_id})
           .then(res=>{
             if(res.status===200){
               this.loading=false;
@@ -379,7 +379,7 @@
         this.uploadShow=object;
       },//添加上传文件时,保存返回的数据
       planPreview(file){
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+sessionStorage.user_id+"&file_id="+this.uploadShow.file_id
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+this.uploadShow.file_id
         window.location.href=url;
       },//点击下载
       beforeUpload(file){
@@ -414,7 +414,7 @@
         })
       },
       goBack(){//返回上一层
-        this.$router.push({name: 'indexmyProject'})//路由传参
+        this.$router.go(-1);
       },
       /*检查所有必填项目以及获取所有数据*/
       submitForm(formName) {
@@ -451,7 +451,7 @@
         else if(this.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else if(this.getNull(this.project.pro_goodness)){this.$tool.error("项目亮点不能为空")}
         else if(this.submitForm('project')) {
-          this.project.user_id=sessionStorage.user_id;
+          this.project.user_id=localStorage.user_id;
           this.project.project_id=this.uploadShow.project_id;
           this.$http.post(this.URL.editProject,this.project)
             .then(res=>{
@@ -480,7 +480,7 @@
       },
       /*自动搜索,接口写这里面*/
       querySearchAsync(queryString, cb) {
-        this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
+        this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
           .then(res=>{
             this.restaurants=[];
             let data=res.data.data;
@@ -505,7 +505,7 @@
       },
       handleSelect(item) {
         this.companyTitle=item.value;
-        this.$http.post(this.URL.getOneCompany,{user_id:sessionStorage.user_id,com_id:item.address})
+        this.$http.post(this.URL.getOneCompany,{user_id:localStorage.user_id,com_id:item.address})
           .then(res=>{
             let data=res.data.data;
             this.queryData=data;
@@ -559,10 +559,11 @@
       if(this.planList.length!=0) this.planButton=false;
       else this.planButton=true;
       this.getprojectId();
-      this.getWxProjectCategory();
+
       setTimeout(() => {
+        this.getWxProjectCategory();
         this.getWxosProjectData();
-      },1000)
+      },500)
 
     },
     /*watch: {

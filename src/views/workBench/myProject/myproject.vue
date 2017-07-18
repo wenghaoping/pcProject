@@ -380,7 +380,7 @@
       /*请求函数*/
       handleIconClick(){
         this.loading=true;
-        this.getPra.user_id=sessionStorage.user_id;
+        this.getPra.user_id=localStorage.user_id;
         this.getPra.search=this.searchinput;
         this.currentPage=1;
         this.getPra.page=1;
@@ -400,7 +400,7 @@
       filterChange(filters){
         this.loading=true;
         this.currentPage=1;
-        this.getPra.user_id=sessionStorage.user_id;
+        this.getPra.user_id=localStorage.user_id;
         if(filters.pro_schedule) {
             if(parseInt(filters.pro_schedule)){
               this.setNode(parseInt(filters.pro_schedule))
@@ -447,7 +447,7 @@
       filterChangeCurrent(page){
         delete this.getPra.page;
         this.loading=true;
-        this.getPra.user_id=sessionStorage.user_id;
+        this.getPra.user_id=localStorage.user_id;
         this.getPra.page=page;//控制当前页码
         this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{
@@ -475,7 +475,7 @@
         this.node8 = false ;
         this.node9 = false ;
         this['node' + v] = true ;
-        this.$http.post(this.getProjectListURL,{user_id: sessionStorage.user_id,pro_schedule:parseInt(v)})
+        this.$http.post(this.getProjectListURL,{user_id: localStorage.user_id,pro_schedule:parseInt(v)})
           .then(res=>{
             this.loading=false
             let data = res.data.data
@@ -495,7 +495,7 @@
 
       getNodeCount(){
         const getNodeCountURL=this.URL.getNodeCount
-        this.$http.post(getNodeCountURL,{user_id: sessionStorage.user_id})
+        this.$http.post(getNodeCountURL,{user_id: localStorage.user_id})
           .then(res=>{
               let data = res.data.data
 
@@ -547,7 +547,7 @@
       titleSift(){
         this.loading=true;
         const titleSiftURL=this.URL.titleSift
-        this.$http.post(titleSiftURL,{user_id: sessionStorage.user_id})
+        this.$http.post(titleSiftURL,{user_id: localStorage.user_id})
           .then(res=>{
             let data = res.data.data
 //            this.$tool.console(data)

@@ -125,9 +125,9 @@
     methods: {
       // 创建项目
       createProject(){
-        sessionStorage.entrance='creatproject'
-        console.log(sessionStorage.user_id)
-        if(sessionStorage.user_id){
+        localStorage.entrance='creatproject'
+        console.log(localStorage.user_id)
+        if(localStorage.user_id){
           this.$router.push({name:'creatproject'})
         }else{
           this.$router.push({name:'telephoneLogin'})

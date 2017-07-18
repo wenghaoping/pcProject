@@ -25,7 +25,7 @@
         data () {
             return {
               uploadData:{
-                user_id:sessionStorage.user_id,
+                user_id:localStorage.user_id,
                 id:sessionStorage.id,
               },
               fileList: [],
@@ -40,7 +40,7 @@
           }
         },
         created(){
-          console.log(sessionStorage.user_id,sessionStorage.id)
+          console.log(localStorage.user_id,sessionStorage.id)
         }
     }
 </script>

@@ -62,7 +62,7 @@ export default [
     path: '/workBench',component: workBench,
     children:[
       // { path: '', component: indexmyProject},
-      { path: '/workBench', component: indexmyProject,name:"indexmyProject",
+      { path: '/workBench', component: indexmyProject,
         children:[
           { path: '', component: myProject, name:"myProject"},
           { path: 'myContacts', component: myContacts, name:"myContacts"},

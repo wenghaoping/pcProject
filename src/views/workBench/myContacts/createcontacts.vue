@@ -335,7 +335,7 @@ export default {
           ],//名片上传列表
       planButton: true,//控制上传按钮的显示
       uploadShow: {},//计划书上传列表,需要存数据啦
-      uploadDate: {user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
+      uploadDate: {user_id: localStorage.user_id},//商业计划书上传所带的额外的参数
       contacts: {
         card_id:'',//id
         user_id:'',//user_id
@@ -405,7 +405,7 @@ export default {
       if (fileList.length == 0) this.planButton = true;
       else this.planButton = true;
       if(this.card_id=='creat') this.card_id=0;
-      this.$http.post(this.URL.deleteConnectCard, {user_id: sessionStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
+      this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
         .then(res => {
           if (res.status === 200) {
             this.loading = false;
@@ -424,7 +424,7 @@ export default {
       this.uploadShow = object;
     },//添加上传文件时,保存返回的数据
     beforeUpload(file){
-      this.uploadDate.user_id = sessionStorage.user_id;
+      this.uploadDate.user_id = localStorage.user_id;
       if(this.card_id='creat') this.card_id=0;
       this.uploadDate.card_id = this.card_id;
       let filetypes=[".jpg",".png",".jpeg"];
@@ -455,7 +455,7 @@ export default {
       let tagName = this.$tool.checkArr(e,this.tags_con);
 
       if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 3, tag_name: tagName})
+        this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
           .then(res => {
             let newState = {};
             newState.label = tagName;
@@ -474,13 +474,13 @@ export default {
         let contacts1=this.submitForm('contacts1');
         let contacts2=this.submitForm('contacts2');
         if(!contacts) {this.$tool.error("姓名不能为空")}
-        else if(!contacts1) this.$tool.error("投资需求过长")
-        else if(!contacts2) this.$tool.error("资源需求过长")
+        else if(!contacts1) {this.$tool.error("投资需求过长")}
+        else if(!contacts2) {this.$tool.error("资源需求过长")}
       else{
           this.$tool.setTag(this.contacts.user_invest_tag,this.tags_con);
           let allData=new Object;
           allData=this.contacts;
-          allData.user_id=sessionStorage.user_id;
+          allData.user_id=localStorage.user_id;
           allData.card_id=this.contacts.card_id || '';
           allData.image_id=this.uploadShow.image_id || '';
           this.$tool.console(this.$tool.getToObject(allData),2);
@@ -515,10 +515,10 @@ export default {
       });
     },
     submitForm(formName) {
-      let check = true
+      let check = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          return
+          check = true;
         } else {
           check = false;
         }
@@ -532,8 +532,8 @@ export default {
       this.stage = this.$global.data.stage;//设置轮次信息
       this.industry = this.$global.data.industry;//设置轮次信息
       this.tags_con = this.$global.data.tags_user;//设置人脉标签
-      this.giveTo=this.$global.data.resource;//设置提供的资源和对接的资源
-      this.pushTo=this.$global.data.resource;//设置提供的资源和对接的资源
+      this.giveTo = this.$global.data.resource;//设置提供的资源和对接的资源
+      this.pushTo = this.$global.data.resource;//设置提供的资源和对接的资源
     },//获取所有下拉框的数据
 
     /*以下都是辅助函数*/
@@ -582,7 +582,7 @@ export default {
 
     getOneUserInfo(){
       this.loading=true;
-      this.$http.post(this.URL.getOneUserInfo,{user_id:sessionStorage.user_id,card_id: this.card_id})
+      this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.card_id})
         .then(res => {
           let data = res.data.data;
           this.$tool.console(this.$tool.getToObject(data));

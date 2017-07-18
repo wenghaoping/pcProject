@@ -187,7 +187,7 @@ export default {
     },//访问时长
     getCrawlerProject(){
       this.$http.post(this.URL.getCrawlerProject, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.comid
       })
         .then(res => {
