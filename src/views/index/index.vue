@@ -129,9 +129,9 @@
     methods: {
       // 创建项目
       createProject(){
-        sessionStorage.entrance='creatproject'
-        console.log(sessionStorage.user_id)
-        if(sessionStorage.user_id){
+        localStorage.entrance='creatproject'
+        console.log(localStorage.user_id)
+        if(localStorage.user_id){
           this.$router.push({name:'creatproject'})
         }else{
           this.$router.push({name:'telephoneLogin'})
@@ -139,11 +139,11 @@
       },
       // 清除浏览器内存
       clearSomething(){
-        console.log('清除sessionStorage部分key值完毕')
-        sessionStorage.removeItem('user_id');
-        sessionStorage.removeItem('id');
-        sessionStorage.removeItem('user_real_name');
-        sessionStorage.removeItem('entrance');
+        console.log('清除localStorage部分key值完毕')
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('id');
+        localStorage.removeItem('user_real_name');
+        localStorage.removeItem('entrance');
       },
       // 鼠标到体验小程序上悬浮触发二维码显示
       showS(){

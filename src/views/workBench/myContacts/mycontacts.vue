@@ -373,7 +373,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.loading=true;
-        this.$http.post(this.URL.deleteConnectUser, {user_id:sessionStorage.user_id,card_id: row.card_id})
+        this.$http.post(this.URL.deleteConnectUser, {user_id:localStorage.user_id,card_id: row.card_id})
           .then(res => {
             this.loading=false;
             this.$tool.success("删除成功")
@@ -421,7 +421,7 @@ export default {
     /*请求函数*/
     handleIconClick(){
       this.loading=true;
-      this.getPra.user_id=sessionStorage.user_id;
+      this.getPra.user_id=localStorage.user_id;
       this.getPra.search=this.searchinput;
       this.currentPage=1;
       this.getPra.page=1;
@@ -441,7 +441,7 @@ export default {
     filterChange(filters){
       this.loading=true;
       this.currentPage=1;
-      this.getPra.user_id=sessionStorage.user_id;
+      this.getPra.user_id=localStorage.user_id;
       if(filters.order){
         if(filters.order=="ascending") filters.order="asc"//升降序
         else filters.order="desc";
@@ -473,7 +473,7 @@ export default {
     filterChangeCurrent(page){
       delete this.getPra.page;
       this.loading=true;
-      this.getPra.user_id=sessionStorage.user_id;
+      this.getPra.user_id=localStorage.user_id;
       this.getPra.page=page;//控制当前页码
       this.$tool.console(this.getPra);
       this.$http.post(this.URL.getConnectUser,this.getPra)
@@ -492,7 +492,7 @@ export default {
 
     titleSift(){
       this.loading=true;
-      this.$http.post(this.URL.userTitleSift,{user_id: sessionStorage.user_id})
+      this.$http.post(this.URL.userTitleSift,{user_id: localStorage.user_id})
         .then(res=>{
           let data = res.data.data;
           let card_industry=data.card_industry;//投资领域
@@ -582,7 +582,7 @@ export default {
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
       if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 3, tag_name: tagName})
+        this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
           .then(res => {
             let newState = {};
             newState.label = tagName;
@@ -598,7 +598,7 @@ export default {
     addTag(){
       this.loading=true;
       this.$tool.setTag(this.tagsValue,this.tags.changecont);
-      this.$http.post(this.URL.setConnectTag, {user_id:sessionStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
+      this.$http.post(this.URL.setConnectTag, {user_id:localStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
         .then(res => {
           this.loading=false;
           this.$tool.success("设置成功");

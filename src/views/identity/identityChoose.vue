@@ -57,11 +57,12 @@
       next(){
         if (typeof this.active === "number") {
           this.$http.post(this.URL.setUserGroup, {
-            user_id: sessionStorage.user_id,
+            user_id: localStorage.user_id,
             group_id: this.identitys[this.active].group_id,
           }).then(res => {
             if (res.data.status_code === 2000000) {
-              sessionStorage.id = res.data.id;
+              localStorage.group_id=this.identitys[this.active].group_id;
+              localStorage.id = res.data.id;
               this.$router.push('/identityDetail')
             } else {
               this.$tool.error(res.data.error_msg)
@@ -84,11 +85,10 @@
     },
     created(){
       this.getIdentity();
-      console.log(1)
 
       //核对是否认证过身份
       this.$http.post(this.URL.getUserGroupByStatus, {
-        user_id: sessionStorage.user_id
+        user_id: localStorage.user_id
       }).then(res => {
         if (res.data.status_code === 2000000) {
           if (res.data.status === 1) {

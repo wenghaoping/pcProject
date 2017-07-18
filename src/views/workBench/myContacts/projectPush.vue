@@ -186,7 +186,7 @@ export default {
         if(check1 && check2) this.$emit('changeall',false)
 
 /*        this.$http.post(this.URL.getCrawlerBrand, {
-          user_id: sessionStorage.user_id,
+          user_id: localStorage.user_id,
         })
           .then(res => {
             let data=res.data.data;
@@ -199,7 +199,7 @@ export default {
       }else if(type==2){//继续
           if(check1 && check2) this.$emit('changeall',false)
 /*        this.$http.post(this.URL.getCrawlerBrand, {
-          user_id: sessionStorage.user_id,
+          user_id: localStorage.user_id,
         })
           .then(res => {
             let data=res.data.data;

@@ -65,7 +65,7 @@
 //          {type: '测试页面', jump: '/test'},
 //          {type: '测试页面2', jump: '/test2'}
         ],
-        user_name: sessionStorage.user_real_name,
+        user_name: localStorage.user_real_name,
         user_id:'',
       }
     },
@@ -75,8 +75,8 @@
         this.active = i
         // 控制点击工作台跳转情况
         if(this.active===1){
-          sessionStorage.entrance='myProject';
-          if(sessionStorage.user_id){
+          localStorage.entrance='myProject';
+          if(localStorage.user_id){
             this.$router.push({name:'myProject'});
           }else{
             this.$router.push({name:"telephoneLogin"});
@@ -85,33 +85,33 @@
       },
       // 伪造user_id
       setUserId(){
-//        sessionStorage.user_id = 'V0VznXa0';
-        sessionStorage.user_id='2rzyz5vp';
-        sessionStorage.user_real_name='杜兴国';
+//        localStorage.user_id = 'V0VznXa0';
+        localStorage.user_id='2rzyz5vp';
+        localStorage.user_real_name='杜兴国';
       },
       // 登录
       login(){
-        sessionStorage.entrance='myProject';
+        localStorage.entrance='myProject';
         this.$router.push('/login');
       },
-      // 检查sessionStorage.user_id
+      // 检查localStorage.user_id
       checkUser(){
         console.log(this.$route.path)
-        this.user_id=sessionStorage.user_id;
+        this.user_id=localStorage.user_id;
         //未登录状态下拦截
-        if(!sessionStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/' && this.$route.path!=='/bindTelephone'){
+        if(!localStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/' && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/' && this.$route.path!=='/workBench' && this.$route.path!=='/qr'){
           this.$tool.error('请先登录')
           this.$router.push({name:'index'})
         }
         //登录状态下拦截
-        /*if(sessionStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
+        /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
           this.$router.push({name:'index'})
         }*/
       },
     },
 //    当dom一创建时
     created(){
-/*       if(sessionStorage.user_id=="" || sessionStorage.user_id==undefined){
+/*       if(localStorage.user_id=="" || localStorage.user_id==undefined){
          this.$router.push({ name: 'SmallRoutine'});
        }else{
        //        this.$router.push('/');

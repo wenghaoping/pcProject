@@ -429,7 +429,7 @@ export default {
     },//里程碑时间
     getCrawlerTeam(){
       this.$http.post(this.URL.getCrawlerTeam, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -441,7 +441,7 @@ export default {
     },//获取核心成员
     getCrawlerHistoryFinance(){
       this.$http.post(this.URL.getCrawlerHistoryFinance, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -454,7 +454,7 @@ export default {
     },//获取历史融资
     getCrawlerMilestone(){
       this.$http.post(this.URL.getCrawlerMilestone, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -467,7 +467,7 @@ export default {
     },//获取里程碑
     getCrawlerNews(){
       this.$http.post(this.URL.getCrawlerNews, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -479,7 +479,7 @@ export default {
     },//获取新闻
     getCrawlerCompeting(){
       this.$http.post(this.URL.getCrawlerCompeting, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {
@@ -491,7 +491,7 @@ export default {
     },//获取竞品
     getCrawlerProject(){
       this.$http.post(this.URL.getCrawlerProject, {
-        user_id: sessionStorage.user_id,
+        user_id: localStorage.user_id,
         com_id: this.com_id
       })
         .then(res => {

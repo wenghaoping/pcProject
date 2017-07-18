@@ -701,12 +701,12 @@
     },
     methods:{
       download(e){
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+sessionStorage.user_id+"&file_id="+e
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
         window.location.href=url;
       },//下载文件
       searchChange(queryString){
         this.$tool.console(queryString)
-        this.$http.post(this.URL.selectCompany,{user_id:sessionStorage.user_id,company_name:queryString})
+        this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
           .then(res=>{
             this.seachCompanys=[];
             let data =res.data.data;
@@ -722,7 +722,7 @@
         if(this.project.pro_company_name==""){
           this.dialogSearchVisible = true;
         }else{
-          this.$http.post(this.URL.getCrawlerCompany, {user_id: sessionStorage.user_id, company_name: this.project.pro_company_name})
+          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.project.pro_company_name})
             .then(res => {
               let data = res.data.data;
               if(data.length==0) {//搜索不到信息
@@ -788,7 +788,7 @@
         return str
       },//项目来源编辑
       getProjectDetail () {
-        this.$http.post(this.URL.getProjectDetail,{user_id:sessionStorage.user_id,project_id:this.project.project_id})
+        this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project.project_id})
           .then(res=>{
             this.loading=false;
             let data = res.data.data;
@@ -932,7 +932,7 @@
       filterChangeCurrent(page){
         /*      delete this.getPra.page;
          this.loading=true;
-         this.getPra.user_id=sessionStorage.user_id;
+         this.getPra.user_id=localStorage.user_id;
          this.getPra.page=page;//控制当前页码
          this.$http.post(this.getProjectListURL,this.getPra)
          .then(res=>{

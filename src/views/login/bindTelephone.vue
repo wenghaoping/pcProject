@@ -10,7 +10,7 @@
           <div class="codeFrame">
             <input class="code" v-model="captcha" placeholder="请输入验证码">
             <el-button type="text" @click="getCode" v-show="is_getCode==0">获取验证码</el-button>
-            <el-button type="text" v-show="is_getCode!=0" :disabled="true">{{captchaNum}}后重新获取</el-button>
+            <el-button type="text" v-show="is_getCode!=0" :disabled="true">{{captchaNum}}s</el-button>
           </div>
           <el-button class="loginBtn tc" @click="certain">确定</el-button>
         </div>
@@ -67,11 +67,11 @@
               }).then(res => {
                 console.log(res)
                 if(res.data.status_code===2000000){
-                    sessionStorage.user_career=res.data.user_career;
-                    sessionStorage.user_company=res.data.user_company;
-                    sessionStorage.user_email=res.data.user_email;
-                    sessionStorage.user_id=res.data.user_id;
-                    sessionStorage.user_real_name=res.data.user_real_name;
+                    localStorage.user_career=res.data.user_career;
+                    localStorage.user_company=res.data.user_company;
+                    localStorage.user_email=res.data.user_email;
+                    localStorage.user_id=res.data.user_id;
+                    localStorage.user_real_name=res.data.user_real_name;
                     this.$router.push({name:'identityChoose'})
                 }else{
                   this.$tool.error(res.data.error_msg)

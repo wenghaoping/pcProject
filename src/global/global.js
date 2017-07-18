@@ -102,7 +102,7 @@ var func = {
     return arr
   },//获取公司规模几人
   getWxProjectCategory() {
-    axios.post(URL.getWxProjectCategory, {user_id: sessionStorage.user_id})
+    axios.post(URL.getWxProjectCategory, {user_id: localStorage.user_id})
     .then(res => {
       let data = res.data.data;
       global.data.categoryData=data;

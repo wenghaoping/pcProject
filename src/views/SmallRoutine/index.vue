@@ -46,7 +46,7 @@ export default {
         clearInterval(this.timeout);
         this.dialogVisible=true;
       }
-      this.$http.post(this.URL.ajaxPolling,{credential:sessionStorage.credential})
+      this.$http.post(this.URL.ajaxPolling,{credential:localStorage.credential})
         .then(res=>{
 //          clearInterval(this.timeout);
           let data=res.data;
@@ -55,8 +55,8 @@ export default {
             clearInterval(this.timeout);
             if(data.type=="create") this.$router.push({ name: 'creatproject'});
             if(data.type=="update") this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});
-            sessionStorage.user_id=data.user_info.user_id;
-            sessionStorage.user_real_name=data.user_info.user_real_name;
+            localStorage.user_id=data.user_info.user_id;
+            localStorage.user_real_name=data.user_info.user_real_name;
           }else if(data.status_msg=="timeout"){
             clearInterval(this.timeout);
             this.dialogVisible=true;
@@ -84,7 +84,7 @@ export default {
           this.$tool.console(res);
           let data=res.data;
           this.qr=data.qr;
-          sessionStorage.credential=data.credential;
+          localStorage.credential=data.credential;
           this.loadIn=false;
         })
         .catch(err => {

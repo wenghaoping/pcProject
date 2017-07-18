@@ -2,7 +2,7 @@
  * Created by WengHaoping on 2017/7/3.
  */
 this.$http.post(this.URL.getCrawlerBrand, {
-  user_id: sessionStorage.user_id,
+  user_id: localStorage.user_id,
   com_id: this.comid
 })
   .then(res => {

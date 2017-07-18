@@ -677,7 +677,7 @@ export default {
     },//设置标签的函数
     getOneUserInfo(){
       this.loading=true;
-      this.$http.post(this.URL.getOneUserInfo,{user_id:sessionStorage.user_id,card_id: this.contacts.card_id})
+      this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.contacts.card_id})
         .then(res => {
           let data = res.data.data;
           this.$tool.console(this.$tool.getToObject(data));
@@ -706,7 +706,7 @@ export default {
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
       if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 3, tag_name: tagName})
+        this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
           .then(res => {
             let newState = {};
             newState.label = tagName;
@@ -722,7 +722,7 @@ export default {
     addTag(){
       this.loading=true;
       this.$tool.setTag(this.tagsValue,this.tags.changecont);
-      this.$http.post(this.URL.setConnectTag, {user_id:sessionStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
+      this.$http.post(this.URL.setConnectTag, {user_id:localStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
         .then(res => {
           this.loading=false;
           this.$tool.success("设置成功");

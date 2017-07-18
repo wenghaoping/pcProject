@@ -335,7 +335,7 @@ export default {
           ],//名片上传列表
       planButton: true,//控制上传按钮的显示
       uploadShow: {},//计划书上传列表,需要存数据啦
-      uploadDate: {user_id: sessionStorage.user_id},//商业计划书上传所带的额外的参数
+      uploadDate: {user_id: localStorage.user_id},//商业计划书上传所带的额外的参数
       contacts: {
         card_id:'',//id
         user_id:'',//user_id
@@ -404,7 +404,7 @@ export default {
     planRemove(file, fileList) {
       if (fileList.length == 0) this.planButton = true;
       else this.planButton = true;
-      this.$http.post(this.URL.deleteConnectCard, {user_id: sessionStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
+      this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
         .then(res => {
           if (res.status === 200) {
             this.loading = false;
@@ -423,7 +423,7 @@ export default {
       this.uploadShow = object;
     },//添加上传文件时,保存返回的数据
     beforeUpload(file){
-      this.uploadDate.user_id = sessionStorage.user_id;
+      this.uploadDate.user_id = localStorage.user_id;
       let filetypes=[".jpg",".png",".jpeg"];
       let name=file.name;
       let fileend=name.substring(name.lastIndexOf("."));
@@ -452,7 +452,7 @@ export default {
       let tagName = this.$tool.checkArr(e,this.tags_con);
 
       if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: sessionStorage.user_id, type: 3, tag_name: tagName})
+        this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
           .then(res => {
             let newState = {};
             newState.label = tagName;
@@ -477,7 +477,7 @@ export default {
           this.$tool.setTag(this.contacts.user_invest_tag,this.tags_con);
           let allData=new Object;
           allData=this.contacts;
-          allData.user_id=sessionStorage.user_id;
+          allData.user_id=localStorage.user_id;
           allData.card_id=this.contacts.card_id || '';
           allData.image_id=this.uploadShow.image_id || '';
           this.$tool.console(this.$tool.getToObject(allData),2);
@@ -579,7 +579,7 @@ export default {
 
     getOneUserInfo(){
       this.loading=true;
-      this.$http.post(this.URL.getOneUserInfo,{user_id:sessionStorage.user_id,card_id: this.card_id})
+      this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.card_id})
         .then(res => {
           let data = res.data.data;
           this.$tool.console(this.$tool.getToObject(data));
