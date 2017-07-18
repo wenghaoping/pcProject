@@ -19,7 +19,9 @@
       console.log(this.$route.query)
       localStorage.user_id=this.$route.query.id;
       localStorage.user_real_name=this.$route.query.name;
-      this.$router.push({name:localStorage.entrance})
+      setTimeout(function(){
+        this.$router.push({name:localStorage.entrance})
+      },2000)
     }
   }
 </script>

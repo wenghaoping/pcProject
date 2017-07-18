@@ -109,6 +109,10 @@
           this.$tool.error('请先登录')
           this.$router.push({name:'index'})
         }
+        //一小时不动后退出登录
+        setTimeout(function(){
+          localStorage.clear()
+        },3600000)
         //登录状态下拦截
         /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
           this.$router.push({name:'index'})
@@ -150,7 +154,6 @@
     line-height: 12px;
     padding-top: 20px;
     padding-bottom: 20px;
-    position: absolute;
     width: 100%;
     p:first-child{
       margin-bottom: 10px;
@@ -179,7 +182,6 @@
   #app {
     /*min-width: 1903px;*/
     background: #f3f4f8;
-    padding-bottom: 60px;
 
     main {
 
