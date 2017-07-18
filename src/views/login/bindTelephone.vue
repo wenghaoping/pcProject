@@ -72,7 +72,12 @@
                     localStorage.user_email=res.data.user_email;
                     localStorage.user_id=res.data.user_id;
                     localStorage.user_real_name=res.data.user_real_name;
-                    this.$router.push({name:'identityChoose'})
+                    //is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
+                    if (res.data.is_exist === 0) {
+                      this.$router.push({name:'identityChoose'})
+                    }else if (res.data.is_exist === 1) {
+                      this.$router.push({name:localStorage.entrance})
+                    }
                 }else{
                   this.$tool.error(res.data.error_msg)
                 }

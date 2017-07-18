@@ -4,7 +4,7 @@
     <div class="loginBox">
       <div class="backLogin" @click="backLogin">
         <img class="arrowLeft" src="../../assets/images/goback.png"/>
-        返回登录
+        <span>返回登录</span>
       </div>
       <input class="telephone" v-model="telephone" placeholder="输入注册时的手机号">
       <div class="codeFrame">

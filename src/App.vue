@@ -110,7 +110,7 @@
         //一小时不动后退出登录
         setTimeout(function(){
           localStorage.clear()
-        },3600000)
+        },300000)
         //登录状态下拦截
         /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
           this.$router.push({name:'index'})
@@ -132,7 +132,7 @@
 //        this.$router.push({name:"telephoneLogin"});
 
 //        this.$router.push({name:"myContacts"});
-//          this.$router.push({name:"createContacts"});
+//        this.$router.push({name:"createContacts"});
 //        this.setUserId();
     },
     watch: {

@@ -384,7 +384,7 @@
                     </el-col>
                     <el-col :span="1">
                       <el-form-item label="　　" v-for="(member, index) in team.core_users" :key="member.index">
-                        <span class="imgdele" @click.prevent="removeMember(member)"><img
+                        <span class="imgdele" @click.prevent="removeMember(member)" style="margin-left: 22px"><img
                           src="../../../assets/images/delete.png"></span>
                       </el-form-item>
                     </el-col>
