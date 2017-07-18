@@ -559,9 +559,9 @@
       if(this.planList.length!=0) this.planButton=false;
       else this.planButton=true;
       this.getprojectId();
-      this.getWxProjectCategory();
       setTimeout(() => {
         this.getWxosProjectData();
+        this.getWxProjectCategory();
       },1000)
 
     },

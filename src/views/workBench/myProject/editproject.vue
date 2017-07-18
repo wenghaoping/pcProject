@@ -2190,7 +2190,7 @@
         this.getWxProjectCategory();
         this.getProjectDetail();
         this.setFileType();
-      },200)
+      },200);
       this.ProjectShow=false;
       this.teamShow=false;
       this.financingShow=false;
