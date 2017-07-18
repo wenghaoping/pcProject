@@ -3,7 +3,7 @@
     <el-dialog title="批量上传BP" :visible="dialogUploadVisible" :before-close="handleClose" :show-close="showList">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
-                   action="api/v/project/projectUpload"
+                   action="https://www.weitianshi.cn/api/v/project/projectUpload"
                    :on-preview="handlePreview"
                    :on-change="handleChange"
                    :on-success="uploadsuccess"
@@ -34,7 +34,7 @@
           class="upload-demo"
           ref="upload"
           size="large"
-          action="api/v/project/projectUpload"
+          action="https://www.weitianshi.cn/api/v/project/projectUpload"
           :on-preview="handlePreview"
           :on-change="handleChange"
           :on-success="uploadsuccess"

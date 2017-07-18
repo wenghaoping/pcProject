@@ -5,7 +5,7 @@
     <el-dialog title="批量上传创建项目" :visible.sync="dialogUploadVisible">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
-                   action="/api/upload"
+                   action="https://www.weitianshi.cn/api/upload"
                    :auto-upload="false"
                    :on-success="uploadsuccess"
                    :on-change="handleChange"

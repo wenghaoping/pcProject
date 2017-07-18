@@ -17,7 +17,7 @@
               <span style="margin-left: 20px;" class="fl">
                 <el-upload class="Upload"
                            ref="upload"
-                           action="api/v/project/projectUpload"
+                           action="https://www.weitianshi.cn/api/v/project/projectUpload"
                            :on-change="planChange"
                            :on-success="planuploadsuccess"
                            :on-preview="planPreview"

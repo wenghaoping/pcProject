@@ -20,7 +20,7 @@
                   <span style="margin-left: 20px;" class="fl">
                     <el-upload class="Upload"
                                ref="upload"
-                               action="api/v/user/uploadConnectCard"
+                               action="https://www.weitianshi.cn/api/v/user/uploadConnectCard"
                                :on-change="planChange"
                                :on-success="planuploadsuccess"
                                :on-remove="planRemove"

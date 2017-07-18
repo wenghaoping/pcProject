@@ -19,7 +19,7 @@
                   <span class="f-title fl">商业计划书</span>
                   <span style="margin-left: 20px;" class="fl">
                     <el-upload class="planUpload"
-                               action="api/v/project/projectUpload"
+                               action="https://www.weitianshi.cn/api/v/project/projectUpload"
                                :on-preview="planPreview"
                                :on-change="planChange"
                                :on-success="planuploadsuccess"
@@ -41,7 +41,7 @@
                       <el-upload
                         class="upload"
                         ref="upload"
-                        action="api/v/project/uploadFile"
+                        action="https://www.weitianshi.cn/api/v/project/uploadFile"
                         :on-change="handleChange"
                         :on-success="uploadsuccess"
                         :on-error="uploaderror"
