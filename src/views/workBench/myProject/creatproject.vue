@@ -442,7 +442,7 @@
           });
           this.$router.push({ name: 'editproject', query: {project_id:this.project.project_id}})
         }).catch(() => {
-          this.$router.push({ path: '/'})
+          this.$router.push({ name:'workBench'})
         });
       },
       /*全部保存按钮*/

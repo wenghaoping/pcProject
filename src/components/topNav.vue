@@ -21,8 +21,8 @@
         active: 0,
         tabs: [
           {type: '我的项目',jump:{name:"myProject"}},
-          {type: '我的人脉',jump:{name:"myContacts"}},
-          {type: '跟进记录',jump:{name:"followUp"}}
+/*          {type: '我的人脉',jump:{name:"myContacts"}},
+          {type: '跟进记录',jump:{name:"followUp"}}*/
         ]
       }
     },

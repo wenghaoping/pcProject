@@ -1,6 +1,6 @@
 <template>
   <div id="projectDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="contain-grid contain-center fl">
+    <div class="contain-grid contain-center">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
         <div class="item-lists item-lists-top clearfix">
@@ -262,7 +262,7 @@
 
             </el-tab-pane>
 
-            <el-tab-pane label="跟进记录" name="flow">
+<!--            <el-tab-pane label="跟进记录" name="flow">
               <folowup :proid="project.project_id">
 
               </folowup>
@@ -272,7 +272,7 @@
               <filemanagement :proid="project.project_id">
 
               </filemanagement>
-            </el-tab-pane>
+            </el-tab-pane>-->
           </el-tabs>
           <div class="ul-lists list">
             <div class="toButton" style="">
@@ -284,7 +284,7 @@
         </div>
       </div>
     </div>
-    <div class="contain-grid contain-right-1 fl">
+<!--    <div class="contain-grid contain-right-1 fl">
       <div class="main-box">
         <el-tabs v-model="activeName" @tab-click="handleClick2">
           <el-tab-pane name="1">
@@ -420,7 +420,7 @@
         </el-tabs>
         <button class="btn">添加意向投资人</button>
       </div>
-    </div>
+    </div>-->
 
     <!--尽调搜索弹窗-->
     <el-dialog title="一键尽调" :visible.sync="dialogSearchVisible">
@@ -697,7 +697,7 @@
     },
     //Echart组件
     mounted(){
-      this.eChart();
+//      this.eChart();
     },
     methods:{
       download(e){
@@ -830,7 +830,7 @@
         this.status_name=e;
 
       },
-      eChart(){
+/*      eChart(){
         let myChart = this.$echart.init(document.getElementById('echart'))
         let option = {
           tooltip: {
@@ -888,7 +888,7 @@
           ]
         };
         myChart.setOption(option);
-      },
+      },*/
       toDetail(){
         this.dialogConVisible=true;
       },//项目详情弹窗
