@@ -98,6 +98,12 @@
       checkUser(){
         console.log(this.$route.path)
         this.user_id=localStorage.user_id;
+        //头部导航下标不对应问题解决
+        if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
+          this.active=1
+        }else{
+          this.active=0
+        }
         //未登录状态下拦截
         if(!localStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/' && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/' && this.$route.path!=='/workBench' && this.$route.path!=='/qr'){
           this.$tool.error('请先登录')
