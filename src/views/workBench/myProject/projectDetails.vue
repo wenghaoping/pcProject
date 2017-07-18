@@ -50,16 +50,16 @@
                 </div>
                 <div class="txt end">佣金收讫</div>
                 <div class="img"><img src="../../../assets/images/editTo.png"></div>
-                 <div class="selectIn fr">
-                    <el-select v-model="value1" placeholder="请选择" @change="selectChange">
-                      <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </div>
+                 <!--<div class="selectIn fr">-->
+                    <!--<el-select v-model="value1" placeholder="请选择" @change="selectChange">-->
+                      <!--<el-option-->
+                        <!--v-for="item in options"-->
+                        <!--:key="item.value"-->
+                        <!--:label="item.label"-->
+                        <!--:value="item.value">-->
+                      <!--</el-option>-->
+                    <!--</el-select>-->
+                  <!--</div>-->
               </div>
             </span>
             </div>
