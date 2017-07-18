@@ -85,8 +85,8 @@
       },
       // 伪造user_id
       setUserId(){
-//        localStorage.user_id = 'V0VznXa0';
-        localStorage.user_id='2rzyz5vp';
+        localStorage.user_id = 'V0VznXa0';
+//        localStorage.user_id='2rzyz5vp';
         localStorage.user_real_name='杜兴国';
       },
       // 登录
@@ -131,7 +131,7 @@
 
 //        this.$router.push({name:"myContacts"});
 //          this.$router.push({name:"createContacts"});
-//        this.setUserId();
+        this.setUserId();
     },
     watch: {
       user_name: function (e) {

@@ -2,14 +2,14 @@
   <div>
     <el-tabs v-model="conmanyName" @tab-click="handleClick">
       <el-tab-pane label="公司信息" name="1">
-<!--        <div class="block" style="margin-bottom: 22px;">
-          <span class="tag-bottom" style="margin-right: 11px;"><img src="../../../assets/images/tag2.png"></span>
-          <span class="tag-bottom">融资</span>
-          <span class="tag-bottom">创业</span>
-          <span class="tag-bottom">大数据</span>
-          <span class="tag-bottom">人工智能</span>
-        </div>-->
-        <div class="block" >
+        <!--        <div class="block" style="margin-bottom: 22px;">
+                  <span class="tag-bottom" style="margin-right: 11px;"><img src="../../../assets/images/tag2.png"></span>
+                  <span class="tag-bottom">融资</span>
+                  <span class="tag-bottom">创业</span>
+                  <span class="tag-bottom">大数据</span>
+                  <span class="tag-bottom">人工智能</span>
+                </div>-->
+        <div class="block" style="display: block">
           <el-row :span="24">
             <el-col :span="4"><div class="content left">公司名称</div></el-col>
             <el-col :span="20"><div class="content" style="padding-left: 12px;margin-right: -8px;">{{company.company_name}}</div></el-col>
@@ -34,7 +34,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane :label="productMessage" name="2">
-        <div class="block">
+        <div class="block"  style="display: block">
           <div class="inner fl" v-for="project in company.company_project">
             <div class="img fl"><img src="../../../../assets/images/logo.png"/></div>
             <p class="type fl" style="margin-bottom: 7px;">{{project.company_project_name}}<span>{{project.company_project_type}}</span></p>
@@ -81,115 +81,116 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  props: ["compName"],
-  data () {
-    return {
-      compaName:"", //搜索用的公司名称
-      conmanyName: '1',
-      productMessage:'产品信息',
-      recruitMessage:'招聘信息(29)',
-      recruitData: [{
-        position: 'JAVA',
-        money: '20-30K',
-        experience: '1-2年',
-        address:"北京",
-        date:'2016-05-04'
-      }, {
-        position: 'IOS',
-        money: '1-2K',
-        experience: '1年',
-        address:"北京",
-        date:'2016-05-04'
-      }],
-      /*公司信息*/
-      company: {
-        com_id: 4,
-        company_name: "",//公司名称杭州投着乐网络科技有限公司
-        company_type: "",//企业类型企业类型：有限责任公司(自然人投资或控股)
-        company_registered_capital: "",//注册资本ff
-        company_Operating_state: "",//经营状态ss
-        company_business_number: "",//工商注册号123
-        company_legal_representative: "",//法定代表人jdjjf
-        company_address: "",//公司地址浙江省杭州市西湖区文三路90号东部软件园一楼之韵社
-        company_empirical_range: "",//科技推广和应用服务业
-        company_register_date: "",//成立日期2014-03-23
-        company_organization_code: "",//统一社会信用代码111
-        company_contact: "",//联系方式0571-86427664
-        company_email: "",//邮箱地址HR@weitianshi.cn
-        company_unified_code: "",//统一社会信用代码111
-        company_register_office: "",//登记机关111
-        team_now_size: "",//团队规模500-2000人
-        company_business_term: "",//营业期限111
-        company_project:[
-          {
-            project_id: 1,
-            company_project_name: "滴滴出行",
-            company_project_introduce: "近3亿用户的选择】，2012年诞生的滴滴现已成为广受用户近3亿用户的选择】，2012年诞生的滴...",
-            company_project_type: "IOS",
-            com_id: 4
-          }
-        ]
-      },
+  export default {
+    props: ["compName"],
+    data () {
+      return {
+        compaName:"", //搜索用的公司名称
+        conmanyName: '1',
+        productMessage:'产品信息',
+        recruitMessage:'招聘信息(29)',
+        recruitData: [{
+          position: 'JAVA',
+          money: '20-30K',
+          experience: '1-2年',
+          address:"北京",
+          date:'2016-05-04'
+        }, {
+          position: 'IOS',
+          money: '1-2K',
+          experience: '1年',
+          address:"北京",
+          date:'2016-05-04'
+        }],
+        /*公司信息*/
+        company: {
+          com_id: 4,
+          company_name: "",//公司名称杭州投着乐网络科技有限公司
+          company_type: "",//企业类型企业类型：有限责任公司(自然人投资或控股)
+          company_registered_capital: "",//注册资本ff
+          company_Operating_state: "",//经营状态ss
+          company_business_number: "",//工商注册号123
+          company_legal_representative: "",//法定代表人jdjjf
+          company_address: "",//公司地址浙江省杭州市西湖区文三路90号东部软件园一楼之韵社
+          company_empirical_range: "",//科技推广和应用服务业
+          company_register_date: "",//成立日期2014-03-23
+          company_organization_code: "",//统一社会信用代码111
+          company_contact: "",//联系方式0571-86427664
+          company_email: "",//邮箱地址HR@weitianshi.cn
+          company_unified_code: "",//统一社会信用代码111
+          company_register_office: "",//登记机关111
+          team_now_size: "",//团队规模500-2000人
+          company_business_term: "",//营业期限111
+          company_project:[
+/*            {
+              project_id: 1,
+              company_project_name: "滴滴出行",
+              company_project_introduce: "近3亿用户的选择】，2012年诞生的滴滴现已成为广受用户近3亿用户的选择】，2012年诞生的滴...",
+              company_project_type: "IOS",
+              com_id: 4
+            }*/
+          ]
+        },
 
 
-    }
-  },
-  methods: {
-    handleClick(tab, event) {
+      }
+    },
+    methods: {
+      handleClick(tab, event) {
 //      this.$tool.console(tab, event);
-    },
-    loadMore(){
-      this.recruitData.push({
-        position: 'IOS',
-        money: '1-2K',
-        experience: '1年',
-        address:"北京",
-        date:'2016-05-04'
-      },{
-        position: 'IOS',
-        money: '1-2K',
-        experience: '1年',
-        address:"北京",
-        date:'2016-05-04'
-      },{
-        position: 'IOS',
-        money: '1-2K',
-        experience: '1年',
-        address:"北京",
-        date:'2016-05-04'
-      })
-    },
-    getCrawlerCompany(){
-      this.$http.post(this.URL.getCrawlerCompany, {
-        user_id: localStorage.user_id,
-        company_name: this.compName
-      })
-        .then(res => {
-          let data=res.data.data
-          this.company=data.company;
-          this.company.company_project=data.project_product;
-          this.productMessage="产品信息"+"("+data.project_product.length+")";
+      },
+      loadMore(){
+        this.recruitData.push({
+          position: 'IOS',
+          money: '1-2K',
+          experience: '1年',
+          address:"北京",
+          date:'2016-05-04'
+        },{
+          position: 'IOS',
+          money: '1-2K',
+          experience: '1年',
+          address:"北京",
+          date:'2016-05-04'
+        },{
+          position: 'IOS',
+          money: '1-2K',
+          experience: '1年',
+          address:"北京",
+          date:'2016-05-04'
         })
-        .catch(err => {
-          this.$tool.console(err);
+      },
+      getCrawlerCompany(){
+        this.$http.post(this.URL.getCrawlerCompany, {
+          user_id: localStorage.user_id,
+          company_name: this.compName
         })
-    },//获取公司信息
-  },
-  created(){
+          .then(res => {
+            let data=res.data.data;
+            console.log(data);
+            this.company=data.company;
+            this.company.company_project=data.project_product;
+            this.productMessage="产品信息"+"("+data.project_product.length+")";
+          })
+          .catch(err => {
+            this.$tool.console(err);
+          })
+      },//获取公司信息
+    },
+    created(){
 //    this.$tool.console(this.compName)
-    this.getCrawlerCompany();
-  },
- watch: {
-    compName: function(e){
-      this.$tool.console(e);
-      this.compaName=e;
-      this.$tool.console(this.compaName)
       this.getCrawlerCompany();
-    }//获取公司名称
-  }
+    },
+    watch: {
+      compName: function(e){
+        this.$tool.console(e);
+        this.compaName=e;
+        this.$tool.console(this.compaName)
+        this.getCrawlerCompany();
+      }//获取公司名称
+    }
 
-}
+  }
 </script>
 
 <style scoped lang="less">
