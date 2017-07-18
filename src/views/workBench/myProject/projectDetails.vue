@@ -274,11 +274,11 @@
               </filemanagement>
             </el-tab-pane>-->
           </el-tabs>
-          <div class="ul-lists list">
-            <div class="toButton" style="">
+          <div class="ul-lists list tc" >
+            <div class="toButton" style="padding-left: 0">
               <button  @click="toEdit" class="btn1">编辑</button>
-              <button  @click="toEdit" class="btn1">写跟近</button>
-              <button  @click="toEdit" class="btn1">项目推送</button>
+<!--              <button  @click="toEdit" class="btn1">写跟近</button>
+              <button  @click="toEdit" class="btn1">项目推送</button>-->
             </div>
           </div>
         </div>
