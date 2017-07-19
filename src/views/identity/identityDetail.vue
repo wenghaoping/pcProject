@@ -1,7 +1,7 @@
 <template>
   <div id="identityDetail">
     <div class="title clearfix tc">
-      您的资料?
+      创建您的投资名片?
       <div class="fr">
         <el-button class="skip" type="text" @click="skip">跳过</el-button>
       </div>
@@ -14,21 +14,22 @@
         <span class="b-hander" @click="baseInfo=!baseInfo" v-show="baseInfo">收起</span>
         <span class="b-hander" @click="baseInfo=!baseInfo" v-show="!baseInfo">展开</span>
       </div>
-      <el-collapse-transition>
-        <div v-show="baseInfo">
+      <el-collapse-transition >
+        <div v-show="baseInfo" >
           <!--上传头像-->
-          <cardUpload>
+          <cardUpload @uploadSuccess="uploadSuccess">
 
           </cardUpload>
           <!--基本资料Form-->
           <el-form :model="ruleForm1" :rules="rule1" ref="ruleForm1" label-width="100px" class="demo-ruleForm"
-                   label-position="top">
+                   label-position="top" style="height: 520px;margin-top: 22px;">
             <div class="flex">
-              <el-form-item label="姓名" prop="name" class="mr32">
+              <el-form-item label="姓名" prop="name" class="mr32 item">
                 <el-input v-model="ruleForm1.name" placeholder="请输入姓名"></el-input>
               </el-form-item>
               <el-form-item
                 label="公司名称"
+                class="item"
                 prop="company">
                 <el-autocomplete v-model="ruleForm1.company"
                                  :fetch-suggestions="querySearchAsync"
@@ -38,23 +39,23 @@
               </el-form-item>
             </div>
             <div class="flex">
-              <el-form-item label="职位" prop="career" class="mr32">
+              <el-form-item label="职位" prop="career" class="mr32 item">
                 <el-input v-model="ruleForm1.career" placeholder="请输入职位"></el-input>
               </el-form-item>
-              <el-form-item label="邮箱" prop="email">
+              <el-form-item class="item" label="邮箱" prop="email">
                 <el-input v-model="ruleForm1.email" placeholder="请输入常用邮箱"></el-input>
               </el-form-item>
             </div>
             <div class="flex">
-              <el-form-item label="微信" prop="weixin" class="mr32">
+              <el-form-item label="微信" prop="weixin" class="mr32 item">
                 <el-input v-model="ruleForm1.weixin" placeholder="请输入微信"></el-input>
               </el-form-item>
-              <el-form-item label="品牌" prop="brand">
-                <el-input v-model="ruleForm1.brand" placeholder="请输入品牌名 如:微天使"></el-input>
+              <el-form-item class="item" label="品牌" prop="brand">
+                <el-input v-model="ruleForm1.brand" placeholder="请输入品牌名 如：微天使"></el-input>
               </el-form-item>
             </div>
-            <el-form-item label="个人描述" prop="desc" class="desc">
-              <el-input type="textarea" v-model="ruleForm1.desc" :rows="5"   placeholder="请输入内容"></el-input>
+            <el-form-item label="个人描述" prop="desc" class="desc item">
+              <el-input type="textarea" v-model="ruleForm1.desc" :rows="5" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -72,10 +73,10 @@
         <div v-show="investPrefer">
           <!--投资偏好Form-->
           <el-form :model="ruleForm2" :rules="rule2" ref="ruleForm2" label-width="100px" class="demo-ruleForm"
-                   label-position="top">
+                   label-position="top" style="margin-top: 18px;">
             <!--投资领域与轮次-->
             <div class="flex">
-              <el-form-item label="投资领域" prop="investIndustry" class="mr32">
+              <el-form-item label="投资领域" prop="investIndustry" class="mr32 item" >
                 <el-select v-model="ruleForm2.investIndustry"
                            multiple filterable
                            :multiple-limit="multiplelimit"
@@ -88,12 +89,12 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="投资轮次" prop="investStage">
+              <el-form-item class="item" label="投资轮次" prop="investStage">
                 <el-select v-model="ruleForm2.investStage"
                            multiple filterable
                            :multiple-limit="multiplelimit"
                            placeholder="请添加(最多5个)"
-                            class="width360">
+                           class="width360">
                   <el-option v-for="item in stage"
                              :key="item.value"
                              :label="item.label"
@@ -104,7 +105,7 @@
             </div>
             <!--投资金额和地区-->
             <div class="flex">
-              <el-form-item label="投资金额" prop="investScale" class="mr32">
+              <el-form-item label="投资金额" prop="investScale" class="mr32 item">
                 <el-select v-model="ruleForm2.investScale"
                            multiple filterable
                            :multiple-limit="multiplelimit"
@@ -117,7 +118,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="投资地区" prop="investArea">
+              <el-form-item class="item" label="投资地区" prop="investArea">
                 <el-select v-model="ruleForm2.investArea"
                            multiple filterable
                            :multiple-limit="multiplelimit"
@@ -133,7 +134,7 @@
             </div>
             <!--成功案例-->
             <div class="flex">
-              <el-form-item label="成功案例">
+              <el-form-item class="item" label="成功案例">
                 <el-button v-show="!hasSuccessCase" @click="addInvestCase">添加</el-button>
                 <el-button v-show="hasSuccessCase">继续添加</el-button>
               </el-form-item>
@@ -147,7 +148,7 @@
       <el-button class="fr next" @click="next">完成</el-button>
     </div>
     <!--成功案例弹窗-->
-    <invest-success-case :dialog-show="dialogShow" @closeInvestCase="closeInvestCase">
+    <invest-success-case :dialog-show="dialogShow" @closeInvestCase="closeInvestCase" lock-scroll>
 
     </invest-success-case>
   </div>
@@ -165,7 +166,7 @@
         area: '',
         stage: '',
         scale: '',
-        hotCity:'',
+        hotCity: '',
 //      控制展开收起
         baseInfo: true,
         investPrefer: false,
@@ -178,14 +179,14 @@
           career: '',
           email: '',
           weixin: '',
-          brand:'',
+          brand: '',
           desc: '',
         },
         ruleForm2: {
           investIndustry: '',
-          investStage:'',
-          investScale:'',
-          investArea:''
+          investStage: '',
+          investScale: '',
+          investArea: ''
         },
 //      表单验证规则
         rule1: {
@@ -221,49 +222,53 @@
           investArea: [{type: 'array', required: false, message: '投资地区不能为空', trigger: 'change'}],
         },
 //      是否添加过成功案例
-        hasSuccessCase:false,
+        hasSuccessCase: false,
 //      控制成功案例弹窗显示/隐藏
-        dialogShow:false,
+        dialogShow: false,
+//      上传图片成功的返回值
+        image_id: '',
       }
     },
     components: {
-      cardUpload,investSuccessCase
+      cardUpload, investSuccessCase
     },
     methods: {
       // 跳过
       skip(){
-        this.$router.push({name:localStorage.entrance})
+        this.$router.push({name: localStorage.entrance})
       },
       // 完成
       next(){
-        if(!this.ruleForm1.name){
+        if (!this.ruleForm1.name.replace(/^\s+|\s+$/g, "")) {
           this.$tool.error('请正确填写姓名')
-        }else if(!this.ruleForm1.company){
+        } else if (!this.ruleForm1.company.replace(/^\s+|\s+$/g, "")) {
           this.$tool.error('请正确填写公司名称')
-        }else if(!this.ruleForm1.career){
+        } else if (!this.ruleForm1.career.replace(/^\s+|\s+$/g, "")) {
           this.$tool.error('请正确填写职位')
-        }else if(!this.$tool.checkEmail(this.ruleForm1.email)){
+        }else if (this.ruleForm1.email && !this.$tool.checkEmail(this.ruleForm1.email)) {
+          console.log(1)
           this.$tool.error('请正确填写邮箱')
-        }else{
-          console.log(this.ruleForm1,this.ruleForm2);
-          this.$http.post(this.URL.saveUserIdentity,{
-            id:sessionStorage.id,
-            user_id:localStorage.user_id,
-            iden_name:this.ruleForm1.name,
-            iden_company_name:this.ruleForm1.company,
-            iden_company_career:this.ruleForm1.career,
-            iden_email:this.ruleForm1.email,
-            iden_wx:this.ruleForm1.weixin,
-            iden_desc:this.ruleForm1.desc,
-            iden_brand:this.ruleForm1.brand,
-            industry:this.ruleForm2.investIndustry,
-            area:this.ruleForm2.investArea,
-            stage:this.ruleForm2.investStage,
-            scale:this.ruleForm2.investScale
-          }).then(res=>{
-            if(res.data.status_code===2000000){
-              this.$router.push({name:localStorage.entrance})
-            }else{
+        }else {
+          console.log(this.ruleForm1, this.ruleForm2);
+          this.$http.post(this.URL.saveUserIdentity, {
+            id: localStorage.id,
+            user_id: localStorage.user_id,
+            iden_name: this.ruleForm1.name,
+            iden_company_name: this.ruleForm1.company,
+            iden_company_career: this.ruleForm1.career,
+            iden_email: this.ruleForm1.email,
+            iden_wx: this.ruleForm1.weixin,
+            iden_desc: this.ruleForm1.desc,
+            iden_brand: this.ruleForm1.brand,
+            industry: this.ruleForm2.investIndustry,
+            area: this.ruleForm2.investArea,
+            stage: this.ruleForm2.investStage,
+            scale: this.ruleForm2.investScale,
+            group_id:localStorage.group_id,
+          }).then(res => {
+            if (res.data.status_code === 2000000) {
+              this.$router.push({name: localStorage.entrance})
+            } else {
               this.$tool.error(res.data.error_msg)
             }
           })
@@ -271,34 +276,34 @@
       },
       // 显示成功案例弹窗
       addInvestCase(){
-        this.dialogShow=true
+        this.dialogShow = true
       },
       // 关闭成功案例弹窗
       closeInvestCase(e){
-        this.dialogShow=false
+        this.dialogShow = false
       },
       // 公司搜索相关函数
       handleSelect(item) {
-        this.companyTitle=item.value;
-        this.$http.post(this.URL.getOneCompany,{user_id:localStorage.user_id,com_id:item.address})
-        .then(res=>{
-          let data=res.data.data;
-          this.queryData=data;
+        this.companyTitle = item.value;
+        this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
+        .then(res => {
+          let data = res.data.data;
+          this.queryData = data;
 //          console.log(this.$tool.getToObject(data));
         })
-        .catch(err=>{
+        .catch(err => {
           this.alert("获取失败");
           console.log(err);
         });
-        this.dialogVisible=true;
+        this.dialogVisible = true;
       },
       querySearchAsync(queryString, cb) {
-        this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
-        .then(res=>{
-          this.restaurants=[];
-          let data=res.data.data;
-          this.restaurants=this.loadData(data);
-          if(queryString=="") this.restaurants=[];
+        this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+        .then(res => {
+          this.restaurants = [];
+          let data = res.data.data;
+          this.restaurants = this.loadData(data);
+          if (queryString == "") this.restaurants = [];
           let restaurants = this.restaurants;
           /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
           clearTimeout(this.timeout);
@@ -306,8 +311,7 @@
             cb(restaurants);
           }, 300);
         })
-        .catch(err=>{
-          this.alert("加载失败");
+        .catch(err => {
           console.log(err);
         })
       },
@@ -317,31 +321,53 @@
         };
       },
       loadData(arr){
-        let newArr=[];
-        for(let i=0; i<arr.length; i++){
-          let obj={};
-          obj.value=arr[i].company_name;
-          obj.address=arr[i].com_id;
+        let newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+          let obj = {};
+          obj.value = arr[i].company_name;
+          obj.address = arr[i].com_id;
           newArr.push(obj)
         }
         return newArr
       },
-
+      // 接收上传图片时返回的image_id
+      uploadSuccess(image_id){
+        console.log(3)
+        console.log(image_id)
+        this.image_id = image_id;
+      },
     },
     mounted(){
     },
     created(){
-      this.industry=this.$global.data.industry;
-      this.scale=this.$global.data.scale;
-      this.stage=this.$global.data.stage;
-      this.hotCity=this.$global.data.hotCity;
+      var that=this;
+      setTimeout(function(){
+        that.industry = that.$global.data.industry;
+        that.scale = that.$global.data.scale;
+        that.stage = that.$global.data.stage;
+        that.hotCity = that.$global.data.hotCity;
+      },200)
+
+      //核对是否认证过身份
+      this.$http.post(this.URL.getUserGroupByStatus, {
+        user_id: localStorage.user_id
+      }).then(res => {
+        if (res.data.status_code === 2000000) {
+          if (res.data.status === 1) {
+            this.$router.push({name: 'index'})
+          }
+        } else {
+          this.$tool.error('核对身份接口调用失败')
+        }
+      })
     }
   }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   @import "../../assets/css/indentity.less";
-  .el-input__inner{
+
+  .el-input__inner {
     border-radius: 2px !important;
   }
 </style>

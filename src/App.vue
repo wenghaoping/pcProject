@@ -3,7 +3,7 @@
     <!--     头部导航 -->
     <header id="header">
       <ul class="select ulfl tc" style="position: relative">
-        <li style="width: 150px;margin-right: 320px;vertical-align: middle;display: table-cell;height: 60px;"><img
+        <li style="width: 150px;margin-right: 100px;vertical-align: middle;display: table-cell;height: 60px;"><img
           src="./assets/images/logoing.png" style="vertical-align:middle;"></li>
         <li @click="toggle(index)" v-for="(tab,index) in tabs">
           <router-link :to=" tab.jump " :class="{border:active===index}">
@@ -22,13 +22,12 @@
           </div>
         </div>
         <li>
-          <a href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>
+          <a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>
         </li>
         <li v-if="user_name" style="float: right;">
           {{user_name}}
         </li>
-
-        <li v-show="!user_id" style="float: right;margin-right: 18%;" @click="login">
+        <li v-show="!user_id" class="login" @click="login">
           登录
         </li>
       </ul>
@@ -45,7 +44,10 @@
       </transition>
     </main>
 
-    <p class="Infooter">© 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</p>
+    <div class="Infooter tc">
+      <p>关于我们 | 联系我们</p>
+      <p> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</p>
+    </div>
   </div>
 
 </template>
@@ -83,11 +85,11 @@
       },
       // 伪造user_id
       setUserId(){
-        localStorage.user_id = 'V0VznXa0';
+          localStorage.user_id = 'V0VznXa0';
 //        localStorage.user_id='2rzyz5vp';
+//        localStorage.user_real_name='杜兴国';
 //        localStorage.user_id='2rzyJEwp';
 //        localStorage.user_id='RpAYVm8p';
-        localStorage.user_real_name='杜兴国';
       },
       // 登录
       login(){
@@ -96,7 +98,25 @@
       },
       // 检查localStorage.user_id
       checkUser(){
+        console.log(this.$route.path)
         this.user_id=localStorage.user_id;
+        //头部导航下标不对应问题解决
+        if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
+          this.active=1
+        }
+        //未登录状态下拦截
+        if(!localStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/' && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/' && this.$route.path!=='/workBench' && this.$route.path!=='/qr'){
+          this.$tool.error('请先登录')
+          this.$router.push({name:'index'})
+        }
+        //一小时不动后退出登录
+        setTimeout(function(){
+          localStorage.clear()
+        },3600000)
+        //登录状态下拦截
+        /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
+          this.$router.push({name:'index'})
+        }*/
       },
     },
 //    当dom一创建时
@@ -107,15 +127,7 @@
        //        this.$router.push('/');
        this.active=0;
        }*/
-        //this.$router.push({name:"identityDetail"});
-//        this.$router.push({name:"contactsDetails"});
-//        this.$router.push({name:"projectDetails"});
-
-//        this.$router.push({name:"telephoneLogin"});
-
-//        this.$router.push({name:"myContacts"});
-//          this.$router.push({name:"createContacts"});
-        this.setUserId();
+//     this.setUserId();
     },
     watch: {
       user_name: function (e) {
@@ -128,13 +140,17 @@
 
 <style lang="less">
   .Infooter {
+
+    background:#444444;
     font-size: 12px;
-    color: #cccccc;
+    color:#a1a1a1;
     line-height: 12px;
-    width: 1336px;
-    margin: 0 auto;
-    margin-top: 60px;
-    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    p:first-child{
+      margin-bottom: 10px;
+    }
   }
 
   * {
@@ -159,10 +175,9 @@
   #app {
     /*min-width: 1903px;*/
     background: #f3f4f8;
-    padding-bottom: 60px;
 
     main {
-
+      min-height: 669px;
     }
     font-family: "Helvetica Neue", "PingFang SC", Arial, sans-serif;
     header {
@@ -170,17 +185,16 @@
       background: #40587a;
       height: 60px;
       position: fixed;
-      z-index: 99999999;
+      z-index: 300;
     }
     .select {
       cursor: pointer;
-
       color: #ffffff;
       letter-spacing: 0;
       line-height: 16px;
       height: 60px;
       li {
-        width: 130px;
+        margin-right: 50px;
         height: 50px;
         line-height: 50px;
         a {
@@ -192,6 +206,10 @@
           width: 70px;
         }
 
+      }
+      li:hover{
+        color: white;
+        opacity: 0.5;
       }
       .border {
         border-bottom: 1px white solid;
@@ -207,7 +225,6 @@
   }
 
   #samllrou {
-
   }
 
   .weixin {
@@ -215,7 +232,7 @@
     position: fixed;
     z-index: 100;
     top: 53px;
-    left: 683px;
+    left: 400px;
     background: #ffffff;
     box-shadow: 0 4px 4px 0 rgba(64, 88, 122, 0.10);
     border-radius: 4px;
@@ -261,5 +278,11 @@
     right: 0;
     margin: auto;
   }
-
+  .login{
+    float: right !important;
+    margin-right: 18% !important;
+    @media screen and(max-width: 1400px){
+      margin-right: 10% !important;
+    }
+  }
 </style>

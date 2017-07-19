@@ -33,6 +33,11 @@
         this.$tool.console(ev);
         this.$tool.console(this.input2);
       }
+    },
+    created(){
+      if(!localStorage.user_id){
+        this.$router.push({name:'telephoneLogin'})
+      }
     }
   };
 </script>

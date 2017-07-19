@@ -31,7 +31,6 @@
                                :data="uploadDate">
                       <el-button slot="trigger" type="primary" v-show="planButton"><i
                         class="el-icon-plus"></i>计划书上传</el-button>
-
                     </el-upload>
                   </span>
 
@@ -385,7 +384,7 @@
                     </el-col>
                     <el-col :span="1">
                       <el-form-item label="　　" v-for="(member, index) in team.core_users" :key="member.index">
-                        <span class="imgdele" @click.prevent="removeMember(member)"><img
+                        <span class="imgdele" @click.prevent="removeMember(member)" style="margin-left: 22px"><img
                           src="../../../assets/images/delete.png"></span>
                       </el-form-item>
                     </el-col>
@@ -1153,21 +1152,20 @@
       },//设置文件分组标签
       getWxProjectCategory(){
 
-//        let data = this.$global.data.categoryData;
-        this.area = this.$global.data.area;//设置热门城市
+
+        let data = this.$global.data.categoryData;
+        this.area = this.$global.data.area;//设置城市1列表
         this.scale = this.$global.data.scale;//设置期望融资
         this.stage = this.$global.data.stage;//设置轮次信息
         this.industry = this.$global.data.industry;//设置轮次信息
         this.company_status = this.$global.data.company_status;//设置运营状态
         this.company_scale = this.$global.data.company_scale;//设置公司规模几人
-
         this.tags_pro = this.$global.data.tags_pro;//设置项目标签
         this.tags.changepro = this.$global.data.tags_pro;//设置项目标签2另外的
         this.tags_team = this.$global.data.tags_team;//设置团队标签
         this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
         this.tags_source = this.$global.data.pro_source;//设置项目来源
         this.tags.changesource = this.$global.data.pro_source;//设置项目来源
-
       },//获取所有下拉框的数据
       area1Change(data){
         this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})//pid省
@@ -1182,7 +1180,7 @@
       },//设置二级城市下拉列表
       area1Change2(data){
         let newData = data;
-        let pid=sessionStorage.pid;
+        let pid=localStorage.pid;
         this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})//pid省
           .then(res => {
             let data = res.data.data;
@@ -1295,7 +1293,7 @@
             this.project.pro_intro = data.pro_intro;
 
             this.project.pro_area = data.pro_area;
-            sessionStorage.pid=data.pro_area.pid;
+            localStorage.pid=data.pro_area.pid;
             if (data.pro_area == "") {
               this.project.pro_area = {area_id: "", pid: "", area_title: ""}
             };
@@ -2187,13 +2185,12 @@
     created(){
       this.loading = true;
       this.getprojectId();
-      setTimeout(()=> {
+
+      setTimeout(() =>{
         this.getWxProjectCategory();
         this.getProjectDetail();
         this.setFileType();
-      },100)
-
-
+      },200);
       this.ProjectShow=false;
       this.teamShow=false;
       this.financingShow=false;

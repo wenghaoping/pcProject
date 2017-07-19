@@ -23,13 +23,13 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    port: 8090,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'https://dev.weitianshi.cn',
+        target: 'https://www.weitianshi.cn',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

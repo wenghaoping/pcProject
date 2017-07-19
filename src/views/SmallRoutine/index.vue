@@ -46,7 +46,7 @@ export default {
         clearInterval(this.timeout);
         this.dialogVisible=true;
       }
-      this.$http.post(this.URL.ajaxPolling,{credential:sessionStorage.credential})
+      this.$http.post(this.URL.ajaxPolling,{credential:localStorage.credential})
         .then(res=>{
 //          clearInterval(this.timeout);
           let data=res.data;
@@ -84,7 +84,7 @@ export default {
           this.$tool.console(res);
           let data=res.data;
           this.qr=data.qr;
-          sessionStorage.credential=data.credential;
+          localStorage.credential=data.credential;
           this.loadIn=false;
         })
         .catch(err => {
