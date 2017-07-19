@@ -1,12 +1,12 @@
 <template>
   <div id="forgetPassword">
-    <div class="title tc">微天使,帮您成交的项目管理工具</div>
+    <div class="title tc">微天使，FA的智能工作站</div>
     <div class="loginBox">
       <div class="backLogin" @click="backLogin">
-        <img class="arrowLeft" src=""/>
-        返回登录
+        <img class="arrowLeft" src="../../assets/images/goback.png"/>
+        <span>返回登录</span>
       </div>
-      <input class="telephone" v-model="telephone" placeholder="请输入常用手机号码">
+      <input class="telephone" v-model="telephone" placeholder="输入注册时的手机号">
       <div class="codeFrame">
         <input class="code" v-model="captcha" placeholder="请输入验证码">
         <el-button type="text" @click="getCode" v-show="is_getCode==0">获取验证码</el-button>

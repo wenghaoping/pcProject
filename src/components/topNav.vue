@@ -43,7 +43,7 @@
     padding-left: 25px;
     background: #ffffff;
     width: 1336px;
-    li{width: 100px;height: 50px;line-height: 50px;
+    li{width: 100px;height: 50px;line-height: 50px;margin-right: 0px;
       a{
         height: 40px;color:#8492a6;display: block;font-size: 15px;
       }

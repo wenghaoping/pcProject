@@ -1,6 +1,8 @@
 import axios from '../config/api.js'//axios请求配置
 import URL from './url.js'//URL请求地址汇总
 import global from './global.js'
+import $tool from './tool.js'
+
 
 //设定变量
 const data = {

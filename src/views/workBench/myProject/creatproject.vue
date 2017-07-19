@@ -442,7 +442,7 @@
           });
           this.$router.push({ name: 'editproject', query: {project_id:this.project.project_id}})
         }).catch(() => {
-          this.$router.push({ path: '/'})
+          this.$router.push({ name:'myProject'})
         });
       },
       /*全部保存按钮*/
@@ -527,10 +527,10 @@
         this.$tool.console(this.$route.query.project_id);
       },
       getWxosProjectData(){
-        if(sessionStorage.credential==undefined || sessionStorage.credential=="" || sessionStorage.credential==null){
+        if(localStorage.credential==undefined || localStorage.credential=="" || localStorage.credential==null){
 
         }else{
-          this.$http.post(this.URL.getWxosProjectData,{credential:sessionStorage.credential})
+          this.$http.post(this.URL.getWxosProjectData,{credential:localStorage.credential})
             .then(res=>{
               let data=res.data.project;
               this.$tool.console(this.$tool.getToObject(data));
@@ -543,7 +543,7 @@
               this.project.pro_finance_stage=data.pro_finance_stage;
               this.project.pro_goodness=data.pro_goodness;
               this.project.pro_intro=data.pro_intro;
-              sessionStorage.credential="";
+              localStorage.credential="";
             })
             .catch(err=>{
               this.alert("获取失败");
@@ -559,11 +559,11 @@
       if(this.planList.length!=0) this.planButton=false;
       else this.planButton=true;
       this.getprojectId();
-
       setTimeout(() => {
         this.getWxProjectCategory();
         this.getWxosProjectData();
       },500)
+
 
     },
     /*watch: {

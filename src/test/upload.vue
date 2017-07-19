@@ -6,7 +6,7 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          action="project/projectUpload"
+          action="/project/projectUpload"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :on-success="success"

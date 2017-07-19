@@ -579,7 +579,11 @@ export default {
       });
       return newArr;
     },//设置标签的函数
-
+    setImage(obj){
+      let obj = new Object;
+      obj.name=obj.name;
+      obj.url=obj.image_src;
+    },//设置名片
     getOneUserInfo(){
       this.loading=true;
       this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.card_id})
@@ -593,6 +597,7 @@ export default {
           data.user_resource_give=this.set_GiveFind(data.user_resource_give);
           data.user_invest_area=this.set_area(data.user_invest_area);
           data.user_invest_tag=this.setTag(data.user_invest_tag);
+//          data.user_image=this.
           this.tags.changecont=this.setTag(data.user_invest_tag);
           this.contacts=data;
           this.loading=false;

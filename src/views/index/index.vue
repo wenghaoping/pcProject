@@ -1,45 +1,47 @@
 <template>
   <div id="index">
     <div class="banner">
-      <el-button class="showQr" type="primary">体验小程序</el-button>
-      <el-button type="primary" @click="createProject">创建项目</el-button>
-      <div class="qrShow">
-        <img src="../../assets/images/index-qr.png"/>
+      <el-button style="z-index:99;" class="showQr" type="primary" @click="showS">体验小程序</el-button>
+      <el-button style="z-index:99;" type="primary" @click="createProject">创建项目</el-button>
+      <div class="qrShow" v-show="showQr">
+        <img src="../../assets/images/weixin.jpg"/>
       </div>
     </div>
-    <h1>如果你是</h1>
-    <div class="content flex content0 tc" >
-      <div class="indentityPic">
-        <img src='../../assets/images/maifangFA.png'/>
-        <div>卖方FA</div>
-        <div>项目精准推荐</div>
-        <div>微天使一手案源</div>
-        <div>大数据一键尽调</div>
-      </div>
-      <div class="indentityPic">
-        <img src='../../assets/images/maifangFA.png'/>
-        <div>买方FA</div>
-        <div>推荐精准匹配投资人</div>
-        <div>项目一键推送</div>
-        <div>微天使一手案源</div>
-        <div>大数据一键尽调</div>
-      </div>
-      <div class="indentityPic">
-        <img src='../../assets/images/touzifang.png'/>
-        <div>投资方</div>
-        <div>FA精选项目</div>
-        <div>项目管理</div>
-        <div>大数据一键尽调</div>
-      </div>
-      <div class="indentityPic">
-        <img src='../../assets/images/chuangyezhe.png'/>
-        <div>创业者</div>
-        <div>融资加速</div>
-        <div>优质FA组团服务</div>
+    <h1 style="background: white">如果你是</h1>
+    <div style="background: white;">
+      <div class="content flex content0 tc" >
+        <div class="indentityPic">
+          <img src='../../assets/images/maifangFA.png'/>
+          <div>卖方FA</div>
+          <div>项目精准推荐</div>
+          <div>微天使一手案源</div>
+          <div>大数据一键尽调</div>
+        </div>
+        <div class="indentityPic">
+          <img src='../../assets/images/maifangFA.png'/>
+          <div>买方FA</div>
+          <div>推荐精准匹配投资人</div>
+          <div>项目一键推送</div>
+          <div>微天使一手案源</div>
+          <div>大数据一键尽调</div>
+        </div>
+        <div class="indentityPic">
+          <img src='../../assets/images/touzifang.png'/>
+          <div>投资方</div>
+          <div>FA精选项目</div>
+          <div>项目管理</div>
+          <div>大数据一键尽调</div>
+        </div>
+        <div class="indentityPic">
+          <img src='../../assets/images/chuangyezhe.png'/>
+          <div>创业者</div>
+          <div>融资加速</div>
+          <div>优质FA组团服务</div>
+        </div>
       </div>
     </div>
     <h1>我们能提供</h1>
-    <div class="content flex content1">
+    <div class="content flex content1" style="height: 481px;">
       <div class="fullPageText fullPageText1">
         <div>投资业务工作场景--团队/个人工作</div>
         <div>项目、人脉数据永久留存,人员流动带不走</div>
@@ -73,12 +75,13 @@
         <img src='../../assets/images/index3.png'/>
       </div>
     </div>
-    <div class="qrCode" @click="clearSomething">
+    <div style="height: 300px;background:#f9fafc"></div>
+    <div class="qrCode">
       <img src='../../assets/images/indexQr.png'/>
-    </div>>
-    <div class="qrCode-large">
+    </div>
+    <div class="qrCode-large tc">
       <img src="../../assets/images/index-qr.png">
-      添加FA哥微信了解更多
+      <div class="add2">添加FA哥微信了解更多</div>
     </div>
   </div>
 </template>
@@ -90,6 +93,8 @@
     data () {
       return {
         msg: '',
+        // 控制二维码显示
+        showQr:false,
         /*identityPic: [
           {
             url: '/static/images/maifangFA.png',
@@ -135,11 +140,16 @@
       },
       // 清除浏览器内存
       clearSomething(){
-        console.log('清除sessionStorage部分key值完毕')
-        sessionStorage.removeItem('user_id');
-        sessionStorage.removeItem('id');
-        sessionStorage.removeItem('entrance');
+        console.log('清除localStorage部分key值完毕')
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('id');
+        localStorage.removeItem('user_real_name');
+        localStorage.removeItem('entrance');
       },
+      // 鼠标到体验小程序上悬浮触发二维码显示
+      showS(){
+        this.showQr = !this.showQr
+      }
     }
   }
 </script>

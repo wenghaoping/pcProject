@@ -16,28 +16,33 @@
 
 
 <script type="text/ecmascript-6">
+  import a from '../../../static/images/maifangFA.png'
+  import b from '../../../static/images/maifangFA.png'
+  import c from '../../../static/images/touzifang.png'
+  import d from '../../../static/images/chuangyezhe.png'
+  import e from '../../../static/images/qita.png'
   export default {
     data () {
       return {
         active: "none",
         identitys: [{
-          url: '/static/images/maifangFa.png',
+          url: a,
           group_title: '买方FA',
           group_id: ''
         }, {
-          url: '/static/images/maifangFa.png',
+          url: b,
           group_title: '卖方FA',
           group_id: ''
         }, {
-          url: '/static/images/touzifang.png',
+          url: c,
           group_title: '投资方',
           group_id: ''
         }, {
-          url: '/static/images/chuangyezhe.png',
+          url: d,
           group_title: '创业者',
           group_id: ''
         }, {
-          url: '/static/images/qita.png',
+          url: e,
           group_title: '其他',
           group_id: ''
         }]
@@ -53,12 +58,14 @@
         if (typeof this.active === "number") {
           this.$http.post(this.URL.setUserGroup, {
             user_id: localStorage.user_id,
-            group_id: this.active,
+            group_id: this.identitys[this.active].group_id,
+
           }).then(res => {
-            if(res.data.status_code===2000000){
-              sessionStorage.id=res.data.id;
+            if (res.data.status_code === 2000000) {
+              localStorage.group_id=this.identitys[this.active].group_id;
+              localStorage.id = res.data.id;
               this.$router.push('/identityDetail')
-            }else{
+            } else {
               this.$tool.error(res.data.error_msg)
             }
           })
@@ -78,7 +85,21 @@
       }
     },
     created(){
-      this.getIdentity()
+      this.getIdentity();
+
+      //核对是否认证过身份
+      this.$http.post(this.URL.getUserGroupByStatus, {
+        user_id: localStorage.user_id
+      }).then(res => {
+        if (res.data.status_code === 2000000) {
+          if (res.data.status === 1) {
+            this.$router.push({name: 'index'})
+          }
+        } else {
+          this.$tool.error('核对身份接口调用失败')
+        }
+      })
+
     }
   }
 </script>

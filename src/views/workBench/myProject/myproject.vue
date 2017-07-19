@@ -1,6 +1,6 @@
 <template>
   <div id="myproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="wrap-left fl">
+    <div class="wrap-left fl" style="height: 888px;">
       <div class="top-big-progress">
         <div class="pp-item pp-node pp-start" :class="{'pp-cur':node0}" @click="setNode('0')">
           <p class="pp-num pp-txt">{{nodeCount.whole}}</p>
@@ -88,7 +88,7 @@
           </alertUpload>
         </div>
       </div>
-      <div class="top-lists" style="height:690px;background: #f3f4f8;cursor: pointer">
+      <div class="top-lists" style="background: #f3f4f8;cursor: pointer">
           <template>
             <el-table :data="tableData" style="width: 100%"
                       @row-click="handleSelect"

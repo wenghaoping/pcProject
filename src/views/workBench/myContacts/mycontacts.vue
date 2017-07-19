@@ -1,7 +1,7 @@
 <template>
   <div id="mycontacts" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!-- 右侧底部主内容区 -->
-    <div class="wrap-left">
+    <div class="wrap-left" style="height: 793px;">
       <div class="top-search-box clearfix">
         <div class="input-box fl">
           <el-input
