@@ -823,6 +823,7 @@
       },
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
+        this.activeName=this.$route.query.activename;
       },
       selectChange(e){
         this.status_name=e;
@@ -955,6 +956,7 @@
       this.loading=true;
       this.getprojectId();
       this.getProjectDetail();
+//      this.activeName=
     }
 
   }

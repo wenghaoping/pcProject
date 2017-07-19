@@ -194,7 +194,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import addfollow from './addFollow.vue'
+import addfollow from './addFollow.vue'
 export default {
   components: {
     addfollow
@@ -256,11 +256,13 @@ export default {
     },//点击写跟近按钮
     handleSelect(row, event, column) {
       if(column.label!="重置"){
-        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id , card_id:row.card_id}})
+        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,activename:'2'}})
       }
     },//跳转到更近详情页
     handleEdit(index, row){
-      this.$router.push({ name: 'createContacts', query: { card_id:row.card_id}})
+        this.dialogFollow=true;
+        this.follow_id=row.follow_id;
+
     },//点击编辑按钮,跳转
     headerClick(column, event){
       if(column.label==="重置"){
@@ -274,10 +276,10 @@ export default {
         type: 'warning'
       }).then(() => {
         this.loading=true;
-        this.$http.post(this.URL.deleteConnectUser, {user_id:localStorage.user_id,card_id: row.card_id})
+        this.$http.post(this.URL.delete_follow_record, {user_id:localStorage.user_id,follow_id: row.follow_id})
           .then(res => {
             this.loading=false;
-            this.$tool.success("删除成功")
+            this.$tool.success("删除成功");
             this.handleIconClick();
           })
           .catch(err => {

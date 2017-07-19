@@ -11,6 +11,8 @@ export default
   /*总地址,下载用的*/
   weitianshi:"http://www.weitianshi.cn/",//下载用
 
+  /*上传用*/
+
   /*登陆接口*/
   returnQrCredential:"api/auth/returnQrCredential",   //(获取生成二维码的uuid接口)，返回值
   ajaxPolling:"api/auth/ajaxPolling",   //获取登陆信息
@@ -86,5 +88,6 @@ export default
   /*跟进记录*/
   get_follow_records:'/api/project/get_follow_records',//获取跟进记录总列表
   getToInvestor:'/api/category/getToInvestor',//获取跟进记录表头
+  delete_follow_record:'/api/project/delete_follow_record',//删除跟进记录
 
 }
