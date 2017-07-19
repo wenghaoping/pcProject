@@ -373,8 +373,6 @@ export default {
           let data = res.data.data;
           this.schedule_nameFilters=this.$tool.getTitleSift(data.schedule_name);
           this.card_nameFilters=this.$tool.getTitleSift(data.investors);
-/*          let pro_schedule=data.pro_schedule;//跟进状态
-          this.schedule_nameFilters=this.$tool.getTitleSift(pro_schedule);*/
           this.loading=false;
         })
         .catch(err=>{
