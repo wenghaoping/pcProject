@@ -84,4 +84,8 @@ export default
   deleteConnectCard:"api/v/user/deleteConnectCard",//删除人脉名片(图片)
   getOneUserInfo:"api/v/user/getOneUserInfo",//人脉详情
 
+  /*跟进记录*/
+  get_follow_records:'/api/project/get_follow_records',//获取跟进记录总列表
+  getToInvestor:'/api/category/getToInvestor',//获取跟进记录表头
+
 }

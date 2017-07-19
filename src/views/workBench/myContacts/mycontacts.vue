@@ -346,7 +346,7 @@ export default {
 
     handleSelect(row, event, column) {
       if(column.label!="重置"){
-        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id,card_id:row.card_id}})
+        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id , card_id:row.card_id}})
       }
     },//跳转到人脉详情页面传参数
     handleEdit(index, row){
@@ -405,7 +405,7 @@ export default {
       this.dialogPushVisible=true;
     },//点击推送,并且传送数据给推送弹框
     addContacts(){
-      this.$router.push({name: 'createContacts'})//路由传参
+      this.$router.push({name: 'createContacts',query: {card_id: 'creat'}})//路由传参
     },//添加人脉
     dialogVisiblechange(msg){
       this.dialogPushVisible=msg;

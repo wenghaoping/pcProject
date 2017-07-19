@@ -431,6 +431,7 @@
             delete this.getPra[key];
           }
         }//删除空的查询项
+        this.$tool.console(this.getPra);
         this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{
             this.loading=false;

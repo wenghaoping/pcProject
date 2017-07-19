@@ -2,13 +2,15 @@
   <div>
     <el-tabs v-model="conmanyName" @tab-click="handleClick">
       <el-tab-pane label="公司信息" name="1">
-        <!--        <div class="block" style="margin-bottom: 22px;">
-                  <span class="tag-bottom" style="margin-right: 11px;"><img src="../../../assets/images/tag2.png"></span>
-                  <span class="tag-bottom">融资</span>
-                  <span class="tag-bottom">创业</span>
-                  <span class="tag-bottom">大数据</span>
-                  <span class="tag-bottom">人工智能</span>
-                </div>-->
+
+<!--        <div class="block" style="margin-bottom: 22px;">
+          <span class="tag-bottom" style="margin-right: 11px;"><img src="../../../assets/images/tag2.png"></span>
+          <span class="tag-bottom">融资</span>
+          <span class="tag-bottom">创业</span>
+          <span class="tag-bottom">大数据</span>
+          <span class="tag-bottom">人工智能</span>
+        </div>-->
+
         <div class="block" style="display: block">
           <el-row :span="24">
             <el-col :span="4"><div class="content left">公司名称</div></el-col>
@@ -138,27 +140,6 @@
     methods: {
       handleClick(tab, event) {
 //      this.$tool.console(tab, event);
-      },
-      loadMore(){
-        this.recruitData.push({
-          position: 'IOS',
-          money: '1-2K',
-          experience: '1年',
-          address:"北京",
-          date:'2016-05-04'
-        },{
-          position: 'IOS',
-          money: '1-2K',
-          experience: '1年',
-          address:"北京",
-          date:'2016-05-04'
-        },{
-          position: 'IOS',
-          money: '1-2K',
-          experience: '1年',
-          address:"北京",
-          date:'2016-05-04'
-        })
       },
       getCrawlerCompany(){
         this.$http.post(this.URL.getCrawlerCompany, {

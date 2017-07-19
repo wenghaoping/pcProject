@@ -62,8 +62,8 @@
           {type: '首页', jump: '/'},
           {type: '工作台', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
-//          {type: '测试页面', jump: '/test'},
-//          {type: '测试页面2', jump: '/test2'}
+          {type: '测试页面', jump: '/test'},
+          {type: '测试页面2', jump: '/test2'}
         ],
         user_name: localStorage.user_real_name,
         user_id:'',
@@ -85,9 +85,11 @@
       },
       // 伪造user_id
       setUserId(){
-        localStorage.user_id = 'V0VznXa0';
+          localStorage.user_id = 'V0VznXa0';
 //        localStorage.user_id='2rzyz5vp';
 //        localStorage.user_real_name='杜兴国';
+//        localStorage.user_id='2rzyJEwp';
+//        localStorage.user_id='RpAYVm8p';
       },
       // 登录
       login(){
@@ -125,15 +127,7 @@
        //        this.$router.push('/');
        this.active=0;
        }*/
-        //this.$router.push({name:"identityDetail"});
-//        this.$router.push({name:"contactsDetails"});
-//        this.$router.push({name:"projectDetails"});
-
-//        this.$router.push({name:"telephoneLogin"});
-
-//        this.$router.push({name:"myContacts"});
-//        this.$router.push({name:"createContacts"});
-//        this.setUserId();
+//     this.setUserId();
     },
     watch: {
       user_name: function (e) {

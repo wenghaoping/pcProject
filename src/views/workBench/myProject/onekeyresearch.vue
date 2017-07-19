@@ -432,76 +432,76 @@
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
-          .then(res => {
-            this.team = res.data.data;
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        .then(res => {
+          this.team = res.data.data;
+        })
+        .catch(err => {
+          this.$tool.console(err);
+        })
       },//获取核心成员
       getCrawlerHistoryFinance(){
         this.$http.post(this.URL.getCrawlerHistoryFinance, {
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
-          .then(res => {
-            this.history_finance = res.data.data;
-            this.getTimeFinancing(this.history_finance);
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        .then(res => {
+          this.history_finance = res.data.data;
+          this.getTimeFinancing(this.history_finance);
+        })
+        .catch(err => {
+          this.$tool.console(err);
+        })
       },//获取历史融资
       getCrawlerMilestone(){
         this.$http.post(this.URL.getCrawlerMilestone, {
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
-          .then(res => {
-            this.milestone_list = res.data.data;
-            this.getTimeMilestone(this.milestone_list);
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        .then(res => {
+          this.milestone_list = res.data.data;
+          this.getTimeMilestone(this.milestone_list);
+        })
+        .catch(err => {
+          this.$tool.console(err);
+        })
       },//获取里程碑
       getCrawlerNews(){
         this.$http.post(this.URL.getCrawlerNews, {
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
-          .then(res => {
-            this.news = res.data.data;
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        .then(res => {
+          this.news = res.data.data;
+        })
+        .catch(err => {
+          this.$tool.console(err);
+        })
       },//获取新闻
       getCrawlerCompeting(){
         this.$http.post(this.URL.getCrawlerCompeting, {
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
-          .then(res => {
-            this.competing = res.data.data;
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        .then(res => {
+          this.competing = res.data.data;
+        })
+        .catch(err => {
+          this.$tool.console(err);
+        })
       },//获取竞品
       getCrawlerProject(){
         this.$http.post(this.URL.getCrawlerProject, {
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
-          .then(res => {
-            this.getProjectIndustry(res.data.data);
-            this.project = res.data.data;
-            this.loading=false;
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        .then(res => {
+          this.getProjectIndustry(res.data.data);
+          this.project = res.data.data;
+          this.loading=false;
+        })
+        .catch(err => {
+          this.$tool.console(err);
+        })
       },//获取项目
       getProjectIndustry(data){
         for(let i=0; i<data.length; i++){

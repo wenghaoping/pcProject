@@ -84,12 +84,12 @@ const tool={
     return arr
   },//设置表格表头的筛选内容======表格页都用的到
   checkArr(arr, arr2){
-    let newArr = []
-    let data = arr[arr.length - 1]
+    let newArr = [];
+    let data = arr[arr.length - 1];
     for (let i = 0; i < arr2.length; i++) {
       newArr.push(arr2[i].value);
     }
-    if (newArr.indexOf(data) == -1) return data
+    if (newArr.indexOf(data) == -1) return data;
 
 
   },//判断是否重复.在动态添加标签的地方使用

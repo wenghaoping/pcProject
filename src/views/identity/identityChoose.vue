@@ -59,6 +59,7 @@
           this.$http.post(this.URL.setUserGroup, {
             user_id: localStorage.user_id,
             group_id: this.identitys[this.active].group_id,
+
           }).then(res => {
             if (res.data.status_code === 2000000) {
               localStorage.group_id=this.identitys[this.active].group_id;
