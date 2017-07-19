@@ -85,11 +85,10 @@
       },
       // 伪造user_id
       setUserId(){
-          localStorage.user_id = 'V0VznXa0';
+//        localStorage.user_id = 'V0VznXa0';
 //        localStorage.user_id='2rzyz5vp';
-//        localStorage.user_real_name='杜兴国';
-//        localStorage.user_id='2rzyJEwp';
-//        localStorage.user_id='RpAYVm8p';
+        localStorage.user_id='2rzyJEwp';
+        localStorage.user_real_name='杜兴国';
       },
       // 登录
       login(){
@@ -127,7 +126,7 @@
        //        this.$router.push('/');
        this.active=0;
        }*/
-//     this.setUserId();
+     this.setUserId();
     },
     watch: {
       user_name: function (e) {

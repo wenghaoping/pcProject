@@ -88,7 +88,7 @@
           </alertUpload>
         </div>
       </div>
-      <div class="top-lists" style="height:690px;background: #f3f4f8;cursor: pointer">
+      <div class="top-lists" style="background: #f3f4f8;cursor: pointer">
           <template>
             <el-table :data="tableData" style="width: 100%"
                       @row-click="handleSelect"

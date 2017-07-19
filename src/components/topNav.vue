@@ -21,8 +21,8 @@
         active: 0,
         tabs: [
           {type: '我的项目',jump:{name:"myProject"}},
-/*          {type: '我的人脉',jump:{name:"myContacts"}},
-          {type: '跟进记录',jump:{name:"followUp"}}*/
+          {type: '我的人脉',jump:{name:"myContacts"}},
+          {type: '跟进记录',jump:{name:"followUp"}}
         ]
       }
     },
@@ -43,7 +43,7 @@
     padding-left: 25px;
     background: #ffffff;
     width: 1336px;
-    li{width: 100px;height: 50px;line-height: 50px;
+    li{width: 100px;height: 50px;line-height: 50px;margin-right: 0px;
       a{
         height: 40px;color:#8492a6;display: block;font-size: 15px;
       }
