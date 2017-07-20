@@ -90,5 +90,6 @@ export default
   get_follow_records:'/api/project/get_follow_records',//获取跟进记录总列表
   getToInvestor:'/api/category/getToInvestor',//获取跟进记录表头
   delete_follow_record:'/api/project/delete_follow_record',//删除跟进记录
+  match_my_relation:'/api/user/match_my_relation',//模糊匹配我的人脉,添加跟进里是用
 
 }

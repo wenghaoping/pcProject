@@ -993,6 +993,9 @@
         color:#ffffff;
       }
     }
+    .el-tabs__content{
+      overflow: auto !important;
+    }
 
     .radio_line{
       width: 13px;

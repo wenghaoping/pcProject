@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!--    <div class="mark">
-          <img src="../../../assets/images/mark.png">
-        </div>-->
+      <!--<div class="mark">
+        <img src="../../../../assets/images/mark.png">
+      </div>-->
     <el-tabs v-model="bussinessName">
 
       <el-tab-pane label="工商信息" name="1" style="margin-top: -30px;">

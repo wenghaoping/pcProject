@@ -15,12 +15,14 @@
             </div>
             <el-collapse-transition>
               <div v-show="contactShow">
-                <div class="block-info block-cc-file clearfix">
+                <div class="block-info block-cc-file clearfix" style="height: 149px;">
                   <span class="f-title fl">名片</span>
                   <span style="margin-left: 20px;" class="fl">
-                    <el-upload class="Upload"
+                    <el-upload class="UploadImg"
                                ref="upload"
                                action="api/v/user/uploadConnectCard"
+                               list-type="picture-card"
+                               :on-preview="handlePictureCardPreview"
                                :on-change="planChange"
                                :on-success="planuploadsuccess"
                                :on-remove="planRemove"
@@ -29,11 +31,15 @@
                                :before-upload="beforeUpload"
                                accept=".jpg, .png, .jpeg"
                                :data="uploadDate">
-                      <el-button slot="trigger" type="primary" v-show="planButton" class="fl button"><i class="el-icon-plus"></i>上传名片</el-button>
+                      <i class="el-icon-plus" v-show="planButton"></i>
+                      <!--<el-button slot="trigger" type="primary" v-show="planButton" class="fl button"><i class="el-icon-plus"></i>上传名片</el-button>-->
                       <div slot="tip" class="el-upload__tip fr" v-show="planButton">支持JPG、PNG、JPEG</div>
                     </el-upload>
-                  </span>
 
+                    <el-dialog v-model="dialogImg" size="tiny">
+                      <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                  </span>
                 </div>
                 <el-form :model="contacts" ref="contacts" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
@@ -329,7 +335,8 @@ export default {
       nullRule: { validator: checkNull, trigger: 'blur' },
       PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
       multiplelimit: 5,//一次最多选5个,下拉表
-
+      dialogImg:false,//名片预览控制
+      dialogImageUrl: '',//图片预览路径
       planList: [
 /*          {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}*/
           ],//名片上传列表
@@ -449,7 +456,10 @@ export default {
         return false;
       };
     },//上传前的验证
-
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogImg = true;
+    },//点击预览名片
     /*添加人脉标签*/
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e,this.tags_con);
@@ -580,9 +590,13 @@ export default {
       return newArr;
     },//设置标签的函数
     setImage(obj){
-      var obj = new Object;
-      obj.name=obj.name;
-      obj.url=obj.image_src;
+      let obj1 = new Object;
+      obj1.url=obj.image_src;
+      this.planList.push(obj1);
+      let object = {};
+      object.image_id = obj.image_id;
+      this.uploadShow = object;
+
     },//设置名片
     getOneUserInfo(){
       this.loading=true;
@@ -597,7 +611,8 @@ export default {
           data.user_resource_give=this.set_GiveFind(data.user_resource_give);
           data.user_invest_area=this.set_area(data.user_invest_area);
           data.user_invest_tag=this.setTag(data.user_invest_tag);
-//          data.user_image=this.
+          this.setImage(data.user_image);
+          if(data.user_image.length==0) {this.uploadShow = {};this.planList = [];}
           this.tags.changecont=this.setTag(data.user_invest_tag);
           this.contacts=data;
           this.loading=false;
@@ -630,6 +645,10 @@ export default {
   @import '../../../assets/css/edit.less';
 
    #createcontacts{
+     .is-success{
+       width: 300px;
+       height: 150px;
+     }
      .button{
        background:#40587a;
        border-radius:4px;
@@ -657,6 +676,7 @@ export default {
        .el-upload-list__item {
          line-height: 1.8;
           margin-top: 0px;
+
        }
        .el-upload-list__item-name {
          font-size: 14px;

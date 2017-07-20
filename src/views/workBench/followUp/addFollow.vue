@@ -10,23 +10,14 @@
           <el-row :span="24">
             <el-col :span="24">
               <el-form-item
-                label="关联项目"
-                prop="project"
-                :rules="[{ required: true, message: '请选择关联项目', trigger: 'change' }]">
-                <el-select
-                  v-model="follow.project"
-                  filterable
-                  remote
-                  placeholder="一句话介绍，如帮助FA成交的项目管理工具"
-                  :remote-method="remoteMethod"
-                  :loading="loading2" style="width: 360px;">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
+                label="* 关联项目"
+                prop="projecname"
+                :rules="[{ required: true, message: '请选择关联项目', trigger: 'blur' }]">
+                <el-autocomplete v-model="follow.projecname"
+                                 :fetch-suggestions="querySearchProject"
+                                 placeholder="一句话介绍，如帮助FA成交的项目管理工具"
+                                 @select="handleSelectProject" style="width:360px;">
+                </el-autocomplete>
               </el-form-item>
             </el-col>
           </el-row>
@@ -34,9 +25,9 @@
             <el-col :span="12">
               <el-form-item
                 label="意向投资人"
-                prop="people"
+                prop="card_name"
                 :rules="[{max: 20, message: '长度不能大于20个字符', trigger: 'blur' }]">
-                <el-autocomplete v-model="follow.people"
+                <el-autocomplete v-model="follow.card_name"
                                  :fetch-suggestions="querySearchAsync"
                                  placeholder="请添加"
                                  @select="handleSelect">
@@ -46,12 +37,12 @@
             <el-col :span="12">
               <el-form-item
                 label="跟进进度"
-                prop="round">
-                <el-select v-model="follow.round"
+                prop="schedule_id">
+                <el-select v-model="follow.schedule_id"
                            placeholder="请选择"
                            style="width: 165px;">
                   <el-option
-                    v-for="item in options"
+                    v-for="item in schedule_name"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -63,11 +54,11 @@
           <el-row :span="24" :gutter="32">
             <el-col :span="24">
               <el-form-item label="跟进描述"
-                            prop="sec"
+                            prop="follow_desc"
                             :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                 <el-input type="textarea"
                           style="width: 360px;"
-                          v-model="follow.sec"
+                          v-model="follow.follow_desc"
                           :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
               </el-form-item>
             </el-col>
@@ -102,7 +93,6 @@
           <span class="del-btn" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
           <span class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
         </div>
-
         <div slot="footer" class="dialog-footer fr" style="margin: 32px 0">
           <el-button @click="handleClose">继续添加</el-button>
           <el-button type="primary" @click="handleClose">提 交</el-button>
@@ -152,7 +142,10 @@
         loading2:false,//加载框加载
         showList: false,//上传列表隐藏
         dialogFileVisible:false,//文件分组设置
-        fileuploadDate: {user_id: localStorage.user_id},//项目文件上传带的参数
+        fileuploadDate: {user_id: localStorage.user_id, flag:1 },//项目文件上传带的参数
+        restaurants: [],//项目模糊匹配存放
+        userArr: [],//意向投资人模糊匹配存放
+        timeout: null,
         fileList: [],//批量上传文件列表
         uploadShow: {//上传文件展示列表,就是老夫操作的列表
           lists: []
@@ -167,99 +160,153 @@
         follow_id:'',
         value:'',
         follow:{
-          project:'',//关联项目
-          people:'',//意向投资人
-          round:'',//跟进进度
-          sec:'',//跟进描述
-
+          project_id:'',//关联项目id
+          projecname:'',//关联项目名称
+          card_id:'',//意向投资人
+          card_name:'',//意向投资人
+          schedule_id:'',//跟进进度
+          follow_desc:'',//跟进描述
+          file_id:[],//文件id
         },//跟进记录
-        options: [{
+        schedule_name: [
+/*            {
           value: '选项1',
           label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
+        }*/
+        ],//跟进进度下拉框
+        project_name:[],//项目搜索下拉框
+        options:[{
+          value: '黄金糕',
+          label: '黄金糕'
         }],
-        list: [],
-        states: ["Alabama", "Alaska", "Arizona",
-          "Arkansas", "California", "Colorado",
-          "Connecticut", "Delaware", "Florida",
-          "Georgia", "Hawaii", "Idaho", "Illinois",
-          "Indiana", "Iowa", "Kansas", "Kentucky",
-          "Louisiana", "Maine", "Maryland",
-          "Massachusetts", "Michigan", "Minnesota",
-          "Mississippi"]
-
       }
     },
     methods: {
       handleClose(){
         this.$emit("changeClose",false);
       },
-      remoteMethod(query) {
-        if (query !== '') {
-          this.loading2 = true;
-          setTimeout(() => {
-            this.loading2 = false;
-            this.options = this.list.filter(item => {
-              return item.label.toLowerCase()
-                  .indexOf(query.toLowerCase()) > -1;
-            });
-          }, 200);
-        } else {
-          this.options = [];
-        }
-      },
-      handleSelect(item) {
-        this.companyTitle = item.value;
-        this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
-          .then(res => {
-            let data = res.data.data;
-            this.$tool.console(this.$tool.getToObject(data))
-            this.queryData = data;
-          })
-          .catch(err => {
-            this.$tool.error("获取失败");
-            this.$tool.console(err);
-          });
-        this.dialogVisible = true;
-      },//选择了搜索出来的数据后
-      /*自动搜索,接口写这里面*/
-      querySearchAsync(queryString, cb) {
-        /*this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+
+
+      handleSelectProject(item){
+//        this.follow.project_name = item.value;
+        this.follow.project_id = item.address;
+      },//选择项目后
+      querySearchProject(queryString, cb){
+        let obj = new Object;
+        obj.user_id=localStorage.user_id;
+        obj.search=queryString;
+        obj.page=0;
+        this.$http.post(this.URL.getProjectList, obj)
           .then(res => {
             this.restaurants=[];
             let data=res.data.data;
+            console.log(data);
             this.restaurants=this.loadData(data);
-            if(queryString=="") this.restaurants=[];
-            let restaurants = this.restaurants;
-            /!*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*!/
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-              cb(restaurants);
-            }, 300);
+             let restaurants = this.restaurants;
+             clearTimeout(this.timeout);
+             this.timeout = setTimeout(() => {
+                cb(restaurants);
+             }, 300);
           })
           .catch(err => {
 //          this.alert("加载失败");
-            this.$tool.console(this.restaurants);
-          })*/
-      },
-      createStateFilter(queryString) {
-        return (state) => {
-          return (state.value.indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
-      /*获取远程数据模拟*/
+              this.$tool.console(this.restaurants);
+          })
+      },//项目搜索
+
+      handleSelect(item) {
+        if(item.label==0){
+          this.$confirm('是否添加该人脉, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.loading=true;
+            this.$http.post(this.URL.createUserCard, {user_id:localStorage.user_id,user_real_name: item.na})
+              .then(res => {
+                this.loading=false;
+                this.$tool.success("添加成功");
+                this.follow.card_id=res.data.card_id;
+                this.follow.card_name=item.na;
+              })
+              .catch(err => {
+                this.loading=false;
+                this.$tool.error("添加失败");
+                this.$tool.console(err);
+                this.follow.card_name=item.na;
+              })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消添加'
+            });
+            this.follow.card_name=item.na;
+          });
+        }
+      },//选择意向投资人后
+      querySearchAsync(queryString, cb) {
+        this.$http.post(this.URL.match_my_relation, {user_id: localStorage.user_id, user_name: queryString})
+          .then(res => {
+            this.userArr=[];
+            let data=res.data.data;
+            console.log(data);
+            this.userArr=this.loadDataUser(data,queryString);
+            let userArr = this.userArr;
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              cb(userArr);
+            }, 300);
+          })
+          .catch(err => {
+            this.$tool.console(this.userArr);
+          })
+      },/*意向投资人搜索*/
+
       loadData(arr){
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].company_name;
-          obj.address = arr[i].com_id;
+          obj.value = arr[i].pro_intro.toString() || "无介绍";
+          obj.label = arr[i].project_id;
           newArr.push(obj)
         }
         return newArr;
-      },
+  },//获取远程数据模拟
+      loadDataUser(arr,name){
+        let newArr=[];
+        var set="新增‘"+name+"’为意向投资人";
+        newArr = [{value:set,label:0,na:name}];
+        if(name=='') newArr=[];
+        for (let i = 0; i < arr.length; i++) {
+          let obj = {};
+          obj.value = arr[i].user_real_name+'('+arr[i].user_company_name+')';
+          if(arr[i].user_company_name=='') obj.value = arr[i].user_real_name;
+          obj.label = arr[i].card_id;
+          newArr.push(obj);
+        }
+        return newArr;
+      },//获取用户
+      getScheduleName(){
+        this.$http.post(this.URL.getToInvestor,{user_id: localStorage.user_id})
+          .then(res=>{
+            let data = res.data.data;
+            this.schedule_name=this.setScheduleName(data.schedule_name);
+          })
+          .catch(err=>{
+            this.loading=false;
+            this.$tool.console(err,2)
+          })
+      },// 获取跟进进度
+      setScheduleName(data){
+          let arr = [];
+          for(let key in data){
+            let obj=new Object;
+            obj.label=data[key];
+            obj.value=key;
+            arr.push(obj)
+          }
+          return arr
+      },//设置跟进进度
 
 
       getFileType(data){
@@ -343,7 +390,6 @@
         }
 
       },//点击下载
-
       removeList(item) {
         var index = this.uploadShow2.lists.indexOf(item);
         if (index !== -1) {
@@ -366,7 +412,6 @@
             })
         }
       },//删除当前上传文件
-
       addDomain(type_name, file_title, file_id, type)  {
         let object = {};
         object.bp_type = type_name;
@@ -376,6 +421,8 @@
         this.uploadShow.lists.push(object);
 
       },//添加上传文件时,加入显示列表
+
+
 
       groupchange(label){
         let index = this.groups.index;
@@ -387,7 +434,6 @@
           }
         }
       },//点击分组设置中的单选框
-
       addGroup(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -446,9 +492,9 @@
       },//获取分组的位置
 
     },
-    created(){
-
-    },
+      created(){
+        this.getScheduleName();
+      },
     watch : {
       followid : function(e){
         this.follow_id=e;
@@ -456,9 +502,7 @@
       },//获取项目id
     },
     mounted(){
-      this.list = this.states.map(item => {
-        return { value: item, label: item };
-      });
+
     }
   }
 </script>

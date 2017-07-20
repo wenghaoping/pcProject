@@ -619,7 +619,7 @@ export default {
       this.getPra.page=page;
       this.$http.post(this.URL.getProjectList,this.getPra)
         .then(res=>{
-          if(res.status_code==2000000) {
+          if(res.data.status_code==2000000) {
             let data = res.data.data;
             this.projectListsAll = this.setProjectList(data);
             this.projectListsSmall = this.setProjectList(data).slice(0, 2);
@@ -703,7 +703,6 @@ export default {
         obj.has_many_industry=this.set_industry(x.has_many_industry);
         obj.has_one_city=x.has_one_city.area_title;
         newArr.push(obj);
-
       });
       return newArr;
     },//设置投资案例

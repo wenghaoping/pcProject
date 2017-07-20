@@ -1,6 +1,6 @@
 <template>
   <div id="fileManagement" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <button class="aa">111111111</button>
+    <el-button class="creatNewGroup">新建文件分组</el-button>
     <el-collapse  v-model="activeNames">
       <el-collapse-item>
         <template slot="title">
