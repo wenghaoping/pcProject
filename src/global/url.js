@@ -92,4 +92,6 @@ export default
   delete_follow_record:'/api/project/delete_follow_record',//删除跟进记录
   match_my_relation:'/api/user/match_my_relation',//模糊匹配我的人脉,添加跟进里是用
 
+  /*文件管理*/
+  getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据
 }

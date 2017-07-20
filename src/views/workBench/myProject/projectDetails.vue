@@ -994,7 +994,7 @@
       }
     }
     .el-tabs__content{
-      overflow: auto !important;
+     position: static;
     }
 
     .radio_line{

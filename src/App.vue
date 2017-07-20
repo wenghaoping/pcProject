@@ -97,7 +97,7 @@
       },
       // 检查localStorage.user_id
       checkUser(){
-        console.log(this.$route.path)
+        //this.$tool.console(this.$route.path)
         this.user_id=localStorage.user_id;
         //头部导航下标不对应问题解决
         if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
