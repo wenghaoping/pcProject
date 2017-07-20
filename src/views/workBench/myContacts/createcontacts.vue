@@ -415,8 +415,9 @@ export default {
       this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
         .then(res => {
           if (res.status === 200) {
+            this.planList=[];
             this.loading = false;
-              this.$tool.success("删除成功");
+            this.$tool.success("删除成功");
           }
         })
         .catch(err => {
@@ -463,7 +464,6 @@ export default {
     /*添加人脉标签*/
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e,this.tags_con);
-
       if (tagName != undefined) {
         this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
           .then(res => {
@@ -478,16 +478,52 @@ export default {
           })
       }
     },//添加人脉标签
-
+    checkPhoneNumber(value){
+      let check=false;
+      if (!this.$tool.getNull(value)) {
+        if (!this.$tool.checkNumber(value)) {
+          this.$tool.error('请输入数字值');
+          check=false;
+        } else {
+          if (!this.$tool.checkPhoneNubmer(value)) {
+            this.$tool.error('请输入正确的手机号');
+            check=false;
+          }else{
+            check=true;
+          }
+        }
+      }else{
+        check=true;
+      }
+      return check;
+    },//验证手机号高级版
+    checkEmail(value){
+      let check=false;
+      if (!this.$tool.getNull(value)) {
+          if (!this.$tool.checkEmail(value)) {
+            this.$tool.error('请输入正确的邮箱');
+            check=false;
+          }else{
+            check=true;
+          }
+      }else{
+        check=true;
+      }
+      return check;
+    },//邮箱验证高级版
     allSave(){
         let contacts=this.submitForm('contacts');
         let contacts1=this.submitForm('contacts1');
         let contacts2=this.submitForm('contacts2');
-        if(!contacts) {this.$tool.error("姓名不能为空")}
+        if(this.$tool.getNull(this.contacts.user_real_name)) {this.$tool.error("姓名不能为空")}
+        else if(!this.checkEmail(this.contacts.user_email)) {this.$tool.console("邮箱不过")}
+        else if(!this.checkPhoneNumber(this.contacts.user_mobile)) {this.$tool.console("电话不过")}
+        else if(!contacts) {}
         else if(!contacts1) {this.$tool.error("投资需求过长")}
         else if(!contacts2) {this.$tool.error("资源需求过长")}
       else{
-          this.$tool.setTag(this.contacts.user_invest_tag,this.tags_con);
+
+          this.$tool.setTag(this.contacts.user_invest_tag,this.tags.changecont);
           let allData=new Object;
           allData=this.contacts;
           allData.user_id=localStorage.user_id;
@@ -613,7 +649,7 @@ export default {
           data.user_invest_tag=this.setTag(data.user_invest_tag);
           this.setImage(data.user_image);
           if(data.user_image.length==0) {this.uploadShow = {};this.planList = [];}
-          this.tags.changecont=this.setTag(data.user_invest_tag);
+          this.tags.changecont=data.user_invest_tag;
           this.contacts=data;
           this.loading=false;
         })

@@ -1151,8 +1151,6 @@
           })
       },//设置文件分组标签
       getWxProjectCategory(){
-
-
         let data = this.$global.data.categoryData;
         this.area = this.$global.data.area;//设置城市1列表
         this.scale = this.$global.data.scale;//设置期望融资
@@ -1692,7 +1690,6 @@
       },
       addChangepro(e){
         let tagName = this.$tool.checkArr(e, this.tags_pro);
-
         if (tagName != undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 0, tag_name: tagName})
             .then(res => {

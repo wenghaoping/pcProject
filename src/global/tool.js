@@ -117,26 +117,53 @@ const tool={
     let reg = /^[0-9]+.?[0-9]*$/;
     if (reg.test(data)) {
       return true;
+    }else{
+      return false;
     }
-    return false;
+
   },//判断是不是数字
   checkEmail(data){
     let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
     if (reg.test(data)) {
       return true;
+    }else{
+      return false;
     }
-    return false;
   },//邮箱验证
   checkPhoneNubmer(data){
     let reg = /^1(3|4|5|7|8)\d{9}$/;
     if (reg.test(data)) {
       return true;
+    }else{
+      return false;
     }
-    return false;
   },//电话号码验证
+  checkPhoneNumber(value){
+    let check=false;
+    if (!this.$tool.getNull(value)) {
+      setTimeout(() => {
+        if (!this.$tool.checkNumber(value)) {
+          this.$tool.error('请输入数字值');
+          check=false;
+        } else {
+          if (!this.$tool.checkPhoneNubmer(value)) {
+            this.$tool.error('请输入正确的手机号');
+            check=false;
+          }else{
+            check=true;
+          }
+        }
+      }, 100);
+    }else{
+      check=true;
+    }
+    return check;
+  },//验证手机号高级版
   checkPassword(data){
     if (data.length>20 || data.length<6){
       return true
+    }else{
+      return false;
     }
   },//密码长度认证(6-20)
   checkLength20(data){
