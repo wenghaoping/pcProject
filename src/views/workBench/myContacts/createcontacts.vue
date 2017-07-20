@@ -580,7 +580,7 @@ export default {
       return newArr;
     },//设置标签的函数
     setImage(obj){
-      let obj = new Object;
+      var obj = new Object;
       obj.name=obj.name;
       obj.url=obj.image_src;
     },//设置名片

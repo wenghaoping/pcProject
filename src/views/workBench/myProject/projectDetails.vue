@@ -49,17 +49,17 @@
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
                 <div class="txt end">佣金收讫</div>
-                <!--<div class="img"><img src="../../../assets/images/editTo.png"></div>
-                 <div class="selectIn fr">-->
-                    <!--<el-select v-model="value1" placeholder="请选择" @change="selectChange">-->
-                      <!--<el-option-->
-                        <!--v-for="item in options"-->
-                        <!--:key="item.value"-->
-                        <!--:label="item.label"-->
-                        <!--:value="item.value">-->
-                      <!--</el-option>-->
-                    <!--</el-select>-->
-                  <!--</div>-->
+                <div class="img"><img src="../../../assets/images/editTo.png"></div>
+                 <div class="selectIn fr">
+                    <el-select v-model="value1" placeholder="请选择" @change="selectChange">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </div>
               </div>
             </span>
             </div>
@@ -88,7 +88,7 @@
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
         <div class="item-lists clearfix" style="padding-top: 10px;">
-          <el-tabs v-model="show" @tab-click="handleClick">
+          <el-tabs v-model="show" @tab-click="handleClick" style="position: relative">
             <el-tab-pane label="项目详情" name="detail">
               <div class="ul-lists">
                 <div class="item">
@@ -262,7 +262,7 @@
 
             </el-tab-pane>
 
-<!--            <el-tab-pane label="跟进记录" name="flow">
+            <el-tab-pane label="跟进记录" name="flow">
               <folowup :proid="project.project_id">
 
               </folowup>
@@ -272,7 +272,7 @@
               <filemanagement :proid="project.project_id">
 
               </filemanagement>
-            </el-tab-pane>-->
+            </el-tab-pane>
           </el-tabs>
           <div class="ul-lists list tc" >
             <div class="toButton" style="padding-left: 0">
