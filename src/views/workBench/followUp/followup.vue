@@ -201,7 +201,7 @@ export default {
   },
   data () {
     return {
-      dialogFollow:true,//控制写跟进弹框
+      dialogFollow:false,//控制写跟进弹框
       followid:'',//跟进id
       loading: false,//加载动画
       searchinput:'',//搜索输入框
@@ -261,8 +261,7 @@ export default {
     },//跳转到更近详情页
     handleEdit(index, row){
         this.dialogFollow=true;
-        this.follow_id=row.follow_id;
-
+        this.followid=row.follow_id;
     },//点击编辑按钮,跳转
     headerClick(column, event){
       if(column.label==="重置"){

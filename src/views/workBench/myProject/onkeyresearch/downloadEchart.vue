@@ -13,7 +13,7 @@
       <el-tab-pane label="访问时长" name="4"></el-tab-pane>
 
     </el-tabs>
-    <div id="pieBox" style="width:803px;height:432px;"></div>
+    <div id="pieBox" style="width:803px;height:432px;diplay:block"></div>
     <p class="sec"><i>{{title}}：</i>{{main}}</p>
     <div class="op">
 
@@ -99,12 +99,12 @@ export default {
           this.gettime();
           break;
         default:
-          alert("你瞎按了吧")
+          alert("你瞎按了吧");
           break;
       };
     },
     eChart(xdata,ydata1,ydata2){
-      let myChart = this.$echart.init(document.getElementById('pieBox'))
+      let myChart = this.$echart.init(document.getElementById('pieBox'));
       let option = {
           title: {},
           color: ['#28DC41', '#009eff'],
@@ -161,27 +161,27 @@ export default {
       myChart.setOption(option);
       },
     getdownload(){
-      this.title="累计下载量",
+      this.title="累计下载量";
       this.main="综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。";
       this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
     },//累计下载量
     getdau(){
-      this.title="累计用户",
+      this.title="累计用户";
       this.main="日活跃用户量";
       this.eChart(this.xdata,this.dau.ydataTotal,this.dau.ydataAverage);
     },//累计用户
     getpv(){
-      this.title="浏览页面数(PV)",
+      this.title="浏览页面数(PV)";
       this.main="对目标公司网站在全网的日均访问量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了用户对目标公司官方网站的访问情况,是可以表明目标公司网站内容受访问热度的指标."
       this.eChart(this.xdata,this.pv.ydataTotal,this.pv.ydataAverage);
     },//浏览页面数
     getuv(){
-      this.title="访问用户数(UV)",
+      this.title="访问用户数(UV)";
       this.main="对目标公司网站在全网的日均独立访问用户量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了木不熬公司官方网站吸引用户的能力,是可以表明目标公司网站的获客能力的指标."
       this.eChart(this.xdata,this.uv.ydataTotal,this.uv.ydataAverage);
     },//访问用户数
     gettime(){
-      this.title="访问时长",
+      this.title="访问时长";
       this.main="所有访问用户在统计时间段内,从进入到离开该网站的时长平均值,是可以表现公司网站用户粘性的指标."
       this.eChart(this.xdata,this.time.ydataTotal,this.time.ydataAverage);
     },//访问时长
@@ -238,7 +238,7 @@ export default {
     },//获取公司id
     compName: function(e){
       this.compaName=e;
-      this.getdownload();
+//      this.getdownload();
 
     },//获取公司名称
 

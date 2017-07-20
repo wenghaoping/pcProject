@@ -11,12 +11,13 @@
             <el-col :span="24">
               <el-form-item
                 label="* 关联项目"
-                prop="projecname"
-                :rules="[{ required: true, message: '请选择关联项目', trigger: 'blur' }]">
-                <el-autocomplete v-model="follow.projecname"
+                prop="project_name">
+                <el-autocomplete v-model="follow.project_name"
                                  :fetch-suggestions="querySearchProject"
                                  placeholder="一句话介绍，如帮助FA成交的项目管理工具"
-                                 @select="handleSelectProject" style="width:360px;">
+                                 :maxlength="20"
+                                 style="width:360px;"
+                                 @select="handleSelectProject">
                 </el-autocomplete>
               </el-form-item>
             </el-col>
@@ -29,7 +30,8 @@
                 :rules="[{max: 20, message: '长度不能大于20个字符', trigger: 'blur' }]">
                 <el-autocomplete v-model="follow.card_name"
                                  :fetch-suggestions="querySearchAsync"
-                                 placeholder="请添加"
+                                 placeholder="请选择或添加投资人"
+                                 :maxlength="20"
                                  @select="handleSelect">
                 </el-autocomplete>
               </el-form-item>
@@ -95,7 +97,7 @@
         </div>
         <div slot="footer" class="dialog-footer fr" style="margin: 32px 0">
           <el-button @click="handleClose">继续添加</el-button>
-          <el-button type="primary" @click="handleClose">提 交</el-button>
+          <el-button type="primary" @click="allSave">提 交</el-button>
         </div>
       </div>
     </el-dialog>
@@ -152,21 +154,25 @@
         },
         groups: {
           input: "",
-          group: [{type: "其他", label: '其他', value: '其他'}],
+          group: [
+/*              {type: "其他", label: '其他', value: '其他'}*/
+              ],
           type: "",
           name:""
         },//分组用的所有参数
+        statusLast:0,
         loadingcheck:false,
         follow_id:'',
         value:'',
         follow:{
           project_id:'',//关联项目id
-          projecname:'',//关联项目名称
+          project_name:'',//关联项目名称
           card_id:'',//意向投资人
           card_name:'',//意向投资人
           schedule_id:'',//跟进进度
           follow_desc:'',//跟进描述
           file_id:[],//文件id
+          follow_id:'',//id
         },//跟进记录
         schedule_name: [
 /*            {
@@ -188,10 +194,10 @@
 
 
       handleSelectProject(item){
-//        this.follow.project_name = item.value;
-        this.follow.project_id = item.address;
+        this.follow.project_id = item.label;
       },//选择项目后
       querySearchProject(queryString, cb){
+        this.follow.project_id='';
         let obj = new Object;
         obj.user_id=localStorage.user_id;
         obj.search=queryString;
@@ -200,7 +206,6 @@
           .then(res => {
             this.restaurants=[];
             let data=res.data.data;
-            console.log(data);
             this.restaurants=this.loadData(data);
              let restaurants = this.restaurants;
              clearTimeout(this.timeout);
@@ -215,6 +220,7 @@
       },//项目搜索
 
       handleSelect(item) {
+        this.follow.card_id = item.label;
         if(item.label==0){
           this.$confirm('是否添加该人脉, 是否继续?', '提示', {
             confirmButtonText: '确定',
@@ -245,11 +251,11 @@
         }
       },//选择意向投资人后
       querySearchAsync(queryString, cb) {
+        this.follow.card_id='';
         this.$http.post(this.URL.match_my_relation, {user_id: localStorage.user_id, user_name: queryString})
           .then(res => {
             this.userArr=[];
             let data=res.data.data;
-            console.log(data);
             this.userArr=this.loadDataUser(data,queryString);
             let userArr = this.userArr;
             clearTimeout(this.timeout);
@@ -260,7 +266,7 @@
           .catch(err => {
             this.$tool.console(this.userArr);
           })
-      },/*意向投资人搜索*/
+      },//意向投资人搜索
 
       loadData(arr){
         let newArr = [];
@@ -293,7 +299,6 @@
             this.schedule_name=this.setScheduleName(data.schedule_name);
           })
           .catch(err=>{
-            this.loading=false;
             this.$tool.console(err,2)
           })
       },// 获取跟进进度
@@ -307,7 +312,6 @@
           }
           return arr
       },//设置跟进进度
-
 
       getFileType(data){
         let arr = [];
@@ -329,12 +333,39 @@
             this.$tool.console(err)
           })
       },//设置文件分组标签
+      setUploadShow(data){
+        for (let i = 0; i < data.length; i++) {
+          if(data[i].belongs_to_type==null) {
+            data[i].belongs_to_type={type_name:"基本信息"};
+          };
+          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title+'.'+data[i].file_ext, data[i].file_id, data[i].belongs_to_type.type_id);
+        }
+      },//设置批量上传文件显示
+      getFollowUp(){
+        this.loading=true;
+        for(let key in this.follow){
+          this.follow[key]='';
+        }
+        this.uploadShow.lists=[];
+        this.fileList=[];
+        this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id,follow_id:this.follow_id})
+          .then(res => {
+            let data = res.data.data;
+            data.schedule_id=data.schedule_id.toString();
+            this.follow=data;
+            this.follow.file_id=[];
+            this.setUploadShow(data.files);
+            this.loading=false;
+          })
+          .catch(err => {
+            this.$tool.console(err);
+            this.loading=false;
+          })
+      },//获取跟进记录
 
       /*项目文件上传*/
       beforeUpload(file){
         this.num++;
-        this.fileuploadDate.project_id = this.project_id;
-        this.uploadDate.project_id = this.project_id;
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
         let name=file.name;
         let fileend=name.substring(name.lastIndexOf("."));
@@ -371,7 +402,7 @@
         }
       },
       uploadsuccess(response, file, fileList){
-        let data = response.data
+        let data = response.data;
         this.$tool.success("上传成功");
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type);
         this.loadingcheck=true;
@@ -391,24 +422,23 @@
 
       },//点击下载
       removeList(item) {
-        var index = this.uploadShow2.lists.indexOf(item);
+        var index = this.uploadShow.lists.indexOf(item);
         if (index !== -1) {
-          this.fileList.splice(index, 1)
+          this.fileList.splice(index, 1);
           this.$http.post(this.URL.deleteAtFile, {
             user_id: localStorage.user_id,
-            project_id: item.project_id,
             file_id: item.file_id
           })
             .then(res => {
               if (res.status === 200) {
                 this.loading = false;
-                this.uploadShow.lists.splice(index, 1)
-                this.$tool.success("删除成功")
+                this.uploadShow.lists.splice(index, 1);
+                this.$tool.success("删除成功");
               }
             })
             .catch(err => {
-              this.$tool.console(err)
-              this.$tool.error("删除失败,请联系管理员")
+              this.$tool.console(err);
+              this.$tool.error("删除失败,请联系管理员");
             })
         }
       },//删除当前上传文件
@@ -419,10 +449,8 @@
         object.file_id = file_id;
         object.type = type;//文件类型
         this.uploadShow.lists.push(object);
-
+        this.follow.file_id.push(file_id);
       },//添加上传文件时,加入显示列表
-
-
 
       groupchange(label){
         let index = this.groups.index;
@@ -460,14 +488,10 @@
           }
         });
       },//添加分组设置的分组选项
-      cancelGroupChange(){
-        this.dialogFormVisible = false;
-        this.project.pro_status = this.statusLast;
-      },//取消后
       saveGroupChange(){//file_id type_id user_id
         let type = this.groups.bp_type;
         let index = this.groups.index;
-        let type_name = this.groups.name
+        let type_name = this.groups.name;
         this.$http.post(this.URL.setFileType, {
           user_id: localStorage.user_id,
           file_id: this.uploadShow.lists[index].file_id,
@@ -486,20 +510,70 @@
       },//发送分组设置请求
       toGroup(item){
         this.groups.type=item.type;
-        var index = this.uploadShow2.lists.indexOf(item);
+        let index = this.uploadShow.lists.indexOf(item);
         this.groups.index = index;
         this.dialogFileVisible = true;
       },//获取分组的位置
 
+      allSave(){
+        if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
+            this.$tool.error("请选择或添加正确的投资人")
+        }
+        else if(this.$tool.getNull(this.follow.project_id)) this.$tool.error("请选择正确的项目")
+        else if(this.$tool.getNull(this.follow.project_name)) this.$tool.error("请选择正确的项目")
+        else {
+          this.follow.follow_id=this.follow_id;
+          if(this.follow.follow_id=="") delete this.follow.follow_id;
+          this.follow.user_id=localStorage.user_id;
+          this.$tool.console(this.$tool.getToObject(this.follow));
+           this.loading=true;
+           this.$http.post(this.URL.add_follow_record, this.follow)
+             .then(res => {
+               this.loading=false;
+//               this.$tool.console(res);
+               this.open2('项目编辑成功', '保存成功', '查看详情', '继续编辑')
+             })
+             .catch(err => {
+               this.loading=false;
+               this.$tool.console(err)
+             })
+         }
+      },//发送请求
+      /*编辑成功弹窗*/
+      open2(title, main, confirm, cancel) {
+        this.$confirm(main, title, {
+          confirmButtonText: confirm,
+          cancelButtonText: cancel,
+          type: 'success'
+        }).then(() => {
+          this.$router.push({ name: 'projectDetails', query: { project_id:this.follow.project_id,activename:'2'}})
+        }).catch(() => {
+          this.$message({
+            type: 'success',
+            message: '继续编辑'
+          });
+          this.getFollowUp();
+        });
+      },
+
     },
-      created(){
+    created(){
         this.getScheduleName();
+        this.setFileType();
       },
     watch : {
       followid : function(e){
-        this.follow_id=e;
-
+        this.follow_id=this.followid;
+        this.getFollowUp();
       },//获取项目id
+      dialogFollow: function(e){
+        for(let key in this.follow){
+          this.follow[key]='';
+          this.follow.file_id=[];
+        }
+        this.uploadShow.lists=[];
+        this.fileList=[];
+      },//清空数据
     },
     mounted(){
 
