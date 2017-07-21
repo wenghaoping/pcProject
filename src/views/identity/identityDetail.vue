@@ -138,6 +138,9 @@
                 <el-button v-show="!hasSuccessCase" @click="addInvestCase">添加</el-button>
                 <el-button v-show="hasSuccessCase">继续添加</el-button>
               </el-form-item>
+              <el-form-item class="item" label="申请试用为FA量身定制的saas系统">
+
+              </el-form-item>
             </div>
           </el-form>
         </div>
@@ -298,22 +301,24 @@
         this.dialogVisible = true;
       },
       querySearchAsync(queryString, cb) {
-        this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
-        .then(res => {
-          this.restaurants = [];
-          let data = res.data.data;
-          this.restaurants = this.loadData(data);
-          if (queryString == "") this.restaurants = [];
-          let restaurants = this.restaurants;
-          /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
-          clearTimeout(this.timeout);
-          this.timeout = setTimeout(() => {
-            cb(restaurants);
-          }, 300);
-        })
-        .catch(err => {
-          console.log(err);
-        })
+        if(queryString.length>2){
+          this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+          .then(res => {
+            this.restaurants = [];
+            let data = res.data.data;
+            this.restaurants = this.loadData(data);
+            if (queryString == "") this.restaurants = [];
+            let restaurants = this.restaurants;
+            /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              cb(restaurants);
+            }, 300);
+          })
+          .catch(err => {
+            console.log(err);
+          })
+        }
       },
       createStateFilter(queryString) {
         return (state) => {

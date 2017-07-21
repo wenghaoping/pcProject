@@ -684,7 +684,7 @@
         tabs:true,//标签切换
         currentPage:1,//当前第几页
         totalData:50,//总数
-        dialogConVisible:true,
+        dialogConVisible:false,
       }
     },
     computed:{

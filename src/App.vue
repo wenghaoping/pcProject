@@ -108,10 +108,10 @@
           this.$tool.error('请先登录')
           this.$router.push({name:'index'})
         }
-        //一小时不动后退出登录
+        //十二小时不动后退出登录
         setTimeout(function(){
           localStorage.clear()
-        },3600000)
+        },43200000)
         //登录状态下拦截
         /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
           this.$router.push({name:'index'})
