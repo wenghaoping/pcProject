@@ -188,7 +188,7 @@
       </div>
     </div>
 
-    <!--写跟进弹框-->
+  <!--写跟进弹框-->
   <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>
   </div>
 </template>
@@ -256,7 +256,7 @@ export default {
     },//点击写跟近按钮
     handleSelect(row, event, column) {
       if(column.label!="重置"){
-        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,activename:'2'}})
+        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'flow'}})
       }
     },//跳转到更近详情页
     handleEdit(index, row){
@@ -382,7 +382,7 @@ export default {
   },
   created(){
     this.loading=true;
-    this.titleSift();
+//    this.titleSift();
     this.handleIconClick();
   }
 }

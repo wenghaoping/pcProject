@@ -583,7 +583,10 @@ export default {
         ]
       };
       myChart.setOption(option);
-    },
+    },//图标
+    getEchartData(){
+
+    },//获取意向项目数据(图表)
     dialogVisiblechangeIn(msg){
       this.dialogVisiblePro=msg;
     },//项目详情弹窗关闭函数

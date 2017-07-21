@@ -137,7 +137,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid"],
+    props: ["dialogFollow","followid","projectid","projectname"],
     data () {
       return {
         loading:false,
@@ -192,7 +192,6 @@
         this.$emit("changeClose",false);
       },
 
-
       handleSelectProject(item){
         this.follow.project_id = item.label;
       },//选择项目后
@@ -214,8 +213,6 @@
              }, 300);
           })
           .catch(err => {
-//          this.alert("加载失败");
-              this.$tool.console(this.restaurants);
           })
       },//项目搜索
 
@@ -264,7 +261,6 @@
             }, 300);
           })
           .catch(err => {
-            this.$tool.console(this.userArr);
           })
       },//意向投资人搜索
 
@@ -335,10 +331,7 @@
       },//设置文件分组标签
       setUploadShow(data){
         for (let i = 0; i < data.length; i++) {
-          if(data[i].belongs_to_type==null) {
-            data[i].belongs_to_type={type_name:"基本信息"};
-          };
-          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title+'.'+data[i].file_ext, data[i].file_id, data[i].belongs_to_type.type_id);
+          this.addDomain(data[i].type_name, data[i].file_title+'.'+data[i].file_ext, data[i].file_id, data[i].type);
         }
       },//设置批量上传文件显示
       getFollowUp(){
@@ -352,8 +345,10 @@
           .then(res => {
             let data = res.data.data;
             data.schedule_id=data.schedule_id.toString();
+            data.file_id=[];
+            data.type='card';
             this.follow=data;
-            this.follow.file_id=[];
+            this.$tool.console(this.$tool.getToObject(data));
             this.setUploadShow(data.files);
             this.loading=false;
           })
@@ -489,7 +484,7 @@
         });
       },//添加分组设置的分组选项
       saveGroupChange(){//file_id type_id user_id
-        let type = this.groups.bp_type;
+        let type = this.groups.type;
         let index = this.groups.index;
         let type_name = this.groups.name;
         this.$http.post(this.URL.setFileType, {
@@ -504,18 +499,20 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err)
+            this.$tool.console(err);
           })
 
       },//发送分组设置请求
       toGroup(item){
         this.groups.type=item.type;
+        console.log(item);
         let index = this.uploadShow.lists.indexOf(item);
         this.groups.index = index;
         this.dialogFileVisible = true;
       },//获取分组的位置
 
       allSave(){
+        this.loading=true;
         if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
             this.$tool.error("请选择或添加正确的投资人")
         }
@@ -524,18 +521,26 @@
         else {
           this.follow.follow_id=this.follow_id;
           if(this.follow.follow_id=="") delete this.follow.follow_id;
+          delete this.follow.files;
           this.follow.user_id=localStorage.user_id;
-          this.$tool.console(this.$tool.getToObject(this.follow));
+          this.follow.type="card";
+//          this.$tool.console(this.$tool.getToObject(this.follow));
+          console.log(this.$tool.getToObject(this.follow));
            this.loading=true;
            this.$http.post(this.URL.add_follow_record, this.follow)
              .then(res => {
+               this.$tool.console(res);
+               if(res.data.status_code==2000000){
+//                 this.follow_id=res.data.data;
+                 this.open2('项目编辑成功', '保存成功', '查看详情', '继续编辑')
+               }else{
+                   this.$tool.error(res.data.error_msg);
+               }
                this.loading=false;
-//               this.$tool.console(res);
-               this.open2('项目编辑成功', '保存成功', '查看详情', '继续编辑')
              })
              .catch(err => {
                this.loading=false;
-               this.$tool.console(err)
+               this.$tool.console(err);
              })
          }
       },//发送请求
@@ -558,14 +563,14 @@
 
     },
     created(){
-        this.getScheduleName();
-        this.setFileType();
-      },
+      this.getScheduleName();
+      this.setFileType();
+    },
     watch : {
       followid : function(e){
-        this.follow_id=this.followid;
+        this.follow_id=this.followid || '';
         this.getFollowUp();
-      },//获取项目id
+      },//获取跟进id
       dialogFollow: function(e){
         for(let key in this.follow){
           this.follow[key]='';
@@ -573,6 +578,8 @@
         }
         this.uploadShow.lists=[];
         this.fileList=[];
+        this.follow.project_id=this.projectid || '';
+        this.follow.project_name=this.projectname || '';
       },//清空数据
     },
     mounted(){
@@ -583,4 +590,13 @@
 
 <style lang="less">
   @import '../../../assets/css/addFollow';
+  .el-radio-group{
+    line-height: 3!important;
+  }
+  .el-radio{
+    margin-left:0px!important;
+    min-width:111px
+
+  }
+
 </style>

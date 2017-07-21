@@ -41,7 +41,7 @@ export default
   setFileType:"api/v/project/setFileType",  //文件分组设置
 
   /*项目编辑页*/
-  getWxProjectCategory:"api/category/getWxProjectCategory",  //编辑项目各种标签接口
+  getWxProjectCategory:"api/category/getProjectCategory",  //编辑项目各种标签接口
   getArea:"api/category/getArea",  //二级城市接口
   createStatusPro:"api/category/createStatusPro",  //添加自定义运营状态
   createCustomTag:"api/category/createCustomTag",  //添加自定义标签/个人,团队,人脉
@@ -96,5 +96,8 @@ export default
 
   //文件管理
   getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据
+
+  /*意向项目(人脉列表右边)*/
+  getEnjoyProjectsGroup:'/api/v/project/getEnjoyProjectsGroup',//意向项目归总
 
 }

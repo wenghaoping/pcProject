@@ -480,23 +480,26 @@
       },
       /*自动搜索,接口写这里面*/
       querySearchAsync(queryString, cb) {
-        this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
-          .then(res=>{
-            this.restaurants=[];
-            let data=res.data.data;
-            this.restaurants=this.loadData(data);
-            if(queryString=="") this.restaurants=[];
-            let restaurants = this.restaurants;
-            /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-              cb(restaurants);
-            }, 300);
-          })
-          .catch(err=>{
-            this.$tool.error("加载失败");
-            this.$tool.console(err);
-          })
+        if(queryString.length>2){
+          this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
+            .then(res=>{
+              this.restaurants=[];
+              let data=res.data.data;
+              this.restaurants=this.loadData(data);
+              if(queryString=="") this.restaurants=[];
+              let restaurants = this.restaurants;
+              /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
+              clearTimeout(this.timeout);
+              this.timeout = setTimeout(() => {
+                cb(restaurants);
+              }, 300);
+            })
+            .catch(err=>{
+              this.$tool.error("加载失败");
+              this.$tool.console(err);
+            })
+        }
+
       },
       createStateFilter(queryString) {
         return (state) => {
@@ -519,7 +522,8 @@
       /*一键同步按钮*/
       sync(){
         this.dialogVisible = false;
-        if(this.project.pro_intro=="") this.project.pro_intro=this.queryData.project_info.project_introduce;
+        console.log(this.queryData)
+        if(this.project.pro_intro=="") {this.project.pro_intro=this.queryData.project_info.project_introduce};
         this.project.pro_company_name=this.queryData.company_name;
       },
       getprojectId(){

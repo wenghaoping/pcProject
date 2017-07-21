@@ -104,7 +104,7 @@
                 </div>
                 <div class="item" style="margin-top:24px;">
                   <div class="paper" v-if="project.pro_BP.length!=0">
-                    <img class="img" style="padding-right: 16px;" src="../../../assets/images/paper.png">
+                    <img class="img" style="padding-left: 16px;" src="../../../assets/images/paper.png">
                     <span class="pt">{{project.pro_BP.file_title}}</span>
                     <!--<el-button type="text" size="mini">查看</el-button>-->
                     <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
@@ -277,8 +277,8 @@
           <div class="ul-lists list tc" >
             <div class="toButton" style="padding-left: 0">
               <button  @click="toEdit" class="btn1">编辑</button>
-<!--              <button  @click="toEdit" class="btn1">写跟近</button>
-              <button  @click="toEdit" class="btn1">项目推送</button>-->
+              <button  @click="addFollow" class="btn1">写跟近</button>
+              <button  @click="toEdit" class="btn1">项目推送</button>
             </div>
           </div>
         </div>
@@ -436,6 +436,12 @@
 
     <!--人脉详情弹窗-->
     <alertcontactsdetail :dialog-con-visible="dialogConVisible" :proid="project.project_id" v-on:changeCon="dialogConchange"></alertcontactsdetail>
+
+    <!--写跟进弹框-->
+    <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
+
+    <!--项目推送项目入口弹窗-->
+    <projectpush2 :dialog-push="dialogPushVisible"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
   </div>
 </template>
 
@@ -444,11 +450,18 @@
   import folowup from './followUpDetail.vue'
   import filemanagement from './fileManagement.vue'
   import alertcontactsdetail from './alertContactsDetail.vue'
+  import addfollow from './../followUp/addFollow.vue'
+  import projectpush2 from './projectPush2.vue'
   export default {
     data(){
       return {
         companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
+        projecmessage:{
+          project_id:'',
+          project_name:''
+        },//项目名称,ID
+        dialogFollow:false,//跟进弹框
         show: "detail",
         dialogVisible: false,
         dialogSearchVisible:false,
@@ -684,7 +697,7 @@
         tabs:true,//标签切换
         currentPage:1,//当前第几页
         totalData:50,//总数
-        dialogConVisible:true,
+        dialogConVisible:false,
       }
     },
     computed:{
@@ -693,13 +706,22 @@
       research,
       folowup,
       filemanagement,
-      alertcontactsdetail
+      alertcontactsdetail,
+      addfollow
     },
     //Echart组件
     mounted(){
       this.eChart();
     },
     methods:{
+      addFollow(){
+        this.dialogFollow=true;
+        this.projecmessage.project_id=this.project.project_id;
+        this.projecmessage.project_name=this.project.pro_name;
+      },//点击写跟近按钮
+      closeFollow(msg){
+        this.dialogFollow=msg;
+      },//关闭添加跟进
       download(e){
         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
         window.location.href=url;
@@ -717,7 +739,7 @@
           .catch(err=>{
             this.$tool.console(err);
           })
-      },
+      },//搜索公司
       goOnkey(){
         if(this.project.pro_company_name==""){
           this.dialogSearchVisible = true;
@@ -823,7 +845,8 @@
       },
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
-        this.activeName=this.$route.query.activename;
+        console.log(this.project.project_id);
+        this.show=this.$route.query.show;
       },
       selectChange(e){
         this.status_name=e;

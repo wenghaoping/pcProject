@@ -1,5 +1,6 @@
 <template>
-  <!--项目推送人脉入口-->
+  <!--项目推送项目入口-->
+
   <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中">
     <el-dialog :visible="dialogPush" :before-close="handleClose">
       <span slot="title" class="dialog-title clearfix">
@@ -16,72 +17,6 @@
           <el-input v-model="email2.nameEmail" placeholder="项目及BP将以邮箱的方式推送，请输入邮箱"></el-input>
         </el-form-item>
       </el-form>
-      <div class="message">
-        <span class="message_innder fl" v-if="userMessage.user_real_name!=''">{{userMessage.user_real_name}}</span>
-        <span class="message_innder fl" v-else>--</span>
-        <span class="lines fl"></span>
-        <span class="message_innder fl" v-if="userMessage.user_company_career!=''">{{userMessage.user_company_career}}</span>
-        <span class="message_innder fl" v-else>--</span>
-        <span class="lines fl"></span>
-        <span class="message_innder fl" v-if="userMessage.user_company_name!=''">{{userMessage.user_company_name}}</span>
-        <span class="message_innder fl" v-else>--</span>
-      </div>
-
-      <el-form label-position="top" label-width="80px">
-        <el-form-item label="推送项目">
-          <el-select v-model="projectList" multiple filterable=""
-                     remote multiple placeholder="请输入项目关键词"
-                     :remote-method="remoteMethod" ><!--popper-class="block"===========================-->
-            <el-option v-for="item in projectAll" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div class="select">
-        <el-tabs v-model="activeName">
-          <el-tab-pane label="我的项目" name="first"></el-tab-pane>
-        </el-tabs>
-      </div>
-      <div class="top-lists" style="background: #f3f4f8;cursor: pointer;margin-bottom: 29px;">
-        <el-table
-          ref="multipleTable"
-          :data="tableData3"
-          tooltip-effect="dark"
-          style="width: 100%"
-          max-height="430"
-          :row-class-name="tableRowClassName">
-          <el-table-column
-            width="64">
-            <template scope="scope">
-              <el-radio class="radio" v-model="projectRadio" :label="scope.row.id"></el-radio>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="项目介绍"
-            min-width="570">
-            <template scope="scope">
-              <el-tooltip placement="top" :disabled="scope.row.introduce.length > 30 ? false:true">
-                <div slot="content">
-                  <div class="tips-txt">{{scope.row.introduce}}</div>
-                </div>
-                <div>
-                  {{scope.row.introduce}}
-                </div>
-              </el-tooltip>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="matching"
-            label="匹配度"
-            min-width="80">
-            <template scope="scope">
-              <div class="origin">
-                {{scope.row.matching}}%
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
       <el-form label-position="top" label-width="80px" ref="email" :model="email">
         <el-form-item label="标题" prop="title"
                       :rules="titleRule">
@@ -97,14 +32,12 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="preview">预览</el-button>
-        <el-button type="primary" @click="push(2)">继续推送</el-button>
-        <el-button type="primary" @click="push(1)">推送</el-button>
+        <el-button type="primary" @click="push()">推送</el-button>
       </span>
     </el-dialog>
 
 
 <!--项目预览弹窗-->
-
   </div>
 </template>
 
@@ -176,44 +109,10 @@ export default {
   },
   methods: {
     preview(){
-
       this.$emit('changeall',false);
-    },//推送预览
+    },
     push(type){
-//      this.$emit('changeall',false);
-      let check1 = this.submitForm('email');
-      let check2 = this.submitForm('email2');
-      if(this.projectRadio=='') this.$tool.error("请选择要推送的项目")
-        else if(!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
-      else if(type==1){//关闭
-        if(check1 && check2) this.$emit('changeall',false)
-
-/*        this.$http.post(this.URL.getCrawlerBrand, {
-          user_id: localStorage.user_id,
-        })
-          .then(res => {
-            let data=res.data.data;
-            this.$tool.console(res);
- this.$emit('changeall',false);
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })*/
-      }else if(type==2){//继续
-          if(check1 && check2) this.$emit('changeall',false)
-/*        this.$http.post(this.URL.getCrawlerBrand, {
-          user_id: localStorage.user_id,
-        })
-          .then(res => {
-            let data=res.data.data;
-            this.$tool.console(res);
-            this.$emit('changeall',false);
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })*/
-      }
-    },//推送按钮1推送1次,2继续推送
+    },//推送按钮
     remoteMethod(query) {
       if (query !== '') {
         this.load = true;
