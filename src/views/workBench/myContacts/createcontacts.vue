@@ -632,6 +632,7 @@ export default {
       let object = {};
       object.image_id = obj.image_id;
       this.uploadShow = object;
+
     },//设置名片
     getOneUserInfo(){
       this.loading=true;

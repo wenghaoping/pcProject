@@ -88,7 +88,7 @@
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
         <div class="item-lists clearfix" style="padding-top: 10px;">
-          <el-tabs v-model="show" @tab-click="handleClick">
+          <el-tabs v-model="show" @tab-click="handleClick" style="position: relative">
             <el-tab-pane label="项目详情" name="detail">
               <div class="ul-lists">
                 <div class="item">
@@ -992,6 +992,9 @@
         background:#009eff;
         color:#ffffff;
       }
+    }
+    .el-tabs__content{
+     position: static;
     }
 
     .radio_line{
