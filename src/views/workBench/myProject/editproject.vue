@@ -796,7 +796,6 @@
         fileList: [],//批量上传文件列表
         planButton: true,//控制上传按钮的显示
         uploadShow: {//计划书上传列表,需要存数据啦
-
         },
         uploadShow2: {//上传文件展示列表,就是老夫操作的列表
           lists: []

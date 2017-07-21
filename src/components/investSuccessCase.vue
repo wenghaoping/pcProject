@@ -110,19 +110,11 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ['dialogShow'],
+    props: ['dialogShow','investCase'],
     data () {
       return {
         caseForm: {
-          investSuccessCase: [{
-            case_name : '',
-            case_deal_time: '',
-            case_industry: '',
-            case_stage: '',
-            case_province: '',
-            case_city: '',
-            case_money: '',
-          }]
+          investSuccessCase: this.investCase
         },
         /*rule:  [{
           name: [{required: true, message: '请填写姓名', trigger: 'blur'},],
@@ -197,7 +189,7 @@
           console.log(this.caseForm.investSuccessCase);
 
           // 发送请求
-          this.$http.post(this.URL.createUserProjectCase,{
+          /*this.$http.post(this.URL.createUserProjectCase,{
             user_id:localStorage.user_id,
             project_case:this.caseForm.investSuccessCase,
           }).then(res=>{
@@ -212,7 +204,13 @@
             }else{
               that.$tool.error(res.data.error_msg)
             }
+          })*/
+          this.$tool.success('投资成功案例保存成功')
+          this.caseForm.investSuccessCase.forEach((x,index)=>{
+            x.case_deal_time=this.caseTime[index]
           })
+          this.caseTime=[];
+          that.$emit('closeInvestCase', false)
         }
       },
 

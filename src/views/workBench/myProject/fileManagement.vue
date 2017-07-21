@@ -4,27 +4,28 @@
     <el-button class="createNewGroup" @click.prevent="toGroup">新建文件分组</el-button>
     <!--文件分组的弹窗-->
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
-      <el-form :model="newGroupName" ref="newGroupName">
+      <el-form :model="newGroupName"  ref="newGroupName">
         <el-form-item label="分组名称" label-width="80px" prop="name"
                       :rules="[{min: 2, message: '最少2个字符',required: true, trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
-              <el-input :model="newGroupName.name" auto-complete="off"></el-input>
+              <el-input v-model="newGroupName.name" auto-complete="off"></el-input>
             </el-col>
           </el-row>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="addGroup">保　存</el-button>
+        <el-button type="primary" @click="addGroup" style="background: #40587a;border-color: #40587a;">保　存</el-button>
       </div>
     </el-dialog>
     <!--文件类别-->
     <el-collapse v-model="activeNames">
-      <el-collapse-item name="1">
+      <el-collapse-item name="index" v-for="(item,index) in groupList" :key="item.type_id">
+        <!--组别表头-->
         <template slot="title">
           <span class="clearfix collapseHead">
-            商业计划书(<span>1</span>)
+            {{item.type_name}}(<span>{{item.fileLength}}</span>)
             <div class="fr">
                <el-upload
                  class="upload"
@@ -35,16 +36,17 @@
                  :on-error="uploaderror"
                  :before-upload="beforeUpload"
                  :file-list="fileList"
-                 :data="fileuploadDate"
+                 :data="{user_id:this.localStorage.user_id,project_id:this.project_id,type:item.type_id}"
                  :show-file-list="false"
                  accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
                  multiple>
-                    <el-button class="upload" type="text"><img src="/static/images/shangchuan.png">批量上传</el-button>
+                    <el-button class="upload" type="text"><img src="/static/images/shangchuan.png">上传文件</el-button>
                </el-upload>
             </div>
           </span>
         </template>
-        <div>
+        <!--文件列表-->
+        <div class="fileList">
           <div class="block-info block-cc-other" style="margin-bottom: 15px;"
                v-for="(list, index) in uploadShow2.lists"
                :key="list.index">
@@ -52,7 +54,7 @@
             <div class="fr">
               <el-dropdown>
                 <span class="el-dropdown-link">
-                  下拉菜单<i class="el-icon-caret-bottom el-icon--right"></i>
+                  <img src="/static/images/threePoint.png" class="threePoint">
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>查看</el-dropdown-item>
@@ -71,9 +73,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-
   export default {
-
     props: ["proid"],
     data () {
       return {
@@ -84,13 +84,18 @@
         groupList: [],
         //被展开的分组
         activeNames: [],
-        //项目文件上传带的参数 fileuploadDate:
-        fileuploadDate: {user_id: localStorage.user_id},
         //批量上传文件列表
         fileList: [],
         //上传文件展示列表,就是老夫操作的列表
         uploadShow2: {
-          lists: []
+          lists: [
+            {
+              bp_type: "1",
+              file_title:"2",
+              file_id:"3",
+              type:"4"
+            }
+          ]
         },
         //新建分组弹窗控制
         dialogFileVisible:false,
@@ -118,26 +123,74 @@
             user_id: localStorage.user_id,
             project_id: this.project_id
           }).then(res => {
-            console.log('res',res)
+            console.log('res',this.$tool.getToObject(res))
             //把分组内的文件放到对应的分组内
             for (let key in res.data.data) {
               this.groupList.forEach(x => {
                 if (x.type_id == key) {
                   x.fileData = (res.data.data[key])
+                  x.fileLenth=res.data.data[key].length
                 } else {
                   x.fileData = []
+                  x.fileLength=0;
                 }
               })
             }
-            this.$tool.console(this.groupList)
+            console.log('groupList',this.$tool.getToArrObject(this.groupList))
           })
         })
       },
 
+      //------------------------新建文件分组-------------------------------------
+      //打开新建分组弹窗
+      toGroup(){
+        this.dialogFileVisible = true;
+        this.newGroupName.name='';
+        console.log(this.getGroupName())
+      },
+      //将所有分组名称放到一个数组里(辅助函数)
+      getGroupName(){
+        var allGroupName=[]
+        this.groupList.forEach(x=>{
+          allGroupName.push(x.type_name)
+        })
+        return allGroupName
+      },
+      //新建分组--确定
+      addGroup() {
+        if(!this.$tool.getNull(this.newGroupName.name)){
+          //检查是否和已有分组重名,若全不重名则创建分组
+          if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
+            this.$http.post(this.URL.createFileType,{
+              user_id:localStorage.user_id,
+              type_name:this.newGroupName.name
+            }).then(res=>{
+              if(res.data.status_code===2000000){
+                this.$tool.success('新建文件分组成功')
+                this.initData();
+                this.$refs['newGroupName'].resetFields();
+                this.dialogFileVisible=false;
+              }else{
+                this.$tool.error(res.data.error_msg)
+              }
+            })
+          }else{
+            this.$tool.error('已有相同命名的文件分组')
+          }
+        }else{
+          this.$tool.error('请输入分组名称')
+        }
+      },
+      //新建分组--取消
+      cancel(){
+        this.$refs['newGroupName'].resetFields();
+        this.dialogFileVisible = false;
+      },
+
+      //-----------------------------批量上传-------------------------------------
       //上传文件前端验证
       beforeUpload(file){
         this.fileuploadDate.project_id = this.project_id;
-        console.log(this.project_id)
         let filetypes = [".doc", ".ppt", ".pdf", ".zip", ".rar", ".pptx", ".png", ".jpg", ".docx", ".jpeg"];
         let name = file.name;
         let fileend = name.substring(name.lastIndexOf("."));
@@ -173,9 +226,11 @@
       //上传文件成功
       uploadsuccess(response, file, fileList){
         let data = response.data
+        console.log(data)
         this.$tool.success("上传成功")
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type);
         this.loadingcheck = true;
+        console.log(this.fileList)
       },
       //上传失败
       uploaderror(err, file, fileList){
@@ -183,7 +238,17 @@
         this.loadingcheck = false;
         this.loading = false;
       },
-      //删除当前上传文件
+      //添加上传文件时,加入显示列表
+      addDomain(type_name, file_title, file_id, type)  {
+        let object = {};
+        object.bp_type = type_name;
+        object.file_title = file_title;
+        object.file_id = file_id;
+        object.type = type;//文件类型
+        this.uploadShow2.lists.push(object);
+        console.log(this.uploadShow2.lists)
+      },
+      //删除列表中的文件
       removeList(item) {
         var index = this.uploadShow2.lists.indexOf(item)
         if (index !== -1) {
@@ -207,62 +272,19 @@
           })
         }
       },
-
-
-
-      //打开新建分组弹窗
-      toGroup(){
-        this.dialogFileVisible = true;
-      },
-      //将所有分组名称放到一个数组里(辅助函数)
-      getGroupName(){
-        var allGroupName=[]
-        this.groupList.forEach(x=>{
-          allGroupName.push(x.type_name)
-        })
-        return allGroupName
-      },
-      //新建分组--确定
-      addGroup()  {
-        if(!this.$tool.getNull(this.newGroupName.name)){
-          //检查是否和已有分组重名,若全不重名则创建分组
-          if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
-            this.$http.post(this.URL.createFileType,{
-              user_id:localStorage.user_id,
-              type_name:this.newGroupName.name
-            }).then(res=>{
-              if(res.data.status_code===2000000){
-                this.$tool.success('新建文件分组成功')
-                this.initData();
-                this.$refs['newGroupName'].resetFields();
-                this.dialogFileVisible=false;
-              }else{
-                this.$tool.error(res.data.error_msg)
-              }
-            })
-          }else{
-            this.$tool.error('已有相同命名的文件分组')
-          }
-        }else{
-          this.$tool.error('请输入分组名称')
+      //点击下载
+      download(item){
+        let index = this.uploadShow2.lists.indexOf(item);
+        if (index !== -1) {
+          let file_id = this.uploadShow2.lists[index].file_id;
+          const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+file_id;
+          window.location.href=url;
         }
-      },
-      //新建分组--取消
-      cancel(){
-        this.$refs['newGroupName'].resetFields();
-        this.dialogFileVisible = false;
-      },
-
-      //添加上传文件时,加入显示列表
-      addDomain(type_name, file_title, file_id, type)  {
-        let object = {};
-        object.bp_type = type_name;
-        object.file_title = file_title;
-        object.file_id = file_id;
-        object.type = type;//文件类型
-        this.uploadShow2.lists.push(object);
 
       },
+
+
+
       //点击分组设置中的单选框
       groupchange(label){
         let index = this.groups.index;
@@ -306,3 +328,9 @@
 <style lang="less">
   @import '../../../assets/css/fileManagement';
 </style>
+:on-change="handleChange(item.type_id)"
+:on-success="uploadsuccess(item.type_id)"
+:on-error="uploaderror(item.type_id)"
+:before-upload="beforeUpload(item.type_id)"
+:file-list="fileList[index]"
+:data="{user_id:localStorage.user_id}"
