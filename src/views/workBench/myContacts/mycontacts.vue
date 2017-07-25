@@ -23,7 +23,7 @@
                     @header-click="headerClick"
                     @sort-change="filterChange"
                     @filter-change="filterChange" stripe>
-            <el-table-column prop="user_real_name" label="姓名" width="200">
+            <el-table-column prop="user_real_name" label="姓名" width="200" show-overflow-tooltip>
               <template scope="scope">
                 <div class="img fl">
                   <img v-if="scope.row.user_avatar_url!=''" :src="scope.row.user_avatar_url">
@@ -607,7 +607,7 @@ export default {
         })
         .catch(err => {
           this.loading=false;
-          this.$tool.error("添加失败");
+          this.$tool.error("设置失败");
           this.$tool.console(err);
           this.dialogVisible = false;
 

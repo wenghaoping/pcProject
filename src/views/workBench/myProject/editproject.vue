@@ -1315,7 +1315,7 @@
             this.project.open_status = data.open_status.toString();//运营状态
             this.project.tags_pro = this.getTag(data.tag, 0);//项目标签
 
-                        this.project.pro_goodness = data.pro_goodness;
+            this.project.pro_goodness = data.pro_goodness;
             this.project.pro_source = this.getTag(data.tag, 2);//项目来源标签
 
 
@@ -1335,7 +1335,7 @@
             if(data.pro_finance_value==0) data.pro_finance_value="";
             this.financing.pro_finance_value = data.pro_finance_value;
 
-           this.setFinance(data.pro_history_finance);
+            this.setFinance(data.pro_history_finance);
             this.financing.pro_history_finance = data.pro_history_finance;
 
             if (data.pro_history_finance == "") this.financing.pro_history_finance = [];

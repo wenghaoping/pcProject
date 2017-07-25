@@ -137,7 +137,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid","projectid","projectname"],
+    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname"],
     data () {
       return {
         loading:false,
@@ -564,6 +564,8 @@
         this.fileList=[];
         this.follow.project_id=this.projectid || '';
         this.follow.project_name=this.projectname || '';
+        this.follow.card_id=this.cardid || '';
+        this.follow.card_name=this.cardname || '';
       },//清空数据
     },
     mounted(){
