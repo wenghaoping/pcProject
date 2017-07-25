@@ -92,7 +92,7 @@
         user_id: localStorage.user_id
       }).then(res => {
         if (res.data.status_code === 2000000) {
-          if (res.data.status === 1) {
+          if (res.data.status === 1 || res.data.status === 2) {
             this.$router.push({name: 'index'})
           }
         } else {
