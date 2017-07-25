@@ -782,10 +782,12 @@
             <el-button type="primary" @click="sync">一键同步</el-button>
           </span>
     </el-dialog>
+
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import projectpush2 from './projectPush2.vue'
   export default {
     data(){
       return {
@@ -1623,23 +1625,25 @@
       },
       /*自动搜索,接口写这里面*/
       querySearchAsync(queryString, cb) {
-        this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
-          .then(res => {
-            this.restaurants=[];
-            let data=res.data.data;
-            this.restaurants=this.loadData(data);
-             if(queryString=="") this.restaurants=[];
-             let restaurants = this.restaurants;
-/*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
-             clearTimeout(this.timeout);
-             this.timeout = setTimeout(() => {
-              cb(restaurants);
-             }, 300);
-          })
-          .catch(err => {
+        if(queryString.length>2) {
+          this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+            .then(res => {
+              this.restaurants = [];
+              let data = res.data.data;
+              this.restaurants = this.loadData(data);
+              if (queryString == "") this.restaurants = [];
+              let restaurants = this.restaurants;
+              /*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
+              clearTimeout(this.timeout);
+              this.timeout = setTimeout(() => {
+                cb(restaurants);
+              }, 300);
+            })
+            .catch(err => {
 //          this.alert("加载失败");
-            this.$tool.console(this.restaurants);
-          })
+              this.$tool.console(this.restaurants);
+            })
+        }
       },
       createStateFilter(queryString) {
         return (state) => {

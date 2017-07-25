@@ -10,9 +10,9 @@
   float:left;
 }*/
 /* ==================右侧样式 公共部分===================== */
-
+#projectPreview{
 .contain-grid{
-/*  float:left;*/
+  /*  float:left;*/
 }
 .main-box{
   .el-tabs__item{
@@ -37,7 +37,7 @@
   background:#f9fafc;
 }
 .contain-center1{
-  width:865px;
+  width:844px;
   background: #eff2f7;
   margin: 0 auto;
   .back-tag{
@@ -51,11 +51,14 @@
     }
   }
   .main-box{
-    margin-top: 12px;
-    margin-right: 15px;
     background: #ffffff;
   }
-
+  .getInner{
+    background:#f9fafc;
+    border-radius:2px;
+    width:824px;
+    height:36px;
+  }
 
   .item-lists{
     .list{
@@ -72,12 +75,10 @@
       }
     }
 
-    padding:24px;
+    padding:24px 0;
 
     .item-lists-inner-left{
       position: relative;
-      width: 630px;
-      height: 249px;
     }
     .item-lists-inner-right{
       position: relative;
@@ -119,9 +120,9 @@
       width:64px;
       height: 64px;
       position: absolute;
-      right: -200px;
+      right: -519px;
       top: -28px;
-/*      background: #ffffff;*/
+      /*      background: #ffffff;*/
     }
     .height{
       //height: 26px;
@@ -229,7 +230,7 @@
         height: 14px;
         line-height: 14px;
         color:#e0e6ed;
-         //margin:0 10px;
+        //margin:0 10px;
       }
       .person-info{
         float:right;
@@ -411,7 +412,7 @@
         display: inline-block;
         width: 732px;
         vertical-align: top;
-/*        margin-left:30px;*/
+        /*        margin-left:30px;*/
         line-height: 60px;
         .v-progress-txt{
           font-size:14px;
@@ -440,6 +441,10 @@
     }
     .progress{
       position: relative;
+      background:#f9fafc;
+      border-radius:2px;
+      width:824px;
+      height:36px;
       .begin,.end{
         display: inline-block;
       }
@@ -485,15 +490,16 @@
       .progress-bar{
         position: relative;
         display: inline-block;
+
         // margin:0 5px;
         .circle{
           position: absolute;
           background:#ffffff;
-          border:1px solid #20a0ff;
+          border:1px solid #c0ccda;
           border-radius:20px;
           width:8px;
           height:8px;
-          top:14.5px;
+          top:7.5px;
           z-index: 3;
         }
         .circle-s{
@@ -506,8 +512,8 @@
           left:calc(~"100% - 5px");
         }
         .bar-bg1{
-          width:137px;
-          height: 2px;
+          width:700px;
+          height: 1px;
           background: #c0ccda;
         }
         .bar-bg2{
@@ -527,12 +533,16 @@
         .state{
           position: absolute;
           z-index: 3;
-          top:12px;
-          left:40px;
+          top:4px;
+
           font-size:14px;
           color:#20a0ff;
           letter-spacing:0;
           line-height:14px;
+          margin: 0 5px;
+          height: 17px;
+          background: #f9fafc;
+          text-align: center;
         }
       }
 
@@ -544,8 +554,13 @@
     }
   }
   .item-lists-top{
-    height: 273px;
     background: #ffffff;
+  }
+  .btn1{
+    background:#40587a;
+    border-radius:2px;
+    width:88px;
+    height:36px;color:#ffffff;cursor: pointer;margin-left: 16px;
   }
 }
 /* ==================右侧样式 第二部分===================== */
@@ -847,34 +862,23 @@
     }
   }
 }
-/* ==================右侧样式 第三部分===================== */
 
-.contain-right-2{
-  width:349px;
-  height: 2117px;
-  margin-left: 22px;
-  margin-top: -22px;
-  background: #fff;
-  .main-box{
-    .title-box{
-      margin-top: 17px;
-      text-align: center;
-      span{
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .title{
-        font-size:16px;
-        color:#475669;
-        margin:0 5px;
-        // font-weight: bold;
-      }
-      .lit-line{
-        width:25px;
-        height: 1px ;
-        background: #c0ccda;
+
+  .dialogCon{
+    .top_pro{
+      p{
+        font-size:12px;
+        color:#1f2d3d;
+        margin-bottom: 30px;
       }
     }
+
+  }
+  .el-dialog__header{
+    display: none;
+  }
+  .el-dialog{
+    width: 880px;
+    margin: 24px;
   }
 }
-

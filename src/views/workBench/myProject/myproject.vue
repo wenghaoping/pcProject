@@ -259,13 +259,15 @@
                   编辑
                 </el-button>
                 <el-button
+                  @click="addFollow(scope.$index, scope.row)"
                   type="text"
-                  size="small" class="flow-btn">
+                  size="small" class="flow-btn btn-cur">
                   跟进
                 </el-button>
                 <el-button
+                  @click="addprojectPush(scope.$index, scope.row)"
                   type="text"
-                  size="small" class="send-btn">
+                  size="small" class="send-btn btn-cur">
                   推送
                 </el-button>
                 <img src="../../../assets/images/more.png" alt="" class="more">
@@ -285,6 +287,13 @@
         </template>
       </div>
     </div>
+
+    <!--写跟进弹框-->
+    <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"@changeClose="closeFollow"></addfollow>
+
+    <!--项目推送项目入口弹窗-->
+    <projectpush2 :dialog-push="dialogPushVisible"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
         <div class="title-box">
@@ -301,10 +310,18 @@
 <script type="text/ecmascript-6">
   import ElButton from "../../../../node_modules/element-ui/packages/button/src/button";
   import alertUpload from './alertUpload.vue'
+  import addfollow from './../followUp/addFollow.vue'
+  import projectpush2 from './projectPush2.vue'
   export default {
-    components: {ElButton,alertUpload},
+    components: {ElButton,alertUpload,addfollow,projectpush2},
     data() {
       return {
+        dialogFollow:false,//控制写跟进弹框
+        dialogPushVisible:false,//项目推送弹窗
+        projecmessage:{
+          project_id:'',
+          project_name:''
+        },//项目名称,ID,跟进弹窗用
         tableData: [
 /*            {
           pro_name: '公司名称公司名称公司名称公司名称',
@@ -321,13 +338,17 @@
           project_id:''
         }*/
         ],
-        pro_sourceFilters:[{ text: '约谈', value: '约谈' },{ text: 'FA签约', value: 'FA签约' }],
-        pro_scheduleFilters:[{ text: '项目线索', value: '项目线索' }],
-        pro_industryFilters:[{ text: '大数据服务', value: '大数据服务' }],
+        pro_sourceFilters:[
+/*            { text: '约谈', value: '约谈' }*/
+            ],
+        pro_scheduleFilters:[
+ /*{ text: '项目线索', value: '项目线索' }*/
+            ],
+        pro_industryFilters:[/*{ text: '大数据服务', value: '大数据服务' }*/],
         soleFilters:[{ text: '独家', value:1},{ text: '非独', value:2},{ text: '其他', value:0}],
-        pro_stageFilters:[{ text: 'IPO上市后', value: 'IPO上市后' }],
+        pro_stageFilters:[/*{ text: 'IPO上市后', value: 'IPO上市后' }*/],
         pro_areaFilters:[],
-        pro_scaleFilters:[{ text: '3000万', value: '3000万' }],
+        pro_scaleFilters:[/*{ text: '3000万', value: '3000万' }*/],
         stateCheck:false,//状态单选
         searchinput:'',//搜索输入框
         dialogUploadVisible: false,//第一个弹窗的控制
@@ -364,7 +385,7 @@
     methods:{
       handleSelect(row, event, column) {
         if(column.label!="重置"){
-          this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id}})
+          this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'detail'}})
         }
       },//跳转到项目详情页面传参数
       handleEdit(index, row){
@@ -376,7 +397,21 @@
       dialogUploadVisiblechange(msg){
         this.dialogUploadVisible=msg;
       },//控制弹窗
-
+      /*跟进*/
+      addFollow(index, row){
+        this.dialogFollow=true;
+        this.projecmessage.project_id=row.project_id;
+        this.projecmessage.project_name=row.pro_name;
+      },//点击写跟近按钮
+      closeFollow(msg){
+        this.dialogFollow=msg;
+      },//关闭添加跟进
+      addprojectPush(index, row){
+        this.dialogPushVisible=true;
+      },//点击项目推送
+      dialogVisiblechangeCloase(msg){
+        this.dialogPushVisible=msg;
+      },//关闭项目推送弹窗
       /*请求函数*/
       handleIconClick(){
         this.loading=true;

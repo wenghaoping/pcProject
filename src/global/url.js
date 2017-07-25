@@ -96,4 +96,7 @@ export default
   //文件管理
   getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据
 
+  /*意向项目(人脉列表右边)*/
+  getEnjoyProjectsGroup:'/api/v/project/getEnjoyProjectsGroup',//意向项目归总
+
 }

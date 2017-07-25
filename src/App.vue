@@ -63,7 +63,7 @@
           {type: '工作台', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
           {type: '测试页面', jump: '/test'},
-          {type: '测试页面2', jump: '/test2'}
+//          {type: '测试页面2', jump: '/test2'}
         ],
         user_name: localStorage.user_real_name,
         user_id:'',
@@ -72,7 +72,7 @@
     methods: {
       // 切换选项卡
       toggle(i){
-        this.active = i
+        this.active = i;
         // 控制点击工作台跳转情况
         if(this.active===1){
           localStorage.entrance='myProject';
