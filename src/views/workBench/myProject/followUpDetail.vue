@@ -10,7 +10,7 @@ export default {
   props: ["proid"],
   data () {
     return {
-      pro_id: '',
+      pro_id: this.proid,
       loading:false,//加载
     }
   },
@@ -18,7 +18,12 @@ export default {
 
   },
   created(){
-
+    this.$http.post(this.URL.getProjectFollowList,{
+      user_id:localStorage.user_id,
+      project_id:this.pro_id,
+    }).then(res=>{
+      this.$tool.console(res)
+    })
   },
   watch : {
     proid : function(e){
