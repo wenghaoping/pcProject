@@ -88,7 +88,7 @@ export default
   /*跟进记录*/
   get_follow_records:'/api/project/get_follow_records',//获取跟进记录总列表
   get_follow_record:'/api/project/get_follow_record',//获取跟进记录单独
-  getToInvestor:'/api/category/getToInvestor',//获取跟进记录表头
+  getToInvestor:'/api/project/getToInvestor',//获取跟进记录表头
   delete_follow_record:'/api/project/delete_follow_record',//删除跟进记录
   match_my_relation:'/api/user/match_my_relation',//模糊匹配我的人脉,添加跟进里是用
   add_follow_record:'/api/project/add_follow_record',//添加跟进记录
@@ -98,6 +98,7 @@ export default
   getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据
 
   /*意向项目(人脉列表右边)*/
-  getEnjoyProjectsGroup:'/api/v/project/getEnjoyProjectsGroup',//意向项目归总
+  getEnjoyProjectsGroup:'/api/v/project/getEnjoyProjectsGroup',//意向项目归总(图表)
+  getEnjoyProjects:'/api/v/project/getEnjoyProjects',//意向项目列表,
 
 }

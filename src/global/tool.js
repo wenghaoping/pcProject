@@ -77,9 +77,9 @@ const tool={
     let arr = [];
     for(let key in data){
       let obj=new Object;
-      obj.text=data[key]
-      obj.value=key
-      arr.push(obj)
+      obj.text=data[key];
+      obj.value=key;
+      arr.push(obj);
     }
     return arr
   },//设置表格表头的筛选内容======表格页都用的到

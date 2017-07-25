@@ -165,45 +165,45 @@
                 <div class="main_left">
                   <div class="echart" id="echart"></div>
                   <div class="selectIn fr">
-                    <el-select v-model="value1" placeholder="请选择">
+                    <el-select v-model="searchSchedule" placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in follow_schedule"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
                       </el-option>
                     </el-select>
                   </div>
-                  <div class="item_lists">
+                  <div class="item_lists"  v-for="(enjoyProject,index) in enjoyProjects">
                     <div class="item_list">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
-                        <span class="bili">100%</span>
+                        <span class="bili">{{enjoyProject.match}}%</span>
                         <span class="pro fr">我的项目</span>
                       </div>
                       <div class="list_main">
-                        <div @click="toDetail" class="click">
+                        <div @click="toDetail(enjoyProject)" class="click">
                           <div class="main">
-                            项目一句话介绍，这里字数会有点，可能要换行显示，两行肯定能显示的下
+                            {{enjoyProject.pro_intro}}
                           </div>
                           <div class="li" style="margin-top: 18px;">
-                            <span class="big-tag">人工智能、大数据、理财、企业服务台</span>
+                            <span class="big-tag">{{enjoyProject.industry}}</span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
-                            <span class="big-tag">100-300万</span><span class="split">｜</span>
-                            <span class="big-tag">10%</span><span class="split">｜</span>
-                            <span class="big-tag">天使轮</span><span class="split">｜</span>
-                            <span class="big-tag">杭州</span>
+                            <span class="big-tag">{{enjoyProject.scale}}</span><span class="split">｜</span>
+                            <span class="big-tag">{{enjoyProject.pro_finance_stock_after}}%</span><span class="split">｜</span>
+                            <span class="big-tag">{{enjoyProject.stage}}</span><span class="split">｜</span>
+                            <span class="big-tag">{{enjoyProject.area}}</span>
                           </div>
                         </div>
                         <div class="li change_li">
                       <span class="all fl">
-                        <span class="all_inner" :style="{width:widthInner + 'px' }"></span>
+                        <span class="all_inner" :style="{width:enjoyProject.width + 'px' }"></span>
                       </span>
-                          <div class="selectIn fl" style="margin-left: 13px;margin-top: -17px;">
-                            <el-select v-model="value" placeholder="请选择" @change="selectChange">
+                          <div class="selectIn fl" style="margin-left: 13px;margin-top: -17px;" @click="getIndex(index)">
+                            <el-select v-model="enjoyProject.schedule_id" placeholder="请选择" @change="selectChange" >
                               <el-option
-                                v-for="item in options"
+                                v-for="item in follow_schedule"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
@@ -212,8 +212,8 @@
                           </div>
                         </div>
 
-                        <div class="img"><img src="../../../assets/images/dujia.png"></div>
-                        <!--<div class="img"><img src="../../../assets/images/feidujia.png"></div>-->
+                        <div class="img"><img src="../../../assets/images/dujia.png" v-if="enjoyProject.is_exclusive==1"></div>
+                        <div class="img"><img src="../../../assets/images/feidujia.png" v-if="enjoyProject.is_exclusive==0"></div>
                       </div>
                     </div>
                   </div>
@@ -221,10 +221,10 @@
                     class="pagination fr"
                     small
                     @current-change="filterChangeCurrent1"
-                    :current-page.sync="currentPage"
+                    :current-page.sync="currentPage2"
                     layout="prev, pager, next"
                     :page-size="10"
-                    :total="totalData">
+                    :total="totalData2">
                   </el-pagination>
                 </div>
               </div>
@@ -390,44 +390,26 @@ export default {
       loading:false,//加载动画
       loading1:false,//加载动画2
       listShow:false,//项目库
-      currentPage:1,//当前第几页
-      totalData:50,//总数
+      currentPage:1,//项目列表当前第几页
+      totalData:50,//项目列表总数
+      currentPage2:1,//意向项目当前第几页
+      totalData2:50,//意向项目总数
       activeName:'1',
 
-      options: [{
+      follow_schedule: [/*{
         value: 1,
         label: '项目推进中'
-      }, {
-        value: 2,
-        label: '前期调研'
-      }, {
-        value: 3,
-        label: '投决'
-      }, {
-        value: 4,
-        label: '签署TS'
-      }, {
-        value: 5,
-        label: '尽调'
-      }, {
-        value: 6,
-        label: '签署投资协议'
-      }, {
-        value: 7,
-        label: '交割'
-      }, {
-        value: 8,
-        label: 'Hold'
-      }, {
-        value: 9,
-        label: 'Reject'
-      }],
-      value: 1,
-      value1:'全部',
-      widthInner:10,//进度条的长度
+      }*/],//项目跟进进度
+      follow_scheduleAll: [/*{
+        value: 1,
+        label: '项目推进中'
+      }*/],//项目跟进进度搜索用,多一个全部
+      searchSchedule:'全部',//意向项目的筛选进度
+      widthInner:0,//进度条的长度
       tabs:true,//标签切换
       pro_id:'123',//项目详情
-      getPra:{},//筛选的请求参数
+      getPra:{},//获取项目的请求参数
+      getConpro:{},//获取意向项目的请求参数
       projectLists:[
         {
         pro_intro:"暂无数据",
@@ -438,9 +420,31 @@ export default {
         pro_stage:"暂无数据",
         pro_finance_stock_after:"暂无数据"
         }
-      ],//项目列表
+      ],//展开收起项目列表
       projectListsSmall:[],//默认2个的表
       projectListsAll:[],//默认全部的表
+      chartData:{
+        going:'',
+        hold:'',
+        reject:''
+      },//图表的数据
+      enjoyProjects:[
+        /*{
+          area: "杭州",
+          follow_id: 87,
+          industry: "人工智能、大数据、理财、企业服务台",
+          is_exclusive: 1,
+          match: 0,
+          pro_finance_stock_after: "0.00",
+          pro_intro: "这是一个很好的项目，能来看看吗",
+          project_id: "RpAj48rx",
+          scale: "2000W-5000W",
+          schedule_id: 2,
+          stage:"IPO上市后"
+        }*/
+      ],
+      scheduleIndex:-1,//设置跟进状态的位置(单独需要)
+
     }
   },
   methods: {
@@ -478,7 +482,7 @@ export default {
       this.getProjectList(page);
     },//控制项目页码1
     filterChangeCurrent1(page){
-
+//      this.getEnjoyProjects(page);
     },//控制右边页码
     handleClick(tab, event) {
       if(tab.name=="1") this.tabs=true;
@@ -488,105 +492,7 @@ export default {
     toDetail(){
       this.dialogVisiblePro=true;
     },//项目详情弹窗
-    selectChange(e){
-      let width = 0;
-      switch (e){
-        case 1:
-          width=10;
-          break;
-        case 2:
-          width=20;
-          break;
-        case 3:
-          width=30;
-          break;
-        case 4:
-          width=40;
-          break;
-        case 5:
-          width=50;
-          break;
-        case 6:
-          width=60;
-          break;
-        case 7:
-          width=70;
-          break;
-        case 8:
-          width=0;
-          break;
-        case 9:
-          width=0;
-          break;
-        default:
-          alert("错误")
-          break;
-      }
-      this.widthInner=width;
-      return width;
-    },//hold切换后
-    eChart(){
-      let myChart = this.$echart.init(document.getElementById('echart'))
-      let option = {
-        tooltip: {
-          trigger: 'item',
-          formatter: "{a} <br/>{b}: {c} ({d}%)"
-        },
-        legend: {
-          orient: 'vertical',
-          x: 'right',
 
-          top:'30%',
-          data:['推进中','Hold','Rejcet'],
-          textStyle:{
-            fontSize:"16",
-          }
-        },
-        series: [
-          {
-            name: '访问来源',
-            type: 'pie',
-            selectedMode: 'single',
-            radius: ['70%','90%'],
-            center: ['35%', '55%'],
-            label: {
-              normal: {
-                show: true,
-                position: 'center',
-                textStyle:{
-                    fontSize:"16",
-                }
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: '20',
-                  fontWeight: 'bold'
-                }
-              }
-            },
-            data: [
-              {value: 4, name: '推进中'},
-              {value: 16, name: 'Hold'},
-              {value: 10, name: 'Rejcet'},
-            ],
-            itemStyle:{
-              normal:{
-                label:{
-                  show: true,
-                  formatter: '{b} : {c}'
-                },
-                labelLine :{show:true}
-              }
-            }
-          }
-        ]
-      };
-      myChart.setOption(option);
-    },//图标
-    getEchartData(){
-
-    },//获取意向项目数据(图表)
     dialogVisiblechangeIn(msg){
       this.dialogVisiblePro=msg;
     },//项目详情弹窗关闭函数
@@ -714,7 +620,7 @@ export default {
       this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
         .then(res => {
           let data = res.data.data;
-          this.$tool.console(this.$tool.getToObject(data));
+//          this.$tool.console(this.$tool.getToObject(data));
           data.user_invest_industry = this.set_industry(data.user_invest_industry);
           data.user_invest_stage = this.set_stage(data.user_invest_stage);
           data.user_invest_scale = this.set_scale(data.user_invest_scale);
@@ -736,6 +642,10 @@ export default {
     getWxProjectCategory(){
       this.addTags = this.$global.data.tags_user;//设置人脉标签
       this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
+      this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
+      this.follow_scheduleAll = this.$global.data.follow_schedule;//设置项目状态
+      this.follow_scheduleAll.unshift({label:"全部",
+      obj.value = x.comp_scale_id;})
     },//获取所有下拉框的数据
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
@@ -771,18 +681,185 @@ export default {
 
         })
     },//保存标签选择
+
+    /*设置意向项目右边*/
+    getEchartData(){
+      this.loading1 = true;
+      this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id})
+        .then(res=>{
+          if(res.data.status_code==2000000) {
+            let data = res.data.data;
+            this.chartData=data;
+            this.eChart(data.going,data.hold,data.reject);
+          }
+          this.loading1 = false;
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading1=false;
+          this.$tool.error("加载超时");
+        })
+    },//获取意向项目数据(图表)
+    getEnjoyProjects(page){
+      this.getConpro.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+      this.currentPage2=page;
+      this.getConpro.card_id=this.contacts.card_id;
+      this.getConpro.page=page;
+      this.getConpro.schedule_id='';
+      this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
+        .then(res=>{
+          if(res.data.status_code==2000000) {
+            let data = res.data.data;
+            this.enjoyProjects=this.setEnjoyProject(data);
+            this.totalData2 = res.data.count;
+            console.log(data);
+          }
+          this.loading1 = false;
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading1=false;
+          this.$tool.error("加载超时");
+        })
+    },//获取意向项目列表
+    setEnjoyProject(arr){
+      let newArr = new Array;
+      arr.forEach((x)=> {
+        let obj = new Object;
+        obj.follow_id=x.follow_id;
+        obj.area=x.area.area_title;
+        obj.industry=this.set_industry(x.industry);
+        obj.is_exclusive=x.is_exclusive;
+        obj.match=x.match;
+        obj.pro_finance_stock_after=x.pro_finance_stock_after;
+        obj.pro_intro=x.pro_intro;
+        obj.project_id=x.project_id;
+        obj.scale=x.scale.scale_money;
+        obj.schedule_id=x.schedule_id;
+        obj.stage=x.stage.stage_name;
+        obj.width=this.selectChange(x.schedule_id);
+        newArr.push(obj);
+      });
+      return newArr;
+    },//设置意向项目列表
+    getIndex(index){
+      this.scheduleIndex=index;
+    },
+    eChart(going,hold,reject){
+      let myChart = this.$echart.init(document.getElementById('echart'));
+      let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+          orient: 'vertical',
+          x: 'right',
+
+          top:'30%',
+          data:["推进中","Hold","Rejcet"],
+          textStyle:{
+            fontSize:"16",
+          }
+        },
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            selectedMode: 'single',
+            radius: ['70%','90%'],
+            center: ['35%', '55%'],
+            label: {
+              normal: {
+                show: true,
+                position: 'center',
+                textStyle:{
+                  fontSize:"16",
+                }
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: '20',
+                  fontWeight: 'bold'
+                }
+              }
+            },
+            data: [
+              {value: going, name: '推进中'},
+              {value: hold, name: 'Hold'},
+              {value: reject, name: 'Rejcet'},
+            ],
+            itemStyle:{
+              normal:{
+                label:{
+                  show: true,
+                  formatter: '{b} : {c}'
+                },
+                labelLine :{show:true}
+              }
+            }
+          }
+        ]
+      };
+      myChart.setOption(option);
+    },//图表
+    selectChange(e){
+      let width = 0;
+      switch (e){
+        case 1:
+          width=10;
+          break;
+        case 2:
+          width=20;
+          break;
+        case 3:
+          width=30;
+          break;
+        case 4:
+          width=40;
+          break;
+        case 5:
+          width=50;
+          break;
+        case 6:
+          width=60;
+          break;
+        case 7:
+          width=70;
+          break;
+        case 8:
+          width=0;
+          break;
+        case 9:
+          width=0;
+          break;
+        default:
+          alert("错误")
+          break;
+      }
+      let index = this.scheduleIndex;
+      if(index!=-1) this.enjoyProjects[index].width=width;
+      return width;
+    },//设置项目跟进进度
+
   },
   created(){
       this.getUserId();
       if(this.contacts.user_id!=0) this.getProjectList(1)
       else this.projectLists=[];
-
       this.getOneUserInfo();
       this.getWxProjectCategory();
+      this.getEchartData();
+      setTimeout(()=>{
+        this.getEnjoyProjects(1);
+      },200)
+
   },
   //Echart组件
   mounted(){
-    this.eChart();
+    this.eChart(this.chartData.going,this.chartData.hold,this.chartData.reject);
   },
   components: {
     alertprojectdetail,

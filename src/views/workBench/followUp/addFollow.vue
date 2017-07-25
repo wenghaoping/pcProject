@@ -289,26 +289,8 @@
         return newArr;
       },//获取用户
       getScheduleName(){
-        this.$http.post(this.URL.getToInvestor,{user_id: localStorage.user_id})
-          .then(res=>{
-            let data = res.data.data;
-            this.schedule_name=this.setScheduleName(data.schedule_name);
-          })
-          .catch(err=>{
-            this.$tool.console(err,2)
-          })
+        this.schedule_name=this.$global.data.follow_schedule;//设置项目跟进状态
       },// 获取跟进进度
-      setScheduleName(data){
-          let arr = [];
-          for(let key in data){
-            let obj=new Object;
-            obj.label=data[key];
-            obj.value=key;
-            arr.push(obj)
-          }
-          return arr
-      },//设置跟进进度
-
       getFileType(data){
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -512,7 +494,7 @@
       },//获取分组的位置
 
       allSave(){
-        this.loading=true;
+//        this.loading=true;
         if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
             this.$tool.error("请选择或添加正确的投资人")
         }
@@ -524,14 +506,13 @@
           delete this.follow.files;
           this.follow.user_id=localStorage.user_id;
           this.follow.type="card";
-//          this.$tool.console(this.$tool.getToObject(this.follow));
-          console.log(this.$tool.getToObject(this.follow));
+          this.$tool.console(this.$tool.getToObject(this.follow));
            this.loading=true;
            this.$http.post(this.URL.add_follow_record, this.follow)
              .then(res => {
                this.$tool.console(res);
                if(res.data.status_code==2000000){
-//                 this.follow_id=res.data.data;
+                 this.follow_id=res.data.data;
                  this.open2('项目编辑成功', '保存成功', '查看详情', '继续编辑')
                }else{
                    this.$tool.error(res.data.error_msg);
@@ -569,7 +550,10 @@
     watch : {
       followid : function(e){
         this.follow_id=this.followid || '';
-        this.getFollowUp();
+        setTimeout(()=>{
+          this.getFollowUp();
+        },200)
+
       },//获取跟进id
       dialogFollow: function(e){
         for(let key in this.follow){

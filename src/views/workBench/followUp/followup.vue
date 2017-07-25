@@ -295,6 +295,9 @@ export default {
       });
     },//点击删除按钮
     filterChange(filters){
+      if(filters.card_name.length==0){
+        delete filters.card_name;
+      }
       this.loading=true;
       this.currentPage=1;
       this.getPra.user_id=localStorage.user_id;
@@ -313,8 +316,12 @@ export default {
         if(this.getPra[key]=='' || this.getPra[key]=='NaN'){
           delete this.getPra[key];
         }
+        if(key == "card_name"){
+          this.getPra.card_name=this.filterInvestors(this.getPra.card_name);
+        }
       }//删除空的查询项
       this.$tool.console(this.getPra);
+
       this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
           this.loading=false;
@@ -345,6 +352,21 @@ export default {
           this.$tool.console(err,2)
         })
     },//控制页码
+    filterInvestors(data){
+      let arr = new Array;
+      let filters = this.card_nameFilters;
+      for(let i=0; i<data.length; i++){
+        let filter = new Array;
+        for(let j=0; j<filters.length; j++){
+          if(data[i]==filters[j].value){
+            filter[0]=filters[j].value;
+            filter[1]=filters[j].type;
+          }
+        }
+        arr.push(filter);
+      }
+      return arr;
+    },//意向投资人筛选控制
     timeChange(time){
       this.loading=true;
       this.currentPage=1;
@@ -365,13 +387,24 @@ export default {
       this.dialogFollow=msg;
     },//关闭添加跟进
 
+    getInvestors(data){
+      let arr = new Array;
+      for(let i=0; i<data.length; i++){
+        let obj = new Object;
+        obj.text=data[i].card_name;
+        obj.value=data[i].card_id;
+        obj.type=data[i].type;
+        arr.push(obj);
+      }
+      return arr
+    },//设置意向投资人表头
     titleSift(){
       this.loading=true;
       this.$http.post(this.URL.getToInvestor,{user_id: localStorage.user_id})
         .then(res=>{
           let data = res.data.data;
           this.schedule_nameFilters=this.$tool.getTitleSift(data.schedule_name);
-          this.card_nameFilters=this.$tool.getTitleSift(data.investors);
+          this.card_nameFilters=this.getInvestors(data.investors);
           this.loading=false;
         })
         .catch(err=>{
@@ -382,7 +415,7 @@ export default {
   },
   created(){
     this.loading=true;
-//    this.titleSift();
+    this.titleSift();
     this.handleIconClick();
   }
 }
