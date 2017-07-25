@@ -100,5 +100,6 @@ export default
   /*意向项目(人脉列表右边)*/
   getEnjoyProjectsGroup:'/api/v/project/getEnjoyProjectsGroup',//意向项目归总(图表)
   getEnjoyProjects:'/api/v/project/getEnjoyProjects',//意向项目列表,
+  setEnjoyProjectSchedule:'api/v/project/setEnjoyProjectSchedule',//设置意向项目的跟进进度
 
 }

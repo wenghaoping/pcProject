@@ -165,9 +165,9 @@
                 <div class="main_left">
                   <div class="echart" id="echart"></div>
                   <div class="selectIn fr">
-                    <el-select v-model="searchSchedule" placeholder="请选择">
+                    <el-select v-model="searchSchedule" placeholder="请选择" @change="selectSearch">
                       <el-option
-                        v-for="item in follow_schedule"
+                        v-for="item in follow_scheduleAll"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -223,7 +223,7 @@
                     @current-change="filterChangeCurrent1"
                     :current-page.sync="currentPage2"
                     layout="prev, pager, next"
-                    :page-size="10"
+                    :page-size="5"
                     :total="totalData2">
                   </el-pagination>
                 </div>
@@ -279,7 +279,7 @@
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-      <button class="btn">添加意向项目</button>
+      <button class="btn" @click="addFollow">添加意向项目</button>
       </div>
     </div>
 
@@ -318,12 +318,16 @@
 
     <!--项目推送弹窗-->
     <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange"></projectpush>
+
+    <!--写跟进弹框-->
+    <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow" :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import alertprojectdetail from './alertProjectDetail.vue'
 import projectpush from './projectPush.vue'
+import addfollow from './../followUp/addFollow.vue'
 export default {
   data () {
     return {
@@ -331,6 +335,7 @@ export default {
 
       /*设置标签*/
       dialogVisibleTag:false,//标签弹框设置
+      dialogFollow:false,//添加更近弹框
       tagsValue:[],//标签弹框数据绑定
       addTags:[{
         value: '',
@@ -343,8 +348,8 @@ export default {
       },
       multiplelimit:5,//标签控制5个
       contacts:{
-        card_id:'',//id
-        user_id:'',//user_id
+        card_id:'',//id那个人的card_id
+        user_id:'',//user_id那个人的userid
         user_real_name:'张三',//姓名
         user_nickname:'昵称',//昵称
         user_mobile:'18758307033',//名片手机号
@@ -404,7 +409,7 @@ export default {
         value: 1,
         label: '项目推进中'
       }*/],//项目跟进进度搜索用,多一个全部
-      searchSchedule:'全部',//意向项目的筛选进度
+      searchSchedule:0,//意向项目的筛选进度
       widthInner:0,//进度条的长度
       tabs:true,//标签切换
       pro_id:'123',//项目详情
@@ -444,6 +449,7 @@ export default {
         }*/
       ],
       scheduleIndex:-1,//设置跟进状态的位置(单独需要)
+
 
     }
   },
@@ -492,7 +498,12 @@ export default {
     toDetail(){
       this.dialogVisiblePro=true;
     },//项目详情弹窗
-
+    addFollow(){
+      this.dialogFollow=true;
+    },//点击添加意向项目按钮
+    closeFollow(msg){
+      this.dialogFollow=msg;
+    },//关闭添加意向项目
     dialogVisiblechangeIn(msg){
       this.dialogVisiblePro=msg;
     },//项目详情弹窗关闭函数
@@ -642,8 +653,10 @@ export default {
     getWxProjectCategory(){
       this.addTags = this.$global.data.tags_user;//设置人脉标签
       this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
-      this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
-      this.follow_scheduleAll = this.$global.data.follow_schedule;//设置项目状态
+      this.follow_schedule = this.$global.data.follow_schedule.slice(0);//设置项目状态
+      this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
+      this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+
     },//获取所有下拉框的数据
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
@@ -699,6 +712,7 @@ export default {
         })
     },//获取意向项目数据(图表)
     getEnjoyProjects(page){
+      this.loading=true;
       this.getConpro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
       this.currentPage2=page;
@@ -711,13 +725,12 @@ export default {
             let data = res.data.data;
             this.enjoyProjects=this.setEnjoyProject(data);
             this.totalData2 = res.data.count;
-            console.log(data);
           }
-          this.loading1 = false;
+          this.loading = false;
         })
         .catch(err=>{
           this.$tool.console(err,2);
-          this.loading1=false;
+          this.loading=false;
           this.$tool.error("加载超时");
         })
     },//获取意向项目列表
@@ -838,9 +851,50 @@ export default {
           break;
       }
       let index = this.scheduleIndex;
-      if(index!=-1) this.enjoyProjects[index].width=width;
+      if(index!=-1) {
+        this.enjoyProjects[index].width = width
+        let follow_id = this.enjoyProjects[index].follow_id;
+        let schedule_id = this.enjoyProjects[index].schedule_id;
+        this.$http.post(this.URL.setEnjoyProjectSchedule, {
+          user_id: localStorage.user_id,
+          follow_id: follow_id,
+          schedule_id: schedule_id
+        })
+          .then(res => {
+            this.$tool.success("设置成功");
+            this.scheduleIndex=-1;
+            this.loading = false;
+          })
+          .catch(err => {
+            this.$tool.console(err, 2);
+            this.loading = false;
+            this.$tool.error("加载超时");
+          })
+      }
       return width;
     },//设置项目跟进进度
+    selectSearch(e){
+      this.loading=true;
+      this.getConpro.schedule_id=e;
+      this.getConpro.user_id=localStorage.user_id;
+      this.currentPage2=1;
+      this.getConpro.card_id=this.contacts.card_id;
+      this.getConpro.page=1;
+      this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
+        .then(res=>{
+          if(res.data.status_code==2000000) {
+            let data = res.data.data;
+            this.enjoyProjects=this.setEnjoyProject(data);
+            this.totalData2 = res.data.count;
+          }
+          this.loading = false;
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading=false;
+          this.$tool.error("加载超时");
+        })
+    },//筛选意向项目
 
   },
   created(){
@@ -861,7 +915,8 @@ export default {
   },
   components: {
     alertprojectdetail,
-    projectpush
+    projectpush,
+    addfollow
   },
 }
 </script>

@@ -433,7 +433,7 @@ export default {
     },//添加上传文件时,保存返回的数据
     beforeUpload(file){
       this.uploadDate.user_id = localStorage.user_id;
-      if(this.card_id='creat') this.card_id=0;
+      if(this.card_id=='creat') this.card_id=0;
       this.uploadDate.card_id = this.card_id;
       let filetypes=[".jpg",".png",".jpeg"];
       let name=file.name;
@@ -572,11 +572,11 @@ export default {
       return check;
     },//提交用
     getWxProjectCategory(){
-
       this.area = this.$global.data.hotCity;//设置热门城市
       this.scale = this.$global.data.scale;//设置期望融资
       this.stage = this.$global.data.stage;//设置轮次信息
       this.industry = this.$global.data.industry;//设置轮次信息
+      this.tags.changecont = this.$global.data.tags_user;//设置人脉标签
       this.tags_con = this.$global.data.tags_user;//设置人脉标签
       this.giveTo = this.$global.data.resource;//设置提供的资源和对接的资源
       this.pushTo = this.$global.data.resource;//设置提供的资源和对接的资源
@@ -649,8 +649,8 @@ export default {
           data.user_invest_tag=this.setTag(data.user_invest_tag);
           this.setImage(data.user_image);
           if(data.user_image.length==0) {this.uploadShow = {};this.planList = [];}
-          this.tags.changecont=data.user_invest_tag;
           this.contacts=data;
+          this.tags_con=this.tags.changecont.slice(0);
           this.loading=false;
         })
         .catch(err=>{
@@ -661,7 +661,7 @@ export default {
     },//获取个人详情
     getContactsId(){
       this.card_id = this.$route.query.card_id;
-    }
+    }//获取id
 
   },
   created(){

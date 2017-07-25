@@ -130,6 +130,7 @@ var func = {
       global.data.company_scale = global.func.getCompanyScale(data.company_scale);//设置公司规模几人
       global.data.follow_schedule = global.func.getSchedule(data.follow_schedule);//设置项目跟进状态
       global.data.schedule = global.func.getSchedule(data.schedule);//设置项目状态
+
     })
     .catch(err => {
       console.log(err);
