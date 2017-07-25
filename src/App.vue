@@ -139,7 +139,6 @@
 
 <style lang="less">
   .Infooter {
-
     background:#444444;
     font-size: 12px;
     color:#a1a1a1;

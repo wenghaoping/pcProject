@@ -34,6 +34,7 @@ Vue.prototype.$global= global
 Vue.use(Element);//UI库
 Vue.use(tool);//自己的库
 Vue.use(Vuex);
+Vue.use(zhuge)
 
 
 

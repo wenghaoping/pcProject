@@ -55,7 +55,8 @@
       }
     },
     mounted(){
-      this.creatObj()
+      this.creatObj();
+      zhuge.track('购买商品');
     },
   }
 </script>

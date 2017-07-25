@@ -644,8 +644,6 @@ export default {
       this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
       this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
       this.follow_scheduleAll = this.$global.data.follow_schedule;//设置项目状态
-      this.follow_scheduleAll.unshift({label:"全部",
-      obj.value = x.comp_scale_id;})
     },//获取所有下拉框的数据
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);

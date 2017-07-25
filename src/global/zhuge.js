@@ -37,12 +37,12 @@
       window.zhuge._init(b, x)
     }
   };
-  window.zhuge.load('此处填写您在诸葛申请的APP KEY', {
+  window.zhuge.load('d79a28abc0424fb499109b8a7d2a2e07', {
     superProperty: {//全局的事件属性(选填)
       '应用名称': '诸葛io'
     },
-    autoTrack: false, //启用全埋点采集（选填，默认false）
-    visualizer: false, //启用可视化埋点（选填，默认false）
-    singlePage: false //是否是单页面应用（SPA），启用autoTrack后生效（选填，默认false）
+    autoTrack: true, //启用全埋点采集（选填，默认false）
+    visualizer: true, //启用可视化埋点（选填，默认false）
+    singlePage: true //是否是单页面应用（SPA），启用autoTrack后生效（选填，默认false）
   });
 })();
