@@ -16,6 +16,9 @@ this.$http.post(this.URL.getCrawlerBrand, {
 
 this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}})//路由传参
 
+//state.show?false:true;
+
+
 /*================输入框================*/
 // <el-input v-model="input" placeholder="请输入内容"></el-input>
 

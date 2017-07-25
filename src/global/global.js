@@ -101,6 +101,16 @@ var func = {
     });
     return arr;
   },//获取公司规模几人
+  getSchedule(data){
+    let arr = [];
+    data.forEach((x)=>{
+      let obj = {};
+      obj.label = x.schedule_name;
+      obj.value = x.schedule_id;
+      arr.push(obj);
+    });
+    return arr;
+  },//获取项目状态和项目进度
   getWxProjectCategory() {
     axios.post(URL.getWxProjectCategory, {user_id: localStorage.user_id})
     .then(res => {
@@ -118,6 +128,8 @@ var func = {
       global.data.resource = global.func.getResource(data.resource);//设置项目来源111
       global.data.company_status = global.func.getCompanyStatus(data.company_status);//设置运营状态
       global.data.company_scale = global.func.getCompanyScale(data.company_scale);//设置公司规模几人
+      global.data.follow_schedule = global.func.getSchedule(data.follow_schedule);//设置项目跟进状态
+      global.data.schedule = global.func.getSchedule(data.schedule);//设置项目状态
     })
     .catch(err => {
       console.log(err);

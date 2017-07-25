@@ -53,7 +53,7 @@
                  <div class="selectIn fr">
                     <el-select v-model="value1" placeholder="请选择" @change="selectChange">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in schedule"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -80,10 +80,7 @@
             一键尽调
           </div>
           </div>
-          <!--===========================================一键尽调弹窗=============================================-->
-          <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" v-on:changeall="dialogVisiblechange" v-on:changeallin="dialogVisiblechangeIn" lock-scroll>
 
-          </research>
 
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
@@ -301,7 +298,7 @@
                   <div class="selectIn fr">
                     <el-select v-model="value2" placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in follow_schedule"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -340,7 +337,7 @@
                           <div class="selectIn fl" style="margin-left: 13px;margin-top: -17px;">
                             <el-select v-model="value3" placeholder="请选择" @change="selectChange2">
                               <el-option
-                                v-for="item in options"
+                                v-for="item in follow_schedule"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
@@ -421,6 +418,10 @@
         <button class="btn">添加意向投资人</button>
       </div>
     </div>
+    <!--一键尽调弹窗-->
+    <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" v-on:changeall="dialogVisiblechange" v-on:changeallin="dialogVisiblechangeIn" lock-scroll>
+
+    </research>
 
     <!--尽调搜索弹窗-->
     <el-dialog title="一键尽调" :visible.sync="dialogSearchVisible">
@@ -465,6 +466,7 @@
         show: "detail",
         dialogVisible: false,
         dialogSearchVisible:false,
+        dialogPushVisible:false,
         searchName:"",
         form: {
           name: '',
@@ -660,34 +662,9 @@
           color: '',
         },
         value1:'',////一键尽调边上绑定是数据
-        options: [{
-          value: '项目推进中',
-          label: '项目推进中'
-        }, {
-          value: '前期调研',
-          label: '前期调研'
-        }, {
-          value: '投决',
-          label: '投决'
-        }, {
-          value: '签署TS',
-          label: '签署TS'
-        }, {
-          value: '尽调',
-          label: '尽调'
-        }, {
-          value: '签署投资协议',
-          label: '签署投资协议'
-        }, {
-          value: '交割',
-          label: '交割'
-        }, {
-          value: 'Hold',
-          label: 'Hold'
-        }, {
-          value: 'Reject',
-          label: 'Reject'
-        }],
+
+        schedule:[],//项目进度
+        follow_schedule:[],//项目跟进进度
         value: 1,
         status_name:'',//一键尽调边上那个按钮线里的字
         activeName:'1',
@@ -707,7 +684,8 @@
       folowup,
       filemanagement,
       alertcontactsdetail,
-      addfollow
+      addfollow,
+      projectpush2
     },
     //Echart组件
     mounted(){
@@ -790,6 +768,9 @@
       dialogConchange(msg){
         this.dialogConVisible=msg;
       },//人脉详情弹窗
+      dialogVisiblechangeCloase(msg){
+        this.dialogPushVisible=msg;
+      },
       getLocalTime(data) {
         for(let i=0; i<data.length; i++){
           data[i].dh_start_time=new Date(parseInt(data[i].dh_start_time) * 1000).toLocaleString().substr(0, 9)
@@ -840,6 +821,10 @@
             this.$tool.console(err,2)
           })
       },//获取项目详情数据
+      getWxProjectCategory(){
+        this.schedule = this.$global.data.schedule;//设置项目跟进状态
+        this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
+      },//获取所有下拉框的数据
       toEdit(){
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },
@@ -978,7 +963,11 @@
       // 组件创建完后获取数据，
       this.loading=true;
       this.getprojectId();
-      this.getProjectDetail();
+      this.getWxProjectCategory();
+      setTimeout(()=>{
+        this.getProjectDetail();
+      },200)
+
 //      this.activeName=
     }
 
