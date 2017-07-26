@@ -128,9 +128,10 @@
             for (let key in res.data.data) {
               this.groupList.forEach(x => {
                 if (x.type_id == key) {
-                  x.fileData = (res.data.data[key])
+                  console.log(x.type_id)
+                  x.fileData = res.data.data[key]
                   x.fileLenth=res.data.data[key].length
-                } else {
+                }else {
                   x.fileData = []
                   x.fileLength=0;
                 }
@@ -167,7 +168,6 @@
             }).then(res=>{
               if(res.data.status_code===2000000){
                 this.$tool.success('新建文件分组成功')
-                this.initData();
                 this.$refs['newGroupName'].resetFields();
                 this.dialogFileVisible=false;
               }else{

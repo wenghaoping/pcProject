@@ -4,15 +4,14 @@
         <span class="card">名片</span>
         <el-upload
           class="upload-demo"
-          action="https://www.weitianshi.cn/api/v/user/uploadCard"
+          action="https://dev.weitianshi.cn/api/user/uploadCard"
           :data="uploadData"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :on-error="handleError"
           :before-upload="beforeUpload"
           :file-list="fileList"
-          :on-success="uploadSuccess"
-        >
+          :on-success="uploadSuccess">
           <el-button size="small" type="primary" style="background:#40587a;border-color: #40587a" v-show="btnShow" >
             <i class="el-icon-plus"></i>
             点击上传
@@ -30,10 +29,9 @@
             return {
               uploadData:{
                 user_id:localStorage.user_id,
-                id:localStorage.id,
+                authenticate_id:localStorage.authenticate_id,
               },
               fileList: [],
-              image_id:'',
               btnShow:true,
             }
         },
@@ -83,7 +81,7 @@
             console.log(response)
             if(response.status_code===2000000){
               this.btnShow=false;
-              this.$emit('upLoadSuccess',response.image_id)
+              this.$emit('upLoadSuccess',response.authenticate_id)
             }else{
               this.$tool.error('上传失败')
               return '上传失败'
@@ -95,7 +93,7 @@
           }
         },
         created(){
-          console.log(localStorage.user_id,localStorage.id)
+          console.log(localStorage.user_id,localStorage.authenticate_id)
         }
     }
 </script>

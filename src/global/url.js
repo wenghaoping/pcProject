@@ -63,8 +63,8 @@ export default
 
   //身份认证相关
   getGroupIdentify:'api/category/getGroupIdentify',//身份类型列表
-  setUserGroup:'api/v/user/setUserGroup',//设置身份类型
-  saveUserIdentity:'api/v/user/saveUserIdentify',//保存身份认证信息
+  setUserGroup:'api/user/setUserGroup',//设置身份类型
+  saveUserIdentity:'api/user/saveUserAuthentication',//保存身份认证信息
   createUserProjectCase:'api/v/project/createUserProjectCase',//保存投资成功案例
   getUserGroupByStatus:'/api/user/getUserGroupByStatus',//核对用户认证状态（用于判断用户是否能进入认证相关页面）
 

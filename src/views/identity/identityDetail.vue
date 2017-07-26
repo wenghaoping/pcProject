@@ -229,7 +229,7 @@
 //      控制成功案例弹窗显示/隐藏
         dialogShow: false,
 //      上传图片成功的返回值
-        image_id: '',
+        authenticate_id: '',
 //      成功案例数据
         investCaseData:[{
           case_name : '',
@@ -266,7 +266,7 @@
           console.log(this.investCaseData)
 
           this.$http.post(this.URL.saveUserIdentity, {
-            id: localStorage.id,
+            authenticate_id: localStorage.authenticate_id,
             user_id: localStorage.user_id,
             iden_name: this.ruleForm1.name,
             iden_company_name: this.ruleForm1.company,
@@ -348,11 +348,10 @@
         }
         return newArr
       },
-      // 接收上传图片时返回的image_id
-      uploadSuccess(image_id){
-        console.log(3)
-        console.log(image_id)
-        this.image_id = image_id;
+      // 接收上传图片时返回的authenticate_id
+      uploadSuccess(authenticate_id){
+        console.log(authenticate_id)
+        this.authenticate_id = authenticate_id;
       },
     },
     mounted(){

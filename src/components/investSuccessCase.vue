@@ -28,7 +28,8 @@
                               :editable="false"
                               type="date"
                               placeholder="请选择"
-                              class="width360"></el-date-picker>
+                              class="width360"
+                              format></el-date-picker>
             </el-form-item>
           </div>
           <!--投资领域和投资轮次-->
@@ -116,15 +117,6 @@
         caseForm: {
           investSuccessCase: this.investCase
         },
-        /*rule:  [{
-          name: [{required: true, message: '请填写姓名', trigger: 'blur'},],
-          time: {required: true, message: '请选择时间', trigger: 'blur'},
-          industry: {required: true, message: '请选择领域', trigger: 'blur'},
-          stage: {required: true, message: '请选择轮次', trigger: 'blur'},
-          area1: {required: true, message: '请选择省份', trigger: 'blur'},
-          area2: {required: true, message: '请选择市区', trigger: 'blur'},
-          scale: [{required: true, message: '请填写金额', trigger: 'blur'}],
-        }],*/
         area1List: [],
         area2List: [],
         industryList: '',
@@ -183,8 +175,11 @@
           console.log('发送请求')
           // 标准时间转化为毫秒数
           this.caseForm.investSuccessCase.forEach(x=>{
-            this.caseTime.push(x.case_deal_time)
-            x.case_deal_time=Date.parse(x.case_deal_time)
+            this.caseTime.push(x.case_deal_time);
+            x.case_deal_time=Date.parse(x.case_deal_time);
+            var date=new Date(x.case_deal_time);
+            x.case_deal_time=date.getFullYear()+'-'+ (date.getMonth()+1)+'-'+ date.getDate();
+            console.log(x.case_deal_time)
           })
           console.log(this.caseForm.investSuccessCase);
 

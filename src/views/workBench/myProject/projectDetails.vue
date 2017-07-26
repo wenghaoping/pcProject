@@ -80,8 +80,6 @@
             一键尽调
           </div>
           </div>
-
-
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
         <div class="item-lists clearfix" style="padding-top: 10px;">
@@ -256,7 +254,6 @@
                   </div>
                 </div>
               </div>
-
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
@@ -274,8 +271,8 @@
           <div class="ul-lists list tc" >
             <div class="toButton" style="padding-left: 0">
               <button  @click="toEdit" class="btn1">编辑</button>
-              <button  @click="addFollow" class="btn1">写跟近</button>
-              <button  @click="toEdit" class="btn1">项目推送</button>
+              <button  @click="addFollow" class="btn1">写跟进</button>
+              <button  @click="projectPush" class="btn1">项目推送</button>
             </div>
           </div>
         </div>
@@ -438,6 +435,9 @@
     <!--人脉详情弹窗-->
     <alertcontactsdetail :dialog-con-visible="dialogConVisible" :proid="project.project_id" v-on:changeCon="dialogConchange"></alertcontactsdetail>
 
+    <!--项目详情弹窗-->
+    <alertprojectdetail :dialog-con-visible2="dialogConVisible2" :proid="project.project_id" v-on:changeCon2="dialogConchange2"></alertprojectdetail>
+
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
@@ -451,6 +451,7 @@
   import folowup from './followUpDetail.vue'
   import filemanagement from './fileManagement.vue'
   import alertcontactsdetail from './alertContactsDetail.vue'
+  import alertprojectdetail from '../../../components/alertProjectDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
   export default {
@@ -674,7 +675,8 @@
         tabs:true,//标签切换
         currentPage:1,//当前第几页
         totalData:50,//总数
-        dialogConVisible:false,
+        dialogConVisible:false ,//人脉详情弹窗
+        dialogConVisible2:false,//项目详情弹窗
       }
     },
     computed:{
@@ -684,6 +686,7 @@
       folowup,
       filemanagement,
       alertcontactsdetail,
+      alertprojectdetail,
       addfollow,
       projectpush2
     },
@@ -768,6 +771,9 @@
       dialogConchange(msg){
         this.dialogConVisible=msg;
       },//人脉详情弹窗
+      dialogConchange2(msg){
+        this.dialogConVisible2=msg;
+      },//项目详情弹窗
       dialogVisiblechangeCloase(msg){
         this.dialogPushVisible=msg;
       },
@@ -828,6 +834,9 @@
       toEdit(){
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },
+      projectPush(){
+        this.dialogPushVisible=true;
+      },//项目推送入口
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
         console.log(this.project.project_id);
