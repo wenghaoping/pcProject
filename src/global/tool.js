@@ -198,6 +198,18 @@ const tool={
       }
     }
   },//input框长度验证(超出40字就返回true)
+  isArray(o) {
+  return Object.prototype.toString.call(o) == '[object Array]';
+},//是否为数组
+  isOwnEmpty(obj) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      return false;//返回false，不为空对象
+    }
+  }
+  return true;//返回true，为空对象
+},//判断是否为空对象
+
   /*弹框类*/
   error(text) {
     Notification.error({
@@ -252,14 +264,15 @@ const tool={
     return arr
   },//获取轮次信息
   getIndustry(data){
-    let arr = [];
-    for (let i = 0; i < data.length; i++) {
-      let obj = {};
-      obj.label = data[i].industry_name;
-      obj.value = data[i].industry_id;
-      arr.push(obj)
-    }
-    return arr
+      let arr = [];
+      for (let i = 0; i < data.length; i++) {
+        let obj = {};
+        obj.label = data[i].industry_name;
+        obj.value = data[i].industry_id;
+        arr.push(obj)
+      }
+      return arr
+
   },//获取领域
 
 

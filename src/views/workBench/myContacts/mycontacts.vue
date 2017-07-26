@@ -480,7 +480,7 @@ export default {
         .then(res=>{
           this.loading=false;
           let data = res.data.data;
-          this.$tool.console(res)
+          this.$tool.console(res);
           this.tableData=this.getProjectList(data);
         })
         .catch(err=>{
@@ -488,7 +488,6 @@ export default {
           this.$tool.console(err,2)
         })
     },//控制页码
-
 
     titleSift(){
       this.loading=true;

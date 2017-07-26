@@ -38,6 +38,7 @@ export default
   editProject:"api/v/project/editProject",  //项目编辑、新建
   getOneCompany:"api/dataTeam/getOneCompany",  //获取公司信息
   setFileType:"api/v/project/setFileType",  //文件分组设置
+  setProjectSchedule:'/api/project/setProjectSchedule',//设置项目进度
 
   /*项目编辑页*/
   getWxProjectCategory:"api/category/getProjectCategory",  //编辑项目各种标签接口
@@ -97,9 +98,12 @@ export default
   //文件管理
   getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据
 
-  /*意向项目(人脉列表右边)*/
+  /*意向项目(人脉详情右边)*/
   getEnjoyProjectsGroup:'/api/v/project/getEnjoyProjectsGroup',//意向项目归总(图表)
   getEnjoyProjects:'/api/v/project/getEnjoyProjects',//意向项目列表,
   setEnjoyProjectSchedule:'api/v/project/setEnjoyProjectSchedule',//设置意向项目的跟进进度
 
+  /*意向投资人(项目详情右边)*/
+  getEnjoyedInvestors:'api/project/getEnjoyedInvestors',//意向投资人列表
+  getEnjoyedInvestorsGroup:'api/project/getEnjoyedInvestorsGroup',//意向投资人归总(图表)
 }

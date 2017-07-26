@@ -18,12 +18,12 @@ export default {
 
   },
   created(){
-    this.$http.post(this.URL.getProjectFollowList,{
+/*    this.$http.post(this.URL.getProjectFollowList,{
       user_id:localStorage.user_id,
       project_id:this.pro_id,
     }).then(res=>{
       this.$tool.console(res)
-    })
+    })*/
   },
   watch : {
     proid : function(e){

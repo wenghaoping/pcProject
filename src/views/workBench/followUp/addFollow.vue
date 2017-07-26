@@ -1,7 +1,7 @@
 <template>
   <div id="addFollow" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================添加或编辑跟进记录弹窗=============================================-->
-    <el-dialog :visible="dialogFollow" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="dialogFollow" custom-class="dialogFollow" :before-close="handleClose(1)" close-on-press-escape close-on-click-modal>
       <div class="addTitle">
         <span> | </span>添加跟进
       </div>
@@ -181,15 +181,18 @@
         }*/
         ],//跟进进度下拉框
         project_name:[],//项目搜索下拉框
-        options:[{
-          value: '黄金糕',
-          label: '黄金糕'
-        }],
+        saveJumpData:{
+
+        }
       }
     },
     methods: {
-      handleClose(){
-        this.$emit("changeClose",false);
+      handleClose(e){
+        if(e==1) this.$emit("changeClose",false);
+        else{
+          this.allSave();//添加
+          this.follow=this.saveJumpData;
+        }
       },
 
       handleSelectProject(item){
@@ -213,6 +216,7 @@
              }, 300);
           })
           .catch(err => {
+
           })
       },//项目搜索
 
@@ -566,6 +570,7 @@
         this.follow.project_name=this.projectname || '';
         this.follow.card_id=this.cardid || '';
         this.follow.card_name=this.cardname || '';
+        this.saveJumpData=this.follow;
       },//清空数据
     },
     mounted(){
