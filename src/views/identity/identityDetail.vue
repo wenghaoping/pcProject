@@ -138,6 +138,9 @@
                 <el-button v-show="!hasSuccessCase" @click="addInvestCase">添加</el-button>
                 <el-button v-show="hasSuccessCase">继续添加</el-button>
               </el-form-item>
+              <el-form-item class="item" label="申请试用为FA量身定制的saas系统">
+
+              </el-form-item>
             </div>
           </el-form>
         </div>
@@ -148,7 +151,7 @@
       <el-button class="fr next" @click="next">完成</el-button>
     </div>
     <!--成功案例弹窗-->
-    <invest-success-case :dialog-show="dialogShow" @closeInvestCase="closeInvestCase" lock-scroll>
+    <invest-success-case :dialog-show="dialogShow" :invest-case="investCaseData"  @closeInvestCase="closeInvestCase" lock-scroll>
 
     </invest-success-case>
   </div>
@@ -227,6 +230,16 @@
         dialogShow: false,
 //      上传图片成功的返回值
         image_id: '',
+//      成功案例数据
+        investCaseData:[{
+          case_name : '',
+          case_deal_time: '',
+          case_industry: '',
+          case_stage: '',
+          case_province: '',
+          case_city: '',
+          case_money: '',
+        }],
       }
     },
     components: {
@@ -250,6 +263,8 @@
           this.$tool.error('请正确填写邮箱')
         }else {
           console.log(this.ruleForm1, this.ruleForm2);
+          console.log(this.investCaseData)
+
           this.$http.post(this.URL.saveUserIdentity, {
             id: localStorage.id,
             user_id: localStorage.user_id,
@@ -265,6 +280,7 @@
             stage: this.ruleForm2.investStage,
             scale: this.ruleForm2.investScale,
             group_id:localStorage.group_id,
+            project_case:this.investCaseData
           }).then(res => {
             if (res.data.status_code === 2000000) {
               this.$router.push({name: localStorage.entrance})
@@ -298,22 +314,24 @@
         this.dialogVisible = true;
       },
       querySearchAsync(queryString, cb) {
-        this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
-        .then(res => {
-          this.restaurants = [];
-          let data = res.data.data;
-          this.restaurants = this.loadData(data);
-          if (queryString == "") this.restaurants = [];
-          let restaurants = this.restaurants;
-          /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
-          clearTimeout(this.timeout);
-          this.timeout = setTimeout(() => {
-            cb(restaurants);
-          }, 300);
-        })
-        .catch(err => {
-          console.log(err);
-        })
+        if(queryString.length>2){
+          this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+          .then(res => {
+            this.restaurants = [];
+            let data = res.data.data;
+            this.restaurants = this.loadData(data);
+            if (queryString == "") this.restaurants = [];
+            let restaurants = this.restaurants;
+            /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              cb(restaurants);
+            }, 300);
+          })
+          .catch(err => {
+            console.log(err);
+          })
+        }
       },
       createStateFilter(queryString) {
         return (state) => {
@@ -353,7 +371,7 @@
         user_id: localStorage.user_id
       }).then(res => {
         if (res.data.status_code === 2000000) {
-          if (res.data.status === 1) {
+          if (res.data.status === 1 || res.data.status === 2) {
             this.$router.push({name: 'index'})
           }
         } else {

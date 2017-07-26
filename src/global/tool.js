@@ -13,7 +13,7 @@ const tool={
       object[key]=data[key]
     }
     return object;
-  }, //对象封装 将数组中无用的参数去除
+  }, //对象封装 将对象中无用的参数去除
   getToArrObject(data) {
     let newArr = new Array;
     for(let i=0;i<data.length; i++){

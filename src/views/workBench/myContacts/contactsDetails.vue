@@ -656,6 +656,7 @@ export default {
       this.follow_schedule = this.$global.data.follow_schedule.slice(0);//设置项目状态
       this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
       this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+
     },//获取所有下拉框的数据
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);

@@ -36,7 +36,6 @@ export default
   deleteFinance:"api/v/project/deleteFinance",  //删除历史融资
   deleteDevelop:"api/v/project/deleteDevelop",  //删除里程碑
   editProject:"api/v/project/editProject",  //项目编辑、新建
-
   getOneCompany:"api/dataTeam/getOneCompany",  //获取公司信息
   setFileType:"api/v/project/setFileType",  //文件分组设置
 
@@ -93,6 +92,7 @@ export default
   delete_follow_record:'/api/project/delete_follow_record',//删除跟进记录
   match_my_relation:'/api/user/match_my_relation',//模糊匹配我的人脉,添加跟进里是用
   add_follow_record:'/api/project/add_follow_record',//添加跟进记录
+  getProjectFollowList:'api/v/project/getProjectFollowList',//项目跟进记录列表
 
   //文件管理
   getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据

@@ -620,6 +620,7 @@ export default {
     this.titleSift();
     this.getWxProjectCategory();
     this.handleIconClick();
+    zhuge.track('购买商品');
   }
 }
 </script>
