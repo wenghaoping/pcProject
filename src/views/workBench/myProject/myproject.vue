@@ -19,13 +19,18 @@
             <div slot="content">
               <div style="width:50px;text-align: center;">约谈 : {{nodeCount.interview}} </div>
             </div>
-            <span class="circle circle-0" @click="setNode('2')">&nbsp;</span>
+
+              <span class="circle circle-0" @click="setNode('2')">
+                <span class="getClick"></span>
+            </span>
           </el-tooltip>
           <el-tooltip placement="top" :class="{'pp-cur':node3}" >
             <div slot="content">
               <div style="width:50px;text-align: center;">考察 : {{nodeCount.investigate}} </div>
             </div>
-            <span class="circle circle-5" @click="setNode('3')">&nbsp;</span>
+            <span class="circle circle-5" @click="setNode('3')">
+              <span class="getClick"></span>
+            </span>
           </el-tooltip>
         </div>
         <div class="pp-item pp-node" :class="{'pp-cur':node4}" @click="setNode('4')">
@@ -38,28 +43,36 @@
             <div slot="content">
               <div style="width:100px;text-align: center;">引荐投资方 : {{nodeCount.recommended}} </div>
             </div>
-            <span class="circle circle-1" @click="setNode('5')">&nbsp;</span>
+            <span class="circle circle-1" @click="setNode('5')">
+              <span class="getClick"></span>
+            </span>
           </el-tooltip>
 
           <el-tooltip placement="top" :class="{'pp-cur':node6}" >
             <div slot="content">
               <div style="width:80px;text-align: center;">投资协议 : {{nodeCount.agreement}} </div>
             </div>
-            <span class="circle circle-2" @click="setNode('6')">&nbsp;</span>
+            <span class="circle circle-2" @click="setNode('6')">
+              <span class="getClick"></span>
+            </span>
           </el-tooltip>
 
           <el-tooltip placement="top" :class="{'pp-cur':node7}" >
             <div slot="content">
               <div style="width:50px;text-align: center;">交割 : {{nodeCount.delivery}} </div>
             </div>
-            <span class="circle circle-3" @click="setNode('7')">&nbsp;</span>
+            <span class="circle circle-3" @click="setNode('7')">
+              <span class="getClick"></span>
+            </span>
           </el-tooltip>
 
           <el-tooltip placement="top" :class="{'pp-cur':node8}">
             <div slot="content">
               <div style="width:80px;text-align: center;">待收佣金 : {{nodeCount.collect}} </div>
             </div>
-            <span class="circle circle-4"  @click="setNode('8')">&nbsp;</span>
+            <span class="circle circle-4"  @click="setNode('8')">
+              <span class="getClick"></span>
+            </span>
           </el-tooltip>
 
         </div>

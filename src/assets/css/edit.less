@@ -129,6 +129,7 @@
       color:#5e6d82;
       line-height: 38px;
       height: 38px;
+
     }
     .f-name{
       color:#475669;
@@ -168,6 +169,13 @@
         line-height:14px;
         cursor: pointer;
       }
+      .f-title{
+        overflow: hidden; /*自动隐藏文字*/
+        text-overflow: ellipsis;/*文字隐藏后添加省略号*/
+        white-space: nowrap;/*强制不换行*/
+        max-width: 180px;
+      }
+
     }
     .block-from{
       margin-top: 32px;

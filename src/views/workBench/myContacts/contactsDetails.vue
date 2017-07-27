@@ -410,7 +410,6 @@ export default {
         label: '项目推进中'
       }*/],//项目跟进进度搜索用,多一个全部
       searchSchedule:0,//意向项目的筛选进度
-      widthInner:0,//进度条的长度
       tabs:true,//标签切换
       pro_id:'123',//项目详情
       getPra:{},//获取项目的请求参数
@@ -488,7 +487,26 @@ export default {
       this.getProjectList(page);
     },//控制项目页码1
     filterChangeCurrent1(page){
-//      this.getEnjoyProjects(page);
+      this.loading=true;
+      this.getConpro.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+      this.currentPage2=page;
+      this.getConpro.card_id=this.contacts.card_id;
+      this.getConpro.page=page;
+      this.getConpro.schedule_id='';
+      this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
+        .then(res=>{
+          if(res.data.status_code==2000000) {
+            let data = res.data.data;
+            this.enjoyProjects=this.setEnjoyProject(data);
+          }
+          this.loading = false;
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading=false;
+          this.$tool.error("加载超时");
+        })
     },//控制右边页码
     handleClick(tab, event) {
       if(tab.name=="1") this.tabs=true;
@@ -503,6 +521,7 @@ export default {
     },//点击添加意向项目按钮
     closeFollow(msg){
       this.dialogFollow=msg;
+      this.getEnjoyProjects();
     },//关闭添加意向项目
     dialogVisiblechangeIn(msg){
       this.dialogVisiblePro=msg;
@@ -711,21 +730,23 @@ export default {
           this.$tool.error("加载超时");
         })
     },//获取意向项目数据(图表)
-    getEnjoyProjects(page){
+    getEnjoyProjects(){
       this.loading=true;
       this.getConpro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-      this.currentPage2=page;
+      this.currentPage2=1;
       this.getConpro.card_id=this.contacts.card_id;
-      this.getConpro.page=page;
+      this.getConpro.page=1;
       this.getConpro.schedule_id='';
       this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
-          if(res.data.status_code==2000000) {
-            let data = res.data.data;
-            this.enjoyProjects=this.setEnjoyProject(data);
-            this.totalData2 = res.data.count;
-          }
+            if(res.data.status_code==2000000) {
+              let data = res.data.data;
+              this.enjoyProjects=this.setEnjoyProject(data);
+              this.totalData2 = res.data.count;
+            }
+
+
           this.loading = false;
         })
         .catch(err=>{
@@ -864,6 +885,7 @@ export default {
             this.$tool.success("设置成功");
             this.scheduleIndex=-1;
             this.loading = false;
+            this.getEchartData();
           })
           .catch(err => {
             this.$tool.console(err, 2);
@@ -882,10 +904,15 @@ export default {
       this.getConpro.page=1;
       this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
-          if(res.data.status_code==2000000) {
-            let data = res.data.data;
-            this.enjoyProjects=this.setEnjoyProject(data);
-            this.totalData2 = res.data.count;
+          if(res.data.data.length!=0){
+            if(res.data.status_code==2000000) {
+              let data = res.data.data;
+              this.enjoyProjects=this.setEnjoyProject(data);
+              this.totalData2 = res.data.count;
+            }
+          }else{
+            this.enjoyProjects=[];
+            this.totalData2 = 0;
           }
           this.loading = false;
         })
@@ -905,7 +932,7 @@ export default {
       this.getWxProjectCategory();
       this.getEchartData();
       setTimeout(()=>{
-        this.getEnjoyProjects(1);
+        this.getEnjoyProjects();
       },200)
 
   },

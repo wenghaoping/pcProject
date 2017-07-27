@@ -124,7 +124,7 @@
             user_id: localStorage.user_id,
             project_id: this.project_id
           }).then(res => {
-            console.log('res',this.$tool.getToObject(res))
+//            console.log('res',this.$tool.getToObject(res))
             //把分组内的文件放到对应的分组内
             var groupWithFile=res.data.data
             groupList.forEach(y=>{
