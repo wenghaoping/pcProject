@@ -1,6 +1,5 @@
 <template>
   <!--项目推送项目入口-->
-
   <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中">
     <el-dialog :visible="dialogPush" :before-close="handleClose">
       <span slot="title" class="dialog-title clearfix">

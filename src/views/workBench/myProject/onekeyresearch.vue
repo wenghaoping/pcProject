@@ -36,7 +36,7 @@
                                         <span class="big-tag">&#45;&#45;</span>-->
                   </div>
                 </div>
-                <div class="tag" style="padding-top: 100px;">
+                <div class="tag" style="padding-top: 20px;    display: inline-block;">
                   <span class="tag-bottom" style="margin-right: 11px;" v-if="project1.project_label!=''"><img src="../../../assets/images/tag2.png"></span>
                   <span class="tag-bottom" v-if="project1.project_label!=''">{{project1.project_label}}</span>
                   <!--                  <span class="tag-bottom">创业</span>

@@ -1955,7 +1955,7 @@
         this.milepostMust = !this.submitForm('milepost');
 //        if (this.fileMust) this.alert("请添加商业计划书")
 //        else
-            if (this.projectMust) this.$tool.error("项目介绍必填项不能为空")
+            if (this.projectMust) this.$tool.error("项目介绍有误,请正确填写")
         else if (this.teamMust) this.$tool.error("核心团队必填项不能为空")
         else if (this.financingMust) this.$tool.error("融资信息必填项不能为空")
         else if (this.milepostMust) this.$tool.error("里程碑必填项不能为空")
@@ -2235,7 +2235,8 @@
       margin: 0 auto;
     }
     .el-radio{
-      width:111px
+/*      width:111px*/
+      padding-left: 25px;
     }
   }
   .edit-page .item-block .block-tt-line{
