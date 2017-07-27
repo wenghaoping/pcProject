@@ -21,7 +21,6 @@ const tool={
     }
     return newArr;
   },//*数组封装将对象中无用的参数去除
-
   fileChange(target) {
   let isIE = /msie/i.test(navigator.userAgent) && !window.opera;
   let fileSize = 0;
@@ -72,7 +71,6 @@ const tool={
     return false;
   }
 },/*设置上传文件大小以及类型fileChange(this)*/
-
   getTitleSift(data){
     let arr = [];
     for(let key in data){

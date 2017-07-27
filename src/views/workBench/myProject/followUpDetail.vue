@@ -18,10 +18,11 @@ export default {
 
   },
   created(){
-/*    this.$http.post(this.URL.getProjectFollowList,{
+   /*this.$http.post(this.URL.getProjectFollowList,{
       user_id:localStorage.user_id,
       project_id:this.pro_id,
     }).then(res=>{
+      this.$tool.console('跟进记录详情列表')
       this.$tool.console(res)
     })*/
   },
