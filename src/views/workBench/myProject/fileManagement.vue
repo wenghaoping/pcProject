@@ -40,7 +40,7 @@
                  :show-file-list="false"
                  accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
                  multiple>
-                    <el-button class="upload" type="text"><img src="/static/images/shangchuan.png">上传文件</el-button>
+                    <el-button class="upload" type="text" @click="getTypeId(item.type_id)"><img src="/static/images/shangchuan.png">上传文件</el-button>
                </el-upload>
             </div>
           </span>
@@ -107,6 +107,8 @@
         newGroupName:{
           name:''
         },
+        //被点击的上传按钮所属分组
+        typeId:0,
         list:[],
       }
     },
@@ -192,9 +194,12 @@
         this.dialogFileVisible = false;
       },
 
+      //获取当前按钮的typeId(辅助函数)
+      getTypeId(typeId){
+        this.typeId=typeId;
+      },
       //上传文件上传之前的钩子函数
       beforeUpload(file){
-//        this.fileuploadDate.project_id = this.project_id;
         let filetypes = [".doc", ".ppt", ".pdf", ".zip", ".rar", ".pptx", ".png", ".jpg", ".docx", ".jpeg"];
         let name = file.name;
         let fileend = name.substring(name.lastIndexOf("."));
@@ -216,6 +221,7 @@
           this.$tool.error("暂不支持超过20m文件上传哦");
           return false;
         };
+
       },
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
