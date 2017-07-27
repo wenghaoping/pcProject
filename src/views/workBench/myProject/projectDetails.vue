@@ -708,7 +708,6 @@
         ],
         scheduleIndex:-1,//设置跟进状态的位置(单独需要)
         takechange:false,//这个我就是随便用用
->>>>>>> origin/morganfly
       }
     },
     computed:{
