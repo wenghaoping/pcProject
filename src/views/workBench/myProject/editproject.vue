@@ -1,5 +1,5 @@
 <template>
-  <div id="editproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="editproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中" class="clearfix">
     <div id="wid" class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">

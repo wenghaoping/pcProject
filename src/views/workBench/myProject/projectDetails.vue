@@ -448,12 +448,14 @@
 </template>
 
 <script type="text/ecmascript-6">
+
   import research from './onekeyresearch.vue'
   import folowup from './followUpDetail.vue'
   import filemanagement from './fileManagement.vue'
   import alertcontactsdetail from './alertContactsDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
+
   export default {
     data(){
       return {
@@ -710,6 +712,8 @@
         ],
         scheduleIndex:-1,//设置跟进状态的位置(单独需要)
         takechange:false,//这个我就是随便用用
+        chart:"",
+        chartCheck:true,
       }
     },
     computed:{
@@ -937,7 +941,7 @@
             if(res.data.status_code==2000000) {
               let data = res.data.data;
               this.chartData=data;
-              this.eChart(data.going,data.hold,data.reject);
+              this.eChart(data.going,data.hold,data.reject)
             }
             this.loading1 = false;
           })
@@ -1029,7 +1033,7 @@
         return newArr;
       },//设置意向投资人列表
       eChart(going,hold,reject){
-        let myChart = this.$echart.init(document.getElementById('echart'));
+        if(this.chartCheck) this.chart = this.$echart.init(document.getElementById('echart'));
         let option = {
           tooltip: {
             trigger: 'item',
@@ -1085,7 +1089,8 @@
             }
           ]
         };
-        myChart.setOption(option);
+        this.chart.setOption(option);
+        this.chartCheck=false;
       },//图表
       getIndex(index){
         this.scheduleIndex=index;
@@ -1188,7 +1193,7 @@
       setTimeout(()=>{
         this.getProjectDetail();
         this.getEnjoyedInvestors();
-      },200)
+      },500)
     }
 
   }
