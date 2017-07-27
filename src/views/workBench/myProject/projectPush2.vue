@@ -10,23 +10,38 @@
         <div class="img fl"><img src="../../../assets/images/why.png"></div>
       </span>
 
-      <el-form label-position="top" :model="email2" label-width="80px" style="position: relative" ref="email2">
-        <el-form-item label="推送人脉"
-                      prop="nameEmail"
-                      :rules="emailRule">
-          <el-input v-model="email2.nameEmail" placeholder="项目及BP将以邮箱的方式推送，请输入邮箱"></el-input>
+      <div>
+        <div class="text1">推送项目</div>
+        <div class="text2">帮助FA成交的项目管理工具</div>
+      </div>
+
+      <!--推送人脉-->
+      <el-form :inline="true" :model="investor" class="demo-form-inline">
+        <el-form-item label="推送人脉">
+          <el-input v-model="investor.name" placeholder="请输入您要推送的投资人"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="customerAdd">自定义添加</el-button>
         </el-form-item>
       </el-form>
+
+      <!--我的人脉和全网人脉tab页切换-->
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="我的人脉" name="myContacts">用户管理</el-tab-pane>
+        <el-tab-pane label="全网人脉" name="netContacts">配置管理</el-tab-pane>
+      </el-tabs>
+
+      <!---->
       <el-form label-position="top" label-width="80px" ref="email" :model="email">
         <el-form-item label="标题" prop="title"
                       :rules="titleRule">
-          <el-input v-model="email.title" placeholder="请输入邮件标题"></el-input>
+          <el-input v-model="email.title" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
         </el-form-item>
         <el-form-item label="正文"
                       prop="main">
           <el-input type="textarea"
                     v-model="email.main"
-                    placeholder="请输入邮件正文"
+                    placeholder="请输入简要项目介绍，作为邮件正文，便于投资人快速了解项目"
                     :autosize="{ minRows: 4, maxRows: 7}"></el-input>
         </el-form-item>
       </el-form>
@@ -105,6 +120,12 @@ export default {
         id:2
       }],
       projectRadio:'',
+
+
+      investor:{
+        name:'',
+      },
+      activeName: 'myContacts'
     }
   },
   methods: {
@@ -155,6 +176,13 @@ export default {
     },
     handleClose(){
       this.$emit('changeClose',false);
+    },
+
+    //自定义添加人脉
+    customerAdd(){},
+    //选项卡切换
+    handleClick(tab, event) {
+//      console.log(tab, event);
     }
   },
   mounted() {

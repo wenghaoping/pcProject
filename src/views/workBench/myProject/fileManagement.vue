@@ -117,6 +117,7 @@
         this.$http.post(this.URL.getFileType, {
           user_id: localStorage.user_id
         }).then(res => {
+          console.log('fisrt-groupList',res.data.data)
           this.groupList = res.data.data;
           //获取分组列表内部文件数据
           this.$http.post(this.URL.getProjectFiles, {
@@ -142,7 +143,6 @@
         })
       },
 
-      //------------------------新建文件分组-------------------------------------
       //打开新建分组弹窗
       toGroup(){
         this.dialogFileVisible = true;
@@ -187,8 +187,7 @@
         this.dialogFileVisible = false;
       },
 
-      //-----------------------------批量上传-------------------------------------
-      //上传文件前端验证
+      //上传文件上传之前的钩子函数
       beforeUpload(file){
         this.fileuploadDate.project_id = this.project_id;
         let filetypes = [".doc", ".ppt", ".pdf", ".zip", ".rar", ".pptx", ".png", ".jpg", ".docx", ".jpeg"];
