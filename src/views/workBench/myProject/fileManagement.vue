@@ -21,11 +21,11 @@
     </el-dialog>
     <!--文件类别-->
     <el-collapse v-model="activeNames">
-      <el-collapse-item name="index" v-for="(item,index) in groupList" :key="item.type_id">
+      <el-collapse-item :name="index" v-for="(item,index) in groupList" :key="item.type_id">
         <!--组别表头-->
         <template slot="title">
           <span class="clearfix collapseHead">
-            {{item.type_name}}(<span>{{item.fileLength}}</span>)
+            {{item.type_name}}(<span>{{item.fileNum}}</span>)
             <div class="fr">
                <el-upload
                  class="upload"
@@ -36,7 +36,7 @@
                  :on-error="uploaderror"
                  :before-upload="beforeUpload"
                  :file-list="fileList"
-                 :data="{user_id:this.localStorage.user_id,project_id:this.project_id,type:item.type_id}"
+                 :data="{user_id:this.localStorage.user_id,project_id:project_id,type:item.type_id}"
                  :show-file-list="false"
                  accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
                  multiple>
@@ -48,9 +48,9 @@
         <!--文件列表-->
         <div class="fileList">
           <div class="block-info block-cc-other" style="margin-bottom: 15px;"
-               v-for="(list, index) in uploadShow2.lists"
-               :key="list.index">
-            <span class="f-name" style="cursor: pointer">{{list.file_title}}</span>
+               v-for="(file, index) in item.file"
+               :key="file.file_id">
+            <span class="f-name" style="cursor: pointer">{{file.file_id}}</span>
             <div class="fr">
               <el-dropdown>
                 <span class="el-dropdown-link">
@@ -118,7 +118,7 @@
           user_id: localStorage.user_id
         }).then(res => {
           console.log('fisrt-groupList',res.data.data)
-          this.groupList = res.data.data;
+          var groupList = res.data.data;
           //获取分组列表内部文件数据
           this.$http.post(this.URL.getProjectFiles, {
             user_id: localStorage.user_id,
@@ -126,19 +126,24 @@
           }).then(res => {
             console.log('res',this.$tool.getToObject(res))
             //把分组内的文件放到对应的分组内
-            for (let key in res.data.data) {
-              this.groupList.forEach(x => {
-                if (x.type_id == key) {
-                  console.log(x.type_id)
-                  x.fileData = res.data.data[key]
-                  x.fileLenth=res.data.data[key].length
-                }else {
-                  x.fileData = []
-                  x.fileLength=0;
+            var groupWithFile=res.data.data
+            groupList.forEach(y=>{
+              groupWithFile.forEach(x=>{
+                if(y.type_id===x.type) {
+                  y.file = x.file;
+                  y.fileNum = x.count
                 }
               })
-            }
-            console.log('groupList',this.$tool.getToArrObject(this.groupList))
+            })
+            //将没有文件的分组设定默认值0
+            groupList.forEach(x=>{
+              if(!x.file){
+                x.file=[];
+                x.fileNum=0;
+              }
+            })
+            this.groupList=groupList;
+            console.log('groupList',this.groupList)
           })
         })
       },
@@ -189,7 +194,7 @@
 
       //上传文件上传之前的钩子函数
       beforeUpload(file){
-        this.fileuploadDate.project_id = this.project_id;
+//        this.fileuploadDate.project_id = this.project_id;
         let filetypes = [".doc", ".ppt", ".pdf", ".zip", ".rar", ".pptx", ".png", ".jpg", ".docx", ".jpeg"];
         let name = file.name;
         let fileend = name.substring(name.lastIndexOf("."));
@@ -210,8 +215,7 @@
         if (parseInt(file.size) > parseInt(20971521)) {
           this.$tool.error("暂不支持超过20m文件上传哦");
           return false;
-        }
-        ;
+        };
       },
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
