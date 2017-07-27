@@ -676,7 +676,7 @@
         currentPage:1,//当前第几页
         totalData:50,//总数
         dialogConVisible:false ,//人脉详情弹窗
-        dialogConVisible2:true,//项目详情弹窗
+        dialogConVisible2:false,//项目详情弹窗
       }
     },
     computed:{
@@ -687,7 +687,7 @@
       filemanagement,
       alertcontactsdetail,
       alertprojectdetail,
-      addfollow,  
+      addfollow,
       projectpush2
     },
     //Echart组件
