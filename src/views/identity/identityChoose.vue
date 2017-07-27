@@ -63,7 +63,7 @@
           }).then(res => {
             if (res.data.status_code === 2000000) {
               localStorage.group_id=this.identitys[this.active].group_id;
-              localStorage.id = res.data.id;
+              localStorage.authenticate_id = res.data.authenticate_id;
               this.$router.push('/identityDetail')
             } else {
               this.$tool.error(res.data.error_msg)
