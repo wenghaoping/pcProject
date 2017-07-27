@@ -96,7 +96,7 @@
               </div>
             </div>
             <!--投资需求-->
-            <div class="item" v-if="contacts.user_invest_industry!='' && contacts.user_invest_stage!='' && contacts.user_invest_scale!='' && contacts.user_invest_desc!=''">
+            <div class="item" v-if="user_invest">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/money2.png">投资需求</span>
               </div>
@@ -120,7 +120,7 @@
               </div>
             </div>
             <!--资源需求-->
-            <div class="item" v-if="contacts.user_resource_desc!='' && contacts.user_resource_give!='' && contacts.user_resource_find!=''">
+            <div class="item" v-if="user_resource">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/ziyuan.png">资源需求</span>
               </div>
@@ -448,7 +448,10 @@ export default {
         }*/
       ],
       scheduleIndex:-1,//设置跟进状态的位置(单独需要)
-
+      chart:"",
+      chartCheck:true,//chart用的
+      user_invest:true,//投资需求
+      user_resource:true,//资源需求
 
     }
   },
@@ -514,7 +517,7 @@ export default {
     },//点击切换标签
 
     toDetail(){
-      this.dialogVisiblePro=true;
+//      this.dialogVisiblePro=true;
     },//项目详情弹窗
     addFollow(){
       this.dialogFollow=true;
@@ -522,6 +525,7 @@ export default {
     closeFollow(msg){
       this.dialogFollow=msg;
       this.getEnjoyProjects();
+      this.getEchartData();
     },//关闭添加意向项目
     dialogVisiblechangeIn(msg){
       this.dialogVisiblePro=msg;
@@ -657,6 +661,16 @@ export default {
           data.user_resource_find = this.set_GiveFind(data.user_resource_find);
           data.user_resource_give = this.set_GiveFind(data.user_resource_give);
           data.project_case = this.setProjectCase(data.project_case);
+          if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
+            this.user_invest=false;//投资需求
+          }else{
+            this.user_invest=true;//投资需求
+          }
+          if(data.user_resource_give=='' && data.user_resource_find=='' && data.user_resource_desc==''){
+            this.user_resource=false;//资源需求
+          }else{
+            this.user_resource=true;//投资需求
+          }
           this.tagsValue = this.setTag(data.user_invest_tag);
           this.tags.changecont = this.setTag(data.user_invest_tag);
           this.contacts = data;
@@ -779,7 +793,7 @@ export default {
       this.scheduleIndex=index;
     },
     eChart(going,hold,reject){
-      let myChart = this.$echart.init(document.getElementById('echart'));
+      if(this.chartCheck) this.chart = this.$echart.init(document.getElementById('echart'));
       let option = {
         tooltip: {
           trigger: 'item',
@@ -835,7 +849,8 @@ export default {
           }
         ]
       };
-      myChart.setOption(option);
+      this.chart.setOption(option);
+      this.chartCheck=false;
     },//图表
     selectChange(e){
       let width = 0;

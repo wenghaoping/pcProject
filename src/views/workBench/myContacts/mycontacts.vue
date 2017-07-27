@@ -401,6 +401,7 @@ export default {
       this.userMessage.user_real_name=row.user_real_name;
       this.userMessage.user_company_career=row.user_company_career;
       this.userMessage.user_company_name=row.user_company_name;
+      this.userMessage.card_id=row.card_id;
       this.userEmail=row.user_email;
       this.dialogPushVisible=true;
     },//点击推送,并且传送数据给推送弹框

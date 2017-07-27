@@ -306,13 +306,14 @@
                     <div class="item_list" v-for="(enjoyInvestor,index) in enjoyInvestors">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
-                        <span class="bili">100%</span>
-                        <span class="pro fr">我跟进关联的用户</span>
+                        <span class="bili">{{enjoyInvestor.match}}%</span>
+                        <span class="pro fr" v-if="enjoyInvestor.source=='follow'">我跟进关联的用户</span>
+                        <span class="pro fr" v-if="enjoyInvestor.source=='push'">我推送的用户</span>
                       </div>
                       <div class="list_main">
-                        <div @click="toDetail" class="click">
+                        <div @click="toDetail(enjoyInvestor)" class="click">
                           <div class="block">
-                            <span class="name">{{enjoyInvestor.import_user_name}}</span>
+                            <span class="name">{{enjoyInvestor.user_real_name}}</span>
                             <span class="zhiwei">{{enjoyInvestor.user_company_career}}</span>
                             <span class="imgs" v-if="enjoyInvestor.user_group!=''"><img src="../../../assets/images/renzhen.png"/></span>
                             <span class="ren">{{enjoyInvestor.user_group}}</span>
@@ -434,7 +435,7 @@
     </el-dialog>
 
     <!--人脉详情弹窗-->
-    <alertcontactsdetail :dialog-con-visible="dialogConVisible" :proid="project.project_id" v-on:changeCon="dialogConchange"></alertcontactsdetail>
+    <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid" v-on:changeCon="dialogConchange"></alertcontactsdetail>
 
     <!--项目详情弹窗-->
     <alertprojectdetail :dialog-con-visible2="dialogConVisible2" :proid="project.project_id" v-on:changeCon2="dialogConchange2"></alertprojectdetail>
@@ -462,15 +463,19 @@
       return {
         companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
+        cardid:"",//人脉详情弹框用(点击的那个人的cardid)
+        userid:"",//人脉详情弹框用(点击的那个人的userid)
         projecmessage:{
           project_id:'',
           project_name:''
         },//项目名称,ID
-        dialogFollow:false,//跟进弹框
+        dialogFollow:false,//添加意向投资人
         show: "detail",
-        dialogVisible: false,
-        dialogSearchVisible:false,
-        dialogPushVisible:false,
+        dialogVisible: false,//一键尽调弹框
+        dialogSearchVisible:false,//公司搜索弹框
+        dialogPushVisible:false,//项目推送入口弹框
+        dialogConVisible:false ,//人脉详情弹窗
+        dialogConVisible2:false,//项目详情弹窗
         searchName:"",
         form: {
           name: '',
@@ -665,20 +670,15 @@
         styleObject: {
           color: '',
         },
-        value1:'',////一键尽调边上绑定是数据
-
 
         value: 1,
-        status_name:'',//一键尽调边上那个按钮线里的字
 
         activeName:'1',
         tabs:true,//标签切换
         currentPage:1,//当前第几页
 
-        dialogConVisible:false ,//人脉详情弹窗
-        dialogConVisible2:true,//项目详情弹窗
+
         totalData:0,//总数
-        dialogConVisible:false,
 
         schedule:[],//项目进度
         follow_schedule: [/*{
@@ -728,7 +728,7 @@
       filemanagement,
       alertcontactsdetail,
       alertprojectdetail,
-      addfollow,  
+      addfollow,
       projectpush2
     },
     //Echart组件
@@ -739,7 +739,6 @@
       addFollow(){
         this.dialogFollow=true;
         this.projecmessage.project_id=this.project.project_id;
-        console.log(this.projecmessage.project_id)
         this.projecmessage.project_name=this.project.pro_intro;
       },//点击写跟近按钮
       closeFollow(msg){
@@ -813,10 +812,10 @@
       },//传递给一键尽调搜索窗口
       dialogConchange(msg){
         this.dialogConVisible=msg;
-      },//人脉详情弹窗
+      },//人脉详情弹窗关闭
       dialogConchange2(msg){
         this.dialogConVisible2=msg;
-      },//项目详情弹窗
+      },//项目详情弹窗关闭
       dialogVisiblechangeCloase(msg){
         this.dialogPushVisible=msg;
       },
@@ -884,14 +883,16 @@
       },//项目推送入口
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
-        this.show=this.$route.query.show;
+        this.show=this.$route.query.show || "detail";
       },//获取id
       toEdit(){
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
-      },
-      toDetail(){
+      },//编辑项目
+      toDetail(data){
+        this.cardid=data.card_id;
+        this.userid=data.user_id;
         this.dialogConVisible=true;
-      },//项目详情弹窗
+      },//打开人脉详情弹窗
       selectChange2(e){
         if(this.takechange){
           let getData={
@@ -1028,7 +1029,7 @@
           obj.follow_id=x.follow_id;
           obj.user_id=x.card.user_id;
           obj.card_id=x.card.card_id;
-          obj.import_user_name=x.card.import_user_name;
+          obj.user_real_name=x.card.user_real_name;
           obj.is_add=x.card.is_add;
           obj.is_bind=x.card.is_bind;
           obj.schedule_id=x.schedule.schedule_id;
@@ -1041,6 +1042,7 @@
           obj.match=x.match;
           obj.user_group=this.set_user_group(x.card.user_group);
           obj.width=this.selectChange(x.schedule.schedule_id);
+          obj.source=x.source;
           newArr.push(obj);
         });
         return newArr;

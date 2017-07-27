@@ -14,7 +14,9 @@
                 <div class="title">{{contacts.card_nickname}}</div>
               </div>
               <div class="header fr">
-                <img :src="contacts.user_avatar_url">
+                <img :src="contacts.user_avatar_url" v-if="contacts.user_avatar_url!=''">
+                <div class="img" v-else><img src="../../../assets/images/logo.png"></div>
+
               </div>
               <div class="item com"><img src="../../../assets/images/company.png">{{contacts.user_company_name}} | {{contacts.user_brand}}</div>
               <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.user_mobile}}</div>
@@ -27,7 +29,7 @@
             </div>
             <div class="item-list item-list-main">
               <!--个人标签-->
-              <div class="item">
+              <div class="item" v-if="contacts.user_invest_tag.length!=0">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
                 </div>
@@ -96,7 +98,7 @@
                 </div>
               </div>
               <!--投资需求-->
-              <div class="item" v-if="contacts.user_invest_industry!='' && contacts.user_invest_stage!='' && contacts.user_invest_scale!='' && contacts.user_invest_desc!=''">
+              <div class="item" v-if="user_invest">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../../assets/images/money2.png">投资需求</span>
                 </div>
@@ -120,7 +122,7 @@
                 </div>
               </div>
               <!--资源需求-->
-              <div class="item" v-if="contacts.user_resource_desc!='' && contacts.user_resource_give!='' && contacts.user_resource_find!=''">
+              <div class="item" v-if="user_resource">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../../assets/images/ziyuan.png">资源需求</span>
                 </div>
@@ -149,15 +151,15 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["dialogConVisible","proid"],
+    props: ["dialogConVisible","cardid","userid"],
     data () {
       return {
         loading:false,//加载动画
         loading1:false,//加载动画2
-        pro_id:'',
+
         listShow:true,//项目库
         currentPage:1,//当前第几页
-        totalData:50,//总数
+        totalData:0,//总数
         tags:{
           changecont:[],//项目标签新增
           index:'',//取数据保存的位置
@@ -213,6 +215,11 @@
         ],//项目列表
         projectListsSmall:[],//默认2个的表
         projectListsAll:[],//默认全部的表
+        getPra:{},//获取项目的请求参数
+        in:true,//进入时
+        user_invest:true,//投资需求
+        user_resource:true,//资源需求
+
       }
     },
     methods: {
@@ -255,12 +262,7 @@
         }
         return arr;
       },//设置项目库项目的标签
-      getUserId(){
-        this.contacts.user_id=this.$route.query.user_id;
-        this.contacts.card_id=this.$route.query.card_id;
-        this.tags.card_id=this.$route.query.card_id;
-        console.log(this.contacts,this.tags)
-      },//获取userid/card_id
+
       /*请求函数*/
 
       getProjectList(page){
@@ -269,21 +271,25 @@
 //      this.getPra.user_id="2rzyz5vp";
         this.currentPage=page;
         this.getPra.page=page;
-        this.$http.post(this.URL.getProjectList,this.getPra)
-          .then(res=>{
-            let data = res.data.data;
-            this.projectListsAll=this.setProjectList(data);
-            this.projectListsSmall=this.setProjectList(data).slice(0,2);
-            if(this.listShow) this.projectLists=this.projectListsAll.slice(0);
-            else this.projectLists=this.projectListsSmall.slice(0);
-            this.loading1=false;
-            this.totalData=res.data.count;
-          })
-          .catch(err=>{
-            this.$tool.console(err,2);
-            this.loading1=false;
-            this.$tool.error("加载超时")
-          })
+        if(this.contacts.user_id==0) {
+          this.projectLists=[];
+        }else{
+          this.$http.post(this.URL.getProjectList, this.getPra)
+            .then(res => {
+              let data = res.data.data;
+              this.projectListsAll = this.setProjectList(data);
+              this.projectListsSmall = this.setProjectList(data).slice(0, 2);
+              if (this.listShow) this.projectLists = this.projectListsAll.slice(0);
+              else this.projectLists = this.projectListsSmall.slice(0)
+
+              this.totalData = res.data.count;
+            })
+            .catch(err => {
+              this.$tool.console(err, 2);
+              this.$tool.error("加载超时");
+            })
+          this.loading1 = false;
+        }
       },//获取项目列表
       /*以下都是辅助函数*/
       set_industry(arr){
@@ -370,68 +376,55 @@
             data.user_resource_find = this.set_GiveFind(data.user_resource_find);
             data.user_resource_give = this.set_GiveFind(data.user_resource_give);
             data.project_case = this.setProjectCase(data.project_case);
+            if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
+              this.user_invest=false;//投资需求
+            }else{
+              this.user_invest=true;//投资需求
+            }
+            if(data.user_resource_give=='' && data.user_resource_find=='' && data.user_resource_desc==''){
+              this.user_resource=false;//资源需求
+            }else{
+              this.user_resource=true;//投资需求
+            }
             this.tagsValue = this.setTag(data.user_invest_tag);
             this.tags.changecont = this.setTag(data.user_invest_tag);
             this.contacts = data;
-            this.loading = false;
           })
           .catch(err=>{
             this.$tool.console(err,2);
-            this.loading=false;
             this.$tool.error("加载超时");
           })
+        this.loading = false;
       },//获取个人详情
 
-      getWxProjectCategory(){
-        this.addTags = this.$global.data.tags_user;//设置人脉标签
-        this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
-      },//获取所有下拉框的数据
-      addChangeTag(e){
-        let tagName = this.$tool.checkArr(e, this.addTags);
-        if (tagName != undefined) {
-          this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
-            .then(res => {
-              let newState = {};
-              newState.label = tagName;
-              newState.value = res.data.tag_id;
-              this.tags.changecont.push(newState);
-            })
-            .catch(err => {
-              this.$tool.error("添加失败");
-              this.$tool.console(err);
-            })
-        }
-      },//添加项目标签
-      addTag(){
-        this.loading=true;
-        this.$tool.setTag(this.tagsValue,this.tags.changecont);
-        this.$http.post(this.URL.setConnectTag, {user_id:localStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
-          .then(res => {
-            this.loading=false;
-            this.$tool.success("设置成功");
-            this.dialogVisibleTag = false;
-            this.getOneUserInfo();
-          })
-          .catch(err => {
-            this.loading=false;
-            this.$tool.error("添加失败");
-            this.$tool.console(err);
-            this.dialogVisibleTag = false;
-
-          })
-      },//保存标签选择
     },
     created(){
-/*      this.getUserId();
-      this.getProjectList(1);
-      this.getOneUserInfo();
-      this.getWxProjectCategory();*/
+
+//      this.getProjectList(1);
+//      this.getOneUserInfo();
     },
     watch : {
-      proid : function(e){
+      cardid : function(e){
         this.pro_id=e;
-
       },//获取项目id
+      dialogConVisible : function (e){
+        for(let key in this.contacts){
+          if(this.$tool.isArray(this.contacts[key])){
+            this.contacts[key]=[];
+          }else{
+            this.contacts[key]='';
+          }
+        }
+        if(this.in){
+          this.contacts.card_id=this.cardid || '';
+          this.contacts.user_id=this.userid || '';
+          setTimeout(()=>{
+            this.getOneUserInfo();
+            this.getProjectList(1);
+          },200)
+        }
+        this.in=!this.in;
+      }
     }
   }
 </script>
