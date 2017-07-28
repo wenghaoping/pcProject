@@ -4,8 +4,10 @@
     <!--===========================================项目推送预览弹框=============================================-->
     <el-dialog :visible="dialogPreviewVisible" :show-close="close"  custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <div class="top_pro">
-        <p>默认邮件标题 = 来自千月资本（推荐人的公司名）的项目推荐-国内首家基因靶向肿瘤治疗项目（推送项目名称）</p>
-        <p>默认邮件正文 = 尊敬的XXX（被推送人姓名），下面是来自千月资本（推荐人的公司名）合伙人（推荐人的职位）张三丰（推荐人的姓名）的项目推荐。你可以注册/登录微天使工作站找到更多精选FA项目资源。</p>
+        <p v-if="email.title==''">邮件标题 : 来自{{user.firse_user_real_name}}的项目推荐-{{project_intro}}</p>
+        <p v-else>邮件标题 : {{email.title}}</p>
+        <p v-if="email.body==''">邮件正文 : 尊敬的{{user.user_real_name}}，下面是来自{{user.firse_user_company_name}}-{{user.firse_user_company_career}}-{{user.firse_user_real_name}}的项目推荐。你可以注册/登录微天使工作站找到更多精选FA项目资源。</p>
+        <p v-else>邮件正文 : {{email.body}}</p>
       </div>
       <div class="contain-grid contain-center1 fl">
         <div class="main-box clearfix">
@@ -26,15 +28,15 @@
                 <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               </div>
               <div class="item progress height" style="margin-top:18px;padding-top: 8px;">
-                <div class="txt begin" style="margin-left: 8px;">项目线索</div>
+                <div class="txt begin" style="margin-left: 8px;" :style="styleObject">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
                   <span class="bar-bg1">&nbsp;</span>
-                  <span  class="txt state" style="left:80px;">约谈</span>
-                  <span  class="txt state" style="left:184px;">签署FA协议</span>
-                  <span  class="txt state" style="left:310px;">引荐投资方</span>
-                  <span  class="txt state" style="left:450px;">交割</span>
-                  <span  class="txt state" style="left:550px;">待收佣金</span>
+                  <span  class="txt state" style="left:80px;"  v-if="project.pro_schedule.schedule_id==2">约谈</span>
+                  <span  class="txt state" style="left:184px;" v-if="project.pro_schedule.schedule_id==4">签署FA协议</span>
+                  <span  class="txt state" style="left:310px;" v-if="project.pro_schedule.schedule_id==5">引荐投资方</span>
+                  <span  class="txt state" style="left:450px;" v-if="project.pro_schedule.schedule_id==7">交割</span>
+                  <span  class="txt state" style="left:550px;" v-if="project.pro_schedule.schedule_id==8">待收佣金</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
                 <div class="txt end">佣金收讫</div>
@@ -231,8 +233,8 @@
 
             <div class="ul-lists list tc" >
               <div class="toButton" style="padding-left: 0">
-                <button  @click="" class="btn1">返回</button>
-                <button  @click="" class="btn1">推送</button>
+                <button  @click="handleClose" class="btn1">返回</button>
+                <button  @click="pushProject" class="btn1">推送</button>
               </div>
             </div>
           </div>
@@ -251,6 +253,9 @@ export default {
       close:false,//默认关闭
       loading:false,//加载动画
       show: "detail",
+      styleObject: {
+        color: '',
+      },
       project: {
         project_id: "",//项目id59W2a0GE
         pro_name: "HoopEASY商业计划PPT+for+pitch",//项目名称HoopEASY商业计划PPT+for+pitch
@@ -439,15 +444,115 @@ export default {
         user_real_name:'顾家',
         user_company_career:'投资尽力',
         user_company_name:'杭州投着乐网络科技有限公司',
+        firse_user_real_name:'顾家',//当前用户
+        firse_user_company_career:'投资尽力',
+        firse_user_company_name:'杭州投着乐网络科技有限公司',
+
       },
+      pushMessage:{},//推送用的数据
+      project_id:'',
+      project_intro:'',
+      email:{
+
+      }
     }
   },
   methods: {
     handleClose(){
       this.$emit('changeCon', false)
     },
-  },
+    getFirstUser(){
+      this.$http.post(this.URL.getOneUserInfo,{user_id: localStorage.user_id})
+        .then(res=>{
+          if(res.data.status_code==2000000) {
+            let data = res.data.data;
+            this.user.firse_user_real_name=data.user_real_name;
+            this.user.firse_user_company_career=data.user_company_career;
+            this.user.firse_user_company_name=data.user_company_name;
 
+          }
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.$tool.error("加载超时");
+        })
+    },//获取当前用户部分信息
+    getLocalTime(data) {
+      for(let i=0; i<data.length; i++){
+        data[i].dh_start_time=new Date(parseInt(data[i].dh_start_time) * 1000).toLocaleString().substr(0, 9)
+      }
+    },//设置时间1
+    getLocalTime2(data) {
+      for(let i=0; i<data.length; i++){
+        data[i].finance_time=new Date(parseInt(data[i].finance_time) * 1000).toLocaleString().substr(0, 9)
+      }
+    },//设置时间2
+    getProjectTag(arr){
+      let str=""
+      for(let i=0;i<arr.length;i++){
+        if(arr[i].type==2){
+          str+=arr[i].tag_name+'.'
+        }
+      }
+      return str
+    },//项目来源编辑
+    getProjectDetail () {
+      this.loading=true;
+      this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project_id})
+        .then(res=>{
+          let data = res.data.data;
+          /*            for(let key in data){
+           if(data[key]=="") data[key]="-"
+           }
+           for(let i=0; i<data.core_users.length; i++){
+           if(data.core_users[i].stock_scale==null){
+           data.core_users[i].stock_scale="－"
+           }
+           }*/
+          if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
+          if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
+          if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-";this.styleObject={color:"#20a0ff"}}
+          if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
+          this.getLocalTime(data.pro_develop);
+          this.getLocalTime2(data.pro_history_finance);
+          this.project=data;
+          this.project.follow_up=data.follow_up.follow_desc;
+          this.project.pro_source=this.getProjectTag(data.tag);
+          this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
+          this.loading=false;
+        })
+        .catch(err=>{
+          this.loading=false;
+          this.$tool.console(err,2)
+        })
+    },//获取项目详情数据
+    pushProject(){
+      this.$http.post(this.URL.pushUser, this.pushMessage)
+        .then(res => {
+          let data=res.data.data;
+          this.$tool.success("推送成功");
+          this.$emit('changeCloseProjectpush',false);
+          this.$emit('changeCon', false);
+        })
+        .catch(err => {
+          this.$tool.console(err);
+          this.$tool.success("推送失败");
+        })
+    },//推送项目
+  },
+  watch:{
+    dialogPreviewVisible:function(e){
+      if(e){
+        this.project_id=this.$store.state.pushProject.project_id;
+        this.user=this.$store.state.pushProject.user;
+        this.pushMessage=this.$store.state.pushProject.pushMessage;
+        this.project_intro=this.$store.state.pushProject.pro_intro;
+        this.email=this.$store.state.pushProject.email;
+        this.getFirstUser();
+        this.getProjectDetail();
+      }
+    }
+  }
 }
 </script>
 

@@ -272,7 +272,7 @@
     </el-dialog>
 
     <!--项目推送弹窗-->
-    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeClose="dialogVisiblechangeCloase"></projectpush>
+    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
     <!--项目预览弹窗-->
     <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"></projectpreview>
@@ -409,9 +409,9 @@ export default {
       this.$router.push({name: 'createContacts',query: {card_id: 'creat'}})//路由传参
     },//添加人脉
     dialogVisiblechange(msg){
-      this.dialogPushVisible=msg;
+//      this.dialogPushVisible=msg;
       this.dialogPreviewVisible=true;
-    },
+    },//关闭推送弹框,打开预览弹框
     dialogVisiblechangeCloase(msg){
       this.dialogPushVisible=msg;
     },//关闭项目推送弹窗
