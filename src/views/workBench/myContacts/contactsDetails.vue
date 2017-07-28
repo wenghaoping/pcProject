@@ -220,6 +220,7 @@
                   <el-pagination
                     class="pagination fr"
                     small
+                    v-if="totalData2!=0"
                     @current-change="filterChangeCurrent1"
                     :current-page.sync="currentPage2"
                     layout="prev, pager, next"
@@ -316,11 +317,14 @@
     <!--项目详情弹窗-->
     <alertprojectdetail :dialog-pro-visible="dialogVisiblePro" v-on:changeall="dialogVisiblechangeIn" :proid="pro_id"></alertprojectdetail>
 
-    <!--项目推送弹窗-->
-    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange"></projectpush>
-
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow" :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
+
+    <!--项目推送弹窗-->
+    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
+
+    <!--项目预览弹窗-->
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"></projectpreview>
   </div>
 </template>
 
@@ -328,14 +332,17 @@
 import alertprojectdetail from './alertProjectDetail.vue'
 import projectpush from './projectPush.vue'
 import addfollow from './../followUp/addFollow.vue'
+import projectpreview from './projectPreview.vue'
 export default {
   data () {
     return {
       close:false,
-
       /*设置标签*/
       dialogVisibleTag:false,//标签弹框设置
       dialogFollow:false,//添加更近弹框
+      dialogPreviewVisible:false,//项目预览弹窗
+      dialogPushVisible:false,//项目推送弹框设置
+      dialogVisiblePro:false,//控制项目详情弹窗
       tagsValue:[],//标签弹框数据绑定
       addTags:[{
         value: '',
@@ -389,9 +396,7 @@ export default {
         user_company_career:'投资总监',//职位
         user_company_name:'杭州投着乐网络科技有限公司',//公司名称
       },//传递给推送的数据
-      dialogPushVisible:false,//项目推送弹框设置
       userEmail:'',
-      dialogVisiblePro:false,//控制项目详情弹窗
       loading:false,//加载动画
       loading1:false,//加载动画2
       listShow:false,//项目库
@@ -411,7 +416,7 @@ export default {
       }*/],//项目跟进进度搜索用,多一个全部
       searchSchedule:0,//意向项目的筛选进度
       tabs:true,//标签切换
-      pro_id:'123',//项目详情
+      pro_id:'',//项目详情
       getPra:{},//获取项目的请求参数
       getConpro:{},//获取意向项目的请求参数
       projectLists:[
@@ -480,12 +485,17 @@ export default {
       this.userMessage.user_real_name=this.contacts.user_real_name;
       this.userMessage.user_company_career=this.contacts.user_company_career;
       this.userMessage.user_company_name=this.contacts.user_company_name;
+      this.userMessage.card_id=this.contacts.card_id;
       this.userEmail=this.contacts.user_email;
       this.dialogPushVisible=true;
     },//点击推送,并且传送数据给推送弹框
     dialogVisiblechange(msg){
+//      this.dialogPushVisible=msg;
+      this.dialogPreviewVisible=true;
+    },//关闭推送弹框,打开预览弹框
+    dialogVisiblechangeCloase(msg){
       this.dialogPushVisible=msg;
-    },//关闭项目推送弹框
+    },//关闭项目推送弹窗
     filterChangeCurrent(page){
       this.getProjectList(page);
     },//控制项目页码1
@@ -529,8 +539,12 @@ export default {
     },//关闭添加意向项目
     dialogVisiblechangeIn(msg){
       this.dialogVisiblePro=msg;
+//      this.dialogPreviewVisible=true;
     },//项目详情弹窗关闭函数
-
+    dialogPrechange(msg){
+//      this.dialogPushVisible=true;
+      this.dialogPreviewVisible=msg;
+    },
     setProjectList(data){
       let arr = new Array;
       for(let i=0; i<data.length; i++){
@@ -958,7 +972,8 @@ export default {
   components: {
     alertprojectdetail,
     projectpush,
-    addfollow
+    addfollow,
+    projectpreview
   },
 }
 </script>

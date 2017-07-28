@@ -1,11 +1,11 @@
 <template>
   <!--项目推送人脉入口-->
-  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中">
+  <div id="projectPush">
     <el-dialog :visible="dialogPush" :before-close="handleClose">
       <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
         <div class="title fl">项目推送</div>
-        <div class="lost fl">今日剩余推送<i>5</i>次</div>
+        <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
         <div class="img fl"><img src="../../../assets/images/why.png"></div>
       </span>
 
@@ -29,9 +29,10 @@
 
       <el-form label-position="top" label-width="80px">
         <el-form-item label="推送项目">
-          <el-select v-model="projectList" multiple filterable=""
-                     remote multiple placeholder="请输入项目关键词(2个字以上)"
-                     :remote-method="remoteMethod" popper-class="popper">
+          <el-select v-model="projectList" filterable
+                     remote placeholder="请输入项目关键词"
+                     multiple @remove-tag="removeTag"
+                     :remote-method="remoteMethod"  popper-class="popper">
             <el-option v-for="item in projectAll" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -42,8 +43,10 @@
           <el-tab-pane label="我的项目" name="first"></el-tab-pane>
         </el-tabs>
       </div>
-      <div class="top-lists" style="background: #f3f4f8;cursor: pointer;margin-bottom: 29px;">
+      <div class="top-lists" style="background: #f3f4f8;cursor: pointer;margin-bottom: 29px;" >
         <el-table
+          v-loading="loading"
+          element-loading-text="拼命加载中"
           ref="multipleTable"
           :data="tableData3"
           tooltip-effect="dark"
@@ -84,13 +87,14 @@
       </div>
       <el-form label-position="top" label-width="80px" ref="email" :model="email">
         <el-form-item label="标题" prop="title"
-                      :rules="titleRule">
+        :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
           <el-input v-model="email.title" placeholder="请输入邮件标题"></el-input>
         </el-form-item>
         <el-form-item label="正文"
-                      prop="main">
+                      prop="body"
+                      :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
           <el-input type="textarea"
-                    v-model="email.main"
+                    v-model="email.body"
                     placeholder="请输入邮件正文"
                     :autosize="{ minRows: 4, maxRows: 7}"></el-input>
         </el-form-item>
@@ -102,134 +106,199 @@
       </span>
     </el-dialog>
 
-
-<!--项目预览弹窗-->
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 
 export default {
-  props: ["dialogPush","userMessage","userEmail"],
+  props: ["dialogPush", "userMessage", "userEmail"],
   data () {
-  var checkEmail = (rule, value, callback) => {
-    if (this.$tool.getNull(value)) {
-      return callback(new Error('邮箱不能为空'));
-    }
-    setTimeout(() => {
-      if(!this.$tool.checkEmail(value)){
-        callback(new Error('请输入正确的邮箱'));
-      }else{
+    var checkEmail = (rule, value, callback) => {
+      if (this.$tool.getNull(value)) {
+        return callback(new Error('邮箱不能为空'));
+      }
+      setTimeout(() => {
+        if (!this.$tool.checkEmail(value)) {
+          callback(new Error('请输入正确的邮箱'));
+        } else {
+          callback();
+        }
+      }, 300);
+
+
+    };//邮箱判断
+    var checkTitle = (rule, value, callback) => {
+      if (this.$tool.getNull(value)) {
+        return callback(new Error('不能为空'));
+      } else {
         callback();
       }
-    }, 300);
+    };//不为空判断
 
-
-  };//邮箱判断
-  var checkTitle = (rule, value, callback) => {
-    if (this.$tool.getNull(value)) {
-      return callback(new Error('不能为空'));
-    }else{
-      callback();
-    }
-  };//不为空判断
-
-  return {
-      emailRule: { validator: checkEmail, trigger: 'blur' },
-      titleRule: { validator: checkTitle, trigger: 'blur' },
-      close:false,//默认关闭
+    return {
+      emailRule: {validator: checkEmail, trigger: 'blur'},
+      titleRule: {validator: checkTitle, trigger: 'blur'},
+      close: false,//默认关闭
       loading: false,//加载动画
-      activeName:'first',
+      activeName: 'first',
 //      dialogPush:false,//控制显不显示
 
-      email:{
-        title:'有人给您推荐一个项目,赶紧看看吧',//邮件标题
-        main:'',//邮件正文
+      email: {
+        title: '',//邮件标题
+        body: '',//邮件正文
       },
-      email2:{
-        nameEmail:'',//人脉的邮箱(一个)
+      email2: {
+        nameEmail: '',//人脉的邮箱(一个)
       },
-      user:{
-        user_real_name:'',
-        user_company_career:'',
-        user_company_name:'',
-        card_id:""
+      user: {
+        user_real_name: '',
+        user_company_career: '',
+        user_company_name: '',
+        card_id: ""
       },
 
-
-      projectList:[],//推送的项目列表
-      projectAll:[],//项目列表下拉框基本是不用的
-
+      projectList: [],//推送的项目列表
+      projectAll: [],//项目列表下拉框基本是不用的
 
       tableData3: [
-/*          {
+        /*          {
         pro_intro: '项目的一句话介绍，字数可能会有点长，但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那',
         match_weight : '100',
         project_id:1
       }*/
       ],
-      projectRadio:'',
+      projectRadio:'',//绑定当前项目数据,单选框的数据(project_id)
+      firstInData:{
+        user:{},
+        email2:{},
+        email:{}
+      },//保存数据
+      pushCount:0,//剩余推送次数
     }
   },
   methods: {
     preview(){
-
-      this.$emit('changeall',false);
+      if(this.pushCount!=0) {
+        if (this.projectRadio == '') this.$tool.error("请选择要推送的项目")
+        else if (!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
+        else {
+          this.$store.state.pushProject.project_id = this.projectRadio;
+          this.$store.state.pushProject.user = this.user;
+          this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
+          this.$store.state.pushProject.pushMessage.card_id = this.user.card_id;
+          this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
+          this.$store.state.pushProject.pushMessage.title = this.email.title;
+          this.$store.state.pushProject.pushMessage.body = this.email.body;
+          this.$store.state.pushProject.pushMessage.project_ids = new Array;
+          this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
+          this.$store.state.pushProject.email.title = this.email.title;
+          this.$store.state.pushProject.email.body = this.email.body;
+          this.$emit('changeall', false);
+        }
+      }else{
+        this.$tool.warning("您今日的推送次数已用完")
+      }
     },//推送预览
     push(type){
-//      this.$emit('changeall',false);
-      let check1 = this.submitForm('email');
-      let check2 = this.submitForm('email2');
-      if(this.projectRadio=='') this.$tool.error("请选择要推送的项目")
-        else if(!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
-      else if(type==1){//关闭
-        if(check1 && check2) this.$emit('changeall',false)
 
-/*        this.$http.post(this.URL.getCrawlerBrand, {
-          user_id: localStorage.user_id,
-        })
-          .then(res => {
-            let data=res.data.data;
-            this.$tool.console(res);
- this.$emit('changeall',false);
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })*/
-      }else if(type==2){//继续
-          if(check1 && check2) this.$emit('changeall',false)
-/*        this.$http.post(this.URL.getCrawlerBrand, {
-          user_id: localStorage.user_id,
-        })
-          .then(res => {
-            let data=res.data.data;
-            this.$tool.console(res);
-            this.$emit('changeall',false);
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })*/
+      if(this.pushCount!=0){
+        this.firstInData.email=this.email;
+        let check1 = this.submitForm('email');
+        let check2 = this.submitForm('email2');
+        if(this.projectRadio=='') this.$tool.error("请选择要推送的项目")
+        else if(!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
+        else if(type ==1){ //关闭
+          if(check1 && check2) {
+            let pushData=new Object;
+            pushData.user_id= localStorage.user_id;
+            pushData.card_id=this.user.card_id;
+            pushData.email=this.email2.nameEmail;
+            pushData.title=this.email.title;
+            pushData.body=this.email.body;
+            pushData.project_ids=new Array;
+            pushData.project_ids.push(this.projectRadio);
+            this.$http.post(this.URL.pushUser, pushData)
+              .then(res => {
+                let data=res.data.data;
+//              this.$tool.console(res);
+//              this.$emit('changeall',false);
+                this.$tool.success("推送成功");
+                this.$emit('changeCloseProjectpush',false);
+                this.getpushCount();
+              })
+              .catch(err => {
+                this.$tool.console(err);
+                this.$tool.success("推送失败");
+              })
+          }
+        }else if(type==2){ //继续
+          let pushData=new Object;
+          pushData.user_id= localStorage.user_id;
+          pushData.card_id=this.user.card_id;
+          pushData.email=this.email2.nameEmail;
+          pushData.title=this.email.title;
+          pushData.body=this.email.body;
+          pushData.project_ids=new Array;
+          pushData.project_ids.push(this.projectRadio);
+          this.$http.post(this.URL.pushUser, pushData)
+            .then(res => {
+              let data=res.data.data;
+//            this.$tool.console(res);
+              this.user={};
+              this.email2.nameEmai="";
+              this.projectList=[];
+              this.tableData3 =[];
+              this.email=this.firstInData.email;
+              this.user=this.firstInData.user;
+              this.email2=this.firstInData.email2;
+              this.$tool.success("推送成功");
+              this.remoteMethod("");
+              this.getpushCount();
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.$tool.success("推送失败");
+            })
+        }
+      }else{
+          this.$tool.warning("您今日的推送次数已用完")
       }
     },//推送按钮1推送1次,2继续推送
     remoteMethod(query) {
-      if (query !== '') {
-          if(query.length>2){
-            this.$http.post(this.URL.matchProject,{user_id:localStorage.user_id,card_id:this.user.card_id,pro_intro:query})
-              .then(res=>{
-                let data = res.data.data;
-                this.$tool.console(data.projects);
-                this.tableData3=data.projects;
-              })
-              .catch(err=>{
 
-                this.$tool.console(err,2)
-              })
-          }
-      } else {
-        this.projectAll = [];
-      }
+      if(query=="") this.projectRadio="";
+      this.loading=true;
+      this.$http.post(this.URL.matchProject,{
+        user_id: localStorage.user_id,
+        card_id: this.user.card_id,
+        pro_intro: query})
+        .then(res=>{
+          let data = res.data.data;
+//          this.$tool.console(data.projects);
+          this.tableData3=data.projects;
+          this.projectAll=this.setProjectAll(data.projects);
+          this.loading=false;
+        })
+        .catch(err =>{
+          this.$tool.console(err,2);
+          this.loading=false;
+        })
     },//项目搜索
+    removeTag(e){
+//      console.log(e);
+      this.projectRadio='';
+    },//删除标签
+    setProjectAll(data){
+      let arr = [];
+      data.forEach((x)=>{
+        let obj = {};
+        obj.label = x.pro_intro;
+        obj.value = x.project_id;
+        arr.push(obj);
+      });
+      return arr
+    },//设置项目下拉框,虽然没什么卵用
     tableRowClassName(row, index) {
       if (index%2 === 1) {
         return 'info-row';
@@ -237,14 +306,18 @@ export default {
       return '';
     },//控制列表颜色
     getIntroduce(id){
+      if(id!=""){
         this.projectList=[];
+        this.projectList.push(id);
         let arr = this.tableData3;
         for(let i=0; i<arr.length; i++){
-           if(arr[i].project_id==id){
-               this.projectList.push(arr[i].pro_intro);
-           }
+          if(arr[i].project_id==id){
+            this.$store.state.pushProject.pro_intro=arr[i].pro_intro;
+
+          }
         }
-    },
+      }
+    },//获取项目详情
     submitForm(formName) {
       let check = true;
       this.$refs[formName].validate((valid) => {
@@ -257,8 +330,21 @@ export default {
       return check;
     },
     handleClose(){
-      this.$emit('changeClose',false);
+      this.$emit('changeCloseProjectpush',false);
     },
+    getpushCount(){
+      this.$http.post(this.URL.pushCount,{
+        user_id: localStorage.user_id})
+        .then(res=>{
+          let data = res.data.data;
+          this.pushCount=data.push_count.remain_times;
+//          this.$tool.console(data.push_count);
+        })
+        .catch(err =>{
+          this.$tool.console(err,2);
+          this.loading=false;
+        })
+    },//获取剩余推送次数
 
   },
   mounted() {
@@ -268,17 +354,28 @@ export default {
     projectRadio : function(e){
       this.getIntroduce(e);
     },
-    dialogPush : function () {
-      this.user={};
-      this.email2.nameEmai="";
-      this.projectList=[];
-      this.tableData3=[];
-      this.user=this.userMessage;
-      this.email2.nameEmail=this.userEmail;
+    dialogPush : function (e) {
+        if(e){
+          this.user={};
+          this.email2.nameEmai="";
+          this.projectList=[];
+          this.tableData3 =[];
+          this.user =this.userMessage || this.$store.state.pushProject.user;
+          this.email2.nameEmail =this.userEmail;
+          this.firstInData.user =this.userMessage;
+          this.firstInData.email2.nameEmail =this.userEmail;
+          /*      this.email.title=this.$store.state.pushProject.email.title || '';
+           this.email.body=this.$store.state.pushProject.email.body || '';
+           this.projectRadio=this.$store.state.pushProject.project_id || '';*/
+          this.remoteMethod("");
+        }
+        this.getpushCount();
     },
 
   },
+  created(){
 
+  }
 }
 </script>
 

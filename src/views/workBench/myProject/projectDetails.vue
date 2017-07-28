@@ -352,6 +352,7 @@
                   <el-pagination
                     class="pagination fr"
                     small
+                    v-if="totalData!=0"
                     @current-change="filterChangeCurrent"
                     :current-page.sync="currentPage"
                     layout="prev, pager, next"
@@ -406,7 +407,16 @@
 
                         <div class="img"><img src="../../../assets/images/header3.png"></div>
                       </div>
-
+                      <el-pagination
+                        class="pagination fr"
+                        small
+                        v-if="totalInvestors!=0"
+                        @current-change="filterChangeInvestors"
+                        :current-page.sync="currentPageInvestors"
+                        layout="prev, pager, next"
+                        :page-size="5"
+                        :total="totalInvestors">
+                      </el-pagination>
                     </div>
                   </div>
                 </div>
@@ -675,8 +685,11 @@
         status_name:'',//一键尽调边上那个按钮线里的字
         activeName:'1',
         tabs:true,//标签切换
-        currentPage:1,//当前第几页
-        totalData:0,//总数
+        currentPage:1,//当前第几页(意向投资人)
+        totalData:0,//总数(意向投资人)
+        currentPageInvestors:1,//当前第几页(买家图谱)
+        totalInvestors:0,//总数(买家图谱)
+
         schedule:[],//项目进度
         follow_schedule: [/*{
          value: 1,
@@ -710,11 +723,18 @@
             user_group:"投资机构",
             width:40
           }*/
-        ],
+        ],//意向投资人数据
         scheduleIndex:-1,//设置跟进状态的位置(单独需要)
         takechange:false,//这个我就是随便用用
         chart:"",
         chartCheck:true,
+
+        getInvestors:{},//获取买家图谱请求参数
+        ProjectMatchInvestors:[
+          {
+
+          }
+        ],//买家图谱数据
       }
     },
     computed:{
@@ -1106,7 +1126,7 @@
       },//图表
       getIndex(index){
         this.scheduleIndex=index;
-      },
+      },//获取意向投资人索引
       selectChange(e){
         let width = 0;
         switch (e){
@@ -1195,6 +1215,79 @@
           })
 
       },//筛选意向项目
+
+      setProjectMatchInvestors(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          let obj = new Object;
+          obj.follow_id=x.follow_id;
+          obj.user_id=x.card.user_id;
+          obj.card_id=x.card.card_id;
+          obj.user_real_name=x.card.user_real_name;
+          obj.is_add=x.card.is_add;
+          obj.is_bind=x.card.is_bind;
+          obj.schedule_id=x.schedule.schedule_id;
+          obj.user_invest_industry=this.set_industry(x.card.user_invest_industry);
+          obj.user_invest_stage=this.set_stage(x.card.user_invest_stage);
+          obj.type=x.type;
+          obj.user_avatar_url=x.card.user_avatar_url;
+          obj.user_company_career=x.card.user_company_career;
+          obj.user_company_name=x.card.user_company_name;
+          obj.match=x.match;
+          obj.user_group=this.set_user_group(x.card.user_group);
+          obj.width=this.selectChange(x.schedule.schedule_id);
+          obj.source=x.source;
+          newArr.push(obj);
+        });
+        return newArr;
+      },//设置买家图谱列表
+      /*买家图谱*/
+      getProjectMatchInvestors(){
+        this.loading=true;
+        this.getInvestors.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+        this.currentPageInvestors=1;
+        this.getInvestors.project_id=this.project.project_id;
+        this.getInvestors.page=1;
+        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+          .then(res=>{
+            if(res.data.status_code==2000000) {
+              let data = res.data.data;
+              console.log(data);
+//              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.totalInvestors = res.data.count;
+            }
+            this.loading = false;
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.loading=false;
+            this.$tool.error("加载超时");
+          })
+      },//买家图谱列表
+      filterChangeInvestors(page){
+        this.loading=true;
+        this.getInvestors.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+        this.currentPageInvestors=page;
+        this.getInvestors.project_id=this.project.project_id;
+        this.getInvestors.page=page;
+        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+          .then(res=>{
+            if(res.data.status_code==2000000) {
+              let data = res.data.data;
+//              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.totalInvestors = res.data.count;
+            }
+            this.loading = false;
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.loading=false;
+            this.$tool.error("加载超时");
+          })
+      },//控制买家图谱页码
+
     },
     created () {
       // 组件创建完后获取数据，
@@ -1205,6 +1298,7 @@
       setTimeout(()=>{
         this.getProjectDetail();
         this.getEnjoyedInvestors();
+        this.getProjectMatchInvestors();
       },500)
     }
 
