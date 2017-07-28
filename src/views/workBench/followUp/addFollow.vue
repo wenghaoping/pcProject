@@ -1,7 +1,7 @@
 <template>
   <div id="addFollow" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================添加或编辑跟进记录弹窗=============================================-->
-    <el-dialog :visible="dialogFollow" custom-class="dialogFollow" :before-close="handleClose(1)" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="dialogFollow" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <div class="addTitle">
         <span> | </span>添加跟进
       </div>
@@ -96,7 +96,7 @@
           <span class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
         </div>
         <div slot="footer" class="dialog-footer fr" style="margin: 32px 0">
-          <el-button @click="handleClose">继续添加</el-button>
+          <el-button @click="saveSecond">继续添加</el-button>
           <el-button type="primary" @click="allSave">提 交</el-button>
         </div>
       </div>
@@ -188,12 +188,12 @@
     },
     methods: {
       handleClose(e){
-        if(e==1) this.$emit("changeClose",false);
-        else{
-          this.allSave();//添加
-          this.follow=this.saveJumpData;
-        }
-      },
+        this.$emit("changeClose",false);
+      },//关闭
+      saveSecond(){
+        this.allSave();//添加
+        this.follow=this.saveJumpData;
+      },//继续添加
 
       handleSelectProject(item){
         this.follow.project_id = item.label;
@@ -330,7 +330,7 @@
         this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id,follow_id:this.follow_id})
           .then(res => {
             let data = res.data.data;
-            data.schedule_id=data.schedule_id.toString();
+            data.schedule_id=data.schedule_id;
             data.file_id=[];
             data.type='card';
             this.follow=data;
@@ -536,9 +536,11 @@
           cancelButtonText: cancel,
           type: 'success'
         }).then(() => {
-          this.$router.push({ name: 'projectDetails', query: { project_id:this.follow.project_id,activename:'2'}})
+          this.$router.push({ name: 'projectDetails', query: { project_id:this.follow.project_id,show:'flow'}});
+          this.$emit("changeClose",false);
         }).catch(() => {
           this.$message({
+            showClose:false,
             type: 'success',
             message: '继续编辑'
           });
@@ -550,6 +552,7 @@
     created(){
       this.getScheduleName();
       this.setFileType();
+
     },
     watch : {
       followid : function(e){

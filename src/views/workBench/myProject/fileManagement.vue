@@ -119,7 +119,7 @@
         this.$http.post(this.URL.getFileType, {
           user_id: localStorage.user_id
         }).then(res => {
-          console.log('fisrt-groupList',res.data.data)
+//          console.log('fisrt-groupList',res.data.data)
           var groupList = res.data.data;
           //获取分组列表内部文件数据
           this.$http.post(this.URL.getProjectFiles, {
@@ -145,7 +145,7 @@
               }
             })
             this.groupList=groupList;
-            console.log('groupList',this.groupList)
+//            console.log('groupList',this.groupList)
           })
         })
       },
