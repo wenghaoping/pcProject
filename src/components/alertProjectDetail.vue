@@ -18,15 +18,17 @@
             <span class="big-tag">{{project.pro_finance_stock_after}}%</span><span class="split">｜</span>
             <span class="big-tag">{{project.pro_stage.stage_name}}</span>
           </div>
-          <div class="item height">
+          <div class="item height" style="background:#f9fafc;margin-top:18px">
             <span class="projectProcess">
               <div class="item progress height">
                 <div class="txt begin">项目线索</div>
                 <div class="progress-bar">
-                  <span class="circle circle-s"></span>
-                  <span class="bar-bg1">&nbsp;</span>
-                  <span  class="txt state">{{status_name}}</span>
-                  <span class="circle circle-e">&nbsp;</span>
+                  <div class="circle circle-s"></div>
+                  <div class="line1"></div>
+                  <div class="txt1">签约</div>
+                  <div class="line2"></div>
+                  <div  class="txt state">{{status_name}}</div>
+                  <div class="circle circle-e">&nbsp;</div>
                 </div>
                 <div class="txt end">佣金收讫</div>
              </div>
@@ -43,9 +45,9 @@
       <!--弹窗下半部分-->
       <div class="down-floor">
         <!--项目资料-->
-        <div class="ul-lists">
+        <div class="ul-lists" style="background:#f9fafc;padding:20px;">
           <div class="item">
-            <span class="title"><img class="img" src="../assets/images/projectIntroduce.png">项目介绍</span>
+            <span class="title"><img class="img" src="../assets/images/projectIntroduce.png">项目资料</span>
             <div class="person-info" v-if="project.contact.user_name!=''">
               <span>联系人 : </span>
               <span>{{project.contact.user_name}}</span>
@@ -55,13 +57,13 @@
           <div class="item" style="margin-top:33px;">
             <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
           </div>
-          <div class="item" style="margin-top:24px;">
-            <div class="paper" v-if="project.pro_BP.length!=0">
+          <div class="item" style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;">
+            <!--<div class="paper" v-if="project.pro_BP.length!=0">-->
               <img class="img" style="padding-left: 16px;" src="../assets/images/paper.png">
               <span class="pt">{{project.pro_BP.file_title}}</span>
-              <!--<el-button type="text" size="mini">查看</el-button>-->
+              <el-button type="text" size="mini">查看</el-button>
               <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
-            </div>
+            <!--</div>-->
           </div>
           <div class="item" style="margin-top:24px;height: 49px;">
             <div class="bot-det" v-if="project.pro_status!=''">
@@ -88,9 +90,12 @@
           </div>
         </div>
         <!--核心团队-->
-        <div class="ul-lists" style="margin-top:16px;" v-if="project.core_users!=''">
+        <div class="ul-lists" style="margin-top: 16px;background: rgb(249, 250, 252); padding: 20px;" v-if="project.core_users!=''">
           <div class="item">
             <span class="title"><img class="img" src="../assets/images/team.png">核心团队</span>
+          </div>
+          <div class="item" style="margin-top:33px;">
+            <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
           </div>
           <div class="item" style="margin-top:33px;">
             <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
@@ -106,7 +111,7 @@
 
         </div>
         <!--融资信息-->
-        <div class="ul-lists" style="margin-top:16px;">
+        <div class="ul-lists" style="margin-top:16px;background: rgb(249, 250, 252); padding: 20px;">
           <div class="item">
             <span class="title"><img class="img" src="../assets/images/money.png">融资信息</span>
             <div class="rz-details">
@@ -140,10 +145,7 @@
                               </div>-->
               <div class="v-progress-table">
                 <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
-                    <span class="radio_line">project
-                      <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
-                    </span>
+                  <span class="radio_line"><span class="radio"></span></span>
                   <span class="pro-txt-1">{{finance.finance_time}}</span>
                   <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                   <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
@@ -155,7 +157,7 @@
           </div>
         </div>
         <!--里程碑-->
-        <div class="ul-lists" style="margin-top:16px;" v-if="project.pro_develop!=''">
+        <div class="ul-lists" style="margin-top:16px;background: rgb(249, 250, 252); padding: 20px;" v-if="project.pro_develop!=''">
           <div class="item">
             <span class="title"><img class="img" src="../assets/images/Milepost.png">里程碑</span>
           </div>
@@ -191,7 +193,7 @@
 
         </div>
         <!--FA签约协议-->
-        <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
+        <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;background: rgb(249, 250, 252); padding: 20px;" v-if="project.pro_FA!=''">
           <div class="item">
             <span class="title"><img class="img" src="../assets/images/money.png">FA签约协议</span>
             <div class="rz-details" >
@@ -408,7 +410,7 @@
           }
         },
         status_name:'',//一键尽调边上那个按钮线里的字
-        }
+      }
     },
     methods: {
       //关闭弹窗
@@ -418,25 +420,25 @@
       //获取项目详情数据
       getProjectDetail () {
         this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.pro_id})
-        .then(res=>{
-          console.log('项目详情',res)
-          this.loading=false;
-          let data = res.data.data;
-          if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
-          if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-          if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-"}
-          if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-          this.getLocalTime(data.pro_develop);
-          this.getLocalTime2(data.pro_history_finance);
-          this.project=data;
-          console.log('data',data)
-          this.project.pro_source=this.getProjectTag(data.tag);
-          this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
-        })
-        .catch(err=>{
-          this.loading=false;
-          this.$tool.console(err,2)
-        })
+          .then(res=>{
+            console.log('项目详情',res)
+            this.loading=false;
+            let data = res.data.data;
+            if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
+            if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
+            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-"}
+            if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
+            this.getLocalTime(data.pro_develop);
+            this.getLocalTime2(data.pro_history_finance);
+            this.project=data;
+            console.log('data',data)
+            this.project.pro_source=this.getProjectTag(data.tag);
+            this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
+          })
+          .catch(err=>{
+            this.loading=false;
+            this.$tool.console(err,2)
+          })
       },
       //设置时间1(获取项目详情数据的辅助函数)
       getLocalTime(data) {
@@ -575,6 +577,7 @@
             color:#99a9bf;
             letter-spacing:0;
             line-height:12px;
+            position: relative;
           }
           .end{
             color:#99a9bf;
@@ -593,6 +596,27 @@
           .progress-bar{
             position: relative;
             display: inline-block;
+            .line1{
+              width: 660px;
+              height: 1px;
+              background: #c0ccda;
+              display: inline-block;
+              vertical-align: middle;
+
+            }
+            .txt1{
+              font-family:MicrosoftYaHei;
+              font-size:14px;
+              color:#20a0ff;
+              letter-spacing:0;
+              line-height:14px;
+              text-align:center;
+              position: absolute;
+              left:18%;
+              top:11px;
+              background:#f9fafc;
+              padding:0 10px;
+            }
             // margin:0 5px;
             .circle{
               position: absolute;
@@ -601,7 +625,7 @@
               border-radius:20px;
               width:8px;
               height:8px;
-              top:14px;
+              top:15px;
               z-index: 3;
             }
             .circle-s{
@@ -669,9 +693,12 @@
       }
       .person-info{
         float:right;
-        font-size:16px;
-        color:#5e6d82;
-        margin-top: 2px;
+        font-family:PingFangSC-Regular;
+        font-size:14px;
+        color:#475669;
+        line-height:16px;
+        text-align:right;
+        margin-top: 8px;
       }
       .paper{
         height:54px;
@@ -724,9 +751,12 @@
 
         }
         .sec-title{
+          font-family:MicrosoftYaHei;
           font-size:18px;
           color:#475669;
           line-height:16px;
+          text-align:left;
+          margin-left: 5px;
         }
         .small-tag{
           background:rgba(32,160,255,0.10);
@@ -868,6 +898,7 @@
           font-size:13px;
           color:#5e6d82;
           line-height:28px;
+          margin-left: 5px;
         }
         .v-progress{
           display: inline-block;
