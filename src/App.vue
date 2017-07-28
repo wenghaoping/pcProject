@@ -88,8 +88,8 @@
       },
       // 伪造user_id
       setUserId(){
-//        localStorage.user_id = 'V0VznXa0';
-        localStorage.user_id='2rzyz5vp';
+        localStorage.user_id = 'V0VznXa0';
+//        localStorage.user_id='2rzyz5vp';
 //        localStorage.user_id='2rzyJEwp';
         localStorage.user_real_name='常保龙';
       },
@@ -178,7 +178,7 @@
     background: #f3f4f8;
 
     main {
-      /*min-height: 669px;*/
+      min-height: 777px;
     }
     font-family: "Helvetica Neue", "PingFang SC", Arial, sans-serif;
     header {

@@ -30,8 +30,8 @@
       <el-form label-position="top" label-width="80px">
         <el-form-item label="推送项目">
           <el-select v-model="projectList" multiple filterable=""
-                     remote multiple placeholder="请输入项目关键词"
-                     :remote-method="remoteMethod" ><!--popper-class="block"===========================-->
+                     remote multiple placeholder="请输入项目关键词(2个字以上)"
+                     :remote-method="remoteMethod" popper-class="popper">
             <el-option v-for="item in projectAll" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -53,30 +53,30 @@
           <el-table-column
             width="64">
             <template scope="scope">
-              <el-radio class="radio" v-model="projectRadio" :label="scope.row.id"></el-radio>
+              <el-radio class="radio" v-model="projectRadio" :label="scope.row.project_id"></el-radio>
             </template>
           </el-table-column>
           <el-table-column
             label="项目介绍"
             min-width="570">
             <template scope="scope">
-              <el-tooltip placement="top" :disabled="scope.row.introduce.length > 30 ? false:true">
+              <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 30 ? false:true">
                 <div slot="content">
-                  <div class="tips-txt">{{scope.row.introduce}}</div>
+                  <div class="tips-txt">{{scope.row.pro_intro}}</div>
                 </div>
                 <div>
-                  {{scope.row.introduce}}
+                  {{scope.row.pro_intro}}
                 </div>
               </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column
-            prop="matching"
+            prop="match_weight"
             label="匹配度"
             min-width="80">
             <template scope="scope">
               <div class="origin">
-                {{scope.row.matching}}%
+                {{scope.row.match_weight}}%
               </div>
             </template>
           </el-table-column>
@@ -154,23 +154,21 @@ export default {
         user_real_name:'',
         user_company_career:'',
         user_company_name:'',
+        card_id:""
       },
 
 
       projectList:[],//推送的项目列表
       projectAll:[],//项目列表下拉框基本是不用的
 
-      list: [],
-      states: ["Alabama"],
-      tableData3: [{
-        introduce: '项目的一句话介绍，字数可能会有点长，但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那',
-        matching : '100',
-        id:1
-      }, {
-        introduce: '项目的一句话介绍，字数可能会有点长。',
-        matching: '50',
-        id:2
-      }],
+
+      tableData3: [
+/*          {
+        pro_intro: '项目的一句话介绍，字数可能会有点长，但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那',
+        match_weight : '100',
+        project_id:1
+      }*/
+      ],
       projectRadio:'',
     }
   },
@@ -216,18 +214,22 @@ export default {
     },//推送按钮1推送1次,2继续推送
     remoteMethod(query) {
       if (query !== '') {
-        this.load = true;
-        setTimeout(() => {
-          this.load = false;
-          this.projectAll = this.list.filter(item => {
-            return item.label.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1;
-          });
-        }, 200);
+          if(query.length>2){
+            this.$http.post(this.URL.matchProject,{user_id:localStorage.user_id,card_id:this.user.card_id,pro_intro:query})
+              .then(res=>{
+                let data = res.data.data;
+                this.$tool.console(data.projects);
+                this.tableData3=data.projects;
+              })
+              .catch(err=>{
+
+                this.$tool.console(err,2)
+              })
+          }
       } else {
         this.projectAll = [];
       }
-    },
+    },//项目搜索
     tableRowClassName(row, index) {
       if (index%2 === 1) {
         return 'info-row';
@@ -235,11 +237,11 @@ export default {
       return '';
     },//控制列表颜色
     getIntroduce(id){
-      this.projectList=[];
+        this.projectList=[];
         let arr = this.tableData3;
         for(let i=0; i<arr.length; i++){
-           if(arr[i].id==id){
-               this.projectList.push(arr[i].introduce);
+           if(arr[i].project_id==id){
+               this.projectList.push(arr[i].pro_intro);
            }
         }
     },
@@ -256,21 +258,22 @@ export default {
     },
     handleClose(){
       this.$emit('changeClose',false);
-    }
+    },
+
   },
   mounted() {
-    this.list = this.states.map(item => {
-      return { value: item, label: item };
-    });
+
   },
   watch : {
     projectRadio : function(e){
       this.getIntroduce(e);
     },
-    userMessage : function (e) {
+    dialogPush : function () {
+      this.user={};
+      this.email2.nameEmai="";
+      this.projectList=[];
+      this.tableData3=[];
       this.user=this.userMessage;
-    },
-    userEmail : function (e) {
       this.email2.nameEmail=this.userEmail;
     },
 
@@ -281,5 +284,7 @@ export default {
 
 <style lang="less">
   @import '../../../assets/css/mycontacts';
-
+.popper{
+display: none;
+}
 </style>

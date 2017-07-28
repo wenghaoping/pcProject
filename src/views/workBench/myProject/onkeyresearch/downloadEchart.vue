@@ -51,6 +51,8 @@ export default {
         ydataTotal:[],
         ydataAverage:[]
       },//访问时长
+      chart:"",
+      chartCheck:true,
 
     }
   },
@@ -104,7 +106,9 @@ export default {
       };
     },
     eChart(xdata,ydata1,ydata2){
-      let myChart = this.$echart.init(document.getElementById('pieBox'));
+      if(this.chartCheck){
+        this.chart = this.$echart.init(document.getElementById('pieBox'));
+      }
       let option = {
           title: {},
           color: ['#28DC41', '#009eff'],
@@ -158,7 +162,8 @@ export default {
             data: ydata1
           }]
         };
-      myChart.setOption(option);
+      this.chart.setOption(option);
+      this.chartCheck=false;
       },
     getdownload(){
       this.title="累计下载量";
@@ -208,7 +213,7 @@ export default {
 
             this.time.ydataTotal=this.getAverage(data.time_mid);
             this.time.ydataAverage=this.getTotal(data.time[0].value);
-
+            this.getdownload();
         })
         .catch(err => {
           console.log(err);
@@ -218,9 +223,12 @@ export default {
   },
   //Echart组件
   mounted(){
-    this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
+/*    setTimeout(() =>{
+      this.getdownload();
+    },100)*/
   },
   watch : {
+
     comid : function(e){
       this.download.ydataTotal=[];
       this.download.ydataAverage=[];
@@ -245,9 +253,9 @@ export default {
   },
   created(){
     this.getCrawlerProject();
-    setTimeout(() =>{
+/*    setTimeout(() =>{
       this.getdownload();
-    },500)
+    },500)*/
 
   },
 }

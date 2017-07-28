@@ -420,25 +420,23 @@
       //获取项目详情数据
       getProjectDetail () {
         this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.pro_id})
-          .then(res=>{
-            console.log('项目详情',res)
-            this.loading=false;
-            let data = res.data.data;
-            if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
-            if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-"}
-            if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-            this.getLocalTime(data.pro_develop);
-            this.getLocalTime2(data.pro_history_finance);
-            this.project=data;
-            console.log('data',data)
-            this.project.pro_source=this.getProjectTag(data.tag);
-            this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
-          })
-          .catch(err=>{
-            this.loading=false;
-            this.$tool.console(err,2)
-          })
+        .then(res=>{
+          this.loading=false;
+          let data = res.data.data;
+          if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
+          if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
+          if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-"}
+          if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
+          this.getLocalTime(data.pro_develop);
+          this.getLocalTime2(data.pro_history_finance);
+          this.project=data;
+          this.project.pro_source=this.getProjectTag(data.tag);
+          this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
+        })
+        .catch(err=>{
+          this.loading=false;
+          this.$tool.console(err,2)
+        })
       },
       //设置时间1(获取项目详情数据的辅助函数)
       getLocalTime(data) {
