@@ -133,7 +133,7 @@
                   <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
                 </div>
                 <div class="item" style="margin-top:33px;">
-                  <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
+                  <span class="person-tag" v-for="tag in project.team_tag" v-if="tag.type==1">{{tag.tag_name}}</span>
                 </div>
                 <div style="margin-top:32px;"></div>
                 <div class="item" v-for="user in project.core_users" style="margin-top:10px;">
