@@ -28,7 +28,6 @@
           <span>{{file.file_title}}</span>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -57,13 +56,11 @@ export default {
       this.$tool.console('跟进记录详情列表')
       this.$tool.console(res)
      this.content=data;
-
     })
   },
   watch : {
     proid : function(e){
       this.pro_id=e;
-
     },//获取项目id
   }
 }
