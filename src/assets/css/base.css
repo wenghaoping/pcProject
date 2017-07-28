@@ -96,3 +96,8 @@ body {
 .tr {
   text-align: right;
 }
+
+/*鼠标变成手型*/
+.cursor{
+  cursor: pointer;
+}
