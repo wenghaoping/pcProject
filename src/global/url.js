@@ -28,16 +28,11 @@ export default
 
   /*项目详情页*/
   getProjectDetail:"api/project/getProjectDetail",  //获取項目詳情
-  deleteAtUpload:"api/v/project/deleteAtUpload",  //bp文件软删除
-  deleteAtFile:"api/v/project/deleteAtFile",  //项目文件软删除
-  download:"api/v/project/download",  //文件下载
-  uploadFile:"api/v/project/uploadFile",  //文件上传
   deleteCoreTeam:"api/v/project/deleteCoreTeam",  //删除核心成员
   deleteFinance:"api/v/project/deleteFinance",  //删除历史融资
   deleteDevelop:"api/v/project/deleteDevelop",  //删除里程碑
   editProject:"api/v/project/editProject",  //项目编辑、新建
   getOneCompany:"api/dataTeam/getOneCompany",  //获取公司信息
-  setFileType:"api/v/project/setFileType",  //文件分组设置
   setProjectSchedule:'/api/project/setProjectSchedule',//设置项目进度
 
   /*项目编辑页*/
@@ -47,6 +42,7 @@ export default
   createCustomTag:"api/category/createCustomTag",  //添加自定义标签/个人,团队,人脉
   selectCompany:"api/dataTeam/selectCompany",  //公司名称提示
   getFileType:"api/category/getFileType",  //文件分组设置选项
+  getAllFileType:"api/category/getAllFileType",  //文件分组设置选项(全)
   createFileType:"api/category/createFileType",  //添加文件分组设置
 
   /*一键尽调*/
@@ -97,6 +93,15 @@ export default
 
   //文件管理
   getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据
+  deleteAtUpload:"api/v/project/deleteAtUpload",  //bp文件软删除
+  deleteAtFile:"api/v/project/deleteAtFile",  //项目文件软删除
+  download:"api/v/project/download",  //文件下载
+  uploadFile:"api/v/project/uploadFile",  //文件上传
+  setFileType:"api/v/project/setFileType",  //文件分组设置
+  deleteFileType:"api/v/project/deleteFileType", //删除文件分组
+  renameFileType:"api/category/renameFileType",//重命名文件分组
+
+
 
   /*意向项目(人脉详情右边)*/
   getEnjoyProjectsGroup:'/api/v/project/getEnjoyProjectsGroup',//意向项目归总(图表)

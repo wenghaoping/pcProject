@@ -133,7 +133,7 @@
                   <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
                 </div>
                 <div class="item" style="margin-top:33px;">
-                  <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
+                  <span class="person-tag" v-for="tag in project.team_tag" v-if="tag.type==1">{{tag.tag_name}}</span>
                 </div>
                 <div style="margin-top:32px;"></div>
                 <div class="item" v-for="user in project.core_users" style="margin-top:10px;">
@@ -680,9 +680,9 @@
         styleObject: {
           color: '',
         },
-
+        value1:'',////一键尽调边上绑定是数据
         value: 1,
-
+        status_name:'',//一键尽调边上那个按钮线里的字
         activeName:'1',
         tabs:true,//标签切换
         currentPage:1,//当前第几页(意向投资人)
