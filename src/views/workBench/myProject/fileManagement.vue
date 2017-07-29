@@ -181,7 +181,7 @@
               x.newFile=[];
             })
             this.groupList=groupList;
-            console.log('groupList',this.groupList)
+//            console.log('groupList',this.groupList)
           })
         })
       },
