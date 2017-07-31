@@ -148,7 +148,7 @@ export default {
         title: '',//邮件标题
         body: '',//邮件正文
       },
-      email2: {
+      email2: {x
         nameEmail: '',//人脉的邮箱(一个)
       },
       user: {

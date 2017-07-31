@@ -15,22 +15,65 @@
       </div>
 
       <!--推送人脉-->
-      <el-form :inline="true" :model="investor" class="demo-form-inline">
-        <el-form-item label="推送人脉">
-          <el-input v-model="investor.name" placeholder="请输入您要推送的投资人"></el-input>
+      <el-form :inline="true" :model="investor" class="demo-form-inline pushInvestor" label-position="top">
+        <el-form-item label="推送人脉" >
+          <el-input style="width: 586px;" v-model="investor.name" placeholder="请输入您要推送的投资人"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="customerAdd">自定义添加</el-button>
+          <el-button style="margin-top: 25px;" type="primary" @click="customerAdd">自定义添加</el-button>
         </el-form-item>
       </el-form>
 
       <!--我的人脉和全网人脉tab页切换-->
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的人脉" name="myContacts">用户管理</el-tab-pane>
+        <el-tab-pane label="我的人脉" name="myContacts">
+          <el-table
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+            ref="multipleTable"
+            :data="myContacts"
+            tooltip-effect="dark"
+            style="width: 100%"
+            max-height="430"
+            :row-class-name="tableRowClassName">
+            <el-table-column
+              width="64">
+              <template scope="scope">
+                <el-checkbox-group  v-model="myContactsCheck">
+                  <el-checkbox class="radio" :label="scope.row.project_id"></el-checkbox>
+                </el-checkbox-group>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="项目介绍"
+              min-width="570">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 30 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.pro_intro}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.pro_intro}}
+                  </div>
+                </el-tooltip>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="match_weight"
+              label="匹配度"
+              min-width="80">
+              <template scope="scope">
+                <div class="origin">
+                  {{scope.row.match_weight}}%
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
         <el-tab-pane label="全网人脉" name="netContacts">配置管理</el-tab-pane>
       </el-tabs>
 
-      <!---->
+      <!--标题和正文-->
       <el-form label-position="top" label-width="80px" ref="email" :model="email">
         <el-form-item label="标题" prop="title"
                       :rules="titleRule">
@@ -46,7 +89,8 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="preview">预览</el-button>
-        <el-button type="primary" @click="push()">推送</el-button>
+        <el-button type="primary" @click="push(2)">继续推送</el-button>
+        <el-button type="primary" @click="push(1)">推送</el-button>
       </span>
     </el-dialog>
 
@@ -60,36 +104,33 @@
 export default {
   props: ["dialogPush","userMessage","userEmail"],
   data () {
-  var checkEmail = (rule, value, callback) => {
-    if (this.$tool.getNull(value)) {
-      return callback(new Error('邮箱不能为空'));
-    }
-    setTimeout(() => {
-      if(!this.$tool.checkEmail(value)){
-        callback(new Error('请输入正确的邮箱'));
-      }else{
+    var checkEmail = (rule, value, callback) => {
+      if (this.$tool.getNull(value)) {
+        return callback(new Error('邮箱不能为空'));
+      }
+      setTimeout(() => {
+        if (!this.$tool.checkEmail(value)) {
+          callback(new Error('请输入正确的邮箱'));
+        } else {
+          callback();
+        }
+      }, 300);
+
+
+    };//邮箱判断
+    var checkTitle = (rule, value, callback) => {
+      if (this.$tool.getNull(value)) {
+        return callback(new Error('不能为空'));
+      } else {
         callback();
       }
-    }, 300);
-
-
-  };//邮箱判断
-  var checkTitle = (rule, value, callback) => {
-    if (this.$tool.getNull(value)) {
-      return callback(new Error('不能为空'));
-    }else{
-      callback();
-    }
-  };//不为空判断
-
-  return {
-      emailRule: { validator: checkEmail, trigger: 'blur' },
-      titleRule: { validator: checkTitle, trigger: 'blur' },
+    };//不为空判断
+    return {
+      emailRule: {validator: checkEmail, trigger: 'blur'},
+      titleRule: {validator: checkTitle, trigger: 'blur'},
       close:false,//默认关闭
       loading: false,//加载动画
-      activeName:'first',
-//      dialogPush:false,//控制显不显示
-
+      //dialogPush:this.dialogPush,//控制显不显示
       email:{
         title:'有人给您推荐一个项目,赶紧看看吧',//邮件标题
         main:'',//邮件正文
@@ -102,11 +143,8 @@ export default {
         user_company_career:'',
         user_company_name:'',
       },
-
-
       projectList:[],//推送的项目列表
       projectAll:[],//项目列表下拉框基本是不用的
-
       list: [],
       states: ["Alabama"],
       tableData3: [{
@@ -119,12 +157,12 @@ export default {
         id:2
       }],
       projectRadio:'',
-
-
       investor:{
         name:'',
       },
-      activeName: 'myContacts'
+      activeName: 'myContacts',
+      myContacts:[],
+      myContactsCheck:'',
     }
   },
   methods: {
