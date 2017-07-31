@@ -113,7 +113,7 @@ export default
   getEnjoyedInvestorsGroup:'api/project/getEnjoyedInvestorsGroup',//意向投资人归总(图表)
 
   /*买家图谱*(项目详情右边)*/
-  getProjectMatchInvestors:'api/project/getProjectMatchInvestors',//买家图谱列表
+  getProjectMatchInvestors:'api/v/project/getProjectMatchInvestors',//买家图谱列表
 
   /*项目推送(人脉入口)*/
   matchProject:'api/v/project/matchProject',//我的人脉-推送（模糊匹配我的项目）

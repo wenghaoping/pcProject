@@ -365,8 +365,7 @@
       },//设置投资案例
       getOneUserInfo(){
         this.loading=true;
-
-        this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.contacts.card_id})
+        this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.contacts.card_id,investor_user_id:this.contacts.user_id})
           .then(res => {
             let data = res.data.data;
             this.$tool.console(this.$tool.getToObject(data));
@@ -416,7 +415,7 @@
           }
         }
         if(this.in){
-          this.contacts.card_id=this.cardid || '';
+          this.contacts.card_id=this.cardid || 0;
           this.contacts.user_id=this.userid || '';
           setTimeout(()=>{
             this.getOneUserInfo();
