@@ -115,8 +115,10 @@ export default
   /*买家图谱*(项目详情右边)*/
   getProjectMatchInvestors:'api/v/project/getProjectMatchInvestors',//买家图谱列表
 
-  /*项目推送(人脉入口)*/
+  /*项目推送*/
   matchProject:'api/v/project/matchProject',//我的人脉-推送（模糊匹配我的项目）
   pushUser:'/api/v/project/pushUser',//我的人脉-推送（发送邮件）
   pushCount:'/api/v/project/pushCount',//推送剩余次数
+  getConnectUserSortByMatch:'api/v/project/getConnectUserSortByMatch',//推送项目时获取我的人脉
+  getAllConnectUserSortByMatch:'api/v/project/getAllConnectUserSortByMatch',//推送项目时获取全网人脉
 }

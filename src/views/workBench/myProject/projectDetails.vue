@@ -448,7 +448,8 @@
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proname="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+
   </div>
 </template>
 
@@ -752,7 +753,7 @@
       alertcontactsdetail,
       alertprojectdetail,
       addfollow,
-      projectpush2
+      projectpush2,
     },
     //Echart组件
     mounted(){
