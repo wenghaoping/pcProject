@@ -1,6 +1,6 @@
 <template>
     <div id="customerAddContacts">
-      <el-dialog title="收货地址" :visible.sync="isShow">
+      <el-dialog title="收货地址" :visible="isShow">
         <el-form :model="form">
           <el-form-item label="活动名称" :label-width="formLabelWidth">
             <el-input v-model="form.name" auto-complete="off"></el-input>
@@ -44,6 +44,11 @@
     create(){
       console.log(this.dialogFormVisible)
       console.log(this.isShow)
+    },
+    watch:{
+      dialogFormVisible:function (e) {
+        console.log(e)
+      }
     }
   }
 </script>

@@ -9,7 +9,7 @@
          <div class="item-time">05.04&nbsp;18:34</div>
         <div class="item-name">{{item.follow_user_name}}</div>
         <div class="item-edit">
-          <div class="item-edit1 item-right">修改</div>
+          <div class="item-edit1 item-right" @click="edit">修改</div>
           <div class="item-edit1">删除</div>
         </div>
       </div>
@@ -46,6 +46,14 @@ export default {
     }
   },
   methods: {
+    //修改
+    edit(){
+
+    },
+    //删除
+    delete(){
+
+    }
   },
   created(){
    this.$http.post(this.URL.getProjectFollowList,{

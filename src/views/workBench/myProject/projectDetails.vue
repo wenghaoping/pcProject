@@ -29,7 +29,7 @@
               <span class="flower" v-if="project.follow_up!=''">跟进人 : {{project.follow_up}}</span>
 
             </div>
-            <div class="item height" style="margin-top:18px;" v-if="project.pro_source!=''">
+            <div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">
               <span class="flower2">来源 : {{project.pro_source}}</span>
             </div>
             <div class="item height">
@@ -133,7 +133,7 @@
                   <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
                 </div>
                 <div class="item" style="margin-top:33px;">
-                  <span class="person-tag" v-for="tag in project.team_tag" v-if="tag.type==1">{{tag.tag_name}}</span>
+                  <span class="person-tag" v-for="tag in project.team_tag">{{tag}}</span>
                 </div>
                 <div style="margin-top:32px;"></div>
                 <div class="item" v-for="user in project.core_users" style="margin-top:10px;">
@@ -868,6 +868,15 @@
         }
         return str
       },//项目来源编辑
+      getteam_tag(arr){
+        let str=[];
+        for(let i=0;i<arr.length;i++){
+          if(arr[i].type==1){
+            str.push(arr[i].tag_name)
+          }
+        }
+        return str
+      },//项目来源编辑
       getProjectDetail () {
         this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project.project_id})
           .then(res=>{
@@ -891,6 +900,7 @@
             this.project=data;
             this.project.follow_up=data.follow_up.follow_desc;
             this.project.pro_source=this.getProjectTag(data.tag);
+            this.project.team_tag=this.getteam_tag(data.tag);
             this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
 
           })
@@ -1303,6 +1313,7 @@
     created () {
       // 组件创建完后获取数据，
       this.loading=true;
+      this.$global.func.getWxProjectCategory();
       this.getprojectId();
       this.getWxProjectCategory();
       this.getEchartData();

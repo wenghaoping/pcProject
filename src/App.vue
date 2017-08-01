@@ -129,7 +129,7 @@
        //        this.$router.push('/');
        this.active=0;
        }*/
-     this.setUserId();
+//     this.setUserId();
     },
     watch: {
       user_name: function (e) {

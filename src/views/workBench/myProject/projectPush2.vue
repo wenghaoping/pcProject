@@ -258,24 +258,36 @@
       </span>
 
       <!--自定义添加-->
-      <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
+      <!--<customeraddcontacts :dialog-form-visible="dialogFormVisible"></customeraddcontacts>-->
 
       <!--自定义添加2-->
-      <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="活动名称" :label-width="formLabelWidth">
-            <el-input v-model="form.name" auto-complete="off"></el-input>
+      <el-dialog class="customerAddForm" title="自定义添加" :visible.sync="dialogFormVisible" :modal='false' size="full" :close-on-click-modal="false">
+        <el-form :model="customerAddForm">
+          <el-form-item label="邮箱"
+                        :label-width="formLabelWidth"
+                        prop="email"
+                        :rules="[{ required: true, message: '邮箱不能为空'}]">
+            <el-input v-model="customerAddForm.email" auto-complete="off"  placeholder="请输入邮箱"></el-input>
           </el-form-item>
-          <el-form-item label="活动区域" :label-width="formLabelWidth">
-            <el-select v-model="form.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
+          <el-form-item label="姓名" :label-width="formLabelWidth">
+            <el-input v-model="customerAddForm.name" auto-complete="off" placeholder="请输入姓名"></el-input>
+          </el-form-item>
+          <el-form-item label="手机" :label-width="formLabelWidth">
+            <el-input v-model="customerAddForm.mobile" auto-complete="off" placeholder="请输入手机"></el-input>
+          </el-form-item>
+          <el-form-item label="公司" :label-width="formLabelWidth">
+            <el-input v-model="customerAddForm.company" auto-complete="off" placeholder="请输入公司"></el-input>
+          </el-form-item>
+          <el-form-item label="品牌" :label-width="formLabelWidth">
+            <el-input v-model="customerAddForm.brand" auto-complete="off" placeholder="请输入品牌"></el-input>
+          </el-form-item>
+          <el-form-item label="职位" :label-width="formLabelWidth">
+            <el-input v-model="customerAddForm.career" auto-complete="off" placeholder="请输入职位"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button @click="cancelAdd">取 消</el-button>
+          <el-button type="primary" @click="certainAdd">确 定</el-button>
         </div>
       </el-dialog>
     </el-dialog>
@@ -284,7 +296,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import customerAddContacts from '../../../components/customerAddContacts.vue'
+  import customeraddcontacts from '../../../components/customerAddContacts.vue'
   export default {
   props: ["dialogPush",'proid','proname'],
   data () {
@@ -314,23 +326,22 @@
       project_id:this.proid,
       close:false,//默认关闭
       activeName: 'myContacts',
-      myContacts:[],
-      netContacts:[],
+      myContacts:[],//我的人脉数据
+      netContacts:[],//全网人脉数据
       myContactsCheck:'',
       loading: false,//加载动画
       //控制自定义添加显示和隐藏
       dialogFormVisible:false,
-      form: {
+      //自定义添加表单数据
+      customerAddForm: {
+        email:'',
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        mobile:'',
+        company:'',
+        brand:'',
+        career:'',
       },
-      formLabelWidth: '120px',
+      formLabelWidth: '74px',
 
       emailRule: {validator: checkEmail, trigger: 'blur'},
       titleRule: {validator: checkTitle, trigger: 'blur'},
@@ -356,7 +367,7 @@
       },
     }
   },
-  components:{customerAddContacts},
+  components:{customeraddcontacts},
   methods: {
     //获取我的人脉数据
     getMyContacts(){
@@ -386,6 +397,40 @@
         }
       })
     },
+    //选项卡切换
+    handleClick(tab, event) {
+      //console.log(tab, event);
+    },
+    //自定义添加人脉(跳出弹窗)
+    customerAdd(){
+     this.dialogFormVisible=true;
+     console.log(this.dialogFormVisible)
+    },
+    //取消添加自定义人脉
+    cancelAdd(){},
+    //确认添加自定义人脉
+    certainAdd(){
+      var form=this.customerAddForm;
+      if(!form.email){
+        this.$tool.error('请输入邮箱')
+      }else{
+        this.$http.post(this.URL.createUserCard,{
+          user_id:localStorage.user_id,
+          card_email:form.email,
+          card_name:form.name,
+          card_mobile:form.mobile,
+          card_company_name:form.company,
+          card_company_career:form.career,
+          card_brand:form.brand
+        }).then(res=>{
+          console.log(res)
+          if(res.data.status===2000000){
+
+          }
+        })
+      }
+    },
+
     preview(){
       this.$emit('changeall',false);
     },
@@ -436,15 +481,7 @@
     },
 
 
-    //自定义添加人脉
-    customerAdd(){
-      this.dialogFormVisible=true;
-      console.log(this.dialogFormVisible)
-    },
-    //选项卡切换
-    handleClick(tab, event) {
-      //console.log(tab, event);
-    }
+
   },
   mounted() {
     this.list = this.states.map(item => {
