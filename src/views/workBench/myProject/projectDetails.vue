@@ -374,50 +374,44 @@
               <div v-show="!tabs">
                 <div class="main_right main_left">
                   <div class="item_lists">
-                    <div class="item_list">
+                    <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
-                        <span class="bili">100%</span>
+                        <span class="bili">{{projectMatchInvestor.match}}%</span>
                         <span class="pro fr">我的/团队人脉</span>
                       </div>
                       <div class="list_main">
-                        <div @click="toDetail" class="click">
+                        <div @click="toDetail(projectMatchInvestor)" class="click">
                           <div class="block">
-                            <span class="name">张鑫</span>
-                            <span class="zhiwei">投资总监</span>
+                            <span class="name">{{projectMatchInvestor.investor_name}}</span>
+                            <span class="zhiwei">{{projectMatchInvestor.investor_career}}</span>
                             <span class="imgs"><img src="../../../assets/images/renzhen.png"/></span>
                             <span class="ren">买方FA</span>
                           </div>
                           <div class="block" style="margin-top: 5px;">
-                            <span class="company">杭州投着乐网络科技有限公司</span>
+                            <span class="company">{{projectMatchInvestor.investor_company}}</span>
                           </div>
                           <div class="block" style="margin-top: 42px;">
-                            <span class="company ft13">投资领域：智能服务、电商</span>
+                            <span class="company ft13">投资领域：{{projectMatchInvestor.industry_tag}}</span>
                           </div>
                           <div class="block" style="margin-top: 5px;">
-                            <span class="company ft13">投资轮次：种子轮、天使轮、A轮、B轮</span>
+                            <span class="company ft13">投资轮次：{{projectMatchInvestor.stage_tag}}</span>
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
                           <button class="button fl">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+                            <div class="img1" @click="industryPush(projectMatchInvestor)"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button class="button fl">
-                            <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
+                            <div class="img1" @click="industryDelete(projectMatchInvestor)"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
 
-                        <div class="img"><img src="../../../assets/images/header3.png"></div>
+                        <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
+                        <div class="imgText" v-else>{{projectMatchInvestor.investor_logo_text}}</div>
+
                       </div>
-                      <el-pagination
-                        class="pagination fr"
-                        small
-                        v-if="totalInvestors!=0"
-                        @current-change="filterChangeInvestors"
-                        :current-page.sync="currentPageInvestors"
-                        layout="prev, pager, next"
-                        :page-size="5"
-                        :total="totalInvestors">
-                      </el-pagination>
+
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -454,7 +448,11 @@
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proname="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+
+    <!--自定义添加-->
+    <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
+
   </div>
 </template>
 
@@ -467,10 +465,12 @@
   import alertprojectdetail from '../../../components/alertProjectDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
+  import customerAddContacts from '../../../components/customerAddContacts.vue'
 
   export default {
     data(){
       return {
+        dialogFormVisible:true,
         companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
         cardid:"",//人脉详情弹框用(点击的那个人的cardid)
@@ -683,7 +683,7 @@
         value1:'',////一键尽调边上绑定是数据
         value: 1,
         status_name:'',//一键尽调边上那个按钮线里的字
-        activeName:'1',
+        activeName:'2',
         tabs:true,//标签切换
         currentPage:1,//当前第几页(意向投资人)
         totalData:0,//总数(意向投资人)
@@ -731,9 +731,21 @@
 
         getInvestors:{},//获取买家图谱请求参数
         ProjectMatchInvestors:[
-          {
-
-          }
+          /*{
+            follow_status:0,
+            industry_tag:"大数据",//领域
+            investor_career:"职位",//职位
+            investor_company:"西安中永顺投资管理有限公司",//公司
+            investor_desc:"",//介绍
+            investor_id:"d8W13Jr5",//id
+            investor_logo_text:"李",//名片名字
+            investor_logo_url:"",
+            investor_name:"李凯伦",//名字
+            investor_type:2,
+            stage_tag:"天使轮",//轮次
+            user_id: "kpbmXNmW",
+            match:12,//匹配度
+          }*/
         ],//买家图谱数据
       }
     },
@@ -746,7 +758,8 @@
       alertcontactsdetail,
       alertprojectdetail,
       addfollow,
-      projectpush2
+      projectpush2,
+      customerAddContacts,
     },
     //Echart组件
     mounted(){
@@ -1220,26 +1233,20 @@
         let newArr = new Array;
         arr.forEach((x)=> {
           let obj = new Object;
-          obj.follow_id=x.follow_id;
-          obj.user_id=x.card.user_id;
-          obj.card_id=x.card.card_id;
-          obj.user_real_name=x.card.user_real_name;
-          obj.is_add=x.card.is_add;
-          obj.is_bind=x.card.is_bind;
-          obj.schedule_id=x.schedule.schedule_id;
-          obj.user_invest_industry=this.set_industry(x.card.user_invest_industry);
-          obj.user_invest_stage=this.set_stage(x.card.user_invest_stage);
-          obj.type=x.type;
-          obj.user_avatar_url=x.card.user_avatar_url;
-          obj.user_company_career=x.card.user_company_career;
-          obj.user_company_name=x.card.user_company_name;
+          obj.user_id=x.user_id;
+          obj.stage_tag=this.set_stage(x.stage_tag);
+          obj.investor_type=x.investor_type;
+          obj.investor_name=x.investor_name;
+          obj.investor_logo_url=x.investor_logo_url || '';
+          obj.investor_logo_text=x.investor_logo_text || '';
+          obj.investor_id=x.investor_id;
+          obj.investor_desc=x.investor_desc;
+          obj.investor_company=x.investor_company;
+          obj.investor_career=x.investor_career;
+          obj.industry_tag=this.set_industry(x.industry_tag);
           obj.match=x.match;
-          obj.user_group=this.set_user_group(x.card.user_group);
-          obj.width=this.selectChange(x.schedule.schedule_id);
-          obj.source=x.source;
           newArr.push(obj);
-        });
-        return newArr;
+        });return newArr;
       },//设置买家图谱列表
       /*买家图谱*/
       getProjectMatchInvestors(){
@@ -1254,7 +1261,7 @@
             if(res.data.status_code==2000000) {
               let data = res.data.data;
               console.log(data);
-//              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
               this.totalInvestors = res.data.count;
             }
             this.loading = false;
@@ -1287,6 +1294,10 @@
             this.$tool.error("加载超时");
           })
       },//控制买家图谱页码
+      industryPush(data){
+
+      },//买家图谱推送
+      industryDelete(data){},//买家图谱人脉删除
 
     },
     created () {
