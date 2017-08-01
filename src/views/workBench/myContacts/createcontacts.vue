@@ -310,7 +310,12 @@ export default {
       if (this.$tool.getNull(value)) {
         return callback(new Error('不能为空'));
       }else{
-        callback();
+        if(value.length>20){
+          callback(new Error('不超过20个字'));
+        }else{
+          callback();
+        }
+
       }
     };//不为空判断
     var checkPhoneNumber = (rule, value, callback) => {

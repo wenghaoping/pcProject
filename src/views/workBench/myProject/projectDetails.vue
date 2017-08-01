@@ -280,8 +280,9 @@
     </div>
     <div class="contain-grid contain-right-1 fl">
       <div class="main-box">
-        <el-tabs v-model="activeName" @tab-click="handleClick2">
+        <el-tabs v-model="activeName" @tab-click="handleClick2" style="position: relative">
           <el-tab-pane name="1">
+            <button class="btn" @click="addFollow">添加意向投资人</button>
             <span slot="label">意向投资人
                 <el-tooltip class="item" effect="dark" placement="top-start">
                   <div slot="content">用户可以主动推送项目／添加跟进意向投资人，维护<br/>意向投资人不同阶段对应的跟进状态</div>
@@ -399,10 +400,10 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
-                          <button class="button fl">
-                            <div class="img1" @click="industryPush(projectMatchInvestor)"><img src="../../../assets/images/tuisong.png"></div>推送</button>
-                          <button class="button fl">
-                            <div class="img1" @click="industryDelete(projectMatchInvestor)"><img src="../../../assets/images/yichu.png"></div>移除</button>
+                          <button class="button fl" @click="industryPush(projectMatchInvestor)">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+                          <button class="button fl" @click="industryDelete(projectMatchInvestor)">
+                            <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
 
                         <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
@@ -411,14 +412,23 @@
                       </div>
 
                     </div>
-
+                    <el-pagination
+                      class="pagination fr"
+                      small
+                      v-if="totalData!=0"
+                      @current-change="filterChangeInvestors"
+                      :current-page.sync="currentPageInvestors"
+                      layout="prev, pager, next"
+                      :page-size="5"
+                      :total="totalInvestors">
+                    </el-pagination>
                   </div>
                 </div>
               </div>
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-        <button class="btn" @click="addFollow">添加意向投资人</button>
+
       </div>
     </div>
     <!--一键尽调弹窗-->
@@ -677,7 +687,7 @@
         value1:'',////一键尽调边上绑定是数据
         value: 1,
         status_name:'',//一键尽调边上那个按钮线里的字
-        activeName:'2',
+        activeName:'1',
         tabs:true,//标签切换
         currentPage:1,//当前第几页(意向投资人)
         totalData:0,//总数(意向投资人)
@@ -1253,7 +1263,6 @@
           .then(res=>{
             if(res.data.status_code==2000000) {
               let data = res.data.data;
-              console.log(data);
               this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
               this.totalInvestors = res.data.count;
             }
@@ -1276,7 +1285,7 @@
           .then(res=>{
             if(res.data.status_code==2000000) {
               let data = res.data.data;
-//              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
               this.totalInvestors = res.data.count;
             }
             this.loading = false;
@@ -1288,10 +1297,39 @@
           })
       },//控制买家图谱页码
       industryPush(data){
-
+        this.dialogPushVisible=true;
       },//买家图谱推送
-      industryDelete(data){},//买家图谱人脉删除
-
+      industryDelete(data){
+        let delData = new Object;
+        delData.user_id = localStorage.user_id;
+        delData.investor_id = data.investor_id;
+        delData.project_id = this.project.project_id;
+        this.$confirm('此操作将移除该买家, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.loading = true;
+          this.$http.post(this.URL.exceptMatchAction, delData)
+            .then(res => {
+              if (res.data.status_code == 2000000) {
+                this.$tool.success("移除成功");
+                this.getProjectMatchInvestors();
+              }
+              this.loading = false;
+            })
+            .catch(err => {
+              this.$tool.console(err, 2);
+              this.loading = false;
+              this.$tool.error("加载超时");
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },//买家图谱人脉删除
     },
     created () {
       // 组件创建完后获取数据，

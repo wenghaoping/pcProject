@@ -283,7 +283,19 @@
                   size="small" class="send-btn btn-cur">
                   推送
                 </el-button>
-                <img src="../../../assets/images/more.png" alt="" class="more">
+                <el-button
+                  type="text"
+                  size="small" class="send-btn btn-cur">
+                  <img src="../../../assets/images/more.png" alt="" class="more">
+                </el-button>
+                <el-select v-model="scope.row.moreShow" placeholder="请选择" @change="moreChange(scope.$index, scope.row)">
+                  <el-option
+                    v-for="item in moreList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </template>
             </el-table-column>
           </el-table>
@@ -392,7 +404,12 @@
         loading:false,
         filter:true,
         getPra:{},//筛选的请求参数
-        getProjectListURL:''//首页获取列表的URL
+        getProjectListURL:'',//首页获取列表的URL
+        moreShow:false,//更多的选项绑定
+        moreList:[{
+          value: '0',
+          label: '删除'
+        }],//更多的选项表单
       }
     },
     methods:{
@@ -676,11 +693,45 @@
           obj.pro_area=this.getProjectPro_area(list[i].pro_area)
           obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale)
           obj.project_id=list[i].project_id;
+          obj.moreShow="";
           arr.push(obj)
-
         }
         return arr
-      }//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
+      },//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
+
+      /*更多按钮*/
+      moreChange(index,row){
+        this.moreShow=!this.moreShow;
+        if(this.moreShow){
+          this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.loading=true;
+            this.$http.post(this.URL.deleteProject, {user_id:localStorage.user_id,project_id: row.project_id})
+              .then(res => {
+                this.loading=false;
+                this.$tool.success("删除成功");
+                this.handleIconClick();
+
+              })
+              .catch(err => {
+                this.loading=false;
+                this.$tool.error("删除失败");
+                this.$tool.console(err);
+              })
+
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        }
+
+
+      },//删除项目
     },
     computed: {
 

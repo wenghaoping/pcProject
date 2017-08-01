@@ -365,6 +365,7 @@ export default {
         this.tags.index=index;
         this.tags.card_id=row.card_id;
         this.tagsValue=this.getTagId(this.tableData[index].tagArray);
+        this.tags.changecont=this.getTagId(this.tableData[index].tagArray);
     },//点击标签按钮
     handleDelete(index,row){
       this.$confirm('此操作将永久删除该人脉, 是否继续?', '提示', {
@@ -376,7 +377,7 @@ export default {
         this.$http.post(this.URL.deleteConnectUser, {user_id:localStorage.user_id,card_id: row.card_id})
           .then(res => {
             this.loading=false;
-            this.$tool.success("删除成功")
+            this.$tool.success("删除成功");
             this.handleIconClick();
           })
           .catch(err => {
@@ -577,7 +578,7 @@ export default {
 
     getWxProjectCategory(){
         this.addTags = this.$global.data.tags_user;//设置人脉标签
-        this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
+//        this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
     },//获取所有下拉框的数据
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
@@ -604,6 +605,7 @@ export default {
           this.$tool.success("设置成功");
           this.dialogVisible = false;
           this.handleIconClick();
+          this.gettags_user();
         })
         .catch(err => {
           this.loading=false;
@@ -613,6 +615,14 @@ export default {
 
         })
     },//保存标签选择
+    gettags_user(){
+      this.$http.post(this.URL.getWxProjectCategory, {user_id: localStorage.user_id})
+        .then(res => {
+          let data = res.data.data;
+          this.addTags = this.$tool.getTags_pro(data.tags_user);//设置人脉标签
+        })
+    },//设置人脉标签
+
 
   },
   created(){

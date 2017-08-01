@@ -25,6 +25,7 @@ export default
   saveUpload:"api/v/project/saveUpload",  //修改批量上传文件的绑定
   titleSift:"api/v/project/titleSift", //项目列表表头数据
   getProjectList:"api/v/project/getProjectList",  //获取項目列表
+  deleteProject:'api/v/project/deleteProject',//删除项目
 
   /*项目详情页*/
   getProjectDetail:"api/project/getProjectDetail",  //获取項目詳情
@@ -108,6 +109,9 @@ export default
   getEnjoyProjects:'/api/v/project/getEnjoyProjects',//意向项目列表,
   setEnjoyProjectSchedule:'api/v/project/setEnjoyProjectSchedule',//设置意向项目的跟进进度
 
+  /*推荐项目(人脉详情右边)*/
+  getInvestorsMatchProjects:'api/v/investors/getInvestorsMatchProjects',//推荐项目
+  exceptMatchAction:'api/v/project/exceptMatchAction',//移除匹配
   /*意向投资人(项目详情右边)*/
   getEnjoyedInvestors:'api/project/getEnjoyedInvestors',//意向投资人列表
   getEnjoyedInvestorsGroup:'api/project/getEnjoyedInvestorsGroup',//意向投资人归总(图表)

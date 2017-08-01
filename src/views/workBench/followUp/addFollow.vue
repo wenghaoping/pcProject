@@ -96,7 +96,7 @@
           <span class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
         </div>
         <div slot="footer" class="dialog-footer fr" style="margin: 32px 0">
-          <el-button @click="saveSecond">继续添加</el-button>
+          <!--<el-button @click="saveSecond">继续添加</el-button>-->
           <el-button type="primary" @click="allSave">提 交</el-button>
         </div>
       </div>
@@ -517,9 +517,9 @@
                this.$tool.console(res);
                if(res.data.status_code==2000000){
                  this.follow_id=res.data.data;
-                 this.open2('项目编辑成功', '保存成功', '查看详情', '继续编辑')
+                 this.open2('项目编辑成功', '保存成功', '继续添加', '返回');
                }else{
-                   this.$tool.error(res.data.error_msg);
+                 this.$tool.error(res.data.error_msg);
                }
                this.loading=false;
              })
@@ -536,17 +536,24 @@
           cancelButtonText: cancel,
           type: 'success'
         }).then(() => {
-          this.$router.push({ name: 'projectDetails', query: { project_id:this.follow.project_id,show:'flow'}});
-          this.$emit("changeClose",false);
+          this.clearData();
         }).catch(() => {
-          this.$message({
-            showClose:false,
-            type: 'success',
-            message: '继续编辑'
-          });
-          this.getFollowUp();
+          this.$emit("changeClose",false);
         });
       },
+      clearData(){
+        for(let key in this.follow){
+          this.follow[key]='';
+          this.follow.file_id=[];
+        }
+        this.uploadShow.lists=[];
+        this.fileList=[];
+        this.follow.project_id=this.projectid || '';
+        this.follow.project_name=this.projectname || '';
+        this.follow.card_id=this.cardid || '';
+        this.follow.card_name=this.cardname || '';
+        this.saveJumpData=this.follow;
+      }
 
     },
     created(){
@@ -563,17 +570,7 @@
 
       },//获取跟进id
       dialogFollow: function(e){
-        for(let key in this.follow){
-          this.follow[key]='';
-          this.follow.file_id=[];
-        }
-        this.uploadShow.lists=[];
-        this.fileList=[];
-        this.follow.project_id=this.projectid || '';
-        this.follow.project_name=this.projectname || '';
-        this.follow.card_id=this.cardid || '';
-        this.follow.card_name=this.cardname || '';
-        this.saveJumpData=this.follow;
+        this.clearData();
       },//清空数据
     },
     mounted(){

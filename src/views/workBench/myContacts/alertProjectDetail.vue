@@ -21,10 +21,10 @@ export default {
   },
   methods: {
     handleClose(){
-//      this.$emit('changeall', false)
+      this.$emit('changeall', false)
     },
     dialogVisibleTo(){
-//      this.$emit('changeall', false)
+      this.$emit('changeall', false)
     }
   },
   created(){
