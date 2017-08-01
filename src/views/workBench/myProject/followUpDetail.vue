@@ -1,6 +1,6 @@
 <template>
   <div id="followUpDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div  class="followDetail" v-for="item in content" >
+    <div  class="followDetail" v-for="(item,index) in content" >
       <!--信息介绍-->
       <div class="followItem" style="margin-top: 0px">
         <div class="item-cicle">
@@ -9,21 +9,14 @@
          <div class="item-time">{{new Date((item.follow_time)* 1000).toLocaleString().replace(/[\u4E00-\u9FA5]/g,'').substr(0, 25)}}</div>
         <div class="item-name">{{item.follow_user_name}}</div>
         <div class="item-edit">
-          <div class="item-edit1 item-right" style="line-height: 32px">修改</div>
+          <el-button
+            type="text"
+            size="small"
+            class="item-edit1 item-right" style="line-height: 19px" @click="addFollow">
+            修改
+          </el-button>
           <!--<div >删除</div>-->
-          <el-button type="text" class="item-edit1" @click="dialogVisible = true">删除</el-button>
-          <el-dialog
-            title="删除"
-            :visible.sync="dialogVisible"
-            size="tiny"
-            :before-close="handleClose">
-            <div class="el-message-box__status el-icon-warning"></div>
-            <span style="display: inline-block;margin-left: 44px;">您确认要删除当前项目跟进记录及关联文件吗？</span>
-            <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
-          </el-dialog>
+          <el-button type="text" class="item-edit1" @click="deleteFollowId(index)">删除</el-button>
         </div>
       </div>
       <!--信息内容介绍-->
@@ -41,6 +34,21 @@
           <span>{{file.file_title}}</span>
         </div>
       </div>
+      <!--确认删除弹框-->
+      <el-dialog
+        title="删除"
+        :visible.sync="dialogVisible"
+        size="tiny"
+        :before-close="handleClose">
+        <div class="el-message-box__status el-icon-warning"></div>
+        <span style="display: inline-block;margin-left: 44px;">您确认要删除当前项目跟进记录及关联文件吗？</span>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteFollow">确 定</el-button>
+  </span>
+      </el-dialog>
+      <!--写跟进弹框-->
+      <addfollow :dialog-follow="dialogFollow" :followId="followId" @changeClose="closeFollow"></addfollow>
     </div>
   </div>
 </template>
@@ -52,15 +60,20 @@
   }
 </style>
 <script type="text/ecmascript-6">
-
+  import addfollow from '../followUp/addFollow.vue'
 export default {
+  components: {
+    addfollow
+  },
   props: ["proid"],
   data () {
     return {
+      dialogFollow:false,//控制写跟进弹框
       pro_id: this.proid,
       loading:false,//加载
       content:{},
-      dialogVisible: false
+      dialogVisible: false,
+      followId:'',
     }
   },
   methods: {
@@ -70,7 +83,26 @@ export default {
           done();
         })
         .catch(_ => {});
-    }
+    },//弹框消息提示
+    deleteFollow(){
+     this.dialogVisible = false;
+      this.$http.post(this.URL.delete_follow_record,{
+          user_id:localStorage.user_id,
+          follow_id:this.followId
+      }).then(res=>{
+         this.$tool.success('删除成功');
+      })
+    },//删除跟进记录
+    deleteFollowId(index){
+        this.dialogVisible  = true;
+        this.followId=this.content[index].follow_id;
+    },//获取删除记录id
+    addFollow(){
+      this.dialogFollow=true;
+    },//点击写跟近按钮
+    closeFollow(msg){
+      this.dialogFollow=msg;
+    },//关闭添加跟进
   },
   created(){
    this.$http.post(this.URL.getProjectFollowList,{
@@ -78,8 +110,8 @@ export default {
       project_id:this.pro_id,
     }).then(res=>{
      let data = res.data.data;
-//      this.$tool.console('跟进记录详情列表')
-//      this.$tool.console(res)
+      this.$tool.console('跟进记录详情列表')
+      this.$tool.console(res)
      this.content=data;
     })
   },
