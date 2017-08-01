@@ -13,8 +13,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="isShow = false">取 消</el-button>
-          <el-button type="primary" @click="isShow = false">确 定</el-button>
+          <el-button>取 消</el-button>
+          <el-button type="primary">确 定</el-button>
         </div>
       </el-dialog>
     </div>

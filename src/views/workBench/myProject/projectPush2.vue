@@ -409,10 +409,13 @@
 
 
     //自定义添加人脉
-    customerAdd(){},
+    customerAdd(){
+      this.dialogFormVisible=true;
+      console.log(this.dialogFormVisible)
+    },
     //选项卡切换
     handleClick(tab, event) {
-//      console.log(tab, event);
+      //console.log(tab, event);
     }
   },
   mounted() {
