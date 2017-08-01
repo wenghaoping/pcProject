@@ -261,7 +261,7 @@
       <!--<customeraddcontacts :dialog-form-visible="dialogFormVisible"></customeraddcontacts>-->
 
       <!--自定义添加2-->
-      <el-dialog class="customerAddForm" title="自定义添加" :visible.sync="dialogFormVisible" :modal='false' size="full" :close-on-click-modal="false">
+      <el-dialog class="customerAddForm" ref="customerAddForm" title="自定义添加" :visible.sync="dialogFormVisible" :modal='false' size="full" :close-on-click-modal="false">
         <el-form :model="customerAddForm">
           <el-form-item label="邮箱"
                         :label-width="formLabelWidth"
@@ -407,7 +407,10 @@
      console.log(this.dialogFormVisible)
     },
     //取消添加自定义人脉
-    cancelAdd(){},
+    cancelAdd(){
+      this.$refs['customerAddForm'].resetFields();
+      this.dialogFormVisible=false;
+    },
     //确认添加自定义人脉
     certainAdd(){
       var form=this.customerAddForm;
@@ -416,16 +419,18 @@
       }else{
         this.$http.post(this.URL.createUserCard,{
           user_id:localStorage.user_id,
-          card_email:form.email,
-          card_name:form.name,
-          card_mobile:form.mobile,
-          card_company_name:form.company,
-          card_company_career:form.career,
-          card_brand:form.brand
+          user_email:form.email,
+          user_real_name:form.name,
+          user_mobile:form.mobile,
+          user_company_name:form.company,
+          user_company_career:form.career,
+          user_brand:form.brand
         }).then(res=>{
           console.log(res)
-          if(res.data.status===2000000){
-
+          if(res.data.status_code===2000000){
+            this.dialogFormVisible=false;
+            this.getMyContacts();
+            this.getNetContacts();
           }
         })
       }
