@@ -40,7 +40,11 @@
         formLabelWidth: '120px'
       }
     },
-    methods: {}
+    methods: {},
+    create(){
+      console.log(this.dialogFormVisible)
+      console.log(this.isShow)
+    }
   }
 </script>
 

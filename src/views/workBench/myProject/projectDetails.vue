@@ -450,6 +450,9 @@
     <!--项目推送项目入口弹窗-->
     <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proname="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
 
+    <!--自定义添加-->
+    <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
+
   </div>
 </template>
 
@@ -462,10 +465,12 @@
   import alertprojectdetail from '../../../components/alertProjectDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
+  import customerAddContacts from '../../../components/customerAddContacts.vue'
 
   export default {
     data(){
       return {
+        dialogFormVisible:true,
         companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
         cardid:"",//人脉详情弹框用(点击的那个人的cardid)
@@ -754,6 +759,7 @@
       alertprojectdetail,
       addfollow,
       projectpush2,
+      customerAddContacts,
     },
     //Echart组件
     mounted(){
