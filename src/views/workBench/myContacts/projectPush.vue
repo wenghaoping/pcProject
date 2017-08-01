@@ -155,8 +155,11 @@ export default {
         user_company_career: '',
         user_company_name: '',
         card_id: ""
-      },
-
+      },//推送的用户消息
+      project:{
+        pro_id:"",//项目id
+        pro_intro:"",//项目介绍
+      },//推送的项目消息
       projectList: [],//推送的项目列表
       projectAll: [],//项目列表下拉框基本是不用的
 
@@ -359,14 +362,23 @@ export default {
           this.email2.nameEmai="";
           this.projectList=[];
           this.tableData3 =[];
+          this.projectRadio="";
           this.user =this.userMessage || this.$store.state.pushProject.user;
+          this.project = this.$store.state.pushProject.projectMessgae || {};
           this.email2.nameEmail =this.userEmail;
           this.firstInData.user =this.userMessage;
-          this.firstInData.email2.nameEmail =this.userEmail;
+          this.firstInData.email2.nameEmail = this.userEmail;
+          this.firstInData.project = this.$store.state.pushProject.projectMessgae || {};
           /*      this.email.title=this.$store.state.pushProject.email.title || '';
            this.email.body=this.$store.state.pushProject.email.body || '';
            this.projectRadio=this.$store.state.pushProject.project_id || '';*/
-          this.remoteMethod("");
+          if(this.firstInData.project.pro_id!=""){
+            this.remoteMethod(this.firstInData.project.pro_intro);
+            setTimeout(()=>{this.projectRadio=this.firstInData.project.pro_id;},200)
+
+          }else{
+            this.remoteMethod("");
+          }
         }
         this.getpushCount();
     },

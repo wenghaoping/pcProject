@@ -295,9 +295,9 @@ export default {
       });
     },//点击删除按钮
     filterChange(filters){
-      if(filters.card_name.length==0){
+/*      if(filters.card_name.length==0){
         delete filters.card_name;
-      }
+      }*/
       this.loading=true;
       this.currentPage=1;
       this.getPra.user_id=localStorage.user_id;
@@ -417,6 +417,13 @@ export default {
     this.loading=true;
     this.titleSift();
     this.handleIconClick();
+  },
+  watch :{
+    dialogFollow : function (e) {
+      if (!e) {
+        this.handleIconClick();
+      }
+    }
   }
 }
 </script>
