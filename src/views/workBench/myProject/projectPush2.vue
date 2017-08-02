@@ -401,6 +401,13 @@
     handleClick(tab, event) {
       //console.log(tab, event);
     },
+    //控制列表颜色
+    tableRowClassName(row, index) {
+      if (index%2 === 1) {
+        return 'info-row';
+      }
+      return '';
+    },
     //自定义添加人脉(跳出弹窗)
     customerAdd(){
      this.dialogFormVisible=true;
@@ -439,8 +446,6 @@
     preview(){
       this.$emit('changeall',false);
     },
-    push(type){
-    },//推送按钮
     remoteMethod(query) {
       if (query !== '') {
         this.load = true;
@@ -455,12 +460,6 @@
         this.projectAll = [];
       }
     },
-    tableRowClassName(row, index) {
-      if (index%2 === 1) {
-        return 'info-row';
-      }
-      return '';
-    },//控制列表颜色
     getIntroduce(id){
       this.projectList=[];
         let arr = this.tableData3;
