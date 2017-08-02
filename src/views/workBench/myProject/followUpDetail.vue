@@ -1,22 +1,4 @@
-remoteMethod(query) {
-
-if(query=="") this.projectRadio="";
-this.loading=true;
-this.$http.post(this.URL.matchProject,{
-user_id: localStorage.user_id,
-card_id: this.user.card_id,
-pro_intro: query})
-.then(res=>{
-let data = res.data.data;
-//          this.$tool.console(data.projects);
-this.tableData3=data.projects;
-this.projectAll=this.setProjectAll(data.projects);
-this.loading=false;
-})
-.catch(err =>{
-this.$tool.console(err,2);
-this.loading=false;
-})
+<template>
   <div id="followUpDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <div  class="followDetail" v-for="(item,index) in content" >
       <!--信息介绍-->
@@ -63,7 +45,7 @@ this.loading=false;
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="deleteFollow">确 定</el-button>
-  </span>
+        </span>
       </el-dialog>
       <!--写跟进弹框-->
       <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>
@@ -138,8 +120,8 @@ export default {
       project_id:this.pro_id,
     }).then(res=>{
      let data = res.data.data;
-//      this.$tool.console('跟进记录详情列表')
-//      this.$tool.console(res)
+      this.$tool.console('跟进记录详情列表')
+      this.$tool.console(res)
      this.content=data;
 
     })//获取跟进记录
