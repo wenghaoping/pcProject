@@ -385,7 +385,7 @@
       beforeUpload(file){
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".docx",".pptx"];
         let name=file.name;
-        let fileend=name.substring(name.lastIndexOf("."));
+        let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
         let isnext = false;
         if(filetypes && filetypes.length>0){
           for(var i =0; i<filetypes.length;i++){
@@ -563,6 +563,7 @@
       if(this.planList.length!=0) this.planButton=false;
       else this.planButton=true;
       this.getprojectId();
+      this.$global.func.getWxProjectCategory();
       setTimeout(() => {
         this.getWxProjectCategory();
         this.getWxosProjectData();

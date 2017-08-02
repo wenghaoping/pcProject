@@ -207,8 +207,18 @@ const tool={
   }
   return true;//返回true，为空对象
 },//判断是否为空对象
+  cloneObj(myObj){
+  if(typeof(myObj) != 'object') return myObj;
+  if(myObj == null) return myObj;
 
-  /*弹框类*/
+  let myNewObj = new Object();
+
+  for(var i in myObj)
+    myNewObj[i] = myObj[i];
+
+    return myNewObj;
+},//对象深拷贝
+/*弹框类*/
   error(text) {
     Notification.error({
       message: text,

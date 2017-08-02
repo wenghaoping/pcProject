@@ -1421,7 +1421,7 @@
         this.uploadDate.project_id = this.project_id;
         let filetypes=[".doc",".docx",".ppt",".pptx",".pdf",".zip",".rar"];
         let name=file.name;
-        let fileend=name.substring(name.lastIndexOf("."));
+        let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
         let isnext = false;
         if(filetypes && filetypes.length>0){
           for(var i =0; i<filetypes.length;i++){
@@ -1447,7 +1447,7 @@
         this.uploadDate.project_id = this.project_id;
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
         let name=file.name;
-        let fileend=name.substring(name.lastIndexOf("."));
+        let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
         let isnext = false;
         if(filetypes && filetypes.length>0){
           for(var i =0; i<filetypes.length;i++){
