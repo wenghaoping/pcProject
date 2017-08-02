@@ -459,7 +459,7 @@
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proname="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
 
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
@@ -496,7 +496,7 @@
         dialogSearchVisible:false,//公司搜索弹框
         dialogPushVisible:false,//项目推送入口弹框
         dialogConVisible:false ,//人脉详情弹窗
-        dialogConVisible2:true,//项目详情弹窗
+        dialogConVisible2:false,//项目详情弹窗
         searchName:"",
         form: {
           name: '',
@@ -1300,7 +1300,7 @@
         this.getInvestors.page=page;
         this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
           .then(res=>{
-            if(res.data.status_code==2000000) {
+            if(res.data.status_code===2000000) {
               let data = res.data.data;
               this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
               this.totalInvestors = res.data.count;
@@ -1416,5 +1416,4 @@
       width: 30%;
     }
   }
-
 </style>
