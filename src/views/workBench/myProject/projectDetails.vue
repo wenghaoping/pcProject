@@ -257,7 +257,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id">
+              <folowup :proid="project.project_id" :proName="project.pro_name">
 
               </folowup>
             </el-tab-pane>
@@ -769,7 +769,7 @@
       addFollow(){
         this.dialogFollow=true;
         this.projecmessage.project_id=this.project.project_id;
-        this.projecmessage.project_name=this.project.pro_intro;
+        this.projecmessage.project_name=this.project.pro_name;
       },//点击写跟近按钮
       closeFollow(msg){
         this.dialogFollow=msg;

@@ -399,6 +399,7 @@
           let file_id = this.uploadShow.lists[index].file_id;
           const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+file_id;
           window.location.href=url;
+          this.$tool.console(url);
         }
 
       },//点击下载

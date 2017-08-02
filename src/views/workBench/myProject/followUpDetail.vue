@@ -12,7 +12,7 @@
           <el-button
             type="text"
             size="small"
-            class="item-edit1 item-right" style="line-height: 19px" @click="addFollow">
+            class="item-edit1 item-right" style="line-height: 19px" @click="addFollow(index)">
             修改
           </el-button>
           <!--<div >删除</div>-->
@@ -23,7 +23,7 @@
       <div class="followContent">
         <div class="followProject">
             <span>关联项目&nbsp;:&nbsp;</span>
-            <span style="max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">{{pro_id}}</span>
+            <span style="max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">{{pro_name}}</span>
             <span style="display: inline-block;margin-left: 150px">意向投资人&nbsp;:&nbsp;</span>
             <span>{{item.investor_name}}</span>
             <span class="followProject1" style="display: inline-block;line-height: 24px">{{item.schedule.schedule_name}}</span>
@@ -48,7 +48,7 @@
   </span>
       </el-dialog>
       <!--写跟进弹框-->
-      <addfollow :dialog-follow="dialogFollow" :followId="followId" @changeClose="closeFollow"></addfollow>
+      <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>
     </div>
   </div>
 </template>
@@ -65,18 +65,26 @@ export default {
   components: {
     addfollow
   },
-  props: ["proid"],
+  props: ["proid","proName"],
   data () {
     return {
       dialogFollow:false,//控制写跟进弹框
       pro_id: this.proid,
+      pro_name:"",//关联项目
       loading:false,//加载
-      content:{},
+      content:{},//跟进记录数据
       dialogVisible: false,
-      followId:'',
+      followId:'',//删除跟进记录id
+      followid:'',//编辑跟进记录id
     }
   },
   methods: {
+    upload(){
+//      let file_id =file_id;
+//
+//      window.location.href=url;
+
+    },
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
@@ -97,8 +105,10 @@ export default {
         this.dialogVisible  = true;
         this.followId=this.content[index].follow_id;
     },//获取删除记录id
-    addFollow(){
+    addFollow(index){
       this.dialogFollow=true;
+      this.followid=this.content[index].follow_id;
+      this.$tool.console(this.followid);
     },//点击写跟近按钮
     closeFollow(msg){
       this.dialogFollow=msg;
@@ -113,12 +123,16 @@ export default {
       this.$tool.console('跟进记录详情列表')
       this.$tool.console(res)
      this.content=data;
-    })
+
+    })//获取跟进记录
   },
   watch : {
     proid : function(e){
-      this.pro_id=e;
-    },//获取项目id
+    this.pro_id=e;
+  },//获取项目id
+    proName : function(e){
+      this.pro_name=e;
+    },//获取关联项目
   }
 }
 </script>
