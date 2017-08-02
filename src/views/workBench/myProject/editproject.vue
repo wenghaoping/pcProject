@@ -1263,11 +1263,13 @@
         }
       },//期望融资,融资金额
       getProjectDetail () {
+        console.log("获取项目详情");
         this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
           .then(res => {
 
             this.uploadShow2.lists=[];
             let data = res.data.data;
+            console.log(data)
             this.area1Change(data.pro_area.pid);//设置市级
             this.setDateTime(data.pro_history_finance);//时间格式设置
             this.setDateTime2(data.pro_develop);//时间格式设置2
@@ -1946,7 +1948,7 @@
 
   /*全部保存按钮*/
       allSave(){
-
+        console.log("保存项目");
 //        if (this.planList.length === 0) this.fileMust = true;
 //        else this.fileMust = false;
         this.projectMust = !this.submitForm('project');
@@ -1972,7 +1974,6 @@
           let allData = {};
 
           this.$tool.setTag(this.project.tags_pro,this.tags.changepro);
-
           this.$tool.setTag(this.team.tags_team,this.tags.changeTeam);
           this.$tool.setTag(this.project.pro_source,this.tags.changesource);
 
@@ -2185,7 +2186,7 @@
     created(){
       this.loading = true;
       this.getprojectId();
-
+      this.$global.func.getWxProjectCategory();
       setTimeout(() =>{
         this.getWxProjectCategory();
         this.getProjectDetail();

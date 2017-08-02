@@ -230,6 +230,7 @@ const tool={
       duration:1000
     })
   },//警告弹窗,(黄色叹号)
+
 /*请求类*/
   getCity(data){
     let arr = [];
@@ -272,7 +273,16 @@ const tool={
       return arr
 
   },//获取领域
-
+  getTags_pro(data){
+    let arr = [];
+    for(let i=0; i<data.length; i++){
+      let obj = {};
+      obj.label = data[i].tag_name;
+      obj.value = data[i].tag_id;
+      arr.push(obj);
+    }
+    return arr
+  },//设置标签
 
 
 
