@@ -317,7 +317,7 @@
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"@changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :proName="pushName"   @changeClose="dialogVisiblechangeCloase"></projectpush2>
 
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
@@ -410,6 +410,8 @@
           value: '0',
           label: '删除'
         }],//更多的选项表单
+        pushId:'',//推送项目传值-项目ID
+        pushName:'',//推送项目传值-项目名称
       }
     },
     methods:{
@@ -437,6 +439,8 @@
         this.dialogFollow=msg;
       },//关闭添加跟进
       addprojectPush(index, row){
+        this.pushId=row.project_id;
+        this.pushName=row.pro_name;
         this.dialogPushVisible=true;
       },//点击项目推送
       dialogVisiblechangeCloase(msg){

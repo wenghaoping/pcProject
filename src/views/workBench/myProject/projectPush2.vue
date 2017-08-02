@@ -625,14 +625,18 @@
     });
   },
   created(){
-    //初始化数据
-    this.initData();
-    console.log(this.proid,this.proName)
+
   },
     watch:{
       proName : function(e){
         console.log(e)
         this.project_name=e;
+      },
+      proid:function(e){
+          this.project_id=e;
+      },
+      dialogPush:function(e){
+        this.initData();
       },
     }
 }
