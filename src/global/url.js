@@ -122,6 +122,7 @@ export default
   /*项目推送*/
   matchProject:'api/v/project/matchProject',//我的人脉-推送（模糊匹配我的项目）
   pushUser:'/api/v/project/pushUser',//我的人脉-推送（发送邮件）
+  pushProject:'/api/v/project/pushProject',//我的项目-推送(发送邮件)
   pushCount:'/api/v/project/pushCount',//推送剩余次数
   getConnectUserSortByMatch:'api/v/project/getConnectUserSortByMatch',//推送项目时获取我的人脉
   getAllConnectUserSortByMatch:'api/v/project/getAllConnectUserSortByMatch',//推送项目时获取全网人脉

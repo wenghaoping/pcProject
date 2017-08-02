@@ -18,15 +18,16 @@
 
       <!--推送人脉-->
       <el-form :inline="true" :model="investor" class="demo-form-inline pushInvestor" label-position="top">
-        <el-form-item label="推送人脉" >
+        <!--<el-form-item label="推送人脉" >
           <el-input style="width: 586px;" v-model="investor.name" placeholder="请输入您要推送的投资人"></el-input>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="推送人脉">
-          <el-select v-model="investor.name" filterable
+          <el-select v-model="allCheck" filterable
+                     style="width: 586px;"
                      remote placeholder="请输入您要推送的投资人"
                      multiple @remove-tag="removeTag"
                      :remote-method="remoteMethod"  popper-class="popper">
-            <el-option v-for="(item,index) in investor.name" :key="index" >
+            <el-option v-for="(item,index) in allCheck" :key="item.card.card_id" :label="item.card.user_real_name" :value="item.card.user_id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -249,14 +250,12 @@
 
       <!--标题和正文-->
       <el-form label-position="top" label-width="80px" ref="email" :model="email">
-        <el-form-item label="标题" prop="title"
-                      :rules="titleRule">
-          <el-input v-model="email.title" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="pushTitle" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
         </el-form-item>
-        <el-form-item label="正文"
-                      prop="main">
+        <el-form-item label="正文" prop="main">
           <el-input type="textarea"
-                    v-model="email.main"
+                    v-model="pushBody"
                     placeholder="请输入简要项目介绍，作为邮件正文，便于投资人快速了解项目"
                     :autosize="{ minRows: 4, maxRows: 7}"></el-input>
         </el-form-item>
@@ -360,11 +359,11 @@
       formLabelWidth: '74px',
       //可用推送次数
       pushCount:5,
-      //删除标签
-      removeTag(e){
-        //console.log(e);
-        this.projectRadio='';
-      },
+      //推送邮箱标题和正文
+      pushTitle:'',
+      pushBody:'',
+
+
       emailRule: {validator: checkEmail, trigger: 'blur'},
       titleRule: {validator: checkTitle, trigger: 'blur'},
       email:{
@@ -429,9 +428,17 @@
         }
       })
     },
+    //重置我的人脉,全网人脉,选中的我的人脉,选中的全网人脉,可用推送次数数据
+    initData(){
+      this.getMyContacts();
+      this.getNetContacts();
+      this.getPushCount();
+      this.myContactsCheck=[];
+      this.netContactsCheck=[];
+    },
     //选项卡切换
     handleClick(tab, event) {
-      //console.log(tab, event);
+      console.log(tab, event);
     },
     //控制列表颜色
     tableRowClassName(row, index) {
@@ -482,10 +489,12 @@
     tableCheck1(val){
       console.log(val)
       this.myContactsCheck=val;
+      console.log(this.allCheck)
     },
     //全网人脉表单选择
     tableCheck2(val){
       this.netContactsCheck=val;
+      console.log(this.allCheck)
     },
     //预览
     preview(){
@@ -493,23 +502,75 @@
     },
     //推送
     push(){
-
+      let dealData=[]
+      this.allCheck.forEach(x=>{
+        if(x.type==='card'){
+          dealData.push([x.card.card_id,x.type,x.card.user_email])
+        }else{
+          dealData.push([x.card.user_id,x.type,x.card.user_email])
+        }
+      })
+      console.log(dealData)
+      if(dealData.length===0){
+        this.$tool.error('请选择推送人脉')
+      }else if(dealData.length>this.pushCount){
+        console.log(dealData.length,this.pushCount)
+        this.$tool.error('推送人数不能超过今日剩余推送次数')
+      }else{
+        this.$http.post(this.URL.pushProject,{
+          user_id:localStorage.user_id,
+          project_id:this.project_id,
+          title:this.pushTitle,
+          body:this.pushBody,
+          receives:dealData
+        }).then(res=>{
+          if(res.data.status_code===2000000){
+            this.$tool.success('推送成功');
+            this.initData();
+          }
+        })
+      }
     },
-    //推送人脉搜索
+    /*//推送人脉搜索
     remoteMethod(query) {
       if (query !== '') {
         this.load = true;
         setTimeout(() => {
           this.load = false;
-          this.projectAll = this.list.filter(item => {
+          this.myContacts = this.list.filter(item => {
             return item.label.toLowerCase()
                 .indexOf(query.toLowerCase()) > -1;
           });
         }, 200);
       } else {
-        this.projectAll = [];
+        this.myContacts = [];
       }
+    },*/
+    //项目搜索
+    remoteMethod(query) {
+      this.loading=true;
+      this.$http.post(this.URL.matchProject,{
+        user_id: localStorage.user_id,
+        card_id: this.user.card_id,
+        pro_intro: query})
+      .then(res=>{
+        let data = res.data.data;
+//          this.$tool.console(data.projects);
+        this.tableData3=data.projects;
+        this.projectAll=this.setProjectAll(data.projects);
+        this.loading=false;
+      })
+      .catch(err =>{
+        this.$tool.console(err,2);
+        this.loading=false;
+      })
     },
+    //删除标签
+    removeTag(e){
+      //console.log(e);
+
+    },
+
     getIntroduce(id){
       this.projectList=[];
         let arr = this.tableData3;
@@ -534,27 +595,20 @@
       this.$emit('changeClose',false);
     },
   },
+  computed:{
+    allCheck(){
+      var allCheck=[];
+      return allCheck.concat(this.myContactsCheck,this.netContactsCheck)
+    }
+  },
   mounted() {
     this.list = this.states.map(item => {
       return { value: item, label: item };
     });
   },
   created(){
-    //获取全网人脉和我的人脉数据和可用推送次数
-    this.getMyContacts();
-    this.getNetContacts();
-//    this.getPushCount();
-  },
-  watch : {
-    projectRadio : function(e){
-      this.getIntroduce(e);
-    },
-    userMessage : function (e) {
-      this.user=this.userMessage;
-    },
-    userEmail : function (e) {
-      this.email2.nameEmail=this.userEmail;
-    },
+    //初始化数据
+    this.initData();
   },
 }
 </script>
