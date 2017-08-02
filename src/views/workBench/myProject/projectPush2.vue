@@ -6,7 +6,7 @@
       <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
         <div class="title fl">项目推送</div>
-        <div class="lost fl">今日剩余推送<i>5</i>次</div>
+        <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
         <div class="img fl"><img src="../../../assets/images/why.png"></div>
       </span>
 
@@ -21,6 +21,15 @@
         <el-form-item label="推送人脉" >
           <el-input style="width: 586px;" v-model="investor.name" placeholder="请输入您要推送的投资人"></el-input>
         </el-form-item>
+        <el-form-item label="推送人脉">
+          <el-select v-model="investor.name" filterable
+                     remote placeholder="请输入您要推送的投资人"
+                     multiple @remove-tag="removeTag"
+                     :remote-method="remoteMethod"  popper-class="popper">
+            <el-option v-for="(item,index) in investor.name" :key="index" >
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button style="margin-top: 25px;" type="primary" @click="customerAdd">自定义添加</el-button>
         </el-form-item>
@@ -33,11 +42,12 @@
             <el-table
               v-loading="loading"
               element-loading-text="拼命加载中"
-              ref="multipleTable"
+              ref="myContacts"
               :data="myContacts"
               tooltip-effect="dark"
               style="width: 100%;font-size: 12px;"
               max-height="430"
+              @selection-change="tableCheck1"
               :row-class-name="tableRowClassName">
               <el-table-column type="selection" width="64"></el-table-column>
               <!--姓名-->
@@ -137,11 +147,12 @@
             <el-table
               v-loading="loading"
               element-loading-text="拼命加载中"
-              ref="multipleTable"
+              ref="netContacts"
               :data="netContacts"
               tooltip-effect="dark"
               style="width: 100%;font-size: 12px;"
               max-height="430"
+              @selection-change="tableCheck2"
               :row-class-name="tableRowClassName">
               <el-table-column type="selection" width="64"></el-table-column>
               <!--姓名-->
@@ -254,15 +265,15 @@
       <!--按钮组-->
       <span slot="footer" class="dialog-footer">
         <el-button @click="preview">预览</el-button>
-        <el-button type="primary" @click="push(1)">推送</el-button>
+        <el-button type="primary" @click="push">推送</el-button>
       </span>
 
       <!--自定义添加-->
       <!--<customeraddcontacts :dialog-form-visible="dialogFormVisible"></customeraddcontacts>-->
 
       <!--自定义添加2-->
-      <el-dialog class="customerAddForm" ref="customerAddForm" title="自定义添加" :visible.sync="dialogFormVisible" :modal='false' size="full" :close-on-click-modal="false">
-        <el-form :model="customerAddForm">
+      <el-dialog class="customerAddForm"  title="自定义添加" :visible.sync="dialogFormVisible" :modal='false' size="full" :close-on-click-modal="false">
+        <el-form :model="customerAddForm" ref="customerAddForm">
           <el-form-item label="邮箱"
                         :label-width="formLabelWidth"
                         prop="email"
@@ -326,10 +337,15 @@
       project_id:this.proid,
       close:false,//默认关闭
       activeName: 'myContacts',
-      myContacts:[],//我的人脉数据
-      netContacts:[],//全网人脉数据
-      myContactsCheck:'',
-      loading: false,//加载动画
+      //我的人脉数据
+      myContacts:[],
+      //全网人脉数据
+      netContacts:[],
+      //选中的我的人脉数据
+      myContactsCheck:[],
+      //选中的全网人脉数据
+      netContactsCheck:[],
+      loading: false,
       //控制自定义添加显示和隐藏
       dialogFormVisible:false,
       //自定义添加表单数据
@@ -342,6 +358,13 @@
         career:'',
       },
       formLabelWidth: '74px',
+      //可用推送次数
+      pushCount:5,
+      //删除标签
+      removeTag(e){
+        //console.log(e);
+        this.projectRadio='';
+      },
 
       emailRule: {validator: checkEmail, trigger: 'blur'},
       titleRule: {validator: checkTitle, trigger: 'blur'},
@@ -397,6 +420,16 @@
         }
       })
     },
+    //获取可用推送次娄
+    getPushCount(){
+      this.$http.post(this.URL.pushCount,{
+        user_id:localStorage.user_id
+      }).then(res=>{
+        if(res.data.status_code===2000000){
+          this.pushCount=res.data.data.push_count.remain_times;
+        }
+      })
+    },
     //选项卡切换
     handleClick(tab, event) {
       //console.log(tab, event);
@@ -423,6 +456,8 @@
       var form=this.customerAddForm;
       if(!form.email){
         this.$tool.error('请输入邮箱')
+      }else if(!this.$tool.checkEmail(form.email)){
+        this.$tool.error('请正确输入邮箱')
       }else{
         this.$http.post(this.URL.createUserCard,{
           user_id:localStorage.user_id,
@@ -435,17 +470,33 @@
         }).then(res=>{
           console.log(res)
           if(res.data.status_code===2000000){
+            this.$refs['customerAddForm'].resetFields();
             this.dialogFormVisible=false;
             this.getMyContacts();
             this.getNetContacts();
+            this.getPushCount();
           }
         })
       }
     },
-
+    //我的人脉表单选择
+    tableCheck1(val){
+      console.log(val)
+      this.myContactsCheck=val;
+    },
+    //全网人脉表单选择
+    tableCheck2(val){
+      this.netContactsCheck=val;
+    },
+    //预览
     preview(){
       this.$emit('changeall',false);
     },
+    //推送
+    push(){
+
+    },
+    //推送人脉搜索
     remoteMethod(query) {
       if (query !== '') {
         this.load = true;
@@ -483,9 +534,6 @@
     handleClose(){
       this.$emit('changeClose',false);
     },
-
-
-
   },
   mounted() {
     this.list = this.states.map(item => {
@@ -493,9 +541,10 @@
     });
   },
   created(){
-    //获取全网人脉和我的人脉数据
+    //获取全网人脉和我的人脉数据和可用推送次数
     this.getMyContacts();
     this.getNetContacts();
+//    this.getPushCount();
   },
   watch : {
     projectRadio : function(e){
