@@ -45,7 +45,7 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
-                        label="姓名"
+                        label="*姓名"
                         prop="user_real_name" :rules="nullRule">
                         <el-input v-model="contacts.user_real_name" placeholder="请输入姓名"></el-input>
                       </el-form-item>
@@ -414,21 +414,26 @@ export default {
       this.$tool.error("上传失败,请联系管理员")
     },//上传失败
     planRemove(file, fileList) {
-      if (fileList.length == 0) this.planButton = true;
-      else this.planButton = true;
-      if(this.card_id=='creat') this.card_id=0;
-      this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
-        .then(res => {
-          if (res.status === 200) {
-            this.planList=[];
-            this.loading = false;
-            this.$tool.success("删除成功");
-          }
-        })
-        .catch(err => {
-          this.$tool.console(err);
-          this.$tool.error("删除失败,请联系管理员");
-        })
+      if(file){
+        if (fileList.length == 0) this.planButton = true;
+        else this.planButton = true;
+        if(this.card_id=='creat') this.card_id=0;
+        this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id, card_id:this.card_id})
+          .then(res => {
+            if (res.status === 200) {
+              this.planList=[];
+              this.loading = false;
+              this.$tool.success("删除成功");
+            }
+          })
+          .catch(err => {
+            this.$tool.console(err);
+            this.$tool.error("删除失败,请联系管理员");
+          })
+      }else{
+          this.planButton=true;
+      }
+
 
     },//删除文件
     addplan(image_id) {
@@ -442,7 +447,7 @@ export default {
       this.uploadDate.card_id = this.card_id;
       let filetypes=[".jpg",".png",".jpeg"];
       let name=file.name;
-      let fileend=name.substring(name.lastIndexOf("."));
+      let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
       let isnext = false;
       if(filetypes && filetypes.length>0){
         for(var i =0; i<filetypes.length;i++){
@@ -469,19 +474,24 @@ export default {
     /*添加人脉标签*/
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e,this.tags_con);
-      if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
-          .then(res => {
-            let newState = {};
-            newState.label = tagName;
-            newState.value = res.data.tag_id;
-            this.tags.changecont.push(newState);
-          })
-          .catch(err => {
-            this.$tool.error("添加失败");
-            this.$tool.console(err);
-          })
-      }
+        if (tagName != undefined) {
+          if(tagName.length>40){
+            this.$tool.error("最多输入40个字");
+            this.contacts.user_invest_tag.pop();
+          }else {
+            this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
+              .then(res => {
+                let newState = {};
+                newState.label = tagName;
+                newState.value = res.data.tag_id;
+                this.tags.changecont.push(newState);
+              })
+              .catch(err => {
+                this.$tool.error("添加失败");
+                this.$tool.console(err);
+              })
+            }
+        }
     },//添加人脉标签
     checkPhoneNumber(value){
       let check=false;
@@ -517,9 +527,40 @@ export default {
       return check;
     },//邮箱验证高级版
     allSave(){
+        this.loading=true;
         let contacts=this.submitForm('contacts');
         let contacts1=this.submitForm('contacts1');
         let contacts2=this.submitForm('contacts2');
+/*      console.log(contacts);
+      console.log(contacts1);
+      console.log(contacts2);*/
+
+/*      this.$refs['contacts'].validate((valid) => {
+        if (valid) {
+          console.log(true)
+          console.log('true')
+        } else {
+          console.log('false')
+          return false;
+        }
+      });
+      this.$refs['contacts1'].validate((valid) => {
+        if (valid) {
+          console.log(true)
+          console.log('true')
+        } else {
+          console.log('false')
+          return false;
+        }
+      });
+      this.$refs['contacts2'].validate((valid) => {
+        if (valid) {
+          console.log('true')
+        } else {
+          console.log('false')
+          return false;
+        }
+      });*/
         if(this.$tool.getNull(this.contacts.user_real_name)) {this.$tool.error("姓名不能为空")}
         else if(!this.checkEmail(this.contacts.user_email)) {this.$tool.console("邮箱不过")}
         else if(!this.checkPhoneNumber(this.contacts.user_mobile)) {this.$tool.console("电话不过")}
@@ -529,13 +570,13 @@ export default {
       else{
 
           this.$tool.setTag(this.contacts.user_invest_tag,this.tags.changecont);
-          let allData=new Object;
+          let allData={};
           allData=this.contacts;
           allData.user_id=localStorage.user_id;
           allData.card_id=this.contacts.card_id || '';
           allData.image_id=this.uploadShow.image_id || '';
-          this.$tool.console(this.$tool.getToObject(allData),2);
-          this.$http.post(this.URL.createUserCard, allData)
+          this.$tool.console(allData);
+          /*this.$http.post(this.URL.createUserCard, allData)
             .then(res => {
               this.card_id=res.data.card_id;
               this.loading=false;
@@ -544,9 +585,9 @@ export default {
             .catch(err => {
               this.$tool.error("编辑失败");
               this.$tool.console(err);
-            })
+              this.loading=false;
+            })*/
         }
-
     },//保存人脉
 
     /*编辑成功弹窗*/
@@ -621,6 +662,7 @@ export default {
       arr.forEach((x)=> {
         newArr.push(x.area_id);
       });
+      console.log(newArr)
       return newArr
     },//资源提供或者寻求处理
     setTag(arr){
@@ -671,7 +713,7 @@ export default {
   },
   created(){
     this.getContactsId();
-
+    this.$global.func.getWxProjectCategory();
     setTimeout(() =>{
       this.getWxProjectCategory();
       if(this.card_id!='creat') this.getOneUserInfo();

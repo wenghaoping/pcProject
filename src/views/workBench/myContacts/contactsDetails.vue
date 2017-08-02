@@ -12,10 +12,13 @@
             <div class="item" style="margin-bottom: 55px;">
               <div class="title">{{contacts.card_nickname}}</div>
             </div>
-            <div class="header fr">
+            <div class="header fr" v-if="contacts.user_avatar_url!=''">
               <img :src="contacts.user_avatar_url">
             </div>
-            <div class="item com"><img src="../../../assets/images/company.png">{{contacts.user_company_name}} | {{contacts.user_brand}}</div>
+            <div class="header fr" v-else>
+              <img src="../../../assets/images/logo.png">
+            </div>
+            <div class="item com"><img src="../../../assets/images/company.png">{{contacts.user_company_name}}<span v-if="contacts.user_company_name!=''"> | </span>{{contacts.user_brand}}</div>
             <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.user_mobile}}</div>
             <div class="item com" style="width: 780px;">
               <img src="../../../assets/images/email.png">{{contacts.user_email}}
@@ -698,6 +701,11 @@
           data.user_resource_find = this.set_GiveFind(data.user_resource_find);
           data.user_resource_give = this.set_GiveFind(data.user_resource_give);
           data.project_case = this.setProjectCase(data.project_case);
+          data.user_email=data.user_email || '暂无填写';
+          data.user_company_name=data.user_company_name || '暂无填写';
+          data.user_brand=data.user_brand || '暂无填写';
+          data.user_company_career=data.user_company_career || '暂无填写';
+          data.user_mobile=data.user_mobile || '暂无填写';
           if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
             this.user_invest=false;//投资需求
           }else{
@@ -731,17 +739,23 @@
       addChangeTag(e){
         let tagName = this.$tool.checkArr(e, this.addTags);
         if (tagName != undefined) {
-          this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
-          .then(res => {
-            let newState = {};
-            newState.label = tagName;
-            newState.value = res.data.tag_id;
-            this.tags.changecont.push(newState);
-          })
-          .catch(err => {
-            this.$tool.error("添加失败");
-            this.$tool.console(err);
-          })
+          if(tagName.length>40){
+            this.$tool.error("最多输入40个字");
+            this.contacts.user_invest_tag.pop();
+          }else {
+            this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
+              .then(res => {
+                let newState = {};
+                newState.label = tagName;
+                newState.value = res.data.tag_id;
+                this.tags.changecont.push(newState);
+              })
+              .catch(err => {
+                this.$tool.error("添加失败");
+                this.$tool.console(err);
+              })
+          }
+
         }
       },//添加项目标签
       addTag(){

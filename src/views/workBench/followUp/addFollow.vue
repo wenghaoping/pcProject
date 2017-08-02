@@ -349,7 +349,7 @@
         this.num++;
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
         let name=file.name;
-        let fileend=name.substring(name.lastIndexOf("."));
+        let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
         let isnext = false;
         if(filetypes && filetypes.length>0){
           for(var i =0; i<filetypes.length;i++){
@@ -557,6 +557,7 @@
 
     },
     created(){
+      this.$global.func.getWxProjectCategory();
       this.getScheduleName();
       this.setFileType();
 

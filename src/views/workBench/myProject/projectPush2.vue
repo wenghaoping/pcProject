@@ -495,8 +495,8 @@
   },
   created(){
     //获取全网人脉和我的人脉数据
-    this.getMyContacts();
-    this.getNetContacts();
+//    this.getMyContacts();
+//    this.getNetContacts();
   },
   watch : {
     projectRadio : function(e){
