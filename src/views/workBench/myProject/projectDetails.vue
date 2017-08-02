@@ -257,7 +257,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id">
+              <folowup :proid="project.project_id" :proName="project.pro_name">
 
               </folowup>
             </el-tab-pane>
@@ -400,17 +400,10 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
-<<<<<<< HEAD
-                          <button class="button fl">
-                            <div class="img1" @click="industryPush(projectMatchInvestor)"><img src="../../../assets/images/tuisong.png"></div>推送</button>
-                          <button class="button fl">
-                            <div class="img1" @click="industryDelete(projectMatchInvestor)"><img src="../../../assets/images/yichu.png"></div>移除</button>
-=======
                           <button class="button fl" @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
->>>>>>> bc01609bfa2b38a4e90bd4dc05938494ea89f86f
                         </div>
 
                         <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
@@ -419,9 +412,6 @@
                       </div>
 
                     </div>
-<<<<<<< HEAD
-
-=======
                     <el-pagination
                       class="pagination fr"
                       small
@@ -432,7 +422,6 @@
                       :page-size="5"
                       :total="totalInvestors">
                     </el-pagination>
->>>>>>> bc01609bfa2b38a4e90bd4dc05938494ea89f86f
                   </div>
                 </div>
               </div>
@@ -790,7 +779,7 @@
       addFollow(){
         this.dialogFollow=true;
         this.projecmessage.project_id=this.project.project_id;
-        this.projecmessage.project_name=this.project.pro_intro;
+        this.projecmessage.project_name=this.project.pro_name;
       },//点击写跟近按钮
       closeFollow(msg){
         this.dialogFollow=msg;

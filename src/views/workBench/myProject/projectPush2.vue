@@ -307,7 +307,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import customeraddcontacts from '../../../components/customerAddContacts.vue'
+  import customerAddContacts from '../../../components/customerAddContacts.vue'
   export default {
   props: ["dialogPush",'proid','proname'],
   data () {
@@ -365,7 +365,6 @@
         //console.log(e);
         this.projectRadio='';
       },
-
       emailRule: {validator: checkEmail, trigger: 'blur'},
       titleRule: {validator: checkTitle, trigger: 'blur'},
       email:{
@@ -390,7 +389,7 @@
       },
     }
   },
-  components:{customeraddcontacts},
+  components:{customerAddContacts},
   methods: {
     //获取我的人脉数据
     getMyContacts(){
