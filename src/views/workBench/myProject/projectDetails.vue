@@ -180,10 +180,10 @@
                                     </div>-->
                     <div class="v-progress-table">
                       <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
-                    <span class="radio_line">
+                      <span class="radio_line">
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
-                    </span>
+                      </span>
                         <span class="pro-txt-1">{{finance.finance_time}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
@@ -495,7 +495,7 @@
         dialogSearchVisible:false,//公司搜索弹框
         dialogPushVisible:false,//项目推送入口弹框
         dialogConVisible:false ,//人脉详情弹窗
-        dialogConVisible2:false,//项目详情弹窗
+        dialogConVisible2:true,//项目详情弹窗
         searchName:"",
         form: {
           name: '',
