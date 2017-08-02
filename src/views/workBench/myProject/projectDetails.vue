@@ -452,8 +452,7 @@
     <!--人脉详情弹窗-->
     <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid" v-on:changeCon="dialogConchange"></alertcontactsdetail>
 
-    <!--项目详情弹窗-->
-    <alertprojectdetail :dialog-con-visible2="dialogConVisible2" :proid="project.project_id" v-on:changeCon2="dialogConchange2"></alertprojectdetail>
+
 
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>

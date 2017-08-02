@@ -330,8 +330,10 @@
       </span>
     </el-dialog>
 
-    项目详情弹窗
-    <alertprojectdetail :dialog-pro-visible="dialogVisiblePro" v-on:changeall="dialogVisiblechangeIn" :proid="pro_id"></alertprojectdetail>
+   <!--&lt;!&ndash;// 项目详情弹窗&ndash;&gt;-->
+    <!--<alertprojectdetail :dialog-pro-visible="dialogVisiblePro" v-on:changeall="dialogVisiblechangeIn" :proid="pro_id"></alertprojectdetail>-->
+    <!--项目详情弹窗-->
+    <alertprojectdetail :dialog-visible-pro="dialogVisiblePro" :proid="pro_id" v-on:changeCon2="dialogVisiblechangeIn"></alertprojectdetail>
 
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow" :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
@@ -345,7 +347,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import alertprojectdetail from './alertProjectDetail.vue'
+  import alertprojectdetail from '../../../components/alertProjectDetail.vue'
   import projectpush from './projectPush.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpreview from './projectPreview.vue'
