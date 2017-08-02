@@ -293,7 +293,7 @@
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-
+        <button class="btn" @click="addFollow">添加意向项目</button>
       </div>
     </div>
 
@@ -479,7 +479,6 @@
 
            }*/
         ],
-
       }
     },
     methods: {
@@ -979,7 +978,6 @@
           this.$tool.error("加载超时");
         })
       },//筛选意向项目
-
       /*设置匹配项目(右边)*/
       getInvestorsMatchProjects(){
         this.loading=true;
@@ -1077,7 +1075,6 @@
           });
         });
       },//移除匹配
-
     },
     created(){
       this.getUserId();
