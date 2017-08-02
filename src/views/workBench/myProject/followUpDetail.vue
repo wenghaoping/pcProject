@@ -79,12 +79,17 @@ export default {
     }
   },
   methods: {
-    upload(){
-//      let file_id =file_id;
-//
-//      window.location.href=url;
-
-    },
+    getData(){
+        this.$http.post(this.URL.getProjectFollowList,{
+          user_id:localStorage.user_id,
+          project_id:this.pro_id,
+        }).then(res=>{
+          let data = res.data.data;
+          this.$tool.console('跟进记录详情列表')
+          this.$tool.console(res)
+          this.content=data;
+        })//获取跟进记录
+      },
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
@@ -99,6 +104,7 @@ export default {
           follow_id:this.followId
       }).then(res=>{
          this.$tool.success('删除成功');
+         this.getData();
       })
     },//删除跟进记录
     deleteFollowId(index){
@@ -108,23 +114,14 @@ export default {
     addFollow(index){
       this.dialogFollow=true;
       this.followid=this.content[index].follow_id;
-      this.$tool.console(this.followid);
+      this.getData();
     },//点击写跟近按钮
     closeFollow(msg){
       this.dialogFollow=msg;
     },//关闭添加跟进
   },
   created(){
-   this.$http.post(this.URL.getProjectFollowList,{
-      user_id:localStorage.user_id,
-      project_id:this.pro_id,
-    }).then(res=>{
-     let data = res.data.data;
-      this.$tool.console('跟进记录详情列表')
-      this.$tool.console(res)
-     this.content=data;
-
-    })//获取跟进记录
+    this.getData()
   },
   watch : {
     proid : function(e){
