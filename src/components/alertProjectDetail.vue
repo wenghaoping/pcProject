@@ -1,6 +1,6 @@
 <template>
   <div id="alertProjectDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <el-dialog :visible="dialogConVisible2"  :before-close="handleClose" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="dialogVisiblePro"  :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <!--弹窗上半部分-->
       <div class="up-floor item-lists item-lists-top clearfix" style="background: white;">
         <div class="item-lists-inner-left">
@@ -35,6 +35,7 @@
             </span>
           </div>
           <div class="onlyone">
+            <img v-if="project.is_exclusive==0" src="../assets/images/onlyonedark.png"/>
             <img v-if="project.is_exclusive==1" src="../assets/images/onlyonedark.png"/>
             <img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>
           </div>
@@ -223,7 +224,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["dialogConVisible2","proid"],
+    props: ["dialogVisiblePro","proid"],
     data () {
       return {
         loading:false,//加载动画
@@ -415,7 +416,7 @@
     methods: {
       //关闭弹窗
       handleClose(){
-        this.$emit('changeCon2', false)
+        this.$emit('changeCon2', false);
       },
       //获取项目详情数据
       getProjectDetail () {
@@ -466,7 +467,9 @@
       this.getProjectDetail();
     },
     watch : {
-
+      dialogVisiblePro : function (e) {
+        console.log(e)
+      }
     }
   }
 </script>
@@ -482,7 +485,7 @@
       .el-dialog__headerbtn{
         width: 30px;
         height: 30px;
-        margin-right: -65px;
+        margin-right: -60px;
         i{
           width: 100%;
           height: 100%;

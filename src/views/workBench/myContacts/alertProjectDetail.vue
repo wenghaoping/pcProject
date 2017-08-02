@@ -1,6 +1,6 @@
 <template>
     <div id="alertProjectDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-      <!--===========================================项目详情弹窗=============================================-->
+      <!--//项目详情弹窗-->
       <el-dialog :visible="dialogProVisible" custom-class="dialogPro" :before-close="handleClose" close-on-press-escape close-on-click-modal>
         <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisibleTo">取 消</el-button>
@@ -12,7 +12,7 @@
 
 <script type="text/ecmascript-6">
 export default {
-  props: ["dialogProVisible","proid"],
+  props: ["dialogConVisible2","proid"],
   data () {
     return {
       loading:false,
