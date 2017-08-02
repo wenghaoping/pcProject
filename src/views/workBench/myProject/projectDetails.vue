@@ -1313,10 +1313,7 @@
           })
       },//控制买家图谱页码
       industryPush(data){
-      
-      },//买家图谱推送
-      industryDelete(data){},//买家图谱人脉删除
-        this.dialogPushVisible=true;
+
       },//买家图谱推送
       industryDelete(data){
         let delData = new Object;
