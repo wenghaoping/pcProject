@@ -400,17 +400,18 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8edd67e16eb4a2aab86337bb64d7372c3de77934
                           <button class="button fl" @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
-
                         <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
                         <div class="imgText" v-else>{{projectMatchInvestor.investor_logo_text}}</div>
-
                       </div>
-
                     </div>
                     <el-pagination
                       class="pagination fr"
@@ -693,7 +694,7 @@
         value1:'',////一键尽调边上绑定是数据
         value: 1,
         status_name:'',//一键尽调边上那个按钮线里的字
-        activeName:'2',
+        activeName:'1',
         tabs:true,//标签切换
         currentPage:1,//当前第几页(意向投资人)
         totalData:0,//总数(意向投资人)
@@ -920,7 +921,7 @@
       },//获取项目详情数据
       getWxProjectCategory(){
         this.schedule = this.$global.data.schedule;//设置项目跟进状态
-        this.follow_schedule = this.$global.data.follow_schedule.slice(0);//设置项目状态
+        this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
         this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
         this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
       },//获取所有下拉框的数据

@@ -177,7 +177,8 @@
             <el-table-column prop="login_time" label="最近活跃" show-overflow-tooltip
                              width="100"
                              column-key="login_time"
-
+                             :filters="created_atFilters"
+                             :filter-multiple="stateCheck"
                              sortable="custom">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.login_time.length > 4 ? false:true">
@@ -227,6 +228,16 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="timeCheck">
+            <el-date-picker
+              v-model="timeSelect"
+              type="date"
+              placeholder="选择日期"
+              :editable="false"
+              @change="timeChange"
+              :picker-options="pickerOptions">
+            </el-date-picker>
+          </div>
           <div class="pagenav" v-if="totalData>10">
             <el-pagination
               small
@@ -334,6 +345,14 @@ export default {
         card_id:''//人脉id
       },
       multiplelimit:5,//标签控制5个
+      timeSelect:'',//时间选择器
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now() - 8.64e7+3600 * 1000 * 24;
+        }
+      },
+      created_atFilters:[],//更近时间选择
+      stateCheck:false,//跟进状态单选
 
 
     }
@@ -439,7 +458,25 @@ export default {
           this.$tool.console(err,2)
         })
     },//搜索===首次进入页面加载的数据
+    timeChange(time){
+        console.log(time)
+      this.loading=true;
+      this.currentPage=1;
+      this.getPra.created_at_time=time;
+      console.log(this.getPra)
+      this.$http.post(this.URL.getConnectUser,this.getPra)
+        .then(res=>{
+          let data = res.data.data;
+          this.tableData=this.getProjectList(data);
 
+          this.totalData=res.data.count;
+          this.loading=false;
+        })
+        .catch(err=>{
+          this.loading=false;
+          this.$tool.console(err,2)
+        })
+    },//筛选时间
     filterChange(filters){
       this.loading=true;
       this.currentPage=1;

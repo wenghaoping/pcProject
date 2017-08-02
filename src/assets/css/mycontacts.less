@@ -15,6 +15,23 @@
     background: #fff;
 
     .top-lists{
+      position: relative;
+      .el-input__icon+.el-input__inner{
+        padding-right: 0px;
+      }
+      .timeCheck{
+        cursor: pointer;
+        position: absolute;
+        opacity: 0;
+        top: 6px;
+        right: 135px;
+        .el-input{
+          width: 30px;
+        }
+        .el-input__icon{
+          display: none;
+        }
+      }
       .img{
         width: 36px;
         height: 36px;
