@@ -29,7 +29,7 @@
               <span class="flower" v-if="project.follow_up!=''">跟进人 : {{project.follow_up}}</span>
 
             </div>
-            <div class="item height" style="margin-top:18px;" v-if="project.pro_source!=''">
+            <div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">
               <span class="flower2">来源 : {{project.pro_source}}</span>
             </div>
             <div class="item height" style="margin-top:18px;    display: inline-block;">
@@ -400,10 +400,17 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
+<<<<<<< HEAD
+                          <button class="button fl">
+                            <div class="img1" @click="industryPush(projectMatchInvestor)"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+                          <button class="button fl">
+                            <div class="img1" @click="industryDelete(projectMatchInvestor)"><img src="../../../assets/images/yichu.png"></div>移除</button>
+=======
                           <button class="button fl" @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
+>>>>>>> bc01609bfa2b38a4e90bd4dc05938494ea89f86f
                         </div>
 
                         <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
@@ -412,6 +419,9 @@
                       </div>
 
                     </div>
+<<<<<<< HEAD
+
+=======
                     <el-pagination
                       class="pagination fr"
                       small
@@ -422,6 +432,7 @@
                       :page-size="5"
                       :total="totalInvestors">
                     </el-pagination>
+>>>>>>> bc01609bfa2b38a4e90bd4dc05938494ea89f86f
                   </div>
                 </div>
               </div>
@@ -458,7 +469,11 @@
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proname="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+
+    <!--自定义添加-->
+    <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
+
   </div>
 </template>
 
@@ -471,10 +486,12 @@
   import alertprojectdetail from '../../../components/alertProjectDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
+  import customerAddContacts from '../../../components/customerAddContacts.vue'
 
   export default {
     data(){
       return {
+        dialogFormVisible:true,
         companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
         cardid:"",//人脉详情弹框用(点击的那个人的cardid)
@@ -687,7 +704,7 @@
         value1:'',////一键尽调边上绑定是数据
         value: 1,
         status_name:'',//一键尽调边上那个按钮线里的字
-        activeName:'1',
+        activeName:'2',
         tabs:true,//标签切换
         currentPage:1,//当前第几页(意向投资人)
         totalData:0,//总数(意向投资人)
@@ -762,7 +779,8 @@
       alertcontactsdetail,
       alertprojectdetail,
       addfollow,
-      projectpush2
+      projectpush2,
+      customerAddContacts,
     },
     //Echart组件
     mounted(){

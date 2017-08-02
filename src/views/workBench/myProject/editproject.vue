@@ -2186,7 +2186,7 @@
     created(){
       this.loading = true;
       this.getprojectId();
-
+      this.$global.func.getWxProjectCategory();
       setTimeout(() =>{
         this.getWxProjectCategory();
         this.getProjectDetail();

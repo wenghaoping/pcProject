@@ -101,8 +101,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="preview">预览</el-button>
-        <el-button type="primary" @click="push(2)">继续推送</el-button>
-        <el-button type="primary" @click="push(1)">推送</el-button>
+        <el-button type="primary" @click="push()">推送</el-button>
       </span>
     </el-dialog>
 

@@ -34,11 +34,12 @@
             user_mobile:this.telephone,
             user_passwd:this.password,
           }).then(res=>{
-              this.$tool.console(res)
             if(res.data.status_code===2000000){
               //将user_id存入sessionStorge并跳转
               localStorage.user_id=res.data.user_id;
               localStorage.user_real_name=res.data.user_real_name;
+              //重新获取个人标签(因为获取个人标签必须要有user_id)
+              this.$global.func.getWxProjectCategory();
               this.$router.push({name:localStorage.entrance})
             }else{
                 this.$tool.error(res.data.error_msg)

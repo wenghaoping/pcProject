@@ -40,35 +40,35 @@
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/projectColl.png">项目库</span>
               </div>
-                  <div class="ul_lists clearfix" v-loading.body="loading1" element-loading-text="拼命加载中">
-                    <div class="list" v-for="projectList in projectLists" >
-                      <div class="li title">{{projectList.pro_intro}}</div>
-                      <div class="img" v-show="projectList.is_exclusive=='独家'"><img src="../../../assets/images/dujia.png"></div>
-                      <div class="img" v-show="projectList.is_exclusive=='非独家'"><img src="../../../assets/images/feidujia.png"></div>
-                      <div class="li">
-                        <span class="tags" v-for="industry in projectList.pro_industry">{{industry}}</span>
-                      </div>
-                      <div class="li" style="margin-top: 16px;">
-                        <span class="big-tag" v-show="projectList.pro_scale!='-'">{{projectList.pro_scale}}</span><span class="split"  v-show="projectList.pro_scale!='-'">｜</span>
-                        <span class="big-tag" v-show="projectList.pro_finance_stock_after!='-'">{{projectList.pro_finance_stock_after}}%</span><span class="split" v-show="projectList.pro_finance_stock_after!='-'">｜</span>
-                        <span class="big-tag" v-show="projectList.pro_stage!='-'">{{projectList.pro_stage}}</span><span class="split" v-show="projectList.pro_stage!='-'">｜</span>
-                        <span class="big-tag" v-show="projectList.pro_area!='-'">{{projectList.pro_area}}</span>
-                      </div>
-                    </div>
+              <div class="ul_lists clearfix" v-loading.body="loading1" element-loading-text="拼命加载中">
+                <div class="list" v-for="projectList in projectLists" >
+                  <div class="li title">{{projectList.pro_intro}}</div>
+                  <div class="img" v-show="projectList.is_exclusive=='独家'"><img src="../../../assets/images/dujia.png"></div>
+                  <div class="img" v-show="projectList.is_exclusive=='非独家'"><img src="../../../assets/images/feidujia.png"></div>
+                  <div class="li">
+                    <span class="tags" v-for="industry in projectList.pro_industry">{{industry}}</span>
                   </div>
-                  <el-pagination
-                    class="pagination fr"
-                    small
-                    @current-change="filterChangeCurrent"
-                    :current-page.sync="currentPage"
-                    layout="prev, pager, next"
-                    :page-size="10"
-                    :total="totalData"
-                    v-show="listShow">
-                  </el-pagination>
-                <span class="b-hander" @click="closeDiv('listShow')" v-show="listShow">收起</span>
-                <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow">展开</span>
+                  <div class="li" style="margin-top: 16px;">
+                    <span class="big-tag" v-show="projectList.pro_scale!='-'">{{projectList.pro_scale}}</span><span class="split"  v-show="projectList.pro_scale!='-'">｜</span>
+                    <span class="big-tag" v-show="projectList.pro_finance_stock_after!='-'">{{projectList.pro_finance_stock_after}}%</span><span class="split" v-show="projectList.pro_finance_stock_after!='-'">｜</span>
+                    <span class="big-tag" v-show="projectList.pro_stage!='-'">{{projectList.pro_stage}}</span><span class="split" v-show="projectList.pro_stage!='-'">｜</span>
+                    <span class="big-tag" v-show="projectList.pro_area!='-'">{{projectList.pro_area}}</span>
+                  </div>
+                </div>
               </div>
+              <el-pagination
+                class="pagination fr"
+                small
+                @current-change="filterChangeCurrent"
+                :current-page.sync="currentPage"
+                layout="prev, pager, next"
+                :page-size="10"
+                :total="totalData"
+                v-show="listShow">
+              </el-pagination>
+              <span class="b-hander" @click="closeDiv('listShow')" v-show="listShow">收起</span>
+              <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow">展开</span>
+            </div>
             <!--投资案例-->
             <div class="item" v-if="contacts.project_case.length!=0">
               <div class="block clearfix" style="margin-bottom: 33px;">
@@ -342,195 +342,195 @@
 </template>
 
 <script type="text/ecmascript-6">
-import alertprojectdetail from './alertProjectDetail.vue'
-import projectpush from './projectPush.vue'
-import addfollow from './../followUp/addFollow.vue'
-import projectpreview from './projectPreview.vue'
-export default {
-  data () {
-    return {
-      close:false,
-      /*设置标签*/
-      dialogVisibleTag:false,//标签弹框设置
-      dialogFollow:false,//添加更近弹框
-      dialogPreviewVisible:false,//项目预览弹窗
-      dialogPushVisible:false,//项目推送弹框设置
-      dialogVisiblePro:false,//控制项目详情弹窗
-      tagsValue:[],//标签弹框数据绑定
-      addTags:[{
-        value: '',
-        label: ''
-      }],//人脉标签展示数据
-      tags:{
-        changecont:[],//项目标签新增
-        index:'',//取数据保存的位置
-        card_id:''//人脉id
-      },
-      multiplelimit:5,//标签控制5个
-      contacts:{
-        card_id:'',//id那个人的card_id
-        user_id:'',//user_id那个人的userid
-        investor_id:'',//investor_id
-        user_real_name:'张三',//姓名
-        user_nickname:'昵称',//昵称
-        user_mobile:'18758307033',//名片手机号
-        user_email:'zhangsan@weitianshi.cn',//邮箱
-        user_company_name:'杭州投着乐网络科技有限公司 ',//公司名称
-        import_user_name:'',//来源
-        user_brand:'投着乐',//品牌
-        user_company_career:'投资经理',//职位
-        user_invest_tag:[],//人脉标签
-        user_avatar_url:'',//头像URL
-        user_invest_industry: [],//领域标签
-        user_invest_stage: [],//轮次
-        user_invest_scale: [],//投资金额
-        user_invest_area: {
-          area_id: '',
-          area_title: "",//市级
-          pid: ''//省级
-        },//所属地区1省级单位
-        user_intro:'',//个人描述
-        user_resource_give:[],//提供的资源
-        user_resource_find:[],//寻求对接的资源
-        user_invest_desc:'',//投资需求描述
-        user_resource_desc:'',//资源需求描述
-        project_case:[
+  import alertprojectdetail from './alertProjectDetail.vue'
+  import projectpush from './projectPush.vue'
+  import addfollow from './../followUp/addFollow.vue'
+  import projectpreview from './projectPreview.vue'
+  export default {
+    data () {
+      return {
+        close:false,
+        /*设置标签*/
+        dialogVisibleTag:false,//标签弹框设置
+        dialogFollow:false,//添加更近弹框
+        dialogPreviewVisible:false,//项目预览弹窗
+        dialogPushVisible:false,//项目推送弹框设置
+        dialogVisiblePro:false,//控制项目详情弹窗
+        tagsValue:[],//标签弹框数据绑定
+        addTags:[{
+          value: '',
+          label: ''
+        }],//人脉标签展示数据
+        tags:{
+          changecont:[],//项目标签新增
+          index:'',//取数据保存的位置
+          card_id:''//人脉id
+        },
+        multiplelimit:5,//标签控制5个
+        contacts:{
+          card_id:'',//id那个人的card_id
+          user_id:'',//user_id那个人的userid
+          investor_id:'',//investor_id
+          user_real_name:'张三',//姓名
+          user_nickname:'昵称',//昵称
+          user_mobile:'18758307033',//名片手机号
+          user_email:'zhangsan@weitianshi.cn',//邮箱
+          user_company_name:'杭州投着乐网络科技有限公司 ',//公司名称
+          import_user_name:'',//来源
+          user_brand:'投着乐',//品牌
+          user_company_career:'投资经理',//职位
+          user_invest_tag:[],//人脉标签
+          user_avatar_url:'',//头像URL
+          user_invest_industry: [],//领域标签
+          user_invest_stage: [],//轮次
+          user_invest_scale: [],//投资金额
+          user_invest_area: {
+            area_id: '',
+            area_title: "",//市级
+            pid: ''//省级
+          },//所属地区1省级单位
+          user_intro:'',//个人描述
+          user_resource_give:[],//提供的资源
+          user_resource_find:[],//寻求对接的资源
+          user_invest_desc:'',//投资需求描述
+          user_resource_desc:'',//资源需求描述
+          project_case:[
+            {
+              case_deal_time:1503936000,//时间
+              case_stage_name:"pre-A轮",//轮次
+              case_name:"第三个项目",//名称
+              case_money:'15800000',//钱
+              has_many_industry:'金融',//金融,人工智能
+              has_one_city:'北京',//地区
+            }
+          ],//投资案例
+        },//人脉参数
+        userMessage:{
+          user_real_name:'翁浩平',//姓名
+          user_company_career:'投资总监',//职位
+          user_company_name:'杭州投着乐网络科技有限公司',//公司名称
+        },//传递给推送的数据
+        userEmail:'',
+        loading:false,//加载动画
+        loading1:false,//加载动画2
+        listShow:false,//项目库
+        currentPage:1,//项目列表当前第几页
+        totalData:0,//项目列表总数
+        currentPage2:1,//意向项目当前第几页
+        totalData2:0,//意向项目总数
+        currentPage3:1,//匹配项目当前第几页
+        totalData3:0,//匹配项目总数
+        activeName:'1',
+
+        follow_schedule: [/*{
+         value: 1,
+         label: '项目推进中'
+         }*/],//项目跟进进度
+        follow_scheduleAll: [/*{
+         value: 1,
+         label: '项目推进中'
+         }*/],//项目跟进进度搜索用,多一个全部
+        searchSchedule:0,//意向项目的筛选进度
+        tabs:true,//标签切换
+        pro_id:'',//项目详情
+        getPra:{},//获取项目的请求参数
+        getConpro:{},//获取意向项目的请求参数
+        getMatchPro:{},//获取匹配项目
+        projectLists:[
           {
-            case_deal_time:1503936000,//时间
-            case_stage_name:"pre-A轮",//轮次
-            case_name:"第三个项目",//名称
-            case_money:'15800000',//钱
-            has_many_industry:'金融',//金融,人工智能
-            has_one_city:'北京',//地区
+            pro_intro:"暂无数据",
+            is_exclusive:"",
+            pro_industry:[],
+            pro_scale:"暂无数据",
+            pro_area:"暂无数据",
+            pro_stage:"暂无数据",
+            pro_finance_stock_after:"暂无数据"
           }
-        ],//投资案例
-      },//人脉参数
-      userMessage:{
-        user_real_name:'翁浩平',//姓名
-        user_company_career:'投资总监',//职位
-        user_company_name:'杭州投着乐网络科技有限公司',//公司名称
-      },//传递给推送的数据
-      userEmail:'',
-      loading:false,//加载动画
-      loading1:false,//加载动画2
-      listShow:false,//项目库
-      currentPage:1,//项目列表当前第几页
-      totalData:0,//项目列表总数
-      currentPage2:1,//意向项目当前第几页
-      totalData2:0,//意向项目总数
-      currentPage3:1,//匹配项目当前第几页
-      totalData3:0,//匹配项目总数
-      activeName:'1',
+        ],//展开收起项目列表
+        projectListsSmall:[],//默认2个的表
+        projectListsAll:[],//默认全部的表
+        chartData:{
+          going:'',
+          hold:'',
+          reject:''
+        },//图表的数据
+        enjoyProjects:[
+          /*{
+           area: "杭州",
+           follow_id: 87,
+           industry: "人工智能、大数据、理财、企业服务台",
+           is_exclusive: 1,
+           match: 0,
+           pro_finance_stock_after: "0.00",
+           pro_intro: "这是一个很好的项目，能来看看吗",
+           project_id: "RpAj48rx",
+           scale: "2000W-5000W",
+           schedule_id: 2,
+           stage:"IPO上市后"
+           }*/
+        ],
+        scheduleIndex:-1,//设置跟进状态的位置(单独需要)
+        chart:"",
+        chartCheck:true,//chart用的
+        user_invest:true,//投资需求
+        user_resource:true,//资源需求
+        matchProjects:[
+          /*          {
 
-      follow_schedule: [/*{
-        value: 1,
-        label: '项目推进中'
-      }*/],//项目跟进进度
-      follow_scheduleAll: [/*{
-        value: 1,
-        label: '项目推进中'
-      }*/],//项目跟进进度搜索用,多一个全部
-      searchSchedule:0,//意向项目的筛选进度
-      tabs:true,//标签切换
-      pro_id:'',//项目详情
-      getPra:{},//获取项目的请求参数
-      getConpro:{},//获取意向项目的请求参数
-      getMatchPro:{},//获取匹配项目
-      projectLists:[
-        {
-        pro_intro:"暂无数据",
-        is_exclusive:"",
-        pro_industry:[],
-        pro_scale:"暂无数据",
-        pro_area:"暂无数据",
-        pro_stage:"暂无数据",
-        pro_finance_stock_after:"暂无数据"
-        }
-      ],//展开收起项目列表
-      projectListsSmall:[],//默认2个的表
-      projectListsAll:[],//默认全部的表
-      chartData:{
-        going:'',
-        hold:'',
-        reject:''
-      },//图表的数据
-      enjoyProjects:[
-        /*{
-          area: "杭州",
-          follow_id: 87,
-          industry: "人工智能、大数据、理财、企业服务台",
-          is_exclusive: 1,
-          match: 0,
-          pro_finance_stock_after: "0.00",
-          pro_intro: "这是一个很好的项目，能来看看吗",
-          project_id: "RpAj48rx",
-          scale: "2000W-5000W",
-          schedule_id: 2,
-          stage:"IPO上市后"
-        }*/
-      ],
-      scheduleIndex:-1,//设置跟进状态的位置(单独需要)
-      chart:"",
-      chartCheck:true,//chart用的
-      user_invest:true,//投资需求
-      user_resource:true,//资源需求
-      matchProjects:[
-/*          {
+           }*/
+        ],
 
-        }*/
-      ],
-
-    }
-  },
-  methods: {
-
-    goBack(){
-      this.$router.push({name: 'myContacts'})//路由传参
-    },//返回上一层
-    goEdit(){
-      this.$router.push({name: 'createContacts', query: {card_id: this.contacts.card_id}})//路由传参
-    },//跳转到编辑页
-    openDiv(v){
-      this[v] = true;
-      this.projectLists=this.projectListsAll.slice(0);
+      }
     },
-    closeDiv(v){
-      this[v] = false;
-      this.projectLists=this.projectListsSmall.slice(0);
-    },
-    getUserId(){
-      this.contacts.user_id=this.$route.query.user_id;
-      this.contacts.card_id=this.$route.query.card_id;
-      this.tags.card_id=this.$route.query.card_id;
-    },//获取userid/card_id
-    handlePush(data){
-      this.userMessage.user_real_name=this.contacts.user_real_name;
-      this.userMessage.user_company_career=this.contacts.user_company_career;
-      this.userMessage.user_company_name=this.contacts.user_company_name;
-      this.userMessage.card_id=this.contacts.card_id;
-      this.userEmail=this.contacts.user_email;
-      this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
-      this.dialogPushVisible=true;
-    },//点击推送,并且传送数据给推送弹框
-    dialogVisiblechange(msg){
+    methods: {
+
+      goBack(){
+        this.$router.push({name: 'myContacts'})//路由传参
+      },//返回上一层
+      goEdit(){
+        this.$router.push({name: 'createContacts', query: {card_id: this.contacts.card_id}})//路由传参
+      },//跳转到编辑页
+      openDiv(v){
+        this[v] = true;
+        this.projectLists=this.projectListsAll.slice(0);
+      },
+      closeDiv(v){
+        this[v] = false;
+        this.projectLists=this.projectListsSmall.slice(0);
+      },
+      getUserId(){
+        this.contacts.user_id=this.$route.query.user_id;
+        this.contacts.card_id=this.$route.query.card_id;
+        this.tags.card_id=this.$route.query.card_id;
+      },//获取userid/card_id
+      handlePush(data){
+        this.userMessage.user_real_name=this.contacts.user_real_name;
+        this.userMessage.user_company_career=this.contacts.user_company_career;
+        this.userMessage.user_company_name=this.contacts.user_company_name;
+        this.userMessage.card_id=this.contacts.card_id;
+        this.userEmail=this.contacts.user_email;
+        this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
+        this.dialogPushVisible=true;
+      },//点击推送,并且传送数据给推送弹框
+      dialogVisiblechange(msg){
 //      this.dialogPushVisible=msg;
-      this.dialogPreviewVisible=true;
-    },//关闭推送弹框,打开预览弹框
-    dialogVisiblechangeCloase(msg){
-      this.dialogPushVisible=msg;
-    },//关闭项目推送弹窗
-    filterChangeCurrent(page){
-      this.getProjectList(page);
-    },//控制项目页码1
-    filterChangeCurrent1(page){
-      this.loading=true;
-      this.getConpro.user_id=localStorage.user_id;
+        this.dialogPreviewVisible=true;
+      },//关闭推送弹框,打开预览弹框
+      dialogVisiblechangeCloase(msg){
+        this.dialogPushVisible=msg;
+      },//关闭项目推送弹窗
+      filterChangeCurrent(page){
+        this.getProjectList(page);
+      },//控制项目页码1
+      filterChangeCurrent1(page){
+        this.loading=true;
+        this.getConpro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-      this.currentPage2=page;
-      this.getConpro.card_id=this.contacts.card_id;
-      this.getConpro.page=page;
-      this.getConpro.schedule_id='';
-      this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
+        this.currentPage2=page;
+        this.getConpro.card_id=this.contacts.card_id;
+        this.getConpro.page=page;
+        this.getConpro.schedule_id='';
+        this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
           if(res.data.status_code==2000000) {
             let data = res.data.data;
@@ -543,61 +543,61 @@ export default {
           this.loading=false;
           this.$tool.error("加载超时");
         })
-    },//控制意向项目页码
-    handleClick(tab, event) {
-      if(tab.name=="1") this.tabs=true;
-      else this.tabs=false
-    },//点击切换标签
+      },//控制意向项目页码
+      handleClick(tab, event) {
+        if(tab.name=="1") this.tabs=true;
+        else this.tabs=false
+      },//点击切换标签
 
-    toDetail(){
-      this.dialogVisiblePro=true;
-    },//项目详情弹窗
-    addFollow(){
-      this.dialogFollow=true;
-    },//点击添加意向项目按钮
-    closeFollow(msg){
-      this.dialogFollow=msg;
-      this.getEnjoyProjects();
-      this.getEchartData();
-    },//关闭添加意向项目
-    dialogVisiblechangeIn(msg){
-      this.dialogVisiblePro=msg;
+      toDetail(){
+        this.dialogVisiblePro=true;
+      },//项目详情弹窗
+      addFollow(){
+        this.dialogFollow=true;
+      },//点击添加意向项目按钮
+      closeFollow(msg){
+        this.dialogFollow=msg;
+        this.getEnjoyProjects();
+        this.getEchartData();
+      },//关闭添加意向项目
+      dialogVisiblechangeIn(msg){
+        this.dialogVisiblePro=msg;
 //      this.dialogPreviewVisible=true;
-    },//项目详情弹窗关闭函数
-    dialogPrechange(msg){
+      },//项目详情弹窗关闭函数
+      dialogPrechange(msg){
 //      this.dialogPushVisible=true;
-      this.dialogPreviewVisible=msg;
-    },
-    setProjectList(data){
-      let arr = new Array;
-      for(let i=0; i<data.length; i++){
-        let obj = new Object;
-        obj.pro_intro=data[i].pro_intro || "暂无信息";//项目介绍
-        obj.is_exclusive=data[i].is_exclusive;//独家/非独家
-        obj.pro_industry=this.setIndustry(data[i].pro_industry) || [];//项目标签
-        obj.pro_scale =data[i].scale_money || '-';//项目估值
-        obj.pro_area =data[i].pro_area.area_title || '-';//地区
-        obj.pro_stage =data[i].pro_stage.stage_name || '-';//投资轮次
-        obj.pro_finance_stock_after =data[i].pro_finance_stock_after || '-';//股权
-        arr.push(obj);
-      }
-      return arr;
-    },//设置项目库函数
-    setIndustry(data){
+        this.dialogPreviewVisible=msg;
+      },
+      setProjectList(data){
         let arr = new Array;
         for(let i=0; i<data.length; i++){
-            arr.push(data[i].industry_name)
+          let obj = new Object;
+          obj.pro_intro=data[i].pro_intro || "暂无信息";//项目介绍
+          obj.is_exclusive=data[i].is_exclusive;//独家/非独家
+          obj.pro_industry=this.setIndustry(data[i].pro_industry) || [];//项目标签
+          obj.pro_scale =data[i].scale_money || '-';//项目估值
+          obj.pro_area =data[i].pro_area.area_title || '-';//地区
+          obj.pro_stage =data[i].pro_stage.stage_name || '-';//投资轮次
+          obj.pro_finance_stock_after =data[i].pro_finance_stock_after || '-';//股权
+          arr.push(obj);
         }
         return arr;
-    },//设置项目库项目的标签
-    /*请求函数*/
-    getProjectList(page){
+      },//设置项目库函数
+      setIndustry(data){
+        let arr = new Array;
+        for(let i=0; i<data.length; i++){
+          arr.push(data[i].industry_name)
+        }
+        return arr;
+      },//设置项目库项目的标签
+      /*请求函数*/
+      getProjectList(page){
         this.loading1=true;
-      this.getPra.user_id=this.contacts.user_id;
+        this.getPra.user_id=this.contacts.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-      this.currentPage=page;
-      this.getPra.page=page;
-      this.$http.post(this.URL.getProjectList,this.getPra)
+        this.currentPage=page;
+        this.getPra.page=page;
+        this.$http.post(this.URL.getProjectList,this.getPra)
         .then(res=>{
           if(res.data.status_code==2000000) {
             let data = res.data.data;
@@ -614,81 +614,81 @@ export default {
           this.loading1=false;
           this.$tool.error("加载超时");
         })
-    },//获取项目列表
-    /*以下都是辅助函数*/
-    set_industry(arr){
-      let str=""
-      if(arr.length===0) {
-        str=""
-      } else {
-        arr.forEach((x)=> {
-          str += x.industry_name + '、'
-        })
-      }
-      return str
-    },//列表领域处理
-    set_stage(arr){
-      let str="";
-      if(arr.length===0) {
-        str=""
-      } else {
-        arr.forEach((x)=> {
-          str += x.stage_name + '、'
-        })
-      }
-      return str
-    },//列表轮次处理
-    set_scale(arr){
-      let str="";
-      if(arr.length===0) {
-        str=""
-      } else {
-        arr.forEach((x)=> {
-          str+=x.scale_money+'、'
-        })
-      }
-      return str
-    },//列表期望金额处理
-    set_GiveFind(arr){
-      let str="";
-      if(arr.length===0) {
-        str=""
-      } else {
-        arr.forEach((x)=> {
-          str+=x.resource_name+'、'
-        })
-      }
-      return str
-    },//资源提供或者寻求处理
-    setTime(string){
+      },//获取项目列表
+      /*以下都是辅助函数*/
+      set_industry(arr){
+        let str=""
+        if(arr.length===0) {
+          str=""
+        } else {
+          arr.forEach((x)=> {
+            str += x.industry_name + '、'
+          })
+        }
+        return str
+      },//列表领域处理
+      set_stage(arr){
+        let str="";
+        if(arr.length===0) {
+          str=""
+        } else {
+          arr.forEach((x)=> {
+            str += x.stage_name + '、'
+          })
+        }
+        return str
+      },//列表轮次处理
+      set_scale(arr){
+        let str="";
+        if(arr.length===0) {
+          str=""
+        } else {
+          arr.forEach((x)=> {
+            str+=x.scale_money+'、'
+          })
+        }
+        return str
+      },//列表期望金额处理
+      set_GiveFind(arr){
+        let str="";
+        if(arr.length===0) {
+          str=""
+        } else {
+          arr.forEach((x)=> {
+            str+=x.resource_name+'、'
+          })
+        }
+        return str
+      },//资源提供或者寻求处理
+      setTime(string){
         let newDate = new Date();
         newDate.setTime(string * 1000);
         string=newDate.toLocaleDateString();
-    },//设置时间
-    setTag(arr){
-      let newArr = new Array;
-      arr.forEach((x)=> {
-        newArr.push(x.tag_id);
-      });
-      return newArr;
-    },//设置标签的函数
-    setProjectCase(arr){
-      let newArr = new Array;
-      arr.forEach((x)=> {
-        let obj = new Object;
-        obj.case_deal_time=this.setTime(x.case_deal_time);
-        obj.case_stage_name=x.case_stage_name;
-        obj.case_name=x.case_name;
-        obj.case_money=x.case_money;
-        obj.has_many_industry=this.set_industry(x.has_many_industry);
-        obj.has_one_city=x.has_one_city.area_title;
-        newArr.push(obj);
-      });
-      return newArr;
-    },//设置投资案例
-    getOneUserInfo(){
-      this.loading=true;
-      this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
+      },//设置时间
+      setTag(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          newArr.push(x.tag_id);
+        });
+        return newArr;
+      },//设置标签的函数
+      setProjectCase(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          let obj = new Object;
+          obj.case_deal_time=this.setTime(x.case_deal_time);
+          obj.case_stage_name=x.case_stage_name;
+          obj.case_name=x.case_name;
+          obj.case_money=x.case_money;
+          obj.has_many_industry=this.set_industry(x.has_many_industry);
+          obj.has_one_city=x.has_one_city.area_title;
+          newArr.push(obj);
+        });
+        return newArr;
+      },//设置投资案例
+      getOneUserInfo(){
+        this.loading=true;
+        this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
         .then(res => {
           let data = res.data.data;
 //          this.$tool.console(this.$tool.getToObject(data));
@@ -718,20 +718,20 @@ export default {
           this.loading=false;
           this.$tool.error("加载超时");
         })
-    },//获取个人详情
+      },//获取个人详情
 
-    getWxProjectCategory(){
-      this.addTags = this.$global.data.tags_user;//设置人脉标签()
+      getWxProjectCategory(){
+        this.addTags = this.$global.data.tags_user;//设置人脉标签()
 //      this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
-      this.follow_schedule = this.$global.data.follow_schedule.slice(0);//设置项目状态
-      this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
-      this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+        this.follow_schedule = this.$global.data.follow_schedule.slice(0);//设置项目状态
+        this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
+        this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
 
-    },//获取所有下拉框的数据
-    addChangeTag(e){
-      let tagName = this.$tool.checkArr(e, this.addTags);
-      if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
+      },//获取所有下拉框的数据
+      addChangeTag(e){
+        let tagName = this.$tool.checkArr(e, this.addTags);
+        if (tagName != undefined) {
+          this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
           .then(res => {
             let newState = {};
             newState.label = tagName;
@@ -742,12 +742,12 @@ export default {
             this.$tool.error("添加失败");
             this.$tool.console(err);
           })
-      }
-    },//添加项目标签
-    addTag(){
-      this.loading=true;
-      this.$tool.setTag(this.tagsValue,this.tags.changecont);
-      this.$http.post(this.URL.setConnectTag, {user_id:localStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
+        }
+      },//添加项目标签
+      addTag(){
+        this.loading=true;
+        this.$tool.setTag(this.tagsValue,this.tags.changecont);
+        this.$http.post(this.URL.setConnectTag, {user_id:localStorage.user_id,card_id: this.tags.card_id,tag: this.tagsValue})
         .then(res => {
           this.loading=false;
           this.$tool.success("设置成功");
@@ -762,18 +762,18 @@ export default {
           this.dialogVisibleTag = false;
 
         })
-    },//保存标签选择
-    gettags_user(){
-      this.$http.post(this.URL.getWxProjectCategory, {user_id: localStorage.user_id})
+      },//保存标签选择
+      gettags_user(){
+        this.$http.post(this.URL.getWxProjectCategory, {user_id: localStorage.user_id})
         .then(res => {
           let data = res.data.data;
           this.addTags = this.$tool.getTags_pro(data.tags_user);//设置人脉标签
         })
-    },//设置人脉标签
-    /*设置意向项目右边*/
-    getEchartData(){
-      this.loading1 = true;
-      this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id})
+      },//设置人脉标签
+      /*设置意向项目右边*/
+      getEchartData(){
+        this.loading1 = true;
+        this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id})
         .then(res=>{
           if(res.data.status_code==2000000) {
             let data = res.data.data;
@@ -787,22 +787,22 @@ export default {
           this.loading1=false;
           this.$tool.error("加载超时");
         })
-    },//获取意向项目数据(图表)
-    getEnjoyProjects(){
-      this.loading=true;
-      this.getConpro.user_id=localStorage.user_id;
+      },//获取意向项目数据(图表)
+      getEnjoyProjects(){
+        this.loading=true;
+        this.getConpro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-      this.currentPage2=1;
-      this.getConpro.card_id=this.contacts.card_id;
-      this.getConpro.page=1;
-      this.getConpro.schedule_id='';
-      this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
+        this.currentPage2=1;
+        this.getConpro.card_id=this.contacts.card_id;
+        this.getConpro.page=1;
+        this.getConpro.schedule_id='';
+        this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
-            if(res.data.status_code==2000000) {
-              let data = res.data.data;
-              this.enjoyProjects=this.setEnjoyProject(data);
-              this.totalData2 = res.data.count;
-            }
+          if(res.data.status_code==2000000) {
+            let data = res.data.data;
+            this.enjoyProjects=this.setEnjoyProject(data);
+            this.totalData2 = res.data.count;
+          }
           this.loading = false;
         })
         .catch(err=>{
@@ -810,134 +810,134 @@ export default {
           this.loading=false;
           this.$tool.error("加载超时");
         })
-    },//获取意向项目列表
-    setEnjoyProject(arr){
-      let newArr = new Array;
-      arr.forEach((x)=> {
-        let obj = new Object;
-        obj.follow_id=x.follow_id;
-        obj.area=x.area.area_title;
-        obj.industry=this.set_industry(x.industry);
-        obj.is_exclusive=x.is_exclusive;
-        obj.match=x.match;
-        obj.pro_finance_stock_after=x.pro_finance_stock_after;
-        obj.pro_intro=x.pro_intro;
-        obj.project_id=x.project_id;
-        obj.scale=x.scale.scale_money;
-        obj.schedule_id=x.schedule_id;
-        obj.stage=x.stage.stage_name;
-        obj.width=this.selectChange(x.schedule_id);
-        newArr.push(obj);
-      });
-      return newArr;
-    },//设置意向项目列表
-    getIndex(index){
-      this.scheduleIndex=index;
-    },
-    eChart(going,hold,reject){
-      if(this.chartCheck) this.chart = this.$echart.init(document.getElementById('echart'));
-      let option = {
-        tooltip: {
-          trigger: 'item',
-          formatter: "{a} <br/>{b}: {c} ({d}%)"
-        },
-        legend: {
-          orient: 'vertical',
-          x: 'right',
+      },//获取意向项目列表
+      setEnjoyProject(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          let obj = new Object;
+          obj.follow_id=x.follow_id;
+          obj.area=x.area.area_title;
+          obj.industry=this.set_industry(x.industry);
+          obj.is_exclusive=x.is_exclusive;
+          obj.match=x.match;
+          obj.pro_finance_stock_after=x.pro_finance_stock_after;
+          obj.pro_intro=x.pro_intro;
+          obj.project_id=x.project_id;
+          obj.scale=x.scale.scale_money;
+          obj.schedule_id=x.schedule_id;
+          obj.stage=x.stage.stage_name;
+          obj.width=this.selectChange(x.schedule_id);
+          newArr.push(obj);
+        });
+        return newArr;
+      },//设置意向项目列表
+      getIndex(index){
+        this.scheduleIndex=index;
+      },
+      eChart(going,hold,reject){
+        if(this.chartCheck) this.chart = this.$echart.init(document.getElementById('echart'));
+        let option = {
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+          },
+          legend: {
+            orient: 'vertical',
+            x: 'right',
 
-          top:'30%',
-          data:["推进中","Hold","Rejcet"],
-          textStyle:{
-            fontSize:"16",
-          }
-        },
-        series: [
-          {
-            name: '访问来源',
-            type: 'pie',
-            selectedMode: 'single',
-            radius: ['70%','90%'],
-            center: ['35%', '55%'],
-            label: {
-              normal: {
-                show: true,
-                position: 'center',
-                textStyle:{
-                  fontSize:"16",
+            top:'30%',
+            data:["推进中","Hold","Rejcet"],
+            textStyle:{
+              fontSize:"16",
+            }
+          },
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              selectedMode: 'single',
+              radius: ['70%','90%'],
+              center: ['35%', '55%'],
+              label: {
+                normal: {
+                  show: true,
+                  position: 'center',
+                  textStyle:{
+                    fontSize:"16",
+                  }
+                },
+                emphasis: {
+                  show: true,
+                  textStyle: {
+                    fontSize: '20',
+                    fontWeight: 'bold'
+                  }
                 }
               },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: '20',
-                  fontWeight: 'bold'
+              data: [
+                {value: going, name: '推进中'},
+                {value: hold, name: 'Hold'},
+                {value: reject, name: 'Rejcet'},
+              ],
+              itemStyle:{
+                normal:{
+                  label:{
+                    show: true,
+                    formatter: '{b} : {c}'
+                  },
+                  labelLine :{show:true}
                 }
               }
-            },
-            data: [
-              {value: going, name: '推进中'},
-              {value: hold, name: 'Hold'},
-              {value: reject, name: 'Rejcet'},
-            ],
-            itemStyle:{
-              normal:{
-                label:{
-                  show: true,
-                  formatter: '{b} : {c}'
-                },
-                labelLine :{show:true}
-              }
             }
-          }
-        ]
-      };
-      this.chart.setOption(option);
-      this.chartCheck=false;
-    },//图表
-    selectChange(e){
-      let width = 0;
-      switch (e){
-        case 1:
-          width=10;
-          break;
-        case 2:
-          width=20;
-          break;
-        case 3:
-          width=30;
-          break;
-        case 4:
-          width=40;
-          break;
-        case 5:
-          width=50;
-          break;
-        case 6:
-          width=60;
-          break;
-        case 7:
-          width=70;
-          break;
-        case 8:
-          width=0;
-          break;
-        case 9:
-          width=0;
-          break;
-        default:
-          alert("错误")
-          break;
-      }
-      let index = this.scheduleIndex;
-      if(index!=-1) {
-        this.enjoyProjects[index].width = width
-        let follow_id = this.enjoyProjects[index].follow_id;
-        let schedule_id = this.enjoyProjects[index].schedule_id;
-        this.$http.post(this.URL.setEnjoyProjectSchedule, {
-          user_id: localStorage.user_id,
-          follow_id: follow_id,
-          schedule_id: schedule_id
-        })
+          ]
+        };
+        this.chart.setOption(option);
+        this.chartCheck=false;
+      },//图表
+      selectChange(e){
+        let width = 0;
+        switch (e){
+          case 1:
+            width=10;
+            break;
+          case 2:
+            width=20;
+            break;
+          case 3:
+            width=30;
+            break;
+          case 4:
+            width=40;
+            break;
+          case 5:
+            width=50;
+            break;
+          case 6:
+            width=60;
+            break;
+          case 7:
+            width=70;
+            break;
+          case 8:
+            width=0;
+            break;
+          case 9:
+            width=0;
+            break;
+          default:
+            alert("错误")
+            break;
+        }
+        let index = this.scheduleIndex;
+        if(index!=-1) {
+          this.enjoyProjects[index].width = width
+          let follow_id = this.enjoyProjects[index].follow_id;
+          let schedule_id = this.enjoyProjects[index].schedule_id;
+          this.$http.post(this.URL.setEnjoyProjectSchedule, {
+            user_id: localStorage.user_id,
+            follow_id: follow_id,
+            schedule_id: schedule_id
+          })
           .then(res => {
             this.$tool.success("设置成功");
             this.scheduleIndex=-1;
@@ -949,17 +949,17 @@ export default {
             this.loading = false;
             this.$tool.error("加载超时");
           })
-      }
-      return width;
-    },//设置项目跟进进度
-    selectSearch(e){
-      this.loading=true;
-      this.getConpro.schedule_id=e;
-      this.getConpro.user_id=localStorage.user_id;
-      this.currentPage2=1;
-      this.getConpro.card_id=this.contacts.card_id;
-      this.getConpro.page=1;
-      this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
+        }
+        return width;
+      },//设置项目跟进进度
+      selectSearch(e){
+        this.loading=true;
+        this.getConpro.schedule_id=e;
+        this.getConpro.user_id=localStorage.user_id;
+        this.currentPage2=1;
+        this.getConpro.card_id=this.contacts.card_id;
+        this.getConpro.page=1;
+        this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
           if(res.data.data.length!=0){
             if(res.data.status_code==2000000) {
@@ -978,58 +978,17 @@ export default {
           this.loading=false;
           this.$tool.error("加载超时");
         })
-    },//筛选意向项目
+      },//筛选意向项目
 
-    /*设置匹配项目(右边)*/
-    getInvestorsMatchProjects(){
-      this.loading=true;
-      this.getMatchPro.user_id=localStorage.user_id;
+      /*设置匹配项目(右边)*/
+      getInvestorsMatchProjects(){
+        this.loading=true;
+        this.getMatchPro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-      this.currentPage3=1;
-      this.getMatchPro.investor_id=this.contacts.investor_id;
-      this.getMatchPro.page=1;
-      this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
-        .then(res=>{
-          if(res.data.status_code==2000000) {
-              if(res.data.data){
-                let data = res.data.data;
-                this.matchProjects=this.setMatchProject(data);
-                this.totalData3 = res.data.count;
-              }
-          }
-          this.loading = false;
-        })
-        .catch(err=>{
-          this.$tool.console(err,2);
-          this.loading=false;
-          this.$tool.error("加载超时");
-        })
-    },//获取匹配项目列表
-    setMatchProject(arr){
-      let newArr = new Array;
-      arr.forEach((x)=> {
-        let obj = new Object;
-        obj.area=x.pro_area.area_title;
-        obj.industry=this.set_industry(x.pro_industry);
-        obj.is_exclusive=x.is_exclusive;
-        obj.match=x.match;
-        obj.pro_finance_stock_after=x.pro_finance_stock_after;
-        obj.pro_intro=x.pro_intro;
-        obj.project_id=x.project_id;
-        obj.scale=x.pro_scale.scale_money;
-        obj.stage=x.pro_stage.stage_name;
-        newArr.push(obj);
-      });
-      return newArr;
-    },//设置意向项目列表
-    filterChangeCurrent2(page){
-      this.loading=true;
-      this.getMatchPro.user_id=localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
-      this.currentPage3=page;
-      this.getMatchPro.investor_id=this.contacts.investor_id;
-      this.getMatchPro.page=page;
-      this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
+        this.currentPage3=1;
+        this.getMatchPro.investor_id=this.contacts.investor_id;
+        this.getMatchPro.page=1;
+        this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
         .then(res=>{
           if(res.data.status_code==2000000) {
             if(res.data.data){
@@ -1045,23 +1004,64 @@ export default {
           this.loading=false;
           this.$tool.error("加载超时");
         })
-    },//控制匹配项目页码
-    delMatchAction(data){
-      let delData=new Object;
-      delData.user_id=localStorage.user_id;
-      delData.investor_id=this.contacts.investor_id;
-      delData.project_id=data.project_id;
-      this.$confirm('此操作将移除该项目, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      },//获取匹配项目列表
+      setMatchProject(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          let obj = new Object;
+          obj.area=x.pro_area.area_title;
+          obj.industry=this.set_industry(x.pro_industry);
+          obj.is_exclusive=x.is_exclusive;
+          obj.match=x.match;
+          obj.pro_finance_stock_after=x.pro_finance_stock_after;
+          obj.pro_intro=x.pro_intro;
+          obj.project_id=x.project_id;
+          obj.scale=x.pro_scale.scale_money;
+          obj.stage=x.pro_stage.stage_name;
+          newArr.push(obj);
+        });
+        return newArr;
+      },//设置意向项目列表
+      filterChangeCurrent2(page){
         this.loading=true;
-        this.$http.post(this.URL.exceptMatchAction,delData)
+        this.getMatchPro.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+        this.currentPage3=page;
+        this.getMatchPro.investor_id=this.contacts.investor_id;
+        this.getMatchPro.page=page;
+        this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
+        .then(res=>{
+          if(res.data.status_code==2000000) {
+            if(res.data.data){
+              let data = res.data.data;
+              this.matchProjects=this.setMatchProject(data);
+              this.totalData3 = res.data.count;
+            }
+          }
+          this.loading = false;
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading=false;
+          this.$tool.error("加载超时");
+        })
+      },//控制匹配项目页码
+      delMatchAction(data){
+        let delData=new Object;
+        delData.user_id=localStorage.user_id;
+        delData.investor_id=this.contacts.investor_id;
+        delData.project_id=data.project_id;
+        this.$confirm('此操作将移除该项目, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.loading=true;
+          this.$http.post(this.URL.exceptMatchAction,delData)
           .then(res=>{
             if(res.data.status_code==2000000) {
-                this.$tool.success("移除成功")
-                this.getInvestorsMatchProjects();
+              this.$tool.success("移除成功")
+              this.getInvestorsMatchProjects();
             }
             this.loading = false;
           })
@@ -1070,16 +1070,16 @@ export default {
             this.loading=false;
             this.$tool.error("加载超时");
           })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
-      });
-    },//移除匹配
+      },//移除匹配
 
-  },
-  created(){
+    },
+    created(){
       this.getUserId();
       if(this.contacts.user_id!=0) this.getProjectList(1)
       else this.projectLists=[];
@@ -1092,18 +1092,18 @@ export default {
         this.getEnjoyProjects();
       },700)
 
-  },
-  //Echart组件
-  mounted(){
-    this.eChart(this.chartData.going,this.chartData.hold,this.chartData.reject);
-  },
-  components: {
-    alertprojectdetail,
-    projectpush,
-    addfollow,
-    projectpreview
-  },
-}
+    },
+    //Echart组件
+    mounted(){
+      this.eChart(this.chartData.going,this.chartData.hold,this.chartData.reject);
+    },
+    components: {
+      alertprojectdetail,
+      projectpush,
+      addfollow,
+      projectpreview
+    },
+  }
 </script>
 
 <style type="text/css" lang="less">
