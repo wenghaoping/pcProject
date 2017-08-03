@@ -101,7 +101,7 @@
           </alertUpload>
         </div>
       </div>
-      <div class="top-lists" style="background: #f3f4f8;cursor: pointer">
+      <div class="top-lists" style="cursor: pointer">
           <template>
             <el-table :data="tableData" style="width: 100%"
                       @row-click="handleSelect"
@@ -642,7 +642,7 @@
 
       /*以下都是辅助函数*/
       getProjectPro_industry(arr){
-        let str=""
+        let str="";
         for(let i=0;i<arr.length;i++){
           str+=arr[i].industry_name+'.'
         }
@@ -691,14 +691,14 @@
           obj.pro_source=this.getProjectPro_source(list[i].pro_source);
           obj.pro_follow_up_user=list[i].pro_follow_up_user;
           obj.pro_schedule=list[i].pro_schedule;
-          obj.pro_industry=this.getProjectPro_industry(list[i].pro_industry)
+          obj.pro_industry=this.getProjectPro_industry(list[i].pro_industry);
           obj.is_exclusive=list[i].is_exclusive;
-          obj.pro_stage=this.getProjectPro_stage(list[i].pro_stage)
-          obj.pro_area=this.getProjectPro_area(list[i].pro_area)
-          obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale)
+          obj.pro_stage=this.getProjectPro_stage(list[i].pro_stage);
+          obj.pro_area=this.getProjectPro_area(list[i].pro_area);
+          obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale);
           obj.project_id=list[i].project_id;
           obj.moreShow="";
-          arr.push(obj)
+          arr.push(obj);
         }
         return arr
       },//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈

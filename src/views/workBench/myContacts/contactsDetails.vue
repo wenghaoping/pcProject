@@ -193,7 +193,7 @@
                             {{enjoyProject.pro_intro}}
                           </div>
                           <div class="li" style="margin-top: 18px;">
-                            <span class="big-tag">{{enjoyProject.industry}}</span>
+                            <span class="big-tag"><i v-for="industry in enjoyProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
                             <span class="big-tag">{{enjoyProject.scale}}</span><span class="split">｜</span>
@@ -260,7 +260,7 @@
                             {{matchProject.pro_intro}}
                           </div>
                           <div class="li" style="margin-top: 18px;">
-                            <span class="big-tag">{{matchProject.industry}}</span>
+                            <span class="big-tag"><i v-for="industry in matchProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
                             <span class="big-tag">{{matchProject.scale}}</span><span class="split">｜</span>
@@ -270,8 +270,12 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
-                          <button class="button fl" @click="handlePush(matchProject)">
+                          <button v-if="matchProject.is_follow==1" class="button fl" @click="handlePush(0)">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
+                          </button>
+                          <button  class="button fl" v-else @click="handlePush(matchProject)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+
                           <button class="button fl" @click="delMatchAction(matchProject)">
                             <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
@@ -508,13 +512,17 @@
         this.tags.card_id=this.$route.query.card_id;
       },//获取userid/card_id
       handlePush(data){
-        this.userMessage.user_real_name=this.contacts.user_real_name;
-        this.userMessage.user_company_career=this.contacts.user_company_career;
-        this.userMessage.user_company_name=this.contacts.user_company_name;
-        this.userMessage.card_id=this.contacts.card_id;
-        this.userEmail=this.contacts.user_email;
-        this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
-        this.dialogPushVisible=true;
+        if(data==0){
+            this.$tool.warning("已推送过")
+        }else{
+          this.userMessage.user_real_name=this.contacts.user_real_name;
+          this.userMessage.user_company_career=this.contacts.user_company_career;
+          this.userMessage.user_company_name=this.contacts.user_company_name;
+          this.userMessage.card_id=this.contacts.card_id;
+          this.userEmail=this.contacts.user_email;
+          this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
+          this.dialogPushVisible=true;
+        }
       },//点击推送,并且传送数据给推送弹框
       dialogVisiblechange(msg){
 //      this.dialogPushVisible=msg;
@@ -817,6 +825,7 @@
             let data = res.data.data;
             this.enjoyProjects=this.setEnjoyProject(data);
             this.totalData2 = res.data.count;
+            if(this.enjoyProjects.length==0) this.activeName='2';
           }
           this.loading = false;
         })
@@ -832,7 +841,7 @@
           let obj = new Object;
           obj.follow_id=x.follow_id;
           obj.area=x.area.area_title;
-          obj.industry=this.set_industry(x.industry);
+          obj.industry=x.industry;
           obj.is_exclusive=x.is_exclusive;
           obj.match=x.match;
           obj.pro_finance_stock_after=x.pro_finance_stock_after;
@@ -1024,7 +1033,7 @@
         arr.forEach((x)=> {
           let obj = new Object;
           obj.area=x.pro_area.area_title;
-          obj.industry=this.set_industry(x.pro_industry);
+          obj.industry=x.pro_industry;
           obj.is_exclusive=x.is_exclusive;
           obj.match=x.match;
           obj.pro_finance_stock_after=x.pro_finance_stock_after;
@@ -1032,6 +1041,7 @@
           obj.project_id=x.project_id;
           obj.scale=x.pro_scale.scale_money;
           obj.stage=x.pro_stage.stage_name;
+          obj.is_follow=x.is_follow;
           newArr.push(obj);
         });
         return newArr;

@@ -2,7 +2,7 @@
   <div id="createcontacts">
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
-      <div class="main-box">
+      <div class="main-box" style="display: inline-block">
         <div class="left-wrap" ref="left" style="margin-top:24px;">
           <!--=================================基本资料=================================-->
           <div class="item-block" style="margin-top:0;margin-bottom: 16px;">
@@ -221,7 +221,7 @@
                                     :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                         <el-input type="textarea"
                                   v-model="contacts.user_invest_desc"
-                                  :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
+                                  :autosize="{ minRows: 4, maxRows: 10}" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -286,7 +286,7 @@
                                     :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                         <el-input type="textarea"
                                   v-model="contacts.user_resource_desc"
-                                  :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
+                                  :autosize="{ minRows: 4, maxRows: 10}" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -528,45 +528,19 @@ export default {
     },//邮箱验证高级版
     allSave(){
         this.loading=true;
-        let contacts=this.submitForm('contacts');
-        let contacts1=this.submitForm('contacts1');
-        let contacts2=this.submitForm('contacts2');
-/*      console.log(contacts);
-      console.log(contacts1);
-      console.log(contacts2);*/
-
-/*      this.$refs['contacts'].validate((valid) => {
-        if (valid) {
-          console.log(true)
-          console.log('true')
-        } else {
-          console.log('false')
-          return false;
-        }
-      });
-      this.$refs['contacts1'].validate((valid) => {
-        if (valid) {
-          console.log(true)
-          console.log('true')
-        } else {
-          console.log('false')
-          return false;
-        }
-      });
-      this.$refs['contacts2'].validate((valid) => {
-        if (valid) {
-          console.log('true')
-        } else {
-          console.log('false')
-          return false;
-        }
-      });*/
+          let contacts=this.submitForm('contacts');
+          let contacts1=this.submitForm('contacts1');
+          let contacts2=this.submitForm('contacts2');
         if(this.$tool.getNull(this.contacts.user_real_name)) {this.$tool.error("姓名不能为空")}
         else if(!this.checkEmail(this.contacts.user_email)) {this.$tool.console("邮箱不过")}
         else if(!this.checkPhoneNumber(this.contacts.user_mobile)) {this.$tool.console("电话不过")}
+        else if(this.contacts.user_nickname.length>20) {this.$tool.error("昵称不超过20字")}
+        else if(this.contacts.user_company_name.length>40) {this.$tool.error("公司不超过40字")}
+        else if(this.contacts.user_brand.length>40) {this.$tool.error("品牌不超过40字")}
+        else if(this.contacts.user_company_career.length>40) {this.$tool.error("职位不超过40字")}
         else if(!contacts) {}
-        else if(!contacts1) {this.$tool.error("投资需求过长")}
-        else if(!contacts2) {this.$tool.error("资源需求过长")}
+        else if(!contacts1) {this.$tool.error("投资需求不超过500字")}
+        else if(!contacts2) {this.$tool.error("资源需求不超过500字")}
       else{
 
           this.$tool.setTag(this.contacts.user_invest_tag,this.tags.changecont);
@@ -576,7 +550,7 @@ export default {
           allData.card_id=this.contacts.card_id || '';
           allData.image_id=this.uploadShow.image_id || '';
           this.$tool.console(allData);
-          /*this.$http.post(this.URL.createUserCard, allData)
+          this.$http.post(this.URL.createUserCard, allData)
             .then(res => {
               this.card_id=res.data.card_id;
               this.loading=false;
@@ -586,7 +560,7 @@ export default {
               this.$tool.error("编辑失败");
               this.$tool.console(err);
               this.loading=false;
-            })*/
+            })
         }
     },//保存人脉
 
@@ -609,11 +583,13 @@ export default {
     submitForm(formName) {
       let check = true;
       this.$refs[formName].validate((valid) => {
-        if (valid) {
+        check=valid;
+        /*if (valid) {
           check = true;
         } else {
           check = false;
-        }
+
+        }*/
       });
       return check;
     },//提交用
@@ -662,7 +638,6 @@ export default {
       arr.forEach((x)=> {
         newArr.push(x.area_id);
       });
-      console.log(newArr)
       return newArr
     },//资源提供或者寻求处理
     setTag(arr){
@@ -771,6 +746,9 @@ export default {
           margin-top: 0px;
        }
 
+     }
+     .edit-page{
+       background: none;
      }
    }
 </style>
