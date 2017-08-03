@@ -1095,7 +1095,7 @@
     },
     mounted() {
         let leftWidth=document.getElementById("wid").offsetLeft+936;
-      this.$refs.right.style.left = leftWidth +'px';
+        this.$refs.right.style.left = leftWidth +'px';
     },
     methods: {
       /*获取列表各种数据*/

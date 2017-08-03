@@ -323,10 +323,10 @@
                             <span class="company">{{enjoyInvestor.user_company_name}}</span>
                           </div>
                           <div class="block" style="margin-top: 42px;">
-                            <span class="company ft13">投资领域：{{enjoyInvestor.user_invest_industry}}</span>
+                            <span class="company ft13">投资领域：<i v-for="industry in enjoyInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="block" style="margin-top: 5px;">
-                            <span class="company ft13">投资轮次：{{enjoyInvestor.user_invest_stage}}</span>
+                            <span class="company ft13">投资轮次：<i v-for="stage in enjoyInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
                         <div class="li change_li">
@@ -393,16 +393,20 @@
                             <span class="company">{{projectMatchInvestor.investor_company}}</span>
                           </div>
                           <div class="block" style="margin-top: 42px;">
-                            <span class="company ft13">投资领域：{{projectMatchInvestor.industry_tag}}</span>
+                            <span class="company ft13">投资领域：<i v-for="industry in projectMatchInvestor.industry_tag" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="block" style="margin-top: 5px;">
-                            <span class="company ft13">投资轮次：{{projectMatchInvestor.stage_tag}}</span>
+                            <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.stage_tag" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
+                          <button v-if="projectMatchInvestor.is_follow==1" class="button fl" @click="industryPush(0)">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
+                          </button>
+                          <button class="button fl" v-else @click="industryPush(projectMatchInvestor)">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
+                          </button>
 
-                          <button class="button fl" @click="industryPush(projectMatchInvestor)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
@@ -901,7 +905,7 @@
 
             if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
             if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-";this.styleObject={color:"#20a0ff"}}
+            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";this.styleObject={color:"#20a0ff"}}
             if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
             this.getLocalTime(data.pro_develop);
             this.getLocalTime2(data.pro_history_finance);
@@ -1026,6 +1030,7 @@
               let data = res.data.data;
               this.enjoyInvestors=this.setEnjoyInvestor(data);
               this.totalData = res.data.count;
+              if(this.enjoyInvestors.length==0) this.activeName='2';
             }
             this.loading = false;
           })
@@ -1080,8 +1085,8 @@
           obj.is_add=x.card.is_add;
           obj.is_bind=x.card.is_bind;
           obj.schedule_id=x.schedule.schedule_id;
-          obj.user_invest_industry=this.set_industry(x.card.user_invest_industry);
-          obj.user_invest_stage=this.set_stage(x.card.user_invest_stage);
+          obj.user_invest_industry=x.card.user_invest_industry;
+          obj.user_invest_stage=x.card.user_invest_stage;
           obj.type=x.type;
           obj.user_avatar_url=x.card.user_avatar_url;
           obj.user_company_career=x.card.user_company_career;
@@ -1251,7 +1256,7 @@
         arr.forEach((x)=> {
           let obj = new Object;
           obj.user_id=x.user_id;
-          obj.stage_tag=this.set_stage(x.stage_tag);
+          obj.stage_tag=x.stage_tag;
           obj.investor_type=x.investor_type;
           obj.investor_name=x.investor_name;
           obj.investor_logo_url=x.investor_logo_url || '';
@@ -1260,7 +1265,8 @@
           obj.investor_desc=x.investor_desc;
           obj.investor_company=x.investor_company;
           obj.investor_career=x.investor_career;
-          obj.industry_tag=this.set_industry(x.industry_tag);
+          obj.industry_tag=x.industry_tag;
+          obj.is_follow=x.is_follow;
           obj.match=x.match;
           newArr.push(obj);
         });return newArr;
@@ -1311,7 +1317,11 @@
           })
       },//控制买家图谱页码
       industryPush(data){
-        this.dialogPushVisible=true;
+          if(data==0){
+            this.$tool.warning("已推送过")
+          }else{
+            this.dialogPushVisible=true;
+          }
       },//买家图谱推送
       industryDelete(data){
         let delData = new Object;
@@ -1356,7 +1366,9 @@
         this.getProjectDetail();
         this.getEnjoyedInvestors();
         this.getProjectMatchInvestors();
-      },500)
+      },500);
+
+
     }
 
   }
@@ -1364,7 +1376,9 @@
 
 <style lang="less">
   @import '../../../assets/css/projectDetail.less';
+
   #projectDetails{
+
     .btn1{
       background:#40587a;
       border-radius:2px;

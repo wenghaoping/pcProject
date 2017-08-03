@@ -167,7 +167,9 @@
     margin: 0;
     position: relative;
   }
-
+  .newColor{
+    color:#40587A;
+  }
   /*  .is-light{
       border: none!important;
     }

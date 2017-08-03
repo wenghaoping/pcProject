@@ -16,7 +16,7 @@
           <el-button type="primary" @click="addFollow">写更进</el-button>
         </div>
       </div>
-      <div class="top-lists" style="height:690px;background: #f3f4f8;cursor: pointer">
+      <div class="top-lists" style="height:690px;cursor: pointer">
         <template>
           <el-table :data="tableData" style="width: 100%"
                     @row-click="handleSelect"
@@ -353,19 +353,21 @@ export default {
         })
     },//控制页码
     filterInvestors(data){
-      let arr = new Array;
-      let filters = this.card_nameFilters;
-      for(let i=0; i<data.length; i++){
-        let filter = new Array;
-        for(let j=0; j<filters.length; j++){
-          if(data[i]==filters[j].value){
-            filter[0]=filters[j].value;
-            filter[1]=filters[j].type;
+      if(data){
+        let arr = new Array;
+        let filters = this.card_nameFilters;
+        for(let i=0; i<data.length; i++){
+          let filter = new Array;
+          for(let j=0; j<filters.length; j++){
+            if(data[i]==filters[j].value){
+              filter[0]=filters[j].value;
+              filter[1]=filters[j].type;
+            }
           }
+          arr.push(filter);
         }
-        arr.push(filter);
+        return arr;
       }
-      return arr;
     },//意向投资人筛选控制
     timeChange(time){
       this.loading=true;
@@ -385,6 +387,7 @@ export default {
     },//筛选时间
     closeFollow(msg){
       this.dialogFollow=msg;
+      this.followid="";
     },//关闭添加跟进
 
     getInvestors(data){
