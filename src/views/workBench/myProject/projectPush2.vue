@@ -41,7 +41,7 @@
               v-loading="loading"
               element-loading-text="拼命加载中"
               ref="myContacts"
-              :data="myContacts.filter(nameFilter)"
+              :data="myContacts"
               tooltip-effect="dark"
               style="width: 100%;font-size: 12px;"
               max-height="430"
@@ -371,7 +371,7 @@
       pushTitle:'',
       pushBody:'',
       //当前激活的tab页
-      activeTab:'',
+      activeTab:'myContacts',
       //input输入的搜索字段
       filterString:'',
       //多选框选值
@@ -409,7 +409,8 @@
     getMyContacts(){
       this.$http.post(this.URL.getConnectUserSortByMatch, {
         user_id: localStorage.user_id,
-        project_id: this.project_id
+        project_id: this.project_id,
+        search:this.filterString,
       }).then(res => {
         if(res.data.status_code===2000000){
 //          console.log('我的人脉', res.data.data)
@@ -423,7 +424,8 @@
     getNetContacts(){
       this.$http.post(this.URL.getAllConnectUserSortByMatch, {
         user_id: localStorage.user_id,
-        project_id: this.project_id
+        project_id: this.project_id,
+        search: this.filterString,
       }).then(res => {
         if(res.data.status_code===2000000){
 //          console.log('全网人脉',res.data.data)
@@ -575,22 +577,12 @@
     remoteMethod(query) {
       console.log(query)
       this.filterString=query;
-      /*this.loading=true;
-      this.$http.post(this.URL.matchProject,{
-        user_id: localStorage.user_id,
-        card_id: this.user.card_id,
-        pro_intro: query})
-      .then(res=>{
-        let data = res.data.data;
-//          this.$tool.console(data.projects);
-        this.tableData3=data.projects;
-        this.projectAll=this.setProjectAll(data.projects);
-        this.loading=false;
-      })
-      .catch(err =>{
-        this.$tool.console(err,2);
-        this.loading=false;
-      })*/
+      console.log(this.activeTab)
+      if(this.activeTab==="myContacts"){
+        this.getMyContacts()
+      }else{
+        this.getNetContacts()
+      }
     },
     //删除标签
     removeTag(e){
