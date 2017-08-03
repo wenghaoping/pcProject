@@ -101,7 +101,7 @@
           </alertUpload>
         </div>
       </div>
-      <div class="top-lists" style="background: #f3f4f8;cursor: pointer">
+      <div class="top-lists" style="cursor: pointer">
           <template>
             <el-table :data="tableData" style="width: 100%"
                       @row-click="handleSelect"
@@ -317,7 +317,7 @@
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"@changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :proName="pushName"   @changeClose="dialogVisiblechangeCloase"></projectpush2>
 
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
@@ -410,6 +410,8 @@
           value: '0',
           label: '删除'
         }],//更多的选项表单
+        pushId:'',//推送项目传值-项目ID
+        pushName:'',//推送项目传值-项目名称
       }
     },
     methods:{
@@ -437,6 +439,8 @@
         this.dialogFollow=msg;
       },//关闭添加跟进
       addprojectPush(index, row){
+        this.pushId=row.project_id;
+        this.pushName=row.pro_name;
         this.dialogPushVisible=true;
       },//点击项目推送
       dialogVisiblechangeCloase(msg){
@@ -638,7 +642,7 @@
 
       /*以下都是辅助函数*/
       getProjectPro_industry(arr){
-        let str=""
+        let str="";
         for(let i=0;i<arr.length;i++){
           str+=arr[i].industry_name+'.'
         }
@@ -687,14 +691,14 @@
           obj.pro_source=this.getProjectPro_source(list[i].pro_source);
           obj.pro_follow_up_user=list[i].pro_follow_up_user;
           obj.pro_schedule=list[i].pro_schedule;
-          obj.pro_industry=this.getProjectPro_industry(list[i].pro_industry)
+          obj.pro_industry=this.getProjectPro_industry(list[i].pro_industry);
           obj.is_exclusive=list[i].is_exclusive;
-          obj.pro_stage=this.getProjectPro_stage(list[i].pro_stage)
-          obj.pro_area=this.getProjectPro_area(list[i].pro_area)
-          obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale)
+          obj.pro_stage=this.getProjectPro_stage(list[i].pro_stage);
+          obj.pro_area=this.getProjectPro_area(list[i].pro_area);
+          obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale);
           obj.project_id=list[i].project_id;
           obj.moreShow="";
-          arr.push(obj)
+          arr.push(obj);
         }
         return arr
       },//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈

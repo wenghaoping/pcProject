@@ -61,7 +61,7 @@
                 <el-input type="textarea"
                           style="width: 360px;"
                           v-model="follow.follow_desc"
-                          :autosize="{ minRows: 4, maxRows: 7}" placeholder="请输入"></el-input>
+                          :autosize="{ minRows: 4, maxRows: 30}" placeholder="请输入"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -221,34 +221,40 @@
       },//项目搜索
 
       handleSelect(item) {
+        console.log(item);
         this.follow.card_id = item.label;
-        if(item.label==0){
-          this.$confirm('是否添加该人脉, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.loading=true;
-            this.$http.post(this.URL.createUserCard, {user_id:localStorage.user_id,user_real_name: item.na})
-              .then(res => {
-                this.loading=false;
-                this.$tool.success("添加成功");
-                this.follow.card_id=res.data.card_id;
-                this.follow.card_name=item.na;
-              })
-              .catch(err => {
-                this.loading=false;
-                this.$tool.error("添加失败");
-                this.$tool.console(err);
-                this.follow.card_name=item.na;
-              })
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消添加'
+        let name=item.value;
+        if(item.label==0) {
+          if (name.length > 30) {
+            this.$tool.error("名字不能超过20个字")
+          } else {
+            this.$confirm('是否添加该人脉, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.loading = true;
+              this.$http.post(this.URL.createUserCard, {user_id: localStorage.user_id, user_real_name: item.na})
+                .then(res => {
+                  this.loading = false;
+                  this.$tool.success("添加成功");
+                  this.follow.card_id = res.data.card_id;
+                  this.follow.card_name = item.na;
+                })
+                .catch(err => {
+                  this.loading = false;
+                  this.$tool.error("添加失败");
+                  this.$tool.console(err);
+                  this.follow.card_name = item.na;
+                })
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消添加'
+              });
+              this.follow.card_name = item.na;
             });
-            this.follow.card_name=item.na;
-          });
+          }
         }
       },//选择意向投资人后
       querySearchAsync(queryString, cb) {
@@ -330,7 +336,7 @@
         this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id,follow_id:this.follow_id})
           .then(res => {
             let data = res.data.data;
-            data.schedule_id=data.schedule_id;
+//            data.schedule_id=data.schedule_id;
             data.file_id=[];
             data.type='card';
             this.follow=data;
@@ -346,6 +352,8 @@
 
       /*项目文件上传*/
       beforeUpload(file){
+        console.log("beforeUpload");
+        console.log(file);
         this.num++;
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
         let name=file.name;
@@ -376,6 +384,9 @@
       },//项目文件上传验证
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
+        console.log("change")
+        console.log(file);
+        console.log(fileList);
         this.loading=true;
         if(this.loadingcheck){
           this.loading=false;
@@ -383,11 +394,14 @@
         }
       },
       uploadsuccess(response, file, fileList){
+        console.log("success")
+        console.log(file);
+        console.log(fileList);
         let data = response.data;
         this.$tool.success("上传成功");
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type);
         this.loadingcheck=true;
-      },
+      },//上传成功
       uploaderror(err, file, fileList){
         this.$tool.error("上传失败,请联系管理员")
         this.loadingcheck=false;
@@ -498,14 +512,27 @@
         this.groups.index = index;
         this.dialogFileVisible = true;
       },//获取分组的位置
+      submitForm(formName) {
+        let check = true;
+        this.$refs[formName].validate((valid) => {
+          check=valid;
+          /*if (valid) {
+           check = true;
+           } else {
+           check = false;
 
+           }*/
+        });
+        return check;
+      },//提交用
       allSave(){
-//        this.loading=true;
+        let follow=this.submitForm('follow');
         if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
             this.$tool.error("请选择或添加正确的投资人")
         }
         else if(this.$tool.getNull(this.follow.project_id)) this.$tool.error("请选择正确的项目")
         else if(this.$tool.getNull(this.follow.project_name)) this.$tool.error("请选择正确的项目")
+        else if(!follow) this.$tool.error("跟进描述不超过500字")
         else {
           this.follow.follow_id=this.follow_id;
           if(this.follow.follow_id=="") delete this.follow.follow_id;
@@ -513,22 +540,23 @@
           this.follow.user_id=localStorage.user_id;
           this.follow.type="card";
           this.$tool.console(this.$tool.getToObject(this.follow));
-           this.loading=true;
-           this.$http.post(this.URL.add_follow_record, this.follow)
-             .then(res => {
-               this.$tool.console(res);
-               if(res.data.status_code==2000000){
-                 this.follow_id=res.data.data;
-                 this.open2('项目编辑成功', '保存成功', '继续添加', '返回');
-               }else{
-                 this.$tool.error(res.data.error_msg);
-               }
-               this.loading=false;
-             })
-             .catch(err => {
-               this.loading=false;
-               this.$tool.console(err);
-             })
+          this.loading=true;
+          this.$http.post(this.URL.add_follow_record, this.follow)
+            .then(res => {
+             this.$tool.console(res);
+             if(res.data.status_code==2000000){
+               this.follow_id=res.data.data;
+               this.open2('项目编辑成功', '保存成功', '继续添加', '返回');
+
+             }else{
+               this.$tool.error(res.data.error_msg);
+             }
+             this.loading=false;
+            })
+            .catch(err => {
+             this.loading=false;
+             this.$tool.console(err);
+            })
          }
 
       },//发送请求
@@ -540,8 +568,11 @@
           type: 'success'
         }).then(() => {
           this.clearData();
+          this.follow_id='';
         }).catch(() => {
           this.$emit("changeClose",false);
+          this.clearData();
+          this.follow_id='';
         });
       },
       clearData(){
@@ -571,10 +602,13 @@
           this.getFollowUp();
           this.getData();
         },200)
-
       },//获取跟进id
       dialogFollow: function(e){
-        this.clearData();
+        if(e) {
+          this.clearData();
+        }else{
+          this.follow_id="";
+        }
       },//清空数据
     },
     mounted(){

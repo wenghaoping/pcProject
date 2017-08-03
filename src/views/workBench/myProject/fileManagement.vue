@@ -290,7 +290,7 @@
         let filetypes = [".doc", ".ppt", ".pdf", ".zip", ".rar", ".pptx", ".png", ".jpg", ".docx", ".jpeg"];
         //去除文件类型后缀
         let name = file.name;
-        let fileend = name.substring(name.lastIndexOf("."));
+        let fileend = name.substring(name.lastIndexOf(".")).toLowerCase();
         let isnext = false;
         //文件格式和上传文件数量前端校验
         if (filetypes && filetypes.length > 0) {
@@ -310,19 +310,19 @@
           this.$tool.error("暂不支持超过20m文件上传哦");
           return false;
         };
-        console.log(file)
+
         this.groupList.forEach(x=>{
           if(x.type_id===this.typeId){
-            console.log(x.type_id,this.typeId)
-            x.newFile.push(file)
+            console.log(x.type_id,this.typeId);
+            x.newFile.push(file);
           }
-        })
+        });
         console.log(this.groupList)
       },
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
         this.loading = true;
-        this.activeNames.push('1')
+        this.activeNames.push('1');
         if (this.loadingcheck) {
           this.loading = false;
           this.loadingcheck = false;
@@ -330,10 +330,10 @@
       },
       //上传文件成功
       uploadsuccess(response, file, fileList){
-        let data = response.data
-        this.$tool.success("上传成功")
+        let data = response.data;
+        this.$tool.success("上传成功");
         this.loadingcheck = true;
-        console.log(this.fileList)
+        console.log(this.fileList);
         this.initData()
       },
       //上传失败
