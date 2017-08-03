@@ -1,6 +1,6 @@
 <template>
   <div id="alertProjectDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <el-dialog :visible="dialogConVisible2"  :before-close="handleClose" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="dialogVisiblePro"  :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <!--弹窗上半部分-->
       <div class="up-floor item-lists item-lists-top clearfix" style="background: white;">
         <div class="item-lists-inner-left">
@@ -35,6 +35,7 @@
             </span>
           </div>
           <div class="onlyone">
+            <img v-if="project.is_exclusive==0" src="../assets/images/onlyonedark.png"/>
             <img v-if="project.is_exclusive==1" src="../assets/images/onlyonedark.png"/>
             <img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>
           </div>
@@ -61,8 +62,8 @@
             <!--<div class="paper" v-if="project.pro_BP.length!=0">-->
               <img class="img" style="padding-left: 16px;" src="../assets/images/paper.png">
               <span class="pt">{{project.pro_BP.file_title}}</span>
-              <el-button type="text" size="mini">查看</el-button>
-              <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
+              <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)" style="float: right;line-height:3;margin-right: 10px">下载</el-button>
+              <el-button type="text" size="mini" style="float: right;line-height: 3;margin-right: 10px">查看</el-button>
             <!--</div>-->
           </div>
           <div class="item" style="margin-top:24px;height: 49px;">
@@ -223,11 +224,11 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["dialogConVisible2","proid"],
+    props: ["dialogVisiblePro","proid"],
     data () {
       return {
         loading:false,//加载动画
-        pro_id:this.proid,
+        pro_id:"",
         project: {
           project_id: "",//项目id59W2a0GE
           pro_name: "",//项目名称HoopEASY商业计划PPT+for+pitch
@@ -415,7 +416,8 @@
     methods: {
       //关闭弹窗
       handleClose(){
-        this.$emit('changeCon2', false)
+        this.$emit('changeCon2', false);
+//        this.pro_id="";
       },
       //获取项目详情数据
       getProjectDetail () {
@@ -462,11 +464,17 @@
       },
     },
     created(){
-      this.loading=true;
-      this.getProjectDetail();
+
+
     },
     watch : {
+      dialogVisiblePro : function (e) {
+          if(e){
+            this.pro_id =this.proid
+            this.getProjectDetail();
+          }
 
+      }
     }
   }
 </script>
@@ -482,9 +490,11 @@
       .el-dialog__headerbtn{
         width: 30px;
         height: 30px;
+        margin-right: -60px;
         i{
           width: 100%;
           height: 100%;
+          font-size: 20px;
         }
       }
     }

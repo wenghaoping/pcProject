@@ -300,7 +300,7 @@
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-
+        <button class="btn" @click="addFollow">添加意向项目</button>
       </div>
     </div>
 
@@ -334,8 +334,10 @@
       </span>
     </el-dialog>
 
-    <!--项目详情弹窗-->
+   <!--&lt;!&ndash;// 项目详情弹窗&ndash;&gt;-->
     <!--<alertprojectdetail :dialog-pro-visible="dialogVisiblePro" v-on:changeall="dialogVisiblechangeIn" :proid="pro_id"></alertprojectdetail>-->
+    <!--项目详情弹窗-->
+    <alertprojectdetail :dialog-visible-pro="dialogVisiblePro" :proid="pro_id" v-on:changeCon2="dialogVisiblechangeIn"></alertprojectdetail>
 
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow" :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
@@ -349,7 +351,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import alertprojectdetail from './alertProjectDetail.vue'
+  import alertprojectdetail from '../../../components/alertProjectDetail.vue'
   import projectpush from './projectPush.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpreview from './projectPreview.vue'
@@ -486,7 +488,6 @@
 
            }*/
         ],
-
       }
     },
     methods: {
@@ -560,7 +561,9 @@
         else this.tabs=false
       },//点击切换标签
 
-      toDetail(){
+      toDetail(data){
+          console.log(data);
+          this.pro_id=data.project_id;
         this.dialogVisiblePro=true;
       },//项目详情弹窗
       addFollow(){
@@ -1002,7 +1005,6 @@
           this.$tool.error("加载超时");
         })
       },//筛选意向项目
-
       /*设置匹配项目(右边)*/
       getInvestorsMatchProjects(){
         this.loading=true;
@@ -1101,7 +1103,6 @@
           });
         });
       },//移除匹配
-
     },
     created(){
       this.getUserId();

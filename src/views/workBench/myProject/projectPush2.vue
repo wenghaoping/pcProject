@@ -6,7 +6,7 @@
       <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
         <div class="title fl">项目推送</div>
-        <div class="lost fl">今日剩余推送<i>5</i>次</div>
+        <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
         <div class="img fl"><img src="../../../assets/images/why.png"></div>
       </span>
 
@@ -18,8 +18,15 @@
 
       <!--推送人脉-->
       <el-form :inline="true" :model="investor" class="demo-form-inline pushInvestor" label-position="top">
-        <el-form-item label="推送人脉" >
-          <el-input style="width: 586px;" v-model="investor.name" placeholder="请输入您要推送的投资人"></el-input>
+        <el-form-item label="推送人脉">
+          <el-select v-model="allShow" filterable
+                     style="width: 586px;"
+                     remote placeholder="请输入您要推送的投资人"
+                     multiple @remove-tag="removeTag"
+                     :remote-method="remoteMethod"  popper-class="popper">
+            <el-option v-for="(item,index) in allCheck" :key="item.card.card_id" :label="item.card.user_real_name" :value="item.card.user_id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button style="margin-top: 25px;" type="primary" @click="customerAdd">自定义添加</el-button>
@@ -33,16 +40,27 @@
             <el-table
               v-loading="loading"
               element-loading-text="拼命加载中"
-              ref="multipleTable"
+              ref="myContacts"
               :data="myContacts"
               tooltip-effect="dark"
               style="width: 100%;font-size: 12px;"
               max-height="430"
+              @selection-change="tableCheck1"
               :row-class-name="tableRowClassName">
-              <el-table-column type="selection" width="64"></el-table-column>
+              <!--多选框实现方案1-->
+              <el-table-column width="64" type="selection">
+
+              </el-table-column>
+              <!--多选框实现方案2-->
+              <!--<el-table-column width="64">
+                <template scope="scope">
+                    <el-checkbox @change="check1" :name="scope.row.card.user_real_name"></el-checkbox>
+                </template>
+              </el-table-column>-->
               <!--姓名-->
               <el-table-column
                 label="姓名"
+                prop="name"
                 min-width="100">
                 <template scope="scope">
                   <el-tooltip placement="top">
@@ -132,16 +150,18 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
+
           <!--全网人脉-->
           <el-tab-pane label="全网人脉" name="netContacts">
             <el-table
               v-loading="loading"
               element-loading-text="拼命加载中"
-              ref="multipleTable"
+              ref="netContacts"
               :data="netContacts"
               tooltip-effect="dark"
               style="width: 100%;font-size: 12px;"
               max-height="430"
+              @selection-change="tableCheck2"
               :row-class-name="tableRowClassName">
               <el-table-column type="selection" width="64"></el-table-column>
               <!--姓名-->
@@ -238,14 +258,12 @@
 
       <!--标题和正文-->
       <el-form label-position="top" label-width="80px" ref="email" :model="email">
-        <el-form-item label="标题" prop="title"
-                      :rules="titleRule">
-          <el-input v-model="email.title" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="pushTitle" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
         </el-form-item>
-        <el-form-item label="正文"
-                      prop="main">
+        <el-form-item label="正文" prop="main">
           <el-input type="textarea"
-                    v-model="email.main"
+                    v-model="pushBody"
                     placeholder="请输入简要项目介绍，作为邮件正文，便于投资人快速了解项目"
                     :autosize="{ minRows: 4, maxRows: 7}"></el-input>
         </el-form-item>
@@ -254,35 +272,32 @@
       <!--按钮组-->
       <span slot="footer" class="dialog-footer">
         <el-button @click="preview">预览</el-button>
-        <el-button type="primary" @click="push(1)">推送</el-button>
+        <el-button type="primary" @click="push">推送</el-button>
       </span>
 
       <!--自定义添加-->
       <!--<customeraddcontacts :dialog-form-visible="dialogFormVisible"></customeraddcontacts>-->
 
       <!--自定义添加2-->
-      <el-dialog class="customerAddForm" ref="customerAddForm" title="自定义添加" :visible.sync="dialogFormVisible" :modal='false' size="full" :close-on-click-modal="false">
-        <el-form :model="customerAddForm">
-          <el-form-item label="邮箱"
-                        :label-width="formLabelWidth"
-                        prop="email"
-                        :rules="[{ required: true, message: '邮箱不能为空'}]">
-            <el-input v-model="customerAddForm.email" auto-complete="off"  placeholder="请输入邮箱"></el-input>
+      <el-dialog class="customerAddForm"  title="自定义添加" :visible.sync="dialogFormVisible" :modal='false' size="full" :close-on-click-modal="false">
+        <el-form :model="customerAddForm" ref="customerAddForm">
+          <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email" :rules="[{ required: true, message: '邮箱不能为空'}]">
+            <el-input v-model="customerAddForm.email" auto-complete="off"  placeholder="请输入邮箱" :rules="[{ required: false}]"></el-input>
           </el-form-item>
-          <el-form-item label="姓名" :label-width="formLabelWidth">
-            <el-input v-model="customerAddForm.name" auto-complete="off" placeholder="请输入姓名"></el-input>
+          <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
+            <el-input v-model="customerAddForm.name" auto-complete="off" placeholder="请输入姓名" :rules="[{ required: false}]"></el-input>
           </el-form-item>
-          <el-form-item label="手机" :label-width="formLabelWidth">
-            <el-input v-model="customerAddForm.mobile" auto-complete="off" placeholder="请输入手机"></el-input>
+          <el-form-item label="手机" :label-width="formLabelWidth" prop="mobile">
+            <el-input v-model="customerAddForm.mobile" auto-complete="off" placeholder="请输入手机" :rules="[{ required: false}]" type="number"></el-input>
           </el-form-item>
-          <el-form-item label="公司" :label-width="formLabelWidth">
-            <el-input v-model="customerAddForm.company" auto-complete="off" placeholder="请输入公司"></el-input>
+          <el-form-item label="公司" :label-width="formLabelWidth" prop="company">
+            <el-input v-model="customerAddForm.company" auto-complete="off" placeholder="请输入公司" :rules="[{ required: false}]"></el-input>
           </el-form-item>
-          <el-form-item label="品牌" :label-width="formLabelWidth">
-            <el-input v-model="customerAddForm.brand" auto-complete="off" placeholder="请输入品牌"></el-input>
+          <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand">
+            <el-input v-model="customerAddForm.brand" auto-complete="off" placeholder="请输入品牌" :rules="[{ required: false}]"></el-input>
           </el-form-item>
-          <el-form-item label="职位" :label-width="formLabelWidth">
-            <el-input v-model="customerAddForm.career" auto-complete="off" placeholder="请输入职位"></el-input>
+          <el-form-item label="职位" :label-width="formLabelWidth" prop="career">
+            <el-input v-model="customerAddForm.career" auto-complete="off" placeholder="请输入职位" :rules="[{ required: false}]"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -296,9 +311,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import customeraddcontacts from '../../../components/customerAddContacts.vue'
+  import customerAddContacts from '../../../components/customerAddContacts.vue'
   export default {
-  props: ["dialogPush",'proid','proname'],
+  props: ["dialogPush",'proid','proName'],
   data () {
     var checkEmail = (rule, value, callback) => {
       if (this.$tool.getNull(value)) {
@@ -322,14 +337,22 @@
       }
     };//不为空判断
     return {
-      project_name:this.proname,
+      project_name:this.proName,
       project_id:this.proid,
       close:false,//默认关闭
+      loading: false,
+      //默认显示tab
       activeName: 'myContacts',
-      myContacts:[],//我的人脉数据
-      netContacts:[],//全网人脉数据
-      myContactsCheck:'',
-      loading: false,//加载动画
+      //我的人脉数据
+      myContacts:[],
+      //全网人脉数据
+      netContacts:[],
+      //选中的我的人脉数据和选中的全网人脉数据(服务于computed)
+      myContactsCheck:[],
+      netContactsCheck:[],
+      //我的人脉显示数组和全网人脉显示数据(服务于computed)
+      myContactsShow:[],
+      netContactsShow:[],
       //控制自定义添加显示和隐藏
       dialogFormVisible:false,
       //自定义添加表单数据
@@ -342,6 +365,19 @@
         career:'',
       },
       formLabelWidth: '74px',
+      //可用推送次数
+      pushCount:5,
+      //推送邮箱标题和正文
+      pushTitle:'',
+      pushBody:'',
+      //当前激活的tab页
+      activeTab:'myContacts',
+      //input输入的搜索字段
+      filterString:'',
+      //多选框选值
+      myCheckList:[],
+
+
 
       emailRule: {validator: checkEmail, trigger: 'blur'},
       titleRule: {validator: checkTitle, trigger: 'blur'},
@@ -367,19 +403,20 @@
       },
     }
   },
-  components:{customeraddcontacts},
+  components:{customerAddContacts},
   methods: {
     //获取我的人脉数据
     getMyContacts(){
       this.$http.post(this.URL.getConnectUserSortByMatch, {
         user_id: localStorage.user_id,
-        project_id: this.project_id
+        project_id: this.project_id,
+        search:this.filterString,
       }).then(res => {
         if(res.data.status_code===2000000){
 //          console.log('我的人脉', res.data.data)
           this.myContacts=res.data.data;
         }else{
-          console.log(res.data.error_msg)
+//          console.log(res.data.error_msg)
         }
       })
     },
@@ -387,24 +424,50 @@
     getNetContacts(){
       this.$http.post(this.URL.getAllConnectUserSortByMatch, {
         user_id: localStorage.user_id,
-        project_id: this.project_id
+        project_id: this.project_id,
+        search: this.filterString,
       }).then(res => {
         if(res.data.status_code===2000000){
-          console.log('全网人脉',res.data.data)
+//          console.log('全网人脉',res.data.data)
           this.netContacts=res.data.data;
         }else{
-          console.log(res.data.error_msg)
+//          console.log(res.data.error_msg)
         }
       })
     },
+    //获取可用推送次娄
+    getPushCount(){
+      this.$http.post(this.URL.pushCount,{
+        user_id:localStorage.user_id
+      }).then(res=>{
+        if(res.data.status_code===2000000){
+          this.pushCount=res.data.data.push_count.remain_times;
+        }
+      })
+    },
+    //重置我的人脉,全网人脉,选中的我的人脉,选中的全网人脉,可用推送次数数据
+    initData(){
+      this.getMyContacts();
+      this.getNetContacts();
+      this.getPushCount();
+      this.pushTitle='';
+      this.pushBody='';
+    },
     //选项卡切换
     handleClick(tab, event) {
-      //console.log(tab, event);
+//      console.log(tab.name)
+      this.activeTab=tab.name
+    },
+    //控制列表颜色
+    tableRowClassName(row, index) {
+      if (index%2 === 1) {
+        return 'info-row';
+      }
+      return '';
     },
     //自定义添加人脉(跳出弹窗)
     customerAdd(){
      this.dialogFormVisible=true;
-     console.log(this.dialogFormVisible)
     },
     //取消添加自定义人脉
     cancelAdd(){
@@ -416,6 +479,8 @@
       var form=this.customerAddForm;
       if(!form.email){
         this.$tool.error('请输入邮箱')
+      }else if(!this.$tool.checkEmail(form.email)){
+        this.$tool.error('请正确输入邮箱')
       }else{
         this.$http.post(this.URL.createUserCard,{
           user_id:localStorage.user_id,
@@ -428,39 +493,125 @@
         }).then(res=>{
           console.log(res)
           if(res.data.status_code===2000000){
+            this.$refs['customerAddForm'].resetFields();
             this.dialogFormVisible=false;
             this.getMyContacts();
             this.getNetContacts();
+            console.log(this.myContactsShow,this.myContactsCheck)
           }
         })
       }
     },
-
+    //我的人脉表单选择
+    tableCheck1(val){
+      console.log(val)
+      this.myContactsCheck=val;
+      let arry=[];
+      val.forEach(x=>{
+        arry.push(x.card.user_real_name)
+      })
+      this.myContactsShow=arry;
+    },
+    //全网人脉表单选择
+    tableCheck2(val){
+      this.netContactsCheck=val;
+      let arry=[];
+      val.forEach(x=>{
+        arry.push(x.card.user_real_name)
+      })
+      this.netContactsShow=arry;
+    },
+    //预览
     preview(){
       this.$emit('changeall',false);
     },
-    push(type){
-    },//推送按钮
+    //推送
+    push(){
+      let dealData=[]
+      this.allCheck.forEach(x=>{
+        if(x.type==='card'){
+          dealData.push([x.card.card_id,x.type,x.card.user_email])
+        }else{
+          dealData.push([x.card.user_id,x.type,x.card.user_email])
+        }
+      })
+      console.log(dealData)
+      if(dealData.length===0){
+        this.$tool.error('请选择推送人脉')
+      }else if(dealData.length>this.pushCount){
+        console.log(dealData.length,this.pushCount)
+        this.$tool.error('推送人数不能超过今日剩余推送次数')
+      }else{
+        this.$http.post(this.URL.pushProject,{
+          user_id:localStorage.user_id,
+          project_id:this.project_id,
+          title:this.pushTitle,
+          body:this.pushBody,
+          receives:dealData
+        }).then(res=>{
+          if(res.data.status_code===2000000){
+            this.$tool.success('推送成功');
+            this.initData();
+            this.myContactsCheck=[];
+            this.netContactsCheck=[];
+          }
+        })
+      }
+    },
+    /*//推送人脉搜索
     remoteMethod(query) {
       if (query !== '') {
         this.load = true;
         setTimeout(() => {
           this.load = false;
-          this.projectAll = this.list.filter(item => {
+          this.myContacts = this.list.filter(item => {
             return item.label.toLowerCase()
                 .indexOf(query.toLowerCase()) > -1;
           });
         }, 200);
       } else {
-        this.projectAll = [];
+        this.myContacts = [];
+      }
+    },*/
+    //项目搜索
+    remoteMethod(query) {
+      console.log(query)
+      this.filterString=query;
+      console.log(this.activeTab)
+      if(this.activeTab==="myContacts"){
+        this.getMyContacts()
+      }else{
+        this.getNetContacts()
       }
     },
-    tableRowClassName(row, index) {
-      if (index%2 === 1) {
-        return 'info-row';
+    //删除标签
+    removeTag(e){
+      console.log(e);
+      this.myContactsShow.forEach((x,index)=>{
+        if(x===e.value){
+          this.myContactsShow.splice(index,1)
+          this.myContactsCheck.splice(index,1)
+        }
+      })
+    },
+    //数据过滤
+    nameFilter(x){
+      if(x.card.user_real_name.indexOf(this.filterString)!=-1){
+        return x
       }
-      return '';
-    },//控制列表颜色
+    },
+    //我的人脉列表的checkox勾选触发
+    check1(e){
+      let thisName=e.currentTarget.name;
+      if(this.myCheckList.indexOf(thisName)===-1){
+        this.myCheckList.push(thisName)
+      }else{
+        this.myCheckList.splice(this.myCheckList.indexOf(thisName),1)
+      }
+      console.log(this.myCheckList)
+    },
+
+
     getIntroduce(id){
       this.projectList=[];
         let arr = this.tableData3;
@@ -484,9 +635,16 @@
     handleClose(){
       this.$emit('changeClose',false);
     },
-
-
-
+  },
+  computed:{
+    allCheck(){
+      var allCheck=[];
+      return allCheck.concat(this.myContactsCheck,this.netContactsCheck)
+    },
+    allShow(){
+      var allShow=[];
+      return allShow.concat(this.myContactsShow,this.netContactsShow)
+    },
   },
   mounted() {
     this.list = this.states.map(item => {
@@ -494,24 +652,21 @@
     });
   },
   created(){
-    //获取全网人脉和我的人脉数据
-//    this.getMyContacts();
-//    this.getNetContacts();
+
   },
-  watch : {
-    projectRadio : function(e){
-      this.getIntroduce(e);
+  watch:{
+    dialogPush:function(e){
+      this.project_name=this.proName;
+      this.project_id=this.proid;
+      this.initData();
     },
-    userMessage : function (e) {
-      this.user=this.userMessage;
-    },
-    userEmail : function (e) {
-      this.email2.nameEmail=this.userEmail;
-    },
-  },
+  }
 }
 </script>
 
 <style lang="less">
   @import '../../../assets/css/mycontacts';
+  .el-select-dropdown {
+    display: none !important;
+  }
 </style>

@@ -180,10 +180,10 @@
                                     </div>-->
                     <div class="v-progress-table">
                       <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
-                    <span class="radio_line">
+                      <span class="radio_line">
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
-                    </span>
+                      </span>
                         <span class="pro-txt-1">{{finance.finance_time}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
@@ -257,7 +257,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id">
+              <folowup :proid="project.project_id" :proName="project.pro_name">
 
               </folowup>
             </el-tab-pane>
@@ -400,13 +400,17 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
+<<<<<<< HEAD
+                          <button class="button fl" @click="industryPush(projectMatchInvestor)">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+=======
                           <button v-if="projectMatchInvestor.is_follow==1" class="button fl" @click="industryPush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button class="button fl" v-else @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
-
+>>>>>>> a362cf38e89390de993df571dc908c8b76ca9215
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
@@ -453,14 +457,13 @@
     <!--人脉详情弹窗-->
     <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid" v-on:changeCon="dialogConchange"></alertcontactsdetail>
 
-    <!--项目详情弹窗-->
-    <alertprojectdetail :dialog-con-visible2="dialogConVisible2" :proid="project.project_id" v-on:changeCon2="dialogConchange2"></alertprojectdetail>
+
 
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proname="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
 
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
@@ -781,7 +784,7 @@
       addFollow(){
         this.dialogFollow=true;
         this.projecmessage.project_id=this.project.project_id;
-        this.projecmessage.project_name=this.project.pro_intro;
+        this.projecmessage.project_name=this.project.pro_name;
       },//点击写跟近按钮
       closeFollow(msg){
         this.dialogFollow=msg;
@@ -1303,7 +1306,7 @@
         this.getInvestors.page=page;
         this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
           .then(res=>{
-            if(res.data.status_code==2000000) {
+            if(res.data.status_code===2000000) {
               let data = res.data.data;
               this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
               this.totalInvestors = res.data.count;
@@ -1424,8 +1427,7 @@
       position: relative;
     }
     .el-dialog--small{
-      width: 30%;
+      width: 60%;
     }
   }
-
 </style>
