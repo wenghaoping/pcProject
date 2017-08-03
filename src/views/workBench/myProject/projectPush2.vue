@@ -18,9 +18,6 @@
 
       <!--推送人脉-->
       <el-form :inline="true" :model="investor" class="demo-form-inline pushInvestor" label-position="top">
-        <!--<el-form-item label="推送人脉" >
-          <el-input style="width: 586px;" v-model="investor.name" placeholder="请输入您要推送的投资人"></el-input>
-        </el-form-item>-->
         <el-form-item label="推送人脉">
           <el-select v-model="allShow" filterable
                      style="width: 586px;"
@@ -44,16 +41,26 @@
               v-loading="loading"
               element-loading-text="拼命加载中"
               ref="myContacts"
-              :data="myContacts"
+              :data="myContacts.filter(nameFilter)"
               tooltip-effect="dark"
               style="width: 100%;font-size: 12px;"
               max-height="430"
               @selection-change="tableCheck1"
               :row-class-name="tableRowClassName">
-              <el-table-column type="selection" width="64"></el-table-column>
+              <!--多选框实现方案1-->
+              <el-table-column width="64" type="selection">
+
+              </el-table-column>
+              <!--多选框实现方案2-->
+              <!--<el-table-column width="64">
+                <template scope="scope">
+                    <el-checkbox @change="check1" :name="scope.row.card.user_real_name"></el-checkbox>
+                </template>
+              </el-table-column>-->
               <!--姓名-->
               <el-table-column
                 label="姓名"
+                prop="name"
                 min-width="100">
                 <template scope="scope">
                   <el-tooltip placement="top">
@@ -143,6 +150,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
+
           <!--全网人脉-->
           <el-tab-pane label="全网人脉" name="netContacts">
             <el-table
@@ -364,6 +372,10 @@
       pushBody:'',
       //当前激活的tab页
       activeTab:'',
+      //input输入的搜索字段
+      filterString:'',
+      //多选框选值
+      myCheckList:[],
 
 
 
@@ -436,8 +448,6 @@
       this.getMyContacts();
       this.getNetContacts();
       this.getPushCount();
-      this.myContactsCheck=[];
-      this.netContactsCheck=[];
       this.pushTitle='';
       this.pushBody='';
     },
@@ -456,7 +466,6 @@
     //自定义添加人脉(跳出弹窗)
     customerAdd(){
      this.dialogFormVisible=true;
-     console.log(this.dialogFormVisible)
     },
     //取消添加自定义人脉
     cancelAdd(){
@@ -486,13 +495,14 @@
             this.dialogFormVisible=false;
             this.getMyContacts();
             this.getNetContacts();
-            this.getPushCount();
+            console.log(this.myContactsShow,this.myContactsCheck)
           }
         })
       }
     },
     //我的人脉表单选择
     tableCheck1(val){
+      console.log(val)
       this.myContactsCheck=val;
       let arry=[];
       val.forEach(x=>{
@@ -540,6 +550,8 @@
           if(res.data.status_code===2000000){
             this.$tool.success('推送成功');
             this.initData();
+            this.myContactsCheck=[];
+            this.netContactsCheck=[];
           }
         })
       }
@@ -562,6 +574,7 @@
     //项目搜索
     remoteMethod(query) {
       console.log(query)
+      this.filterString=query;
       /*this.loading=true;
       this.$http.post(this.URL.matchProject,{
         user_id: localStorage.user_id,
@@ -581,7 +594,29 @@
     },
     //删除标签
     removeTag(e){
-      //console.log(e);
+      console.log(e);
+      this.myContactsShow.forEach((x,index)=>{
+        if(x===e.value){
+          this.myContactsShow.splice(index,1)
+          this.myContactsCheck.splice(index,1)
+        }
+      })
+    },
+    //数据过滤
+    nameFilter(x){
+      if(x.card.user_real_name.indexOf(this.filterString)!=-1){
+        return x
+      }
+    },
+    //我的人脉列表的checkox勾选触发
+    check1(e){
+      let thisName=e.currentTarget.name;
+      if(this.myCheckList.indexOf(thisName)===-1){
+        this.myCheckList.push(thisName)
+      }else{
+        this.myCheckList.splice(this.myCheckList.indexOf(thisName),1)
+      }
+      console.log(this.myCheckList)
     },
 
 
@@ -627,18 +662,13 @@
   created(){
 
   },
-    watch:{
-      proName : function(e){
-        console.log(e)
-        this.project_name=e;
-      },
-      proid:function(e){
-          this.project_id=e;
-      },
-      dialogPush:function(e){
-        this.initData();
-      },
-    }
+  watch:{
+    dialogPush:function(e){
+      this.project_name=this.proName;
+      this.project_id=this.proid;
+      this.initData();
+    },
+  }
 }
 </script>
 
