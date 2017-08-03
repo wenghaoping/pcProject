@@ -137,7 +137,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname","getData"],
+    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname"],
     data () {
       return {
         loading:false,
@@ -340,7 +340,7 @@
             data.file_id=[];
             data.type='card';
             this.follow=data;
-            this.$tool.console(this.$tool.getToObject(data));
+            console.log(this.$tool.getToObject(data));
             this.setUploadShow(data.files);
             this.loading=false;
           })
@@ -576,10 +576,11 @@
         });
       },
       clearData(){
+          console.log(this.follow);
         for(let key in this.follow){
           this.follow[key]='';
-          this.follow.file_id=[];
         }
+        this.follow.file_id=[];
         this.uploadShow.lists=[];
         this.fileList=[];
         this.follow.project_id=this.projectid || '';
@@ -597,15 +598,15 @@
     },
     watch : {
       followid : function(e){
-        this.follow_id=this.followid || '';
-        setTimeout(()=>{
-          this.getFollowUp();
-          this.getData();
-        },200)
+
       },//获取跟进id
       dialogFollow: function(e){
         if(e) {
           this.clearData();
+          this.follow_id=this.followid || '';
+          setTimeout(()=>{
+            this.getFollowUp();
+          },200)
         }else{
           this.follow_id="";
         }

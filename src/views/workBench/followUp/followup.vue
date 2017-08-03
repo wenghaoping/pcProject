@@ -243,7 +243,6 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
-          console.log(data);
           this.loading=false;
           this.totalData=data.count;
         })
