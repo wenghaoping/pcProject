@@ -137,7 +137,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname"],
+    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname","getData"],
     data () {
       return {
         loading:false,
@@ -414,6 +414,7 @@
           const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+file_id;
           window.location.href=url;
           this.$tool.console(url);
+          console.log(url)
         }
 
       },//点击下载
@@ -557,6 +558,7 @@
              this.$tool.console(err);
             })
          }
+
       },//发送请求
       /*编辑成功弹窗*/
       open2(title, main, confirm, cancel) {
@@ -586,7 +588,6 @@
         this.follow.card_name=this.cardname || '';
         this.saveJumpData=this.follow;
       }
-
     },
     created(){
       this.$global.func.getWxProjectCategory();
@@ -596,12 +597,11 @@
     },
     watch : {
       followid : function(e){
-        if(e!=""){
-          this.follow_id=this.followid || '';
-          setTimeout(()=>{
-            this.getFollowUp();
-          },200)
-        }
+        this.follow_id=this.followid || '';
+        setTimeout(()=>{
+          this.getFollowUp();
+          this.getData();
+        },200)
       },//获取跟进id
       dialogFollow: function(e){
         if(e) {

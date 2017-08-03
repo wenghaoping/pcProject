@@ -62,8 +62,8 @@
             <!--<div class="paper" v-if="project.pro_BP.length!=0">-->
               <img class="img" style="padding-left: 16px;" src="../assets/images/paper.png">
               <span class="pt">{{project.pro_BP.file_title}}</span>
-              <el-button type="text" size="mini">查看</el-button>
-              <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
+              <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)" style="float: right;line-height:3;margin-right: 10px">下载</el-button>
+              <el-button type="text" size="mini" style="float: right;line-height: 3;margin-right: 10px">查看</el-button>
             <!--</div>-->
           </div>
           <div class="item" style="margin-top:24px;height: 49px;">
@@ -228,7 +228,7 @@
     data () {
       return {
         loading:false,//加载动画
-        pro_id:this.proid,
+        pro_id:"",
         project: {
           project_id: "",//项目id59W2a0GE
           pro_name: "",//项目名称HoopEASY商业计划PPT+for+pitch
@@ -417,6 +417,7 @@
       //关闭弹窗
       handleClose(){
         this.$emit('changeCon2', false);
+//        this.pro_id="";
       },
       //获取项目详情数据
       getProjectDetail () {
@@ -463,12 +464,16 @@
       },
     },
     created(){
-      this.loading=true;
-      this.getProjectDetail();
+
+
     },
     watch : {
       dialogVisiblePro : function (e) {
-        console.log(e)
+          if(e){
+            this.pro_id =this.proid
+            this.getProjectDetail();
+          }
+
       }
     }
   }

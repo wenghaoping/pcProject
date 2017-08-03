@@ -52,10 +52,11 @@
         </div>
         <!--新添文件列表-->
         <div class="fileList">
-          <div class="block-info block-cc-other" style="margin-bottom: 15px;"
+          <div class="block-info block-cc-other" style="margin-bottom: 15px; position:relative;"
                v-for="(newF, index) in item.newFile"
                :key="newF.file_id">
             <span class="f-name" style="cursor: pointer" @click="download">{{newF.name}}</span>
+            <img src="../../../assets/images/loading.gif" style="width:16px;height: 16px;margin-left: 10px;">
             <span class="upLoading" v-loading.body="true"></span>
             <div class="fr">
               <el-dropdown  @command="fileDeal" trigger="click">
@@ -69,6 +70,7 @@
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
+
           </div>
         </div>
       </el-collapse-item>
@@ -435,5 +437,10 @@
 
 <style lang="less">
   @import '../../../assets/css/fileManagement';
+  .el-loading-mask{
+    display: none;
+    /*left:205px!important;*/
+    /*top:610px!important;*/
+  }
 </style>
 
