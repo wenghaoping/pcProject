@@ -400,17 +400,12 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
-<<<<<<< HEAD
-                          <button class="button fl" @click="industryPush(projectMatchInvestor)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
-=======
                           <button v-if="projectMatchInvestor.is_follow==1" class="button fl" @click="industryPush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button class="button fl" v-else @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
->>>>>>> a362cf38e89390de993df571dc908c8b76ca9215
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>

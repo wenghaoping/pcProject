@@ -48,15 +48,15 @@
               @selection-change="tableCheck1"
               :row-class-name="tableRowClassName">
               <!--多选框实现方案1-->
-              <el-table-column width="64" type="selection">
+              <!--<el-table-column width="64" type="selection">
 
-              </el-table-column>
-              <!--多选框实现方案2-->
-              <!--<el-table-column width="64">
-                <template scope="scope">
-                    <el-checkbox @change="check1" :name="scope.row.card.user_real_name"></el-checkbox>
-                </template>
               </el-table-column>-->
+              <!--多选框实现方案2-->
+              <el-table-column width="64">
+                <template scope="scope">
+                    <el-checkbox :checked="myNameList[scope.row.card.user_real_name]"  @change="check1" :name="scope.row.card.user_real_name"></el-checkbox>
+                </template>
+              </el-table-column>
               <!--姓名-->
               <el-table-column
                 label="姓名"
@@ -353,6 +353,8 @@
       //我的人脉显示数组和全网人脉显示数据(服务于computed)
       myContactsShow:[],
       netContactsShow:[],
+      //多选框勾选控制
+      myNameList:{},
       //控制自定义添加显示和隐藏
       dialogFormVisible:false,
       //自定义添加表单数据
@@ -374,8 +376,7 @@
       activeTab:'myContacts',
       //input输入的搜索字段
       filterString:'',
-      //多选框选值
-      myCheckList:[],
+
 
 
 
@@ -603,12 +604,12 @@
     //我的人脉列表的checkox勾选触发
     check1(e){
       let thisName=e.currentTarget.name;
-      if(this.myCheckList.indexOf(thisName)===-1){
-        this.myCheckList.push(thisName)
+      if(this.myContactsShow.indexOf(thisName)===-1){
+        this.myContactsShow.push(thisName);
+
       }else{
-        this.myCheckList.splice(this.myCheckList.indexOf(thisName),1)
+        this.myContactsShow.splice(this.myContactsShow.indexOf(thisName),1)
       }
-      console.log(this.myCheckList)
     },
 
 
@@ -652,7 +653,22 @@
     });
   },
   created(){
-
+    //获取
+    this.$http.post(this.URL.getConnectUserSortByMatch, {
+      user_id: localStorage.user_id,
+      project_id: this.project_id,
+      search:this.filterString,
+    }).then(res => {
+      if(res.data.status_code===2000000){
+        res.data.data.forEach(x=>{
+          this.myNameList[x.card.user_real_name]=false;
+        })
+        this.myContacts=res.data.data;
+        console.log('myNameList',this.myNameList)
+      }else{
+//          console.log(res.data.error_msg)
+      }
+    })
   },
   watch:{
     dialogPush:function(e){
