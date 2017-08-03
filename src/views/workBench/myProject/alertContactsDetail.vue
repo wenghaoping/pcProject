@@ -416,7 +416,7 @@
         }
         if(this.in){
           this.contacts.card_id=this.cardid || 0;
-          this.contacts.user_id=this.userid || '';
+          this.contacts.user_id=this.userid || '' ;
           setTimeout(()=>{
             this.getOneUserInfo();
             this.getProjectList(1);

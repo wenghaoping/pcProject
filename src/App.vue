@@ -88,8 +88,8 @@
       },
       // 伪造user_id
       setUserId(){
-        localStorage.user_id = 'V0VznXa0';
-//        localStorage.user_id = '8W1ERo3W';//自己的
+//        localStorage.user_id = 'V0VznXa0';
+        localStorage.user_id = '8W1ERo3W';//自己的
 //        localStorage.user_id='2rzyz5vp';
 //        localStorage.user_id='2rzyJEwp';
         localStorage.user_real_name='常保龙';

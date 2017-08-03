@@ -400,10 +400,6 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
-<<<<<<< HEAD
-=======
-
->>>>>>> 8edd67e16eb4a2aab86337bb64d7372c3de77934
                           <button class="button fl" @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
@@ -1412,7 +1408,7 @@
       position: relative;
     }
     .el-dialog--small{
-      width: 30%;
+      width: 60%;
     }
   }
 
