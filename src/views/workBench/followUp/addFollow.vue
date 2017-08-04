@@ -600,7 +600,6 @@
         this.follow_id=this.followid || '';
         setTimeout(()=>{
           this.getFollowUp();
-          this.getData();
         },200)
       },//获取跟进id
       dialogFollow: function(e){
