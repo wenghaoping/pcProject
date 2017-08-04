@@ -400,14 +400,11 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
-                          <button class="button fl" @click="industryPush(projectMatchInvestor)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button v-if="projectMatchInvestor.is_follow==1" class="button fl" @click="industryPush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
-                          <!--<button class="button fl" v-else @click="industryPush(projectMatchInvestor)">-->
-                            <!--<div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送-->
-                          <!--</button>-->
+                          <button v-else class="button fl" @click="industryPush(projectMatchInvestor)">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
@@ -454,22 +451,54 @@
     <!--人脉详情弹窗-->
     <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid" v-on:changeCon="dialogConchange"></alertcontactsdetail>
 
-
-
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
     <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
 
+    <!--项目推送项目入口小弹窗-->
+    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel">
+      <el-form :model="littlePush" ref="littlePush">
+        <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
+          <el-input v-model="littlePush.email" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="一句话" prop="content" :label-width="formLabelWidth">
+          <el-input v-model="littlePush.content" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="littlePushCancel">取 消</el-button>
+        <el-button type="primary" @click="littlePushCertain">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--项目推送项目入口小弹窗2-->
+    <el-popover
+      ref="popover4"
+      placement="right"
+      width="400"
+      trigger="click">
+      <el-form :model="littlePush" ref="littlePush">
+        <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
+          <el-input v-model="littlePush.email" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="一句话" prop="content" :label-width="formLabelWidth">
+          <el-input v-model="littlePush.content" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="littlePushCancel">取 消</el-button>
+        <el-button type="primary" @click="littlePushCertain">确 定</el-button>
+      </div>
+    </el-popover>
+
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-
   import research from './onekeyresearch.vue'
   import folowup from './followUpDetail.vue'
   import filemanagement from './fileManagement.vue'
@@ -759,6 +788,13 @@
             match:12,//匹配度
           }*/
         ],//买家图谱数据
+        littlePushShow:false,//买家图谱推送弹窗
+        littlePush:{
+          email:'',
+          content:''
+        },//买家图谱推送弹窗表单
+        formLabelWidth:'74px',
+        pushData:[],//买家图谱推送接口参数
       }
     },
     computed:{
@@ -1265,9 +1301,11 @@
           obj.investor_desc=x.investor_desc;
           obj.investor_company=x.investor_company;
           obj.investor_career=x.investor_career;
+          obj.investor_email=x.investor_email;
           obj.industry_tag=x.industry_tag;
           obj.is_follow=x.is_follow;
           obj.match=x.match;
+
           newArr.push(obj);
         });return newArr;
       },//设置买家图谱列表
@@ -1317,11 +1355,14 @@
           })
       },//控制买家图谱页码
       industryPush(data){
-          if(data==0){
-            this.$tool.warning("已推送过")
-          }else{
-            this.dialogPushVisible=true;
-          }
+        console.log(data)
+        if(data==0){
+          this.$tool.warning("已推送过")
+        }else{
+          this.littlePushShow=true;
+          this.littlePush.email=data.investor_email;
+          this.pushData=[data.user_id,'user']
+        }
       },//买家图谱推送
       industryDelete(data){
         let delData = new Object;
@@ -1354,6 +1395,35 @@
           });
         });
       },//买家图谱人脉删除
+      littlePushCertain(){
+        if(!this.littlePush.email){
+          this.$tool.error('请输入邮箱')
+        }else if(!this.$tool.checkEmail(this.littlePush.email)){
+          this.$tool.error('请正确输入邮箱')
+        }else{
+          this.pushData.push(this.littlePush.email)
+          //转化为二维数组
+          let newPushData=[];
+          newPushData.push(this.pushData)
+          this.$http.post(this.URL.pushProject,{
+            user_id:localStorage.user_id,
+            project_id:this.project.project_id,
+            title:this.littlePush.content,
+            body:'',
+            receives:newPushData
+          }).then(res=>{
+            if(res.data.status_code===2000000){
+              this.$tool.success('推送成功');
+              this.$refs['littlePush'].resetFields();
+              this.littlePushShow=false;
+            }
+          })
+        }
+      },//买家图谱推送确定
+      littlePushCancel(){
+        this.$refs['littlePush'].resetFields();
+        this.littlePushShow=false;
+      },//买家图谱推送取消
     },
     created () {
       // 组件创建完后获取数据，
@@ -1367,8 +1437,6 @@
         this.getEnjoyedInvestors();
         this.getProjectMatchInvestors();
       },500);
-
-
     }
 
   }
@@ -1422,6 +1490,14 @@
       background: #f9fafc;
       height:12px;
       position: relative;
+    }
+    .littlePush{
+      .el-dialog--small{
+        width:430px;
+      }
+      .el-form-item__label{
+        text-align: left;
+      }
     }
     /*.el-dialog--small{*/
       /*width: 20%;*/

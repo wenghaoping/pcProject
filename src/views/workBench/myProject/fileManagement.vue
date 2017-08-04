@@ -118,8 +118,10 @@
         groupList: [],
         //被展开的分组
         activeNames: [],
-        //批量上传文件列表
+        //批量上传文件列表(组件处理)
         fileList: [],
+        //批量上传文件列表(自己处理)
+        uploadList:[],
         //上传文件展示列表,就是老夫操作的列表
         uploadShow2: {
           lists: [
@@ -182,6 +184,42 @@
                 x.fileNum=0;
               }
               x.newFile=[];
+            })
+            this.groupList=groupList;
+//            console.log('groupList',this.groupList)
+          })
+        })
+      },
+      //重新获取分组列表信息(不取消newFile)
+      initData2(){
+        //获取分组列表
+        this.$http.post(this.URL.getAllFileType, {
+          user_id: localStorage.user_id
+        }).then(res => {
+//          console.log('fisrt-groupList',res.data.data)
+          var groupList = res.data.data;
+          //获取分组列表内部文件数据
+          this.$http.post(this.URL.getProjectFiles, {
+            user_id: localStorage.user_id,
+            project_id: this.project_id
+          }).then(res => {
+//            console.log('res',this.$tool.getToObject(res))
+            //把分组内的文件放到对应的分组内
+            var groupWithFile=res.data.data
+            groupList.forEach(y=>{
+              groupWithFile.forEach(x=>{
+                if(y.type_id===x.type) {
+                  y.file = x.file;
+                  y.fileNum = x.count
+                }
+              })
+            })
+            //将没有文件的分组设定默认值0
+            groupList.forEach(x=>{
+              if(!x.file){
+                x.file=[];
+                x.fileNum=0;
+              }
             })
             this.groupList=groupList;
 //            console.log('groupList',this.groupList)
@@ -311,6 +349,11 @@
           return false;
         };
 
+        //给上传文件加typeId属性标志其分组后存入uploadList
+        file.typeId=this.typeId
+        this.uploadList.push(file)
+
+        //将上传文件放入相应数据的newFile属性中
         this.groupList.forEach(x=>{
           if(x.type_id===this.typeId){
             x.newFile.push(file);
@@ -337,11 +380,26 @@
       },
       //上传文件成功
       uploadsuccess(response, file, fileList){
+        //剔除掉已经上传成功的文件
+        this.uploadList.forEach((x,index)=>{
+          if(x.name===file.name){
+            this.uploadList.splice(index,1)
+          }
+        })
         let data = response.data;
         this.$tool.success("上传成功");
         this.loadingcheck = true;
-        console.log(response,file,fileList)
         this.initData()
+        //将还未上传成功的文件重新放回newFile中
+//        console.log('重点',this.groupList)
+//        console.log(this.uploadList)
+        this.uploadList.forEach((x)=>{
+          this.groupList.forEach((y,index)=>{
+            if(x.typeId===y.type_id){
+              y.newFile.push(x);
+            }
+          })
+        })
       },
       //上传失败
       uploaderror(err, file, fileList){

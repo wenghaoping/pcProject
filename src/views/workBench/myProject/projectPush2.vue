@@ -626,6 +626,7 @@
             this.initData();
             this.myContactsCheck=[];
             this.netContactsCheck=[];
+            this.dialogPush=false;
           }
         })
       }
