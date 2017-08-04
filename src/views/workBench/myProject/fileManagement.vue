@@ -154,7 +154,7 @@
     },
     methods: {
       //重新获取分组列表信息
-      initData(){
+      initData(file){
         //获取分组列表
         this.$http.post(this.URL.getAllFileType, {
           user_id: localStorage.user_id
@@ -177,16 +177,41 @@
                 }
               })
             })
+
+            //如果有值传进来
+            if(file){
+              console.log('开始了')
+              console.log(this.uploadList)
+              console.log(this.uploadList[0])
+              //剔除掉已经上传成功的文件
+              this.uploadList.forEach((x,index)=>{
+                if(x.name===file.name){
+                  this.uploadList.splice(index,1)
+                }
+              })
+            }
+
             //将没有文件的分组设定默认值0
-            groupList.forEach(x=>{
+            groupList.forEach((x,index)=>{
               if(!x.file){
                 x.file=[];
                 x.fileNum=0;
               }
-              x.newFile=[];
+              //如果有值传进来,那么此次触发由上传成功触发
+              if(!file){
+                x.newFile=[];
+              }else{
+                console.log(x.type_id,file.typeId)
+                if(x.type_id===file.typeId){
+                  console.log(1)
+                  x.newFile.push(file);
+                }
+              }
             })
             this.groupList=groupList;
-//            console.log('groupList',this.groupList)
+            /*if(file){
+              console.log(this.groupList)
+            }*/
           })
         })
       },
@@ -344,28 +369,21 @@
       },
       //上传文件成功
       uploadsuccess(response, file, fileList){
-        //剔除掉已经上传成功的文件
-        this.uploadList.forEach((x,index)=>{
-          if(x.name===file.name){
-            this.uploadList.splice(index,1)
-          }
-        })
         let data = response.data;
         this.$tool.success("上传成功");
         this.loadingcheck = true;
-        console.log('上传成功',response,file)
-        console.log(this.groupList)
-        this.initData()
+//        console.log('3',response,file)
+        this.initData(file)
         //将还未上传成功的文件重新放回newFile中
 //        console.log('重点',this.groupList)
 //        console.log(this.uploadList)
-        this.uploadList.forEach((x)=>{
+      /*  this.uploadList.forEach((x)=>{
           this.groupList.forEach((y,index)=>{
             if(x.typeId===y.type_id){
               y.newFile.push(x);
             }
           })
-        })
+        })*/
       },
       //上传失败
       uploaderror(err, file, fileList){
