@@ -304,7 +304,7 @@
                     </el-select>
                   </div>
                   <div class="item_lists">
-                    <div class="item_list" v-for="(enjoyInvestor,index) in enjoyInvestors">
+                    <div class="item_list" v-for="(enjoyInvestor,index) in enjoyInvestors" v-if="enjoyInvestors.lngth!=0">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{enjoyInvestor.match}}%</span>
@@ -349,6 +349,9 @@
                         <div class="img" v-else><img src="../../../assets/images/logo.png"></div>
                       </div>
                     </div>
+                    <div class="emptyImg" v-if="enjoyInvestors.length==0">
+                      <img src="../../../assets/images/zanwushuju.png">
+                    </div>
                   </div>
                   <el-pagination
                     class="pagination fr"
@@ -375,7 +378,7 @@
               <div v-show="!tabs">
                 <div class="main_right main_left">
                   <div class="item_lists">
-                    <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors">
+                    <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors" v-if="ProjectMatchInvestors.length!=0">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{projectMatchInvestor.match}}%</span>
@@ -402,21 +405,26 @@
                         <div class="li clearfix" style="margin-top: 12px;">
                           <button class="button fl" @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
-                          <button v-if="projectMatchInvestor.is_follow==1" class="button fl" @click="industryPush(0)">
+                          <button v-if="projectMatchInvestor.push_statues==3" class="button fl" @click="industryPush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button class="button fl" v-else @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
+                          <button class="button fl" @click="industryDelete(projectMatchInvestor)">
+                            <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
-                        <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
+                        <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.investor_logo_url"></div>
                         <div class="imgText" v-else>{{projectMatchInvestor.investor_logo_text}}</div>
                       </div>
+                    </div>
+                    <div class="emptyImg" v-if="ProjectMatchInvestors.length==0">
+                      <img src="../../../assets/images/zanwushuju.png">
                     </div>
                     <el-pagination
                       class="pagination fr"
                       small
-                      v-if="totalData!=0"
+                      v-if="totalInvestors!=0"
                       @current-change="filterChangeInvestors"
                       :current-page.sync="currentPageInvestors"
                       layout="prev, pager, next"
@@ -451,8 +459,6 @@
 
     <!--人脉详情弹窗-->
     <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid" v-on:changeCon="dialogConchange"></alertcontactsdetail>
-
-
 
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
@@ -741,22 +747,23 @@
 
         getInvestors:{},//获取买家图谱请求参数
         ProjectMatchInvestors:[
-          /*{
+/*          {
             follow_status:0,
-            industry_tag:"大数据",//领域
-            investor_career:"职位",//职位
-            investor_company:"西安中永顺投资管理有限公司",//公司
-            investor_desc:"",//介绍
-            investor_id:"d8W13Jr5",//id
-            investor_logo_text:"李",//名片名字
+            industry_tag:"暂无匹配",//领域
+            investor_career:"暂无匹配",//职位
+            investor_company:"暂无匹配",//公司
+            investor_desc:"暂无匹配",//介绍
+            investor_id:"0",//id
+            investor_logo_text:"暂无匹配",//名片名字
             investor_logo_url:"",
-            investor_name:"李凯伦",//名字
+            investor_name:"暂无匹配",//名字
             investor_type:2,
-            stage_tag:"天使轮",//轮次
-            user_id: "kpbmXNmW",
-            match:12,//匹配度
+            stage_tag:"暂无匹配",//轮次
+            user_id: "0",
+            match:0,//匹配度
           }*/
         ],//买家图谱数据
+        activeFrom:0,//从哪个路由进来的
       }
     },
     computed:{
@@ -842,7 +849,8 @@
         this.show = tab.name ;
       },
       goBack(){
-        this.$router.go(-1);
+          if(this.activeFrom==0) this.$router.push({name: 'myProject',query: {activeTo: 0}})
+        else if(this.activeFrom==2) this.$router.push({name: 'followUp',query: {activeTo: 2}})//路由传参
       },//返回上一层
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
@@ -932,6 +940,7 @@
       },//项目推送入口
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
+        this.activeFrom=this.$route.query.activeTo || 0;
         this.show=this.$route.query.show || "detail";
       },//获取id
       toEdit(){
@@ -1355,19 +1364,24 @@
     },
     created () {
       // 组件创建完后获取数据，
+
       this.loading=true;
       this.$global.func.getWxProjectCategory();
       this.getprojectId();
       this.getWxProjectCategory();
       this.getEchartData();
+
       setTimeout(()=>{
         this.getProjectDetail();
         this.getEnjoyedInvestors();
         this.getProjectMatchInvestors();
       },500);
+    },
+    watch: {
+      '$route' (to, from) {
 
-
-    }
+      }
+    },
 
   }
 </script>
@@ -1421,8 +1435,8 @@
       height:12px;
       position: relative;
     }
-    .el-dialog--small{
+/*    .el-dialog--small{
       width: 60%;
-    }
+    }*/
   }
 </style>

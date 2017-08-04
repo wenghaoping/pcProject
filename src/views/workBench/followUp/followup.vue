@@ -258,7 +258,7 @@ export default {
     },//点击写跟近按钮
     handleSelect(row, event, column) {
       if(column.label!="重置"){
-        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'flow'}})
+        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'flow',activeTo: 2}})
       }
     },//跳转到更近详情页
     handleEdit(index, row){

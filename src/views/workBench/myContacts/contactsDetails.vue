@@ -181,7 +181,7 @@
                     </el-select>
                   </div>
                   <div class="item_lists">
-                    <div class="item_list" v-for="(enjoyProject,index) in enjoyProjects">
+                    <div class="item_list" v-for="(enjoyProject,index) in enjoyProjects" v-if="enjoyProjects.length!=0">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{enjoyProject.match}}%</span>
@@ -222,6 +222,9 @@
                         <div class="img"><img src="../../../assets/images/feidujia.png" v-if="enjoyProject.is_exclusive==0"></div>
                       </div>
                     </div>
+                    <div class="emptyImg" v-if="enjoyProjects.length==0">
+                      <img src="../../../assets/images/zanwushuju.png">
+                    </div>
                   </div>
                   <el-pagination
                     class="pagination fr"
@@ -248,7 +251,7 @@
               <div v-show="!tabs">
                 <div class="main_right main_left">
                   <div class="item_lists">
-                    <div class="item_list" v-for="(matchProject,index) in matchProjects">
+                    <div class="item_list" v-for="(matchProject,index) in matchProjects" v-if="matchProjects.length!=0">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{matchProject.match}}%</span>
@@ -270,7 +273,7 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
-                          <button v-if="matchProject.is_follow==1" class="button fl" @click="handlePush(0)">
+                          <button v-if="matchProject.push_statues==3" class="button fl" @click="handlePush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button  class="button fl" v-else @click="handlePush(matchProject)">
@@ -284,6 +287,9 @@
                         <div class="img"><img src="../../../assets/images/feidujia.png" v-if="matchProject.is_exclusive==0"></div>
                       </div>
                     </div>
+                    <div class="emptyImg" v-if="matchProjects.length==0">
+                      <img src="../../../assets/images/zanwushuju.png">
+                    </div>
                   </div>
                   <el-pagination
                     class="pagination fr"
@@ -293,7 +299,7 @@
                     :current-page.sync="currentPage3"
                     layout="prev, pager, next"
                     :page-size="5"
-                    :total="totalData2">
+                    :total="totalData3">
                   </el-pagination>
                 </div>
               </div>
@@ -525,7 +531,7 @@
     },
     methods: {
       goBack(){
-        this.$router.push({name: 'myContacts'})//路由传参
+        this.$router.push({name: 'myContacts',query: {activeTo: 1}})//路由传参
       },//返回上一层
       goEdit(){
         this.$router.push({name: 'createContacts', query: {card_id: this.contacts.card_id}})//路由传参
@@ -830,6 +836,8 @@
         .then(res => {
           let data = res.data.data;
           this.addTags = this.$tool.getTags_pro(data.tags_user);//设置人脉标签
+          this.$global.func.getWxProjectCategory();
+          this.getWxProjectCategory();
         })
       },//设置人脉标签
       /*设置意向项目右边*/
@@ -1049,6 +1057,7 @@
 //      this.getPra.user_id="2rzyz5vp";
         this.currentPage3=1;
         this.getMatchPro.investor_id=this.contacts.investor_id;
+        this.getMatchPro.card_id=this.contacts.card_id;
         this.getMatchPro.page=1;
         this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
         .then(res=>{
@@ -1091,6 +1100,7 @@
 //      this.getPra.user_id="2rzyz5vp";
         this.currentPage3=page;
         this.getMatchPro.investor_id=this.contacts.investor_id;
+        this.getMatchPro.card_id=this.contacts.card_id;
         this.getMatchPro.page=page;
         this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
         .then(res=>{
@@ -1195,6 +1205,7 @@
     },
     created(){
       this.getUserId();
+
       if(this.contacts.user_id!=0) this.getProjectList(1)
       else this.projectLists=[];
       this.getOneUserInfo();

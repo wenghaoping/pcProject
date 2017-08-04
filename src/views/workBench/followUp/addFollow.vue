@@ -92,12 +92,13 @@
           <span class="f-title">{{list.bp_type}} : </span>
           <span class="f-name" @click.prevent="download(list)"
                 style="cursor: pointer">{{list.file_title}}</span>
-          <span class="del-btn" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
-          <span class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
+          <span v-if="!list.load" class="del-btn" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
+          <span v-if="!list.load" class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
+          <span v-if="list.load" class="uploadImg"><img src="../../../assets/images/loading.gif"></span>
         </div>
         <div slot="footer" class="dialog-footer fr" style="margin: 32px 0">
           <!--<el-button @click="saveSecond">继续添加</el-button>-->
-          <el-button type="primary" @click="allSave">提 交</el-button>
+          <el-button type="primary" @click="allSave" :disabled="submitButton">提 交</el-button>
         </div>
       </div>
     </el-dialog>
@@ -150,7 +151,16 @@
         timeout: null,
         fileList: [],//批量上传文件列表
         uploadShow: {//上传文件展示列表,就是老夫操作的列表
-          lists: []
+          lists: [
+            /*{
+              bp_type: "其他",
+              file_id: 2476,
+              file_title: "文件2.docx",
+              type: 4,
+              load:true,
+              uid:1501837722250
+            }*/
+          ]
         },
         groups: {
           input: "",
@@ -184,7 +194,8 @@
         project_name:[],//项目搜索下拉框
         saveJumpData:{
 
-        }
+        },
+        submitButton:false,//是否允许提交false允许/true不允许
       }
     },
     methods: {
@@ -328,33 +339,30 @@
         }
       },//设置批量上传文件显示
       getFollowUp(){
-        this.loading=true;
-        for(let key in this.follow){
-          this.follow[key]='';
-        }
-        this.uploadShow.lists=[];
-        this.fileList=[];
-        this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id,follow_id:this.follow_id})
-          .then(res => {
-            let data = res.data.data;
+          if(this.follow_id!=''){
+            this.loading=true;
+            this.uploadShow.lists=[];
+            this.fileList=[];
+            this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id,follow_id:this.follow_id})
+              .then(res => {
+                let data = res.data.data;
 //            data.schedule_id=data.schedule_id;
-            data.file_id=[];
-            data.type='card';
-            this.follow=data;
-            console.log(this.$tool.getToObject(data));
-            this.setUploadShow(data.files);
-            this.loading=false;
-          })
-          .catch(err => {
-            this.$tool.console(err);
-            this.loading=false;
-          })
+                data.file_id=[];
+                data.type='card';
+                this.follow=data;
+                this.setUploadShow(data.files);
+                this.loading=false;
+              })
+              .catch(err => {
+                this.$tool.console(err);
+                this.loading=false;
+              })
+          }
+
       },//获取跟进记录
 
       /*项目文件上传*/
       beforeUpload(file){
-        console.log("beforeUpload");
-        console.log(file);
         this.num++;
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
         let name=file.name;
@@ -368,7 +376,6 @@
             }
           }
         }
-        this.loading=false;
         if(!isnext){
           this.$tool.error("不支持的文件格式");
           return false;
@@ -381,32 +388,22 @@
           this.$tool.error("一次最多选择5个文件");
           this.num=0;
           return false;
-        }
+        };
+        this.addDomain("其他", file.name, 0, 4,true,file.uid);
       },//项目文件上传验证
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
-        console.log("change")
-        console.log(file);
-        console.log(fileList);
-        this.loading=true;
-        if(this.loadingcheck){
-          this.loading=false;
-          this.loadingcheck=false;
-        }
+        this.subButtonCheck(this.uploadShow.lists)
       },
       uploadsuccess(response, file, fileList){
-        console.log("success")
-        console.log(file);
-        console.log(fileList);
         let data = response.data;
         this.$tool.success("上传成功");
-        this.addDomain(data.type_name, data.file_title, data.file_id, data.type);
-        this.loadingcheck=true;
+        this.deleteLoad(file.uid);
+        this.addDomain(data.type_name, data.file_title, data.file_id, data.type,false,file.uid);
+        this.subButtonCheck(this.uploadShow.lists);
       },//上传成功
       uploaderror(err, file, fileList){
-        this.$tool.error("上传失败,请联系管理员")
-        this.loadingcheck=false;
-        this.loading=false;
+        this.$tool.error("上传失败,请联系管理员");
       },//上传失败
       download(item){
         let index = this.uploadShow.lists.indexOf(item);
@@ -415,7 +412,6 @@
           const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+file_id;
           window.location.href=url;
           this.$tool.console(url);
-          console.log(url)
         }
 
       },//点击下载
@@ -440,15 +436,37 @@
             })
         }
       },//删除当前上传文件
-      addDomain(type_name, file_title, file_id, type)  {
+      addDomain(type_name, file_title, file_id, type,load,uid)  {
         let object = {};
         object.bp_type = type_name;
         object.file_title = file_title;
         object.file_id = file_id;
         object.type = type;//文件类型
+        object.load = load;//是否在上传中
+        object.uid = uid;//文件唯一标识
         this.uploadShow.lists.push(object);
         this.follow.file_id.push(file_id);
       },//添加上传文件时,加入显示列表
+      deleteLoad(uid){
+        let lists=this.uploadShow.lists;//所有的文件的数组
+        for(let i=0; i<lists.length; i++){
+          if(lists[i].uid==uid){
+            lists.splice(i,1)
+          }
+        }
+      },//剔除Load
+      subButtonCheck(arr){
+        for(let i=0; i<arr.length; i++){
+          if(arr[i].load){
+            this.submitButton=true;
+            return false;
+          }else{
+            this.submitButton=false;
+          }
+        }
+      },//当文件没有全部上传完时,不能提交
+
+
 
       groupchange(label){
         let index = this.groups.index;
@@ -589,13 +607,11 @@
         this.follow.card_name=this.cardname || '';
         this.investor_id=this.investorid || '';
         this.saveJumpData=this.follow;
-      }
+      },//清除所有数据
     },
     created(){
-      this.$global.func.getWxProjectCategory();
       this.getScheduleName();
       this.setFileType();
-
     },
     watch : {
       followid : function(e){
@@ -604,6 +620,7 @@
       dialogFollow: function(e){
         if(e) {
           this.clearData();
+          this.$global.func.getWxProjectCategory();
           this.follow_id=this.followid || '';
           setTimeout(()=>{
             this.getFollowUp();
