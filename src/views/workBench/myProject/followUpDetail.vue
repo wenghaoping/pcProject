@@ -24,7 +24,7 @@
         <div class="followProject">
             <span style="display: inline-block;float: left">关联项目&nbsp;:&nbsp;</span>
             <span style="max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>
-            <span style="display: inline-block;margin-left: 90px;float: left">意向投资人&nbsp;:&nbsp;</span>
+            <span style="display: inline-block;margin-left: 90px;float: left" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
             <span style="display: inline-block;float: left">{{item.investor_name}}</span>
             <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
         </div>
