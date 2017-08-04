@@ -61,13 +61,13 @@
           <div class="item" style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;">
             <!--<div class="paper" v-if="project.pro_BP.length!=0">-->
               <img class="img" style="padding-left: 16px;" src="../assets/images/paper.png">
-              <span class="pt">{{project.pro_BP.file_title}}</span>
-              <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)" style="float: right;line-height:3;margin-right: 10px">下载</el-button>
-              <el-button type="text" size="mini" style="float: right;line-height: 3;margin-right: 10px">查看</el-button>
+              <span class="pt" style="">{{project.pro_BP.file_title}}</span>
+              <!--<el-button type="text" size="mini" @click="download(project.pro_BP.file_id)" style="float: right;line-height:3;margin-right: 10px">下载</el-button>-->
+              <!--<el-button type="text" size="mini" style="float: right;line-height: 3;margin-right: 10px">查看</el-button>-->
             <!--</div>-->
           </div>
           <div class="item" style="margin-top:24px;height: 49px;">
-            <div class="bot-det" v-if="project.pro_status!=''">
+            <div class="bot-det" v-show="project.pro_status!=''">
               <span class="det-title">运营状态：</span>
               <span class="del-info">{{project.pro_status.status_name}}</span>
             </div>
@@ -414,6 +414,10 @@
       }
     },
     methods: {
+      download(e){
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
+        window.location.href=url;
+      },//下载文件
       //关闭弹窗
       handleClose(){
         this.$emit('changeCon2', false);
