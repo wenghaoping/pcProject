@@ -1,6 +1,6 @@
 <template>
   <!--项目推送项目入口-->
-  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中">
+  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中" v-if="reBorn">
     <el-dialog :visible="dialogPush" :before-close="handleClose">
       <!--弹窗头部-->
       <span slot="title" class="dialog-title clearfix">
@@ -48,15 +48,15 @@
               @selection-change="tableCheck1"
               :row-class-name="tableRowClassName">
               <!--多选框实现方案1-->
-              <el-table-column width="64" type="selection">
+              <!--<el-table-column width="64" type="selection">
 
-              </el-table-column>
-              <!--多选框实现方案2-->
-              <!--<el-table-column width="64">
-                <template scope="scope">
-                    <el-checkbox @change="check1" :name="scope.row.card.user_real_name"></el-checkbox>
-                </template>
               </el-table-column>-->
+              <!--多选框实现方案2-->
+              <el-table-column width="64">
+                <template scope="scope">
+                    <el-checkbox :checked="myNameList[scope.row.card.user_real_name]"  @change="myCheck" :name="scope.row.card.user_real_name"></el-checkbox>
+                </template>
+              </el-table-column>
               <!--姓名-->
               <el-table-column
                 label="姓名"
@@ -163,7 +163,11 @@
               max-height="430"
               @selection-change="tableCheck2"
               :row-class-name="tableRowClassName">
-              <el-table-column type="selection" width="64"></el-table-column>
+              <el-table-column width="64">
+                <template scope="scope">
+                  <el-checkbox :checked="netNameList[scope.row.card.user_real_name]"  @change="netCheck" :name="scope.row.card.user_real_name"></el-checkbox>
+                </template>
+              </el-table-column>
               <!--姓名-->
               <el-table-column
                 label="姓名"
@@ -315,27 +319,6 @@
   export default {
   props: ["dialogPush",'proid','proName'],
   data () {
-    var checkEmail = (rule, value, callback) => {
-      if (this.$tool.getNull(value)) {
-        return callback(new Error('邮箱不能为空'));
-      }
-      setTimeout(() => {
-        if (!this.$tool.checkEmail(value)) {
-          callback(new Error('请输入正确的邮箱'));
-        } else {
-          callback();
-        }
-      }, 300);
-
-
-    };//邮箱判断
-    var checkTitle = (rule, value, callback) => {
-      if (this.$tool.getNull(value)) {
-        return callback(new Error('不能为空'));
-      } else {
-        callback();
-      }
-    };//不为空判断
     return {
       project_name:this.proName,
       project_id:this.proid,
@@ -353,6 +336,11 @@
       //我的人脉显示数组和全网人脉显示数据(服务于computed)
       myContactsShow:[],
       netContactsShow:[],
+      //发送推送项目时参数
+      pushData:[],
+      //多选框勾选控制
+      myNameList:{},
+      netNameList:{},
       //控制自定义添加显示和隐藏
       dialogFormVisible:false,
       //自定义添加表单数据
@@ -374,13 +362,12 @@
       activeTab:'myContacts',
       //input输入的搜索字段
       filterString:'',
-      //多选框选值
-      myCheckList:[],
+      investor:{
+        name:'',
+      },
+      //重新渲染组建
+      reBorn:false,
 
-
-
-      emailRule: {validator: checkEmail, trigger: 'blur'},
-      titleRule: {validator: checkTitle, trigger: 'blur'},
       email:{
         title:'有人给您推荐一个项目,赶紧看看吧',//邮件标题
         main:'',//邮件正文
@@ -392,14 +379,6 @@
         user_real_name:'',
         user_company_career:'',
         user_company_name:'',
-      },
-      projectList:[],//推送的项目列表
-      projectAll:[],//项目列表下拉框基本是不用的
-      list: [],
-      states: ["Alabama"],
-      projectRadio:'',
-      investor:{
-        name:'',
       },
     }
   },
@@ -521,14 +500,106 @@
       })
       this.netContactsShow=arry;
     },
+    //项目搜索
+    remoteMethod(query) {
+      this.filterString=query;
+      if(this.activeTab==="myContacts"){
+        this.getMyContacts()
+      }else{
+        this.getNetContacts()
+      }
+    },
+    //删除标签
+    removeTag(e){
+      console.log(e);
+      //取消Input显示
+      this.myContactsShow.forEach((x,index)=>{
+        if(x===e.value){
+          this.myContactsShow.splice(index,1)
+          this.myContactsCheck.splice(index,1)
+        }
+      })
+      this.netContactsShow.forEach((x,index)=>{
+        if(x===e.value){
+          this.netContactsShow.splice(index,1)
+          this.netContactsCheck.splice(index,1)
+        }
+      })
+      //删除checkbox勾选
+      if(this.myNameList[e.value]){
+        this.myNameList[e.value]=!this.myNameList[e.value];
+      }
+      if(this.netNameList[e.value]){
+        this.netNameList[e.value]=!this.netNameList[e.value];
+      }
+      //删除pushData
+      this.pushData.forEach((x,index)=>{
+          if(x.card.user_real_name===e.value){
+              this.pushData.splice(index,1)
+          }
+      })
+      console.log(this.pushData)
+      //强置刷新checkBox状态
+      this.reBorn=false;
+      setTimeout(()=>{
+        this.reBorn=true;
+      },0)
+    },
+    //数据过滤
+    nameFilter(x){
+      if(x.card.user_real_name.indexOf(this.filterString)!=-1){
+        return x
+      }
+    },
+    //checkox勾选触发
+    myCheck(e){
+      let thisName=e.currentTarget.name;
+      if(this.myContactsShow.indexOf(thisName)===-1){
+        this.myContactsShow.push(thisName);
+        this.myNameList[thisName]=true;
+        //预处理推送项目接口的参数
+        this.myContacts.forEach(x=>{
+            if(x.card.user_real_name===thisName){
+              this.pushData.push(x)
+              return
+            }
+        })
+        console.log(this.pushData)
+      }else{
+        this.myContactsShow.splice(this.myContactsShow.indexOf(thisName),1)
+        this.pushData.splice(this.pushData.indexOf(thisName),1)
+        console.log(this.pushData)
+      }
+
+    },
+    netCheck(e){
+      let thisName=e.currentTarget.name;
+      if(this.netContactsShow.indexOf(thisName)===-1){
+        this.netContactsShow.push(thisName);
+        this.netNameList[thisName]=true;
+        //预处理推送项目接口的参数
+        this.netContacts.forEach(x=>{
+          if(x.card.user_real_name===thisName){
+            this.pushData.push(x)
+            return
+          }
+        })
+        console.log(this.pushData)
+      }else{
+        this.netContactsShow.splice(this.netContactsShow.indexOf(thisName),1)
+        this.pushData.splice(this.pushData.indexOf(thisName),1)
+        console.log(this.pushData)
+      }
+    },
     //预览
     preview(){
       this.$emit('changeall',false);
     },
     //推送
     push(){
+        console.log(this.pushData)
       let dealData=[]
-      this.allCheck.forEach(x=>{
+      this.pushData.forEach(x=>{
         if(x.type==='card'){
           dealData.push([x.card.card_id,x.type,x.card.user_email])
         }else{
@@ -558,81 +629,18 @@
         })
       }
     },
-    /*//推送人脉搜索
-    remoteMethod(query) {
-      if (query !== '') {
-        this.load = true;
-        setTimeout(() => {
-          this.load = false;
-          this.myContacts = this.list.filter(item => {
-            return item.label.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1;
-          });
-        }, 200);
-      } else {
-        this.myContacts = [];
-      }
-    },*/
-    //项目搜索
-    remoteMethod(query) {
-      console.log(query)
-      this.filterString=query;
-      console.log(this.activeTab)
-      if(this.activeTab==="myContacts"){
-        this.getMyContacts()
-      }else{
-        this.getNetContacts()
-      }
-    },
-    //删除标签
-    removeTag(e){
-      console.log(e);
-      this.myContactsShow.forEach((x,index)=>{
-        if(x===e.value){
-          this.myContactsShow.splice(index,1)
-          this.myContactsCheck.splice(index,1)
-        }
-      })
-    },
-    //数据过滤
-    nameFilter(x){
-      if(x.card.user_real_name.indexOf(this.filterString)!=-1){
-        return x
-      }
-    },
-    //我的人脉列表的checkox勾选触发
-    check1(e){
-      let thisName=e.currentTarget.name;
-      if(this.myCheckList.indexOf(thisName)===-1){
-        this.myCheckList.push(thisName)
-      }else{
-        this.myCheckList.splice(this.myCheckList.indexOf(thisName),1)
-      }
-      console.log(this.myCheckList)
-    },
-
-
-    getIntroduce(id){
-      this.projectList=[];
-        let arr = this.tableData3;
-        for(let i=0; i<arr.length; i++){
-           if(arr[i].id==id){
-               this.projectList.push(arr[i].introduce);
-           }
-        }
-    },
-    submitForm(formName) {
-      let check = true;
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          return
-        } else {
-          check = false;
-        }
-      });
-      return check;
-    },
+    //关闭弹窗前回调
     handleClose(){
+      this.initData();
+      this.myContactsShow=[];
+      this.netContactsShow=[];
+      for(let x in this.myNameList){
+          this.myNameList[x]=false;
+      }
+      console.log(this.myNameList)
+      for(let x in this.netNameList){
+        x=false;
+      }
       this.$emit('changeClose',false);
     },
   },
@@ -646,20 +654,54 @@
       return allShow.concat(this.myContactsShow,this.netContactsShow)
     },
   },
-  mounted() {
-    this.list = this.states.map(item => {
-      return { value: item, label: item };
-    });
-  },
+  mounted() {},
   created(){
-
+    if(this.project_id){
+      //获取我的人脉和全网人脉的姓名作为勾选框标记
+      this.$http.post(this.URL.getConnectUserSortByMatch, {
+        user_id: localStorage.user_id,
+        project_id: this.project_id,
+        search:this.filterString,
+      }).then(res => {
+        if(res.data.status_code===2000000){
+          res.data.data.forEach(x=>{
+            this.myNameList[x.card.user_real_name]=false;
+          })
+          this.myContacts=res.data.data;
+        }else{
+//          console.log(res.data.error_msg)
+        }
+      })
+      this.$http.post(this.URL.getAllConnectUserSortByMatch, {
+        user_id: localStorage.user_id,
+        project_id: this.project_id,
+        search: this.filterString,
+      }).then(res => {
+        if(res.data.status_code===2000000){
+          res.data.data.forEach(x=>{
+            this.netNameList[x.card.user_real_name]=false;
+          })
+          this.netContacts=res.data.data;
+        }else{
+//          console.log(res.data.error_msg)
+        }
+      })
+    }
   },
   watch:{
     dialogPush:function(e){
       this.project_name=this.proName;
       this.project_id=this.proid;
       this.initData();
-    },
+      //为了重置checkBox状态
+      if(e===true){
+          this.reBorn=true
+      }else{
+          this.reBorn=false
+      }
+      //重置推送项目接口参数
+      this.pushData=[];
+    }
   }
 }
 </script>
