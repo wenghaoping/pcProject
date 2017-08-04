@@ -197,15 +197,14 @@
                 x.file=[];
                 x.fileNum=0;
               }
+              x.newFile=[];
               //如果有值传进来,那么此次触发由上传成功触发
-              if(!file){
-                x.newFile=[];
-              }else{
-                console.log(x.type_id,file.typeId)
-                if(x.type_id===file.typeId){
-                  console.log(1)
-                  x.newFile.push(file);
-                }
+              if(file){
+                this.uploadList.forEach((y,index)=>{
+                  if(x.type_id===y.typeId){
+                    x.newFile.push(y)
+                  }
+                })
               }
             })
             this.groupList=groupList;
