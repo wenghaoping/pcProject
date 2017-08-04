@@ -137,7 +137,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname","getData"],
+    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname"],
     data () {
       return {
         loading:false,

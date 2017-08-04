@@ -43,7 +43,7 @@
               ref="myContacts"
               :data="myContacts"
               tooltip-effect="dark"
-              style="width: 100%;font-size: 12px;"
+              style="width: 100%;font-size: 12px!important;"
               max-height="430"
               @selection-change="tableCheck1"
               :row-class-name="tableRowClassName">
@@ -262,7 +262,7 @@
 
       <!--标题和正文-->
       <el-form label-position="top" label-width="80px" ref="email" :model="email">
-        <el-form-item label="标题" prop="title">
+        <el-form-item label="标题" prop="title" style="margin-top: 15px">
           <el-input v-model="pushTitle" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
         </el-form-item>
         <el-form-item label="正文" prop="main">

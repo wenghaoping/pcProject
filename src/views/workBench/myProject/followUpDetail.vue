@@ -48,7 +48,7 @@
         </span>
       </el-dialog>
       <!--写跟进弹框-->
-      <addfollow :dialog-follow="dialogFollow" :followid="followid" :get-data="getData" @changeClose="closeFollow"></addfollow>
+      <addfollow :dialog-follow="dialogFollow" :followid="followid"  @changeClose="closeFollow"></addfollow>
     </div>
   </div>
 </template>
@@ -83,7 +83,6 @@ export default {
       let fileId=this.content[index].follow_file[item1].file_id;
       const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
       window.location.href=url;
-     console.log(fileId,url);
     },
     getData(){
         this.$http.post(this.URL.getProjectFollowList,{
@@ -125,6 +124,7 @@ export default {
     closeFollow(msg){
       this.dialogFollow=msg;
       this.followid="";
+      this.getData();
     },//关闭添加跟进
   },
   created(){
