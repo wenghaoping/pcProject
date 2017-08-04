@@ -190,42 +190,6 @@
           })
         })
       },
-      //重新获取分组列表信息(不取消newFile)
-      initData2(){
-        //获取分组列表
-        this.$http.post(this.URL.getAllFileType, {
-          user_id: localStorage.user_id
-        }).then(res => {
-//          console.log('fisrt-groupList',res.data.data)
-          var groupList = res.data.data;
-          //获取分组列表内部文件数据
-          this.$http.post(this.URL.getProjectFiles, {
-            user_id: localStorage.user_id,
-            project_id: this.project_id
-          }).then(res => {
-//            console.log('res',this.$tool.getToObject(res))
-            //把分组内的文件放到对应的分组内
-            var groupWithFile=res.data.data
-            groupList.forEach(y=>{
-              groupWithFile.forEach(x=>{
-                if(y.type_id===x.type) {
-                  y.file = x.file;
-                  y.fileNum = x.count
-                }
-              })
-            })
-            //将没有文件的分组设定默认值0
-            groupList.forEach(x=>{
-              if(!x.file){
-                x.file=[];
-                x.fileNum=0;
-              }
-            })
-            this.groupList=groupList;
-//            console.log('groupList',this.groupList)
-          })
-        })
-      },
       //打开新建分组弹窗
       toGroup(){
         this.dialogFileVisible = true;
@@ -389,6 +353,8 @@
         let data = response.data;
         this.$tool.success("上传成功");
         this.loadingcheck = true;
+        console.log('上传成功',response,file)
+        console.log(this.groupList)
         this.initData()
         //将还未上传成功的文件重新放回newFile中
 //        console.log('重点',this.groupList)
