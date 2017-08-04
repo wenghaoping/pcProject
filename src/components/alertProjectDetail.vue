@@ -417,7 +417,6 @@
       //关闭弹窗
       handleClose(){
         this.$emit('changeCon2', false);
-//        this.pro_id="";
       },
       //获取项目详情数据
       getProjectDetail () {

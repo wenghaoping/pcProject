@@ -60,7 +60,7 @@
   export default {
     data () {
       return {
-        active: 0,
+        active: 1,
         tabs: [
           {type: '首页', jump: '/'},
           {type: '工作台', jump: '/workBench'},
