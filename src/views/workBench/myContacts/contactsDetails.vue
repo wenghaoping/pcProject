@@ -334,8 +334,6 @@
       </span>
     </el-dialog>
 
-   <!--&lt;!&ndash;// 项目详情弹窗&ndash;&gt;-->
-    <!--<alertprojectdetail :dialog-pro-visible="dialogVisiblePro" v-on:changeall="dialogVisiblechangeIn" :proid="pro_id"></alertprojectdetail>-->
     <!--项目详情弹窗-->
     <alertprojectdetail :dialog-visible-pro="dialogVisiblePro" :proid="pro_id" v-on:changeCon2="dialogVisiblechangeIn"></alertprojectdetail>
 
@@ -343,18 +341,47 @@
     <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow" :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
 
     <!--项目推送弹窗,人脉入口-->
-    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
+    <el-dialog :visible="dialogPushVisible" :before-close="handleClose" size="tiny" :show-close="close">
 
-    <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"></projectpreview>
+     <span slot="title" class="dialog-title clearfix">
+        <div class="title fl">项目推送</div>
+        <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
+        <div class="img fl"><img src="../../../assets/images/why.png"></div>
+      </span>
+      <el-form :model="pushData" label-position="right" label-width="60px"
+               ref="pushData">
+        <el-form-item
+          prop="email"
+          label="邮箱"
+          :rules="[
+          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
+        ]">
+          <el-input v-model="pushData.email" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="一句话" prop="body"
+        :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
+          <el-input v-model="pushData.body" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogPushVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('pushData')">确 定</el-button>
+      </div>
+    </el-dialog>
+<!--    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
+
+    &lt;!&ndash;项目预览弹窗&ndash;&gt;
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"></projectpreview>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import alertprojectdetail from '../../../components/alertProjectDetail.vue'
-  import projectpush from './projectPush.vue'
   import addfollow from './../followUp/addFollow.vue'
-  import projectpreview from './projectPreview.vue'
+
+/*  import projectpush from './projectPush.vue'
+  import projectpreview from './projectPreview.vue'*/
   export default {
     data () {
       return {
@@ -488,10 +515,15 @@
 
            }*/
         ],
+        pushCount:0,//剩余推送次数
+        pushData:{
+          email:"",
+          body:"",
+          project_id:'',
+        },//推送数据
       }
     },
     methods: {
-
       goBack(){
         this.$router.push({name: 'myContacts'})//路由传参
       },//返回上一层
@@ -522,8 +554,13 @@
           this.userEmail=this.contacts.user_email;
           this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
           this.dialogPushVisible=true;
+          this.pushData.email=this.contacts.user_email;
+          this.pushData.project_id=data.project_id;
         }
       },//点击推送,并且传送数据给推送弹框
+      handleClose(){
+        this.dialogPushVisible=false;
+      },//关闭项目推送
       dialogVisiblechange(msg){
 //      this.dialogPushVisible=msg;
         this.dialogPreviewVisible=true;
@@ -1103,6 +1140,58 @@
           });
         });
       },//移除匹配
+
+      getpushCount(){
+        this.$http.post(this.URL.pushCount,{
+          user_id: localStorage.user_id})
+          .then(res=>{
+            let data = res.data.data;
+            this.pushCount=data.push_count.remain_times;
+//          this.$tool.console(data.push_count);
+          })
+          .catch(err =>{
+            this.$tool.console(err,2);
+            this.loading=false;
+          })
+      },//获取剩余推送次数
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.push();
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },//弹框确定推送
+      push(){
+        if(this.pushCount!=0){
+            let pushData=new Object;
+            pushData.user_id= localStorage.user_id;
+            pushData.card_id=this.contacts.card_id;
+            pushData.email=this.pushData.email;
+            pushData.title="";
+            pushData.body=this.pushData.body;
+            pushData.project_ids=new Array;
+            pushData.project_ids.push(this.pushData.project_id);
+            this.$http.post(this.URL.pushUser, pushData)
+              .then(res => {
+                let data=res.data.data;
+                this.$tool.success("推送成功");
+                this.getpushCount();
+                this.getInvestorsMatchProjects();
+                this.dialogPushVisible = false;
+              })
+              .catch(err => {
+                this.$tool.console(err);
+                this.$tool.success("推送失败");
+                this.dialogPushVisible = false;
+              })
+          }else{
+          this.$tool.warning("您今日的推送次数已用完")
+        }
+      }//推送
+
     },
     created(){
       this.getUserId();
@@ -1111,7 +1200,7 @@
       this.getOneUserInfo();
       this.getWxProjectCategory();
       this.getEchartData();
-
+      this.getpushCount();
       setTimeout(()=>{
         this.getInvestorsMatchProjects();
         this.getEnjoyProjects();
@@ -1124,9 +1213,9 @@
     },
     components: {
       alertprojectdetail,
-      projectpush,
-      addfollow,
-      projectpreview
+      addfollow
+/*      projectpush,
+      projectpreview*/
     },
   }
 </script>

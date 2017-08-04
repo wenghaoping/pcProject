@@ -15,7 +15,7 @@ this.$http.post(this.URL.getCrawlerBrand, {
   })//请求函数
 
 this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}})//路由传参
-
+this.$route.query.project_id;
 //state.show?false:true;
 
 

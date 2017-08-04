@@ -163,6 +163,7 @@
         statusLast:0,
         loadingcheck:false,
         follow_id:'',
+        investor_id:'',
         value:'',
         follow:{
           project_id:'',//关联项目id
@@ -576,7 +577,6 @@
         });
       },
       clearData(){
-          console.log(this.follow);
         for(let key in this.follow){
           this.follow[key]='';
         }
@@ -587,6 +587,7 @@
         this.follow.project_name=this.projectname || '';
         this.follow.card_id=this.cardid || '';
         this.follow.card_name=this.cardname || '';
+        this.investor_id=this.investorid || '';
         this.saveJumpData=this.follow;
       }
     },

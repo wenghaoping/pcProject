@@ -666,7 +666,4 @@
 
 <style lang="less">
   @import '../../../assets/css/mycontacts';
-  .el-select-dropdown {
-    display: none !important;
-  }
 </style>

@@ -299,6 +299,7 @@ export default {
     return {
       close:false,
       activeName:'second',
+
       loading: false,//加载
       dialogUploadVisible:false,//控制添加人脉弹窗
       searchinput:'',//搜索绑定
@@ -422,8 +423,10 @@ export default {
       this.userMessage.user_company_career=row.user_company_career;
       this.userMessage.user_company_name=row.user_company_name;
       this.userMessage.card_id=row.card_id;
+      this.userMessage.investor_id=row.investor_id;
       this.userEmail=row.user_email;
       this.dialogPushVisible=true;
+
     },//点击推送,并且传送数据给推送弹框
     addContacts(){
       this.$router.push({name: 'createContacts',query: {card_id: 'creat'}})//路由传参
@@ -608,6 +611,7 @@ export default {
         obj.tagArray=list[i].user_invest_tag;//标签
         obj.login_time=list[i].login_time;//活跃时间
         obj.card_id=list[i].card_id;//活跃时间
+        obj.investor_id=list[i].investor_id;//活跃时间
         arr.push(obj);
       }
       return arr;
