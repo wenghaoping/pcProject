@@ -23,7 +23,8 @@
                      style="width: 586px;"
                      remote placeholder="请输入您要推送的投资人"
                      multiple @remove-tag="removeTag"
-                     :remote-method="remoteMethod"  popper-class="popper">
+                     :remote-method="remoteMethod"
+                     popper-class="popper">
             <el-option v-for="(item,index) in allCheck" :key="item.card.card_id" :label="item.card.user_real_name" :value="item.card.user_id">
             </el-option>
           </el-select>
@@ -637,7 +638,6 @@
       for(let x in this.myNameList){
           this.myNameList[x]=false;
       }
-      console.log(this.myNameList)
       for(let x in this.netNameList){
         x=false;
       }
@@ -708,7 +708,7 @@
 
 <style lang="less">
   @import '../../../assets/css/mycontacts';
-  .el-select-dropdown {
+  .popper {
     display: none !important;
   }
 </style>

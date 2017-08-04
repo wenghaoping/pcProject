@@ -16,6 +16,7 @@
                  ref="upload"
                  action="api/v/project/uploadFile"
                  :on-change="handleChange"
+                 :on-progress="uploadProgress"
                  :on-success="uploadsuccess"
                  :on-error="uploaderror"
                  :before-upload="beforeUpload"
@@ -82,7 +83,7 @@
                       :rules="[{min: 2, message: '最少2个字符',required: true, trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
-              <el-input v-model="newGroupName.name" auto-complete="off"></el-input>
+              <el-input v-model="newGroupName.name" auto-complete="off" @keyup.enter="addGroup"></el-input>
             </el-col>
           </el-row>
         </el-form-item>
@@ -93,9 +94,9 @@
       </div>
     </el-dialog>
     <!--移动文件分组弹框-->
-    <el-dialog title="移至" :visible.sync="fileMoveFrame">
+    <el-dialog class="moveFileFrame" title="移至" :visible.sync="fileMoveFrame">
         <el-radio-group v-model="radio">
-          <el-radio v-for="group in groupList" :key="group.type_id" :label="group.type_id">{{group.type_name}}</el-radio>
+          <el-radio class="groupRadio" v-for="group in groupList" :key="group.type_id" :label="group.type_id">{{group.type_name}}</el-radio>
         </el-radio-group>
       <div slot="footer" class="dialog-footer">
         <el-button @click="fileMoveFrame = false">取 消</el-button>
@@ -187,7 +188,6 @@
           })
         })
       },
-
       //打开新建分组弹窗
       toGroup(){
         this.dialogFileVisible = true;
@@ -313,11 +313,9 @@
 
         this.groupList.forEach(x=>{
           if(x.type_id===this.typeId){
-            console.log(x.type_id,this.typeId);
             x.newFile.push(file);
           }
         });
-        console.log(this.groupList)
       },
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
@@ -327,13 +325,22 @@
           this.loading = false;
           this.loadingcheck = false;
         }
+//        console.log('handleChange',file,fileList)
+      },
+      //文件上传中
+      uploadProgress(event,file,fileList){
+        //不知道为什么文件上传中的勾子函数内的console会触发两次,且event的值不同
+        /*console.log('文件上传中')
+        console.log(event)
+        console.log(file)
+        console.log(fileList)*/
       },
       //上传文件成功
       uploadsuccess(response, file, fileList){
         let data = response.data;
         this.$tool.success("上传成功");
         this.loadingcheck = true;
-        console.log(this.fileList);
+        console.log(response,file,fileList)
         this.initData()
       },
       //上传失败
