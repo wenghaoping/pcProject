@@ -160,7 +160,6 @@
         var that=this;
         var item=this.caseForm.investSuccessCase;
         var is_complete=true;
-        console.log(item)
         // 前端验证表单
         item.forEach((x,index)=>{
           if(x.case_name.replace(/^\s+|\s+$/g, "") && x.case_name.replace(/^\s+|\s+$/g, "").length<16 && x.case_industry && x.case_stage && x.case_province && x.case_city && x.case_money.replace(/^\s+|\s+$/g, "") && x.case_money.replace(/^\s+|\s+$/g, "").length<9){
@@ -172,16 +171,14 @@
           }
         })
         if(is_complete){
-          console.log('发送请求')
           // 标准时间转化为毫秒数
           this.caseForm.investSuccessCase.forEach(x=>{
             this.caseTime.push(x.case_deal_time);
             x.case_deal_time=Date.parse(x.case_deal_time);
             var date=new Date(x.case_deal_time);
             x.case_deal_time=date.getFullYear()+'-'+ (date.getMonth()+1)+'-'+ date.getDate();
-            console.log(x.case_deal_time)
+//            console.log(x.case_deal_time)
           })
-          console.log(this.caseForm.investSuccessCase);
 
           // 发送请求
           /*this.$http.post(this.URL.createUserProjectCase,{
@@ -200,7 +197,7 @@
               that.$tool.error(res.data.error_msg)
             }
           })*/
-          this.$tool.success('投资成功案例保存成功')
+//          this.$tool.success('投资成功案例保存成功')
           this.caseForm.investSuccessCase.forEach((x,index)=>{
             x.case_deal_time=this.caseTime[index]
           })
