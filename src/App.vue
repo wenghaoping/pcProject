@@ -122,14 +122,8 @@
         }*/
       },
     },
-//    当dom一创建时
+    //当dom一创建时
     created(){
-/*       if(localStorage.user_id=="" || localStorage.user_id==undefined){
-         this.$router.push({ name: 'SmallRoutine'});
-       }else{
-       //        this.$router.push('/');
-       this.active=0;
-       }*/
      this.setUserId();
     },
     watch: {

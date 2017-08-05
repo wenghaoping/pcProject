@@ -28,7 +28,7 @@
                     <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img src="/static/images/shangchuan.png">上传文件</el-button>
                </el-upload>
             </div>
-            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1)"><img src="/static/images/shangchuan.png">重命名</el-button>
+            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img src="/static/images/shangchuan.png">重命名</el-button>
           </span>
         </template>
         <!--文件列表-->
@@ -59,31 +59,18 @@
             <span class="f-name" style="cursor: pointer" @click="download">{{newF.name}}</span>
             <img src="../../../assets/images/loading.gif" style="width:16px;height: 16px;margin-left: 10px;">
             <span class="upLoading" v-loading.body="true"></span>
-            <div class="fr">
-              <el-dropdown  @command="fileDeal" trigger="click">
-                <span class="el-dropdown-link">
-                  <img src="/static/images/threePoint.png" class="threePoint">
-                </span>
-                <el-dropdown-menu slot="dropdown" class="curor">
-                  <el-dropdown-item command="1">查看</el-dropdown-item>
-                  <el-dropdown-item command="2">移至</el-dropdown-item>
-                  <el-dropdown-item command="3">删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-
           </div>
         </div>
       </el-collapse-item>
     </el-collapse>
-    <!--文件分组的弹窗-->
+    <!--新建文件分组的弹窗-->
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="newGroupName"  ref="newGroupName">
         <el-form-item label="分组名称" label-width="80px" prop="name"
-                      :rules="[{min: 2, message: '最少2个字符',required: true, trigger: 'blur'}]">
+                      :rules="[{min: 2, max:40, message: '分组名称应在2-40个字符之间',required: true, trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
-              <el-input v-model="newGroupName.name" auto-complete="off" @keyup.enter="addGroup"></el-input>
+              <el-input v-model="newGroupName.name" auto-complete="off"></el-input>
             </el-col>
           </el-row>
         </el-form-item>
@@ -230,8 +217,10 @@
       //新建分组--确定
       addGroup() {
         if(!this.$tool.getNull(this.newGroupName.name)){
-          //检查是否和已有分组重名,若全不重名则创建分组
-          if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
+          if(this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length<2 || this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length>40){
+            this.$tool.error('分组名称应在2-40个字符之间')
+          }else if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
+            //检查是否和已有分组重名,若全不重名则创建分组
             this.$http.post(this.URL.createFileType,{
               user_id:localStorage.user_id,
               type_name:this.newGroupName.name
@@ -258,10 +247,10 @@
         this.dialogFileVisible = false;
       },
       //获取当前按钮的typeId(辅助函数)
-      getTypeId(typeId,type){
+      getTypeId(typeId,type,groupName){
         this.typeId=typeId;
         if(type===1){
-          this.renameGroup();
+          this.renameGroup(groupName);
         }else if(type===3){
           this.deleteGroup();
         }
@@ -300,7 +289,6 @@
               type_id:this.typeId,
               project_id:this.project_id
             }).then(res => {
-              console.log(res)
               if (res.data.status_code === 2000000) {
                 this.loading = false;
                 this.$tool.success("删除成功")
