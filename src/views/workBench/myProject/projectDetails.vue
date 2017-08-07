@@ -257,7 +257,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :proName="project.pro_name">
+              <folowup :proid="project.project_id" :proName="project.pro_name" @changeClose="closeFollow1" >
 
               </folowup>
             </el-tab-pane>
@@ -835,7 +835,13 @@
       },//点击写跟近按钮
       closeFollow(msg){
         this.dialogFollow=msg;
-        this.getEnjoyedInvestors()
+        this.getEnjoyedInvestors();
+
+      },//关闭添加跟进
+      closeFollow1(msg){
+        this.dialogFollow=msg;
+        this.getEnjoyedInvestors();
+
       },//关闭添加跟进
       download(e){
         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e

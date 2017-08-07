@@ -23,12 +23,17 @@
               <div class="item progress height">
                 <div class="txt begin">项目线索</div>
                 <div class="progress-bar">
-                  <div class="circle circle-s"></div>
-                  <div class="line1"></div>
-                  <div class="txt1">签约</div>
-                  <div class="line2"></div>
-                  <div  class="txt state">{{status_name}}</div>
-                  <div class="circle circle-e">&nbsp;</div>
+                   <span class="circle circle-s" style=" display: inline-block;
+      vertical-align: middle;"></span>
+                  <span class="bar-bg1" style=" display: inline-block;
+      vertical-align: middle;">&nbsp;</span>
+                  <span  class="txt state" style="left:80px;"  v-if="project.pro_schedule.schedule_id==2">约谈</span>
+                  <span  class="txt state" style="left:184px;" v-if="project.pro_schedule.schedule_id==4">签署FA协议</span>
+                  <span  class="txt state" style="left:310px;" v-if="project.pro_schedule.schedule_id==5">引荐投资方</span>
+                  <span  class="txt state" style="left:450px;" v-if="project.pro_schedule.schedule_id==7">交割</span>
+                  <span  class="txt state" style="left:550px;" v-if="project.pro_schedule.schedule_id==8">待收佣金</span>
+                  <span class="circle circle-e" style=" display: inline-block;
+      vertical-align: middle;">&nbsp;</span>
                 </div>
                 <div class="txt end">佣金收讫</div>
              </div>
@@ -58,21 +63,18 @@
           <div class="item" style="margin-top:33px;">
             <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
           </div>
-          <div class="item" style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;">
+          <div class="item" v-show="project.pro_BP.length!==0" style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;" >
             <!--<div class="paper" v-if="project.pro_BP.length!=0">-->
               <img class="img" style="padding-left: 16px;" src="../assets/images/paper.png">
-              <span class="pt" style="">{{project.pro_BP.file_title}}</span>
-              <!--<el-button type="text" size="mini" @click="download(project.pro_BP.file_id)" style="float: right;line-height:3;margin-right: 10px">下载</el-button>-->
-              <!--<el-button type="text" size="mini" style="float: right;line-height: 3;margin-right: 10px">查看</el-button>-->
-            <!--</div>-->
+              <span class="pt"  v-if="project.pro_BP.file_title!==''">{{project.pro_BP.file_title}}</span>
           </div>
           <div class="item" style="margin-top:24px;height: 49px;">
             <div class="bot-det" v-show="project.pro_status!=''">
               <span class="det-title">运营状态：</span>
-              <span class="del-info">{{project.pro_status.status_name}}</span>
+              <span class="del-info" v-if="project.pro_status.status_name!==''">{{project.pro_status.status_name}}</span>
             </div>
             <!--<div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">-->
-            <div class="bot-det" style="margin-left:170px;">
+            <div class="bot-det" style="margin-left:150px;">
               <span class="det-title">产品链接：</span>
               <span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}www.weitianshi.cn</a></span>
             </div>
@@ -96,10 +98,7 @@
             <span class="title"><img class="img" src="../assets/images/team.png">核心团队</span>
           </div>
           <div class="item" style="margin-top:33px;">
-            <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
-          </div>
-          <div class="item" style="margin-top:33px;">
-            <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
+            <span class="person-tag" v-for="tag in project.tag">{{tag.tag_name}}</span>
           </div>
           <div style="margin-top:32px;"></div>
           <div class="item" v-for="user in project.core_users" style="margin-top:10px;">
@@ -427,6 +426,7 @@
         this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.pro_id})
         .then(res=>{
           this.loading=false;
+          this.$tool.console(res);
           let data = res.data.data;
           if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
           if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
@@ -435,6 +435,8 @@
           this.getLocalTime(data.pro_develop);
           this.getLocalTime2(data.pro_history_finance);
           this.project=data;
+          this.$tool.console(project);
+          this.$tool.console(project.pro_schedule.schedule_id);
           this.project.pro_source=this.getProjectTag(data.tag);
           this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
         })
@@ -556,6 +558,10 @@
       }
     }
     /*上层弹框*/
+    #projectPreview .contain-center1 .item-lists .item span{
+      display: inline-block;
+      vertical-align: middle;
+    }
     .up-floor{
       padding: 20px 30px;
       background: white;
@@ -607,27 +613,7 @@
           .progress-bar{
             position: relative;
             display: inline-block;
-            .line1{
-              width: 660px;
-              height: 1px;
-              background: #c0ccda;
-              display: inline-block;
-              vertical-align: middle;
 
-            }
-            .txt1{
-              font-family:MicrosoftYaHei;
-              font-size:14px;
-              color:#20a0ff;
-              letter-spacing:0;
-              line-height:14px;
-              text-align:center;
-              position: absolute;
-              left:18%;
-              top:11px;
-              background:#f9fafc;
-              padding:0 10px;
-            }
             // margin:0 5px;
             .circle{
               position: absolute;
@@ -636,7 +622,7 @@
               border-radius:20px;
               width:8px;
               height:8px;
-              top:15px;
+              top:15.5px;
               z-index: 3;
             }
             .circle-s{
@@ -649,8 +635,8 @@
               left:calc(~"100% - 5px");
             }
             .bar-bg1{
-              width:630px;
-              height: 2px;
+              width:675px;
+              height: 1px;
               background: #c0ccda;
             }
             .bar-bg2{
@@ -669,13 +655,17 @@
             }
             .state{
               position: absolute;
-              z-index: 3;
+              z-index: 333;
               top:12px;
-              left:40px;
+
               font-size:14px;
               color:#20a0ff;
               letter-spacing:0;
               line-height:14px;
+              margin: 0 5px;
+              height: 17px;
+              background: #f9fafc;
+              text-align: center;
             }
           }
         }

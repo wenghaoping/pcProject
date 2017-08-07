@@ -145,6 +145,7 @@
         loading2:false,//加载框加载
         showList: false,//上传列表隐藏
         dialogFileVisible:false,//文件分组设置
+        getFollow:{},
         fileuploadDate: {user_id: localStorage.user_id, flag:1 },//项目文件上传带的参数
         restaurants: [],//项目模糊匹配存放
         userArr: [],//意向投资人模糊匹配存放
@@ -571,6 +572,8 @@
                this.$tool.error(res.data.error_msg);
              }
              this.loading=false;
+//              this.getFollow.user_id=localStorage.user_id;
+//              this.getFollow.project_id=this.follow.project_id;
             })
             .catch(err => {
              this.loading=false;
@@ -617,6 +620,7 @@
       followid : function(e){
       
       },//获取跟进id
+
       dialogFollow: function(e){
         if(e) {
           this.clearData();
