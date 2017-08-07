@@ -35,9 +35,9 @@
             </span>
           </div>
           <div class="onlyone">
-            <img v-if="project.is_exclusive==0" src="../assets/images/onlyonedark.png"/>
             <img v-if="project.is_exclusive==1" src="../assets/images/onlyonedark.png"/>
-            <img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>
+            <img v-if="project.is_exclusive==0" src="../assets/images/onlyonelight.png"/>
+            <!--<img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>-->
           </div>
         </div>
       </div>

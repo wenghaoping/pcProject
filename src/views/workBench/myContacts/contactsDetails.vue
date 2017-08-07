@@ -146,7 +146,7 @@
             <div class="button_list">
               <div class="lis">
                 <button class="button" @click="goEdit" v-if="contacts.is_bind==0">编辑</button>
-                <button class="button" @click="handlePush" style="margin-left: 16px;">项目推送</button>
+                <button class="button" @click="handlePushComplete" style="margin-left: 16px;">项目推送</button>
               </div>
             </div>
           </div>
@@ -346,7 +346,7 @@
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow" :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
 
-    <!--项目推送弹窗,人脉入口-->
+    <!--项目推送弹窗,人脉入口精简版-->
     <el-dialog :visible="dialogPushVisible" :before-close="handleClose" size="tiny" :show-close="close">
 
      <span slot="title" class="dialog-title clearfix">
@@ -375,10 +375,12 @@
         <el-button type="primary" @click="submitForm('pushData')">确 定</el-button>
       </div>
     </el-dialog>
-<!--    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
-    &lt;!&ndash;项目预览弹窗&ndash;&gt;
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"></projectpreview>-->
+    <!--项目推送弹窗,人脉入口完整版-->
+    <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
+
+    <!--项目预览弹窗-->
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"></projectpreview>
   </div>
 </template>
 
@@ -386,8 +388,8 @@
   import alertprojectdetail from '../../../components/alertProjectDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
 
-/*  import projectpush from './projectPush.vue'
-  import projectpreview from './projectPreview.vue'*/
+  import projectpush from './projectPush.vue'
+  import projectpreview from './projectPreview.vue'
   export default {
     data () {
       return {
@@ -396,7 +398,8 @@
         dialogVisibleTag:false,//标签弹框设置
         dialogFollow:false,//添加更近弹框
         dialogPreviewVisible:false,//项目预览弹窗
-        dialogPushVisible:false,//项目推送弹框设置
+        dialogPushVisible:false,//项目推送弹框设置,简易版
+        dialogPushVisibleComplete:false,//项目推送弹框,完整版
         dialogVisiblePro:false,//控制项目详情弹窗
         tagsValue:[],//标签弹框数据绑定
         addTags:[{
@@ -551,7 +554,7 @@
       },//获取userid/card_id
       handlePush(data){
         if(data==0){
-            this.$tool.warning("已推送过")
+            this.$tool.warning("已推送过");
         }else{
           this.userMessage.user_real_name=this.contacts.user_real_name;
           this.userMessage.user_company_career=this.contacts.user_company_career;
@@ -563,7 +566,15 @@
           this.pushData.email=this.contacts.user_email;
           this.pushData.project_id=data.project_id;
         }
-      },//点击推送,并且传送数据给推送弹框
+      },//点击推送精简版.
+      handlePushComplete(){
+        this.userMessage.user_real_name=this.contacts.user_real_name;
+        this.userMessage.user_company_career=this.contacts.user_company_career;
+        this.userMessage.user_company_name=this.contacts.user_company_name;
+        this.userMessage.card_id=this.contacts.card_id;
+        this.userEmail=this.contacts.user_email;
+        this.dialogPushVisibleComplete=true;
+      },//点击推送完整版,并且传送数据给推送弹框
       handleClose(){
         this.dialogPushVisible=false;
       },//关闭项目推送
@@ -572,7 +583,8 @@
         this.dialogPreviewVisible=true;
       },//关闭推送弹框,打开预览弹框
       dialogVisiblechangeCloase(msg){
-        this.dialogPushVisible=msg;
+        this.dialogPushVisibleComplete=msg;
+        this.getpushCount();
       },//关闭项目推送弹窗
       filterChangeCurrent(page){
         this.getProjectList(page);
@@ -1066,6 +1078,7 @@
               let data = res.data.data;
               this.matchProjects=this.setMatchProject(data);
               this.totalData3 = res.data.count;
+
             }
           }
           this.loading = false;
@@ -1092,6 +1105,7 @@
           obj.is_follow=x.is_follow;
           newArr.push(obj);
         });
+        console.log(newArr);
         return newArr;
       },//设置意向项目列表
       filterChangeCurrent2(page){
@@ -1150,7 +1164,7 @@
           });
         });
       },//移除匹配
-
+      /*项目推送*/
       getpushCount(){
         this.$http.post(this.URL.pushCount,{
           user_id: localStorage.user_id})
@@ -1200,7 +1214,8 @@
           }else{
           this.$tool.warning("您今日的推送次数已用完")
         }
-      }//推送
+      },//推送
+
 
     },
     created(){
@@ -1224,9 +1239,9 @@
     },
     components: {
       alertprojectdetail,
-      addfollow
-/*      projectpush,
-      projectpreview*/
+      addfollow,
+      projectpush,
+      projectpreview
     },
   }
 </script>
