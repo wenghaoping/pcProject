@@ -609,7 +609,7 @@
     },
     watch : {
       followid : function(e){
-
+      
       },//获取跟进id
       dialogFollow: function(e){
         if(e) {

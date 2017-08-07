@@ -22,9 +22,15 @@
       <!--信息内容介绍-->
       <div class="followContent">
         <div class="followProject">
-            <span style="display: inline-block;float: left">关联项目&nbsp;:&nbsp;</span>
-            <span style="max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>
-            <span style="display: inline-block;margin-left: 90px;float: left">意向投资人&nbsp;:&nbsp;</span>
+            <span style="display: inline-block;float: left;position: relative;">关联项目&nbsp;:&nbsp;</span>
+          <el-tooltip class="item" effect="dark"  placement="top" :disabled="pro_name.length > 10 ? false:true">
+            <div slot="content">
+              <div class="tips-txt">{{pro_name}}</div>
+            </div>
+            <span style="width:180px;max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>
+            <!--<el-button></el-button>-->
+          </el-tooltip>
+           <span style="display: inline-block;margin-left: 90px;float: left" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
             <span style="display: inline-block;float: left">{{item.investor_name}}</span>
             <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
         </div>
@@ -48,8 +54,12 @@
         </span>
       </el-dialog>
       <!--写跟进弹框-->
+<<<<<<< HEAD
       <!--<addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>-->
 
+=======
+      <addfollow :dialog-follow="dialogFollow" :followid="followid"  @changeClose="closeFollow"></addfollow>
+>>>>>>> 0f05b9aad90f783543d8fe36c281db93a5f2291d
     </div>
   </div>
 </template>
@@ -78,7 +88,6 @@ export default {
       let fileId=this.content[index].follow_file[item1].file_id;
       const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
       window.location.href=url;
-     console.log(fileId,url);
     },
     getProjectFollowList(){
         this.$http.post(this.URL.getProjectFollowList,{
@@ -118,10 +127,6 @@ export default {
       this.getProjectFollowList();
       this.$emit("getfollowid",this.content[index].follow_id);
     },//点击写跟近按钮
-/*    closeFollow(msg){
-      this.dialogFollow=msg;
-      this.followid="";
-    },//关闭添加跟进*/
   },
   created(){
     this.getProjectFollowList();

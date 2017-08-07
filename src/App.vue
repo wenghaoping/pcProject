@@ -60,7 +60,7 @@
   export default {
     data () {
       return {
-        active: 0,
+        active: 1,
         tabs: [
           {type: '首页', jump: '/'},
           {type: '工作台', jump: '/workBench'},
@@ -124,14 +124,14 @@
         }*/
       },
     },
-//    当dom一创建时
+    //当dom一创建时
     created(){
-/*       if(localStorage.user_id=="" || localStorage.user_id==undefined){
+       if(localStorage.user_id=="" || localStorage.user_id==undefined){
          this.$router.push({ name: 'SmallRoutine'});
        }else{
        //        this.$router.push('/');
        this.active=0;
-       }*/
+       }
 //     this.setUserId();
 
     },
