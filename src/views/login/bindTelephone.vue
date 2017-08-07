@@ -65,14 +65,15 @@
                 captcha: this.captcha,
                 open_session:this.open_session
               }).then(res => {
-                console.log(res)
                 if(res.data.status_code===2000000){
                     localStorage.user_career=res.data.user_career;
                     localStorage.user_company=res.data.user_company;
                     localStorage.user_email=res.data.user_email;
                     localStorage.user_id=res.data.user_id;
                     localStorage.user_real_name=res.data.user_real_name;
-                    //is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
+                    this.$store.state.logining.user_id=res.data.user_id;
+                    this.$store.state.logining.user_real_name=res.data.user_real_name;
+                      //is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
                     if (res.data.is_exist === 0) {
                       this.$router.push({name:'identityChoose'})
                     }else if (res.data.is_exist === 1) {

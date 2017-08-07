@@ -114,7 +114,6 @@ export default {
   data () {
     return {
       num:0,//控制一次最多选择个数
-      number:0,//用来和选择数字做对比
 //      dialogUploadVisible: false,//第一个弹窗的控制
       dialogUpload2Visible:false,//第二个弹窗的控制
       status:"",//状态success/exception
@@ -180,20 +179,12 @@ export default {
       }
       this.loading=false;
       if(!isnext){
-        this.$tool.error("不支持的文件格式");
+        setTimeout(()=>{this.$tool.error(file.name+"是不支持的文件格式");},200);
         this.num=0;
         return false;
       }
-
       if(parseInt(file.size) > parseInt(20971521)){
-        this.$tool.error("暂不支持超过20m文件上传哦");
-        this.alentTitle="暂不支持超过20M文件上传哦";
-        this.number=0;
-        this.num=0;
-        return false;
-      }
-      if(parseInt(this.num) > parseInt(5)){
-        this.$tool.error("一次最多选择5个文件");
+        setTimeout(()=>{this.$tool.error(file.name+"超过20m哦");},200);
         this.num=0;
         return false;
       }

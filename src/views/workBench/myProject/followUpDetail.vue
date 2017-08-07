@@ -48,24 +48,19 @@
         </span>
       </el-dialog>
       <!--写跟进弹框-->
-      <addfollow :dialog-follow="dialogFollow" :followid="followid" :get-data="getData" @changeClose="closeFollow"></addfollow>
+      <!--<addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>-->
+
     </div>
   </div>
 </template>
-<style lang="less">
-  @import '../../../assets/css/followUpDetail';
-  .el-dialog--tiny{
-    width:44%;
-    box-shadow: none;
-  }
-</style>
+
 <script type="text/ecmascript-6">
-  import addfollow from '../followUp/addFollow.vue'
+//import addfollow from '../followUp/addFollow.vue'
 export default {
   components: {
-    addfollow
+//    addfollow
   },
-  props: ["proid","proName"],
+  props: ["proid","proName","getDataTrue"],
   data () {
     return {
       dialogFollow:false,//控制写跟进弹框
@@ -85,7 +80,7 @@ export default {
       window.location.href=url;
      console.log(fileId,url);
     },
-    getData(){
+    getProjectFollowList(){
         this.$http.post(this.URL.getProjectFollowList,{
           user_id:localStorage.user_id,
           project_id:this.pro_id,
@@ -117,17 +112,19 @@ export default {
         this.followId=this.content[index].follow_id;
     },//获取删除记录id
     addFollow(index){
+
       this.dialogFollow=true;
       this.followid=this.content[index].follow_id;
-      this.getData();
+      this.getProjectFollowList();
+      this.$emit("getfollowid",this.content[index].follow_id);
     },//点击写跟近按钮
-    closeFollow(msg){
+/*    closeFollow(msg){
       this.dialogFollow=msg;
       this.followid="";
-    },//关闭添加跟进
+    },//关闭添加跟进*/
   },
   created(){
-    this.getData()
+    this.getProjectFollowList();
   },
   watch : {
     proid : function(e){
@@ -136,10 +133,20 @@ export default {
     proName : function(e){
       this.pro_name=e;
     },//获取关联项目
+    getDataTrue : function (e) {
+      if(e){
+        this.getProjectFollowList();
+        this.followid="";
+      }
+    },//是否重新获取数据
   }
 }
 </script>
 
 <style lang="less">
   @import '../../../assets/css/followUpDetail';
+  .el-dialog--tiny{
+    width:44%;
+    box-shadow: none;
+  }
 </style>

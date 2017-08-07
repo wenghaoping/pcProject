@@ -644,22 +644,25 @@
       getProjectPro_industry(arr){
         let str="";
         for(let i=0;i<arr.length;i++){
-          str+=arr[i].industry_name+'.'
+          str+=arr[i].industry_name+'、'
         }
+        str.substr(0, str.length - 1);
         return str
       },//列表领域处理
       getProjectPro_stage(arr){
         let str=""
         for(let i=0;i<arr.length;i++){
-          str+=arr[i].stage_name+'.'
+          str+=arr[i].stage_name+'、'
         }
+        str.substr(0, str.length - 1);
         return str
       },//列表轮次处理
       getProjectPro_area(arr){
         let str=""
         for(let i=0;i<arr.length;i++){
-          str+=arr[i].area_title+'.'
+          str+=arr[i].area_title+'、'
         }
+        str.substr(0, str.length - 1);
         return str
       },//列表地区处理
       getProjectPro_scale(arr){
@@ -668,16 +671,18 @@
           str=""
         } else {
             for(let i=0;i<arr.length;i++){
-              str+=arr[i].scale_money+'.'
+              str+=arr[i].scale_money+'、'
             }
+          str.substr(0, str.length - 1);
         }
         return str
       },//列表期望金额处理
       getProjectPro_source(arr){
         let str=""
         for(let i=0;i<arr.length;i++){
-          str+=arr[i].tag_name+'.'
+          str+=arr[i].tag_name+'、'
         }
+        str.substr(0, str.length - 1);
         return str
       },//列表项目来源处理
 
