@@ -303,8 +303,6 @@ const tool={
 
 
 
-
-
   console(text,data) {
     let type=true;//true代表开发环境,false代表上线环境
     if(type) console.log(text,data);
