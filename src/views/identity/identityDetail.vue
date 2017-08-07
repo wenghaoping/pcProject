@@ -132,14 +132,58 @@
                 </el-select>
               </el-form-item>
             </div>
-            <!--成功案例-->
+            <!--成功案例和新添单选项-->
             <div class="flex">
-              <el-form-item class="item" label="成功案例">
+              <el-form-item class="item mr32" label="成功案例">
                 <el-button v-show="!hasSuccessCase" @click="addInvestCase">添加</el-button>
                 <el-button v-show="hasSuccessCase">继续添加</el-button>
               </el-form-item>
-              <el-form-item class="item" label="申请试用为FA量身定制的saas系统">
-
+              <!--创业者身份-->
+              <el-form-item v-if="group_id==3" class="item" label="是否需要财务顾问服务">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_financing" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_financing" label="0">否</el-radio>
+              </el-form-item>
+              <!--买方FA身份-->
+              <el-form-item v-if="group_id==18" class="item" label="是否申请加入FA行业联盟">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_alliance" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_alliance" label="0">否</el-radio>
+              </el-form-item>
+              <!--卖方FA身份-->
+              <el-form-item v-if="group_id==19" class="item" label="是否申请加入FA行业联盟">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_alliance" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_alliance" label="0">否</el-radio>
+              </el-form-item>
+              <!--投资方身份-->
+              <el-form-item v-if="group_id==6" class="item" label="是否兼职FA业务">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_FA_part" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_FA_part" label="0">否</el-radio>
+              </el-form-item>
+              <!--其他身份-->
+              <el-form-item v-if="group_id==8" class="item" label="是否兼职FA业务">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_FA_part" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_FA_part" label="0">否</el-radio>
+              </el-form-item>
+            </div>
+            <!--新添单选项-买方FA身份-->
+            <div class="flex" v-if="group_id==18">
+              <el-form-item class="item mr32" label="是否申请试用为FA量身定制的sass系统">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_saas" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_saas" label="0">否</el-radio>
+              </el-form-item>
+              <el-form-item class="item" label="是否加入FA社群认证会员">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_identify_member" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_identify_member" label="0">否</el-radio>
+              </el-form-item>
+            </div>
+            <!--新添单选项-卖方FA身份-->
+            <div class="flex" v-if="group_id==19">
+              <el-form-item class="item mr32" label="是否申请试用为FA量身定制的sass系统">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_saas" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_saas" label="0">否</el-radio>
+              </el-form-item>
+              <el-form-item class="item" label="是否加入FA社群认证会员">
+                <el-radio class="radio mr120" v-model="ruleForm2.is_identify_member" label="1">是</el-radio>
+                <el-radio class="radio" v-model="ruleForm2.is_identify_member" label="0">否</el-radio>
               </el-form-item>
             </div>
           </el-form>
@@ -164,6 +208,8 @@
   export default {
     data () {
       return {
+//      身份认证所选择的身份的group_id
+        group_id:'',
 //      初始列表信息
         industry: '',
         area: '',
@@ -189,7 +235,12 @@
           investIndustry: '',
           investStage: '',
           investScale: '',
-          investArea: ''
+          investArea: '',
+          is_financing:0,//是否需要FA(财务顾问)融资服务[0否，1是]
+          is_alliance:0,//是否申请加入中国FA行业聪明
+          is_identify_member:0,//是否加入FA社群认证会员
+          is_saas:0,//是否申请试用创业项目库的管理(saas)
+          is_FA_part:0,//是否兼做FA业务
         },
 //      表单验证规则
         rule1: {
@@ -252,6 +303,7 @@
       },
       // 完成
       next(){
+        console.log(this.investCaseData)
         if (!this.ruleForm1.name.replace(/^\s+|\s+$/g, "")) {
           this.$tool.error('请正确填写姓名')
         } else if (!this.ruleForm1.company.replace(/^\s+|\s+$/g, "")) {
@@ -259,12 +311,9 @@
         } else if (!this.ruleForm1.career.replace(/^\s+|\s+$/g, "")) {
           this.$tool.error('请正确填写职位')
         }else if (this.ruleForm1.email && !this.$tool.checkEmail(this.ruleForm1.email)) {
-          console.log(1)
           this.$tool.error('请正确填写邮箱')
         }else {
           console.log(this.ruleForm1, this.ruleForm2);
-          console.log(this.investCaseData)
-
           this.$http.post(this.URL.saveUserIdentity, {
             authenticate_id: localStorage.authenticate_id,
             user_id: localStorage.user_id,
@@ -279,6 +328,11 @@
             area: this.ruleForm2.investArea,
             stage: this.ruleForm2.investStage,
             scale: this.ruleForm2.investScale,
+            is_financing:this.ruleForm2.is_financing,
+            is_alliance:this.ruleForm2.is_alliance,
+            is_identify_member:this.ruleForm2.is_identify_member,
+            is_saas:this.ruleForm2.is_saas,
+            is_FA_part:this.ruleForm2.is_FA_part,
             group_id:localStorage.group_id,
             project_case:this.investCaseData
           }).then(res => {
@@ -349,9 +403,8 @@
         return newArr
       },
       // 接收上传图片时返回的authenticate_id
-      uploadSuccess(authenticate_id){
-        console.log(authenticate_id)
-        this.authenticate_id = authenticate_id;
+      uploadSuccess(response){
+        console.log('图片上传返回数据',response)
       },
     },
     mounted(){
@@ -370,13 +423,15 @@
         user_id: localStorage.user_id
       }).then(res => {
         if (res.data.status_code === 2000000) {
-          if (res.data.status === 1 || res.data.status === 2) {
+          if (res.data.status === 1 || res.data.status === 2){
             this.$router.push({name: 'index'})
           }
         } else {
           this.$tool.error('核对身份接口调用失败')
         }
       })
+      this.group_id=localStorage.group_id;
+      console.log(this.group_id)
     }
   }
 </script>

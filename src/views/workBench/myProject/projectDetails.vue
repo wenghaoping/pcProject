@@ -304,7 +304,7 @@
                     </el-select>
                   </div>
                   <div class="item_lists">
-                    <div class="item_list" v-for="(enjoyInvestor,index) in enjoyInvestors">
+                    <div class="item_list" v-for="(enjoyInvestor,index) in enjoyInvestors" v-if="enjoyInvestors.lngth!=0">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{enjoyInvestor.match}}%</span>
@@ -349,6 +349,9 @@
                         <div class="img" v-else><img src="../../../assets/images/logo.png"></div>
                       </div>
                     </div>
+                    <div class="emptyImg" v-if="enjoyInvestors.length==0">
+                      <img src="../../../assets/images/zanwushuju.png">
+                    </div>
                   </div>
                   <el-pagination
                     class="pagination fr"
@@ -375,7 +378,7 @@
               <div v-show="!tabs">
                 <div class="main_right main_left">
                   <div class="item_lists">
-                    <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors">
+                    <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors" v-if="ProjectMatchInvestors.length!=0">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{projectMatchInvestor.match}}%</span>
@@ -400,23 +403,26 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
-                          <button v-if="projectMatchInvestor.is_follow==1" class="button fl" @click="industryPush(0)">
+                          <button v-if="projectMatchInvestor.push_statues==3" class="button fl" @click="industryPush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button class="button fl" v-else @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
-                            <div class="img1" ><img src="../../../assets/images/yichu.png"></div>移除</button>
+                            <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
-                        <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
+                        <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.investor_logo_url"></div>
                         <div class="imgText" v-else>{{projectMatchInvestor.investor_logo_text}}</div>
                       </div>
+                    </div>
+                    <div class="emptyImg" v-if="ProjectMatchInvestors.length==0">
+                      <img src="../../../assets/images/zanwushuju.png">
                     </div>
                     <el-pagination
                       class="pagination fr"
                       small
-                      v-if="totalData!=0"
+                      v-if="totalInvestors!=0"
                       @current-change="filterChangeInvestors"
                       :current-page.sync="currentPageInvestors"
                       layout="prev, pager, next"
@@ -452,22 +458,57 @@
     <!--人脉详情弹窗-->
     <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid" v-on:changeCon="dialogConchange"></alertcontactsdetail>
 
-
-
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
+
+    <!--项目推送项目入口小弹窗-->
+    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel">
+      <el-form :model="littlePush" ref="littlePush">
+        <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
+          <el-input v-model="littlePush.email" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="一句话" prop="content" :label-width="formLabelWidth">
+          <el-input v-model="littlePush.content" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="littlePushCancel">取 消</el-button>
+        <el-button type="primary" @click="littlePushCertain">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--项目推送项目入口小弹窗2-->
+    <el-popover
+      ref="popover4"
+      placement="right"
+      width="400"
+      trigger="click">
+      <el-form :model="littlePush" ref="littlePush">
+        <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
+          <el-input v-model="littlePush.email" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="一句话" prop="content" :label-width="formLabelWidth">
+          <el-input v-model="littlePush.content" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="littlePushCancel">取 消</el-button>
+        <el-button type="primary" @click="littlePushCertain">确 定</el-button>
+      </div>
+    </el-popover>
+
+    <!--项目预览弹窗-->
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
 
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-
   import research from './onekeyresearch.vue'
   import folowup from './followUpDetail.vue'
   import filemanagement from './fileManagement.vue'
@@ -476,7 +517,7 @@
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
   import customerAddContacts from '../../../components/customerAddContacts.vue'
-
+  import projectpreview from '../myContacts/projectPreview.vue'
   export default {
     data(){
       return {
@@ -741,22 +782,32 @@
 
         getInvestors:{},//获取买家图谱请求参数
         ProjectMatchInvestors:[
-          /*{
+/*          {
             follow_status:0,
-            industry_tag:"大数据",//领域
-            investor_career:"职位",//职位
-            investor_company:"西安中永顺投资管理有限公司",//公司
-            investor_desc:"",//介绍
-            investor_id:"d8W13Jr5",//id
-            investor_logo_text:"李",//名片名字
+            industry_tag:"暂无匹配",//领域
+            investor_career:"暂无匹配",//职位
+            investor_company:"暂无匹配",//公司
+            investor_desc:"暂无匹配",//介绍
+            investor_id:"0",//id
+            investor_logo_text:"暂无匹配",//名片名字
             investor_logo_url:"",
-            investor_name:"李凯伦",//名字
+            investor_name:"暂无匹配",//名字
             investor_type:2,
-            stage_tag:"天使轮",//轮次
-            user_id: "kpbmXNmW",
-            match:12,//匹配度
+            stage_tag:"暂无匹配",//轮次
+            user_id: "0",
+            match:0,//匹配度
           }*/
         ],//买家图谱数据
+        littlePushShow:false,//买家图谱推送弹窗
+        littlePush:{
+          email:'',
+          content:''
+        },//买家图谱推送弹窗表单
+        formLabelWidth:'74px',
+        pushData:[],//买家图谱推送接口参数
+        activeFrom:0,//从哪个路由进来的
+        dialogPreviewVisible:false,//项目推送预览显隐控制
+        emitPush:false,//控制项目推送-项目入口的推送函数触发
       }
     },
     computed:{
@@ -770,6 +821,7 @@
       addfollow,
       projectpush2,
       customerAddContacts,
+      projectpreview
     },
     //Echart组件
     mounted(){
@@ -848,7 +900,8 @@
         this.show = tab.name ;
       },
       goBack(){
-        this.$router.go(-1);
+          if(this.activeFrom==0) this.$router.push({name: 'myProject',query: {activeTo: 0}})
+        else if(this.activeFrom==2) this.$router.push({name: 'followUp',query: {activeTo: 2}})//路由传参
       },//返回上一层
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
@@ -938,6 +991,7 @@
       },//项目推送入口
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
+        this.activeFrom=this.$route.query.activeTo || 0;
         this.show=this.$route.query.show || "detail";
       },//获取id
       toEdit(){
@@ -1255,6 +1309,7 @@
 
       },//筛选意向项目
 
+      /*买家图谱*/
       setProjectMatchInvestors(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -1269,13 +1324,14 @@
           obj.investor_desc=x.investor_desc;
           obj.investor_company=x.investor_company;
           obj.investor_career=x.investor_career;
+          obj.investor_email=x.investor_email;
           obj.industry_tag=x.industry_tag;
           obj.is_follow=x.is_follow;
           obj.match=x.match;
+
           newArr.push(obj);
         });return newArr;
       },//设置买家图谱列表
-      /*买家图谱*/
       getProjectMatchInvestors(){
         this.loading=true;
         this.getInvestors.user_id=localStorage.user_id;
@@ -1321,11 +1377,14 @@
           })
       },//控制买家图谱页码
       industryPush(data){
-          if(data==0){
-            this.$tool.warning("已推送过")
-          }else{
-            this.dialogPushVisible=true;
-          }
+        console.log(data)
+        if(data==0){
+          this.$tool.warning("已推送过")
+        }else{
+          this.littlePushShow=true;
+          this.littlePush.email=data.investor_email;
+          this.pushData=[data.user_id,'user']
+        }
       },//买家图谱推送
       industryDelete(data){
         let delData = new Object;
@@ -1358,23 +1417,64 @@
           });
         });
       },//买家图谱人脉删除
+      littlePushCertain(){
+        if(!this.littlePush.email){
+          this.$tool.error('请输入邮箱')
+        }else if(!this.$tool.checkEmail(this.littlePush.email)){
+          this.$tool.error('请正确输入邮箱')
+        }else{
+          this.pushData.push(this.littlePush.email)
+          //转化为二维数组
+          let newPushData=[];
+          newPushData.push(this.pushData)
+          this.$http.post(this.URL.pushProject,{
+            user_id:localStorage.user_id,
+            project_id:this.project.project_id,
+            title:this.littlePush.content,
+            body:'',
+            receives:newPushData
+          }).then(res=>{
+            if(res.data.status_code===2000000){
+              this.$tool.success('推送成功');
+              this.$refs['littlePush'].resetFields();
+              this.littlePushShow=false;
+            }
+          })
+        }
+      },//买家图谱推送确定
+      littlePushCancel(){
+        this.$refs['littlePush'].resetFields();
+        this.littlePushShow=false;
+      },//买家图谱推送取消
+
+      /*项目推送*/
+      dialogPrechange(msg){
+        this.dialogPreviewVisible=msg;
+      },//项目推送预览显隐控制
+      previewPush(x){
+        this.emitPush=x;
+      },//项目推送预览隐藏
     },
     created () {
       // 组件创建完后获取数据，
+
       this.loading=true;
       this.$global.func.getWxProjectCategory();
       this.getprojectId();
       this.getWxProjectCategory();
       this.getEchartData();
+
       setTimeout(()=>{
         this.getProjectDetail();
         this.getEnjoyedInvestors();
         this.getProjectMatchInvestors();
       },500);
+    },
+    watch: {
+      '$route' (to, from) {
 
-
-    }
-
+      }
+    },
   }
 </script>
 
@@ -1427,8 +1527,13 @@
       height:12px;
       position: relative;
     }
-    /*.el-dialog--small{*/
-      /*width: 20%;*/
-    /*}*/
+    .littlePush{
+      .el-dialog--small{
+        width:430px;
+      }
+      .el-form-item__label{
+        text-align: left;
+      }
+    }
   }
 </style>

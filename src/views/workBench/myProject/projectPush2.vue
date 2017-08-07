@@ -318,7 +318,7 @@
 <script type="text/ecmascript-6">
   import customerAddContacts from '../../../components/customerAddContacts.vue'
   export default {
-  props: ["dialogPush",'proid','proName'],
+  props: ["dialogPush",'proid','proName','emitPush'],
   data () {
     return {
       project_name:this.proName,
@@ -385,6 +385,22 @@
   },
   components:{customerAddContacts},
   methods: {
+    //获取当前用户部分信息
+    getFirstUser(user){
+      this.$http.post(this.URL.getOneUserInfo,{user_id: localStorage.user_id})
+      .then(res=>{
+        if(res.data.status_code==2000000) {
+          let data = res.data.data;
+          user.firse_user_real_name=data.user_real_name;
+          user.firse_user_company_career=data.user_company_career;
+          user.firse_user_company_name=data.user_company_name;
+        }
+      })
+      .catch(err=>{
+        this.$tool.console(err,2);
+        this.$tool.error("加载超时");
+      })
+    },
     //获取我的人脉数据
     getMyContacts(){
       this.$http.post(this.URL.getConnectUserSortByMatch, {
@@ -427,11 +443,17 @@
     },
     //重置我的人脉,全网人脉,选中的我的人脉,选中的全网人脉,可用推送次数数据
     initData(){
+      this.pushData=[];
+      this.myContactsShow=[];
+      this.netContactsShow=[];
+      this.pushTitle='';
+      this.pushBody='';
+      this.pushData=[];
+      this.myNameList={};
+      this.netNameList={};
       this.getMyContacts();
       this.getNetContacts();
       this.getPushCount();
-      this.pushTitle='';
-      this.pushBody='';
     },
     //选项卡切换
     handleClick(tab, event) {
@@ -482,7 +504,7 @@
         })
       }
     },
-    //我的人脉表单选择
+    //我的人脉表单选择(无用)
     tableCheck1(val){
       console.log(val)
       this.myContactsCheck=val;
@@ -492,7 +514,7 @@
       })
       this.myContactsShow=arry;
     },
-    //全网人脉表单选择
+    //全网人脉表单选择(无用)
     tableCheck2(val){
       this.netContactsCheck=val;
       let arry=[];
@@ -504,6 +526,7 @@
     //项目搜索
     remoteMethod(query) {
       this.filterString=query;
+      console.log(this.activeTab)
       if(this.activeTab==="myContacts"){
         this.getMyContacts()
       }else{
@@ -552,7 +575,7 @@
         return x
       }
     },
-    //checkox勾选触发
+    //我的人脉表单和全网人脉表单勾选触发
     myCheck(e){
       let thisName=e.currentTarget.name;
       if(this.myContactsShow.indexOf(thisName)===-1){
@@ -571,7 +594,6 @@
         this.pushData.splice(this.pushData.indexOf(thisName),1)
         console.log(this.pushData)
       }
-
     },
     netCheck(e){
       let thisName=e.currentTarget.name;
@@ -594,11 +616,40 @@
     },
     //预览
     preview(){
-      this.$emit('changeall',false);
+      if(this.pushData.length>0){
+        let targetUser=this.pushData[0].card
+        let user={
+          user_real_name:targetUser.user_real_name,
+          user_company_career:targetUser.user_company_career,
+          user_company_name:targetUser.user_company_name,
+          firse_user_real_name:'',//当前用户
+          firse_user_company_career:'',
+          firse_user_company_name:'',
+        };
+        this.getFirstUser(user);
+        if(this.pushCount!=0) {
+          this.$store.state.pushProject.project_id = this.project_id;
+          this.$store.state.pushProject.user = user;
+          this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
+          this.$store.state.pushProject.pushMessage.card_id = user.card_id;
+          this.$store.state.pushProject.pushMessage.investor_id=user.investor_id;
+          this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
+          this.$store.state.pushProject.pushMessage.title = this.pushTitle;
+          this.$store.state.pushProject.pushMessage.body = this.pushBody;
+          this.$store.state.pushProject.pushMessage.project_ids = new Array;
+          this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
+          this.$store.state.pushProject.email.title = this.pushTitle;
+          this.$store.state.pushProject.email.body = this.pushBody;
+          this.$emit('preview', true);
+        }else{
+          this.$tool.warning("您今日的推送次数已用完")
+        }
+      }else{
+        this.$tool.error('请先选择推送人脉 ')
+      }
     },
     //推送
     push(){
-        console.log(this.pushData)
       let dealData=[]
       this.pushData.forEach(x=>{
         if(x.type==='card'){
@@ -607,7 +658,6 @@
           dealData.push([x.card.user_id,x.type,x.card.user_email])
         }
       })
-      console.log(dealData)
       if(dealData.length===0){
         this.$tool.error('请选择推送人脉')
       }else if(dealData.length>this.pushCount){
@@ -626,6 +676,7 @@
             this.initData();
             this.myContactsCheck=[];
             this.netContactsCheck=[];
+            this.$emit('changeClose',false);
           }
         })
       }
@@ -668,6 +719,10 @@
             this.myNameList[x.card.user_real_name]=false;
           })
           this.myContacts=res.data.data;
+          //如果我的人脉为空,则默认显示全网人脉页面
+          if(res.data.data.length===0){
+            this.activeTab='netContacts'
+          }
         }else{
 //          console.log(res.data.error_msg)
         }
@@ -701,6 +756,10 @@
       }
       //重置推送项目接口参数
       this.pushData=[];
+    },
+    emitPush:function(e){
+      this.push();
+      this.$emit('changeClose',false)
     }
   }
 }

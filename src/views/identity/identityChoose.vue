@@ -59,9 +59,9 @@
           this.$http.post(this.URL.setUserGroup, {
             user_id: localStorage.user_id,
             group_id: this.identitys[this.active].group_id,
-
           }).then(res => {
             if (res.data.status_code === 2000000) {
+              console.log(res.data)
               localStorage.group_id=this.identitys[this.active].group_id;
               localStorage.authenticate_id = res.data.authenticate_id;
               this.$router.push('/identityDetail')
@@ -75,8 +75,7 @@
       },
       // 获取身份列表信息
       getIdentity(){
-        this.$http.post(this.URL.getGroupIdentify, {}).then(
-          res => {
+        this.$http.post(this.URL.getGroupIdentify, {}).then(res => {
             this.identitys.forEach((x, index) => {
               x.group_id = res.data.data[index].group_id
             })

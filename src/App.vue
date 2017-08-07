@@ -92,7 +92,7 @@
         localStorage.user_id = '8W1ERo3W';//自己的
 //        localStorage.user_id='2rzyz5vp';
 //        localStorage.user_id='2rzyJEwp';
-        localStorage.user_real_name='常保龙';
+        localStorage.user_real_name='翁浩平';
       },
       // 登录
       login(){
@@ -122,14 +122,8 @@
         }*/
       },
     },
-//    当dom一创建时
+    //当dom一创建时
     created(){
-/*       if(localStorage.user_id=="" || localStorage.user_id==undefined){
-         this.$router.push({ name: 'SmallRoutine'});
-       }else{
-       //        this.$router.push('/');
-       this.active=0;
-       }*/
      this.setUserId();
     },
     watch: {

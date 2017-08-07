@@ -39,12 +39,9 @@
           // 取消列表里的文件时触发
           handleRemove(file, fileList) {
             this.btnShow=true;
-            console.log(file, fileList);
           },
           // 点击列表里的文件触发
-          handlePreview(file) {
-            console.log(file);
-          },
+          handlePreview(file) {},
           // 上传文件之前触发
           beforeUpload(file){
             console.log(file)
@@ -78,10 +75,10 @@
           },
           // 上传成功时触发
           uploadSuccess(response, file, fileList){
-            console.log(response)
             if(response.status_code===2000000){
               this.btnShow=false;
-              this.$emit('upLoadSuccess',response.authenticate_id)
+              localStorage.authenticate_id=response.authenticate_id;
+              this.$emit('upLoadSuccess',response)
             }else{
               this.$tool.error('上传失败')
               return '上传失败'
@@ -93,7 +90,7 @@
           }
         },
         created(){
-          console.log(localStorage.user_id,localStorage.authenticate_id)
+//          console.log(localStorage.user_id,localStorage.authenticate_id)
         }
     }
 </script>

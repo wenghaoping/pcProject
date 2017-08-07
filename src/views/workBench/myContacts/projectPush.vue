@@ -198,7 +198,6 @@ export default {
   methods: {
     preview(){
       if(this.pushCount!=0) {
-
         if (this.projectRadio == '' || this.projectRadio==undefined) this.$tool.error("请选择要推送的项目")
         else if (!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
         else if(this.email.title.length>40) this.$tool.error("标题不能大于40个字")
@@ -208,6 +207,7 @@ export default {
           this.$store.state.pushProject.user = this.user;
           this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
           this.$store.state.pushProject.pushMessage.card_id = this.user.card_id;
+          this.$store.state.pushProject.pushMessage.investor_id=this.user.investor_id;
           this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
           this.$store.state.pushProject.pushMessage.title = this.email.title;
           this.$store.state.pushProject.pushMessage.body = this.email.body;
@@ -420,7 +420,6 @@ export default {
         }
         this.getpushCount();
     },
-
   },
   created(){
 

@@ -62,8 +62,9 @@
                   <span class="f-title">{{list.bp_type}} : </span>
                   <span class="f-name" @click.prevent="download(list)"
                         style="cursor: pointer">{{list.file_title}}</span>
-                  <span class="del-btn" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
-                  <span class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
+                  <span v-if="!list.load"  class="del-btn" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
+                  <span v-if="!list.load"  class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
+                  <span v-if="list.load" class="uploadImg"><img src="../../../assets/images/loading.gif"></span>
                 </div>
               </div>
             </el-collapse-transition>
@@ -631,7 +632,7 @@
               </div>
             </el-collapse-transition>
           </div>
-          <el-button type="primary" size="large" style="margin-top:32px;float: right;display: block;" @click="allSave">保存
+          <el-button type="primary" size="large" style="margin-top:32px;float: right;display: block;" @click="allSave" :disabled="submitButton">保存
           </el-button>
           <div style="height: 50px;"></div>
         </div>
@@ -724,7 +725,7 @@
               </span>
           </div>
           <div class="bot-btn">
-            <el-button type="primary" size="large" @click="allSave">保存项目</el-button>
+            <el-button type="primary" size="large" @click="allSave" :disabled="submitButton">保存项目</el-button>
           </div>
         </div>
       </div>
@@ -800,7 +801,16 @@
         uploadShow: {//计划书上传列表,需要存数据啦
         },
         uploadShow2: {//上传文件展示列表,就是老夫操作的列表
-          lists: []
+          lists: [
+            /*{
+             bp_type: "其他",
+             file_id: 2476,
+             file_title: "文件2.docx",
+             type: 4,
+             load:true,
+             uid:1501837722250
+             }*/
+          ]
         },
         uploadDate: {user_id: localStorage.user_id},//商业计划书上传所带的额外的参数
         fileuploadDate: {user_id: localStorage.user_id},//项目文件上传带的参数
@@ -983,8 +993,8 @@
         finance:[
           { validator: checkFinance, trigger: 'blur' }
         ],
-        one:false//第一次进来的时候
-
+        one:false,//第一次进来的时候
+        submitButton:false,//是否允许提交false允许/true不允许
 
 
       };
@@ -1414,8 +1424,6 @@
         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+this.uploadShow.file_id
         window.location.href=url;
       },//点击下载
-
-      /*批量上传*/
       beforeUpload(file){
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
@@ -1441,6 +1449,10 @@
           return false;
         };
       },//上传前的验证
+
+
+      /*批量上传*/
+
       beforeUpload1(file){
         this.num++;
         this.fileuploadDate.project_id = this.project_id;
@@ -1471,6 +1483,7 @@
           this.num=0;
           return false;
         }
+        this.addDomain("其他", file.name, 0, 4,true,file.uid);
       },//项目文件上传验证
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
@@ -1479,15 +1492,18 @@
           this.loading=false;
           this.loadingcheck=false;
         }
+        this.subButtonCheck(this.uploadShow2.lists)
       },
       uploadsuccess(response, file, fileList){
-        let data = response.data
-        this.$tool.success("上传成功")
-        this.addDomain(data.type_name, data.file_title, data.file_id, data.type);
+        let data = response.data;
+        this.$tool.success("上传成功");
+        this.deleteLoad(file.uid);
+        this.addDomain(data.type_name, data.file_title, data.file_id, data.type,false,file.uid);
         this.loadingcheck=true;
+        this.subButtonCheck(this.uploadShow2.lists);
       },
       uploaderror(err, file, fileList){
-        this.$tool.error("上传失败,请联系管理员")
+        this.$tool.error("上传失败,请联系管理员");
         this.loadingcheck=false;
         this.loading=false;
       },//上传失败
@@ -1525,16 +1541,35 @@
         }
       },//删除当前上传文件
 
-      addDomain(type_name, file_title, file_id, type)  {
+      addDomain(type_name, file_title, file_id, type,load,uid)  {
         let object = {};
         object.bp_type = type_name;
         object.file_title = file_title;
         object.file_id = file_id;
         object.type = type;//文件类型
+        object.load = load;//是否在上传中
+        object.uid = uid;//文件唯一标识
         this.uploadShow2.lists.push(object);
 
       },//添加上传文件时,加入显示列表
-
+      deleteLoad(uid){
+        let lists=this.uploadShow2.lists;//所有的文件的数组
+        for(let i=0; i<lists.length; i++){
+          if(lists[i].uid==uid){
+            lists.splice(i,1)
+          }
+        }
+      },//剔除Load
+      subButtonCheck(arr){
+        for(let i=0; i<arr.length; i++){
+          if(arr[i].load){
+            this.submitButton=true;
+            return false;
+          }else{
+            this.submitButton=false;
+          }
+        }
+      },//当文件没有全部上传完时,不能提交
       groupchange(label){
         let index = this.groups.index;
         let data = this.groups.group;
@@ -1948,7 +1983,7 @@
 
   /*全部保存按钮*/
       allSave(){
-        console.log("保存项目");
+
 //        if (this.planList.length === 0) this.fileMust = true;
 //        else this.fileMust = false;
         this.projectMust = !this.submitForm('project');
@@ -2180,6 +2215,7 @@
       },
       getprojectId(){
         this.project_id = this.$route.query.project_id;
+
       }
     },
     //    当dom一创建时
@@ -2231,6 +2267,14 @@
   }
 
   #editproject {
+    .uploadImg{
+      width: 15px;
+      height: 15px;
+      display: inline-block;
+      img{
+        width: 100%;
+      }
+    }
     .addMember {
       display: block;
       margin: 0 auto;

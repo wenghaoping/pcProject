@@ -485,6 +485,7 @@ export default {
                 newState.label = tagName;
                 newState.value = res.data.tag_id;
                 this.tags.changecont.push(newState);
+                this.$global.func.getWxProjectCategory();
               })
               .catch(err => {
                 this.$tool.error("添加失败");
@@ -688,7 +689,7 @@ export default {
   },
   created(){
     this.getContactsId();
-    this.$global.func.getWxProjectCategory();
+
     setTimeout(() =>{
       this.getWxProjectCategory();
       if(this.card_id!='creat') this.getOneUserInfo();

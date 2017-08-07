@@ -203,6 +203,7 @@ export default {
     return {
       dialogFollow:false,//控制写跟进弹框
       followid:'',//跟进id
+
       loading: false,//加载动画
       searchinput:'',//搜索输入框
       totalData:1,//总页数
@@ -229,7 +230,7 @@ export default {
         disabledDate(time) {
           return time.getTime() > Date.now() - 8.64e7+3600 * 1000 * 24;
         }
-      },
+      },//计算时间
     }
   },
   methods: {
@@ -243,7 +244,6 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
-          console.log(data);
           this.loading=false;
           this.totalData=data.count;
         })
@@ -254,10 +254,11 @@ export default {
     },//搜索===首次进入页面加载的数据
     addFollow(){
       this.dialogFollow=true;
+
     },//点击写跟近按钮
     handleSelect(row, event, column) {
       if(column.label!="重置"){
-        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'flow'}})
+        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'flow',activeTo: 2}})
       }
     },//跳转到更近详情页
     handleEdit(index, row){
