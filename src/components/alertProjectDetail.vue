@@ -23,12 +23,6 @@
               <div class="item progress height">
                 <div class="txt begin">项目线索</div>
                 <div class="progress-bar">
-                  <!--<div class="circle circle-s"></div>-->
-                  <!--<div class="line1"></div>-->
-                  <!--<div class="txt1">签约</div>-->
-                  <!--<div class="line2"></div>-->
-                  <!--<div  class="txt state">{{status_name}}</div>-->
-                  <!--<div class="circle circle-e">&nbsp;</div>-->
                    <span class="circle circle-s" style=" display: inline-block;
       vertical-align: middle;"></span>
                   <span class="bar-bg1" style=" display: inline-block;
