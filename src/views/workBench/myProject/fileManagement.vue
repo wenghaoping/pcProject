@@ -16,6 +16,7 @@
                  ref="upload"
                  action="api/v/project/uploadFile"
                  :on-change="handleChange"
+                 :on-progress="uploadProgress"
                  :on-success="uploadsuccess"
                  :on-error="uploaderror"
                  :before-upload="beforeUpload"
@@ -27,7 +28,7 @@
                     <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img src="/static/images/shangchuan.png">上传文件</el-button>
                </el-upload>
             </div>
-            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1)"><img src="/static/images/shangchuan.png">重命名</el-button>
+            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img src="/static/images/shangchuan.png">重命名</el-button>
           </span>
         </template>
         <!--文件列表-->
@@ -58,28 +59,15 @@
             <span class="f-name" style="cursor: pointer" @click="download">{{newF.name}}</span>
             <img src="../../../assets/images/loading.gif" style="width:16px;height: 16px;margin-left: 10px;">
             <span class="upLoading" v-loading.body="true"></span>
-            <div class="fr">
-              <el-dropdown  @command="fileDeal" trigger="click">
-                <span class="el-dropdown-link">
-                  <img src="/static/images/threePoint.png" class="threePoint">
-                </span>
-                <el-dropdown-menu slot="dropdown" class="curor">
-                  <el-dropdown-item command="1">查看</el-dropdown-item>
-                  <el-dropdown-item command="2">移至</el-dropdown-item>
-                  <el-dropdown-item command="3">删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-
           </div>
         </div>
       </el-collapse-item>
     </el-collapse>
-    <!--文件分组的弹窗-->
+    <!--新建文件分组的弹窗-->
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="newGroupName"  ref="newGroupName">
         <el-form-item label="分组名称" label-width="80px" prop="name"
-                      :rules="[{min: 2, message: '最少2个字符',required: true, trigger: 'blur'}]">
+                      :rules="[{min: 2, max:40, message: '分组名称应在2-40个字符之间',required: true, trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
               <el-input v-model="newGroupName.name" auto-complete="off"></el-input>
@@ -93,9 +81,9 @@
       </div>
     </el-dialog>
     <!--移动文件分组弹框-->
-    <el-dialog title="移至" :visible.sync="fileMoveFrame">
+    <el-dialog class="moveFileFrame" title="移至" :visible.sync="fileMoveFrame">
         <el-radio-group v-model="radio">
-          <el-radio v-for="group in groupList" :key="group.type_id" :label="group.type_id">{{group.type_name}}</el-radio>
+          <el-radio class="groupRadio" v-for="group in groupList" :key="group.type_id" :label="group.type_id">{{group.type_name}}</el-radio>
         </el-radio-group>
       <div slot="footer" class="dialog-footer">
         <el-button @click="fileMoveFrame = false">取 消</el-button>
@@ -117,8 +105,10 @@
         groupList: [],
         //被展开的分组
         activeNames: [],
-        //批量上传文件列表
+        //批量上传文件列表(组件处理)
         fileList: [],
+        //批量上传文件列表(自己处理)
+        uploadList:[],
         //上传文件展示列表,就是老夫操作的列表
         uploadShow2: {
           lists: [
@@ -151,7 +141,7 @@
     },
     methods: {
       //重新获取分组列表信息
-      initData(){
+      initData(file){
         //获取分组列表
         this.$http.post(this.URL.getAllFileType, {
           user_id: localStorage.user_id
@@ -174,20 +164,43 @@
                 }
               })
             })
+
+            //如果有值传进来
+            if(file){
+              console.log('开始了')
+              console.log(this.uploadList)
+              console.log(this.uploadList[0])
+              //剔除掉已经上传成功的文件
+              this.uploadList.forEach((x,index)=>{
+                if(x.name===file.name){
+                  this.uploadList.splice(index,1)
+                }
+              })
+            }
+
             //将没有文件的分组设定默认值0
-            groupList.forEach(x=>{
+            groupList.forEach((x,index)=>{
               if(!x.file){
                 x.file=[];
                 x.fileNum=0;
               }
               x.newFile=[];
+              //如果有值传进来,那么此次触发由上传成功触发
+              if(file){
+                this.uploadList.forEach((y,index)=>{
+                  if(x.type_id===y.typeId){
+                    x.newFile.push(y)
+                  }
+                })
+              }
             })
             this.groupList=groupList;
-//            console.log('groupList',this.groupList)
+            /*if(file){
+              console.log(this.groupList)
+            }*/
           })
         })
       },
-
       //打开新建分组弹窗
       toGroup(){
         this.dialogFileVisible = true;
@@ -204,8 +217,10 @@
       //新建分组--确定
       addGroup() {
         if(!this.$tool.getNull(this.newGroupName.name)){
-          //检查是否和已有分组重名,若全不重名则创建分组
-          if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
+          if(this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length<2 || this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length>40){
+            this.$tool.error('分组名称应在2-40个字符之间')
+          }else if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
+            //检查是否和已有分组重名,若全不重名则创建分组
             this.$http.post(this.URL.createFileType,{
               user_id:localStorage.user_id,
               type_name:this.newGroupName.name
@@ -232,10 +247,10 @@
         this.dialogFileVisible = false;
       },
       //获取当前按钮的typeId(辅助函数)
-      getTypeId(typeId,type){
+      getTypeId(typeId,type,groupName){
         this.typeId=typeId;
         if(type===1){
-          this.renameGroup();
+          this.renameGroup(groupName);
         }else if(type===3){
           this.deleteGroup();
         }
@@ -274,7 +289,6 @@
               type_id:this.typeId,
               project_id:this.project_id
             }).then(res => {
-              console.log(res)
               if (res.data.status_code === 2000000) {
                 this.loading = false;
                 this.$tool.success("删除成功")
@@ -311,13 +325,16 @@
           return false;
         };
 
+        //给上传文件加typeId属性标志其分组后存入uploadList
+        file.typeId=this.typeId
+        this.uploadList.push(file)
+
+        //将上传文件放入相应数据的newFile属性中
         this.groupList.forEach(x=>{
           if(x.type_id===this.typeId){
-            console.log(x.type_id,this.typeId);
             x.newFile.push(file);
           }
         });
-        console.log(this.groupList)
       },
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
@@ -327,14 +344,33 @@
           this.loading = false;
           this.loadingcheck = false;
         }
+//        console.log('handleChange',file,fileList)
+      },
+      //文件上传中
+      uploadProgress(event,file,fileList){
+        //不知道为什么文件上传中的勾子函数内的console会触发两次,且event的值不同
+        /*console.log('文件上传中')
+        console.log(event)
+        console.log(file)
+        console.log(fileList)*/
       },
       //上传文件成功
       uploadsuccess(response, file, fileList){
         let data = response.data;
         this.$tool.success("上传成功");
         this.loadingcheck = true;
-        console.log(this.fileList);
-        this.initData()
+//        console.log('3',response,file)
+        this.initData(file)
+        //将还未上传成功的文件重新放回newFile中
+//        console.log('重点',this.groupList)
+//        console.log(this.uploadList)
+      /*  this.uploadList.forEach((x)=>{
+          this.groupList.forEach((y,index)=>{
+            if(x.typeId===y.type_id){
+              y.newFile.push(x);
+            }
+          })
+        })*/
       },
       //上传失败
       uploaderror(err, file, fileList){
