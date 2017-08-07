@@ -561,7 +561,7 @@
         else this.tabs=false
       },//点击切换标签
       toDetail(data){
-          console.log(data);
+//          console.log(data);
           this.pro_id=data.project_id;
         this.dialogVisiblePro=true;
       },//项目详情弹窗

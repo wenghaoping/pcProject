@@ -6,7 +6,7 @@
         <div class="item-cicle">
           <div class="item-cicle1"></div>
         </div>
-         <div class="item-time">{{new Date((item.follow_time)* 1000).toLocaleString().replace(/[\u4E00-\u9FA5]/g,'').substr(0, 25).replace(/\//g,'.')}}</div>
+         <div class="item-time">{{new Date(parseInt(item.follow_time)* 1000).toLocaleString('chinese',{hour12:false}).replace(/[\u4E00-\u9FA5]/g,'').substr(0, 14).replace(/\//g,'.')}}</div>
         <div class="item-name">{{item.follow_user_name}}</div>
         <div class="item-edit">
           <el-button
@@ -54,8 +54,18 @@
         </span>
       </el-dialog>
       <!--写跟进弹框-->
-      <addfollow :dialog-follow="dialogFollow" :followid="followid"  @changeClose="closeFollow"></addfollow>
+      <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow1"></addfollow>
     </div>
+    <!--分页-->
+    <el-pagination
+      class="pagination fr"
+      small
+      @current-change="filterChangeCurrent"
+      :current-page.sync="currentPage"
+      layout="prev, pager, next"
+      :page-size="10"
+      :total="totalData">
+    </el-pagination>
   </div>
 </template>
 <style lang="less">
@@ -75,13 +85,17 @@ export default {
   data () {
     return {
       dialogFollow:false,//控制写跟进弹框
-      pro_id: this.proid,
+      proId: this.proid,
       pro_name:"",//关联项目
       loading:false,//加载
+      loading1:false,//加载动画
       content:{},//跟进记录数据
       dialogVisible: false,
-      followId:'',//删除跟进记录id
+//      followId:'',//删除跟进记录id
       followid:'',//编辑跟进记录id
+      currentPage:1,//跟进列表当前第几页
+      totalData:0,//跟进列表总数
+      getData1:{},//获取跟进的请求参数
     }
   },
   methods: {
@@ -89,18 +103,18 @@ export default {
       let fileId=this.content[index].follow_file[item1].file_id;
       const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
       window.location.href=url;
-    },
-    getData(){
-        this.$http.post(this.URL.getProjectFollowList,{
-          user_id:localStorage.user_id,
-          project_id:this.pro_id,
-        }).then(res=>{
-          let data = res.data.data;
-          this.$tool.console('跟进记录详情列表')
-          this.$tool.console(res)
-          this.content=data;
-        })
-      },//获取跟进记录
+    },//点击下载
+//    getData(){
+//        this.$http.post(this.URL.getProjectFollowList,{
+//          user_id:localStorage.user_id,
+//          project_id:this.proId,
+//        }).then(res=>{
+//          let data = res.data.data;
+//          this.$tool.console('跟进记录详情列表')
+//          this.$tool.console(res)
+//          this.content=data;
+//        })
+//      },//获取跟进记录
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
@@ -112,33 +126,60 @@ export default {
      this.dialogVisible = false;
       this.$http.post(this.URL.delete_follow_record,{
           user_id:localStorage.user_id,
-          follow_id:this.followId
+          follow_id:this.followid
       }).then(res=>{
          this.$tool.success('删除成功');
-         this.getData();
+         this.getFollowList();
       })
     },//删除跟进记录
     deleteFollowId(index){
         this.dialogVisible  = true;
-        this.followId=this.content[index].follow_id;
+        this.followid=this.content[index].follow_id;
     },//获取删除记录id
     addFollow(index){
       this.dialogFollow=true;
       this.followid=this.content[index].follow_id;
-      this.getData();
+      this.getFollowList();
     },//点击写跟近按钮
-    closeFollow(msg){
+    closeFollow1(msg){
       this.dialogFollow=msg;
+      this.getFollowList();//获取跟进记录
       this.followid="";
-      this.getData();//获取跟进记录
     },//关闭添加跟进
+    filterChangeCurrent(page){
+      this.getFollowList(page);
+    },//控制项目页码1
+  getFollowList(page){
+      this.loading1=true;
+      this.getData1.user_id=localStorage.user_id;
+      this.getData1.project_id=this.proId;
+      this.currentPage=page;
+      this.getData1.page=page;
+      this.$http.post(this.URL.getProjectFollowList,this.getData1)
+        .then(res=>{
+          if(res.data.status_code==2000000) {
+            let data = res.data.data;
+            this.content=data;
+            this.$tool.console('跟进记录详情列表')
+            this.$tool.console(res)
+            this.totalData = res.data.count;
+          }
+          this.loading1 = false;
+        })
+        .catch(err=>{
+          this.$tool.console(err,2);
+          this.loading1=false;
+          this.$tool.error("加载超时");
+        })
+    },//跟进记录分页
   },
   created(){
-    this.getData()
+    this.getFollowList(1);
+//    this.getData();
   },
   watch : {
     proid : function(e){
-    this.pro_id=e;
+    this.proId=e;
   },//获取项目id
     proName : function(e){
       this.pro_name=e;
