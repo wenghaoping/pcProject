@@ -55,9 +55,7 @@ html {
 
 }
 /*base*/
-body {
 
-}
 /*清浮动*/
 .clearfix:after {
   content: '200B';

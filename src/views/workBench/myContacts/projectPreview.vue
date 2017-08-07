@@ -4,7 +4,7 @@
     <!--===========================================项目推送预览弹框=============================================-->
     <el-dialog :visible="dialogPreviewVisible" :show-close="close"  custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <div class="top_pro">
-        <p v-if="email.title==''">邮件标题 : 来自{{user.firse_user_real_name}}的项目推荐-{{project_intro}}</p>
+        <p v-if="email.title==''">邮件标题 : {{user.firse_user_company_name}}－{{user.firse_user_company_career}}－{{user.firse_user_real_name}}推送给您一个项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行</p>
         <p v-else>邮件标题 : {{email.title}}</p>
         <p v-if="email.body==''">邮件正文 : 尊敬的{{user.user_real_name}}，下面是来自{{user.firse_user_company_name}}-{{user.firse_user_company_career}}-{{user.firse_user_real_name}}的项目推荐。你可以注册/登录微天使工作站找到更多精选FA项目资源。</p>
         <p v-else>邮件正文 : {{email.body}}</p>
@@ -28,7 +28,7 @@
                 <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               </div>
               <div class="item progress height" style="margin-top:18px;padding-top: 8px;">
-                <div class="txt begin" style="margin-left: 8px;" :style="styleObject">项目线索</div>
+                <!--<div class="txt begin" style="margin-left: 8px;" :style="styleObject">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
                   <span class="bar-bg1">&nbsp;</span>
@@ -39,7 +39,7 @@
                   <span  class="txt state" style="left:550px;" v-if="project.pro_schedule.schedule_id==8">待收佣金</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
-                <div class="txt end">佣金收讫</div>
+                <div class="txt end" :class="{ scheduleColor: project.pro_schedule.schedule_id==9}">佣金收讫</div>-->
               </div>
               <div class="onlyone">
                 <img v-if="project.is_exclusive==0" src="../../../assets/images/onlyonedark.png"/>
@@ -458,8 +458,8 @@ export default {
   },
   methods: {
     handleClose(){
-      this.$emit('changeCon', false)
-    },
+      this.$emit('closePreview', false);
+    },//关闭当前弹窗
     getFirstUser(){
       this.$http.post(this.URL.getOneUserInfo,{user_id: localStorage.user_id})
         .then(res=>{

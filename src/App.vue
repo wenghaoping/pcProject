@@ -65,10 +65,10 @@
           {type: '首页', jump: '/'},
           {type: '工作台', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
-          {type: '测试页面', jump: '/test'},
+//          {type: '测试页面', jump: '/test'},
 //          {type: '测试页面2', jump: '/test2'}
         ],
-        user_name: localStorage.user_real_name,
+        user_name: "",
         user_id:'',
       }
     },
@@ -93,6 +93,7 @@
 //        localStorage.user_id='2rzyz5vp';
 //        localStorage.user_id='2rzyJEwp';
         localStorage.user_real_name='翁浩平';
+        this.$store.state.logining.user_real_name='黄晨曦';
       },
       // 登录
       login(){
@@ -103,14 +104,15 @@
       checkUser(){
         //this.$tool.console(this.$route.path)
         this.user_id=localStorage.user_id;
+        this.user_name=this.userRealName;
         //头部导航下标不对应问题解决
         if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
           this.active=1
         }
         //未登录状态下拦截
         if(!localStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/' && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/' && this.$route.path!=='/workBench' && this.$route.path!=='/qr'){
-          this.$tool.error('请先登录')
-          this.$router.push({name:'index'})
+          this.$tool.error('请先登录');
+          this.$router.push({name:'index'});
         }
         //十二小时不动后退出登录
         setTimeout(function(){
@@ -124,7 +126,21 @@
     },
     //当dom一创建时
     created(){
-     this.setUserId();
+       if(localStorage.user_id=="" || localStorage.user_id==undefined){
+         this.$router.push({ name: 'SmallRoutine'});
+       }else{
+       //        this.$router.push('/');
+       this.active=0;
+       }
+//     this.setUserId();
+
+    },
+    computed:{
+      userRealName(){
+        let user_real_name=this.$store.state.logining.user_real_name;
+//        this.user_name=this.$store.state.logining.user_real_name;
+        return user_real_name;
+      }
     },
     watch: {
       user_name: function (e) {
@@ -160,6 +176,7 @@
   body {
     margin: 0;
     position: relative;
+    overflow: auto!important;
   }
   .newColor{
     color:#40587A;

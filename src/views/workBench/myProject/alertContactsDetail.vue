@@ -340,6 +340,7 @@
         let newDate = new Date();
         newDate.setTime(string * 1000);
         string=newDate.toLocaleDateString();
+        return string;
       },//设置时间
       setTag(arr){
         let newArr = new Array;

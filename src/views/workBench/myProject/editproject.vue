@@ -17,7 +17,9 @@
               <div v-show="fileShow">
                 <div class="block-info block-cc-file">
                   <span class="f-title fl">商业计划书</span>
-                  <span style="margin-left: 20px;" class="fl">
+                  <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-if="uploadLoading"><img src="../../../assets/images/loading.gif"></span>
+                  <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-else></span>
+                  <span style="margin-left: 8px;" class="fl">
                     <el-upload class="planUpload"
                                action="api/v/project/projectUpload"
                                :on-preview="planPreview"
@@ -31,7 +33,9 @@
                                :data="uploadDate">
                       <el-button slot="trigger" type="primary" v-show="planButton"><i
                         class="el-icon-plus"></i>计划书上传</el-button>
+
                     </el-upload>
+
                   </span>
 
                 </div>
@@ -995,6 +999,7 @@
         ],
         one:false,//第一次进来的时候
         submitButton:false,//是否允许提交false允许/true不允许
+        uploadLoading:false,//BP上传动画
 
 
       };
@@ -1388,8 +1393,10 @@
       },
       planuploadsuccess(response, file, fileList){
         this.$tool.success("上传成功")
-        let data = response.data
+        let data = response.data;
         this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id)
+        this.uploadLoading=false;
+        this.submitButton=false;
       },//上传成功后添加字段
       planuploaderror(err, file, fileList){
         this.$tool.error("上传失败,请联系管理员")
@@ -1448,8 +1455,9 @@
           this.$tool.error("暂不支持超过20M文件上传哦");
           return false;
         };
+        this.uploadLoading=true;
+        this.submitButton=true;
       },//上传前的验证
-
 
       /*批量上传*/
 
@@ -1478,11 +1486,6 @@
           this.$tool.error("暂不支持超过20m文件上传哦");
           return false;
         };
-        if(parseInt(this.num) > parseInt(5)){
-          this.$tool.error("一次最多选择5个文件");
-          this.num=0;
-          return false;
-        }
         this.addDomain("其他", file.name, 0, 4,true,file.uid);
       },//项目文件上传验证
       //当添加文件时,添加入上传列表
@@ -2214,8 +2217,7 @@
         this.loading=false;
       },
       getprojectId(){
-        this.project_id = this.$route.query.project_id;
-
+        this.project_id = this.$route.query.project_id || '';
       }
     },
     //    当dom一创建时

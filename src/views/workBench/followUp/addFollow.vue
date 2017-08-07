@@ -234,7 +234,6 @@
       },//项目搜索
 
       handleSelect(item) {
-        console.log(item);
         this.follow.card_id = item.label;
         let name=item.value;
         if(item.label==0) {
@@ -271,7 +270,7 @@
         }
       },//选择意向投资人后
       querySearchAsync(queryString, cb) {
-        this.follow.card_id='';
+//        this.follow.card_id='';
         this.$http.post(this.URL.match_my_relation, {user_id: localStorage.user_id, user_name: queryString})
           .then(res => {
             this.userArr=[];
@@ -313,6 +312,7 @@
       },//获取用户
       getScheduleName(){
         this.schedule_name=this.$global.data.follow_schedule;//设置项目跟进状态
+        console.log(this.schedule_name);
       },// 获取跟进进度
       getFileType(data){
         let arr = [];
@@ -378,16 +378,11 @@
           }
         }
         if(!isnext){
-          this.$tool.error("不支持的文件格式");
+          this.$tool.error(file.name+"是不支持的文件格式");
           return false;
         }
         if(parseInt(file.size) > parseInt(20971521)){
-          this.$tool.error("暂不支持超过20m文件上传哦");
-          return false;
-        };
-        if(parseInt(this.num) > parseInt(5)){
-          this.$tool.error("一次最多选择5个文件");
-          this.num=0;
+          this.$tool.error(file.name+"超过20m文件大小");
           return false;
         };
         this.addDomain("其他", file.name, 0, 4,true,file.uid);
@@ -468,7 +463,6 @@
       },//当文件没有全部上传完时,不能提交
 
 
-
       groupchange(label){
         let index = this.groups.index;
         let data = this.groups.group;
@@ -547,6 +541,7 @@
       },//提交用
       allSave(){
         let follow=this.submitForm('follow');
+        console.log(this.follow)
         if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
             this.$tool.error("请选择或添加正确的投资人")
         }
@@ -613,8 +608,7 @@
       },//清除所有数据
     },
     created(){
-      this.getScheduleName();
-      this.setFileType();
+//      alert("吊接口啦")
     },
     watch : {
       followid : function(e){
@@ -625,7 +619,9 @@
         if(e) {
           this.clearData();
           this.$global.func.getWxProjectCategory();
+          this.getScheduleName();
           this.follow_id=this.followid || '';
+          this.setFileType();
           setTimeout(()=>{
             this.getFollowUp();
           },200)
