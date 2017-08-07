@@ -96,7 +96,7 @@ export default {
           project_id:this.pro_id,
         }).then(res=>{
           let data = res.data.data;
-          this.$tool.console('跟进记录详情列表',res)
+//          this.$tool.console(res)
           this.content=data;
         })
       },//获取跟进记录

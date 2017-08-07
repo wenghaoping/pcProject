@@ -42,10 +42,8 @@
                 <div class="txt end">佣金收讫</div>
               </div>
               <div class="onlyone">
-                <!--<img v-if="project.is_exclusive==1" src="../../../assets/images/onlyonedark.png"/>-->
-                <img src="../../../assets/images/onlyonedark.png"/>
-
-<!--                <img v-else-if="project.is_exclusive==2" src="../../../assets/images/onlyonelight.png"/>-->
+                <img v-if="project.is_exclusive==0" src="../../../assets/images/onlyonedark.png"/>
+                <img v-else-if="project.is_exclusive==1" src="../../../assets/images/onlyonelight.png"/>
               </div>
             </div>
           </div>
@@ -249,7 +247,7 @@
 <script type="text/ecmascript-6">
 
 export default {
-  props: ["dialogPreviewVisible"],
+  props: ["dialogPreviewVisible","investorid"],
   data () {
     return {
       close:false,//默认关闭
@@ -449,7 +447,6 @@ export default {
         firse_user_real_name:'顾家',//当前用户
         firse_user_company_career:'投资尽力',
         firse_user_company_name:'杭州投着乐网络科技有限公司',
-
       },
       pushMessage:{},//推送用的数据
       project_id:'',
@@ -471,7 +468,6 @@ export default {
             this.user.firse_user_real_name=data.user_real_name;
             this.user.firse_user_company_career=data.user_company_career;
             this.user.firse_user_company_name=data.user_company_name;
-
           }
         })
         .catch(err=>{
@@ -522,7 +518,6 @@ export default {
           this.project.pro_source=this.getProjectTag(data.tag);
           this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
           this.loading=false;
-          console.log(data)
         })
         .catch(err=>{
           this.loading=false;
