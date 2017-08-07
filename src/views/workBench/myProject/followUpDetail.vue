@@ -54,12 +54,8 @@
         </span>
       </el-dialog>
       <!--写跟进弹框-->
-<<<<<<< HEAD
       <!--<addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>-->
 
-=======
-      <addfollow :dialog-follow="dialogFollow" :followid="followid"  @changeClose="closeFollow"></addfollow>
->>>>>>> 0f05b9aad90f783543d8fe36c281db93a5f2291d
     </div>
   </div>
 </template>
