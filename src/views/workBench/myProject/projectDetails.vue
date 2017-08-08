@@ -1367,6 +1367,7 @@
         if(data==0){
           this.$tool.warning("已推送过")
         }else{
+          console.log(data)
           this.littlePushShow=true;
           this.littlePush.email=data.investor_email;
           this.pushData=[data.user_id,'user']
@@ -1431,7 +1432,13 @@
               this.$tool.success('推送成功');
               this.$refs['littlePush'].resetFields();
               this.littlePushShow=false;
+              this.pushData.pop()
+            }else{
+              this.$tool.error(res.data.error_msg)
+              this.pushData.pop();
             }
+          }).catch(err=>{
+            this.pushData.pop();
           })
         }
       },//买家图谱推送确定
