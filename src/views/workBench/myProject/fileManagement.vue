@@ -51,11 +51,11 @@
           </span>
         </template>
         <!--文件列表-->
-        <div class="fileList">
+        <div class="fileList" style="padding-left: 37px">
           <div class="block-info block-cc-other" style="margin-bottom: 15px;"
                v-for="(file, index) in item.file"
                :key="file.file_id">
-            <span class="f-name" style="cursor: pointer" @click="download">{{file.file_title}}</span>
+            <span class="f-name" style="cursor: pointer;font-size: 10px" @click="download">{{file.file_title}}</span>
             <div class="fr">
               <!--bp上传-->
               <el-button v-if="item.type_id===1" type="text"  @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
