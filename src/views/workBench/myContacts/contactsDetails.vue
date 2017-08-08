@@ -380,7 +380,7 @@
     <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange" @closePreview="closePreview"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'contacts'" @changeCon="dialogPrechange" @closePreview="closePreview"></projectpreview>
   </div>
 </template>
 
@@ -619,7 +619,7 @@
         else this.tabs=false
       },//点击切换标签
       toDetail(data){
-          console.log(data);
+//          console.log(data);
           this.pro_id=data.project_id;
         this.dialogVisiblePro=true;
       },//项目详情弹窗

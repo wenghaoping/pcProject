@@ -247,7 +247,7 @@
 <script type="text/ecmascript-6">
 
 export default {
-  props: ["dialogPreviewVisible","investorid"],
+  props: ["dialogPreviewVisible","investorid",'comeFrom'],
   data () {
     return {
       close:false,//默认关闭
@@ -525,17 +525,27 @@ export default {
         })
     },//获取项目详情数据
     pushProject(){
-      this.$http.post(this.URL.pushUser, this.pushMessage)
+      console.log(this.comeFrom)
+      if(this.comeFrom==='contacts'){
+        this.$http.post(this.URL.pushUser, this.pushMessage)
         .then(res => {
-          let data=res.data.data;
-          this.$tool.success("推送成功");
-          this.$emit('changeCloseProjectpush',false);
-          this.$emit('changeCon', false);
+          if(res.data.status_code===2000000){
+            let data=res.data.data;
+            this.$tool.success("推送成功");
+            this.$emit('changeCloseProjectpush',false);
+            this.$emit('changeCon', false);
+          }else{
+            this.$tool.error(res.data.error_msg)
+          }
         })
         .catch(err => {
           this.$tool.console(err);
           this.$tool.success("推送失败");
         })
+      }else{
+        this.$emit('previewPush',true);
+        this.$emit('changeCon', false);
+      }
     },//推送项目
   },
   watch:{

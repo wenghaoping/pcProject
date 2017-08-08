@@ -6,7 +6,7 @@
         <div class="item-cicle">
           <div class="item-cicle1"></div>
         </div>
-         <div class="item-time">{{new Date((item.follow_time)* 1000).toLocaleString().replace(/[\u4E00-\u9FA5]/g,'').substr(0, 25).replace(/\//g,'.')}}</div>
+        <div class="item-time">{{new Date((item.follow_time)* 1000).toLocaleString().replace(/[\u4E00-\u9FA5]/g,'').substr(0, 25).replace(/\//g,'.')}}</div>
         <div class="item-name">{{item.follow_user_name}}</div>
         <div class="item-edit">
           <el-button
@@ -22,7 +22,7 @@
       <!--信息内容介绍-->
       <div class="followContent">
         <div class="followProject">
-            <span style="display: inline-block;float: left;position: relative;">关联项目&nbsp;:&nbsp;</span>
+          <span style="display: inline-block;float: left;position: relative;">关联项目&nbsp;:&nbsp;</span>
           <el-tooltip class="item" effect="dark"  placement="top" :disabled="pro_name.length > 10 ? false:true">
             <div slot="content">
               <div class="tips-txt">{{pro_name}}</div>
@@ -30,9 +30,9 @@
             <span style="width:180px;max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>
             <!--<el-button></el-button>-->
           </el-tooltip>
-           <span style="display: inline-block;margin-left: 90px;float: left" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
-            <span style="display: inline-block;float: left">{{item.investor_name}}</span>
-            <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
+          <span style="display: inline-block;margin-left: 90px;float: left" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
+          <span style="display: inline-block;float: left">{{item.investor_name}}</span>
+          <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
         </div>
         <div class="followContent1">{{item.follow_desc}}</div>
         <!--信息文件名-->
@@ -55,93 +55,92 @@
       </el-dialog>
       <!--写跟进弹框-->
       <!--<addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>-->
-
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-//import addfollow from '../followUp/addFollow.vue'
-export default {
-  components: {
+  //import addfollow from '../followUp/addFollow.vue'
+  export default {
+    components: {
 //    addfollow
-  },
-  props: ["proid","proName","getDataTrue"],
-  data () {
-    return {
-      dialogFollow:false,//控制写跟进弹框
-      pro_id: this.proid,
-      pro_name:"",//关联项目
-      loading:false,//加载
-      content:{},//跟进记录数据
-      dialogVisible: false,
-      followId:'',//删除跟进记录id
-      followid:'',//编辑跟进记录id
-    }
-  },
-  methods: {
-    upload(item1,index){
-      let fileId=this.content[index].follow_file[item1].file_id;
-      const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
-      window.location.href=url;
     },
-    getProjectFollowList(){
+    props: ["proid","proName","getDataTrue"],
+    data () {
+      return {
+        dialogFollow:false,//控制写跟进弹框
+        pro_id: this.proid,
+        pro_name:"",//关联项目
+        loading:false,//加载
+        content:{},//跟进记录数据
+        dialogVisible: false,
+        followId:'',//删除跟进记录id
+        followid:'',//编辑跟进记录id
+      }
+    },
+    methods: {
+      upload(item1,index){
+        let fileId=this.content[index].follow_file[item1].file_id;
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
+        window.location.href=url;
+      },
+      getProjectFollowList(){
         this.$http.post(this.URL.getProjectFollowList,{
           user_id:localStorage.user_id,
           project_id:this.pro_id,
         }).then(res=>{
           let data = res.data.data;
-//          this.$tool.console(res)
+//         this.$tool.console(res)
           this.content=data;
         })
       },//获取跟进记录
-    handleClose(done) {
-      this.$confirm('确认关闭？')
+      handleClose(done) {
+        this.$confirm('确认关闭？')
         .then(_ => {
           done();
         })
         .catch(_ => {});
-    },//弹框消息提示
-    deleteFollow(){
-     this.dialogVisible = false;
-      this.$http.post(this.URL.delete_follow_record,{
+      },//弹框消息提示
+      deleteFollow(){
+        this.dialogVisible = false;
+        this.$http.post(this.URL.delete_follow_record,{
           user_id:localStorage.user_id,
           follow_id:this.followId
-      }).then(res=>{
-         this.$tool.success('删除成功');
-         this.getData();
-      })
-    },//删除跟进记录
-    deleteFollowId(index){
+        }).then(res=>{
+          this.$tool.success('删除成功');
+          this.getData();
+        })
+      },//删除跟进记录
+      deleteFollowId(index){
         this.dialogVisible  = true;
         this.followId=this.content[index].follow_id;
-    },//获取删除记录id
-    addFollow(index){
+      },//获取删除记录id
+      addFollow(index){
 
-      this.dialogFollow=true;
-      this.followid=this.content[index].follow_id;
-      this.getProjectFollowList();
-      this.$emit("getfollowid",this.content[index].follow_id);
-    },//点击写跟近按钮
-  },
-  created(){
-    this.getProjectFollowList();
-  },
-  watch : {
-    proid : function(e){
-    this.pro_id=e;
-  },//获取项目id
-    proName : function(e){
-      this.pro_name=e;
-    },//获取关联项目
-    getDataTrue : function (e) {
-      if(e){
+        this.dialogFollow=true;
+        this.followid=this.content[index].follow_id;
         this.getProjectFollowList();
-        this.followid="";
-      }
-    },//是否重新获取数据
+        this.$emit("getfollowid",this.content[index].follow_id);
+      },//点击写跟近按钮
+    },
+    created(){
+      this.getProjectFollowList();
+    },
+    watch : {
+      proid : function(e){
+        this.pro_id=e;
+      },//获取项目id
+      proName : function(e){
+        this.pro_name=e;
+      },//获取关联项目
+      getDataTrue : function (e) {
+        if(e){
+          this.getProjectFollowList();
+          this.followid="";
+        }
+      },//是否重新获取数据
+    }
   }
-}
 </script>
 
 <style lang="less">

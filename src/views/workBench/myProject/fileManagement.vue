@@ -10,7 +10,26 @@
           <span class="clearfix collapseHead">
             {{item.type_name}}  (<span>{{item.fileNum}}</span>)
              <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img src="/static/images/shangchuan.png">删除</el-button>
-            <div class="fr">
+            <!--bp上传-->
+             <div class="fr" v-if="item.type_id===1 && parseInt(item.fileNum)===0">
+               <el-upload
+                 class="upload"
+                 ref="upload"
+                 action="api/v/project/projectUpload"
+                 :on-change="handleChange"
+                 :on-progress="uploadProgress"
+                 :on-success="uploadsuccess"
+                 :on-error="uploaderror"
+                 :before-upload="beforeUpload"
+                 :file-list="fileList"
+                 :data="{user_id:this.localStorage.user_id,project_id:project_id}"
+                 :show-file-list="false"
+                 accept=".pdf, .ppt, .pptx, .doc, .docx, .rar, .zip">
+                    <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img src="/static/images/shangchuan.png">上传文件</el-button>
+               </el-upload>
+            </div>
+            <!--非bp上传-->
+            <div class="fr" v-if="item.type_id!=1">
                <el-upload
                  class="upload"
                  ref="upload"
@@ -19,11 +38,11 @@
                  :on-progress="uploadProgress"
                  :on-success="uploadsuccess"
                  :on-error="uploaderror"
-                 :before-upload="beforeUpload"
+                 :before-upload="beforeUpload2"
                  :file-list="fileList"
                  :data="{user_id:this.localStorage.user_id,project_id:project_id,type:item.type_id}"
                  :show-file-list="false"
-                 accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
+                 accept=".pdf, .ppt, .pptx, .doc, .docx, .rar, .zip, .png, .jpg, .jpeg"
                  multiple>
                     <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img src="/static/images/shangchuan.png">上传文件</el-button>
                </el-upload>
@@ -38,7 +57,10 @@
                :key="file.file_id">
             <span class="f-name" style="cursor: pointer" @click="download">{{file.file_title}}</span>
             <div class="fr">
-              <el-dropdown  @command="fileDeal" trigger="click">
+              <!--bp上传-->
+              <el-button v-if="item.type_id===1" type="text"  @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
+              <!--非bp上传-->
+              <el-dropdown v-if="item.type_id!=1"  @command="fileDeal" trigger="click">
                 <span class="el-dropdown-link" @click="getFileId(file.file_id,item.type_id)">
                   <img src="/static/images/threePoint.png" class="threePoint">
                 </span>
@@ -83,7 +105,7 @@
     <!--移动文件分组弹框-->
     <el-dialog class="moveFileFrame" title="移至" :visible.sync="fileMoveFrame">
         <el-radio-group v-model="radio">
-          <el-radio class="groupRadio" v-for="group in groupList" :key="group.type_id" :label="group.type_id">{{group.type_name}}</el-radio>
+          <el-radio v-if="group.type_id!=1" class="groupRadio" v-for="group in groupList" :key="group.type_id" :label="group.type_id">{{group.type_name}}</el-radio>
         </el-radio-group>
       <div slot="footer" class="dialog-footer">
         <el-button @click="fileMoveFrame = false">取 消</el-button>
@@ -106,6 +128,7 @@
         //被展开的分组
         activeNames: [],
         //批量上传文件列表(组件处理)
+        bpFileList:[],
         fileList: [],
         //批量上传文件列表(自己处理)
         uploadList:[],
@@ -299,9 +322,45 @@
           })
         })
       },
-      //上传文件上传之前的钩子函数
+      //上传文件上传之前的钩子函数(允许上传的文件格式不丗)
       beforeUpload(file){
-        let filetypes = [".doc", ".ppt", ".pdf", ".zip", ".rar", ".pptx", ".png", ".jpg", ".docx", ".jpeg"];
+        let filetypes = ['.pdf','.ppt','.pptx', '.doc', '.docx', '.rar', '.zip'];
+        //去除文件类型后缀
+        let name = file.name;
+        let fileend = name.substring(name.lastIndexOf(".")).toLowerCase();
+        let isnext = false;
+        //文件格式和上传文件数量前端校验
+        if (filetypes && filetypes.length > 0) {
+          for (var i = 0; i < filetypes.length; i++) {
+            if (filetypes[i] == fileend) {
+              isnext = true;
+              break;
+            }
+          }
+        }
+        this.loading = false;
+        if (!isnext) {
+          this.$tool.error("不支持的文件格式");
+          return false;
+        }
+        if (parseInt(file.size) > parseInt(20971521)) {
+          this.$tool.error("暂不支持超过20m文件上传哦");
+          return false;
+        };
+
+        //给上传文件加typeId属性标志其分组后存入uploadList
+        file.typeId=this.typeId
+        this.uploadList.push(file)
+
+        //将上传文件放入相应数据的newFile属性中
+        this.groupList.forEach(x=>{
+          if(x.type_id===this.typeId){
+            x.newFile.push(file);
+          }
+        });
+      },
+      beforeUpload2(file){
+        let filetypes = ['.pdf','.ppt','.pptx', '.doc', '.docx', '.rar', '.zip', '.png', '.jpg', '.jpeg'];
         //去除文件类型后缀
         let name = file.name;
         let fileend = name.substring(name.lastIndexOf(".")).toLowerCase();
@@ -379,9 +438,12 @@
         this.loading = false;
       },
       //获取fileId(辅助函数)
-      getFileId(fileId,groupId){
+      getFileId(fileId,groupId,bp){
         this.fileId=fileId;
         this.groupId=groupId;
+        if(bp){
+          this.fileDeal(3)
+        }
       },
       //文件操作
       fileDeal(command){

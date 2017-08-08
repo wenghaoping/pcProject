@@ -314,10 +314,13 @@
     </div>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"@changeClose="closeFollow"></addfollow>
+    <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :proName="pushName"   @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :proName="pushName" :emitPush="emitPush" @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
+
+    <!--项目预览弹窗-->
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
 
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
@@ -337,8 +340,15 @@
   import alertUpload from './alertUpload.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
+  import projectpreview from '../myContacts/projectPreview.vue'
   export default {
-    components: {ElButton,alertUpload,addfollow,projectpush2},
+    components: {
+      ElButton,
+      alertUpload,
+      addfollow,
+      projectpush2,
+      projectpreview
+    },
     data() {
       return {
         dialogFollow:false,//控制写跟进弹框
@@ -412,6 +422,8 @@
         }],//更多的选项表单
         pushId:'',//推送项目传值-项目ID
         pushName:'',//推送项目传值-项目名称
+        dialogPreviewVisible:false,//控制项目推送预览显隐
+        emitPush:false,//控制项目推送-项目入口的推送函数触发
       }
     },
     methods:{
@@ -741,6 +753,13 @@
 
 
       },//删除项目
+
+      previewPush(x){
+        this.emitPush=x;
+      },//项目推送预览隐藏
+      dialogPrechange(msg){
+        this.dialogPreviewVisible=msg;
+      },//项目推送预览显隐控制
     },
     computed: {
 

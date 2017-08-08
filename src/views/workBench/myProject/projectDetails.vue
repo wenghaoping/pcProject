@@ -260,11 +260,8 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :pro-name="project.pro_name" :get-data-true="getFollowData" @getfollowid="getFollowId">
-
-              </folowup>
+              <folowup :proid="project.project_id" :pro-name="project.pro_name" :get-data-true="getFollowData" @getfollowid="getFollowId"></folowup>
             </el-tab-pane>
-
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id">
 
@@ -469,7 +466,7 @@
                :followid="followid"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name"  @changeClose="dialogVisiblechangeCloase"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
 
     <!--项目推送项目入口小弹窗-->
     <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel">
@@ -507,6 +504,9 @@
       </div>
     </el-popover>
 
+    <!--项目预览弹窗-->
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
+
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
   </div>
@@ -521,7 +521,7 @@
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
   import customerAddContacts from '../../../components/customerAddContacts.vue'
-
+  import projectpreview from '../myContacts/projectPreview.vue'
   export default {
     data(){
       return {
@@ -810,6 +810,8 @@
         formLabelWidth:'74px',
         pushData:[],//买家图谱推送接口参数
         activeFrom:0,//从哪个路由进来的
+        dialogPreviewVisible:false,//项目推送预览显隐控制
+        emitPush:false,//控制项目推送-项目入口的推送函数触发
         getFollowData:false,//看是否要获取跟进的数据
         followid:'',//得到followid
       }
@@ -825,6 +827,7 @@
       addfollow,
       projectpush2,
       customerAddContacts,
+      projectpreview
     },
     //Echart组件
     mounted(){
@@ -1310,6 +1313,7 @@
 
       },//筛选意向项目
 
+      /*买家图谱*/
       setProjectMatchInvestors(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -1332,7 +1336,6 @@
           newArr.push(obj);
         });return newArr;
       },//设置买家图谱列表
-      /*买家图谱*/
       getProjectMatchInvestors(){
         this.loading=true;
         this.getInvestors.user_id=localStorage.user_id;
@@ -1454,6 +1457,14 @@
         this.$refs['littlePush'].resetFields();
         this.littlePushShow=false;
       },//买家图谱推送取消
+
+      /*项目推送*/
+      dialogPrechange(msg){
+        this.dialogPreviewVisible=msg;
+      },//项目推送预览显隐控制
+      previewPush(x){
+        this.emitPush=x;
+      },//项目推送预览隐藏
     },
     created () {
       // 组件创建完后获取数据，
