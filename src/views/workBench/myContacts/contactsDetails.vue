@@ -170,7 +170,7 @@
               <div v-show="tabs">
                 <div class="main_left">
                   <div class="echart" id="echart"></div>
-                  <div class="selectIn fr" v-if="totalData2!=0">
+                  <div class="selectIn fr">
                     <el-select v-model="searchSchedule" placeholder="请选择" @change="selectSearch">
                       <el-option
                         v-for="item in follow_scheduleAll"
@@ -380,7 +380,7 @@
     <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'contacts'" @changeCon="dialogPrechange" @closePreview="closePreview"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange" @closePreview="closePreview" :comeFrom="'contacts'"></projectpreview>
   </div>
 </template>
 
@@ -550,6 +550,7 @@
       getUserId(){
         this.contacts.user_id=this.$route.query.user_id;
         this.contacts.card_id=this.$route.query.card_id;
+        this.contacts.investor_id=this.$route.query.investor_id;
         this.tags.card_id=this.$route.query.card_id;
       },//获取userid/card_id
       handlePush(data){
@@ -694,51 +695,6 @@
         return getProjectList;
 
       },//获取项目列表
-      /*以下都是辅助函数*/
-      set_industry(arr){
-        let str="";
-        if(arr.length===0) {
-          str=""
-        } else {
-          arr.forEach((x)=> {
-            str += x.industry_name + '、'
-          })
-        }
-        return str
-      },//列表领域处理
-      set_stage(arr){
-        let str="";
-        if(arr.length===0) {
-          str=""
-        } else {
-          arr.forEach((x)=> {
-            str += x.stage_name + '、'
-          })
-        }
-        return str
-      },//列表轮次处理
-      set_scale(arr){
-        let str="";
-        if(arr.length===0) {
-          str=""
-        } else {
-          arr.forEach((x)=> {
-            str+=x.scale_money+'、'
-          })
-        }
-        return str
-      },//列表期望金额处理
-      set_GiveFind(arr){
-        let str="";
-        if(arr.length===0) {
-          str=""
-        } else {
-          arr.forEach((x)=> {
-            str+=x.resource_name+'、'
-          })
-        }
-        return str
-      },//资源提供或者寻求处理
       setTag(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -754,7 +710,7 @@
           obj.case_stage_name=x.case_stage_name;
           obj.case_name=x.case_name;
           obj.case_money=x.case_money;
-          obj.has_many_industry=this.set_industry(x.has_many_industry);
+          obj.has_many_industry=this.$tool.setTagToString(x.has_many_industry,'industry_name');
           obj.has_one_city=x.has_one_city.area_title;
           newArr.push(obj);
         });
@@ -768,11 +724,11 @@
             .then(res => {
               let data = res.data.data;
 //          this.$tool.console(this.$tool.getToObject(data));
-              data.user_invest_industry = this.set_industry(data.user_invest_industry);
-              data.user_invest_stage = this.set_stage(data.user_invest_stage);
-              data.user_invest_scale = this.set_scale(data.user_invest_scale);
-              data.user_resource_find = this.set_GiveFind(data.user_resource_find);
-              data.user_resource_give = this.set_GiveFind(data.user_resource_give);
+              data.user_invest_industry = this.$tool.setTagToString(data.user_invest_industry,'industry_name');
+              data.user_invest_stage = this.$tool.setTagToString(data.user_invest_stage,'stage_name');
+              data.user_invest_scale = this.$tool.setTagToString(data.user_invest_scale,'scale_money');
+              data.user_resource_find = this.$tool.setTagToString(data.user_resource_find,'resource_name');
+              data.user_resource_give = this.$tool.setTagToString(data.user_resource_give,'resource_name');
               data.project_case = this.setProjectCase(data.project_case);
               data.user_email=data.user_email || '暂无填写';
               data.user_company_name=data.user_company_name || '暂无填写';
@@ -1108,6 +1064,7 @@
                 if(res.data.data){
                   let data = res.data.data;
                   this.matchProjects=this.setMatchProject(data);
+                  console.log(this.matchProjects);
                   this.totalData3 = res.data.count;
 
                 }
@@ -1252,7 +1209,7 @@
 
     },
     created(){
-        var _this=this;
+      var _this=this;
       function runAsync1(){
         var runAsync1 = new Promise((resolve, reject)=>{
           //做一些异步操作

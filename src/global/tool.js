@@ -247,6 +247,25 @@ const tool={
       x[title]=tool.formatDateTime(x[title]);
     });
   },//时间戳转化正常时间,在数组中循环,time为总的数组,title为要改变的字段(字符串格式)
+
+  /*将标签转化为字符长串==========例子'汽车交通、物流、房产服务、体育运动、工业生产、'data为总的数组,title为要改变的字段(字符串格式)*/
+  setTagToString(data,title){
+    if(tool.isArray(data)){
+      let str="";
+      if(data.length===0) {
+        str="";
+      }else{
+        data.forEach((x)=>{
+          str+=x[title]+'、'
+        });
+        str = str.substr(0, str.length - 1);
+      }
+      return str;
+    }else{
+      return data;
+    }
+  },
+
 /*弹框类*/
   error(text) {
     Notification.error({

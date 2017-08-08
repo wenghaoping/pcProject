@@ -652,52 +652,6 @@
           })
       },// 获取表头
 
-      /*以下都是辅助函数*/
-      getProjectPro_industry(arr){
-        let str="";
-        for(let i=0;i<arr.length;i++){
-          str+=arr[i].industry_name+'、'
-        }
-        str.substr(0, str.length - 1);
-        return str
-      },//列表领域处理
-      getProjectPro_stage(arr){
-        let str=""
-        for(let i=0;i<arr.length;i++){
-          str+=arr[i].stage_name+'、'
-        }
-        str.substr(0, str.length - 1);
-        return str
-      },//列表轮次处理
-      getProjectPro_area(arr){
-        let str=""
-        for(let i=0;i<arr.length;i++){
-          str+=arr[i].area_title+'、'
-        }
-        str.substr(0, str.length - 1);
-        return str
-      },//列表地区处理
-      getProjectPro_scale(arr){
-        let str=""
-        if(arr.length===0) {
-          str=""
-        } else {
-            for(let i=0;i<arr.length;i++){
-              str+=arr[i].scale_money+'、'
-            }
-          str.substr(0, str.length - 1);
-        }
-        return str
-      },//列表期望金额处理
-      getProjectPro_source(arr){
-        let str=""
-        for(let i=0;i<arr.length;i++){
-          str+=arr[i].tag_name+'、'
-        }
-        str.substr(0, str.length - 1);
-        return str
-      },//列表项目来源处理
-
       getProjectList(list){
         let arr = new Array;
         for(let i=0; i<list.length; i++){
@@ -705,20 +659,20 @@
           obj.pro_name=list[i].pro_name;
           obj.pro_intro=list[i].pro_intro;
           obj.pro_company_name=list[i].pro_company_name;
-          obj.pro_source=this.getProjectPro_source(list[i].pro_source);
+          obj.pro_source=this.$tool.setTagToString(list[i].pro_source,'tag_name');
           obj.pro_follow_up_user=list[i].pro_follow_up_user;
           obj.pro_schedule=list[i].pro_schedule;
-          obj.pro_industry=this.getProjectPro_industry(list[i].pro_industry);
+          obj.pro_industry=this.$tool.setTagToString(list[i].pro_industry,'industry_name');
           obj.is_exclusive=list[i].is_exclusive;
-          obj.pro_stage=this.getProjectPro_stage(list[i].pro_stage);
-          obj.pro_area=this.getProjectPro_area(list[i].pro_area);
-          obj.pro_scale=this.getProjectPro_scale(list[i].pro_scale);
+          obj.pro_stage=this.$tool.setTagToString(list[i].pro_stage,'stage_name');
+          obj.pro_area=this.$tool.setTagToString(list[i].pro_area,'area_title');
+          obj.pro_scale=this.$tool.setTagToString(list[i].pro_scale,'scale_money');
           obj.project_id=list[i].project_id;
           obj.moreShow="";
           arr.push(obj);
         }
         return arr
-      },//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
+      },//总设置列表的数据处理
 
       /*更多按钮*/
       moreChange(index,row){

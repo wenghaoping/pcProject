@@ -56,9 +56,9 @@
               </div>
               <div class="ul-lists" style="margin-top:16px;padding: 0">
                 <div class="item">
-                  <span class="p-name">{{user.user_real_name}}</span>
-                  <span class="p-mg">{{user.user_company_career}}</span>
-                  <span class="p-mg">{{user.user_company_name}}</span>
+                  <span class="p-name">{{user.firse_user_real_name}}</span>
+                  <span class="p-mg">{{user.firse_user_company_career}}</span>
+                  <span class="p-mg">{{user.firse_user_company_name}}</span>
                 </div>
               </div>
             </div>
@@ -515,7 +515,7 @@ export default {
         })
     },//获取项目详情数据
     pushProject(){
-      console.log(this.comeFrom)
+      console.log(this.comeFrom);
       if(this.comeFrom==='contacts'){
         this.$http.post(this.URL.pushUser, this.pushMessage)
         .then(res => {
