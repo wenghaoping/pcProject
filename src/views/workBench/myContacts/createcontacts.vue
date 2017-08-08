@@ -459,11 +459,11 @@ export default {
       }
       this.loading=false;
       if(!isnext){
-        this.$tool.error("不支持的文件格式");
+        this.$tool.error(file.name+"是不支持的文件格式");
         return false;
       }
       if(parseInt(file.size) > parseInt(1048580)){
-        this.$tool.error("暂不支持超过1M文件上传哦");
+        this.$tool.error(file.name+"超过1M大小哦");
         return false;
       };
     },//上传前的验证

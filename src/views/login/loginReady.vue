@@ -26,6 +26,8 @@
       console.log(this.$route.query);
       localStorage.user_id=this.$route.query.id;
       localStorage.user_real_name=this.$route.query.name;
+      this.$store.state.logining.user_id=this.$route.query.id;
+      this.$store.state.logining.user_real_name=this.$route.query.name;
       //重新获取个人标签(因为获取个人标签必须要有user_id)
       this.$global.func.getWxProjectCategory();
       setTimeout(function(){

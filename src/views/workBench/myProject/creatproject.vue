@@ -527,8 +527,9 @@
         this.project.pro_company_name=this.queryData.company_name;
       },
       getprojectId(){
-        this.project.project_id = this.$route.query.project_id;
-        this.$tool.console(this.$route.query.project_id);
+        this.project.project_id = this.$route.query.project_id || '';
+//        this.$tool.console(this.$route.query.project_id);
+        console.log(this.project.project_id);
       },
       getWxosProjectData(){
         if(localStorage.credential==undefined || localStorage.credential=="" || localStorage.credential==null){
@@ -537,7 +538,8 @@
           this.$http.post(this.URL.getWxosProjectData,{credential:localStorage.credential})
             .then(res=>{
               let data=res.data.project;
-              this.$tool.console(this.$tool.getToObject(data));
+//              this.$tool.console(this.$tool.getToObject(data));
+              console.log(this.$tool.getToObject(data));
               this.project.pro_industry=data.industry;
               if(data.is_exclusive==4) data.is_exclusive=0;
               this.project.is_exclusive=data.is_exclusive;

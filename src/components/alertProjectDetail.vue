@@ -35,7 +35,7 @@
                   <span class="circle circle-e" style=" display: inline-block;
       vertical-align: middle;">&nbsp;</span>
                 </div>
-                <div class="txt end">佣金收讫</div>
+                <div class="txt end" >佣金收讫</div>
              </div>
             </span>
           </div>

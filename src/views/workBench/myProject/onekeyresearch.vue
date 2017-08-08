@@ -428,18 +428,22 @@
         }
       },//里程碑时间
       getCrawlerTeam(){
+          this.loading=true;
         this.$http.post(this.URL.getCrawlerTeam, {
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
         .then(res => {
           this.team = res.data.data;
+          this.loading=false;
         })
         .catch(err => {
           this.$tool.console(err);
+          this.loading=false;
         })
       },//获取核心成员
       getCrawlerHistoryFinance(){
+        this.loading=true;
         this.$http.post(this.URL.getCrawlerHistoryFinance, {
           user_id: localStorage.user_id,
           com_id: this.com_id
@@ -447,12 +451,15 @@
         .then(res => {
           this.history_finance = res.data.data;
           this.getTimeFinancing(this.history_finance);
+          this.loading=false;
         })
         .catch(err => {
           this.$tool.console(err);
+          this.loading=false;
         })
       },//获取历史融资
       getCrawlerMilestone(){
+        this.loading=true;
         this.$http.post(this.URL.getCrawlerMilestone, {
           user_id: localStorage.user_id,
           com_id: this.com_id
@@ -460,36 +467,45 @@
         .then(res => {
           this.milestone_list = res.data.data;
           this.getTimeMilestone(this.milestone_list);
+          this.loading=false;
         })
         .catch(err => {
           this.$tool.console(err);
+          this.loading=false;
         })
       },//获取里程碑
       getCrawlerNews(){
+        this.loading=true;
         this.$http.post(this.URL.getCrawlerNews, {
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
         .then(res => {
           this.news = res.data.data;
+          this.loading=false;
         })
         .catch(err => {
           this.$tool.console(err);
+          this.loading=false;
         })
       },//获取新闻
       getCrawlerCompeting(){
+        this.loading=true;
         this.$http.post(this.URL.getCrawlerCompeting, {
           user_id: localStorage.user_id,
           com_id: this.com_id
         })
         .then(res => {
           this.competing = res.data.data;
+          this.loading=false;
         })
         .catch(err => {
           this.$tool.console(err);
+          this.loading=false;
         })
       },//获取竞品
       getCrawlerProject(){
+        this.loading=true;
         this.$http.post(this.URL.getCrawlerProject, {
           user_id: localStorage.user_id,
           com_id: this.com_id
@@ -501,6 +517,7 @@
         })
         .catch(err => {
           this.$tool.console(err);
+          this.loading=false;
         })
       },//获取项目
       getProjectIndustry(data){

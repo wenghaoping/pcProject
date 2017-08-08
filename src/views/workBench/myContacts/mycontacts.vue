@@ -37,7 +37,7 @@
                     {{scope.row.user_real_name}}
                   </div>
                 </el-tooltip>
-                <span class="fl add" v-if="scope.row.is_add==true"><img src="../../../assets/images/add.png"></span>
+                <span class="fl add" v-if="scope.row.is_add==false"><img src="../../../assets/images/add.png"></span>
                 <div v-if="scope.row.user_real_name.length === 0">
                   --
                 </div>
@@ -286,7 +286,7 @@
     <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange" @closePreview="closePreview"></projectpreview>
 
   </div>
 </template>
@@ -439,9 +439,12 @@ export default {
       this.dialogPushVisible=msg;
     },//关闭项目推送弹窗
     dialogPrechange(msg){
-      this.dialogPushVisible=true;
+      this.dialogPushVisible=msg;
       this.dialogPreviewVisible=msg;
-    },
+    },//关闭项目预览
+    closePreview(msg){
+      this.dialogPreviewVisible=msg;
+    },//关闭项目预览
     /*请求函数*/
     handleIconClick(){
       this.loading=true;
@@ -565,6 +568,7 @@ export default {
         for(let i=0;i<arr.length;i++){
           str+=arr[i].industry_name+'.'
         }
+        str.substr(0, str.length - 1);
       }
       return str
     },//投资领域处理
@@ -668,10 +672,14 @@ export default {
   },
   created(){
     this.loading=true;
+    this.$global.func.getWxProjectCategory();
     this.titleSift();
-    this.getWxProjectCategory();
-    this.handleIconClick();
-    zhuge.track('购买商品');
+    setTimeout(()=>{
+      this.getWxProjectCategory();
+      this.handleIconClick();
+    },200)
+
+//    zhuge.track('购买商品');
   }
 }
 </script>
