@@ -10,7 +10,7 @@
               <div class="career fl">{{contacts.user_company_career}}</div>
             </div>
             <div class="item" style="margin-bottom: 55px;">
-              <div class="title">{{contacts.card_nickname}}</div>
+              <div class="title">{{contacts.user_nickname}}</div>
             </div>
             <div class="header fr" v-if="contacts.user_avatar_url!=''">
               <img :src="contacts.user_avatar_url">
@@ -380,7 +380,8 @@
     <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'contacts'" @changeCon="dialogPrechange"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'contacts'" @changeCon="dialogPrechange" @closePreview="closePreview"></projectpreview>
+
   </div>
 </template>
 
@@ -582,6 +583,9 @@
 //      this.dialogPushVisible=msg;
         this.dialogPreviewVisible=true;
       },//关闭推送弹框,打开预览弹框
+      closePreview(msg){
+        this.dialogPreviewVisible=msg;
+      },//关闭项目预览
       dialogVisiblechangeCloase(msg){
         this.dialogPushVisibleComplete=msg;
         this.getpushCount();
@@ -633,9 +637,10 @@
 //      this.dialogPreviewVisible=true;
       },//项目详情弹窗关闭函数
       dialogPrechange(msg){
-//      this.dialogPushVisible=true;
+        this.dialogPushVisible=msg;
+        this.dialogPushVisibleComplete=msg;
         this.dialogPreviewVisible=msg;
-      },
+      },//关闭项目预览
       setProjectList(data){
         let arr = new Array;
         for(let i=0; i<data.length; i++){
@@ -643,7 +648,8 @@
           obj.pro_intro=data[i].pro_intro || "暂无信息";//项目介绍
           obj.is_exclusive=data[i].is_exclusive;//独家/非独家
           obj.pro_industry=this.setIndustry(data[i].pro_industry) || [];//项目标签
-          obj.pro_scale =data[i].scale_money || '-';//项目估值
+          obj.pro_scale =data[i].pro_scale.scale_money || '-';//项目估值
+
           obj.pro_area =data[i].pro_area.area_title || '-';//地区
           obj.pro_stage =data[i].pro_stage.stage_name || '-';//投资轮次
           obj.pro_finance_stock_after =data[i].pro_finance_stock_after || '-';//股权
@@ -685,7 +691,7 @@
       },//获取项目列表
       /*以下都是辅助函数*/
       set_industry(arr){
-        let str=""
+        let str="";
         if(arr.length===0) {
           str=""
         } else {
@@ -732,6 +738,7 @@
         let newDate = new Date();
         newDate.setTime(string * 1000);
         string=newDate.toLocaleDateString();
+        return string
       },//设置时间
       setTag(arr){
         let newArr = new Array;
@@ -771,6 +778,7 @@
           data.user_brand=data.user_brand || '暂无填写';
           data.user_company_career=data.user_company_career || '暂无填写';
           data.user_mobile=data.user_mobile || '暂无填写';
+          data.user_intro=data.user_intro || '';
           if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
             this.user_invest=false;//投资需求
           }else{
@@ -784,6 +792,7 @@
           this.tagsValue = this.setTag(data.user_invest_tag);
           this.tags.changecont = this.setTag(data.user_invest_tag);
           this.contacts = data;
+          console.log(data);
           this.loading = false;
         })
         .catch(err=>{
@@ -1104,7 +1113,6 @@
           obj.is_follow=x.is_follow;
           newArr.push(obj);
         });
-        console.log(newArr);
         return newArr;
       },//设置意向项目列表
       filterChangeCurrent2(page){
@@ -1218,19 +1226,20 @@
 
     },
     created(){
+      this.loading=true;
       this.getUserId();
-
       if(this.contacts.user_id!=0) this.getProjectList(1)
       else this.projectLists=[];
       this.getOneUserInfo();
-      this.getWxProjectCategory();
-      this.getEchartData();
-      this.getpushCount();
+      this.$global.func.getWxProjectCategory();
       setTimeout(()=>{
+        this.getEchartData();
+        console.log(this.contacts);
+        this.getWxProjectCategory();
         this.getInvestorsMatchProjects();
         this.getEnjoyProjects();
-      },700)
-
+        this.loading=false;
+      },800)
     },
     //Echart组件
     mounted(){
@@ -1242,6 +1251,14 @@
       projectpush,
       projectpreview
     },
+    watch : {
+      dialogVisibleTag : function (e) {
+        if (e) {
+          this.$global.func.getWxProjectCategory();
+          setTimeout(()=>{this.getWxProjectCategory();},200)
+        }
+      }
+    }
   }
 </script>
 

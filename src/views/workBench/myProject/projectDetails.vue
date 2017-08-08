@@ -41,14 +41,16 @@
             </span>
               <span class="project" style="width: 292px;">
               <div class="item progress height">
-                <div class="txt begin" :style="styleObject">项目线索</div>
+                <div class="txt begin" :class="{ scheduleColor: project.pro_schedule.schedule_name=='项目线索'}">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
                   <span class="bar-bg1">&nbsp;</span>
-                  <span  class="txt state">{{project.pro_schedule.schedule_name}}</span>
+                  <span  class="txt state" v-if="project.pro_schedule.schedule_name=='项目线索'"></span>
+                  <span  class="txt state" v-else-if="project.pro_schedule.schedule_name=='佣金收讫'"></span>
+                  <span  class="txt state" v-else>{{project.pro_schedule.schedule_name}}</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
-                <div class="txt end">佣金收讫</div>
+                <div class="txt end" :class="{ scheduleColor: project.pro_schedule.schedule_name=='佣金收讫'}">佣金收讫</div>
                 <div class="img"><img src="../../../assets/images/editTo.png"></div>
                  <div class="selectIn fr">
                     <el-select v-model="project.pro_schedule.schedule_id" placeholder="请选择" @change="selectChange2">
@@ -83,6 +85,7 @@
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
         <div class="item-lists clearfix" style="padding-top: 10px;">
+          <!--===================================================================================================tab页面-->
           <el-tabs v-model="show" @tab-click="handleClick" style="position: relative">
             <el-tab-pane label="项目详情" name="detail">
               <div class="ul-lists">
@@ -257,9 +260,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :proName="project.pro_name" @changeClose="closeFollow1" >
-
-              </folowup>
+              <folowup :proid="project.project_id" :pro-name="project.pro_name" :get-data-true="getFollowData" @getfollowid="getFollowId"></folowup>
             </el-tab-pane>
 
             <el-tab-pane label="文件管理" name="files">
@@ -459,7 +460,11 @@
     <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid" v-on:changeCon="dialogConchange"></alertcontactsdetail>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
+    <addfollow :dialog-follow="dialogFollow"
+               :projectid="projecmessage.project_id"
+               :projectname="projecmessage.project_name"
+               @changeClose="closeFollow"
+               :followid="followid"></addfollow>
 
     <!--项目推送项目入口弹窗-->
     <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
@@ -808,6 +813,8 @@
         activeFrom:0,//从哪个路由进来的
         dialogPreviewVisible:false,//项目推送预览显隐控制
         emitPush:false,//控制项目推送-项目入口的推送函数触发
+        getFollowData:false,//看是否要获取跟进的数据
+        followid:'',//得到followid
       }
     },
     computed:{
@@ -829,6 +836,7 @@
     },
     methods:{
       addFollow(){
+        this.followid='';
         this.dialogFollow=true;
         this.projecmessage.project_id=this.project.project_id;
         this.projecmessage.project_name=this.project.pro_name;
@@ -836,12 +844,7 @@
       closeFollow(msg){
         this.dialogFollow=msg;
         this.getEnjoyedInvestors();
-
-      },//关闭添加跟进
-      closeFollow1(msg){
-        this.dialogFollow=msg;
-        this.getEnjoyedInvestors();
-
+        this.getFollowData=true;
       },//关闭添加跟进
       download(e){
         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
@@ -947,9 +950,10 @@
         return str
       },//项目来源编辑
       getProjectDetail () {
+        this.loading = true;
         this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project.project_id})
           .then(res=>{
-            this.loading=false;
+
             let data = res.data.data;
             /*            for(let key in data){
               if(data[key]=="") data[key]="-"
@@ -962,7 +966,7 @@
 
             if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
             if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";this.styleObject={color:"#20a0ff"}}
+            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
             if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
             this.getLocalTime(data.pro_develop);
             this.getLocalTime2(data.pro_history_finance);
@@ -971,6 +975,7 @@
             this.project.pro_source=this.getProjectTag(data.tag);
             this.project.team_tag=this.getteam_tag(data.tag);
             this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
+            this.loading=false;
           })
           .catch(err=>{
             this.loading=false;
@@ -1058,7 +1063,7 @@
 
       /*设置意向投资人右边*/
       getEchartData(){
-        this.loading1 = true;
+        this.loading = true;
         this.$http.post(this.URL.getEnjoyedInvestorsGroup,{user_id:localStorage.user_id,project_id:this.project.project_id})
           .then(res=>{
             if(res.data.status_code==2000000) {
@@ -1066,7 +1071,7 @@
               this.chartData=data;
               this.eChart(data.going,data.hold,data.reject)
             }
-            this.loading1 = false;
+            this.loading = false;
           })
           .catch(err=>{
             this.$tool.console(err,2);
@@ -1417,6 +1422,13 @@
           });
         });
       },//买家图谱人脉删除
+
+      /*编辑跟进记录*/
+      getFollowId(id){
+        this.dialogFollow=true;
+        this.followid=id;
+        this.getFollowData=false;
+      },//拿到跟进记录id
       littlePushCertain(){
         if(!this.littlePush.email){
           this.$tool.error('请输入邮箱')
@@ -1457,18 +1469,18 @@
     },
     created () {
       // 组件创建完后获取数据，
-
       this.loading=true;
       this.$global.func.getWxProjectCategory();
       this.getprojectId();
-      this.getWxProjectCategory();
-      this.getEchartData();
 
       setTimeout(()=>{
+        this.getWxProjectCategory();
+        this.getEchartData();
         this.getProjectDetail();
         this.getEnjoyedInvestors();
         this.getProjectMatchInvestors();
-      },500);
+      },200);
+
     },
     watch: {
       '$route' (to, from) {
@@ -1480,7 +1492,9 @@
 
 <style lang="less">
   @import '../../../assets/css/projectDetail.less';
-
+.scheduleColor{
+  color:#20a0ff!important;
+}
   #projectDetails{
 
     .btn1{

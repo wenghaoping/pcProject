@@ -92,13 +92,16 @@ const tool={
 
   },//判断是否重复.在动态添加标签的地方使用
   setTag(arr,pro){
-    for(let i=0; i<pro.length; i++){
-      for(let j=0; j<arr.length; j++){
-        if(arr[j]==pro[i].label){
-          arr[j]=pro[i].value;
+    if(arr.length!=0){
+      for(let i=0; i<pro.length; i++){
+        for(let j=0; j<arr.length; j++){
+          if(arr[j]==pro[i].label){
+            arr[j]=pro[i].value;
+          }
         }
       }
     }
+
   },//标签取数据arr//放值的地方,pro总值/标签最后保存的时候,把文字标签替换成id
 /*验证类*/
   trim(string){
@@ -226,21 +229,21 @@ const tool={
     Notification.error({
       message: text,
       offset: 300,
-      duration:1000
+      duration:1500
     })
   },//错误弹窗(所有的错误调用,红色叉)
   success(text) {
     Notification.success({
       message: text,
       offset: 300,
-      duration:1000
+      duration:1500
     })
   },//成功弹窗(绿钩)
   warning(text) {
     Notification.warning({
       message: text,
       offset: 300,
-      duration:1000
+      duration:1500
     })
   },//警告弹窗,(黄色叹号)
 
@@ -296,8 +299,6 @@ const tool={
     }
     return arr
   },//设置标签
-
-
 
 
 

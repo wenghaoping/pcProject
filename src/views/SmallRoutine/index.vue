@@ -57,6 +57,8 @@ export default {
             if(data.type=="update") this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});
             localStorage.user_id=data.user_info.user_id;
             localStorage.user_real_name=data.user_info.user_real_name;
+            this.$store.state.logining.user_id=data.user_info.user_id;
+            this.$store.state.logining.user_real_name=data.user_info.user_real_name;
           }else if(data.status_msg=="timeout"){
             clearInterval(this.timeout);
             this.dialogVisible=true;

@@ -68,20 +68,14 @@
     </el-pagination>
   </div>
 </template>
-<style lang="less">
-  @import '../../../assets/css/followUpDetail';
-  .el-dialog--tiny{
-    width:44%;
-    box-shadow: none;
-  }
-</style>
+
 <script type="text/ecmascript-6">
-  import addfollow from '../followUp/addFollow.vue'
+//import addfollow from '../followUp/addFollow.vue'
 export default {
   components: {
-    addfollow
+//    addfollow
   },
-  props: ["proid","proName"],
+  props: ["proid","proName","getDataTrue"],
   data () {
     return {
       dialogFollow:false,//控制写跟进弹框
@@ -104,17 +98,16 @@ export default {
       const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
       window.location.href=url;
     },//点击下载
-//    getData(){
-//        this.$http.post(this.URL.getProjectFollowList,{
-//          user_id:localStorage.user_id,
-//          project_id:this.proId,
-//        }).then(res=>{
-//          let data = res.data.data;
-//          this.$tool.console('跟进记录详情列表')
-//          this.$tool.console(res)
-//          this.content=data;
-//        })
-//      },//获取跟进记录
+    getProjectFollowList(){
+        this.$http.post(this.URL.getProjectFollowList,{
+          user_id:localStorage.user_id,
+          project_id:this.pro_id,
+        }).then(res=>{
+          let data = res.data.data;
+          this.$tool.console(res)
+          this.content=data;
+        })
+      },//获取跟进记录
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
@@ -149,7 +142,7 @@ export default {
     filterChangeCurrent(page){
       this.getFollowList(page);
     },//控制项目页码1
-  getFollowList(page){
+    getFollowList(page){
       this.loading1=true;
       this.getData1.user_id=localStorage.user_id;
       this.getData1.project_id=this.proId;
@@ -175,7 +168,7 @@ export default {
   },
   created(){
     this.getFollowList(1);
-//    this.getData();
+    this.getProjectFollowList();
   },
   watch : {
     proid : function(e){
@@ -184,10 +177,20 @@ export default {
     proName : function(e){
       this.pro_name=e;
     },//获取关联项目
+    getDataTrue : function (e) {
+      if(e){
+        this.getProjectFollowList();
+        this.followid="";
+      }
+    },//是否重新获取数据
   }
 }
 </script>
 
 <style lang="less">
   @import '../../../assets/css/followUpDetail';
+  .el-dialog--tiny{
+    width:44%;
+    box-shadow: none;
+  }
 </style>
