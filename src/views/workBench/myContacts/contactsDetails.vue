@@ -380,8 +380,7 @@
     <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'contacts'"  @changeCon="dialogPrechange" @closePreview="closePreview"></projectpreview>
-
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'contacts'" @changeCon="dialogPrechange" @closePreview="closePreview"></projectpreview>
   </div>
 </template>
 

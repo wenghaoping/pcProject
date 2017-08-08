@@ -54,8 +54,12 @@
         </span>
       </el-dialog>
       <!--写跟进弹框-->
+<<<<<<< HEAD
       <!--<addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>-->
 
+=======
+      <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow1"></addfollow>
+>>>>>>> morganfly
     </div>
   </div>
 </template>
@@ -91,7 +95,7 @@
           project_id:this.pro_id,
         }).then(res=>{
           let data = res.data.data;
-//          this.$tool.console(res)
+//         this.$tool.console(res)
           this.content=data;
         })
       },//获取跟进记录
