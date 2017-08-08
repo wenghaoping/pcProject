@@ -668,55 +668,58 @@
   },
   mounted() {},
   created(){
-    if(this.project_id){
-      //获取我的人脉和全网人脉的姓名作为勾选框标记
-      this.$http.post(this.URL.getConnectUserSortByMatch, {
-        user_id: localStorage.user_id,
-        project_id: this.project_id,
-        search:this.filterString,
-      }).then(res => {
-        if(res.data.status_code===2000000){
-          res.data.data.forEach(x=>{
-            this.myNameList[x.card.user_real_name]=false;
-          })
-          this.myContacts=res.data.data;
-          //如果我的人脉为空,则默认显示全网人脉页面
-          if(res.data.data.length===0){
-            this.activeTab='netContacts'
-          }
-        }else{
-//          console.log(res.data.error_msg)
-        }
-      })
-      this.$http.post(this.URL.getAllConnectUserSortByMatch, {
-        user_id: localStorage.user_id,
-        project_id: this.project_id,
-        search: this.filterString,
-      }).then(res => {
-        if(res.data.status_code===2000000){
-          res.data.data.forEach(x=>{
-            this.netNameList[x.card.user_real_name]=false;
-          })
-          this.netContacts=res.data.data;
-        }else{
-//          console.log(res.data.error_msg)
-        }
-      })
-    }
+
   },
   watch:{
     dialogPush:function(e){
-      this.project_name=this.proName;
-      this.project_id=this.proid;
-      this.initData();
-      //为了重置checkBox状态
       if(e===true){
+        this.project_name=this.proName;
+        this.project_id=this.proid;
+        this.initData();
+        //为了重置checkBox状态
+        if(e===true){
           this.reBorn=true
-      }else{
+        }else{
           this.reBorn=false
+        }
+        //重置推送项目接口参数
+        this.pushData=[];
+        //获取我的人脉和全网人脉的姓名作为勾选框标记
+        if(this.project_id){
+          this.$http.post(this.URL.getConnectUserSortByMatch, {
+            user_id: localStorage.user_id,
+            project_id: this.project_id,
+            search:this.filterString,
+          }).then(res => {
+            if(res.data.status_code===2000000){
+              res.data.data.forEach(x=>{
+                this.myNameList[x.card.user_real_name]=false;
+              })
+              this.myContacts=res.data.data;
+              //如果我的人脉为空,则默认显示全网人脉页面
+              if(res.data.data.length===0){
+                this.activeTab='netContacts'
+              }
+            }else{
+//          console.log(res.data.error_msg)
+            }
+          })
+          this.$http.post(this.URL.getAllConnectUserSortByMatch, {
+            user_id: localStorage.user_id,
+            project_id: this.project_id,
+            search: this.filterString,
+          }).then(res => {
+            if(res.data.status_code===2000000){
+              res.data.data.forEach(x=>{
+                this.netNameList[x.card.user_real_name]=false;
+              })
+              this.netContacts=res.data.data;
+            }else{
+//          console.log(res.data.error_msg)
+            }
+          })
+        }
       }
-      //重置推送项目接口参数
-      this.pushData=[];
     },
     emitPush:function(e){
       this.push();
