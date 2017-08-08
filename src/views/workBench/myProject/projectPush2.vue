@@ -391,7 +391,7 @@
       })
     },
     //获取我的人脉数据
-    getMyContacts(){
+    getMyContacts(remote){
       this.$http.post(this.URL.getConnectUserSortByMatch, {
         user_id: localStorage.user_id,
         project_id: this.project_id,
@@ -400,13 +400,20 @@
         if(res.data.status_code===2000000){
 //          console.log('我的人脉', res.data.data)
           this.myContacts=res.data.data;
+          if(remote){
+            //强置刷新checkBox状态
+            this.reBorn=false;
+            setTimeout(()=>{
+              this.reBorn=true;
+            },0)
+          }
         }else{
 //          console.log(res.data.error_msg)
         }
       })
     },
     //获取全网人脉数据
-    getNetContacts(){
+    getNetContacts(remote){
       this.$http.post(this.URL.getAllConnectUserSortByMatch, {
         user_id: localStorage.user_id,
         project_id: this.project_id,
@@ -415,6 +422,13 @@
         if(res.data.status_code===2000000){
 //          console.log('全网人脉',res.data.data)
           this.netContacts=res.data.data;
+          if(remote){
+            //强置刷新checkBox状态
+            this.reBorn=false;
+            setTimeout(()=>{
+              this.reBorn=true;
+            },0)
+          }
         }else{
 //          console.log(res.data.error_msg)
         }
@@ -497,9 +511,9 @@
       this.filterString=query;
       console.log(this.myNameList)
       if(this.activeTab==="myContacts"){
-        this.getMyContacts()
+        this.getMyContacts('remote')
       }else{
-        this.getNetContacts()
+        this.getNetContacts('remote')
       }
     },
     //删除标签
