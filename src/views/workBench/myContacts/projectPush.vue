@@ -218,7 +218,7 @@ export default {
           this.$emit('changeall', false);
         }
       }else{
-        this.$tool.warning("您今日的推送次数已用完")
+        this.$tool.warning("您今日的推送次数已经达到5次,请明天再试")
       }
     },//推送预览
     push(type){

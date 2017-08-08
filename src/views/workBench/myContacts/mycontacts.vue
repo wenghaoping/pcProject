@@ -283,10 +283,12 @@
     </el-dialog>
 
     <!--项目推送弹窗-->
-    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
+    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail"
+                 @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange" @closePreview="closePreview"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"
+                    @closePreview="closePreview" :comeFrom="'contacts'"></projectpreview>
 
   </div>
 </template>
@@ -366,7 +368,7 @@ export default {
 
     handleSelect(row, event, column) {
       if(column.label!="重置"){
-        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id , card_id:row.card_id}})
+        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id , card_id:row.card_id, investor_id:row.investor_id}})
       }
     },//跳转到人脉详情页面传参数
     handleEdit(index, row){
@@ -559,41 +561,6 @@ export default {
         return string;
     },//判断要不要用文字显示头像
 
-    /*以下都是辅助函数*/
-    getUser_invest_industry(arr){
-      let str="";
-      if(arr.length==0) {
-          str="";
-      } else{
-        for(let i=0;i<arr.length;i++){
-          str+=arr[i].industry_name+'.'
-        }
-        str.substr(0, str.length - 1);
-      }
-      return str
-    },//投资领域处理
-    getUser_invest_stage(arr){
-      let str="";
-      if(arr.length==0) {
-        str="";
-      } else {
-        for (let i = 0; i < arr.length; i++) {
-          str += arr[i].stage_name + '.'
-        }
-      }
-      return str
-    },//投资轮次处理
-    getUser_invest_tag(arr){
-      let str="";
-      if(arr.length==0) {
-        str="";
-      } else {
-        for (let i = 0; i < arr.length; i++) {
-          str += arr[i].tag_name + '.'
-        }
-      }
-      return str
-    },//标签处理
     getProjectList(list){
       let arr = new Array;
       for(let i=0; i<list.length; i++){
@@ -609,9 +576,9 @@ export default {
         obj.user_brand=list[i].user_brand;//品牌
         obj.user_mobile=list[i].user_mobile;//手机
         obj.user_email=list[i].user_email;//邮箱
-        obj.user_invest_industry=this.getUser_invest_industry(list[i].user_invest_industry);//投资领域
-        obj.user_invest_stage=this.getUser_invest_stage(list[i].user_invest_stage);//投资轮次
-        obj.tag=this.getUser_invest_tag(list[i].user_invest_tag);//标签
+        obj.user_invest_industry=this.$tool.setTagToString(list[i].user_invest_industry,'industry_name');//投资领域
+        obj.user_invest_stage=this.$tool.setTagToString(list[i].user_invest_stage,'stage_name');//投资轮次
+        obj.tag=this.$tool.setTagToString(list[i].user_invest_tag,'tag_name');//标签
         obj.tagArray=list[i].user_invest_tag;//标签
         obj.login_time=list[i].login_time;//活跃时间
         obj.card_id=list[i].card_id;//活跃时间
@@ -619,7 +586,7 @@ export default {
         arr.push(obj);
       }
       return arr;
-    },//总设置列表的数据处理=====上面的辅助函数都是给老子用的,哈哈哈
+    },//总设置列表的数据处理
 
     getWxProjectCategory(){
         this.addTags = this.$global.data.tags_user;//设置人脉标签

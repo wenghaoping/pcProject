@@ -200,7 +200,7 @@
           }).then(res => {
 //            console.log('res',this.$tool.getToObject(res))
             //把分组内的文件放到对应的分组内
-            var groupWithFile=res.data.data
+            var groupWithFile=res.data.data;
             groupList.forEach(y=>{
               groupWithFile.forEach(x=>{
                 if(y.type_id===x.type) {

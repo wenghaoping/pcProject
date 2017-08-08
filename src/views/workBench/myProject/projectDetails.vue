@@ -268,7 +268,7 @@
               </filemanagement>
             </el-tab-pane>
           </el-tabs>
-          <div class="ul-lists list tc" >
+          <div class="ul-lists list tc"  style="padding:0">
             <div class="toButton" style="padding-left: 0">
               <button  @click="toEdit" class="btn1">编辑</button>
               <button  @click="addFollow" class="btn1">写跟进</button>
@@ -1117,40 +1117,6 @@
         return getEnjoyedInvestors;
 
       },//获取意向投资人列表
-      set_industry(arr){
-        let str=""
-        if(arr.length===0) {
-          str=""
-        } else {
-          arr.forEach((x)=> {
-            str += x.industry_name + '、'
-          })
-        }
-        return str
-      },//列表领域处理
-      set_stage(arr){
-        let str="";
-        if(arr.length===0) {
-          str=""
-        } else {
-          arr.forEach((x)=> {
-            str += x.stage_name + '、'
-          })
-        }
-        return str
-      },//列表轮次处理
-      set_user_group(arr){
-        let str="";
-        if(arr.length===0) {
-          str="";
-        } else {
-          arr.forEach((x)=> {
-            str += x.group_title + '、';
-          })
-        }
-        return str;
-      },//列表轮次处理
-
       setEnjoyInvestor(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -1169,7 +1135,7 @@
           obj.user_company_career=x.card.user_company_career;
           obj.user_company_name=x.card.user_company_name;
           obj.match=x.match;
-          obj.user_group=this.set_user_group(x.card.user_group);
+          obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
           obj.width=this.selectChange(x.schedule.schedule_id);
           obj.source=x.source;
           newArr.push(obj);

@@ -435,8 +435,7 @@
           this.$tool.setTime(data.pro_develop,'dh_start_time');
           this.$tool.setTime(data.pro_history_finance,'finance_time');
           this.project=data;
-          this.$tool.console(project);
-          this.$tool.console(project.pro_schedule.schedule_id);
+//          this.$tool.console(project.pro_schedule.schedule_id);
           this.project.pro_source=this.getProjectTag(data.tag);
           this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
         })
@@ -447,7 +446,7 @@
       },
       //项目来源编辑(获取项目详情数据的辅助函数)
       getProjectTag(arr){
-        let str=""
+        let str="";
         for(let i=0;i<arr.length;i++){
           if(arr[i].type==2){
             str+=arr[i].tag_name+'.'
