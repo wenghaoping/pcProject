@@ -32,7 +32,7 @@
             <div class="item">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
-                <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editTo.png">修改</span>
+                <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editYag.png">修改</span>
               </div>
               <div class="block">
                 <div class="tag" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
@@ -170,7 +170,7 @@
               <div v-show="tabs">
                 <div class="main_left">
                   <div class="echart" id="echart"></div>
-                  <div class="selectIn fr">
+                  <div class="selectIn fr" v-if="totalData2!=0">
                     <el-select v-model="searchSchedule" placeholder="请选择" @change="selectSearch">
                       <el-option
                         v-for="item in follow_scheduleAll"
@@ -665,28 +665,34 @@
       },//设置项目库项目的标签
       /*请求函数*/
       getProjectList(page){
-        this.loading1=true;
-        this.getPra.user_id=this.contacts.user_id;
+        var getProjectList = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.loading1=true;
+          this.getPra.user_id=this.contacts.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-        this.currentPage=page;
-        this.getPra.page=page;
-        this.$http.post(this.URL.getProjectList,this.getPra)
-        .then(res=>{
-          if(res.data.status_code==2000000) {
-            let data = res.data.data;
-            this.projectListsAll = this.setProjectList(data);
-            this.projectListsSmall = this.setProjectList(data).slice(0, 2);
-            if (this.listShow) this.projectLists = this.projectListsAll.slice(0);
-            else this.projectLists = this.projectListsSmall.slice(0);
-            this.totalData = res.data.count;
-          }
-          this.loading1 = false;
-        })
-        .catch(err=>{
-          this.$tool.console(err,2);
-          this.loading1=false;
-          this.$tool.error("加载超时");
-        })
+          this.currentPage=page;
+          this.getPra.page=page;
+          this.$http.post(this.URL.getProjectList,this.getPra)
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                let data = res.data.data;
+                this.projectListsAll = this.setProjectList(data);
+                this.projectListsSmall = this.setProjectList(data).slice(0, 2);
+                if (this.listShow) this.projectLists = this.projectListsAll.slice(0);
+                else this.projectLists = this.projectListsSmall.slice(0);
+                this.totalData = res.data.count;
+              }
+              this.loading1 = false;
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.loading1=false;
+              this.$tool.error("加载超时");
+            })
+          resolve(4);
+        });
+        return getProjectList;
+
       },//获取项目列表
       /*以下都是辅助函数*/
       set_industry(arr){
@@ -733,12 +739,6 @@
         }
         return str
       },//资源提供或者寻求处理
-      setTime(string){
-        let newDate = new Date();
-        newDate.setTime(string * 1000);
-        string=newDate.toLocaleDateString();
-        return string
-      },//设置时间
       setTag(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -750,7 +750,7 @@
         let newArr = new Array;
         arr.forEach((x)=> {
           let obj = new Object;
-          obj.case_deal_time=this.setTime(x.case_deal_time);
+          obj.case_deal_time=this.$tool.formatDateTime(x.case_deal_time);
           obj.case_stage_name=x.case_stage_name;
           obj.case_name=x.case_name;
           obj.case_money=x.case_money;
@@ -761,52 +761,67 @@
         return newArr;
       },//设置投资案例
       getOneUserInfo(){
-        this.loading=true;
-        this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
-        .then(res => {
-          let data = res.data.data;
+        var getOneUserInfo = new Promise((resolve, reject)=>{
+          //做一些异步操作
+//          this.loading=true;
+          this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
+            .then(res => {
+              let data = res.data.data;
 //          this.$tool.console(this.$tool.getToObject(data));
-          data.user_invest_industry = this.set_industry(data.user_invest_industry);
-          data.user_invest_stage = this.set_stage(data.user_invest_stage);
-          data.user_invest_scale = this.set_scale(data.user_invest_scale);
-          data.user_resource_find = this.set_GiveFind(data.user_resource_find);
-          data.user_resource_give = this.set_GiveFind(data.user_resource_give);
-          data.project_case = this.setProjectCase(data.project_case);
-          data.user_email=data.user_email || '暂无填写';
-          data.user_company_name=data.user_company_name || '暂无填写';
-          data.user_brand=data.user_brand || '暂无填写';
-          data.user_company_career=data.user_company_career || '暂无填写';
-          data.user_mobile=data.user_mobile || '暂无填写';
-          data.user_intro=data.user_intro || '';
-          if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
-            this.user_invest=false;//投资需求
-          }else{
-            this.user_invest=true;//投资需求
-          }
-          if(data.user_resource_give=='' && data.user_resource_find=='' && data.user_resource_desc==''){
-            this.user_resource=false;//资源需求
-          }else{
-            this.user_resource=true;//投资需求
-          }
-          this.tagsValue = this.setTag(data.user_invest_tag);
-          this.tags.changecont = this.setTag(data.user_invest_tag);
-          this.contacts = data;
-          console.log(data);
-          this.loading = false;
-        })
-        .catch(err=>{
-          this.$tool.console(err,2);
-          this.loading=false;
-          this.$tool.error("加载超时");
-        })
+              data.user_invest_industry = this.set_industry(data.user_invest_industry);
+              data.user_invest_stage = this.set_stage(data.user_invest_stage);
+              data.user_invest_scale = this.set_scale(data.user_invest_scale);
+              data.user_resource_find = this.set_GiveFind(data.user_resource_find);
+              data.user_resource_give = this.set_GiveFind(data.user_resource_give);
+              data.project_case = this.setProjectCase(data.project_case);
+              data.user_email=data.user_email || '暂无填写';
+              data.user_company_name=data.user_company_name || '暂无填写';
+              data.user_brand=data.user_brand || '暂无填写';
+              data.user_company_career=data.user_company_career || '暂无填写';
+              data.user_mobile=data.user_mobile || '暂无填写';
+              data.user_intro=data.user_intro || '';
+              if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
+                this.user_invest=false;//投资需求
+              }else{
+                this.user_invest=true;//投资需求
+              }
+              if(data.user_resource_give=='' && data.user_resource_find=='' && data.user_resource_desc==''){
+                this.user_resource=false;//资源需求
+              }else{
+                this.user_resource=true;//投资需求
+              }
+              this.tagsValue = this.setTag(data.user_invest_tag);
+              this.tags.changecont = this.setTag(data.user_invest_tag);
+              this.contacts = data;
+//              console.log(data);
+//              this.loading = false;
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+//              this.loading=false;
+              this.$tool.error("加载超时");
+            })
+          resolve(3);
+        });
+        return getOneUserInfo;
+
       },//获取个人详情
 
       getWxProjectCategory(){
-        this.addTags = this.$global.data.tags_user;//设置人脉标签()
+        var getWxProjectCategory = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          setTimeout(()=>{
+            this.addTags = this.$global.data.tags_user;//设置人脉标签()
 //      this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
-        this.follow_schedule = this.$global.data.follow_schedule.slice(0);//设置项目状态
-        this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
-        this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+            this.follow_schedule = this.$global.data.follow_schedule.slice(0);//设置项目状态
+            this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
+            this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+            resolve(2);
+          },500)
+
+        });
+        return getWxProjectCategory;
+
 
       },//获取所有下拉框的数据
       addChangeTag(e){
@@ -861,45 +876,53 @@
       },//设置人脉标签
       /*设置意向项目右边*/
       getEchartData(){
-        this.loading1 = true;
-        this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id})
-        .then(res=>{
-          if(res.data.status_code==2000000) {
-            let data = res.data.data;
-            this.chartData=data;
-            this.eChart(data.going,data.hold,data.reject);
-          }
-          this.loading1 = false;
-        })
-        .catch(err=>{
-          this.$tool.console(err,2);
-          this.loading1=false;
-          this.$tool.error("加载超时");
-        })
+        var getEchartData = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id})
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                let data = res.data.data;
+                this.chartData=data;
+                this.eChart(data.going,data.hold,data.reject);
+              }
+              this.loading1 = false;
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.loading1=false;
+              this.$tool.error("加载超时");
+            })
+            resolve(5);
+        });
+        return getEchartData;
+
       },//获取意向项目数据(图表)
       getEnjoyProjects(){
-        this.loading=true;
-        this.getConpro.user_id=localStorage.user_id;
+        var getEnjoyProjects = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.getConpro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-        this.currentPage2=1;
-        this.getConpro.card_id=this.contacts.card_id;
-        this.getConpro.page=1;
-        this.getConpro.schedule_id='';
-        this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
-        .then(res=>{
-          if(res.data.status_code==2000000) {
-            let data = res.data.data;
-            this.enjoyProjects=this.setEnjoyProject(data);
-            this.totalData2 = res.data.count;
-            if(this.enjoyProjects.length==0) this.activeName='2';
-          }
-          this.loading = false;
-        })
-        .catch(err=>{
-          this.$tool.console(err,2);
-          this.loading=false;
-          this.$tool.error("加载超时");
-        })
+          this.currentPage2=1;
+          this.getConpro.card_id=this.contacts.card_id;
+          this.getConpro.page=1;
+          this.getConpro.schedule_id='';
+          this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                let data = res.data.data;
+                this.enjoyProjects=this.setEnjoyProject(data);
+                this.totalData2 = res.data.count || 0;
+                if(this.enjoyProjects.length==0) this.activeName='2';
+              }
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.$tool.error("加载超时");
+            })
+          resolve(7);
+        });
+        return getEnjoyProjects;
+
       },//获取意向项目列表
       setEnjoyProject(arr){
         let newArr = new Array;
@@ -1071,30 +1094,34 @@
       },//筛选意向项目
       /*设置匹配项目(右边)*/
       getInvestorsMatchProjects(){
-        this.loading=true;
-        this.getMatchPro.user_id=localStorage.user_id;
+        var getInvestorsMatchProjects = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.getMatchPro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-        this.currentPage3=1;
-        this.getMatchPro.investor_id=this.contacts.investor_id;
-        this.getMatchPro.card_id=this.contacts.card_id;
-        this.getMatchPro.page=1;
-        this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
-        .then(res=>{
-          if(res.data.status_code==2000000) {
-            if(res.data.data){
-              let data = res.data.data;
-              this.matchProjects=this.setMatchProject(data);
-              this.totalData3 = res.data.count;
+          this.currentPage3=1;
+          this.getMatchPro.investor_id=this.contacts.investor_id;
+          this.getMatchPro.card_id=this.contacts.card_id;
+          this.getMatchPro.page=1;
+          this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                if(res.data.data){
+                  let data = res.data.data;
+                  this.matchProjects=this.setMatchProject(data);
+                  this.totalData3 = res.data.count;
 
-            }
-          }
-          this.loading = false;
-        })
-        .catch(err=>{
-          this.$tool.console(err,2);
-          this.loading=false;
-          this.$tool.error("加载超时");
-        })
+                }
+              }
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.loading=false;
+              this.$tool.error("加载超时");
+            })
+          resolve(6);
+        });
+        return getInvestorsMatchProjects;
+
       },//获取匹配项目列表
       setMatchProject(arr){
         let newArr = new Array;
@@ -1225,20 +1252,52 @@
 
     },
     created(){
+        var _this=this;
+      function runAsync1(){
+        var runAsync1 = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          _this.$global.func.getWxProjectCategory();
+          resolve(1);
+        });
+        return runAsync1;
+      }
       this.loading=true;
       this.getUserId();
       if(this.contacts.user_id!=0) this.getProjectList(1)
       else this.projectLists=[];
-      this.getOneUserInfo();
-      this.$global.func.getWxProjectCategory();
-      setTimeout(()=>{
+      runAsync1()
+        .then((data)=>{
+          console.log(data)
+          return this.getWxProjectCategory();
+        })
+        .then((data)=>{
+          console.log(data)
+          return this.getOneUserInfo();
+        })
+        .then((data)=>{
+          console.log(data)
+          return this.getEchartData();
+        })
+        .then((data)=>{
+          console.log(data)
+          return this.getInvestorsMatchProjects();
+        })
+        .then((data)=>{
+          console.log(data)
+          this.loading=false;
+          return this.getEnjoyProjects();
+        });
+
+//      this.getOneUserInfo();
+//      this.$global.func.getWxProjectCategory();
+/*      setTimeout(()=>{
         this.getEchartData();
-        console.log(this.contacts);
-        this.getWxProjectCategory();
+//        console.log(this.contacts);
+//        this.getWxProjectCategory();
         this.getInvestorsMatchProjects();
         this.getEnjoyProjects();
         this.loading=false;
-      },800)
+      },800)*/
     },
     //Echart组件
     mounted(){

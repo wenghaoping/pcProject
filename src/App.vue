@@ -60,7 +60,7 @@
   export default {
     data () {
       return {
-        active: 1,
+        active: 0,
         tabs: [
           {type: '首页', jump: '/'},
           {type: '工作台', jump: '/workBench'},
@@ -68,7 +68,7 @@
 //          {type: '测试页面', jump: '/test'},
 //          {type: '测试页面2', jump: '/test2'}
         ],
-        user_name: "",
+        user_name:'',
         user_id:'',
       }
     },
@@ -134,17 +134,21 @@
 //       }
 //     this.setUserId();
 
+      this.user_name= localStorage.user_real_name;
+//      console.log(localStorage.user_real_name,3);
+
     },
     computed:{
       userRealName(){
-        let user_real_name=this.$store.state.logining.user_real_name;
-        this.user_name=this.$store.state.logining.user_real_name;
+        let user_real_name=this.$store.state.logining.user_real_name || localStorage.user_real_name;
+//        this.user_name=this.$store.state.logining.user_real_name;
         return user_real_name;
       }
     },
     watch: {
       user_name: function (e) {
-        this.$tool.console(e, 1);
+//        this.user_name=e;
+//        console.log(e, 1);
       },
       "$route": "checkUser"
     }

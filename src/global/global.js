@@ -130,13 +130,13 @@ var func = {
       global.data.stage = global.func.getStage(data.stage);//设置轮次信息
       global.data.industry = global.func.getIndustry(data.industry);//设置轮次信息
       global.data.hotCity = global.func.getCity(data.hotCity);//设置热门城市
-      // if(data.tags_pro){
-        global.data.tags_pro = global.func.getTags_pro(data.tags_pro);//设置项目标签
-        global.data.tags_team = global.func.getTags_pro(data.tags_team);//设置团队标签
-        global.data.tags_user = global.func.getTags_pro(data.tags_user);//设置人脉标签
-        global.data.pro_source = global.func.getTags_pro(data.pro_source);//设置项目来源
-        global.data.company_status = global.func.getCompanyStatus(data.company_status);//设置运营状态
-      // }
+
+      if(data.tags_pro){global.data.tags_pro = global.func.getTags_pro(data.tags_pro)};//设置项目标签}
+      if(data.tags_team){global.data.tags_team = global.func.getTags_pro(data.tags_team)};//设置团队标签
+      if(data.tags_user){global.data.tags_user = global.func.getTags_pro(data.tags_user)};//设置人脉标签
+      if(data.pro_source){global.data.pro_source = global.func.getTags_pro(data.pro_source)};//设置项目来源
+      if(data.company_status){global.data.company_status = global.func.getCompanyStatus(data.company_status)};//设置运营状态
+
       global.data.resource = global.func.getResource(data.resource);//设置项目来源111
       global.data.company_scale = global.func.getCompanyScale(data.company_scale);//设置公司规模几人
       global.data.follow_schedule = global.func.getSchedule(data.follow_schedule);//设置项目跟进状态

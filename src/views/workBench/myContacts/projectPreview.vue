@@ -475,16 +475,6 @@ export default {
           this.$tool.error("加载超时");
         })
     },//获取当前用户部分信息
-    getLocalTime(data) {
-      for(let i=0; i<data.length; i++){
-        data[i].dh_start_time=new Date(parseInt(data[i].dh_start_time) * 1000).toLocaleString().substr(0, 9)
-      }
-    },//设置时间1
-    getLocalTime2(data) {
-      for(let i=0; i<data.length; i++){
-        data[i].finance_time=new Date(parseInt(data[i].finance_time) * 1000).toLocaleString().substr(0, 9)
-      }
-    },//设置时间2
     getProjectTag(arr){
       let str=""
       for(let i=0;i<arr.length;i++){
@@ -511,8 +501,8 @@ export default {
           if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
           if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-";this.styleObject={color:"#20a0ff"}}
           if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-          this.getLocalTime(data.pro_develop);
-          this.getLocalTime2(data.pro_history_finance);
+          this.$tool.setTime(data.pro_develop,'dh_start_time');
+          this.$tool.setTime(data.pro_history_finance,'finance_time');
           this.project=data;
           this.project.follow_up=data.follow_up.follow_desc;
           this.project.pro_source=this.getProjectTag(data.tag);

@@ -336,12 +336,6 @@
         }
         return str
       },//资源提供或者寻求处理
-      setTime(string){
-        let newDate = new Date();
-        newDate.setTime(string * 1000);
-        string=newDate.toLocaleDateString();
-        return string;
-      },//设置时间
       setTag(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -353,7 +347,7 @@
         let newArr = new Array;
         arr.forEach((x)=> {
           let obj = new Object;
-          obj.case_deal_time=this.setTime(x.case_deal_time);
+          obj.case_deal_time=this.$tool.formatDateTime(x.case_deal_time);
           obj.case_stage_name=x.case_stage_name;
           obj.case_name=x.case_name;
           obj.case_money=x.case_money;

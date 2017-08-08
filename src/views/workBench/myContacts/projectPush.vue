@@ -381,7 +381,7 @@ export default {
         user_id: localStorage.user_id})
         .then(res=>{
           let data = res.data.data;
-          this.pushCount=data.push_count.remain_times;
+          this.pushCount=data.push_count.remain_times || 0;
 //          this.$tool.console(data.push_count);
         })
         .catch(err =>{

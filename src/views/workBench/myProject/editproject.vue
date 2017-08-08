@@ -21,7 +21,7 @@
                   <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-else></span>
                   <span style="margin-left: 8px;" class="fl">
                     <el-upload class="planUpload"
-                               action="api/v/project/projectUpload"
+                               :action="uploadAddress"
                                :on-preview="planPreview"
                                :on-change="planChange"
                                :on-success="planuploadsuccess"
@@ -45,7 +45,7 @@
                       <el-upload
                         class="upload"
                         ref="upload"
-                        action="api/v/project/uploadFile"
+                        :action="uploadAddressFile"
                         :on-change="handleChange"
                         :on-success="uploadsuccess"
                         :on-error="uploaderror"
@@ -796,6 +796,8 @@
   export default {
     data(){
       return {
+        uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
+        uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
         screenWidth: document.body.clientWidth,  // 屏幕大小变动
         num:0,//一次上传最多选5个
         project_id: "",//项目Id全局保存

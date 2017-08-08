@@ -148,7 +148,7 @@
         })
           .then(res => {
             let data=res.data.data;
-            console.log(data);
+            data.company.company_register_date=this.$tool.formatDateTime(data.company.company_register_date);
             this.company=data.company;
             this.company.company_project=data.project_product;
             this.productMessage="产品信息"+"("+data.project_product.length+")";
@@ -157,6 +157,7 @@
             this.$tool.console(err);
           })
       },//获取公司信息
+
     },
     created(){
 //    this.$tool.console(this.compName)
@@ -164,9 +165,9 @@
     },
     watch: {
       compName: function(e){
-        this.$tool.console(e);
+//        this.$tool.console(e);
         this.compaName=e;
-        this.$tool.console(this.compaName)
+//        this.$tool.console(this.compaName);
         this.getCrawlerCompany();
       }//获取公司名称
     }

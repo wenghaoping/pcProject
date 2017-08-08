@@ -882,7 +882,7 @@
               }
             })
             .catch(err => {
-//          this.alert("加载失败");
+              alert("加载失败");
               this.$tool.console(err);
             })
         }
@@ -920,16 +920,6 @@
       dialogVisiblechangeCloase(msg){
         this.dialogPushVisible=msg;
       },
-      getLocalTime(data) {
-        for(let i=0; i<data.length; i++){
-          data[i].dh_start_time=new Date(parseInt(data[i].dh_start_time) * 1000).toLocaleString().substr(0, 9)
-        }
-      },//设置时间1
-      getLocalTime2(data) {
-        for(let i=0; i<data.length; i++){
-          data[i].finance_time=new Date(parseInt(data[i].finance_time) * 1000).toLocaleString().substr(0, 9)
-        }
-      },//设置时间2
       getProjectTag(arr){
         let str=""
         for(let i=0;i<arr.length;i++){
@@ -949,43 +939,52 @@
         return str
       },//项目来源编辑
       getProjectDetail () {
-        this.loading = true;
-        this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project.project_id})
-          .then(res=>{
+        var getProjectDetail = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project.project_id})
+            .then(res=>{
 
-            let data = res.data.data;
-            /*            for(let key in data){
-              if(data[key]=="") data[key]="-"
-            }
-            for(let i=0; i<data.core_users.length; i++){
-                if(data.core_users[i].stock_scale==null){
-                  data.core_users[i].stock_scale="－"
-                }
-            }*/
-
-            if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
-            if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
-            if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-            this.getLocalTime(data.pro_develop);
-            this.getLocalTime2(data.pro_history_finance);
-            this.project=data;
-            this.project.follow_up=data.follow_up.follow_desc;
-            this.project.pro_source=this.getProjectTag(data.tag);
-            this.project.team_tag=this.getteam_tag(data.tag);
-            this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
-            this.loading=false;
-          })
-          .catch(err=>{
-            this.loading=false;
-            this.$tool.console(err,2)
-          })
+              let data = res.data.data;
+              /*            for(let key in data){
+               if(data[key]=="") data[key]="-"
+               }
+               for(let i=0; i<data.core_users.length; i++){
+               if(data.core_users[i].stock_scale==null){
+               data.core_users[i].stock_scale="－"
+               }
+               }*/
+              if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
+              if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
+              if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
+              if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
+              this.$tool.setTime(data.pro_develop,'dh_start_time');
+              this.$tool.setTime(data.pro_history_finance,'finance_time');
+              this.project=data;
+              this.project.follow_up=data.follow_up.follow_desc;
+              this.project.pro_source=this.getProjectTag(data.tag);
+              this.project.team_tag=this.getteam_tag(data.tag);
+              this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
+            })
+            .catch(err=>{
+              this.$tool.console(err,2)
+            })
+          resolve(3);
+        });
+        return getProjectDetail;
       },//获取项目详情数据
       getWxProjectCategory(){
-        this.schedule = this.$global.data.schedule;//设置项目跟进状态
-        this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
-        this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
-        this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+        var getWxProjectCategory = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$global.func.getWxProjectCategory();
+          setTimeout(()=>{
+            this.schedule = this.$global.data.schedule;//设置项目跟进状态
+            this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
+            this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
+            this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+            resolve(2);
+          }, 500);
+        });
+        return getWxProjectCategory;
       },//获取所有下拉框的数据
       toEdit(){
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
@@ -1062,45 +1061,52 @@
 
       /*设置意向投资人右边*/
       getEchartData(){
-        this.loading = true;
-        this.$http.post(this.URL.getEnjoyedInvestorsGroup,{user_id:localStorage.user_id,project_id:this.project.project_id})
-          .then(res=>{
-            if(res.data.status_code==2000000) {
-              let data = res.data.data;
-              this.chartData=data;
-              this.eChart(data.going,data.hold,data.reject)
-            }
-            this.loading = false;
-          })
-          .catch(err=>{
-            this.$tool.console(err,2);
-            this.loading1=false;
-            this.$tool.error("加载超时");
-          })
+        var getEchartData = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getEnjoyedInvestorsGroup,{user_id:localStorage.user_id,project_id:this.project.project_id})
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                let data = res.data.data;
+                this.chartData=data;
+                this.eChart(data.going,data.hold,data.reject);
+                resolve(4);
+              }
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.$tool.error("加载超时");
+            })
+
+        });
+        return getEchartData;
+
       },//获取意向项目数据(图表)
       getEnjoyedInvestors(){
-        this.loading=true;
-        this.getConCon.user_id=localStorage.user_id;
+        var getEnjoyedInvestors = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.getConCon.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-        this.currentPage=1;
-        this.getConCon.project_id=this.project.project_id;
-        this.getConCon.page=1;
-        this.getConCon.schedule_id='';
-        this.$http.post(this.URL.getEnjoyedInvestors,this.getConCon)
-          .then(res=>{
-            if(res.data.status_code==2000000) {
-              let data = res.data.data;
-              this.enjoyInvestors=this.setEnjoyInvestor(data);
-              this.totalData = res.data.count;
-              if(this.enjoyInvestors.length==0) this.activeName='2';
-            }
-            this.loading = false;
-          })
-          .catch(err=>{
-            this.$tool.console(err,2);
-            this.loading=false;
-            this.$tool.error("加载超时");
-          })
+          this.currentPage=1;
+          this.getConCon.project_id=this.project.project_id;
+          this.getConCon.page=1;
+          this.getConCon.schedule_id='';
+          this.$http.post(this.URL.getEnjoyedInvestors,this.getConCon)
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                let data = res.data.data;
+                this.enjoyInvestors=this.setEnjoyInvestor(data);
+                this.totalData = res.data.count;
+                if(this.enjoyInvestors.length==0) this.activeName='2';
+                resolve(5);
+              }
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.$tool.error("加载超时");
+            })
+        });
+        return getEnjoyedInvestors;
+
       },//获取意向投资人列表
       set_industry(arr){
         let str=""
@@ -1337,26 +1343,28 @@
         });return newArr;
       },//设置买家图谱列表
       getProjectMatchInvestors(){
-        this.loading=true;
-        this.getInvestors.user_id=localStorage.user_id;
+        var getProjectMatchInvestors = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.getInvestors.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
-        this.currentPageInvestors=1;
-        this.getInvestors.project_id=this.project.project_id;
-        this.getInvestors.page=1;
-        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
-          .then(res=>{
-            if(res.data.status_code==2000000) {
-              let data = res.data.data;
-              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
-              this.totalInvestors = res.data.count;
-            }
-            this.loading = false;
-          })
-          .catch(err=>{
-            this.$tool.console(err,2);
-            this.loading=false;
-            this.$tool.error("加载超时");
-          })
+          this.currentPageInvestors=1;
+          this.getInvestors.project_id=this.project.project_id;
+          this.getInvestors.page=1;
+          this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                let data = res.data.data;
+                this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+                this.totalInvestors = res.data.count;
+                resolve(6);
+              }
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.$tool.error("加载超时");
+            })
+        });
+        return getProjectMatchInvestors;
       },//买家图谱列表
       filterChangeInvestors(page){
         this.loading=true;
@@ -1381,7 +1389,6 @@
           })
       },//控制买家图谱页码
       industryPush(data){
-        console.log(data)
         if(data==0){
           this.$tool.warning("已推送过")
         }else{
@@ -1467,18 +1474,45 @@
       },//项目推送预览隐藏
     },
     created () {
+        var _this=this;
+      function runAsync1(){
+        var runAsync1 = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          _this.$global.func.getWxProjectCategory();
+          resolve(1);
+        });
+        return runAsync1;
+      }
       // 组件创建完后获取数据，
       this.loading=true;
-      this.$global.func.getWxProjectCategory();
       this.getprojectId();
+/*      runAsync1()
+      .then((data)=>{
+        return this.getWxProjectCategory();
+      })*/
+      this.getWxProjectCategory()
+      .then((data)=>{
+        return this.getProjectDetail();
+      })
+      .then((data)=>{
+        return this.getEchartData();
+      })
+      .then((data)=>{
+        return this.getEnjoyedInvestors();
+      })
+      .then((data)=>{
+        this.loading=false;
+        return this.getProjectMatchInvestors();
+      });
 
+/*
       setTimeout(()=>{
         this.getWxProjectCategory();
         this.getEchartData();
         this.getProjectDetail();
         this.getEnjoyedInvestors();
         this.getProjectMatchInvestors();
-      },200);
+      },200);*/
 
     },
     watch: {

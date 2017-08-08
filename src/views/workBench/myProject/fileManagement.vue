@@ -15,7 +15,7 @@
                <el-upload
                  class="upload"
                  ref="upload"
-                 action="api/v/project/projectUpload"
+                 :action="uploadAddress"
                  :on-change="handleChange"
                  :on-progress="uploadProgress"
                  :on-success="uploadsuccess"
@@ -33,7 +33,7 @@
                <el-upload
                  class="upload"
                  ref="upload"
-                 action="api/v/project/uploadFile"
+                 :action="uploadAddressFile"
                  :on-change="handleChange"
                  :on-progress="uploadProgress"
                  :on-success="uploadsuccess"
@@ -120,6 +120,8 @@
     props: ["proid"],
     data () {
       return {
+        uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
+        uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
         project_id: this.proid,
         //加载
         loading: false,
