@@ -33,7 +33,7 @@
                <el-upload
                  class="upload"
                  ref="upload"
-                 action="/api/v/project/uploadFile"
+                 action="api/v/project/uploadFile"
                  :on-change="handleChange"
                  :on-progress="uploadProgress"
                  :on-success="uploadsuccess"
