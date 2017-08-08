@@ -21,21 +21,23 @@
           <div class="item height" style="background:#f9fafc;margin-top:18px">
             <span class="projectProcess">
               <div class="item progress height">
-                <div class="txt begin">项目线索</div>
+                <div class="txt begin"  :class="{ scheduleColor: project.pro_schedule.schedule_id==1}">项目线索</div>
                 <div class="progress-bar">
                    <span class="circle circle-s" style=" display: inline-block;
       vertical-align: middle;"></span>
                   <span class="bar-bg1" style=" display: inline-block;
       vertical-align: middle;">&nbsp;</span>
-                  <span  class="txt state" style="left:80px;"  v-if="project.pro_schedule.schedule_id==2">约谈</span>
+                  <span  class="txt state" style="left:50px;"  v-if="project.pro_schedule.schedule_id==2">约谈</span>
+                  <span  class="txt state" style="left:100px;"  v-if="project.pro_schedule.schedule_id==3">考察</span>
                   <span  class="txt state" style="left:184px;" v-if="project.pro_schedule.schedule_id==4">签署FA协议</span>
                   <span  class="txt state" style="left:310px;" v-if="project.pro_schedule.schedule_id==5">引荐投资方</span>
+                  <span  class="txt state" style="left:350px;" v-if="project.pro_schedule.schedule_id==6">投资协议</span>
                   <span  class="txt state" style="left:450px;" v-if="project.pro_schedule.schedule_id==7">交割</span>
                   <span  class="txt state" style="left:550px;" v-if="project.pro_schedule.schedule_id==8">待收佣金</span>
                   <span class="circle circle-e" style=" display: inline-block;
       vertical-align: middle;">&nbsp;</span>
                 </div>
-                <div class="txt end" >佣金收讫</div>
+                <div class="txt end"  :class="{ scheduleColor: project.pro_schedule.schedule_id==9}">佣金收讫</div>
              </div>
             </span>
           </div>
@@ -960,6 +962,9 @@
         }
       }
     }
+  }
+  .scheduleColor{
+    color:#20a0ff!important;
   }
 </style>
 
