@@ -79,9 +79,9 @@
               <span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}www.weitianshi.cn</a></span>
             </div>
             <!--<div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">-->
-            <div class="bot-det" style="float:right;">
+            <div class="bot-det" v-show=""project.pro_company_scale.comp_scale_value!="''" style="float:right;">
               <span class="det-title">公司规模：</span>
-              <span class="del-info">{{project.pro_company_scale.comp_scale_value}} 7人</span>
+              <span class="del-info">{{project.pro_company_scale.comp_scale_value}} 人</span>
             </div>
           </div>
           <div class="line"></div>

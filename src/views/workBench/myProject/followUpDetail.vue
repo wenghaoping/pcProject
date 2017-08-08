@@ -62,7 +62,7 @@
       :current-page.sync="currentPage"
       layout="prev, pager, next"
       :page-size="10"
-      :total="totalData">
+      :total="totalData" v-show="this.totalData!==0">
     </el-pagination>
   </div>
 </template>
