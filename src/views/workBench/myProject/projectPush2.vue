@@ -1,6 +1,6 @@
 <template>
   <!--项目推送项目入口-->
-  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中" >
+  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中">
     <el-dialog :visible="dialogPush" :before-close="handleClose">
       <!--弹窗头部-->
       <span slot="title" class="dialog-title clearfix">
@@ -495,7 +495,7 @@
     //项目搜索
     remoteMethod(query) {
       this.filterString=query;
-      console.log(this.activeTab)
+      console.log(this.myNameList)
       if(this.activeTab==="myContacts"){
         this.getMyContacts()
       }else{
@@ -548,6 +548,7 @@
       if(this.myContactsShow.indexOf(thisName)===-1){
         this.myContactsShow.push(thisName);
         this.myNameList[thisName]=true;
+        console.log(this.myNameList)
         //预处理推送项目接口的参数
         this.myContacts.forEach(x=>{
             if(x.card.user_real_name===thisName){
@@ -557,6 +558,9 @@
         })
         console.log(this.pushData)
       }else{
+        let thisName=e.currentTarget.name;
+        this.myNameList[thisName]=false;
+        console.log(this.myNameList)
         this.myContactsShow.splice(this.myContactsShow.indexOf(thisName),1)
         this.pushData.splice(this.pushData.indexOf(thisName),1)
         console.log(this.pushData)
@@ -741,5 +745,8 @@
   }
   .el-table td, .el-table th{
     height:60px!important;
+  }
+  .popper{
+    display: none;
   }
 </style>
