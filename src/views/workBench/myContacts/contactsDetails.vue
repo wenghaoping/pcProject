@@ -1161,6 +1161,7 @@
           .then(res=>{
             let data = res.data.data;
             this.pushCount=data.push_count.remain_times;
+            console.log(data)
 //          this.$tool.console(data.push_count);
           })
           .catch(err =>{
@@ -1220,6 +1221,7 @@
       }
       this.loading=true;
       this.getUserId();
+      this.getpushCount();
       if(this.contacts.user_id!=0) this.getProjectList(1)
       else this.projectLists=[];
       runAsync1()
