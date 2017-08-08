@@ -268,7 +268,7 @@
               </filemanagement>
             </el-tab-pane>
           </el-tabs>
-          <div class="ul-lists list tc" >
+          <div class="ul-lists list tc"  style="padding:0">
             <div class="toButton" style="padding-left: 0">
               <button  @click="toEdit" class="btn1">编辑</button>
               <button  @click="addFollow" class="btn1">写跟进</button>
