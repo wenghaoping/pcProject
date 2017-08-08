@@ -9,7 +9,7 @@
         <template slot="title">
           <span class="clearfix collapseHead">
             {{item.type_name}}  (<span>{{item.fileNum}}</span>)
-             <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img src="/static/images/shangchuan.png">删除</el-button>
+             <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img src="/static/images/filedelete.png">删除</el-button>
             <!--bp上传-->
              <div class="fr" v-if="item.type_id===1 && parseInt(item.fileNum)===0 && item.newFile.length===0">
                <el-upload
@@ -47,15 +47,15 @@
                     <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img src="/static/images/shangchuan.png">上传文件</el-button>
                </el-upload>
             </div>
-            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img src="/static/images/shangchuan.png">重命名</el-button>
+            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img src="/static/images/filerename.png">重命名</el-button>
           </span>
         </template>
         <!--文件列表-->
-        <div class="fileList">
+        <div class="fileList" style="padding-left: 37px">
           <div class="block-info block-cc-other" style="margin-bottom: 15px;"
                v-for="(file, index) in item.file"
                :key="file.file_id">
-            <span class="f-name" style="cursor: pointer" @click="download">{{file.file_title}}</span>
+            <span class="f-name" style="cursor: pointer;font-size: 10px" @click="download">{{file.file_title}}</span>
             <div class="fr">
               <!--bp上传-->
               <el-button v-if="item.type_id===1" type="text"  @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
@@ -86,20 +86,20 @@
       </el-collapse-item>
     </el-collapse>
     <!--新建文件分组的弹窗-->
-    <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
+    <el-dialog title="新建文件分组" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="newGroupName"  ref="newGroupName">
-        <el-form-item label="分组名称" label-width="80px" prop="name"
+        <el-form-item label="" label-width="20px" prop="name"
                       :rules="[{min: 2, max:40, message: '分组名称应在2-40个字符之间',required: true, trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
-            <el-col :span="18">
-              <el-input v-model="newGroupName.name" auto-complete="off"></el-input>
+            <el-col :span="23" style="padding-left: 0">
+              <el-input v-model="newGroupName.name" auto-complete="off" placeholder="请输入分组名" style="border-radius: 2px!important"></el-input>
             </el-col>
           </el-row>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="addGroup" style="background: #40587a;border-color: #40587a;">保　存</el-button>
+        <el-button type="primary" @click="addGroup" style="background: #40587a;border-color: #40587a;margin-right:13px">保　存</el-button>
       </div>
     </el-dialog>
     <!--移动文件分组弹框-->
@@ -592,6 +592,9 @@
     display: none;
     /*left:205px!important;*/
     /*top:610px!important;*/
+  }
+  .el-dialog--small{
+    width:390px;
   }
 </style>
 

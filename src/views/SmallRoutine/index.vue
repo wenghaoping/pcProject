@@ -113,7 +113,7 @@ export default {
   padding-bottom: 312px;
   .scan{
     box-shadow:0 4px 4px 0 rgba(64,88,122,0.10);
-    border-radius:4px;
+    border-radius:2px;
     width:410px;
     height:410px;
     text-align: center;
