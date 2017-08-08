@@ -1191,11 +1191,15 @@
             pushData.project_ids.push(this.pushData.project_id);
             this.$http.post(this.URL.pushUser, pushData)
               .then(res => {
-                let data=res.data.data;
-                this.$tool.success("推送成功");
-                this.getpushCount();
-                this.getInvestorsMatchProjects();
-                this.dialogPushVisible = false;
+                if(res.data.status_code===2000000){
+                  let data=res.data.data;
+                  this.$tool.success("推送成功");
+                  this.getpushCount();
+                  this.getInvestorsMatchProjects();
+                  this.dialogPushVisible = false;
+                }else{
+                  this.$tool.error(res.data.error_msg)
+                }
               })
               .catch(err => {
                 this.$tool.console(err);
