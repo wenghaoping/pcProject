@@ -1,6 +1,6 @@
 <template>
   <!--项目推送项目入口-->
-  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中" v-if="reBorn">
+  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中" >
     <el-dialog :visible="dialogPush" :before-close="handleClose">
       <!--弹窗头部-->
       <span slot="title" class="dialog-title clearfix">
@@ -33,7 +33,7 @@
       </el-form>
 
       <!--我的人脉和全网人脉tab页切换-->
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleClick" v-if="reBorn">
           <!--我的人脉-->
           <el-tab-pane label="我的人脉" name="myContacts">
             <el-table

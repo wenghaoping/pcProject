@@ -105,7 +105,7 @@ const tool={
   },//标签取数据arr//放值的地方,pro总值/标签最后保存的时候,把文字标签替换成id
 /*验证类*/
   trim(string){
-    return str.replace(/(^\s*)|(\s*$)/g,"");
+    return string.replace(/(^\s*)|(\s*$)/g,"");
   },
   getNull(data) {
     let reg=/\S/;
