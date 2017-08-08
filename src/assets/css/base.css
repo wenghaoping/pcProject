@@ -99,3 +99,11 @@ html {
 .cursor{
   cursor: pointer;
 }
+
+/*输入框中时的边框颜色*/
+input:focus{
+  border-color:#40587A !important;
+}
+textarea:focus{
+  border-color: #40587A !important;
+}

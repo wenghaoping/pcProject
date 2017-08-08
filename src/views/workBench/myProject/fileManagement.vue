@@ -11,7 +11,7 @@
             {{item.type_name}}  (<span>{{item.fileNum}}</span>)
              <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img src="/static/images/filedelete.png">删除</el-button>
             <!--bp上传-->
-             <div class="fr" v-if="item.type_id===1 && parseInt(item.fileNum)===0">
+             <div class="fr" v-if="item.type_id===1 && parseInt(item.fileNum)===0 && item.newFile.length===0">
                <el-upload
                  class="upload"
                  ref="upload"
@@ -112,6 +112,23 @@
         <el-button type="primary" @click="fileMove">确 定</el-button>
       </div>
     </el-dialog>
+    <!--重命名文件分组的弹窗-->
+    <el-dialog title="重命名文件分组" :visible.sync="renameFrame" :show-close="showList">
+      <el-form ref="renameFrame">
+        <el-form-item label="分组名称" label-width="80px" prop="name">
+          <el-row :span="24" :gutter="32">
+            <el-col :span="18">
+              <el-input v-model="exGroupName" auto-complete="off"></el-input>
+            </el-col>
+          </el-row>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="renameCancel">取 消</el-button>
+        <el-button type="primary" @click="renameCertain" style="background: #40587a;border-color: #40587a;">保　存</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -160,6 +177,9 @@
         //文件分组单选的值
         radio:0,
         list:[],
+        //重命名弹框显隐
+        renameFrame:false,
+        exGroupName:'',
       }
     },
     methods: {
@@ -279,8 +299,8 @@
         }
       },
       //重命名分组
-      renameGroup(){
-        this.$prompt('请输入分组名', '新建文件分组', {
+      renameGroup(groupName){
+       /* this.$prompt('请输入分组名', '新建文件分组', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(({ value }) => {
@@ -298,7 +318,40 @@
               this.$tool.error(res.data.error_msg)
             }
           })
-        });
+        });*/
+       this.exGroupName=groupName;
+       this.renameFrame=true;
+      },
+      //重命名确定
+      renameCertain(){
+        this.exGroupName=this.$tool.trim(this.exGroupName);
+        if(this.exGroupName.length===0){
+          this.$tool.error('请输入分组名称')
+        }else if(this.exGroupName.length>40 || this.exGroupName<2){
+          this.$tool.error('分组名称长度应在2-40字符之间')
+        }else{
+          this.$http.post(this.URL.renameFileType,{
+            user_id:localStorage.user_id,
+            type_id:this.typeId,
+            type_name:this.exGroupName
+          }).then(res => {
+            console.log(res)
+            if (res.data.status_code === 2000000) {
+              this.loading = false;
+              this.$refs['renameFrame'].resetFields();
+              this.renameFrame=false;
+              this.$tool.success("分组重命名成功")
+              this.initData();
+            } else {
+              this.$tool.error(res.data.error_msg)
+            }
+          })
+        }
+      },
+      //重命名取消
+      renameCancel(){
+        this.$refs['renameFrame'].resetFields();
+        this.renameFrame=false;
       },
       //删除分组
       deleteGroup(){
@@ -322,7 +375,7 @@
           })
         })
       },
-      //上传文件上传之前的钩子函数(允许上传的文件格式不丗)
+      //上传文件上传之前的钩子函数(允许上传的文件格式不同)
       beforeUpload(file){
         let filetypes = ['.pdf','.ppt','.pptx', '.doc', '.docx', '.rar', '.zip'];
         //去除文件类型后缀

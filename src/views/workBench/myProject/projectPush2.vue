@@ -1,6 +1,6 @@
 <template>
   <!--项目推送项目入口-->
-  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中" v-if="reBorn">
+  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中" >
     <el-dialog :visible="dialogPush" :before-close="handleClose">
       <!--弹窗头部-->
       <span slot="title" class="dialog-title clearfix">
@@ -25,8 +25,6 @@
                      multiple @remove-tag="removeTag"
                      :remote-method="remoteMethod"
                      popper-class="popper">
-            <el-option v-for="(item,index) in allCheck" :key="item.card.card_id" :label="item.card.user_real_name" :value="item.card.user_id">
-            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -35,7 +33,7 @@
       </el-form>
 
       <!--我的人脉和全网人脉tab页切换-->
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleClick" v-if="reBorn">
           <!--我的人脉-->
           <el-tab-pane label="我的人脉" name="myContacts">
             <el-table
@@ -46,13 +44,8 @@
               tooltip-effect="dark"
               style="width: 100%;font-size: 12px!important;"
               max-height="430"
-              @selection-change="tableCheck1"
               :row-class-name="tableRowClassName">
-              <!--多选框实现方案1-->
-              <!--<el-table-column width="64" type="selection">
-
-              </el-table-column>-->
-              <!--多选框实现方案2-->
+              <!--多选框-->
               <el-table-column width="64">
                 <template scope="scope">
                     <el-checkbox :checked="myNameList[scope.row.card.user_real_name]"  @change="myCheck" :name="scope.row.card.user_real_name"></el-checkbox>
@@ -162,7 +155,6 @@
               tooltip-effect="dark"
               style="width: 100%;font-size: 12px;"
               max-height="430"
-              @selection-change="tableCheck2"
               :row-class-name="tableRowClassName">
               <el-table-column width="64">
                 <template scope="scope">
@@ -331,9 +323,6 @@
       myContacts:[],
       //全网人脉数据
       netContacts:[],
-      //选中的我的人脉数据和选中的全网人脉数据(服务于computed)
-      myContactsCheck:[],
-      netContactsCheck:[],
       //我的人脉显示数组和全网人脉显示数据(服务于computed)
       myContactsShow:[],
       netContactsShow:[],
@@ -499,29 +488,9 @@
             this.dialogFormVisible=false;
             this.getMyContacts();
             this.getNetContacts();
-            console.log(this.myContactsShow,this.myContactsCheck)
           }
         })
       }
-    },
-    //我的人脉表单选择(无用)
-    tableCheck1(val){
-      console.log(val)
-      this.myContactsCheck=val;
-      let arry=[];
-      val.forEach(x=>{
-        arry.push(x.card.user_real_name)
-      })
-      this.myContactsShow=arry;
-    },
-    //全网人脉表单选择(无用)
-    tableCheck2(val){
-      this.netContactsCheck=val;
-      let arry=[];
-      val.forEach(x=>{
-        arry.push(x.card.user_real_name)
-      })
-      this.netContactsShow=arry;
     },
     //项目搜索
     remoteMethod(query) {
@@ -540,13 +509,11 @@
       this.myContactsShow.forEach((x,index)=>{
         if(x===e.value){
           this.myContactsShow.splice(index,1)
-          this.myContactsCheck.splice(index,1)
         }
       })
       this.netContactsShow.forEach((x,index)=>{
         if(x===e.value){
           this.netContactsShow.splice(index,1)
-          this.netContactsCheck.splice(index,1)
         }
       })
       //删除checkbox勾选
@@ -674,8 +641,6 @@
           if(res.data.status_code===2000000){
             this.$tool.success('推送成功');
             this.initData();
-            this.myContactsCheck=[];
-            this.netContactsCheck=[];
             this.$emit('changeClose',false);
           }
         })
@@ -696,10 +661,6 @@
     },
   },
   computed:{
-    allCheck(){
-      var allCheck=[];
-      return allCheck.concat(this.myContactsCheck,this.netContactsCheck)
-    },
     allShow(){
       var allShow=[];
       return allShow.concat(this.myContactsShow,this.netContactsShow)
