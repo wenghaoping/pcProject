@@ -257,7 +257,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :proName="project.pro_name" @changeClose="closeFollow1" >
+              <folowup :proid="project.project_id" :proName="project.pro_name" @changeClose="closeFollow" >
 
               </folowup>
             </el-tab-pane>
@@ -838,7 +838,7 @@
         this.getEnjoyedInvestors();
 
       },//关闭添加跟进
-      closeFollow1(msg){
+      closeFollow(msg){
         this.dialogFollow=msg;
         this.getEnjoyedInvestors();
 

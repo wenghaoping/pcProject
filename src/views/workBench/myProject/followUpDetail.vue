@@ -54,7 +54,7 @@
         </span>
       </el-dialog>
       <!--写跟进弹框-->
-      <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow1"></addfollow>
+      <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>
     </div>
     <!--分页-->
     <el-pagination
