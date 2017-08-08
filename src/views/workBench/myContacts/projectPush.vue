@@ -100,14 +100,14 @@
             <el-form label-position="top" label-width="80px" ref="email" :model="email">
               <el-form-item label="标题" prop="title"
               :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-                <el-input v-model="email.title" placeholder="请输入邮件标题"></el-input>
+                <el-input v-model="email.title" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
               </el-form-item>
               <el-form-item label="正文"
                             prop="body"
                             :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                 <el-input type="textarea"
                           v-model="email.body"
-                          placeholder="请输入邮件正文"
+                          placeholder="请输入简要项目介绍，作为邮件正文，便于投资人快速了解项目"
                           :autosize="{ minRows: 4, maxRows: 7}"></el-input>
               </el-form-item>
             </el-form>

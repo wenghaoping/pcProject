@@ -9,6 +9,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
 // axios.defaults.baseURL = 'http://192.168.9.74';
 
+
 //POST传参序列化
 axios.interceptors.request.use((config) => {
   if(config.method  === 'post'){

@@ -713,7 +713,7 @@ export default {
      }
      .button{
        background:#40587a;
-       border-radius:4px;
+       border-radius:2px;
        height:37px;
        font-size:14px;
        color:#ffffff;

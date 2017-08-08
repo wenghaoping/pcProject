@@ -469,7 +469,8 @@
     <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
 
     <!--项目推送项目入口小弹窗-->
-    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel">
+    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel" >
+      <span class="pushCount">今日剩余推送<span>{{pushCount}}</span>次</span>
       <el-form :model="littlePush" ref="littlePush">
         <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
           <el-input v-model="littlePush.email" auto-complete="off"></el-input>
@@ -814,6 +815,7 @@
         emitPush:false,//控制项目推送-项目入口的推送函数触发
         getFollowData:false,//看是否要获取跟进的数据
         followid:'',//得到followid
+        pushCount:5,//当前用户今日剩余推送次数
       }
     },
     computed:{
@@ -991,6 +993,13 @@
       },
       projectPush(){
         this.dialogPushVisible=true;
+        this.$http.post(this.URL.pushCount,{
+          user_id:localStorage.user_id
+        }).then(res=>{
+          if(res.data.status_code===2000000){
+            this.pushCount=res.data.data.push_count.remain_times;
+          }
+        })
       },//项目推送入口
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
@@ -1580,6 +1589,15 @@
       }
       .el-form-item__label{
         text-align: left;
+      }
+      .pushCount{
+        position: absolute;
+        left: 80px;
+        top: 24px;
+        font-size: 12px;
+        span{
+          color: red;
+        }
       }
     }
   }
