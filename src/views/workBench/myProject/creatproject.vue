@@ -17,7 +17,7 @@
               <span style="margin-left: 20px;" class="fl">
                 <el-upload class="Upload"
                            ref="upload"
-                           action="api/v/project/projectUpload"
+                           :action="uploadAddress"
                            :on-change="planChange"
                            :on-success="planuploadsuccess"
                            :on-preview="planPreview"
@@ -234,6 +234,7 @@
   export default {
     data () {
       return {
+        uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
         planList:[],//商业计划书上传列表
         planButton:false,//控制上传按钮的显示
         dialogVisible:false,//是否同步弹窗

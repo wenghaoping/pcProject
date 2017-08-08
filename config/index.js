@@ -30,6 +30,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'https://pc.dev.weitianshi.cn',
+        // target: 'http://192.168.9.74',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

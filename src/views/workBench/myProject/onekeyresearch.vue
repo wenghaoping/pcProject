@@ -413,20 +413,6 @@
           date: '2016-05-04'
         })
       },
-      getTimeMilestone(data){
-        for(let i=0; i<data.length; i++){
-          var newDate = new Date();
-          newDate.setTime(data[i].milestone_time * 1000);
-          data[i].milestone_time=newDate.toLocaleDateString();
-        }
-      },//里程碑时间
-      getTimeFinancing(data){
-        for(let i=0; i<data.length; i++){
-          var newDate = new Date();
-          newDate.setTime(data[i].history_financing_time * 1000);
-          data[i].history_financing_time=newDate.toLocaleDateString();
-        }
-      },//里程碑时间
       getCrawlerTeam(){
           this.loading=true;
         this.$http.post(this.URL.getCrawlerTeam, {
@@ -449,8 +435,9 @@
           com_id: this.com_id
         })
         .then(res => {
-          this.history_finance = res.data.data;
-          this.getTimeFinancing(this.history_finance);
+          let data=res.data.data;
+          this.$tool.setTime(data,'history_financing_time');
+          this.history_finance = data;
           this.loading=false;
         })
         .catch(err => {
@@ -465,8 +452,9 @@
           com_id: this.com_id
         })
         .then(res => {
-          this.milestone_list = res.data.data;
-          this.getTimeMilestone(this.milestone_list);
+          let data=res.data.data;
+          this.$tool.setTime(data,'milestone_time');
+          this.milestone_list = data;
           this.loading=false;
         })
         .catch(err => {
@@ -481,8 +469,10 @@
           com_id: this.com_id
         })
         .then(res => {
-          this.news = res.data.data;
-          this.loading=false;
+            let data=res.data.data;
+            this.$tool.setTime(data,'project_news_time');
+            this.news =data;
+            this.loading=false;
         })
         .catch(err => {
           this.$tool.console(err);
@@ -496,7 +486,9 @@
           com_id: this.com_id
         })
         .then(res => {
-          this.competing = res.data.data;
+          let data=res.data.data;
+          this.$tool.setTime(data,'competing_goods_Financing_time');
+          this.competing =data;
           this.loading=false;
         })
         .catch(err => {

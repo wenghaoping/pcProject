@@ -20,7 +20,7 @@
                   <span style="margin-left: 20px;" class="fl">
                     <el-upload class="UploadImg"
                                ref="upload"
-                               action="api/v/user/uploadConnectCard"
+                               :action="uploadAddress"
                                list-type="picture-card"
                                :on-preview="handlePictureCardPreview"
                                :on-change="planChange"
@@ -336,6 +336,7 @@ export default {
       }
     };//电话号码正则判断
     return {
+      uploadAddress:this.URL.weitianshiLine+"api/v/user/uploadConnectCard",//上传地址
       card_id:'',//名片ID
       nullRule: { validator: checkNull, trigger: 'blur' },
       PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
@@ -543,14 +544,14 @@ export default {
         else if(!contacts1) {this.$tool.error("投资需求不超过500字")}
         else if(!contacts2) {this.$tool.error("资源需求不超过500字")}
       else{
-
           this.$tool.setTag(this.contacts.user_invest_tag,this.tags.changecont);
           let allData={};
           allData=this.contacts;
           allData.user_id=localStorage.user_id;
           allData.card_id=this.contacts.card_id || '';
           allData.image_id=this.uploadShow.image_id || '';
-          this.$tool.console(allData);
+//          this.$tool.console(allData);
+          console.log(allData);
           this.$http.post(this.URL.createUserCard, allData)
             .then(res => {
               this.card_id=res.data.card_id;
@@ -662,7 +663,7 @@ export default {
       this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.card_id})
         .then(res => {
           let data = res.data.data;
-          this.$tool.console(this.$tool.getToObject(data));
+
           data.user_invest_industry=this.set_industry(data.user_invest_industry);
           data.user_invest_stage=this.set_stage(data.user_invest_stage);
           data.user_invest_scale=this.set_scale(data.user_invest_scale);
@@ -675,6 +676,8 @@ export default {
           this.contacts=data;
           this.tags_con=this.tags.changecont.slice(0);
           this.loading=false;
+//          this.$tool.console(this.$tool.getToObject(data));
+          console.log(this.$tool.getToObject(data));
         })
         .catch(err=>{
           this.$tool.console(err,2);

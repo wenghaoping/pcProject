@@ -1,7 +1,7 @@
 <template>
   <div id="addFollow" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================添加或编辑跟进记录弹窗=============================================-->
-    <el-dialog :visible="dialogFollow" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="dialogFollow" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll>
       <div class="addTitle">
         <span> | </span>添加跟进
       </div>
@@ -72,7 +72,7 @@
               <el-upload
                 class="upload"
                 ref="upload"
-                action="api/v/project/uploadFile"
+                :action="uploadAddress"
                 :on-change="handleChange"
                 :on-success="uploadsuccess"
                 :on-error="uploaderror"
@@ -141,6 +141,7 @@
     props: ["dialogFollow","followid","projectid","projectname","cardid","cardname"],
     data () {
       return {
+        uploadAddress:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
         loading:false,
         loading2:false,//加载框加载
         showList: false,//上传列表隐藏
@@ -270,7 +271,7 @@
         }
       },//选择意向投资人后
       querySearchAsync(queryString, cb) {
-//        this.follow.card_id='';
+//
         this.$http.post(this.URL.match_my_relation, {user_id: localStorage.user_id, user_name: queryString})
           .then(res => {
             this.userArr=[];
@@ -312,7 +313,6 @@
       },//获取用户
       getScheduleName(){
         this.schedule_name=this.$global.data.follow_schedule;//设置项目跟进状态
-        console.log(this.schedule_name);
       },// 获取跟进进度
       getFileType(data){
         let arr = [];
@@ -542,6 +542,7 @@
       allSave(){
         let follow=this.submitForm('follow');
         console.log(this.follow)
+        if(this.follow.card_name=="") this.follow.card_id='';
         if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
             this.$tool.error("请选择或添加正确的投资人")
         }
@@ -612,7 +613,7 @@
     },
     watch : {
       followid : function(e){
-      
+
       },//获取跟进id
 
       dialogFollow: function(e){

@@ -9,7 +9,10 @@
 export default
 {
   /*总地址,下载用的*/
-  weitianshi:"http://www.weitianshi.cn/",//下载用
+  weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
+  weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传
+  // weitianshi:"http://192.168.9.74",//下载用
+  // weitianshiLine:"http://192.168.9.74",//上传接口汇总
 
   /*上传用*/
 
