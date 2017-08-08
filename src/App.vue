@@ -126,19 +126,19 @@
     },
     //当dom一创建时
     created(){
-       if(localStorage.user_id=="" || localStorage.user_id==undefined){
-         this.$router.push({ name: 'SmallRoutine'});
-       }else{
-       //        this.$router.push('/');
-       this.active=0;
-       }
+//       if(localStorage.user_id=="" || localStorage.user_id==undefined){
+//         this.$router.push({ name: 'SmallRoutine'});
+//       }else{
+//       //        this.$router.push('/');
+//       this.active=0;
+//       }
 //     this.setUserId();
 
     },
     computed:{
       userRealName(){
         let user_real_name=this.$store.state.logining.user_real_name;
-//        this.user_name=this.$store.state.logining.user_real_name;
+        this.user_name=this.$store.state.logining.user_real_name;
         return user_real_name;
       }
     },
