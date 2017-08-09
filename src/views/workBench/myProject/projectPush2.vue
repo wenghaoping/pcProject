@@ -48,7 +48,7 @@
               <!--多选框-->
               <el-table-column width="64" v-if="reBorn">
                 <template scope="scope">
-                    <el-checkbox :checked="myNameList[scope.row.card.user_real_name]"  @change="myCheck" :name="scope.row.card.user_real_name"></el-checkbox>
+                    <el-checkbox :vlaue="scope.row.card.card_id" :checked="myNameList[scope.row.card.user_real_name]"  @change="myCheck" :name="scope.row.card.user_real_name"></el-checkbox>
                 </template>
               </el-table-column>
               <!--姓名-->
@@ -559,6 +559,7 @@
     },
     //我的人脉表单和全网人脉表单勾选触发
     myCheck(e){
+      console.log(e)
       let thisName=e.currentTarget.name;
       if(this.myContactsShow.indexOf(thisName)===-1){
         this.myContactsShow.push(thisName);
