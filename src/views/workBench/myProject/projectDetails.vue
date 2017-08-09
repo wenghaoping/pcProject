@@ -506,7 +506,7 @@
     </el-popover>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @closePreview="closePreview" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
 
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
@@ -1454,6 +1454,9 @@
       previewPush(x){
         this.emitPush=x;
       },//项目推送预览隐藏
+      closePreview(msg){
+        this.dialogPreviewVisible=msg;
+      },//关闭项目预览
     },
     created () {
         var _this=this;
