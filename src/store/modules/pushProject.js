@@ -22,5 +22,11 @@ export default {
       title: '',//邮件标题
       body: '',//邮件正文
     },
+
+    //推送项目-项目入口
+    projectPush2:{
+      myCheckList:{},
+      netCheckList:{},
+    }
   }
 }

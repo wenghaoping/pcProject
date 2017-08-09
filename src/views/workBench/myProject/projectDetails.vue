@@ -260,7 +260,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :pro-name="project.pro_name" :get-data-true="getFollowData" @getfollowid="getFollowId"></folowup>
+              <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData" @getfollowid="getFollowId"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id">
@@ -269,7 +269,7 @@
             </el-tab-pane>
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
-            <div class="toButton" style="padding-left: 0">
+            <div class="toButton" style="padding-left: 0;z-index: 111">
               <button  @click="toEdit" class="btn1">编辑</button>
               <button  @click="addFollow" class="btn1">写跟进</button>
               <button  @click="projectPush" class="btn1">项目推送</button>
@@ -416,6 +416,7 @@
                             <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
+
                         <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
                           <button v-if="projectMatchInvestor.push_statues==3" class="button fl" @click="industryPush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
@@ -425,6 +426,7 @@
                           </button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png" ></div>移除</button>
+
                         </div>
                         <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
                         <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
@@ -1338,6 +1340,8 @@
           obj.user_invest_industry=x.card.user_invest_industry;
           obj.user_invest_stage=x.card.user_invest_stage;
           obj.user_id=x.card.user_id;
+          obj.card_id=x.card.card_id;
+          obj.user_eamil=x.card.user_email;
           obj.investor_id=x.card.investor_id;
 
           obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
@@ -1397,8 +1401,12 @@
         }else{
           console.log(data)
           this.littlePushShow=true;
-          this.littlePush.email=data.investor_email;
-          this.pushData=[data.user_id,'user']
+          this.littlePush.email=data.user_eamil;
+          if(data.type==='user'){
+            this.pushData=[data.user_id,data.type]
+          }else{
+            this.pushData=[data.card_id,data.type]
+          }
         }
       },//买家图谱推送
       industryDelete(data){
