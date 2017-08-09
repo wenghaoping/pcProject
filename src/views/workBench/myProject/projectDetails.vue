@@ -260,7 +260,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :pro-name="project.pro_name" :get-data-true="getFollowData" @getfollowid="getFollowId"></folowup>
+              <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData" @getfollowid="getFollowId"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id">
@@ -269,7 +269,7 @@
             </el-tab-pane>
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
-            <div class="toButton" style="padding-left: 0">
+            <div class="toButton" style="padding-left: 0;z-index: 111">
               <button  @click="toEdit" class="btn1">编辑</button>
               <button  @click="addFollow" class="btn1">写跟进</button>
               <button  @click="projectPush" class="btn1">项目推送</button>
