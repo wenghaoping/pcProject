@@ -27,7 +27,7 @@
                 <span class="big-tag">{{project.pro_finance_stock_after}}%</span><span class="split">｜</span>
                 <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               </div>
-              <div class="item progress height" style="margin-top:18px;padding-top: 8px;">
+              <div class="item" style="width: 824px;">
                 <!--<div class="txt begin" style="margin-left: 8px;" :style="styleObject">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
@@ -52,7 +52,7 @@
             <!--推送用户-->
             <div class="ul-lists">
               <div class="item">
-                <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">推送用户</span>
+                <span class="title"><img class="img" src="../../../assets/images/team.png">推送用户</span>
               </div>
               <div class="ul-lists" style="margin-top:16px;padding: 0">
                 <div class="item">
@@ -209,7 +209,7 @@
             <!--FA签约协议-->
             <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
               <div class="item">
-                <span class="title"><img class="img" src="../../../assets/images/money.png">FA签约协议</span>
+                <span class="title">FA签约协议</span>
                 <div class="rz-details" >
                   <div class="rz-detail" style="width: 25%">
                     <p class="det-title">签约佣金</p>

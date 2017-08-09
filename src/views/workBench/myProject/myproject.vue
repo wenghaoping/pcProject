@@ -739,11 +739,7 @@
 
 <style type="text/css" lang="less">
   @import '../../../assets/css/myproject';
-  .el-table-filter__content{
-    max-height: 250px;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+
   .el-table-filter__list{
     min-width: 130px!important;;
   }

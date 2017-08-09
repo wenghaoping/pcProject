@@ -488,6 +488,7 @@ export default {
     filterChange(filters){
       this.loading=true;
       this.currentPage=1;
+      this.getPra.page=1;//控制当前页码
       this.getPra.user_id=localStorage.user_id;
       if(filters.order){
         if(filters.order=="ascending") filters.order="asc"//升降序

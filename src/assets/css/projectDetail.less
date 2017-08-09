@@ -808,10 +808,12 @@
           }
           .img{
             width:52px;
-            height:16px;
+            height:52px;
             position: absolute;
             top: 3px;
             right: -6px;
+            border-radius: 50%;
+            overflow: hidden;
             img{width: 100%}
           }
           .imgText{
@@ -856,6 +858,18 @@
                 background: #ffffff;
               }
             }
+
+          }
+          .header{
+            display: inline-block;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #eff2f7;
+            line-height: 52px;
+            text-align: center;
+            font-size: 26px;
+            color: #40587a;
           }
         }
       }
@@ -863,6 +877,7 @@
   }
   .main_right{
     .button{
+      border-right: 1px solid #eff2f7;
       width: 179px;
       background:#ffffff;
       height:44px;

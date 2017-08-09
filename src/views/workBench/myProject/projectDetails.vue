@@ -26,7 +26,7 @@
               <span class="big-tag">{{project.pro_area.area_title}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_finance_stock_after}}%</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_stage.stage_name}}</span>
-              <span class="flower" v-if="project.follow_up!=''">跟进人 : {{project.follow_up}}</span>
+              <span class="flower" v-if="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
 
             </div>
             <div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">
@@ -346,7 +346,7 @@
                         </div>
 
                         <div class="img" v-if="enjoyInvestor.user_avatar_url!=''"><img :src="enjoyInvestor.user_avatar_url"></div>
-                        <div class="img" v-else><img src="../../../assets/images/logo.png"></div>
+                        <div class="img" v-else><span class="header">{{enjoyInvestor.user_avatar_txt}}</span></div>
                       </div>
                     </div>
                     <div class="emptyImg" v-if="enjoyInvestors.length==0">
@@ -380,7 +380,7 @@
                   <div class="item_top">
                     <span class="top_inn fl">匹配推荐=我的+全网人脉</span>
                     <div class="selectIn fr" style="height: 36px;">
-                      <el-select v-model="isFollow" placeholder="请选择" @change="selectSearch">
+                      <el-select v-model="isFollow" placeholder="请选择" @change="selectFollow">
                         <el-option
                           v-for="item in myAllCont"
                           :key="item.value"
@@ -416,18 +416,18 @@
                             <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
-                        <div class="li clearfix" style="margin-top: 12px;">
+                        <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
                           <button v-if="projectMatchInvestor.push_statues==3" class="button fl" @click="industryPush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button class="button fl" v-else @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
-                          <button class="button fl" @click="industryDelete(projectMatchInvestor)">
-                            <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
+                          <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none">
+                            <div class="img1"><img src="../../../assets/images/yichu.png" ></div>移除</button>
                         </div>
                         <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
-                        <div class="imgText" v-else>{{projectMatchInvestor.investor_logo_text}}</div>
+                        <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
                       </div>
                     </div>
                     <div class="emptyImg" v-if="ProjectMatchInvestors.length==0">
@@ -475,7 +475,7 @@
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow"
                :projectid="projecmessage.project_id"
-               :projectname="projecmessage.project_name"
+               :projectname="projecmessage.pro_intro"
                @changeClose="closeFollow"
                :followid="followid"></addfollow>
 
@@ -547,7 +547,7 @@
         userid:"",//人脉详情弹框用(点击的那个人的userid)
         projecmessage:{
           project_id:'',
-          project_name:''
+          pro_intro:''
         },//项目名称,ID
         dialogFollow:false,//添加意向投资人
         show: "detail",
@@ -866,7 +866,7 @@
         this.followid='';
         this.dialogFollow=true;
         this.projecmessage.project_id=this.project.project_id;
-        this.projecmessage.project_name=this.project.pro_name;
+        this.projecmessage.pro_intro=this.project.pro_intro;
       },//点击写跟近按钮
       closeFollow(msg){
         this.dialogFollow=msg;
@@ -988,7 +988,7 @@
               this.$tool.setTime(data.pro_develop,'dh_start_time');
               this.$tool.setTime(data.pro_history_finance,'finance_time');
               this.project=data;
-              this.project.follow_up=data.follow_up.follow_desc;
+              this.project.follow_user=data.follow_user;
               this.project.pro_source=this.getProjectTag(data.tag);
               this.project.team_tag=this.getteam_tag(data.tag);
               this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
@@ -1158,6 +1158,7 @@
           obj.user_invest_stage=x.card.user_invest_stage;
           obj.type=x.type;
           obj.user_avatar_url=x.card.user_avatar_url;
+          obj.user_avatar_txt=this.$tool.setUrlChange(x.card.user_avatar_url,x.card.user_real_name);
           obj.user_company_career=x.card.user_company_career;
           obj.user_company_name=x.card.user_company_name;
           obj.match=x.match;
@@ -1330,6 +1331,7 @@
           obj.type=x.type;
           obj.push_statues=x.push_statues;
           obj.user_avatar_url=x.card.user_avatar_url;
+          obj.user_avatar_txt=this.$tool.setUrlChange(x.card.user_avatar_url,x.card.user_real_name);
           obj.user_real_name=x.card.user_real_name;
           obj.user_company_career=x.card.user_company_career;
           obj.user_company_name=x.card.user_company_name;
@@ -1337,6 +1339,7 @@
           obj.user_invest_stage=x.card.user_invest_stage;
           obj.user_id=x.card.user_id;
           obj.investor_id=x.card.investor_id;
+
           obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
           newArr.push(obj);
         });
@@ -1429,7 +1432,26 @@
           });
         });
       },//买家图谱人脉删除
-
+      selectFollow(e){
+        this.getInvestors.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+        this.currentPageInvestors=1;
+        this.getInvestors.project_id=this.project.project_id;
+        this.getInvestors.page=1;
+        this.getInvestors.is_follow=e;
+        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+          .then(res=>{
+            if(res.data.status_code==2000000) {
+              let data = res.data.data;
+              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.totalInvestors = res.data.count;
+            }
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.$tool.error("加载超时");
+          })
+      },//筛选买家图谱
       /*编辑跟进记录*/
       getFollowId(id){
         this.dialogFollow=true;
@@ -1561,7 +1583,7 @@
      position: static;
     }
 
-    .radio_line{
+/*    .radio_line{
       width: 13px;
       //height: 49px;
     }
@@ -1572,7 +1594,7 @@
       background: #f9fafc;
       height:12px;
       position: relative;
-    }
+    }*/
     .littlePush{
       .el-dialog--small{
         width:430px;

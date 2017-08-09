@@ -244,8 +244,8 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
-          this.loading=false;
           this.totalData=data.count;
+          this.loading=false;
         })
         .catch(err=>{
           this.loading=false;
@@ -271,7 +271,7 @@ export default {
       }
     },//点击重置按钮时
     handleDelete(index,row){
-      this.$confirm('此操作将永久删除该人脉, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该跟进, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -302,6 +302,7 @@ export default {
       }*/
       this.loading=true;
       this.currentPage=1;
+      this.getPra.page=1;//控制当前页码
       this.getPra.user_id=localStorage.user_id;
       if(filters.order){
         if(filters.order=="ascending") filters.order="asc"//升降序
@@ -326,10 +327,11 @@ export default {
 
       this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
-          this.loading=false;
+
           let data = res.data.data;
           this.tableData=data.follow_record;
           this.totalData=data.count;
+          this.loading=false;
         })
         .catch(err=>{
           this.loading=false
@@ -344,10 +346,9 @@ export default {
       this.$tool.console(this.getPra);
       this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
-          this.loading=false;
           let data = res.data.data;
-
           this.tableData=data.follow_record;
+          this.loading=false;
         })
         .catch(err=>{
           this.loading=false
@@ -377,10 +378,10 @@ export default {
       this.getPra.created_at_time=time;
       this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
-          this.loading=false;
           let data = res.data.data;
           this.tableData=data.follow_record;
           this.totalData=data.count;
+          this.loading=false;
         })
         .catch(err=>{
           this.loading=false
