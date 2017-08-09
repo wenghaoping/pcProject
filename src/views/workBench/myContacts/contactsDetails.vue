@@ -1250,17 +1250,6 @@
           this.loading=false;
           return this.getEnjoyProjects();
         });
-
-//      this.getOneUserInfo();
-//      this.$global.func.getWxProjectCategory();
-/*      setTimeout(()=>{
-        this.getEchartData();
-//        console.log(this.contacts);
-//        this.getWxProjectCategory();
-        this.getInvestorsMatchProjects();
-        this.getEnjoyProjects();
-        this.loading=false;
-      },800)*/
     },
     //Echart组件
     mounted(){
