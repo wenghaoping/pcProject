@@ -28,8 +28,13 @@
             </div>
             <span style="width:180px;max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>
           </el-tooltip>
-          <span style="display: inline-block;margin-left: 90px;float: left" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
-          <span style="display: inline-block;float: left">{{item.investor_name}}</span>
+          <span style="display: inline-block;margin-left: 90px;float: left;position: relative;" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
+          <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.investor_name.length > 3 ? false:true">
+            <div slot="content">
+              <div class="tips-txt">{{item.investor_name}}</div>
+            </div>
+            <span style="width:50px;max-width:50px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{item.investor_name}}</span>
+          </el-tooltip>
           <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
         </div>
         <div v-show=" item.follow_desc!=''|| item.follow_file.length!=''"  class="followLine"></div>

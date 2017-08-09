@@ -402,13 +402,14 @@
                             <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.stage_tag" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
-                        <div class="li clearfix" style="margin-top: 12px;">
+                        <div class="li clearfix" style="border-top:1px solid #eff2f7;">
                           <button v-if="projectMatchInvestor.push_statues==3" class="button fl" @click="industryPush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button class="button fl" v-else @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
+                          <span style="width:1px;height: 20px;background: #eff2f7; display: inline-block;float: left;margin-top: 11px"></span>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
