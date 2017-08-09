@@ -94,6 +94,17 @@
           img{
             width: 100%;
           }
+          .change{
+            display: inline-block;
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: #eff2f7;
+            line-height: 88px;
+            text-align: center;
+            font-size: 45px;
+            color: #40587a;
+          }
         }
         .com{
           font-size:16px;
@@ -332,9 +343,12 @@
           text-align:left;
         }
         .button_list{
+          position: fixed;
+          bottom:95px;
+          left:212px;
           background:#ffffff;
-          box-shadow:0 -2px 4px 0 rgba(64,88,122,0.10);
-          width:835px;
+          box-shadow:0 -2px 4px 0 rgba(64,88,122,0.3);
+          width:880px;
           height:60px;
           .lis{
             width: 210px;
@@ -365,6 +379,9 @@
     .el-tabs__content{
       position: static;
     }
+    .el-tabs__header{
+      border: none;
+    }
     margin: 45px 0 0 15px;
     width:440px;
     .main-box{
@@ -382,7 +399,7 @@
         color:#40587a;
         cursor: pointer;
         position: absolute;
-        right: 0px;
+        right: 11px;
         top:2px;
       }
       .back-tag{

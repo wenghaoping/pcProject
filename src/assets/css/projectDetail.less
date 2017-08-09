@@ -239,7 +239,7 @@
       }
       .person-tag{
         background:rgba(32,160,255,0.10);
-        border-radius:px;
+        border-radius:2px;
         height:34px;
         font-size:14px;
         color:#20a0ff;
@@ -684,6 +684,7 @@
     margin: 14px 25px 25px ;
     .click{
       cursor: pointer;
+      padding-bottom: 5px;
     }
     .btn{
       border:1px solid #40587a;
@@ -807,11 +808,12 @@
 
           }
           .img{
-            width:52px;
-            height:16px;
+            width: 52px;
+            height: 66px;
+            overflow: hidden;
             position: absolute;
             top: 3px;
-            right: -6px;
+            right: 9px;
             img{width: 100%}
           }
           .imgText{
@@ -856,6 +858,18 @@
                 background: #ffffff;
               }
             }
+
+          }
+          .header{
+            display: inline-block;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #eff2f7;
+            line-height: 52px;
+            text-align: center;
+            font-size: 26px;
+            color: #40587a;
           }
         }
       }
@@ -863,12 +877,14 @@
   }
   .main_right{
     .button{
+      border-right: 1px solid #eff2f7;
       width: 179px;
       background:#ffffff;
       height:44px;
       font-size:14px;
       color:#40587a;
       cursor: pointer;
+      line-height: 44px;
       .img1{
         width: 14px;
         height: 14px;

@@ -26,8 +26,7 @@
             <el-col :span="12">
               <el-form-item
                 label="意向投资人"
-                prop="card_name"
-                :rules="[{max: 20, message: '长度不能大于20个字符', trigger: 'blur' }]">
+                prop="card_name">
                 <el-autocomplete v-model="follow.card_name"
                                  :fetch-suggestions="querySearchAsync"
                                  placeholder="请选择或添加投资人"
@@ -186,6 +185,7 @@
           follow_desc:'',//跟进描述
           file_id:[],//文件id
           follow_id:'',//id
+          type:'',//名片类型card,user
         },//跟进记录
         schedule_name: [
 /*            {
@@ -210,14 +210,15 @@
       },//继续添加
 
       handleSelectProject(item){
+        this.follow.project_id='';
         this.follow.project_id = item.label;
       },//选择项目后
       querySearchProject(queryString, cb){
-        this.follow.project_id='';
         let obj = new Object;
         obj.user_id=localStorage.user_id;
         obj.search=queryString;
         obj.page=0;
+        obj.type='follow';
         this.$http.post(this.URL.getProjectList, obj)
           .then(res => {
             this.restaurants=[];
@@ -236,10 +237,18 @@
 
       handleSelect(item) {
         this.follow.card_id = item.label;
+        this.follow.type = item.type || 'card';
         let name=item.value;
+        let na = item.na || '';
         if(item.label==0) {
+          if(this.$tool.getNull(na)) {
+            this.$tool.error("名字不能为空");
+            this.follow.card_name="";
+            return false
+          }
           if (name.length > 30) {
-            this.$tool.error("名字不能超过20个字")
+            this.$tool.error("名字不能超过20个字");
+            this.follow.card_name="";
           } else {
             this.$confirm('是否添加该人脉, 是否继续?', '提示', {
               confirmButtonText: '确定',
@@ -265,7 +274,8 @@
                 type: 'info',
                 message: '已取消添加'
               });
-              this.follow.card_name = item.na;
+              this.follow.card_name = na;
+              this.follow.card_id = '';
             });
           }
         }
@@ -307,6 +317,7 @@
           obj.value = arr[i].user_real_name+'('+arr[i].user_company_name+')';
           if(arr[i].user_company_name=='') obj.value = arr[i].user_real_name;
           obj.label = arr[i].card_id;
+          obj.type = arr[i].type;
           newArr.push(obj);
         }
         return newArr;
@@ -349,7 +360,6 @@
                 let data = res.data.data;
 //            data.schedule_id=data.schedule_id;
                 data.file_id=[];
-                data.type='card';
                 this.follow=data;
                 this.setUploadShow(data.files);
                 this.loading=false;
@@ -386,10 +396,10 @@
           return false;
         };
         this.addDomain("其他", file.name, 0, 4,true,file.uid);
+        this.subButtonCheck(this.uploadShow.lists);
       },//项目文件上传验证
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
-        this.subButtonCheck(this.uploadShow.lists)
       },
       uploadsuccess(response, file, fileList){
         let data = response.data;
@@ -554,7 +564,6 @@
           if(this.follow.follow_id=="") delete this.follow.follow_id;
           delete this.follow.files;
           this.follow.user_id=localStorage.user_id;
-          this.follow.type="card";
           this.$tool.console(this.$tool.getToObject(this.follow));
           this.loading=true;
           this.$http.post(this.URL.add_follow_record, this.follow)
@@ -562,8 +571,7 @@
              this.$tool.console(res);
              if(res.data.status_code==2000000){
                this.follow_id=res.data.data;
-               this.open2('项目编辑成功', '保存成功', '继续添加', '返回');
-
+               this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
              }else{
                this.$tool.error(res.data.error_msg);
              }

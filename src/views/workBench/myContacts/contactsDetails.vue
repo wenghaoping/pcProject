@@ -16,13 +16,13 @@
               <img :src="contacts.user_avatar_url">
             </div>
             <div class="header fr" v-else>
-              <img src="../../../assets/images/logo.png">
+              <span class="change">{{contacts.user_avatar_txt}}</span>
             </div>
             <div class="item com"><img src="../../../assets/images/company.png">{{contacts.user_company_name}}<span v-if="contacts.user_company_name!=''"> | </span>{{contacts.user_brand}}</div>
             <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.user_mobile}}</div>
             <div class="item com" style="width: 780px;">
               <img src="../../../assets/images/email.png">{{contacts.user_email}}
-              <div class="fr" v-if="contacts.import_user_name!=''">
+              <div class="fr" v-if="contacts.import_user_name!=''" style="color: #8492A6">
                 来源: {{contacts.import_user_name}}
               </div>
             </div>
@@ -143,7 +143,7 @@
               </div>
             </div>
 
-            <div class="button_list">
+            <div class="button_list" >
               <div class="lis">
                 <button class="button" @click="goEdit" v-if="contacts.is_bind==0">编辑</button>
                 <button class="button" @click="handlePushComplete" style="margin-left: 16px;">项目推送</button>
@@ -272,14 +272,14 @@
                             <span class="big-tag">{{matchProject.area}}</span>
                           </div>
                         </div>
-                        <div class="li clearfix" style="margin-top: 12px;">
+                        <div class="li clearfix" style="margin-top: 12px; border-top: 1px solid #eff2f7">
                           <button v-if="matchProject.push_statues==3" class="button fl" @click="handlePush(0)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button  class="button fl" v-else @click="handlePush(matchProject)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
 
-                          <button class="button fl" @click="delMatchAction(matchProject)">
+                          <button class="button fl" @click="delMatchAction(matchProject)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
 
@@ -668,7 +668,7 @@
       getProjectList(page){
         var getProjectList = new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.loading1=true;
+          this.loading=true;
           this.getPra.user_id=this.contacts.user_id;
 //      this.getPra.user_id="2rzyz5vp";
           this.currentPage=page;
@@ -683,7 +683,7 @@
                 else this.projectLists = this.projectListsSmall.slice(0);
                 this.totalData = res.data.count;
               }
-              this.loading1 = false;
+              this.loading = false;
             })
             .catch(err=>{
               this.$tool.console(err,2);
@@ -719,7 +719,7 @@
       getOneUserInfo(){
         var getOneUserInfo = new Promise((resolve, reject)=>{
           //做一些异步操作
-//          this.loading=true;
+          this.loading=true;
           this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
             .then(res => {
               let data = res.data.data;
@@ -736,6 +736,7 @@
               data.user_company_career=data.user_company_career || '暂无填写';
               data.user_mobile=data.user_mobile || '暂无填写';
               data.user_intro=data.user_intro || '';
+              data.user_avatar_txt=this.$tool.setUrlChange(data.user_avatar_url,data.user_real_name);
               if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
                 this.user_invest=false;//投资需求
               }else{
@@ -749,8 +750,8 @@
               this.tagsValue = this.setTag(data.user_invest_tag);
               this.tags.changecont = this.setTag(data.user_invest_tag);
               this.contacts = data;
-//              console.log(data);
-//              this.loading = false;
+              console.log(data);
+              this.loading = false;
             })
             .catch(err=>{
               this.$tool.console(err,2);
@@ -762,7 +763,6 @@
         return getOneUserInfo;
 
       },//获取个人详情
-
       getWxProjectCategory(){
         var getWxProjectCategory = new Promise((resolve, reject)=>{
           //做一些异步操作
@@ -832,6 +832,7 @@
       },//设置人脉标签
       /*设置意向项目右边*/
       getEchartData(){
+        this.loading = true;
         var getEchartData = new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id})
@@ -841,7 +842,7 @@
                 this.chartData=data;
                 this.eChart(data.going,data.hold,data.reject);
               }
-              this.loading1 = false;
+              this.loading = false;
             })
             .catch(err=>{
               this.$tool.console(err,2);
@@ -854,6 +855,7 @@
 
       },//获取意向项目数据(图表)
       getEnjoyProjects(){
+        this.loading = true;
         var getEnjoyProjects = new Promise((resolve, reject)=>{
           //做一些异步操作
           this.getConpro.user_id=localStorage.user_id;
@@ -870,6 +872,7 @@
                 this.totalData2 = res.data.count || 0;
                 if(this.enjoyProjects.length==0) this.activeName='2';
               }
+              this.loading = false;
             })
             .catch(err=>{
               this.$tool.console(err,2);
@@ -1064,7 +1067,7 @@
                 if(res.data.data){
                   let data = res.data.data;
                   this.matchProjects=this.setMatchProject(data);
-                  console.log(this.matchProjects);
+//                  console.log(this.matchProjects);
                   this.totalData3 = res.data.count;
 
                 }
@@ -1161,7 +1164,6 @@
           .then(res=>{
             let data = res.data.data;
             this.pushCount=data.push_count.remain_times;
-            console.log(data)
 //          this.$tool.console(data.push_count);
           })
           .catch(err =>{
@@ -1210,43 +1212,35 @@
           this.$tool.warning("您今日的推送次数已用完")
         }
       },//推送
-
-
-    },
-    created(){
-      var _this=this;
-      function runAsync1(){
-        var runAsync1 = new Promise((resolve, reject)=>{
+      getNewWxPro(){
+        var getNewPro = new Promise((resolve, reject)=>{
           //做一些异步操作
-          _this.$global.func.getWxProjectCategory();
+          this.$global.func.getWxProjectCategory();
           resolve(1);
         });
-        return runAsync1;
-      }
+        return getNewPro;
+      },//获取最新的下拉框数据
+    },
+    created(){
       this.loading=true;
       this.getUserId();
       this.getpushCount();
       if(this.contacts.user_id!=0) this.getProjectList(1)
       else this.projectLists=[];
-      runAsync1()
+      this.getNewWxPro()
         .then((data)=>{
-          console.log(data)
           return this.getWxProjectCategory();
         })
         .then((data)=>{
-          console.log(data)
           return this.getOneUserInfo();
         })
         .then((data)=>{
-          console.log(data)
           return this.getEchartData();
         })
         .then((data)=>{
-          console.log(data)
           return this.getInvestorsMatchProjects();
         })
         .then((data)=>{
-          console.log(data)
           this.loading=false;
           return this.getEnjoyProjects();
         });

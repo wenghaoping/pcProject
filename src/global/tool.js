@@ -248,7 +248,7 @@ const tool={
     });
   },//时间戳转化正常时间,在数组中循环,time为总的数组,title为要改变的字段(字符串格式)
 
-  /*将标签转化为字符长串==========例子'汽车交通、物流、房产服务、体育运动、工业生产、'data为总的数组,title为要改变的字段(字符串格式)*/
+  /*将标签转化为字符长串==========例子'汽车交通、物流、房产服务、体育运动、工业生产'data为总的数组,title为要改变的字段(字符串格式)*/
   setTagToString(data,title){
     if(tool.isArray(data)){
       let str="";
@@ -264,6 +264,14 @@ const tool={
     }else{
       return data;
     }
+  },
+
+  /*在没有头像的时候,转化为文字,url为头像的URL地址,name为当前人的名字*/
+  setUrlChange(url,name){
+    let string='';
+    if(url=='') string = name.charAt(0);
+    else string='';
+    return string;
   },
 
 /*弹框类*/
@@ -346,7 +354,7 @@ const tool={
 
 
   console(text,data) {
-    let type=true;//true代表开发环境,false代表上线环境
+    let type=false;//true代表开发环境,false代表上线环境
     if(type) console.log(text,data);
   },//console控制
 

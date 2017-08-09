@@ -156,6 +156,11 @@
 </script>
 
 <style lang="less">
+  .el-table-filter__content{
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
   .Infooter {
     background:#444444;
     font-size: 12px;

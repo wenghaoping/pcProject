@@ -28,15 +28,20 @@
             </div>
             <span style="width:180px;max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>
           </el-tooltip>
-          <span style="display: inline-block;margin-left: 90px;float: left" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
-          <span style="display: inline-block;float: left">{{item.investor_name}}</span>
+          <span style="display: inline-block;margin-left: 90px;float: left;position: relative;" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
+          <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.investor_name.length > 4 ? false:true">
+            <div slot="content">
+              <div class="tips-txt">{{item.investor_name}}</div>
+            </div>
+            <span style="width:58px;max-width:58px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{item.investor_name}}</span>
+          </el-tooltip>
           <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
         </div>
         <div v-show=" item.follow_desc!=''|| item.follow_file.length!=''"  class="followLine"></div>
-        <div class="followContent1">{{item.follow_desc}}</div>
+        <div class="followContent1" >{{item.follow_desc}}</div>
         <!--信息文件名-->
         <div class="followFile" v-for="(file,item1) in item.follow_file" :key="file.id">
-          <span @click.prevent="upload(item1,index)" style="cursor: pointer">{{file.file_title}}</span>
+          <span @click.prevent="upload(item1,index)" style="cursor: pointer">{{file.file_title}}.{{file.file_ext}}</span>
         </div>
       </div>
       <!--确认删除弹框-->
@@ -109,13 +114,15 @@
           .then(res=>{
             if(res.data.status_code==2000000) {
               let data = res.data.data;
+//              this.$tool.console("获取跟进记录")
               this.content=data;
+//              this.$tool.console(this.content);
               this.totalData = res.data.count;
             }
             this.loading1 = false;
           })
           .catch(err=>{
-            this.$tool.console(err,2);
+//            this.$tool.console(err,2);
             this.loading1=false;
             this.$tool.error("加载超时");
           })
