@@ -35,7 +35,7 @@ Vue.use(Element);//UI库
 Vue.use(tool);//自己的库
 Vue.use(Vuex);
 Vue.use(zhuge);
-
+Vue.prototype.$store=store;
 
 
 Vue.config.productionTip = false;

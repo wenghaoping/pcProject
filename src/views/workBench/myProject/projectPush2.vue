@@ -33,7 +33,7 @@
       </el-form>
 
       <!--我的人脉和全网人脉tab页切换-->
-        <el-tabs v-model="activeName" @tab-click="handleClick" v-if="reBorn">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
           <!--我的人脉-->
           <el-tab-pane label="我的人脉" name="myContacts">
             <el-table
@@ -46,9 +46,9 @@
               max-height="430"
               :row-class-name="tableRowClassName">
               <!--多选框-->
-              <el-table-column width="64">
+              <el-table-column width="64" v-if="reBorn">
                 <template scope="scope">
-                    <el-checkbox :checked="myNameList[scope.row.card.user_real_name]"  @change="myCheck" :name="scope.row.card.user_real_name"></el-checkbox>
+                    <el-checkbox :vlaue="scope.row.card.card_id" :checked="myNameList[scope.row.card.user_real_name]"  @change="myCheck" :name="scope.row.card.user_real_name"></el-checkbox>
                 </template>
               </el-table-column>
               <!--姓名-->
@@ -309,6 +309,7 @@
 
 <script type="text/ecmascript-6">
   import customerAddContacts from '../../../components/customerAddContacts.vue'
+  import { mapState } from 'vuex'
   export default {
   props: ["dialogPush",'proid','proName','emitPush'],
   data () {
@@ -558,10 +559,12 @@
     },
     //我的人脉表单和全网人脉表单勾选触发
     myCheck(e){
+      console.log(e)
       let thisName=e.currentTarget.name;
       if(this.myContactsShow.indexOf(thisName)===-1){
         this.myContactsShow.push(thisName);
-        this.myNameList[thisName]=true;
+        this.$store.commit('checkboxChange',{thisName:thisName,isCheck:true})
+        this.myNameList=this.myCheckList;
         console.log(this.myNameList)
         //预处理推送项目接口的参数
         this.myContacts.forEach(x=>{
@@ -570,21 +573,23 @@
               return
             }
         })
-        console.log(this.pushData)
+//        console.log(this.pushData)
       }else{
         let thisName=e.currentTarget.name;
-        this.myNameList[thisName]=false;
+        this.$store.commit('checkboxChange',{thisName:thisName,isCheck:false})
+        this.myNameList=this.myCheckList;
         console.log(this.myNameList)
         this.myContactsShow.splice(this.myContactsShow.indexOf(thisName),1)
         this.pushData.splice(this.pushData.indexOf(thisName),1)
-        console.log(this.pushData)
+//        console.log(this.pushData)
       }
     },
     netCheck(e){
       let thisName=e.currentTarget.name;
       if(this.netContactsShow.indexOf(thisName)===-1){
         this.netContactsShow.push(thisName);
-        this.netNameList[thisName]=true;
+        this.$store.commit('checkboxChange2',{thisName:thisName,isCheck:true})
+        this.netNameList=this.netCheckList;
         //预处理推送项目接口的参数
         this.netContacts.forEach(x=>{
           if(x.card.user_real_name===thisName){
@@ -592,11 +597,14 @@
             return
           }
         })
-        console.log(this.pushData)
+//        console.log(this.pushData)
       }else{
+        let thisName=e.currentTarget.name;
+        this.$store.commit('checkboxChange2',{thisName:thisName,isCheck:false})
+        this.netNameList=this.netCheckList;
         this.netContactsShow.splice(this.netContactsShow.indexOf(thisName),1)
         this.pushData.splice(this.pushData.indexOf(thisName),1)
-        console.log(this.pushData)
+//        console.log(this.pushData)
       }
     },
     //预览
@@ -678,17 +686,20 @@
       this.$emit('changeClose',false);
     },
   },
-  computed:{
+  computed: mapState({
     allShow(){
       var allShow=[];
       return allShow.concat(this.myContactsShow,this.netContactsShow)
     },
-  },
-  mounted() {},
+    myCheckList:state=>state.pushProject.myCheckList,
+    netCheckList:state=>state.pushProject.netCheckList,
+  }),
+  mounted(){},
   created(){
 
   },
   watch:{
+    //打开该弹框时
     dialogPush:function(e){
       if(e===true){
         this.project_name=this.proName;
@@ -713,6 +724,7 @@
               res.data.data.forEach(x=>{
                 this.myNameList[x.card.user_real_name]=false;
               })
+              this.$store.state.pushProject.myCheckList=this.myNameList;
               this.myContacts=res.data.data;
               //如果我的人脉为空,则默认显示全网人脉页面
               if(res.data.data.length===0){
@@ -731,6 +743,7 @@
               res.data.data.forEach(x=>{
                 this.netNameList[x.card.user_real_name]=false;
               })
+              this.$store.state.pushProject.netCheckList=this.netNameList;
               this.netContacts=res.data.data;
             }else{
 //          console.log(res.data.error_msg)
@@ -739,6 +752,7 @@
         }
       }
     },
+    //项目预览提交推送时
     emitPush:function(e){
       this.push();
       this.$emit('changeClose',false)

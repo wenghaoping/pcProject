@@ -55,7 +55,7 @@
           <div class="block-info block-cc-other" style="margin-bottom: 15px;"
                v-for="(file, index) in item.file"
                :key="file.file_id">
-            <span class="f-name" style="cursor: pointer;font-size: 10px" @click="download">{{file.file_title}}</span>
+            <span class="f-name" style="cursor: pointer;font-size: 10px" @click="download">{{file.file_title}}.{{file.file_ext}}</span>
             <div class="fr">
               <!--bp上传-->
               <el-button v-if="item.type_id===1" type="text"  @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
@@ -74,7 +74,7 @@
           </div>
         </div>
         <!--新添文件列表-->
-        <div class="fileList">
+        <div class="fileList" style="padding-left: 37px">
           <div class="block-info block-cc-other" style="margin-bottom: 15px; position:relative;"
                v-for="(newF, index) in item.newFile"
                :key="newF.file_id">
@@ -198,7 +198,6 @@
             user_id: localStorage.user_id,
             project_id: this.project_id
           }).then(res => {
-//            console.log('res',this.$tool.getToObject(res))
             //把分组内的文件放到对应的分组内
             var groupWithFile=res.data.data;
             groupList.forEach(y=>{
@@ -240,9 +239,7 @@
               }
             })
             this.groupList=groupList;
-            /*if(file){
-              console.log(this.groupList)
-            }*/
+            console.log(this.groupList)
           })
         })
       },
