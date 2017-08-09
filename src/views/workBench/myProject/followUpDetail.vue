@@ -38,7 +38,7 @@
           <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
         </div>
         <div v-show=" item.follow_desc!=''|| item.follow_file.length!=''"  class="followLine"></div>
-        <div class="followContent1">{{item.follow_desc}}</div>
+        <div class="followContent1" >{{item.follow_desc}}</div>
         <!--信息文件名-->
         <div class="followFile" v-for="(file,item1) in item.follow_file" :key="file.id">
           <span @click.prevent="upload(item1,index)" style="cursor: pointer">{{file.file_title}}.{{file.file_ext}}</span>
@@ -114,15 +114,15 @@
           .then(res=>{
             if(res.data.status_code==2000000) {
               let data = res.data.data;
-              this.$tool.console("获取跟进记录")
+//              this.$tool.console("获取跟进记录")
               this.content=data;
-              this.$tool.console(this.content);
+//              this.$tool.console(this.content);
               this.totalData = res.data.count;
             }
             this.loading1 = false;
           })
           .catch(err=>{
-            this.$tool.console(err,2);
+//            this.$tool.console(err,2);
             this.loading1=false;
             this.$tool.error("加载超时");
           })
