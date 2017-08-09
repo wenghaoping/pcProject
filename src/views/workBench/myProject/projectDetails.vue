@@ -601,7 +601,7 @@
           },//运营状态
 
           pro_area: {
-            /*"area_id": 2,
+            "area_id": 2,
             "area_title": "北京市",
             "pid": 1,
             "created_at": null,
@@ -612,10 +612,10 @@
               "created_at": "2017-06-01 16:27:35",
               "updated_at": "2017-06-01 16:27:35",
               "priority": 1
-            }*/
+            }
           },//区域
           pro_stage: {
-            /*"stage_id": 2,
+            "stage_id": 2,
             "stage_name": "天使轮",
             "sort": 2,
             "created_at": null,
@@ -626,11 +626,11 @@
               "created_at": "2017-06-01 16:23:04",
               "updated_at": "2017-06-13 18:33:31",
               "priority": 1
-            }*/
+            }
           },//轮次
 
           pro_scale: {
-           /* "scale_id": 1,
+            "scale_id": 1,
             "scale_money": "100W以下",
             "created_at": null,
             "updated_at": null,
@@ -640,11 +640,11 @@
               "created_at": null,
               "updated_at": null,
               "priority": 1
-            }*/
+            }
           },//规模
 
           pro_industry: [
-            /*{
+            {
               "industry_id": 12,
               "industry_name": "社交网络",
               "parent_id": 0,
@@ -657,12 +657,12 @@
                 "updated_at": "2017-06-01 16:21:46",
                 "priority": 1
               }
-            }*/
+            }
           ],//领域标签
 
         /*核心团队人员*/
           core_users: [
-            /*{
+            {
               project_ct_id: 30,
               ct_index: "9bd0c8d7d615832340340aab0c0625b7",
               project_id: 37,
@@ -673,11 +673,11 @@
               created_at: null,
               updated_at: null,
               stock_scale: null
-            }*/
+            }
           ],
         /*//历史融资信息*/
         pro_history_finance: [{
-          /*project_id: 37,
+          project_id: 37,
           pro_finance_stage: 1,//轮次
           pro_finance_scale: "100.00",//金额
           pro_finance_investor: "周杰伦",//投资人
@@ -685,11 +685,11 @@
           updated_time: null,
           belongs_to_stage:{
 
-          }*/
+          }
         }],
         /*自定义标签*/
           tag: [
-            /*{
+            {
               tag_id: 1,
               tag_name: "海贼王",
               user_id: 0,
@@ -697,11 +697,11 @@
               created_time: null,
               updated_time: null,
               type: 0//项目标签
-            }*/
+            }
           ],
         /*文件列表*/
           pro_file: [
-            /*{
+            {
               file_id: 1,
               project_id: 37,
               file_title: "项目文件1",
@@ -710,10 +710,10 @@
               created_at: null,
               updated_at: null,
               deleted_at: null
-            }*/],
+            }],
         /*里程碑*/
           pro_develop: [
-            /*{
+            {
               project_dh_id: 6,
               dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
               project_id: 37,
@@ -723,20 +723,20 @@
               dh_event: "组建团队和设立办公室",//事件
               created_at: null,
               updated_at: null
-            }*/],
+            }],
           /*FA签约*/
           pro_FA: {
-            /*project_id: 37,
+            project_id: 37,
             commission: "63.00",//签约佣金
             stock_right: "13.00",//股权赠与
             stock_follow: "12.00",//跟投权
             stock_other: "55.00",//其他权益
             created_at: null,
-            updeted_at: null*/
+            updeted_at: null
           },
          /*BP文件*/
           pro_BP: {
-            /*file_id: 34,
+            file_id: 34,
             project_id: 37,
             user_id: 181391,
             file_title: "",
@@ -744,11 +744,14 @@
             bp_url: "20161201/e6b499c3e94ed4247147cdbfd50ca319.pptx",
             created_at: "2017-06-01 18:14:38",
             updated_at: "2017-06-01 18:14:38",
-            deleted_at: null*/
+            deleted_at: null
           }
 
         },
         seachCompanys:[],
+        styleObject: {
+          color: '',
+        },
         value1:'',////一键尽调边上绑定是数据
         value: 1,
         status_name:'',//一键尽调边上那个按钮线里的字
@@ -1040,8 +1043,6 @@
         this.dialogConVisible=true;
       },//打开人脉详情弹窗
       selectChange2(e){
-        console.log(this.takechange);
-        console.log("设置啦");
         if(this.takechange){
           let getData={
             user_id: localStorage.user_id,
