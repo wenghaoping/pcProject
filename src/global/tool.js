@@ -268,7 +268,6 @@ const tool={
 
   /*在没有头像的时候,转化为文字,url为头像的URL地址,name为当前人的名字*/
   setUrlChange(url,name){
-    console.log(url,name)
     let string='';
     if(url=='') string = name.charAt(0);
     else string='';
@@ -355,7 +354,7 @@ const tool={
 
 
   console(text,data) {
-    let type=true;//true代表开发环境,false代表上线环境
+    let type=false;//true代表开发环境,false代表上线环境
     if(type) console.log(text,data);
   },//console控制
 

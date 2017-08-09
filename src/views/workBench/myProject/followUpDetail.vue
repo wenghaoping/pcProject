@@ -114,9 +114,9 @@
           .then(res=>{
             if(res.data.status_code==2000000) {
               let data = res.data.data;
-              this.$tool.console("获取跟进记录")
+//              this.$tool.console("获取跟进记录")
               this.content=data;
-              this.$tool.console(this.content);
+//              this.$tool.console(this.content);
               this.totalData = res.data.count;
             }
             this.loading1 = false;
