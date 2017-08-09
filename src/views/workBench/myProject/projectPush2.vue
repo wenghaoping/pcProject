@@ -48,7 +48,7 @@
               <!--多选框-->
               <el-table-column width="64" v-if="reBorn">
                 <template scope="scope">
-                    <el-checkbox :vlaue="scope.row.card.card_id" :checked="myNameList[scope.row.card.user_real_name]"  @change="myCheck" :name="scope.row.card.user_real_name"></el-checkbox>
+                    <el-checkbox :checked="myCheckList[scope.row.card.card_id]" :label="scope.row.card.card_id" @change="myCheck" :name="scope.row.card.user_real_name+'( '+scope.row.card.user_email+' )'"></el-checkbox>
                 </template>
               </el-table-column>
               <!--姓名-->
@@ -158,7 +158,7 @@
               :row-class-name="tableRowClassName">
               <el-table-column width="64">
                 <template scope="scope">
-                  <el-checkbox :checked="netNameList[scope.row.card.user_real_name]"  @change="netCheck" :name="scope.row.card.user_real_name"></el-checkbox>
+                  <el-checkbox :checked="netCheckList[scope.row.card.user_real_name]"  @change="netCheck" :name="scope.row.card.user_real_name"></el-checkbox>
                 </template>
               </el-table-column>
               <!--姓名-->
@@ -324,14 +324,16 @@
       myContacts:[],
       //全网人脉数据
       netContacts:[],
-      //我的人脉显示数组和全网人脉显示数据(服务于computed)
+      //我的人脉显示数组和全网人脉显示数据(show:是name;id是id.服务于computed)
       myContactsShow:[],
       netContactsShow:[],
+      myContactsId:[],
+      netContactsId:[],
       //发送推送项目时参数
       pushData:[],
       //多选框勾选控制
-      myNameList:{},
-      netNameList:{},
+      myCheckList:{},
+      netCheckList:{},
       //控制自定义添加显示和隐藏
       dialogFormVisible:false,
       //自定义添加表单数据
@@ -453,8 +455,8 @@
       this.pushTitle='';
       this.pushBody='';
       this.pushData=[];
-      this.myNameList={};
-      this.netNameList={};
+      this.myCheckList={};
+      this.netCheckList={};
       this.getMyContacts();
       this.getNetContacts();
       this.getPushCount();
@@ -510,7 +512,7 @@
     //项目搜索
     remoteMethod(query) {
       this.filterString=query;
-      console.log(this.myNameList)
+      console.log(this.myCheckList)
       if(this.activeTab==="myContacts"){
         this.getMyContacts('remote')
       }else{
@@ -519,7 +521,12 @@
     },
     //删除标签
     removeTag(e){
-      console.log(e);
+      let checktag=e.value
+      let pattern =new RegExp("\\((.| )+?\\)","igm")
+      let name=checktag.substring(0,checktag.indexOf('('));
+      let email=checktag.match(pattern).toString();
+      email=email.substring(3,email.length-2)
+
       //取消Input显示
       this.myContactsShow.forEach((x,index)=>{
         if(x===e.value){
@@ -532,11 +539,11 @@
         }
       })
       //删除checkbox勾选
-      if(this.myNameList[e.value]){
-        this.myNameList[e.value]=!this.myNameList[e.value];
+      if(this.myCheckList[e.value]){
+        this.myCheckList[e.value]=!this.myCheckList[e.value];
       }
-      if(this.netNameList[e.value]){
-        this.netNameList[e.value]=!this.netNameList[e.value];
+      if(this.netCheckList[e.value]){
+        this.netCheckList[e.value]=!this.netCheckList[e.value];
       }
       //删除pushData
       this.pushData.forEach((x,index)=>{
@@ -559,29 +566,30 @@
     },
     //我的人脉表单和全网人脉表单勾选触发
     myCheck(e){
-      console.log(e)
+      let thisId=e.target.value;
       let thisName=e.currentTarget.name;
-      if(this.myContactsShow.indexOf(thisName)===-1){
+      if(this.myContactsId.indexOf(thisId)===-1){
+        this.myContactsId.push(thisId)
         this.myContactsShow.push(thisName);
-        this.$store.commit('checkboxChange',{thisName:thisName,isCheck:true})
-        this.myNameList=this.myCheckList;
-        console.log(this.myNameList)
+        this.myCheckList[thisId]=true;
+        console.log(1,this.myCheckList)
         //预处理推送项目接口的参数
         this.myContacts.forEach(x=>{
-            if(x.card.user_real_name===thisName){
+            if(x.card.card_id===thisId){
               this.pushData.push(x)
               return
             }
         })
-//        console.log(this.pushData)
+        //console.log(1,this.pushData)
       }else{
         let thisName=e.currentTarget.name;
-        this.$store.commit('checkboxChange',{thisName:thisName,isCheck:false})
-        this.myNameList=this.myCheckList;
-        console.log(this.myNameList)
+        let thisId=e.target.value;
+        this.myCheckList[thisId]=false;
+        console.log(2,this.myCheckList)
+        this.myContactsId.splice(this.myContactsId.indexOf(thisId),1)
         this.myContactsShow.splice(this.myContactsShow.indexOf(thisName),1)
-        this.pushData.splice(this.pushData.indexOf(thisName),1)
-//        console.log(this.pushData)
+        this.pushData.splice(this.pushData.indexOf(thisId),1)
+        //console.log(2,this.pushData)
       }
     },
     netCheck(e){
@@ -589,7 +597,6 @@
       if(this.netContactsShow.indexOf(thisName)===-1){
         this.netContactsShow.push(thisName);
         this.$store.commit('checkboxChange2',{thisName:thisName,isCheck:true})
-        this.netNameList=this.netCheckList;
         //预处理推送项目接口的参数
         this.netContacts.forEach(x=>{
           if(x.card.user_real_name===thisName){
@@ -600,8 +607,6 @@
 //        console.log(this.pushData)
       }else{
         let thisName=e.currentTarget.name;
-        this.$store.commit('checkboxChange2',{thisName:thisName,isCheck:false})
-        this.netNameList=this.netCheckList;
         this.netContactsShow.splice(this.netContactsShow.indexOf(thisName),1)
         this.pushData.splice(this.pushData.indexOf(thisName),1)
 //        console.log(this.pushData)
@@ -677,10 +682,10 @@
       this.initData();
       this.myContactsShow=[];
       this.netContactsShow=[];
-      for(let x in this.myNameList){
-          this.myNameList[x]=false;
+      for(let x in this.myCheckList){
+          this.myCheckList[x]=false;
       }
-      for(let x in this.netNameList){
+      for(let x in this.netCheckList){
         x=false;
       }
       this.$emit('changeClose',false);
@@ -691,8 +696,6 @@
       var allShow=[];
       return allShow.concat(this.myContactsShow,this.netContactsShow)
     },
-    myCheckList:state=>state.pushProject.myCheckList,
-    netCheckList:state=>state.pushProject.netCheckList,
   }),
   mounted(){},
   created(){
@@ -722,9 +725,8 @@
           }).then(res => {
             if(res.data.status_code===2000000){
               res.data.data.forEach(x=>{
-                this.myNameList[x.card.user_real_name]=false;
+                this.myCheckList[x.card.card_id]=false;
               })
-              this.$store.state.pushProject.myCheckList=this.myNameList;
               this.myContacts=res.data.data;
               //如果我的人脉为空,则默认显示全网人脉页面
               if(res.data.data.length===0){
@@ -741,9 +743,8 @@
           }).then(res => {
             if(res.data.status_code===2000000){
               res.data.data.forEach(x=>{
-                this.netNameList[x.card.user_real_name]=false;
+                this.netCheckList[x.card.user_real_name]=false;
               })
-              this.$store.state.pushProject.netCheckList=this.netNameList;
               this.netContacts=res.data.data;
             }else{
 //          console.log(res.data.error_msg)
