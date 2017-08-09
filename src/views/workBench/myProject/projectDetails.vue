@@ -506,7 +506,7 @@
     </el-popover>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @closePreview="closePreview" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
 
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
@@ -1367,6 +1367,7 @@
         if(data==0){
           this.$tool.warning("已推送过")
         }else{
+          console.log(data)
           this.littlePushShow=true;
           this.littlePush.email=data.investor_email;
           this.pushData=[data.user_id,'user']
@@ -1431,7 +1432,13 @@
               this.$tool.success('推送成功');
               this.$refs['littlePush'].resetFields();
               this.littlePushShow=false;
+              this.pushData.pop()
+            }else{
+              this.$tool.error(res.data.error_msg)
+              this.pushData.pop();
             }
+          }).catch(err=>{
+            this.pushData.pop();
           })
         }
       },//买家图谱推送确定
@@ -1447,6 +1454,9 @@
       previewPush(x){
         this.emitPush=x;
       },//项目推送预览隐藏
+      closePreview(msg){
+        this.dialogPreviewVisible=msg;
+      },//关闭项目预览
     },
     created () {
         var _this=this;

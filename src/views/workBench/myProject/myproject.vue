@@ -320,7 +320,7 @@
     <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :proName="pushName" :emitPush="emitPush" @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @closePreview="closePreview" @previewPush="previewPush"></projectpreview>
 
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
@@ -714,6 +714,9 @@
       dialogPrechange(msg){
         this.dialogPreviewVisible=msg;
       },//项目推送预览显隐控制
+      closePreview(msg){
+        this.dialogPreviewVisible=msg;
+      },//关闭项目预览
     },
     computed: {
 
