@@ -143,7 +143,7 @@
               </div>
             </div>
 
-            <div class="button_list">
+            <div class="button_list" >
               <div class="lis">
                 <button class="button" @click="goEdit" v-if="contacts.is_bind==0">编辑</button>
                 <button class="button" @click="handlePushComplete" style="margin-left: 16px;">项目推送</button>
