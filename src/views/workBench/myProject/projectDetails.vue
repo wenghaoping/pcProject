@@ -377,29 +377,43 @@
             <el-collapse-transition>
               <div v-show="!tabs">
                 <div class="main_right main_left">
+                  <div class="item_top">
+                    <span class="top_inn fl">匹配推荐=我的+全网人脉</span>
+                    <div class="selectIn fr" style="height: 36px;">
+                      <el-select v-model="isFollow" placeholder="请选择" @change="selectSearch">
+                        <el-option
+                          v-for="item in myAllCont"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </div>
+                  </div>
                   <div class="item_lists">
                     <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors" v-if="ProjectMatchInvestors.length!=0">
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{projectMatchInvestor.match}}%</span>
-                        <span class="pro fr">我的/团队人脉</span>
+                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==1">我的人脉</span>
+                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==0">全网人脉</span>
                       </div>
                       <div class="list_main">
                         <div @click="toDetail(projectMatchInvestor)" class="click">
                           <div class="block">
-                            <span class="name">{{projectMatchInvestor.investor_name}}</span>
-                            <span class="zhiwei">{{projectMatchInvestor.investor_career}}</span>
-                            <span class="imgs"><img src="../../../assets/images/renzhen.png"/></span>
-                            <span class="ren">买方FA</span>
+                            <span class="name">{{projectMatchInvestor.user_real_name}}</span>
+                            <span class="zhiwei">{{projectMatchInvestor.user_company_career}}</span>
+                            <span class="imgs" v-if="projectMatchInvestor.user_group!=''"><img src="../../../assets/images/renzhen.png"/></span>
+                            <span class="ren">{{projectMatchInvestor.user_group}}</span>
                           </div>
                           <div class="block" style="margin-top: 5px;">
-                            <span class="company">{{projectMatchInvestor.investor_company}}</span>
+                            <span class="company">{{projectMatchInvestor.user_company_name}}</span>
                           </div>
                           <div class="block" style="margin-top: 42px;">
-                            <span class="company ft13">投资领域：<i v-for="industry in projectMatchInvestor.industry_tag" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                            <span class="company ft13">投资领域：<i v-for="industry in projectMatchInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="block" style="margin-top: 5px;">
-                            <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.stage_tag" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
+                            <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px;">
@@ -412,7 +426,7 @@
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
-                        <div class="img" v-if="projectMatchInvestor.investor_logo_url!=''"><img :src="projectMatchInvestor.investor_logo_url"></div>
+                        <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
                         <div class="imgText" v-else>{{projectMatchInvestor.investor_logo_text}}</div>
                       </div>
                     </div>
@@ -816,6 +830,18 @@
         getFollowData:false,//看是否要获取跟进的数据
         followid:'',//得到followid
         pushCount:5,//当前用户今日剩余推送次数
+        myAllCont:[{
+          value: -1,
+          label: '全部'
+        }, {
+            value: 0,
+            label: '全网人脉'
+          }, {
+            value: 1,
+            label: '我的人脉'
+          }
+        ],//人脉筛选条件
+        isFollow:-1,//人脉筛选绑定
       }
     },
     computed:{
@@ -1299,23 +1325,22 @@
         let newArr = new Array;
         arr.forEach((x)=> {
           let obj = new Object;
-          obj.user_id=x.user_id;
-          obj.stage_tag=x.stage_tag;
-          obj.investor_type=x.investor_type;
-          obj.investor_name=x.investor_name;
-          obj.investor_logo_url=x.investor_logo_url || '';
-          obj.investor_logo_text=x.investor_logo_text || '';
-          obj.investor_id=x.investor_id;
-          obj.investor_desc=x.investor_desc;
-          obj.investor_company=x.investor_company;
-          obj.investor_career=x.investor_career;
-          obj.investor_email=x.investor_email;
-          obj.industry_tag=x.industry_tag;
-          obj.is_follow=x.is_follow;
           obj.match=x.match;
-
+          obj.is_follow=x.is_follow;
+          obj.type=x.type;
+          obj.push_statues=x.push_statues;
+          obj.user_avatar_url=x.card.user_avatar_url;
+          obj.user_real_name=x.card.user_real_name;
+          obj.user_company_career=x.card.user_company_career;
+          obj.user_company_name=x.card.user_company_name;
+          obj.user_invest_industry=x.card.user_invest_industry;
+          obj.user_invest_stage=x.card.user_invest_stage;
+          obj.user_id=x.card.user_id;
+          obj.investor_id=x.card.investor_id;
+          obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
           newArr.push(obj);
-        });return newArr;
+        });
+        return newArr;
       },//设置买家图谱列表
       getProjectMatchInvestors(){
         var getProjectMatchInvestors = new Promise((resolve, reject)=>{
@@ -1447,25 +1472,22 @@
       previewPush(x){
         this.emitPush=x;
       },//项目推送预览隐藏
-    },
-    created () {
-        var _this=this;
-      function runAsync1(){
-        var runAsync1 = new Promise((resolve, reject)=>{
+      getNewPro(){
+        var getNewPro = new Promise((resolve, reject)=>{
           //做一些异步操作
-          _this.$global.func.getWxProjectCategory();
+          this.$global.func.getWxProjectCategory();
           resolve(1);
         });
-        return runAsync1;
-      }
-      // 组件创建完后获取数据，
+        return getNewPro;
+      },//获取下拉框最新消息
+    },
+    created () {
       this.loading=true;
       this.getprojectId();
-/*      runAsync1()
+      this.getNewPro()
       .then((data)=>{
         return this.getWxProjectCategory();
-      })*/
-      this.getWxProjectCategory()
+      })
       .then((data)=>{
         return this.getProjectDetail();
       })
