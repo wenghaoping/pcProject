@@ -1336,6 +1336,8 @@
           obj.user_invest_industry=x.card.user_invest_industry;
           obj.user_invest_stage=x.card.user_invest_stage;
           obj.user_id=x.card.user_id;
+          obj.card_id=x.card.card_id;
+          obj.user_eamil=x.card.user_email;
           obj.investor_id=x.card.investor_id;
           obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
           newArr.push(obj);
@@ -1394,8 +1396,12 @@
         }else{
           console.log(data)
           this.littlePushShow=true;
-          this.littlePush.email=data.investor_email;
-          this.pushData=[data.user_id,'user']
+          this.littlePush.email=data.user_eamil;
+          if(data.type==='user'){
+            this.pushData=[data.user_id,data.type]
+          }else{
+            this.pushData=[data.card_id,data.type]
+          }
         }
       },//买家图谱推送
       industryDelete(data){

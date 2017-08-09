@@ -239,7 +239,6 @@
               }
             })
             this.groupList=groupList;
-            console.log(this.groupList)
           })
         })
       },
