@@ -327,8 +327,6 @@
       //我的人脉显示数组和全网人脉显示数据(show:是name;id是id.服务于computed)
       myContactsShow:[],
       netContactsShow:[],
-      myContactsId:[],
-      netContactsId:[],
       //发送推送项目时参数
       pushData:[],
       //多选框勾选控制
@@ -593,8 +591,7 @@
     myCheck(e){
       let thisId=e.target.value;
       let thisName=e.currentTarget.name;
-      if(this.myContactsId.indexOf(thisId)===-1){
-        this.myContactsId.push(thisId)
+      if(this.myCheckList[thisId]===false){
         this.myContactsShow.push(thisName);
         this.myCheckList[thisId]=true;
         //预处理推送项目接口的参数
@@ -609,7 +606,6 @@
         let thisName=e.currentTarget.name;
         let thisId=e.target.value;
         this.myCheckList[thisId]=false;
-        this.myContactsId.splice(this.myContactsId.indexOf(thisId),1)
         this.myContactsShow.splice(this.myContactsShow.indexOf(thisName),1)
         this.pushData.splice(this.pushData.indexOf(thisId),1)
       }
@@ -617,9 +613,7 @@
     netCheck(e){
       let thisId=e.target.value;
       let thisName=e.currentTarget.name;
-      if(this.netContactsId.indexOf(thisId)===-1){
-        console.log(1)
-        this.netContactsId.push(thisId)
+      if(this.netCheckList[thisId]===false){
         this.netContactsShow.push(thisName);
         this.netCheckList[thisId]=true;
         //预处理推送项目接口的参数
@@ -631,11 +625,9 @@
         })
 //        console.log(this.pushData)
       }else{
-        console.log(2)
         let thisName=e.currentTarget.name;
         let thisId=e.target.value;
         this.netCheckList[thisId]=false;
-        this.netContactsId.splice(this.netContactsId.indexOf(thisId),1)
         this.netContactsShow.splice(this.netContactsShow.indexOf(thisName),1)
         this.pushData.splice(this.pushData.indexOf(thisId),1)
       }
