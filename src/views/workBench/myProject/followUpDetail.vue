@@ -132,7 +132,7 @@
       },//获取跟进记录
       setDateTime(data){
         for (let i = 0; i < data.length; i++) {
-          data[i].follow_time=new Date(data[i].follow_time*1000).toLocaleString('chinese',{hour12:false}).substr(0, 15).replace(/:$/,"");
+          data[i].follow_time=new Date(data[i].follow_time*1000).toLocaleString('chinese',{hour12:false}).substr(0, 15).replace(/\//g,'.').replace(/:$/,"");
         }
 //        console.log(data[i].follow_time);
       },
