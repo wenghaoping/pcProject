@@ -1635,12 +1635,15 @@
       .pushCount{
         position: absolute;
         left: 80px;
-        top: 24px;
+        top: 36px;
         font-size: 12px;
         span{
           color: red;
         }
       }
     }
+  }
+  .el-input input{
+    border-radius: 2px!important;
   }
 </style>
