@@ -7,7 +7,7 @@
       <el-collapse-item :name="index" v-for="(item,index) in groupList" :key="item.type_id">
         <!--分组表头-->
         <template slot="title">
-          <span class="clearfix collapseHead">
+          <span class="clearfix collapseHead groupName">
             {{item.type_name}}  (<span>{{item.fileNum}}</span>)
              <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img src="/static/images/filedelete.png">删除</el-button>
             <!--bp上传-->
@@ -55,17 +55,17 @@
           <div class="block-info block-cc-other" style="margin-bottom: 15px;"
                v-for="(file, index) in item.file"
                :key="file.file_id">
-            <span class="f-name" style="cursor: pointer;font-size: 10px" @click="download">{{file.file_title}}.{{file.file_ext}}</span>
+            <span class="f-name" style="cursor: pointer;font-size: 10px" @click="download(file.file_id)">{{file.file_title}}.{{file.file_ext}}</span>
             <div class="fr">
               <!--bp上传-->
               <el-button v-if="item.type_id===1" type="text"  @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
               <!--非bp上传-->
               <el-dropdown v-if="item.type_id!=1"  @command="fileDeal" trigger="click">
                 <span class="el-dropdown-link" @click="getFileId(file.file_id,item.type_id)">
-                  <img src="/static/images/threePoint.png" class="threePoint">
+                  <img :src="threePoint" class="threePoint">
                 </span>
                 <el-dropdown-menu slot="dropdown" class="curor">
-                  <el-dropdown-item command="1">查看</el-dropdown-item>
+                  <!--<el-dropdown-item command="1">查看</el-dropdown-item>-->
                   <el-dropdown-item command="2">移至</el-dropdown-item>
                   <el-dropdown-item command="3">删除</el-dropdown-item>
                 </el-dropdown-menu>
@@ -78,7 +78,7 @@
           <div class="block-info block-cc-other" style="margin-bottom: 15px; position:relative;"
                v-for="(newF, index) in item.newFile"
                :key="newF.file_id">
-            <span class="f-name" style="cursor: pointer" @click="download">{{newF.name}}</span>
+            <span class="f-name" style="cursor: pointer">{{newF.name}}</span>
             <img src="../../../assets/images/loading.gif" style="width:16px;height: 16px;margin-left: 10px;">
             <span class="upLoading" v-loading.body="true"></span>
           </div>
@@ -89,7 +89,7 @@
     <el-dialog title="新建文件分组" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="newGroupName"  ref="newGroupName">
         <el-form-item label="" label-width="20px" prop="name"
-                      :rules="[{min: 2, max:40, message: '分组名称应在2-40个字符之间',required: true, trigger: 'blur'}]">
+                      :rules="[{max:20, message: '分组名称应小于20个字符',required: true, trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="23" style="padding-left: 0">
               <el-input v-model="newGroupName.name" auto-complete="off" placeholder="请输入分组名" style="border-radius: 2px!important"></el-input>
@@ -133,10 +133,13 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import threePoint from '../../../../static/images/threePoint.png'
   export default {
     props: ["proid"],
     data () {
       return {
+        //图片资源
+        threePoint:threePoint,
         uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
         uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
         project_id: this.proid,
@@ -258,8 +261,8 @@
       //新建分组--确定
       addGroup() {
         if(!this.$tool.getNull(this.newGroupName.name)){
-          if(this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length<2 || this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length>40){
-            this.$tool.error('分组名称应在2-40个字符之间')
+          if(this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length>20){
+            this.$tool.error('分组名称应小于20个字符')
           }else if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
             //检查是否和已有分组重名,若全不重名则创建分组
             this.$http.post(this.URL.createFileType,{
@@ -296,7 +299,7 @@
           this.deleteGroup();
         }
       },
-      //重命名分组
+      //重命名分组(打开弹框)
       renameGroup(groupName){
        /* this.$prompt('请输入分组名', '新建文件分组', {
           confirmButtonText: '确定',
@@ -325,8 +328,8 @@
         this.exGroupName=this.$tool.trim(this.exGroupName);
         if(this.exGroupName.length===0){
           this.$tool.error('请输入分组名称')
-        }else if(this.exGroupName.length>40 || this.exGroupName<2){
-          this.$tool.error('分组名称长度应在2-40字符之间')
+        }else if(this.exGroupName.length>20){
+          this.$tool.error('分组名称长度应在小于20字符')
         }else{
           this.$http.post(this.URL.renameFileType,{
             user_id:localStorage.user_id,
@@ -540,8 +543,8 @@
         })
       },
       //点击下载
-      download(){
-          const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+this.fileId;
+      download(fileId){
+          const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
           window.location.href=url;
       },
       //点击分组设置中的单选框
