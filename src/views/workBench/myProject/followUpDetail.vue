@@ -57,8 +57,6 @@
         <el-button type="primary" @click="deleteFollow">确 定</el-button>
         </span>
       </el-dialog>
-      <!--写跟进弹框-->
-      <!--<addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>-->
     </div>
     <!--分页-->
     <el-pagination
@@ -74,10 +72,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  //import addfollow from '../followUp/addFollow.vue'
   export default {
     components: {
-//    addfollow
     },
     props: ["proid","proName","getDataTrue"],
     data () {
@@ -169,6 +165,8 @@
         if(e){
           this.getProjectFollowList();
           this.followid="";
+          this.$emit('changefollowdata',true)
+
         }
       },//是否重新获取数据
     }

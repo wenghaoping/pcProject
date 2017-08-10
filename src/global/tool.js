@@ -227,6 +227,7 @@ const tool={
 
   /*时间戳的处理*/
   formatDateTime(timeStamp) {
+    if(timeStamp=='') return '';
     var date = new Date();
     date.setTime(timeStamp * 1000);
     var y = date.getFullYear();

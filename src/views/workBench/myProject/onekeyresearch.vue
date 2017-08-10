@@ -220,7 +220,7 @@
                       </div>
                       <div class="bo">
                         <span style="margin-left: 5px;">
-                          {{compet.competing_goods_region}}
+                          {{compet.competing_goods_Financing_amount}}
                         </span>
                         <span style="margin-left: 5px;">
                           {{compet.competing_goods_Set_up}}
@@ -233,7 +233,7 @@
                   <!--                  <li class="table3">华兴资本</li>-->
                   <li class="table4" style="height: 101px;">{{compet.competing_goods_Financing_time}}</li>
                   <li class="table5" style="height: 101px;">{{compet.competing_goods_Financing_rounds}}</li>
-                  <li class="table6" style="height: 101px;">{{compet.competing_goods_Financing_amount}}</li>
+                  <li class="table6" style="height: 101px;">{{compet.competing_goods_region}}</li>
                 </ul>
                 <div class="line2"></div>
               </div>
@@ -488,6 +488,7 @@
         .then(res => {
           let data=res.data.data;
           this.$tool.setTime(data,'competing_goods_Financing_time');
+          this.$tool.setTime(data,'competing_goods_Set_up');
           this.competing =data;
           this.loading=false;
         })

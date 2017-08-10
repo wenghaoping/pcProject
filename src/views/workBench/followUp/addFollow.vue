@@ -88,10 +88,21 @@
         <div class="block-info block-cc-other" style="margin-bottom: 15px;"
              v-for="(list, index) in uploadShow.lists"
              :key="list.index">
-          <span class="f-title">{{list.bp_type}} : </span>
-          <span class="f-name" @click.prevent="download(list)"
-                style="cursor: pointer">{{list.file_title}}</span>
-          <span v-if="!list.load" class="del-btn" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
+
+          <el-tooltip placement="top">
+              <div slot="content">{{list.bp_type}}</div>
+              <span class="f-title fl">{{list.bp_type}}：</span>
+          </el-tooltip>
+
+
+
+          <el-tooltip placement="top">
+            <div slot="content">{{list.file_title}}</div>
+            <span class="f-name fl" @click.prevent="download(list)"
+                  style="cursor: pointer">{{list.file_title}}</span>
+          </el-tooltip>
+
+          <span v-if="!list.load" class="del-btn fl" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
           <span v-if="!list.load" class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
           <span v-if="list.load" class="uploadImg"><img src="../../../assets/images/loading.gif"></span>
         </div>
@@ -106,7 +117,7 @@
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
-                      :rules="[{min: 2, message: '最少2个字符',required: true, message: '分组不能为空', trigger: 'blur'}]">
+                      :rules="[{required: true, message: '分组不能为空', trigger: 'blur',max:40,message: '不超过40个字符'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
               <el-input v-model="groups.input" auto-complete="off"></el-input>
@@ -117,7 +128,7 @@
           </el-row>
         </el-form-item>
       </el-form>
-      <div class="radio">
+      <div class="radio" >
         <el-radio-group v-model="groups.type" @change="groupchange">
           <el-radio v-for="group in groups.group" class="radio"
                     :label="group.value"
@@ -647,13 +658,21 @@
 
 <style lang="less">
   @import '../../../assets/css/addFollow';
-  .el-radio-group{
-    line-height: 3!important;
-  }
-  .el-radio{
-    margin-left:0px!important;
-    min-width:111px
+  #addFollow{
+    .el-radio-group{
+      line-height: 3!important;
+
+    }
+    .el-radio{
+      margin-left:0px!important;
+      min-width:111px
+    }
+    .radio{
+/*      width: 370px;
+      display: inline-block;*/
+    }
 
   }
+
 
 </style>
