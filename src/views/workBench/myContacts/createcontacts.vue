@@ -559,7 +559,8 @@ export default {
             .then(res => {
               this.card_id=res.data.card_id;
               this.loading=false;
-              this.open2('名片编辑成功', "是否继续编辑", '查看详情', '继续编辑')
+//              this.open2('名片编辑成功', "是否继续编辑", '查看详情', '继续编辑')
+              this.$router.push({name: 'myContacts',query: {activeTo: 1}})//路由传参
             })
             .catch(err => {
               this.$tool.error("编辑失败");
@@ -727,12 +728,19 @@ export default {
     },//获取个人详情
     getContactsId(){
       this.card_id = this.$route.query.card_id;
-    }//获取id
-
+    },//获取id
+    getNewPro(){
+      var getNewPro = new Promise((resolve, reject)=>{
+        //做一些异步操作
+        this.$global.func.getWxProjectCategory();
+        resolve(1);
+      });
+      return getNewPro;
+    },
   },
   created(){
     this.getContactsId();
-
+    this.getNewPro();
     setTimeout(() =>{
       this.getWxProjectCategory();
       if(this.card_id!='creat') this.getOneUserInfo();

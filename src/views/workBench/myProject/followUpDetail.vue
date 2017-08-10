@@ -138,11 +138,13 @@
         }).then(res=>{
           this.$tool.success('删除成功');
           this.getProjectFollowList();
+          this.$emit('changefollowdata',true)
         })
       },//删除跟进记录
       deleteFollowId(index){
         this.dialogVisible  = true;
         this.followid=this.content[index].follow_id;
+
       },//获取删除记录id
       addFollow(index){
         this.dialogFollow=true;
@@ -166,7 +168,6 @@
           this.getProjectFollowList();
           this.followid="";
           this.$emit('changefollowdata',true)
-
         }
       },//是否重新获取数据
     }

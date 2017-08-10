@@ -128,7 +128,7 @@
           </el-row>
         </el-form-item>
       </el-form>
-      <div class="radio" >
+      <div class="radios">
         <el-radio-group v-model="groups.type" @change="groupchange">
           <el-radio v-for="group in groups.group" class="radio"
                     :label="group.value"
@@ -661,11 +661,19 @@
   #addFollow{
     .el-radio-group{
       line-height: 3!important;
-
+      width: 470px;
     }
     .el-radio{
       margin-left:0px!important;
-      min-width:111px
+      min-width:111px;
+      max-width:400px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .radios{
+      width: 470px;
+      /*display: inline-block;*/
     }
     .radio{
 /*      width: 370px;
