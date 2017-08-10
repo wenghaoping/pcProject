@@ -385,6 +385,8 @@
           .catch(err => {
             console.log(err);
           })
+        }else{
+          cb([]);
         }
       },
       createStateFilter(queryString) {

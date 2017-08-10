@@ -639,6 +639,7 @@ export default {
 
   },
   created(){
+
     this.loading=true;
     this.$global.func.getWxProjectCategory();
     this.titleSift();

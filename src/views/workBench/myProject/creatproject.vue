@@ -499,8 +499,9 @@
               this.$tool.error("加载失败");
               this.$tool.console(err);
             })
+        }else{
+          cb([]);
         }
-
       },
       createStateFilter(queryString) {
         return (state) => {

@@ -276,8 +276,7 @@
                         prop="open_status">
                         <el-select v-model="project.open_status" placeholder="请选择" class="width360">
                           <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="0"></el-option>
-                          <el-option label="公开项目（投放到交易易市场参与融资匹配，投资人可以申请查看bp，每日
-限公开一次)" value="1"></el-option>
+                          <el-option label="公开项目（投放到交易易市场参与融资匹配，投资人可以申请查看bp，每日限公开一次)" value="1"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -750,7 +749,7 @@
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
-                      :rules="[{min: 2, message: '最少2个字符',required: true, message: '分组不能为空', trigger: 'blur'}]">
+                      :rules="[{required: true, message: '分组不能为空', trigger: 'blur',max: 40, message: '最多40个字符'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
               <el-input v-model="groups.input" auto-complete="off"></el-input>
@@ -1685,6 +1684,8 @@
 //          this.alert("加载失败");
               this.$tool.console(this.restaurants);
             })
+        }else{
+          cb([]);
         }
       },
       createStateFilter(queryString) {

@@ -230,8 +230,10 @@
         })
           .then(res => {
             let data=res.data.data;
+            this.$tool.setTime(data.company_change,'company_change_time');
+            this.$tool.setTime(data.brand,'company_brand_time');
             this.business=data;
-            console.log(this.business);
+//            console.log(this.business);
             this.trademarkMessage="商标信息"+"("+data.brand.length+")"
           })
           .catch(err => {

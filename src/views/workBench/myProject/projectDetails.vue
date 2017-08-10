@@ -260,7 +260,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData" @getfollowid="getFollowId"></folowup>
+              <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData" @getfollowid="getFollowId" @changefollowdata="changefollowdata"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id">
@@ -875,6 +875,9 @@
         this.getEnjoyedInvestors();
         this.getFollowData=true;
       },//关闭添加跟进
+      changefollowdata(){
+        this.getFollowData=false;
+      },//关闭添加跟进重置
       download(e){
         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
         window.location.href=url;
