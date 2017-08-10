@@ -83,7 +83,9 @@
                         label="公司"
                         prop="user_company_name"
                         :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-                        <el-input v-model="contacts.user_company_name" placeholder="请输入公司名称"></el-input>
+                        <el-autocomplete v-model="contacts.user_company_name" placeholder="请输入公司名称"
+                                         :fetch-suggestions="querySearchAsync" class="width360">
+                        </el-autocomplete>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -534,6 +536,7 @@ export default {
           let contacts1=this.submitForm('contacts1');
           let contacts2=this.submitForm('contacts2');
         if(this.$tool.getNull(this.contacts.user_real_name)) {this.$tool.error("姓名不能为空")}
+        if(this.contacts.user_real_name.length>20) {this.$tool.error("姓名不超过20字")}
         else if(!this.checkEmail(this.contacts.user_email)) {this.$tool.console("邮箱不过")}
         else if(!this.checkPhoneNumber(this.contacts.user_mobile)) {this.$tool.console("电话不过")}
         else if(this.contacts.user_nickname.length>20) {this.$tool.error("昵称不超过20字")}
@@ -565,6 +568,43 @@ export default {
             })
         }
     },//保存人脉
+/*公司搜索*/
+    /*获取远程数据模拟*/
+    loadData(arr){
+      let newArr = [];
+      for (let i = 0; i < arr.length; i++) {
+        let obj = {};
+        obj.value = arr[i].company_name;
+        obj.address = arr[i].com_id;
+        newArr.push(obj)
+      }
+      return newArr;
+    },
+    /*自动搜索,接口写这里面*/
+    querySearchAsync(queryString, cb) {
+      if(queryString.length>2) {
+        this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+          .then(res => {
+            this.restaurants = [];
+            let data = res.data.data;
+            this.restaurants = this.loadData(data);
+            if (queryString == "") this.restaurants = [];
+            let restaurants = this.restaurants;
+            /*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              cb(restaurants);
+            }, 300);
+          })
+          .catch(err => {
+//          this.alert("加载失败");
+            this.$tool.console(this.restaurants);
+          })
+      }else{
+        cb([]);
+      }
+    },
+
 
     /*编辑成功弹窗*/
     open2(title, main, confirm, cancel) {
