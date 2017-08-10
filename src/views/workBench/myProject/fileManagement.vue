@@ -9,7 +9,7 @@
         <template slot="title">
           <span class="clearfix collapseHead groupName">
             {{item.type_name}}  (<span>{{item.fileNum}}</span>)
-             <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img src="/static/images/filedelete.png">删除</el-button>
+             <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img :src="delteIcon">删除</el-button>
             <!--bp上传-->
              <div class="fr" v-if="item.type_id===1 && parseInt(item.fileNum)===0 && item.newFile.length===0">
                <el-upload
@@ -25,7 +25,7 @@
                  :data="{user_id:this.localStorage.user_id,project_id:project_id}"
                  :show-file-list="false"
                  accept=".pdf, .ppt, .pptx, .doc, .docx, .rar, .zip">
-                    <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img src="/static/images/shangchuan.png">上传文件</el-button>
+                    <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img :src="uploadIcon">上传文件</el-button>
                </el-upload>
             </div>
             <!--非bp上传-->
@@ -44,10 +44,10 @@
                  :show-file-list="false"
                  accept=".pdf, .ppt, .pptx, .doc, .docx, .rar, .zip, .png, .jpg, .jpeg"
                  multiple>
-                    <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img src="/static/images/shangchuan.png">上传文件</el-button>
+                    <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img :src="uploadIcon">上传文件</el-button>
                </el-upload>
             </div>
-            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img src="/static/images/filerename.png">重命名</el-button>
+            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img :src="renameIcon">重命名</el-button>
           </span>
         </template>
         <!--文件列表-->
@@ -134,12 +134,18 @@
 
 <script type="text/ecmascript-6">
   import threePoint from '../../../../static/images/threePoint.png'
+  import renameIcon from '../../../../static/images/rename.png'
+  import uploadIcon from '../../../../static/images/upload.png'
+  import deleteIcon from '../../../../static/images/delete.png'
   export default {
     props: ["proid"],
     data () {
       return {
         //图片资源
         threePoint:threePoint,
+        renameIcon:renameIcon,
+        uploadIcon:uploadIcon,
+        deleteIcon:deleteIcon,
         uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
         uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
         project_id: this.proid,
