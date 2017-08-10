@@ -89,7 +89,7 @@
     <el-dialog title="新建文件分组" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="newGroupName"  ref="newGroupName">
         <el-form-item label="" label-width="20px" prop="name"
-                      :rules="[{min: 2, max:40, message: '分组名称应在2-40个字符之间',required: true, trigger: 'blur'}]">
+                      :rules="[{max:40, message: '分组名称应小于40个字符',required: true, trigger: 'blur'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="23" style="padding-left: 0">
               <el-input v-model="newGroupName.name" auto-complete="off" placeholder="请输入分组名" style="border-radius: 2px!important"></el-input>
@@ -258,8 +258,8 @@
       //新建分组--确定
       addGroup() {
         if(!this.$tool.getNull(this.newGroupName.name)){
-          if(this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length<2 || this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length>40){
-            this.$tool.error('分组名称应在2-40个字符之间')
+          if(this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length>40){
+            this.$tool.error('分组名称应小于40个字符')
           }else if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
             //检查是否和已有分组重名,若全不重名则创建分组
             this.$http.post(this.URL.createFileType,{
@@ -296,7 +296,7 @@
           this.deleteGroup();
         }
       },
-      //重命名分组
+      //重命名分组(打开弹框)
       renameGroup(groupName){
        /* this.$prompt('请输入分组名', '新建文件分组', {
           confirmButtonText: '确定',
@@ -325,8 +325,8 @@
         this.exGroupName=this.$tool.trim(this.exGroupName);
         if(this.exGroupName.length===0){
           this.$tool.error('请输入分组名称')
-        }else if(this.exGroupName.length>40 || this.exGroupName<2){
-          this.$tool.error('分组名称长度应在2-40字符之间')
+        }else if(this.exGroupName.length>40){
+          this.$tool.error('分组名称长度应在小于40字符')
         }else{
           this.$http.post(this.URL.renameFileType,{
             user_id:localStorage.user_id,
