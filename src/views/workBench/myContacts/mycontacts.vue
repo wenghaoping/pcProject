@@ -39,14 +39,14 @@
                 </el-tooltip>
                 <span class="fl add" v-if="scope.row.is_add==false"><img src="../../../assets/images/add.png"></span>
                 <div v-if="scope.row.user_real_name.length === 0">
-                  --
+                  -
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="user_company_career" label="职位" show-overflow-tooltip width="80">
               <template scope="scope">
                 <div v-if="scope.row.user_company_career==''">
-                  --
+                  -
                 </div>
                 <div else>
                   {{scope.row.user_company_career}}
@@ -65,7 +65,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.user_company_name.length === 0">
-                  --
+                  -
                 </div>
               </template>
             </el-table-column>
@@ -81,7 +81,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.user_brand.length === 0">
-                  --
+                  -
                 </div>
               </template>
             </el-table-column>
@@ -89,7 +89,7 @@
             <el-table-column prop="user_mobile" label="手机" show-overflow-tooltip width="112">
               <template scope="scope">
                 <div v-if="scope.row.user_mobile==''">
-                  --
+                  -
                 </div>
                 <div else>
                   {{scope.row.user_mobile}}
@@ -108,7 +108,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.user_email.length === 0">
-                  --
+                  -
                 </div>
               </template>
             </el-table-column>
@@ -129,7 +129,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.user_invest_industry.length === 0">
-                  --
+                  -
                 </div>
               </template>
             </el-table-column>
@@ -149,7 +149,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.user_invest_stage.length === 0">
-                  --
+                  -
                 </div>
               </template>
             </el-table-column>
@@ -169,7 +169,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.tag.length === 0">
-                  --
+                  -
                 </div>
               </template>
             </el-table-column>
@@ -190,7 +190,7 @@
                   </div>
                 </el-tooltip>
                 <div v-if="scope.row.login_time.length === 0">
-                  --
+                  -
                 </div>
               </template>
             </el-table-column>
