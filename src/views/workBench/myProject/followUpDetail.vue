@@ -6,7 +6,7 @@
         <div class="item-cicle">
           <div class="item-cicle1"></div>
         </div>
-        <div class="item-time">{{new Date(parseInt(item.follow_time)* 1000).toLocaleString('chinese',{hour12:false}).replace(/[\u4E00-\u9FA5]/g,'').substr(0, 14).replace(/\//g,'.')}}</div>
+        <div class="item-time">{{item.follow_time}}</div>
         <div class="item-name">{{item.follow_user_name}}</div>
         <div class="item-edit">
           <el-button
@@ -82,6 +82,7 @@
     props: ["proid","proName","getDataTrue"],
     data () {
       return {
+        newTime:'',
         dialogFollow:false,//控制写跟进弹框
         pro_id: this.proid,
         pro_name:"",//关联项目
@@ -115,8 +116,10 @@
             if(res.data.status_code==2000000) {
               let data = res.data.data;
 //              this.$tool.console("获取跟进记录")
+              this.setDateTime(data);//时间格式设置
               this.content=data;
 //              this.$tool.console(this.content);
+//              console.log(this.content);
               this.totalData = res.data.count;
             }
             this.loading1 = false;
@@ -127,6 +130,12 @@
             this.$tool.error("加载超时");
           })
       },//获取跟进记录
+      setDateTime(data){
+        for (let i = 0; i < data.length; i++) {
+          data[i].follow_time=new Date(data[i].follow_time*1000).toLocaleString('chinese',{hour12:false}).substr(0, 15).replace(/:$/,"");
+        }
+//        console.log(data[i].follow_time);
+      },
       handleClose(done) {
         this.$confirm('确认关闭？')
         .then(_ => {
