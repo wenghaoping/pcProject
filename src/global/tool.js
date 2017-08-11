@@ -119,6 +119,7 @@ const tool={
   },//判断是不是空(空字符串也算是空)
   checkNumber(data) {
     let reg = /^[0-9]+.?[0-9]*$/;
+    let reg2 = /^(?:(?!.*(%)).*)/;//不含%
     if (reg.test(data)) {
       return true;
     }else{
@@ -351,7 +352,12 @@ const tool={
     return arr
   },//设置标签
 
-
+/*页面回到顶部*/
+  getTop(){
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    window.pageYOffset = 0;
+  },
 
 
   console(text,data) {

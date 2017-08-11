@@ -1279,13 +1279,11 @@
         }
       },//期望融资,融资金额
       getProjectDetail () {
-        console.log("获取项目详情");
         this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
           .then(res => {
 
             this.uploadShow2.lists=[];
             let data = res.data.data;
-            console.log(data)
             this.area1Change(data.pro_area.pid);//设置市级
             this.setDateTime(data.pro_history_finance);//时间格式设置
             this.setDateTime2(data.pro_develop);//时间格式设置2
@@ -1554,7 +1552,6 @@
         object.load = load;//是否在上传中
         object.uid = uid;//文件唯一标识
         this.uploadShow2.lists.push(object);
-
       },//添加上传文件时,加入显示列表
       deleteLoad(uid){
         let lists=this.uploadShow2.lists;//所有的文件的数组
@@ -1905,7 +1902,7 @@
 
       /*检查所有必填项目以及获取所有数据*/
       submitForm(formName) {
-        let check = true
+        let check = true;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             return
@@ -2054,7 +2051,7 @@
           this.$http.post(this.URL.editProject, allData)
             .then(res => {
               this.loading=false;
-              this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '继续编辑')
+              this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '返回列表')
             })
             .catch(err => {
               this.$tool.error("编辑失败");
@@ -2086,11 +2083,7 @@
         }).then(() => {
           this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}})
         }).catch(() => {
-          this.$message({
-            type: 'success',
-            message: '继续编辑'
-          });
-          this.getProjectDetail();
+          this.$router.push({name: 'myProject',query: {activeTo: 0}})
         });
       },
       /*锚点跳转*/
@@ -2225,6 +2218,8 @@
     },
     //    当dom一创建时
     created(){
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
       this.loading = true;
       this.getprojectId();
       this.$global.func.getWxProjectCategory();

@@ -344,14 +344,15 @@
           line-height:28px;
           text-align:left;
         }
-        .button_list{
+        .toButton{
           position: fixed;
-          bottom:95px;
-          left:212px;
-          background:#ffffff;
-          box-shadow:0 -2px 4px 0 rgba(64,88,122,0.3);
-          width:880px;
+          bottom:0px;
+          left:0px;
+          background-color:rgba(255,255,255,0.2);
+          box-shadow:0 -2px 4px 0 rgba(64,88,122,0.10);
+          width:100%;
           height:60px;
+          z-index: 99999;
           .lis{
             width: 210px;
             margin: 0 auto;
@@ -531,12 +532,14 @@
     }
     .main_right{
       .button{
-        width: 179px;
+        //border-right: 1px solid #eff2f7;
+        width: 178px;
         background:#ffffff;
         height:44px;
         font-size:14px;
         color:#40587a;
         cursor: pointer;
+        line-height: 44px;
         .img1{
           width: 14px;
           height: 14px;
@@ -549,6 +552,13 @@
           }
         }
       }
+      .lineLine{
+        height: 22px;
+        width: 1px;
+        background: #eff2f7;
+        margin-top: 10px;
+      }
+
     }
   }
 }

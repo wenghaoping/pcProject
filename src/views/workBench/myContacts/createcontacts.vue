@@ -45,8 +45,8 @@
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
-                        label="*姓名"
-                        prop="user_real_name" :rules="nullRule">
+                        label="姓名"
+                        prop="user_real_name" :rules="[{ required: true, message: '请输入姓名', trigger: 'blur' },{max: 20, message: '长度不能大于20个字符', trigger: 'blur' }]">
                         <el-input v-model="contacts.user_real_name" placeholder="请输入姓名"></el-input>
                       </el-form-item>
                     </el-col>
@@ -536,7 +536,7 @@ export default {
           let contacts1=this.submitForm('contacts1');
           let contacts2=this.submitForm('contacts2');
         if(this.$tool.getNull(this.contacts.user_real_name)) {this.$tool.error("姓名不能为空")}
-        if(this.contacts.user_real_name.length>20) {this.$tool.error("姓名不超过20字")}
+        else if(this.contacts.user_real_name.length>20) {this.$tool.error("姓名不超过20字")}
         else if(!this.checkEmail(this.contacts.user_email)) {this.$tool.console("邮箱不过")}
         else if(!this.checkPhoneNumber(this.contacts.user_mobile)) {this.$tool.console("电话不过")}
         else if(this.contacts.user_nickname.length>20) {this.$tool.error("昵称不超过20字")}
@@ -559,8 +559,8 @@ export default {
             .then(res => {
               this.card_id=res.data.card_id;
               this.loading=false;
-//              this.open2('名片编辑成功', "是否继续编辑", '查看详情', '继续编辑')
-              this.$router.push({name: 'myContacts',query: {activeTo: 1}})//路由传参
+              this.open2('名片编辑成功', "是否返回", '查看详情', '返回人脉列表')
+//              //路由传参
             })
             .catch(err => {
               this.$tool.error("编辑失败");
@@ -616,11 +616,7 @@ export default {
       }).then(() => {
         this.$router.push({name: 'contactsDetails', query: {card_id: this.card_id,user_id: this.contacts.user_id}})
       }).catch(() => {
-        this.$message({
-          type: 'success',
-          message: '继续编辑'
-        });
-        this.getOneUserInfo();
+        this.$router.push({name: 'myContacts',query: {activeTo: 1}})
       });
     },
     submitForm(formName) {
@@ -739,6 +735,7 @@ export default {
     },
   },
   created(){
+    this.$tool.getTop();
     this.getContactsId();
     this.getNewPro();
     setTimeout(() =>{

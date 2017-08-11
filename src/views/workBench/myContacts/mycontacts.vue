@@ -177,11 +177,12 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="login_time" label="最近活跃" show-overflow-tooltip
-                             width="100"
+            <el-table-column prop="login_time" label="最近活跃"
+                             width="100" show-overflow-tooltip
                              column-key="login_time"
-                             :filters="created_atFilters"
+                             :filters="login_timeFilters"
                              :filter-multiple="stateCheck"
+                             filter-placement="bottom-end"
                              sortable="custom">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.login_time.length > 4 ? false:true">
@@ -201,7 +202,7 @@
             <el-table-column
               prop="reset"
               label="重置"
-              width="130" class="set-th">
+              width="130" class="set-th btn-cur">
               <template scope="scope">
                 <el-button
                   @click="handlePush(scope.$index, scope.row)"
@@ -231,7 +232,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="timeCheck">
+<!--          <div class="timeCheck">
             <el-date-picker
               v-model="timeSelect"
               type="date"
@@ -240,7 +241,7 @@
               @change="timeChange"
               :picker-options="pickerOptions">
             </el-date-picker>
-          </div>
+          </div>-->
           <div class="pagenav" v-if="totalData>10">
             <el-pagination
               small
@@ -338,7 +339,6 @@ export default {
       user_invest_industryFilters:[],//投资领域筛选条件
       user_invest_stageFilters:[],//投资轮次筛选
       tagFilters:[],//标签筛选条件
-      login_timeFilters:[],//最近活跃
       userMessage:{
         user_real_name:'',//姓名
         user_company_career:'',//职位
@@ -357,10 +357,14 @@ export default {
           return time.getTime() > Date.now() - 8.64e7+3600 * 1000 * 24;
         }
       },
-      created_atFilters:[],//更近时间选择
+      login_timeFilters:[
+        { text: '刚刚活跃', value: 0 },
+        { text: '一天前活跃', value: 1 },
+        { text: '两天前活跃', value: 2 },
+        { text: '三天前活跃', value: 3 },
+        { text: '一周前活跃', value: 4 }
+      ],//最近活跃
       stateCheck:false,//跟进状态单选
-
-
     }
   },
   components: {
@@ -442,6 +446,7 @@ export default {
     },//关闭推送弹框,打开预览弹框
     dialogVisiblechangeCloase(msg){
       this.dialogPushVisible=msg;
+      this.handleIconClick();
     },//关闭项目推送弹窗
     dialogPrechange(msg){
       this.dialogPushVisible=msg;
@@ -531,6 +536,7 @@ export default {
           this.$tool.console(res);
           this.tableData=this.getProjectList(data);
           this.loading=false;
+          this.$tool.getTop();
         })
         .catch(err=>{
           this.loading=false
@@ -594,17 +600,23 @@ export default {
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
       if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
-          .then(res => {
-            let newState = {};
-            newState.label = tagName;
-            newState.value = res.data.tag_id;
-            this.tags.changecont.push(newState);
-          })
-          .catch(err => {
-            this.$tool.error("添加失败");
-            this.$tool.console(err);
-          })
+        if (tagName.length > 40) {
+          this.$tool.error("最多输入40个字");
+          this.tagsValue.pop();
+        } else {
+          this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
+            .then(res => {
+              let newState = {};
+              newState.label = tagName;
+              newState.value = res.data.tag_id;
+              this.tags.changecont.push(newState);
+              this.$global.func.getWxProjectCategory();
+            })
+            .catch(err => {
+              this.$tool.error("添加失败");
+              this.$tool.console(err);
+            })
+        }
       }
     },//添加项目标签
     addTag(){
@@ -637,6 +649,7 @@ export default {
 
   },
   created(){
+    this.$tool.getTop();
     this.loading=true;
     this.$global.func.getWxProjectCategory();
     this.titleSift();

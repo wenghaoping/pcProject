@@ -230,7 +230,6 @@
                   </li>
 
                   <li class="table2" style="height: 101px;">{{compet.competing_goods_industry}}</li>
-                  <!--                  <li class="table3">华兴资本</li>-->
                   <li class="table4" style="height: 101px;">{{compet.competing_goods_Financing_time}}</li>
                   <li class="table5" style="height: 101px;">{{compet.competing_goods_Financing_rounds}}</li>
                   <li class="table6" style="height: 101px;">{{compet.competing_goods_region}}</li>

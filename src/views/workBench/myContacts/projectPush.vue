@@ -7,7 +7,10 @@
         <div class="lines fl"></div>
         <div class="title fl">项目推送</div>
         <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
-        <div class="img fl"><img src="../../../assets/images/why.png"></div>
+        <el-tooltip content="Top center" placement="top">
+          <div slot="content">每天可以推送5次，1个项目推送给1个投资人计1次，1个项目推送给多个投资人计多次</div>
+          <div class="img fl" style="cursor: pointer"><img src="../../../assets/images/why.png"></div>
+        </el-tooltip>
       </span>
 
        <el-form label-position="top" :model="email2" label-width="80px" style="position: relative" ref="email2">
@@ -53,6 +56,7 @@
                 tooltip-effect="dark"
                 style="width: 100%"
                 max-height="430"
+                @row-click="handleSelect"
                 :row-class-name="tableRowClassName">
                 <el-table-column
                   width="64">
@@ -192,7 +196,8 @@ export default {
       pushCount:0,//剩余推送次数
       totalMatchProject: 0,//项目加载总页数
       currentPageMatchProject:1,//当前第几页
-
+      searchProject:{},//搜索项目的数据
+      searchProjectInput:'',//搜素项目用的
     }
   },
   methods: {
@@ -292,11 +297,11 @@ export default {
       if(query=="") this.projectRadio="";
       this.loading=true;
       this.currentPageMatchProject=1;
-      this.$http.post(this.URL.matchProject,{
-        user_id: localStorage.user_id,
-        card_id: this.user.card_id,
-        pro_intro: query,
-        page:1})
+      this.searchProject.user_id=localStorage.user_id;
+      this.searchProject.card_id=this.user.card_id;
+      this.searchProject.pro_intro=query;
+      this.searchProject.page=1;
+      this.$http.post(this.URL.matchProject,this.searchProject)
         .then(res=>{
           let data = res.data.data;
 //          this.$tool.console(data);
@@ -311,12 +316,11 @@ export default {
         })
     },//项目搜索
     filterChangeMatchProject(page){
+
       this.loading=true;
-      this.$http.post(this.URL.matchProject,{
-        user_id: localStorage.user_id,
-        card_id: this.user.card_id,
-        pro_intro: "",
-        page:page})
+      this.searchProject.page=page;
+      this.searchProject.pro_intro=this.searchProjectInput;
+      this.$http.post(this.URL.matchProject,this.searchProject)
         .then(res=>{
           let data = res.data.data;
 //          this.$tool.console(data);
@@ -389,6 +393,9 @@ export default {
           this.loading=false;
         })
     },//获取剩余推送次数
+    handleSelect(row, event, column) {
+      this.projectRadio=row.project_id;
+    },//点击单选
   },
   watch : {
     projectRadio : function(e){
@@ -429,7 +436,7 @@ export default {
 
 <style lang="less">
   @import '../../../assets/css/projectPush';
-.popper{
-display: none;
-}
+  .popper{
+    display: none;
+  }
 </style>

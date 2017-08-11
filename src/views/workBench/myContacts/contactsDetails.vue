@@ -145,7 +145,7 @@
               </div>
             </div>
 
-            <div class="button_list" >
+            <div class="toButton" >
               <div class="lis">
                 <button class="button" @click="goEdit" v-if="contacts.is_bind==0">编辑</button>
                 <button class="button" @click="handlePushComplete" style="margin-left: 16px;">项目推送</button>
@@ -197,7 +197,7 @@
                             {{enjoyProject.pro_intro}}
                           </div>
                           <div class="li" style="margin-top: 18px;">
-                            <span class="big-tag"><i v-for="industry in enjoyProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                            <span class="big-tag" v-if="enjoyProject.industry!=0"><i v-for="industry in enjoyProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
                             <span class="big-tag">{{enjoyProject.scale}}</span><span class="split">｜</span>
@@ -233,7 +233,7 @@
                   <el-pagination
                     class="pagination fr"
                     small
-                    v-if="totalData2!=0"
+                    v-if="totalData2>5"
                     @current-change="filterChangeCurrent1"
                     :current-page.sync="currentPage2"
                     layout="prev, pager, next"
@@ -267,7 +267,7 @@
                             {{matchProject.pro_intro}}
                           </div>
                           <div class="li" style="margin-top: 18px;">
-                            <span class="big-tag"><i v-for="industry in matchProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                            <span class="big-tag" v-if="matchProject.industry!=0"><i v-for="industry in matchProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
                             <span class="big-tag">{{matchProject.scale}}</span><span class="split">｜</span>
@@ -277,12 +277,12 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px; border-top: 1px solid #eff2f7">
-
-                          <button  class="button fl" v-if="matchProject.push_statues==-1" @click="handlePush(matchProject)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
-                          <button class="button fl" @click="handlePush(0)" v-else>
+                          <button class="button fl" @click="handlePush(0)" v-if="matchProject.push_statues==-1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
+                          <button  class="button fl"  @click="handlePush(matchProject)" v-else>
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+                          <span class="lineLine fl"></span>
                           <button class="button fl" @click="delMatchAction(matchProject)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
@@ -298,7 +298,7 @@
                   <el-pagination
                     class="pagination fr"
                     small
-                    v-if="totalData3!=0"
+                    v-if="totalData3>5"
                     @current-change="filterChangeCurrent2"
                     :current-page.sync="currentPage3"
                     layout="prev, pager, next"
@@ -355,13 +355,12 @@
     <!--项目推送弹窗,人脉入口精简版-->
     <el-dialog :visible="dialogPushVisible"
                :before-close="handleClose" size="tiny" :show-close="close">
-
      <span slot="title" class="dialog-title clearfix">
         <div class="title fl">项目推送</div>
         <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
         <div class="img fl"><img src="../../../assets/images/why.png"></div>
       </span>
-      <el-form :model="pushData" label-position="right" label-width="60px"
+      <el-form :model="pushData" label-position="right" label-width="80px"
                ref="pushData">
         <el-form-item
           prop="email"
@@ -372,9 +371,9 @@
         ]">
           <el-input v-model="pushData.email" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="一句话" prop="body"
+        <el-form-item label="邮件标题" prop="body"
         :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-          <el-input v-model="pushData.body" auto-complete="off"></el-input>
+          <el-input v-model="pushData.body" auto-complete="off" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -611,7 +610,8 @@
         this.currentPage2=page;
         this.getConpro.card_id=this.contacts.card_id;
         this.getConpro.page=page;
-        this.getConpro.schedule_id='';
+        this.getConpro.card_link_user_id=this.contacts.user_id;
+//        this.getConpro.schedule_id='';
         this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
           if(res.data.status_code==2000000) {
@@ -796,7 +796,7 @@
         if (tagName != undefined) {
           if(tagName.length>40){
             this.$tool.error("最多输入40个字");
-            this.contacts.user_invest_tag.pop();
+            this.tagsValue.pop();
           }else {
             this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
               .then(res => {
@@ -846,7 +846,7 @@
         this.loading = true;
         var getEchartData = new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id})
+          this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id,card_link_user_id:this.contacts.user_id})
             .then(res=>{
               if(res.data.status_code==2000000) {
                 let data = res.data.data;
@@ -875,13 +875,17 @@
           this.getConpro.card_id=this.contacts.card_id;
           this.getConpro.page=1;
           this.getConpro.schedule_id='';
+          this.getConpro.card_link_user_id=this.contacts.user_id;
           this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
             .then(res=>{
               if(res.data.status_code==2000000) {
                 let data = res.data.data;
                 this.enjoyProjects=this.setEnjoyProject(data);
                 this.totalData2 = res.data.count || 0;
-                if(this.enjoyProjects.length==0) this.activeName='2';
+                if(this.enjoyProjects.length==0) {
+                    this.activeName='2';
+                    this.tabs=false;
+                }
               }
               this.loading = false;
             })
@@ -1042,6 +1046,7 @@
         this.currentPage2=1;
         this.getConpro.card_id=this.contacts.card_id;
         this.getConpro.page=1;
+        this.getConpro.card_link_user_id=this.contacts.user_id;
         this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
           if(res.data.data.length!=0){
@@ -1071,7 +1076,9 @@
           this.currentPage3=1;
           this.getMatchPro.investor_id=this.contacts.investor_id;
           this.getMatchPro.card_id=this.contacts.card_id;
+          this.getMatchPro.card_link_user_id=this.contacts.user_id;
           this.getMatchPro.page=1;
+
           this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
             .then(res=>{
               if(res.data.status_code==2000000) {
@@ -1233,6 +1240,7 @@
       },//获取最新的下拉框数据
     },
     created(){
+      this.$tool.getTop();
       this.loading=true;
       this.getUserId();
       this.getpushCount();

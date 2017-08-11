@@ -327,10 +327,10 @@
                             <span class="company">{{enjoyInvestor.user_company_name}}</span>
                           </div>
                           <div class="block" style="margin-top: 42px;">
-                            <span class="company ft13">投资领域：<i v-for="industry in enjoyInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                            <span class="company ft13" v-if="enjoyInvestor.user_invest_industry.length!=0">投资领域：<i v-for="industry in enjoyInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="block" style="margin-top: 5px;">
-                            <span class="company ft13">投资轮次：<i v-for="stage in enjoyInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
+                            <span class="company ft13" v-if="enjoyInvestor.user_invest_stage.length!=0">投资轮次：<i v-for="stage in enjoyInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
                         <div class="li change_li">
@@ -360,7 +360,7 @@
                   <el-pagination
                     class="pagination fr"
                     small
-                    v-if="totalData!=0"
+                    v-if="totalData>5"
                     @current-change="filterChangeCurrent"
                     :current-page.sync="currentPage"
                     layout="prev, pager, next"
@@ -422,15 +422,16 @@
                         </div>
 
                         <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
-                          <button v-if="projectMatchInvestor.push_statues=-1" class="button fl" @click="industryPush(projectMatchInvestor)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
-                          </button>
-                          <button class="button fl" @click="industryPush(0)" v-else>
+
+                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==-1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
+                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-else>
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
+                          </button>
+                          <span class="lineLine fl"></span>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png" ></div>移除</button>
-
                         </div>
                         <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
                         <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
@@ -442,7 +443,7 @@
                     <el-pagination
                       class="pagination fr"
                       small
-                      v-if="totalInvestors!=0"
+                      v-if="totalInvestors>5"
                       @current-change="filterChangeInvestors"
                       :current-page.sync="currentPageInvestors"
                       layout="prev, pager, next"
@@ -883,7 +884,6 @@
       changefollowdata(){
         this.getFollowData=false;
         this.getAllData();
-        console.log("获取所有数据一次啊")
       },//关闭添加跟进重置
       download(e){
         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
@@ -1121,7 +1121,10 @@
                 let data = res.data.data;
                 this.enjoyInvestors=this.setEnjoyInvestor(data);
                 this.totalData = res.data.count;
-                if(this.enjoyInvestors.length==0) this.activeName='2';
+                if(this.enjoyInvestors.length==0) {
+                    this.activeName='2';
+                    this.tabs=false;
+                }
                 resolve(5);
               }
             })
@@ -1131,7 +1134,6 @@
             })
         });
         return getEnjoyedInvestors;
-
       },//获取意向投资人列表
       setEnjoyInvestor(arr){
         let newArr = new Array;
@@ -1224,7 +1226,7 @@
       },//获取意向投资人索引
       filterChangeCurrent(page){
 
-        if(this.ctrlSelect){
+//        if(this.ctrlSelect){
 //          console.log("页码变啦")
         this.loading=true;
         this.getConCon.user_id=localStorage.user_id;
@@ -1248,9 +1250,9 @@
             this.loading=false;
             this.$tool.error("加载超时");
           })
-        }
-        this.ctrlSelect=true;
-        console.log(this.ctrlSelect);
+//        }
+//        this.ctrlSelect=true;
+//        console.log(this.ctrlSelect);
       },//控制意向投资人页码
       selectChange(e){
         let width = 0;
@@ -1311,9 +1313,9 @@
         return width;
       },//设置项目跟进进度
       selectSearch(e){
-        this.ctrlSelect=false;
+//        this.ctrlSelect=false;
 //        console.log("筛选");
-        console.log(this.ctrlSelect);
+//        console.log(this.ctrlSelect);
         this.loading=true;
         this.getConCon.schedule_id=e;
         this.getConCon.user_id=localStorage.user_id;
@@ -1553,23 +1555,26 @@
             return this.getEchartData();
           })
           .then((data)=>{
-            return this.getEnjoyedInvestors();
+            return this.getProjectMatchInvestors();
           })
           .then((data)=>{
             this.loading=false;
-            return this.getProjectMatchInvestors();
+            return this.getEnjoyedInvestors();
           });
       },//重新获取所有数据
     },
     created () {
+      this.$tool.getTop();
       this.loading=true;
       this.getprojectId();
       this.getAllData();
     },
-    watch: {
-//      '$route' (to, from) {
-//
-//      }
+    watch(){
+      document.onscroll = function(){
+//        if(document.body.scrollTop+document.body.clientHeight>=document.body.scrollHeight){
+          console.log(document.body.scrollHeight)
+//        }
+      }
     },
   }
 </script>

@@ -220,9 +220,6 @@
 
             //如果有值传进来
             if(file){
-              console.log('开始了')
-              console.log(this.uploadList)
-              console.log(this.uploadList[0])
               //剔除掉已经上传成功的文件
               this.uploadList.forEach((x,index)=>{
                 if(x.name===file.name){
@@ -587,6 +584,7 @@
       },
     },
     created(){
+      this.$tool.getTop();
       this.initData();
     },
     watch: {}

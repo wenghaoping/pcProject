@@ -4,7 +4,12 @@
     <!--===========================================项目推送预览弹框=============================================-->
     <el-dialog :visible="dialogPreviewVisible" :show-close="close"  custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <div class="top_pro">
-        <p v-if="email.title==''">邮件标题 : {{user.firse_user_company_name}}－{{user.firse_user_company_career}}－{{user.firse_user_real_name}}推送给您一个项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行</p>
+        <p v-if="email.title==''">邮件标题 :
+          <i v-if="user.firse_user_company_name!=''">{{user.firse_user_company_name}}－</i>
+          <i v-if="user.firse_user_company_name==''">{{user.user_brand}}－</i>
+          <i v-if="user.firse_user_company_career==''">{{user.firse_user_company_career}}－</i>
+          <i v-if="user.firse_user_real_name==''">{{user.firse_user_real_name}}－</i>
+          推送给您一个项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行</p>
         <p v-else>邮件标题 : {{email.title}}</p>
         <p v-if="email.body==''">邮件正文 : 尊敬的{{user.user_real_name}}，下面是来自{{user.firse_user_company_name}}-{{user.firse_user_company_career}}-{{user.firse_user_real_name}}的项目推荐。你可以注册/登录微天使工作站找到更多精选FA项目资源。</p>
         <p v-else>邮件正文 : {{email.body}}</p>
@@ -42,8 +47,8 @@
                 <div class="txt end" :class="{ scheduleColor: project.pro_schedule.schedule_id==9}">佣金收讫</div>-->
               </div>
               <div class="onlyone">
-                <img v-if="project.is_exclusive==0" src="../../../assets/images/onlyonedark.png"/>
-                <img v-else-if="project.is_exclusive==1" src="../../../assets/images/onlyonelight.png"/>
+                <img v-if="project.is_exclusive==1" src="../../../assets/images/onlyonedark.png"/>
+                <img v-else-if="project.is_exclusive==2" src="../../../assets/images/onlyonelight.png"/>
               </div>
             </div>
           </div>
@@ -447,6 +452,7 @@ export default {
         firse_user_real_name:'顾家',//当前用户
         firse_user_company_career:'投资尽力',
         firse_user_company_name:'杭州投着乐网络科技有限公司',
+        user_brand:'',//品牌
       },
       pushMessage:{},//推送用的数据
       project_id:'',
@@ -468,6 +474,7 @@ export default {
             this.user.firse_user_real_name=data.user_real_name;
             this.user.firse_user_company_career=data.user_company_career;
             this.user.firse_user_company_name=data.user_company_name;
+            this.user.user_brand=data.user_brand || '';
           }
         })
         .catch(err=>{

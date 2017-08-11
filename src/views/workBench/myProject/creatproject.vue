@@ -564,6 +564,7 @@
 
     },
     created(){
+      this.$tool.getTop();
       if(this.planList.length!=0) this.planButton=false;
       else this.planButton=true;
       this.getprojectId();
