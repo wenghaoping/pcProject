@@ -30,6 +30,9 @@
         <li v-show="!user_id" class="login" @click="login">
           登录
         </li>
+        <li @click="loginOut">
+          退出登录(测试)
+        </li>
       </ul>
     </header>
     <div style="height: 60px;"></div>
@@ -122,7 +125,12 @@
         /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
           this.$router.push({name:'index'})
         }*/
+
       },
+      loginOut(){
+        localStorage.clear();
+        window.location.reload()
+      }
     },
     //当dom一创建时
     created(){
@@ -185,7 +193,7 @@
   body {
     margin: 0;
     position: relative;
-    overflow: auto!important;
+    /*overflow: auto!important;*/
   }
   .newColor{
     color:#40587A;

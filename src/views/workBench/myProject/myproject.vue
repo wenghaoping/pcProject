@@ -1,5 +1,5 @@
 <template>
-  <div id="myproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="myproject">
     <div class="wrap-left fl" style="height: 888px;">
       <div class="top-big-progress">
         <div class="pp-item pp-node pp-start" :class="{'pp-cur':node0}" @click="setNode('0')">
@@ -107,7 +107,9 @@
                       @row-click="handleSelect"
                       @header-click="headerClick"
                       @sort-change="filterChange"
-                      @filter-change="filterChange" stripe>
+                      @filter-change="filterChange" stripe
+                      v-loading="loading"
+                      element-loading-text="拼命加载中">
             <el-table-column prop="pro_name" label="项目名称" width="144" show-overflow-tooltip>
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 7 ? false:true">
@@ -626,7 +628,6 @@
           })
       },// 获取项目节点数量
       titleSift(){
-        this.loading=true;
         const titleSiftURL=this.URL.titleSift
         this.$http.post(titleSiftURL,{user_id: localStorage.user_id})
           .then(res=>{
@@ -644,10 +645,8 @@
             this.pro_scheduleFilters=this.$tool.getTitleSift(pro_schedule);
             this.pro_sourceFilters=this.$tool.getTitleSift(pro_source);
             this.pro_stageFilters=this.$tool.getTitleSift(pro_stage);
-            this.loading=false;
           })
           .catch(err=>{
-            this.loading=false;
             this.$tool.console(err,2)
           })
       },// 获取表头
@@ -723,11 +722,12 @@
     },
     created () {
       // 组件创建完后获取数据，
-      this.getProjectListURL=this.URL.getProjectList
+      this.getProjectListURL=this.URL.getProjectList;
       this.loading=true;
       this.getNodeCount();
       this.titleSift();
       this.handleIconClick();
+
     },
     watch: {
       // 如果路由有变化，会再次执行该方法

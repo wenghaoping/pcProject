@@ -760,7 +760,7 @@
           </el-row>
         </el-form-item>
       </el-form>
-      <div class="radio">
+      <div class="radios">
         <el-radio-group v-model="groups.type" @change="groupchange">
           <el-radio v-for="group in groups.group" class="radio"
                     :label="group.value"
@@ -2248,13 +2248,7 @@
 
 <style lang="less">
   @import '../../../assets/css/edit.less';
-.el-radio-group{
-  line-height: 3!important;
-}
-  .el-radio{
-    margin-left:0px!important;
 
-  }
 
   .planUpload {
     .el-upload {
@@ -2284,9 +2278,21 @@
       display: block;
       margin: 0 auto;
     }
+    .el-radio-group{
+      line-height: 3!important;
+    }
     .el-radio{
-/*      width:111px*/
+      margin-left:0px!important;
+      min-width:111px;
+      max-width:600px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
       padding-left: 25px;
+    }
+    .radios{
+      width: 470px;
+      /*display: inline-block;*/
     }
   }
   .edit-page .item-block .block-tt-line{

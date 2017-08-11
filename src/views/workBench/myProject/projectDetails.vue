@@ -1,6 +1,8 @@
 <template>
-  <div id="projectDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="contain-grid contain-center1 fl">
+  <div id="projectDetails" class="clearfix" >
+    <div class="contain-grid contain-center1 fl"
+         v-loading="loading"
+         element-loading-text="拼命加载中">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
         <div class="item-lists item-lists-top clearfix">
@@ -85,7 +87,7 @@
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
         <div class="item-lists clearfix" style="padding-top: 10px;">
-          <!--===================================================================================================tab页面-->
+          <!--===============================================================================================================================tab页面-->
           <el-tabs v-model="show" @tab-click="handleClick" style="position: relative">
             <el-tab-pane label="项目详情" name="detail">
               <div class="ul-lists">
@@ -278,7 +280,9 @@
         </div>
       </div>
     </div>
-    <div class="contain-grid contain-right-1 fl">
+    <div class="contain-grid contain-right-1 fl"
+         v-loading="loading"
+         element-loading-text="拼命加载中">
       <div class="main-box">
         <el-tabs v-model="activeName" @tab-click="handleClick2" style="position: relative">
           <el-tab-pane name="1">
@@ -418,11 +422,11 @@
                         </div>
 
                         <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
-                          <button v-if="projectMatchInvestor.push_statues==3" class="button fl" @click="industryPush(0)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
-                          </button>
-                          <button class="button fl" v-else @click="industryPush(projectMatchInvestor)">
+                          <button v-if="projectMatchInvestor.push_statues=-1" class="button fl" @click="industryPush(projectMatchInvestor)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
+                          </button>
+                          <button class="button fl" @click="industryPush(0)" v-else>
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png" ></div>移除</button>
@@ -844,6 +848,7 @@
           }
         ],//人脉筛选条件
         isFollow:-1,//人脉筛选绑定
+        ctrlSelect:true,//筛选控制
       }
     },
     computed:{
@@ -877,6 +882,8 @@
       },//关闭添加跟进
       changefollowdata(){
         this.getFollowData=false;
+        this.getAllData();
+        console.log("获取所有数据一次啊")
       },//关闭添加跟进重置
       download(e){
         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
@@ -1070,29 +1077,7 @@
         }
         this.takechange=true;
       },//hold切换后
-      filterChangeCurrent(page){
-        this.loading=true;
-        this.getConCon.user_id=localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
-        this.currentPage=page;
-        this.getConCon.project_id=this.project.project_id;
-        this.getConCon.page=page;
-        this.getConCon.schedule_id='';
-        this.$http.post(this.URL.getEnjoyedInvestors,this.getConCon)
-          .then(res=>{
-            if(res.data.status_code==2000000) {
-              let data = res.data.data;
-              this.enjoyInvestors=this.setEnjoyInvestor(data);
-              this.totalData = res.data.count;
-            }
-            this.loading = false;
-          })
-          .catch(err=>{
-            this.$tool.console(err,2);
-            this.loading=false;
-            this.$tool.error("加载超时");
-          })
-      },//控制意向投资人页码
+
       handleClick2(tab, event) {
 
         if(tab.name=="1") this.tabs=true;
@@ -1237,6 +1222,36 @@
       getIndex(index){
         this.scheduleIndex=index;
       },//获取意向投资人索引
+      filterChangeCurrent(page){
+
+        if(this.ctrlSelect){
+//          console.log("页码变啦")
+        this.loading=true;
+        this.getConCon.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+//        this.currentPage=page;
+        this.getConCon.project_id=this.project.project_id;
+        this.getConCon.page=page;
+//        this.getConCon.schedule_id='';
+        this.$http.post(this.URL.getEnjoyedInvestors,this.getConCon)
+          .then(res=>{
+            if(res.data.status_code==2000000) {
+              let data = res.data.data;
+              this.enjoyInvestors=this.setEnjoyInvestor(data);
+              this.totalData = res.data.count;
+            }
+            this.loading = false;
+
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.loading=false;
+            this.$tool.error("加载超时");
+          })
+        }
+        this.ctrlSelect=true;
+        console.log(this.ctrlSelect);
+      },//控制意向投资人页码
       selectChange(e){
         let width = 0;
         switch (e){
@@ -1296,6 +1311,9 @@
         return width;
       },//设置项目跟进进度
       selectSearch(e){
+        this.ctrlSelect=false;
+//        console.log("筛选");
+        console.log(this.ctrlSelect);
         this.loading=true;
         this.getConCon.schedule_id=e;
         this.getConCon.user_id=localStorage.user_id;
@@ -1309,14 +1327,12 @@
                 let data = res.data.data;
                 this.enjoyInvestors=this.setEnjoyInvestor(data);
                 this.totalData = res.data.count;
-
+                this.loading = false;
               }
             }else{
               this.enjoyInvestors=[];
               this.totalData = 0;
             }
-
-            this.loading = false;
           })
           .catch(err=>{
             this.$tool.console(err,2);
@@ -1490,7 +1506,8 @@
               this.$tool.success('推送成功');
               this.$refs['littlePush'].resetFields();
               this.littlePushShow=false;
-              this.pushData.pop()
+              this.pushData.pop();
+              this.getProjectMatchInvestors();
             }else{
               this.$tool.error(res.data.error_msg)
               this.pushData.pop();
@@ -1523,34 +1540,36 @@
       closePreview(msg){
         this.dialogPreviewVisible=msg;
       },//关闭项目预览
+      getAllData(){
+        this.loading=true;
+        this.getNewPro()
+          .then((data)=>{
+            return this.getWxProjectCategory();
+          })
+          .then((data)=>{
+            return this.getProjectDetail();
+          })
+          .then((data)=>{
+            return this.getEchartData();
+          })
+          .then((data)=>{
+            return this.getEnjoyedInvestors();
+          })
+          .then((data)=>{
+            this.loading=false;
+            return this.getProjectMatchInvestors();
+          });
+      },//重新获取所有数据
     },
     created () {
       this.loading=true;
       this.getprojectId();
-
-      this.getNewPro()
-      .then((data)=>{
-        return this.getWxProjectCategory();
-      })
-      .then((data)=>{
-        return this.getProjectDetail();
-      })
-      .then((data)=>{
-        return this.getEchartData();
-      })
-      .then((data)=>{
-        return this.getEnjoyedInvestors();
-      })
-      .then((data)=>{
-        this.loading=false;
-        return this.getProjectMatchInvestors();
-      });
-
+      this.getAllData();
     },
     watch: {
-      '$route' (to, from) {
-
-      }
+//      '$route' (to, from) {
+//
+//      }
     },
   }
 </script>

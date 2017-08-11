@@ -1,6 +1,8 @@
 <template>
-  <div id="contactsDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="contain-grid contain-center fl">
+  <div id="contactsDetails" class="clearfix">
+    <div class="contain-grid contain-center fl"
+         v-loading="loading"
+         element-loading-text="拼命加载中">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
         <div class="item-lists2 clearfix">
@@ -46,8 +48,8 @@
               <div class="ul_lists clearfix" v-loading.body="loading1" element-loading-text="拼命加载中">
                 <div class="list" v-for="projectList in projectLists" >
                   <div class="li title">{{projectList.pro_intro}}</div>
-                  <div class="img" v-show="projectList.is_exclusive=='独家'"><img src="../../../assets/images/dujia.png"></div>
-                  <div class="img" v-show="projectList.is_exclusive=='非独家'"><img src="../../../assets/images/feidujia.png"></div>
+                  <div class="img" v-show="projectList.is_exclusive==1"><img src="../../../assets/images/dujia.png"></div>
+                  <div class="img" v-show="projectList.is_exclusive==2"><img src="../../../assets/images/feidujia.png"></div>
                   <div class="li">
                     <span class="tags" v-for="industry in projectList.pro_industry">{{industry}}</span>
                   </div>
@@ -153,7 +155,9 @@
         </div>
       </div>
     </div>
-    <div class="contain-grid contain-right-1 fl">
+    <div class="contain-grid contain-right-1 fl"
+         v-loading="loading"
+         element-loading-text="拼命加载中">
       <div class="main-box">
         <el-tabs v-model="activeName" @tab-click="handleClick" style="position: relative">
 
@@ -219,7 +223,7 @@
                         </div>
 
                         <div class="img"><img src="../../../assets/images/dujia.png" v-if="enjoyProject.is_exclusive==1"></div>
-                        <div class="img"><img src="../../../assets/images/feidujia.png" v-if="enjoyProject.is_exclusive==0"></div>
+                        <div class="img"><img src="../../../assets/images/feidujia.png" v-if="enjoyProject.is_exclusive==2"></div>
                       </div>
                     </div>
                     <div class="emptyImg" v-if="enjoyProjects.length==0">
@@ -273,12 +277,12 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px; border-top: 1px solid #eff2f7">
-                          <button v-if="matchProject.push_statues==3" class="button fl" @click="handlePush(0)">
+
+                          <button  class="button fl" v-if="matchProject.push_statues==-1" @click="handlePush(matchProject)">
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
+                          <button class="button fl" @click="handlePush(0)" v-else>
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
-                          <button  class="button fl" v-else @click="handlePush(matchProject)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
-
                           <button class="button fl" @click="delMatchAction(matchProject)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
@@ -341,13 +345,16 @@
     </el-dialog>
 
     <!--项目详情弹窗-->
-    <alertprojectdetail :dialog-visible-pro="dialogVisiblePro" :proid="pro_id" v-on:changeCon2="dialogVisiblechangeIn"></alertprojectdetail>
+    <alertprojectdetail :dialog-visible-pro="dialogVisiblePro" :proid="pro_id"
+                        @changeCon2="dialogVisiblechangeIn"></alertprojectdetail>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow" :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
+    <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow"
+               :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
 
     <!--项目推送弹窗,人脉入口精简版-->
-    <el-dialog :visible="dialogPushVisible" :before-close="handleClose" size="tiny" :show-close="close">
+    <el-dialog :visible="dialogPushVisible"
+               :before-close="handleClose" size="tiny" :show-close="close">
 
      <span slot="title" class="dialog-title clearfix">
         <div class="title fl">项目推送</div>
@@ -377,10 +384,14 @@
     </el-dialog>
 
     <!--项目推送弹窗,人脉入口完整版-->
-    <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage" :user-email="userEmail" @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
+    <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage"
+                 :user-email="userEmail" @changeall="dialogVisiblechange"
+                 @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange" @closePreview="closePreview" :comeFrom="'contacts'"></projectpreview>
+    <projectpreview :dialog-preview-visible="dialogPreviewVisible"
+                    @changeCon="dialogPrechange" @closePreview="closePreview"
+                    :comeFrom="'contacts'"></projectpreview>
   </div>
 </template>
 

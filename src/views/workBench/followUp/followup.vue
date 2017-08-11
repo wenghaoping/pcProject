@@ -1,5 +1,5 @@
 <template>
-  <div id="followup" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="followup">
     <!-- 右侧底部主内容区 -->
     <div class="wrap-left" style="height:793px">
       <div class="top-search-box clearfix">
@@ -22,8 +22,10 @@
                     @row-click="handleSelect"
                     @header-click="headerClick"
                     @sort-change="filterChange"
-                    @filter-change="filterChange" stripe>
-
+                    @filter-change="filterChange"
+                    v-loading="loading"
+                    element-loading-text="拼命加载中"
+                    stripe>
             <el-table-column prop="pro_name" label="关联项目" show-overflow-tooltip width="150">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 8 ? false:true">
@@ -327,7 +329,6 @@ export default {
 
       this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
-
           let data = res.data.data;
           this.tableData=data.follow_record;
           this.totalData=data.count;
@@ -405,16 +406,13 @@ export default {
       return arr
     },//设置意向投资人表头
     titleSift(){
-      this.loading=true;
       this.$http.post(this.URL.getToInvestor,{user_id: localStorage.user_id})
         .then(res=>{
           let data = res.data.data;
           this.schedule_nameFilters=this.$tool.getTitleSift(data.schedule_name);
           this.card_nameFilters=this.getInvestors(data.investors);
-          this.loading=false;
         })
         .catch(err=>{
-          this.loading=false;
           this.$tool.console(err,2)
         })
     },// 获取表头

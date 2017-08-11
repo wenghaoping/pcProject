@@ -1,5 +1,5 @@
 <template>
-  <div id="mycontacts" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="mycontacts" >
     <!-- 右侧底部主内容区 -->
     <div class="wrap-left" style="height: 793px;">
       <div class="top-search-box clearfix">
@@ -22,7 +22,10 @@
                     @row-click="handleSelect"
                     @header-click="headerClick"
                     @sort-change="filterChange"
-                    @filter-change="filterChange" stripe>
+                    @filter-change="filterChange"
+                    v-loading="loading"
+                    element-loading-text="拼命加载中"
+                    stripe>
             <el-table-column prop="user_real_name" label="姓名" width="200" show-overflow-tooltip>
               <template scope="scope">
                 <div class="img fl">
@@ -458,8 +461,8 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.tableData=this.getProjectList(data);
-          this.loading=false;
           this.totalData=res.data.count;
+          this.loading=false;
         })
         .catch(err=>{
           this.loading=false;
@@ -467,7 +470,6 @@ export default {
         })
     },//搜索===首次进入页面加载的数据
     timeChange(time){
-        console.log(time)
       this.loading=true;
       this.currentPage=1;
       this.getPra.created_at_time=time;
@@ -476,7 +478,6 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.tableData=this.getProjectList(data);
-
           this.totalData=res.data.count;
           this.loading=false;
         })
@@ -526,10 +527,10 @@ export default {
       this.$tool.console(this.getPra);
       this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
-          this.loading=false;
           let data = res.data.data;
           this.$tool.console(res);
           this.tableData=this.getProjectList(data);
+          this.loading=false;
         })
         .catch(err=>{
           this.loading=false
@@ -538,7 +539,6 @@ export default {
     },//控制页码
 
     titleSift(){
-      this.loading=true;
       this.$http.post(this.URL.userTitleSift,{user_id: localStorage.user_id})
         .then(res=>{
           let data = res.data.data;
@@ -548,10 +548,8 @@ export default {
           this.user_invest_industryFilters=this.$tool.getTitleSift(card_industry);
           this.user_invest_stageFilters=this.$tool.getTitleSift(card_stage);
           this.tagFilters=this.$tool.getTitleSift(card_tag);
-          this.loading=false;
         })
         .catch(err=>{
-          this.loading=false;
           this.$tool.console(err,2)
         })
     },// 获取表头
@@ -639,7 +637,6 @@ export default {
 
   },
   created(){
-
     this.loading=true;
     this.$global.func.getWxProjectCategory();
     this.titleSift();
