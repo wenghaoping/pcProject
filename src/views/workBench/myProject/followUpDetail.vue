@@ -163,6 +163,7 @@
       },//点击写跟近按钮
     },
     created(){
+      this.$tool.getTop();
       this.getProjectFollowList(1);
     },
     watch : {

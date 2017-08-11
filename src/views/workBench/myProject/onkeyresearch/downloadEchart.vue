@@ -270,7 +270,7 @@ export default {
       opacity: 0;
       position: absolute;
       left: 317px;
-      top: 55px;
+      top: 43px;
     }
   }
   .sec{
@@ -279,7 +279,6 @@ export default {
     color:#5e6d82;
     margin-top:48px;
     line-height: 23px;
-    margin-bottom: 24px;
     i{
       color:#475669;
       font-weight: bolder;
