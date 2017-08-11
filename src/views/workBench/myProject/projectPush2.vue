@@ -574,7 +574,6 @@
               let thisId=x.card.user_id
               this.myCheckList[thisId]=!this.myCheckList[thisId]
             }
-
             return
           }
         }
