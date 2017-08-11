@@ -180,7 +180,7 @@
             <el-table-column prop="login_time" label="最近活跃" show-overflow-tooltip
                              width="100"
                              column-key="login_time"
-                             :filters="created_atFilters"
+                             :filters="login_timeFilters"
                              :filter-multiple="stateCheck"
                              sortable="custom">
               <template scope="scope">
@@ -201,7 +201,7 @@
             <el-table-column
               prop="reset"
               label="重置"
-              width="130" class="set-th">
+              width="130" class="set-th btn-cur">
               <template scope="scope">
                 <el-button
                   @click="handlePush(scope.$index, scope.row)"
@@ -338,7 +338,6 @@ export default {
       user_invest_industryFilters:[],//投资领域筛选条件
       user_invest_stageFilters:[],//投资轮次筛选
       tagFilters:[],//标签筛选条件
-      login_timeFilters:[],//最近活跃
       userMessage:{
         user_real_name:'',//姓名
         user_company_career:'',//职位
@@ -357,13 +356,13 @@ export default {
           return time.getTime() > Date.now() - 8.64e7+3600 * 1000 * 24;
         }
       },
-      created_atFilters:[
+      login_timeFilters:[
         { text: '刚刚活跃', value: 0 },
         { text: '一天前活跃', value: 1 },
         { text: '两天前活跃', value: 2 },
         { text: '三天前活跃', value: 3 },
         { text: '一周前活跃', value: 4 }
-      ],//更近时间选择
+      ],//最近活跃
       stateCheck:false,//跟进状态单选
     }
   },
@@ -446,6 +445,7 @@ export default {
     },//关闭推送弹框,打开预览弹框
     dialogVisiblechangeCloase(msg){
       this.dialogPushVisible=msg;
+      this.handleIconClick();
     },//关闭项目推送弹窗
     dialogPrechange(msg){
       this.dialogPushVisible=msg;

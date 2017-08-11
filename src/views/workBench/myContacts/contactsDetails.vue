@@ -233,7 +233,7 @@
                   <el-pagination
                     class="pagination fr"
                     small
-                    v-if="totalData2!=0"
+                    v-if="totalData2>5"
                     @current-change="filterChangeCurrent1"
                     :current-page.sync="currentPage2"
                     layout="prev, pager, next"
@@ -298,7 +298,7 @@
                   <el-pagination
                     class="pagination fr"
                     small
-                    v-if="totalData3!=0"
+                    v-if="totalData3>5"
                     @current-change="filterChangeCurrent2"
                     :current-page.sync="currentPage3"
                     layout="prev, pager, next"
@@ -611,7 +611,8 @@
         this.currentPage2=page;
         this.getConpro.card_id=this.contacts.card_id;
         this.getConpro.page=page;
-        this.getConpro.schedule_id='';
+        this.getConpro.card_link_user_id=this.contacts.user_id;
+//        this.getConpro.schedule_id='';
         this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
           if(res.data.status_code==2000000) {
@@ -846,7 +847,7 @@
         this.loading = true;
         var getEchartData = new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id})
+          this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id,card_link_user_id:this.contacts.user_id})
             .then(res=>{
               if(res.data.status_code==2000000) {
                 let data = res.data.data;
@@ -875,13 +876,17 @@
           this.getConpro.card_id=this.contacts.card_id;
           this.getConpro.page=1;
           this.getConpro.schedule_id='';
+          this.getConpro.card_link_user_id=this.contacts.user_id;
           this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
             .then(res=>{
               if(res.data.status_code==2000000) {
                 let data = res.data.data;
                 this.enjoyProjects=this.setEnjoyProject(data);
                 this.totalData2 = res.data.count || 0;
-                if(this.enjoyProjects.length==0) this.activeName='2';
+                if(this.enjoyProjects.length==0) {
+                    this.activeName='2';
+                    this.tabs=false;
+                }
               }
               this.loading = false;
             })
@@ -1042,6 +1047,7 @@
         this.currentPage2=1;
         this.getConpro.card_id=this.contacts.card_id;
         this.getConpro.page=1;
+        this.getConpro.card_link_user_id=this.contacts.user_id;
         this.$http.post(this.URL.getEnjoyProjects,this.getConpro)
         .then(res=>{
           if(res.data.data.length!=0){
@@ -1071,7 +1077,9 @@
           this.currentPage3=1;
           this.getMatchPro.investor_id=this.contacts.investor_id;
           this.getMatchPro.card_id=this.contacts.card_id;
+          this.getMatchPro.card_link_user_id=this.contacts.user_id;
           this.getMatchPro.page=1;
+
           this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
             .then(res=>{
               if(res.data.status_code==2000000) {

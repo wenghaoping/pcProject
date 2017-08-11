@@ -475,6 +475,7 @@
 
 <style lang="less">
   #alertProjectDetail{
+
     /*组件自带格式修改*/
     .el-dialog__body{
       padding: 0 !important;;
