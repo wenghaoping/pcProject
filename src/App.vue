@@ -59,7 +59,6 @@
 </template>
 
 <script>
-
   export default {
     data () {
       return {
@@ -114,7 +113,7 @@
         }
         //未登录状态下拦截
         if(!localStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/' && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/' && this.$route.path!=='/workBench' && this.$route.path!=='/qr'){
-          this.$tool.error('请先登录');
+//          this.$tool.error('请先登录');
           this.$router.push({name:'index'});
         }
         //十二小时不动后退出登录

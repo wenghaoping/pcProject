@@ -487,7 +487,7 @@
                :followid="followid"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :proName="project.pro_name" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :pro-intro="project.pro_intro" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
 
     <!--项目推送项目入口小弹窗-->
     <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel" >

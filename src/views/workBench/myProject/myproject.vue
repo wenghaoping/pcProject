@@ -319,7 +319,7 @@
     <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :proName="pushName" :emitPush="emitPush" @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
+    <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush" @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
 
     <!--项目预览弹窗-->
     <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @closePreview="closePreview" @previewPush="previewPush"></projectpreview>
@@ -423,7 +423,7 @@
           label: '删除'
         }],//更多的选项表单
         pushId:'',//推送项目传值-项目ID
-        pushName:'',//推送项目传值-项目名称
+        pushIntro:'',//推送项目传值-项目名称
         dialogPreviewVisible:false,//控制项目推送预览显隐
         emitPush:false,//控制项目推送-项目入口的推送函数触发
       }
@@ -453,8 +453,9 @@
         this.dialogFollow=msg;
       },//关闭添加跟进
       addprojectPush(index, row){
+        console.log(row)
         this.pushId=row.project_id;
-        this.pushName=row.pro_name;
+        this.pushIntro=row.pro_intro;
         this.dialogPushVisible=true;
       },//点击项目推送
       dialogVisiblechangeCloase(msg){
@@ -742,22 +743,16 @@
 
 <style type="text/css" lang="less">
   @import '../../../assets/css/myproject';
-
   .el-table-filter__list{
     min-width: 130px!important;;
   }
   .el-table-filter__bottom button:first-child{
     color:#20a0ff;
   }
-
-
   .el-dialog{
     .el-dialog__header{
       padding-left: 64px;
       padding-top: 32px;
     }
   }
-
-
-
 </style>
