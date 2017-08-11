@@ -273,7 +273,7 @@ export default {
       }
     },//点击重置按钮时
     handleDelete(index,row){
-      this.$confirm('此操作将永久删除该跟进, 是否继续?', '提示', {
+      this.$confirm('您确定要删除当前项目跟进记录及关联文件吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

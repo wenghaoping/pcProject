@@ -5,7 +5,7 @@
       <div class="main-box" style="display: inline-block">
         <div class="left-wrap" ref="left" style="margin-top:24px;">
           <!--=================================基本资料=================================-->
-          <div class="item-block" style="margin-top:0;margin-bottom: 16px;">
+          <div class="item-block" style="margin-top:0;margin-bottom: 16px; padding-bottom: 26px;">
             <div class="bigTitle">添加人脉</div>
             <div class="block-tt-line">
               <span class="b-title">基本资料</span>
@@ -131,7 +131,7 @@
             </el-collapse-transition>
           </div>
           <!--=================================投资需求=================================-->
-          <div class="item-block" style="margin-top:0;margin-bottom: 16px;">
+          <div class="item-block" style="margin-top:0;margin-bottom: 16px;padding-bottom: 26px;">
             <div class="block-tt-line">
               <span class="b-title">投资需求</span>
               <span class="b-line"></span>
@@ -233,7 +233,7 @@
           </div>
 
           <!--=================================资源需求=================================-->
-          <div class="item-block" style="margin-top:0;margin-bottom: 16px;">
+          <div class="item-block" style="margin-top:0;margin-bottom: 16px;padding-bottom: 26px;">
             <div class="block-tt-line">
               <span class="b-title">资源需求</span>
               <span class="b-line"></span>
