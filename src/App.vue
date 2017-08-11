@@ -134,14 +134,7 @@
     },
     //当dom一创建时
     created(){
-//       if(localStorage.user_id=="" || localStorage.user_id==undefined){
-//         this.$router.push({ name: 'SmallRoutine'});
-//       }else{
-//       //        this.$router.push('/');
-//       this.active=0;
-//       }
-//     this.setUserId();
-
+//    this.setUserId();
       this.user_name= localStorage.user_real_name;
 //      console.log(localStorage.user_real_name,3);
 

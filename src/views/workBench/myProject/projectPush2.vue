@@ -51,7 +51,7 @@
               <!--多选框-->
               <el-table-column width="64" v-if="reBorn">
                 <template scope="scope">
-                    <el-checkbox :checked="myCheckList[scope.row.card.card_id]" :label="scope.row.card.card_id" @change="myCheck" :name="scope.row.card.user_real_name+'( '+scope.row.card.user_email+' )'"></el-checkbox>
+                    <el-checkbox :checked="myCheckList[scope.row.card.card_id] || myCheckList[scope.row.card.user_id]" :label="scope.row.card.card_id || scope.row.card.user_id" @change="myCheck" :name="scope.row.card.user_real_name+'( '+scope.row.card.user_email+' )'"></el-checkbox>
                 </template>
               </el-table-column>
               <!--姓名-->
@@ -361,6 +361,8 @@
       },
       //重新渲染组建
       reBorn:false,
+      //自定义添加人脉数据(服务于新加人脉后自动选中)
+      newAddContacts:{},
 
       email:{
         title:'有人给您推荐一个项目,赶紧看看吧',//邮件标题
@@ -404,12 +406,31 @@
         if(res.data.status_code===2000000){
 //          console.log('我的人脉', res.data.data)
           this.myContacts=res.data.data;
+          //有参数remote传则是项目搜索时调用当前接口
           if(remote){
             //强置刷新checkBox状态
             this.reBorn=false;
             setTimeout(()=>{
               this.reBorn=true;
             },0)
+          }
+          //如果this.newAddContacts有数据则是自定义人脉时调用当前接口
+          if(this.newAddContacts.name && this.newAddContacts.email){
+            let lastOne=this.myContacts.slice(-1)[0].card
+            if(lastOne.user_real_name===this.newAddContacts.name && lastOne.user_email===this.newAddContacts.email){
+              //在checkbox上勾选自定义人脉
+              if(this.myContacts.slice(-1)[0].type==='card'){
+                this.myCheckList[lastOne.card_id]=true
+              }else{
+                this.myCheckList[lastOne.user_id]=true
+              }
+              //在input显示中添加自定义人脉
+              this.myContactsShow.push(lastOne.user_real_name)
+              //在pushData中添加自定义人脉
+              this.pushData.push(this.myContacts.slice(-1)[0])
+              //清除痕迹
+              this.newAddContacts={};
+            }
           }
         }else{
 //          console.log(res.data.error_msg)
@@ -455,7 +476,6 @@
       this.netContactsShow=[];
       this.pushTitle='';
       this.pushBody='';
-      this.pushData=[];
       this.myCheckList={};
       this.netCheckList={};
       this.getMyContacts();
@@ -502,6 +522,8 @@
         }).then(res=>{
           console.log(res)
           if(res.data.status_code===2000000){
+            this.newAddContacts.name=this.customerAddForm.name;
+            this.newAddContacts.email=this.customerAddForm.email;
             this.$refs['customerAddForm'].resetFields();
             this.dialogFormVisible=false;
             this.getMyContacts();
@@ -544,8 +566,14 @@
       this.myContacts.forEach((x,index)=>{
         if(x.card.user_email===email){
           if(x.card.user_real_name===name){
-            let thisId=x.card.card_id
-            this.myCheckList[thisId]=!this.myCheckList[thisId]
+            if(x.type==='card'){
+              let thisId=x.card.card_id
+              this.myCheckList[thisId]=!this.myCheckList[thisId]
+            }else{
+              let thisId=x.card.user_id
+              this.myCheckList[thisId]=!this.myCheckList[thisId]
+            }
+
             return
           }
         }
@@ -695,6 +723,7 @@
           if(res.data.status_code===2000000){
             this.$tool.success('推送成功');
             this.initData();
+            this.initReborn();
             this.$emit('changeClose',false);
           }
         })
@@ -711,7 +740,16 @@
       for(let x in this.netCheckList){
         x=false;
       }
+      //强置刷新checkBox状态
+      this.initReborn();
       this.$emit('changeClose',false);
+    },
+    //强制刷新checkbox
+    initReborn(){
+      this.reBorn=false;
+      setTimeout(()=>{
+        this.reBorn=true;
+      },0)
     },
   },
   computed: mapState({
@@ -748,7 +786,11 @@
           }).then(res => {
             if(res.data.status_code===2000000){
               res.data.data.forEach(x=>{
-                this.myCheckList[x.card.card_id]=false;
+                if(x.type==='card'){
+                  this.myCheckList[x.card.card_id]=false;
+                }else{
+                  this.myCheckList[x.card.user_id]=false;
+                }
               })
               this.myContacts=res.data.data;
               //如果我的人脉为空,则默认显示全网人脉页面
@@ -786,7 +828,7 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/mycontacts';
+  @import '../../../assets/css/projectPush';
   .el-table .cell .el-tooltip{
     max-width: 105px!important;
     overflow: hidden!important;
