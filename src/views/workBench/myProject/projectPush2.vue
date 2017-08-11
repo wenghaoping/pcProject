@@ -567,8 +567,14 @@
       this.myContacts.forEach((x,index)=>{
         if(x.card.user_email===email){
           if(x.card.user_real_name===name){
-            let thisId=x.card.card_id
-            this.myCheckList[thisId]=!this.myCheckList[thisId]
+            if(x.type==='card'){
+              let thisId=x.card.card_id
+              this.myCheckList[thisId]=!this.myCheckList[thisId]
+            }else{
+              let thisId=x.card.user_id
+              this.myCheckList[thisId]=!this.myCheckList[thisId]
+            }
+
             return
           }
         }
