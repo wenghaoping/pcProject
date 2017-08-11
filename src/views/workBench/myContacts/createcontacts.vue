@@ -46,7 +46,7 @@
                     <el-col :span="12">
                       <el-form-item
                         label="姓名"
-                        prop="user_real_name" :rules="[{ required: true, message: '请输入姓名', trigger: 'blur' },{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
+                        prop="user_real_name" :rules="[{ required: true, message: '请输入姓名', trigger: 'blur' },{max: 20, message: '长度不能大于20个字符', trigger: 'blur' }]">
                         <el-input v-model="contacts.user_real_name" placeholder="请输入姓名"></el-input>
                       </el-form-item>
                     </el-col>
@@ -735,8 +735,7 @@ export default {
     },
   },
   created(){
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    this.$tool.getTop();
     this.getContactsId();
     this.getNewPro();
     setTimeout(() =>{

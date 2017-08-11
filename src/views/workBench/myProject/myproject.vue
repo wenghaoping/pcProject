@@ -462,6 +462,7 @@
       },//关闭项目推送弹窗
       /*请求函数*/
       handleIconClick(){
+        this.$tool.getTop();
         this.loading=true;
         this.getPra.user_id=localStorage.user_id;
         this.getPra.search=this.searchinput;
@@ -536,8 +537,9 @@
           .then(res=>{
             this.loading=false;
             let data = res.data.data;
-            this.$tool.console(res)
+            this.$tool.console(res);
             this.tableData=this.getProjectList(data);
+            this.$tool.getTop();
           })
           .catch(err=>{
             this.loading=false
@@ -722,8 +724,7 @@
     },
     created () {
       // 组件创建完后获取数据，
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+
       this.getProjectListURL=this.URL.getProjectList;
       this.loading=true;
       this.getNodeCount();

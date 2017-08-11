@@ -340,6 +340,7 @@ export default {
         })
     },//筛选 ascending升/descending降/
     filterChangeCurrent(page){
+      this.$tool.getTop();
       delete this.getPra.page;
       this.loading=true;
       this.getPra.user_id=localStorage.user_id;
@@ -418,8 +419,7 @@ export default {
     },// 获取表头
   },
   created(){
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    this.$tool.getTop();
     this.loading=true;
     this.titleSift();
     this.handleIconClick();

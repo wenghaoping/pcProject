@@ -145,7 +145,7 @@
               </div>
             </div>
 
-            <div class="button_list" >
+            <div class="toButton" >
               <div class="lis">
                 <button class="button" @click="goEdit" v-if="contacts.is_bind==0">编辑</button>
                 <button class="button" @click="handlePushComplete" style="margin-left: 16px;">项目推送</button>
@@ -277,11 +277,11 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px; border-top: 1px solid #eff2f7">
-                          <button  class="button fl" v-if="matchProject.push_statues==-1" @click="handlePush(matchProject)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
-                          <button class="button fl" @click="handlePush(0)" v-else>
+                          <button class="button fl" @click="handlePush(0)" v-if="matchProject.push_statues==-1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
+                          <button  class="button fl"  @click="handlePush(matchProject)" v-else>
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <span class="lineLine fl"></span>
                           <button class="button fl" @click="delMatchAction(matchProject)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
@@ -355,13 +355,12 @@
     <!--项目推送弹窗,人脉入口精简版-->
     <el-dialog :visible="dialogPushVisible"
                :before-close="handleClose" size="tiny" :show-close="close">
-
      <span slot="title" class="dialog-title clearfix">
         <div class="title fl">项目推送</div>
         <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
         <div class="img fl"><img src="../../../assets/images/why.png"></div>
       </span>
-      <el-form :model="pushData" label-position="right" label-width="60px"
+      <el-form :model="pushData" label-position="right" label-width="80px"
                ref="pushData">
         <el-form-item
           prop="email"
@@ -372,9 +371,9 @@
         ]">
           <el-input v-model="pushData.email" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="一句话" prop="body"
+        <el-form-item label="邮件标题" prop="body"
         :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-          <el-input v-model="pushData.body" auto-complete="off"></el-input>
+          <el-input v-model="pushData.body" auto-complete="off" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -1241,8 +1240,7 @@
       },//获取最新的下拉框数据
     },
     created(){
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+      this.$tool.getTop();
       this.loading=true;
       this.getUserId();
       this.getpushCount();

@@ -177,11 +177,12 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="login_time" label="最近活跃" show-overflow-tooltip
-                             width="100"
+            <el-table-column prop="login_time" label="最近活跃"
+                             width="100" show-overflow-tooltip
                              column-key="login_time"
                              :filters="login_timeFilters"
                              :filter-multiple="stateCheck"
+                             filter-placement="bottom-end"
                              sortable="custom">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.login_time.length > 4 ? false:true">
@@ -535,6 +536,7 @@ export default {
           this.$tool.console(res);
           this.tableData=this.getProjectList(data);
           this.loading=false;
+          this.$tool.getTop();
         })
         .catch(err=>{
           this.loading=false
@@ -647,8 +649,7 @@ export default {
 
   },
   created(){
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    this.$tool.getTop();
     this.loading=true;
     this.$global.func.getWxProjectCategory();
     this.titleSift();

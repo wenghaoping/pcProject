@@ -261,11 +261,11 @@
             this.$tool.error("名字不能超过20个字");
             this.follow.card_name="";
           } else {
-            this.$confirm('是否添加该人脉, 是否继续?', '提示', {
+/*            this.$confirm('是否添加该人脉, 是否继续?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
               type: 'warning'
-            }).then(() => {
+            }).then(() => {*/
               this.loading = true;
               this.$http.post(this.URL.createUserCard, {user_id: localStorage.user_id, user_real_name: item.na})
                 .then(res => {
@@ -280,14 +280,14 @@
                   this.$tool.console(err);
                   this.follow.card_name = item.na;
                 })
-            }).catch(() => {
+/*            }).catch(() => {
               this.$message({
                 type: 'info',
                 message: '已取消添加'
               });
               this.follow.card_name = na;
               this.follow.card_id = '';
-            });
+            });*/
           }
         }
       },//选择意向投资人后
@@ -628,8 +628,7 @@
       },//清除所有数据
     },
     created(){
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+//      alert("吊接口啦")
     },
     watch : {
       followid : function(e){

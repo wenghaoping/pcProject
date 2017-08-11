@@ -1902,7 +1902,7 @@
 
       /*检查所有必填项目以及获取所有数据*/
       submitForm(formName) {
-        let check = true
+        let check = true;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             return
@@ -2051,7 +2051,7 @@
           this.$http.post(this.URL.editProject, allData)
             .then(res => {
               this.loading=false;
-              this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '继续编辑')
+              this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '返回列表')
             })
             .catch(err => {
               this.$tool.error("编辑失败");
@@ -2083,11 +2083,7 @@
         }).then(() => {
           this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}})
         }).catch(() => {
-          this.$message({
-            type: 'success',
-            message: '继续编辑'
-          });
-          this.getProjectDetail();
+          this.$router.push({name: 'myProject',query: {activeTo: 0}})
         });
       },
       /*锚点跳转*/

@@ -422,11 +422,12 @@
                         </div>
 
                         <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
-                          <button v-if="projectMatchInvestor.push_statues=-1" class="button fl" @click="industryPush(projectMatchInvestor)">
-                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
-                          </button>
-                          <button class="button fl" @click="industryPush(0)" v-else>
+
+                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==-1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
+                          </button>
+                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-else>
+                            <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
                           <span class="lineLine fl"></span>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none">
@@ -1563,16 +1564,17 @@
       },//重新获取所有数据
     },
     created () {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+      this.$tool.getTop();
       this.loading=true;
       this.getprojectId();
       this.getAllData();
     },
-    watch: {
-//      '$route' (to, from) {
-//
-//      }
+    watch(){
+      document.onscroll = function(){
+//        if(document.body.scrollTop+document.body.clientHeight>=document.body.scrollHeight){
+          console.log(document.body.scrollHeight)
+//        }
+      }
     },
   }
 </script>
