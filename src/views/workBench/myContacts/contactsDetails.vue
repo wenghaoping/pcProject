@@ -377,6 +377,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <!--<el-button @click="preview">预 览</el-button>-->
         <el-button @click="dialogPushVisible = false">取 消</el-button>
         <el-button type="primary" @click="submitForm('pushData')">确 定</el-button>
       </div>
@@ -593,6 +594,28 @@
 //      this.dialogPushVisible=msg;
         this.dialogPreviewVisible=true;
       },//关闭推送弹框,打开预览弹框
+      preview(){
+        if(this.pushCount!=0) {
+          if (!this.$tool.checkEmail(this.pushData.email)) this.$tool.error("请输入正确的邮箱")
+          else if(this.pushData.body>40) this.$tool.error("标题不能大于40个字")
+          else {
+            this.$store.state.pushProject.project_id = this.$store.state.pushProject.projectMessgae.pro_id;
+            this.$store.state.pushProject.user = this.user;
+            this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
+            this.$store.state.pushProject.pushMessage.card_id = this.userMessage.card_id;
+//            this.$store.state.pushProject.pushMessage.investor_id=this.user.investor_id;
+            this.$store.state.pushProject.pushMessage.email = this.pushData.email;
+            this.$store.state.pushProject.pushMessage.title = this.pushData.body;
+            this.$store.state.pushProject.pushMessage.project_ids = new Array;
+            this.$store.state.pushProject.pushMessage.project_ids.push(this.$store.state.pushProject.projectMessgae.pro_id);
+            this.$store.state.pushProject.email.title = this.pushData.body;
+            this.dialogPreviewVisible = true
+          }
+        }else{
+          this.$tool.warning("您今日的推送次数已经达到5次,请明天再试")
+        }
+
+      },//项目预览
       closePreview(msg){
         this.dialogPreviewVisible=msg;
       },//关闭项目预览
@@ -1205,8 +1228,8 @@
             pushData.user_id= localStorage.user_id;
             pushData.card_id=this.contacts.card_id;
             pushData.email=this.pushData.email;
-            pushData.title="";
-            pushData.body=this.pushData.body;
+            pushData.title=this.pushData.body;
+            pushData.body="";
             pushData.project_ids=new Array;
             pushData.project_ids.push(this.pushData.project_id);
             this.$http.post(this.URL.pushUser, pushData)

@@ -1,7 +1,7 @@
 <template>
   <div id="followup">
     <!-- 右侧底部主内容区 -->
-    <div class="wrap-left" style="height:793px">
+    <div class="wrap-left" style="">
       <div class="top-search-box clearfix">
         <div class="input-box fl">
           <el-input
@@ -16,7 +16,7 @@
           <el-button type="primary" @click="addFollow">写更进</el-button>
         </div>
       </div>
-      <div class="top-lists" style="height:690px;cursor: pointer">
+      <div class="top-lists" style="cursor: pointer">
         <template>
           <el-table :data="tableData" style="width: 100%"
                     @row-click="handleSelect"
@@ -26,6 +26,22 @@
                     v-loading="loading"
                     element-loading-text="拼命加载中"
                     stripe>
+            <el-table-column prop="pro_intro" label="项目名称" show-overflow-tooltip width="150">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 8 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.pro_intro}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.pro_intro}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.pro_intro.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
             <el-table-column prop="pro_name" label="关联项目" show-overflow-tooltip width="150">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 8 ? false:true">
@@ -80,9 +96,9 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="follow_desc" label="跟进描述" show-overflow-tooltip width="289">
+            <el-table-column prop="follow_desc" label="跟进描述" show-overflow-tooltip width="139">
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.follow_desc.length > 20 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.follow_desc.length > 15 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.follow_desc}}</div>
                   </div>
@@ -273,7 +289,7 @@ export default {
       }
     },//点击重置按钮时
     handleDelete(index,row){
-      this.$confirm('此操作将永久删除该跟进, 是否继续?', '提示', {
+      this.$confirm('您确认要删除当前项目跟进记录及关联文件吗?, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

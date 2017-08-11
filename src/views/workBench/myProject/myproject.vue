@@ -1,6 +1,6 @@
 <template>
   <div id="myproject">
-    <div class="wrap-left fl" style="height: 888px;">
+    <div class="wrap-left fl" style="">
       <div class="top-big-progress">
         <div class="pp-item pp-node pp-start" :class="{'pp-cur':node0}" @click="setNode('0')">
           <p class="pp-num pp-txt">{{nodeCount.whole}}</p>

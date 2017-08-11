@@ -150,7 +150,7 @@ var func = {
 
 }
 //运行函数
-func.getWxProjectCategory();
+// func.getWxProjectCategory();
 
 export default {
   data, func

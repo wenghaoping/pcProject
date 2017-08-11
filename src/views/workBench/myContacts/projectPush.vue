@@ -117,7 +117,7 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
               <el-button @click="preview">预览</el-button>
-              <el-button type="primary" @click="push(2)">继续推送</el-button>
+              <!--<el-button type="primary" @click="push(2)">继续推送</el-button>-->
               <el-button type="primary" @click="push(1)">推送</el-button>
             </span>
     </el-dialog>
@@ -237,7 +237,6 @@ export default {
         else if(this.email.body.length>500) this.$tool.error("正文不能大于500个字")
         else if(type ==1){ //关闭
           if(check1 && check2) {
-            console.log("推送啦1")
             let pushData=new Object;
             pushData.user_id= localStorage.user_id;
             pushData.card_id=this.user.card_id;
@@ -246,21 +245,25 @@ export default {
             pushData.body=this.email.body;
             pushData.project_ids=new Array;
             pushData.project_ids.push(this.projectRadio);
+            this.loading=true;
             this.$http.post(this.URL.pushUser, pushData)
               .then(res => {
                 let data=res.data.data;
 //              this.$tool.console(res);
-//              this.$emit('changeall',false);
+//              this.$emit('changeall',false)
                 this.$tool.success("推送成功");
-                this.$emit('changeCloseProjectpush',false);
+//                this.$emit('changeCloseProjectpush',false);
                 this.getpushCount();
+                this.loading=false;
+                this.open2('推送成功', '推送成功', '继续推送', '返回');
               })
               .catch(err => {
                 this.$tool.console(err);
                 this.$tool.success("推送失败");
               })
           }
-        }else if(type==2){ //继续
+        }
+/*        else if(type==2){ //继续
           let pushData=new Object;
           pushData.user_id= localStorage.user_id;
           pushData.card_id=this.user.card_id;
@@ -288,7 +291,7 @@ export default {
               this.$tool.console(err);
               this.$tool.success("推送失败");
             })
-        }
+        }*/
       }else{
           this.$tool.warning("您今日的推送次数已用完")
       }
@@ -396,6 +399,29 @@ export default {
     handleSelect(row, event, column) {
       this.projectRadio=row.project_id;
     },//点击单选
+    open2(title, main, confirm, cancel) {
+      this.$confirm(main, title, {
+        confirmButtonText: confirm,
+        cancelButtonText: cancel,
+        type: 'success'
+      }).then(() => {
+        this.remoteMethod("");
+        this.getpushCount();
+        this.clearData();
+      }).catch(() => {
+        this.$emit("changeCloseProjectpush",false);
+        this.clearData();
+      });
+    },
+    clearData(){
+      this.user={};
+      this.email2.nameEmai="";
+      this.projectList=[];
+      this.tableData3 =[];
+      this.email=this.firstInData.email;
+      this.user=this.firstInData.user;
+      this.email2=this.firstInData.email2;
+    }
   },
   watch : {
     projectRadio : function(e){

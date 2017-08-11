@@ -202,7 +202,7 @@
     background: #f3f4f8;
 
     main {
-      min-height: 777px;
+      min-height: 791px;
     }
     font-family: "Helvetica Neue", "PingFang SC", Arial, sans-serif;
     header {

@@ -1,7 +1,7 @@
 <template>
   <div id="mycontacts" >
     <!-- 右侧底部主内容区 -->
-    <div class="wrap-left" style="height: 793px;">
+    <div class="wrap-left" style="">
       <div class="top-search-box clearfix">
         <div class="input-box fl">
           <el-input
@@ -16,7 +16,7 @@
           <el-button type="primary" @click="addContacts">添加人脉</el-button>
         </div>
       </div>
-      <div class="top-lists" style="height:690px;cursor: pointer">
+      <div class="top-lists" style="cursor: pointer">
         <template>
           <el-table :data="tableData" style="width: 100%"
                     @row-click="handleSelect"
@@ -511,6 +511,9 @@ export default {
           delete this.getPra[key];
         }
       }//删除空的查询项
+      if(this.getPra.login_time){
+        this.getPra.login_time=this.getPra.login_time[0];
+      }
       this.$tool.console(this.getPra);
       this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
