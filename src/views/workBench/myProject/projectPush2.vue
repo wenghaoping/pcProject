@@ -314,10 +314,10 @@
   import customerAddContacts from '../../../components/customerAddContacts.vue'
   import { mapState } from 'vuex'
   export default {
-  props: ["dialogPush",'proid','proName','emitPush'],
+  props: ["dialogPush",'proid','proIntro','emitPush'],
   data () {
     return {
-      project_name:this.proName,
+      project_name:this.proIntro,
       project_id:this.proid,
       close:false,//默认关闭
       loading: false,
@@ -765,7 +765,7 @@
     //打开该弹框时
     dialogPush:function(e){
       if(e===true){
-        this.project_name=this.proName;
+        this.project_name=this.proIntro;
         this.project_id=this.proid;
         this.initData();
         //为了重置checkBox状态
