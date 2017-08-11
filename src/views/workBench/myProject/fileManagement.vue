@@ -9,7 +9,7 @@
         <template slot="title">
           <span class="clearfix collapseHead groupName">
             {{item.type_name}}  (<span>{{item.fileNum}}</span>)
-             <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img :src="delteIcon">删除</el-button>
+             <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img :src="deleteIcon">删除</el-button>
             <!--bp上传-->
              <div class="fr" v-if="item.type_id===1 && parseInt(item.fileNum)===0 && item.newFile.length===0">
                <el-upload
@@ -587,6 +587,8 @@
       },
     },
     created(){
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
       this.initData();
     },
     watch: {}

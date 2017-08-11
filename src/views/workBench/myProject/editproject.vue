@@ -2225,6 +2225,8 @@
     },
     //    当dom一创建时
     created(){
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
       this.loading = true;
       this.getprojectId();
       this.$global.func.getWxProjectCategory();

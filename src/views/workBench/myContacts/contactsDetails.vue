@@ -197,7 +197,7 @@
                             {{enjoyProject.pro_intro}}
                           </div>
                           <div class="li" style="margin-top: 18px;">
-                            <span class="big-tag"><i v-for="industry in enjoyProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                            <span class="big-tag" v-if="enjoyProject.industry!=0"><i v-for="industry in enjoyProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
                             <span class="big-tag">{{enjoyProject.scale}}</span><span class="split">｜</span>
@@ -267,7 +267,7 @@
                             {{matchProject.pro_intro}}
                           </div>
                           <div class="li" style="margin-top: 18px;">
-                            <span class="big-tag"><i v-for="industry in matchProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                            <span class="big-tag" v-if="matchProject.industry!=0"><i v-for="industry in matchProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
                             <span class="big-tag">{{matchProject.scale}}</span><span class="split">｜</span>
@@ -277,12 +277,12 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px; border-top: 1px solid #eff2f7">
-
                           <button  class="button fl" v-if="matchProject.push_statues==-1" @click="handlePush(matchProject)">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <button class="button fl" @click="handlePush(0)" v-else>
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
+                          <span class="lineLine fl"></span>
                           <button class="button fl" @click="delMatchAction(matchProject)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png"></div>移除</button>
                         </div>
@@ -796,7 +796,7 @@
         if (tagName != undefined) {
           if(tagName.length>40){
             this.$tool.error("最多输入40个字");
-            this.contacts.user_invest_tag.pop();
+            this.tagsValue.pop();
           }else {
             this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
               .then(res => {
@@ -1233,6 +1233,8 @@
       },//获取最新的下拉框数据
     },
     created(){
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
       this.loading=true;
       this.getUserId();
       this.getpushCount();

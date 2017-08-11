@@ -327,10 +327,10 @@
                             <span class="company">{{enjoyInvestor.user_company_name}}</span>
                           </div>
                           <div class="block" style="margin-top: 42px;">
-                            <span class="company ft13">投资领域：<i v-for="industry in enjoyInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                            <span class="company ft13" v-if="enjoyInvestor.user_invest_industry.length!=0">投资领域：<i v-for="industry in enjoyInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="block" style="margin-top: 5px;">
-                            <span class="company ft13">投资轮次：<i v-for="stage in enjoyInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
+                            <span class="company ft13" v-if="enjoyInvestor.user_invest_stage.length!=0">投资轮次：<i v-for="stage in enjoyInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
                         <div class="li change_li">
@@ -428,6 +428,7 @@
                           <button class="button fl" @click="industryPush(0)" v-else>
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
+                          <span class="lineLine fl"></span>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none">
                             <div class="img1"><img src="../../../assets/images/yichu.png" ></div>移除</button>
 
@@ -1562,6 +1563,8 @@
       },//重新获取所有数据
     },
     created () {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
       this.loading=true;
       this.getprojectId();
       this.getAllData();

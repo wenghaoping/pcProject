@@ -722,6 +722,8 @@
     },
     created () {
       // 组件创建完后获取数据，
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
       this.getProjectListURL=this.URL.getProjectList;
       this.loading=true;
       this.getNodeCount();

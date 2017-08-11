@@ -628,7 +628,8 @@
       },//清除所有数据
     },
     created(){
-//      alert("吊接口啦")
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     },
     watch : {
       followid : function(e){

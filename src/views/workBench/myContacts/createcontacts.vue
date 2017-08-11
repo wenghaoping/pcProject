@@ -739,6 +739,8 @@ export default {
     },
   },
   created(){
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     this.getContactsId();
     this.getNewPro();
     setTimeout(() =>{

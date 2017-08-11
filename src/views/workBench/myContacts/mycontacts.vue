@@ -231,7 +231,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="timeCheck">
+<!--          <div class="timeCheck">
             <el-date-picker
               v-model="timeSelect"
               type="date"
@@ -240,7 +240,7 @@
               @change="timeChange"
               :picker-options="pickerOptions">
             </el-date-picker>
-          </div>
+          </div>-->
           <div class="pagenav" v-if="totalData>10">
             <el-pagination
               small
@@ -357,10 +357,14 @@ export default {
           return time.getTime() > Date.now() - 8.64e7+3600 * 1000 * 24;
         }
       },
-      created_atFilters:[],//更近时间选择
+      created_atFilters:[
+        { text: '刚刚活跃', value: 0 },
+        { text: '一天前活跃', value: 1 },
+        { text: '两天前活跃', value: 2 },
+        { text: '三天前活跃', value: 3 },
+        { text: '一周前活跃', value: 4 }
+      ],//更近时间选择
       stateCheck:false,//跟进状态单选
-
-
     }
   },
   components: {
@@ -594,17 +598,23 @@ export default {
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
       if (tagName != undefined) {
-        this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
-          .then(res => {
-            let newState = {};
-            newState.label = tagName;
-            newState.value = res.data.tag_id;
-            this.tags.changecont.push(newState);
-          })
-          .catch(err => {
-            this.$tool.error("添加失败");
-            this.$tool.console(err);
-          })
+        if (tagName.length > 40) {
+          this.$tool.error("最多输入40个字");
+          this.tagsValue.pop();
+        } else {
+          this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
+            .then(res => {
+              let newState = {};
+              newState.label = tagName;
+              newState.value = res.data.tag_id;
+              this.tags.changecont.push(newState);
+              this.$global.func.getWxProjectCategory();
+            })
+            .catch(err => {
+              this.$tool.error("添加失败");
+              this.$tool.console(err);
+            })
+        }
       }
     },//添加项目标签
     addTag(){
@@ -637,6 +647,8 @@ export default {
 
   },
   created(){
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     this.loading=true;
     this.$global.func.getWxProjectCategory();
     this.titleSift();

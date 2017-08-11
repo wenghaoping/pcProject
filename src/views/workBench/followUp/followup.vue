@@ -418,6 +418,8 @@ export default {
     },// 获取表头
   },
   created(){
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     this.loading=true;
     this.titleSift();
     this.handleIconClick();

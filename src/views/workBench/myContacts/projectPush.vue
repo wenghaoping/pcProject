@@ -7,7 +7,10 @@
         <div class="lines fl"></div>
         <div class="title fl">项目推送</div>
         <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
-        <div class="img fl"><img src="../../../assets/images/why.png"></div>
+        <el-tooltip content="Top center" placement="top">
+          <div slot="content">每天可以推送5次，1个项目推送给1个投资人计1次，1个项目推送给多个投资人计多次</div>
+          <div class="img fl" style="cursor: pointer"><img src="../../../assets/images/why.png"></div>
+        </el-tooltip>
       </span>
 
        <el-form label-position="top" :model="email2" label-width="80px" style="position: relative" ref="email2">
@@ -429,7 +432,7 @@ export default {
 
 <style lang="less">
   @import '../../../assets/css/projectPush';
-.popper{
-display: none;
-}
+  .popper{
+    display: none;
+  }
 </style>
