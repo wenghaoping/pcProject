@@ -726,12 +726,7 @@ export default {
       this.card_id = this.$route.query.card_id;
     },//获取id
     getNewPro(){
-      var getNewPro = new Promise((resolve, reject)=>{
-        //做一些异步操作
-        this.$global.func.getWxProjectCategory();
-        resolve(1);
-      });
-      return getNewPro;
+      this.$global.func.getWxProjectCategory();
     },
   },
   created(){

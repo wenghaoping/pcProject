@@ -118,14 +118,17 @@ const tool={
 
   },//判断是不是空(空字符串也算是空)
   checkNumber(data) {
-    let reg = /^[0-9]+.?[0-9]*$/;
-    let reg2 = /^(?:(?!.*(%)).*)/;//不含%
+    var reg = /^[0-9]+.?[0-9]*$/;
+    var reg2 = /^(?:(?!.*(%)).*)/;//不含%
     if (reg.test(data)) {
-      return true;
+     if(reg2.test(data)){
+       return true;
+     }else{
+       return false;
+     }
     }else{
       return false;
     }
-
   },//判断是不是数字
   checkEmail(data){
     let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;

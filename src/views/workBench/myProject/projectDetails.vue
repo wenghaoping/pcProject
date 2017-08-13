@@ -1569,12 +1569,8 @@
       this.getprojectId();
       this.getAllData();
     },
-    watch(){
-      document.onscroll = function(){
-//        if(document.body.scrollTop+document.body.clientHeight>=document.body.scrollHeight){
-          console.log(document.body.scrollHeight)
-//        }
-      }
+    watch:{
+
     },
   }
 </script>
