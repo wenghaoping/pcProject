@@ -758,7 +758,11 @@
           this.$tool.error('标题不能大于40个字')
         }else if(this.pushBody.length>500){
           this.$tool.error('正文不能大于500个字')
-        }else if (this.pushData.length > 0) {
+        }else if(this.pushData.lenth<0){
+          this.$tool.error('请先选择推送人脉 ')
+        }else if(this.pushData.length>this.pushCount){
+          this.$tool.error('推送人数不能超过今日剩余推送次数')
+        }else{
           let targetUser = this.pushData[0].card
           let user = {
             user_real_name: targetUser.user_real_name,
@@ -786,8 +790,6 @@
           } else {
             this.$tool.warning("您今日的推送次数已用完")
           }
-        } else {
-          this.$tool.error('请先选择推送人脉 ')
         }
       },
       //推送
