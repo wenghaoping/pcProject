@@ -33,7 +33,7 @@
             <div slot="content">
               <div class="tips-txt">{{item.investor_name}}</div>
             </div>
-            <span style="width:58px;max-width:58px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{item.investor_name}}</span>
+            <span style="width:58px;max-width:58px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left;text-align: center">{{item.investor_name}}</span>
           </el-tooltip>
           <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
         </div>
