@@ -36,7 +36,7 @@
                 <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
                 <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editYag.png">修改</span>
               </div>
-              <div class="block">
+              <div class="block" style="margin-top: 32px">
                 <div class="tag" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
               </div>
             </div>
