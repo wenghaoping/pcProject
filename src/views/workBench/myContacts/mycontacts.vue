@@ -457,22 +457,28 @@ export default {
     },//关闭项目预览
     /*请求函数*/
     handleIconClick(){
-      this.loading=true;
-      this.getPra.user_id=localStorage.user_id;
-      this.getPra.search=this.searchinput;
-      this.currentPage=1;
-      this.getPra.page=1;
-      this.$http.post(this.URL.getConnectUser,this.getPra)
-        .then(res=>{
-          let data = res.data.data;
-          this.tableData=this.getProjectList(data);
-          this.totalData=res.data.count;
-          this.loading=false;
-        })
-        .catch(err=>{
-          this.loading=false;
-          this.$tool.console(err,2)
-        })
+      var handleIconClick = new Promise((resolve, reject)=>{
+        //做一些异步操作
+        this.loading=true;
+        this.getPra.user_id=localStorage.user_id;
+        this.getPra.search=this.searchinput;
+        this.currentPage=1;
+        this.getPra.page=1;
+        this.$http.post(this.URL.getConnectUser,this.getPra)
+          .then(res=>{
+            let data = res.data.data;
+            this.tableData=this.getProjectList(data);
+            this.totalData=res.data.count;
+            this.loading=false;
+            resolve(3)
+          })
+          .catch(err=>{
+            this.loading=false;
+            this.$tool.console(err,2)
+          })
+      });
+      return handleIconClick;
+
     },//搜索===首次进入页面加载的数据
     timeChange(time){
       this.loading=true;
@@ -597,8 +603,16 @@ export default {
     },//总设置列表的数据处理
 
     getWxProjectCategory(){
-        this.addTags = this.$global.data.tags_user;//设置人脉标签
-//        this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
+      var getWxProjectCategory = new Promise((resolve, reject)=>{
+        //做一些异步操作
+        setTimeout(()=>{
+          this.addTags = this.$global.data.tags_user;//设置人脉标签
+          resolve(2);
+        },500)
+      });
+      return getWxProjectCategory;
+
+
     },//获取所有下拉框的数据
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
@@ -648,18 +662,27 @@ export default {
           this.addTags = this.$tool.getTags_pro(data.tags_user);//设置人脉标签
         })
     },//设置人脉标签
-
+    getNewWxPro(){
+      var getNewPro = new Promise((resolve, reject)=>{
+        //做一些异步操作
+        this.$global.func.getWxProjectCategory();
+        resolve(1);
+      });
+      return getNewPro;
+    },//获取最新的下拉框数据
 
   },
   created(){
     this.$tool.getTop();
     this.loading=true;
-    this.$global.func.getWxProjectCategory();
+    this.getNewWxPro()
+      .then((data)=>{
+        return this.getWxProjectCategory();
+      })
+      .then((data)=>{
+        return this.handleIconClick();
+      })
     this.titleSift();
-    setTimeout(()=>{
-      this.getWxProjectCategory();
-      this.handleIconClick();
-    },200)
 
 //    zhuge.track('购买商品');
   }

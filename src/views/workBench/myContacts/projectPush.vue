@@ -304,6 +304,7 @@ export default {
       this.searchProject.card_id=this.user.card_id;
       this.searchProject.pro_intro=query;
       this.searchProject.page=1;
+      this.searchProject.type=this.user.type || '';
       this.$http.post(this.URL.matchProject,this.searchProject)
         .then(res=>{
           let data = res.data.data;

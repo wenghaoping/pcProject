@@ -1158,29 +1158,41 @@
       },//获取项目分组信息
 
       setFileType(){
+        var setFileType = new Promise((resolve, reject)=>{
         this.$http.post(this.URL.getFileType, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
             this.groups.group = this.getFileType(data);
+            resolve(4);
           })
           .catch(err => {
             this.$tool.console(err)
           })
+        });
+        return setFileType;
       },//设置文件分组标签
       getWxProjectCategory(){
-        let data = this.$global.data.categoryData;
-        this.area = this.$global.data.area;//设置城市1列表
-        this.scale = this.$global.data.scale;//设置期望融资
-        this.stage = this.$global.data.stage;//设置轮次信息
-        this.industry = this.$global.data.industry;//设置轮次信息
-        this.company_status = this.$global.data.company_status;//设置运营状态
-        this.company_scale = this.$global.data.company_scale;//设置公司规模几人
-        this.tags_pro = this.$global.data.tags_pro;//设置项目标签
-        this.tags.changepro = this.$global.data.tags_pro;//设置项目标签2另外的
-        this.tags_team = this.$global.data.tags_team;//设置团队标签
-        this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
-        this.tags_source = this.$global.data.pro_source;//设置项目来源
-        this.tags.changesource = this.$global.data.pro_source;//设置项目来源
+        var getWxProjectCategory = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          setTimeout(()=>{
+            this.area = this.$global.data.area;//设置城市1列表
+            this.scale = this.$global.data.scale;//设置期望融资
+            this.stage = this.$global.data.stage;//设置轮次信息
+            this.industry = this.$global.data.industry;//设置轮次信息
+            this.company_status = this.$global.data.company_status;//设置运营状态
+            this.company_scale = this.$global.data.company_scale;//设置公司规模几人
+            this.tags_pro = this.$global.data.tags_pro;//设置项目标签
+            this.tags.changepro = this.$global.data.tags_pro;//设置项目标签2另外的
+            this.tags_team = this.$global.data.tags_team;//设置团队标签
+            this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
+            this.tags_source = this.$global.data.pro_source;//设置项目来源
+            this.tags.changesource = this.$global.data.pro_source;//设置项目来源
+            resolve(2);
+          },500)
+        });
+        return getWxProjectCategory;
+
+
       },//获取所有下拉框的数据
       area1Change(data){
         this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})//pid省
@@ -1279,109 +1291,116 @@
         }
       },//期望融资,融资金额
       getProjectDetail () {
-        this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
-          .then(res => {
+        var getProjectDetail = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
+            .then(res => {
 
-            this.uploadShow2.lists=[];
-            let data = res.data.data;
-            this.area1Change(data.pro_area.pid);//设置市级
-            this.setDateTime(data.pro_history_finance);//时间格式设置
-            this.setDateTime2(data.pro_develop);//时间格式设置2
+              this.uploadShow2.lists=[];
+              let data = res.data.data;
+              this.area1Change(data.pro_area.pid);//设置市级
+              this.setDateTime(data.pro_history_finance);//时间格式设置
+              this.setDateTime2(data.pro_develop);//时间格式设置2
 
-            this.planList = [{name: data.pro_BP.file_title+'.'+data.pro_BP.file_ext, url: data.pro_BP.bp_url}];
-            this.uploadShow = {
-              file_title: data.pro_BP.file_title,
-              pro_intro: data.pro_BP.file_title,
-              pro_name: data.pro_BP.file_title,
-              project_id: this.project_id,
-              file_id: data.pro_BP.file_id
-            };//设置计划书上传列表
+              this.planList = [{name: data.pro_BP.file_title+'.'+data.pro_BP.file_ext, url: data.pro_BP.bp_url}];
+              this.uploadShow = {
+                file_title: data.pro_BP.file_title,
+                pro_intro: data.pro_BP.file_title,
+                pro_name: data.pro_BP.file_title,
+                project_id: this.project_id,
+                file_id: data.pro_BP.file_id
+              };//设置计划书上传列表
 
-            if(data.pro_BP.length=="") {
+              if(data.pro_BP.length=="") {
                 this.planList=[];
                 this.uploadShow={};
-            };
+              };
 
-            this.setUploadShow2(data.pro_file);
-            this.project.pro_name = data.pro_name;
-            this.project.pro_company_name = data.pro_company_name;
-            this.project.pro_intro = data.pro_intro;
+              this.setUploadShow2(data.pro_file);
+              this.project.pro_name = data.pro_name;
+              this.project.pro_company_name = data.pro_company_name;
+              this.project.pro_intro = data.pro_intro;
 
-            this.project.pro_area = data.pro_area;
-            localStorage.pid=data.pro_area.pid;
-            if (data.pro_area == "") {
-              this.project.pro_area = {area_id: "", pid: "", area_title: ""}
-            };
-
-
-            this.project.pro_stage = data.pro_stage;
-
-            if (data.pro_stage == "") {
-              this.project.pro_stage = {stage_id: ""}
-            };
-
-            this.project.pro_industry = this.getindustry(data.pro_industry);//领域标签
-            this.project.pro_status = data.pro_status.status_id;//运营状态
-            this.statusLast = data.pro_status.status_id;//运营状态多余的
-            this.project.pro_scale = data.pro_scale;
-            this.project.pro_website = data.pro_website;
-            this.project.contact = data.contact;
-            this.project.pro_source = data.pro_source;
-            this.project.open_status = data.open_status.toString();//运营状态
-            this.project.tags_pro = this.getTag(data.tag, 0);//项目标签
-
-            this.project.pro_goodness = data.pro_goodness;
-            this.project.pro_source = this.getTag(data.tag, 2);//项目来源标签
+              this.project.pro_area = data.pro_area;
+              localStorage.pid=data.pro_area.pid;
+              if (data.pro_area == "") {
+                this.project.pro_area = {area_id: "", pid: "", area_title: ""}
+              };
 
 
-            this.project.pro_company_scale = data.pro_company_scale;
-            if (data.pro_company_scale == "") {
-              this.project.pro_company_scale = {comp_scale_id: 1, comp_scale_value: "1-20"}
-            };
+              this.project.pro_stage = data.pro_stage;
 
-            this.team.tags_team = this.getTag(data.tag, 1);//团队标签
-            this.setMemberScale(data.core_users);
-            this.team.core_users = data.core_users;
+              if (data.pro_stage == "") {
+                this.project.pro_stage = {stage_id: ""}
+              };
 
-            this.financing.pro_finance_scale = data.pro_finance_scale;
-            this.financing.pro_finance_use = data.pro_finance_use;
-            if(data.pro_finance_stock_after==0) data.pro_finance_stock_after="";
-            this.financing.pro_finance_stock_after = data.pro_finance_stock_after;
-            if(data.pro_finance_value==0) data.pro_finance_value="";
-            this.financing.pro_finance_value = data.pro_finance_value;
+              this.project.pro_industry = this.getindustry(data.pro_industry);//领域标签
+              this.project.pro_status = data.pro_status.status_id;//运营状态
+              this.statusLast = data.pro_status.status_id;//运营状态多余的
+              this.project.pro_scale = data.pro_scale;
+              this.project.pro_website = data.pro_website;
+              this.project.contact = data.contact;
+              this.project.pro_source = data.pro_source;
+              this.project.open_status = data.open_status.toString();//运营状态
+              this.project.tags_pro = this.getTag(data.tag, 0);//项目标签
 
-            this.setFinance(data.pro_history_finance);
-            this.financing.pro_history_finance = data.pro_history_finance;
-
-            if (data.pro_history_finance == "") this.financing.pro_history_finance = [];
-
-            this.milepost.pro_develop = data.pro_develop;
-
-            if (data.core_users == "") this.team.core_users = [];
+              this.project.pro_goodness = data.pro_goodness;
+              this.project.pro_source = this.getTag(data.tag, 2);//项目来源标签
 
 
-            this.is_exclusive = data.is_exclusive;//FA运营状态
+              this.project.pro_company_scale = data.pro_company_scale;
+              if (data.pro_company_scale == "") {
+                this.project.pro_company_scale = {comp_scale_id: 1, comp_scale_value: "1-20"}
+              };
 
-            if (data.pro_FA == "") data.pro_FA = {commission: "", stock_right: "", stock_follow: "", stock_other: ""};
+              this.team.tags_team = this.getTag(data.tag, 1);//团队标签
+              this.setMemberScale(data.core_users);
+              this.team.core_users = data.core_users;
+
+              this.financing.pro_finance_scale = data.pro_finance_scale;
+              this.financing.pro_finance_use = data.pro_finance_use;
+              if(data.pro_finance_stock_after==0) data.pro_finance_stock_after="";
+              this.financing.pro_finance_stock_after = data.pro_finance_stock_after;
+              if(data.pro_finance_value==0) data.pro_finance_value="";
+              this.financing.pro_finance_value = data.pro_finance_value;
+
+              this.setFinance(data.pro_history_finance);
+              this.financing.pro_history_finance = data.pro_history_finance;
+
+              if (data.pro_history_finance == "") this.financing.pro_history_finance = [];
+
+              this.milepost.pro_develop = data.pro_develop;
+
+              if (data.core_users == "") this.team.core_users = [];
 
 
-            if(data.pro_FA.commission==0) data.pro_FA.commission="";
-            if(data.pro_FA.stock_right==0) data.pro_FA.stock_right="";
-            if(data.pro_FA.stock_follow==0) data.pro_FA.stock_follow="";
-            if(data.pro_FA.stock_other==0) data.pro_FA.stock_other="";
+              this.is_exclusive = data.is_exclusive;//FA运营状态
 
-            this.pro_FA = data.pro_FA;
-            if (this.planList.length != 0) this.planButton = false;
-            else this.planButton = true;
-            this.loading = false;
-            this.tags_pro=this.tags.changepro.slice(0);
-            this.tags_team=this.tags.changeTeam.slice(0);
-            this.tags_source=this.tags.changesource.slice(0);
-          })
-          .catch(err => {
-            this.loading = false
-            this.$tool.console(err, 2)
-          })
+              if (data.pro_FA == "") data.pro_FA = {commission: "", stock_right: "", stock_follow: "", stock_other: ""};
+
+
+              if(data.pro_FA.commission==0) data.pro_FA.commission="";
+              if(data.pro_FA.stock_right==0) data.pro_FA.stock_right="";
+              if(data.pro_FA.stock_follow==0) data.pro_FA.stock_follow="";
+              if(data.pro_FA.stock_other==0) data.pro_FA.stock_other="";
+
+              this.pro_FA = data.pro_FA;
+              if (this.planList.length != 0) this.planButton = false;
+              else this.planButton = true;
+              this.loading = false;
+              this.tags_pro=this.tags.changepro.slice(0);
+              this.tags_team=this.tags.changeTeam.slice(0);
+              this.tags_source=this.tags.changesource.slice(0);
+            })
+            .catch(err => {
+              this.loading = false
+              this.$tool.console(err, 2)
+            })
+            resolve(3);
+
+        });
+        return getProjectDetail;
+
       },//获取项目详情数据
 
       /*商业计划书*/
@@ -2213,20 +2232,32 @@
       },
       getprojectId(){
         this.project_id = this.$route.query.project_id || '';
-      }
+      },
+
+      getNewWxPro(){
+        var getNewPro = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$global.func.getWxProjectCategory();
+          resolve(1);
+        });
+        return getNewPro;
+      },//获取最新的下拉框数据
     },
     //    当dom一创建时
     created(){
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+      this.$tool.getTop();
       this.loading = true;
       this.getprojectId();
-      this.$global.func.getWxProjectCategory();
-      setTimeout(() =>{
-        this.getWxProjectCategory();
-        this.getProjectDetail();
-        this.setFileType();
-      },500);
+      this.getNewWxPro()
+        .then((data)=>{
+          return this.getWxProjectCategory();
+        })
+        .then((data)=>{
+          return this.setFileType();
+        })
+        .then((data)=>{
+          return this.getProjectDetail();
+        })
       this.ProjectShow=false;
       this.teamShow=false;
       this.financingShow=false;

@@ -423,10 +423,10 @@
 
                         <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
 
-                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==-1">
+<!--                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==-1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
-                          </button>
-                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-else>
+                          </button>-->
+                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" ><!--v-else-->
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
                           <span class="lineLine fl"></span>
@@ -460,7 +460,7 @@
       </div>
     </div>
     <!--一键尽调弹窗-->
-    <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" v-on:changeall="dialogVisiblechange" v-on:changeallin="dialogVisiblechangeIn" lock-scroll>
+    <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" @changeall="dialogVisiblechange" v-on:changeallin="dialogVisiblechangeIn" lock-scroll>
 
     </research>
 
@@ -490,7 +490,7 @@
     <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :pro-intro="project.pro_intro" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
 
     <!--项目推送项目入口小弹窗-->
-    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel" >
+<!--    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel" >
       <span class="pushCount">今日剩余推送<span>{{pushCount}}</span>次</span>
       <el-form :model="littlePush" ref="littlePush">
         <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
@@ -504,7 +504,12 @@
         <el-button @click="littlePushCancel">取 消</el-button>
         <el-button type="primary" @click="littlePushCertain">确 定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog>-->
+
+    <!--项目推送弹窗,人脉入口完整版============================-->
+    <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage"
+                 :user-email="userEmail" @changeall="dialogVisiblechangePush"
+                 @changeCloseProjectpush="dialogVisiblechangeCloasePush"></projectpush>
 
     <!--项目推送项目入口小弹窗2-->
     <el-popover
@@ -531,6 +536,7 @@
 
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
+
   </div>
 </template>
 
@@ -544,10 +550,12 @@
   import projectpush2 from './projectPush2.vue'
   import customerAddContacts from '../../../components/customerAddContacts.vue'
   import projectpreview from '../myContacts/projectPreview.vue'
+  import projectpush from '../myContacts/projectPush.vue'
   export default {
     data(){
       return {
         dialogFormVisible:true,
+        dialogPushVisibleComplete:false,//项目推送弹框,完整版
         companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
         cardid:"",//人脉详情弹框用(点击的那个人的cardid)
@@ -754,10 +762,6 @@
 
         },
         seachCompanys:[],
-        styleObject: {
-          color: '',
-        },
-        value1:'',////一键尽调边上绑定是数据
         value: 1,
         status_name:'',//一键尽调边上那个按钮线里的字
         activeName:'1',
@@ -849,7 +853,12 @@
           }
         ],//人脉筛选条件
         isFollow:-1,//人脉筛选绑定
-        ctrlSelect:true,//筛选控制
+        userMessage:{
+          user_real_name:'翁浩平',//姓名
+          user_company_career:'投资总监',//职位
+          user_company_name:'杭州投着乐网络科技有限公司',//公司名称
+        },//传递给推送的数据
+        userEmail:'',
       }
     },
     computed:{
@@ -863,7 +872,8 @@
       addfollow,
       projectpush2,
       customerAddContacts,
-      projectpreview
+      projectpreview,
+      projectpush
     },
     //Echart组件
     mounted(){
@@ -948,6 +958,10 @@
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
       },//传递给一键尽调窗口
+      dialogVisiblechangePush(msg){
+//      this.dialogPushVisible=msg;
+        this.dialogPreviewVisible=true;
+      },//关闭推送弹框,打开预览弹框
       dialogVisiblechangeIn(msg){
         this.dialogSearchVisible=msg;
       },//传递给一键尽调搜索窗口
@@ -959,6 +973,11 @@
       },//项目详情弹窗关闭
       dialogVisiblechangeCloase(msg){
         this.dialogPushVisible=msg;
+      },
+      dialogVisiblechangeCloasePush(msg){
+        this.dialogPushVisibleComplete=false;
+        this.dialogPushVisible=false;
+//        this.getpushCount();
       },
       getProjectTag(arr){
         let str=""
@@ -1015,12 +1034,11 @@
       getWxProjectCategory(){
         var getWxProjectCategory = new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.$global.func.getWxProjectCategory();
           setTimeout(()=>{
             this.schedule = this.$global.data.schedule;//设置项目跟进状态
             this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
             this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
-            this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+//            this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
             resolve(2);
           }, 500);
         });
@@ -1225,15 +1243,11 @@
       },//获取意向投资人索引
       filterChangeCurrent(page){
 
-//        if(this.ctrlSelect){
-//          console.log("页码变啦")
+
         this.loading=true;
         this.getConCon.user_id=localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
-//        this.currentPage=page;
         this.getConCon.project_id=this.project.project_id;
         this.getConCon.page=page;
-//        this.getConCon.schedule_id='';
         this.$http.post(this.URL.getEnjoyedInvestors,this.getConCon)
           .then(res=>{
             if(res.data.status_code==2000000) {
@@ -1249,9 +1263,6 @@
             this.loading=false;
             this.$tool.error("加载超时");
           })
-//        }
-//        this.ctrlSelect=true;
-//        console.log(this.ctrlSelect);
       },//控制意向投资人页码
       selectChange(e){
         let width = 0;
@@ -1312,9 +1323,6 @@
         return width;
       },//设置项目跟进进度
       selectSearch(e){
-//        this.ctrlSelect=false;
-//        console.log("筛选");
-//        console.log(this.ctrlSelect);
         this.loading=true;
         this.getConCon.schedule_id=e;
         this.getConCon.user_id=localStorage.user_id;
@@ -1363,7 +1371,7 @@
           obj.card_id=x.card.card_id;
           obj.user_eamil=x.card.user_email;
           obj.investor_id=x.card.investor_id;
-
+          obj.type=x.type;
           obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
           newArr.push(obj);
         });
@@ -1416,17 +1424,21 @@
           })
       },//控制买家图谱页码
       industryPush(data){
-        if(data==0){
-          this.$tool.warning("已推送过")
-        }else{
           console.log(data)
-          this.littlePushShow=true;
-          this.littlePush.email=data.user_eamil;
-          if(data.type==='user'){
-            this.pushData=[data.user_id,data.type]
-          }else{
-            this.pushData=[data.card_id,data.type]
-          }
+        if(data==0){
+          this.$tool.warning("已推送过");
+        }else{
+          this.userMessage.user_real_name=data.user_real_name;
+          this.userMessage.user_company_career=data.user_company_career;
+          this.userMessage.user_company_name=data.user_company_name;
+          this.userMessage.card_id=data.card_id || data.user_id;
+          this.userMessage.type=data.type || '';
+          this.userEmail=data.user_eamil;
+          this.$store.state.pushProject.projectMessgae={pro_id:this.project.project_id || '',pro_intro:this.project.pro_intro || ''};
+          this.dialogPushVisible=true;
+          this.dialogPushVisibleComplete=true;
+          this.pushData.email=data.user_eamil;
+          this.pushData.project_id=this.project.project_id;
         }
       },//买家图谱推送
       industryDelete(data){
@@ -1579,71 +1591,4 @@
 .scheduleColor{
   color:#20a0ff!important;
 }
-  #projectDetails{
-
-    .btn1{
-      background:#40587a;
-      border-radius:2px;
-      width:88px;
-      height:36px;color:#ffffff;cursor: pointer;margin-left: 16px;
-    }
-    .el-dialog__header{
-      padding-left:21px;
-    }
-    .onsearch{
-      width: 100%;
-      max-height: 320px;
-      overflow-y: auto;
-      li{
-      width: 100%;
-        height:40px;
-        line-height: 40px;
-        font-size:13px;
-        color:#475669;
-        text-align:left;
-        cursor: pointer;
-        padding-left: 20px;
-      }
-      li:hover{
-        background:#009eff;
-        color:#ffffff;
-      }
-    }
-    .el-tabs__content{
-     position: static;
-    }
-
-/*    .radio_line{
-      width: 13px;
-      //height: 49px;
-    }
-    .radio{
-      border:1px solid #e0e6ed;
-      border-radius:20px;
-      width:12px;
-      background: #f9fafc;
-      height:12px;
-      position: relative;
-    }*/
-    .littlePush{
-      .el-dialog--small{
-        width:430px;
-      }
-      .el-form-item__label{
-        text-align: left;
-      }
-      .pushCount{
-        position: absolute;
-        left: 80px;
-        top: 36px;
-        font-size: 12px;
-        span{
-          color: red;
-        }
-      }
-    }
-  }
-  .el-input input{
-    border-radius: 2px!important;
-  }
 </style>
