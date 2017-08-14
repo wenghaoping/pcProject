@@ -2,13 +2,16 @@
   <div id="alertContactsDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================人脉详情弹窗=============================================-->
     <el-dialog :visible="dialogConVisible" custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
-      <div class="contain-grid contain-center1 fl">
+      <div class="contain-grid contain-center3 fl">
         <div class="main-box clearfix">
           <div class="item-lists clearfix">
             <div class="item-list item-lists-top clearfix">
               <div class="item">
                 <div class="name fl">{{contacts.user_real_name}}</div>
                 <div class="career fl">{{contacts.user_company_career}}</div>
+              </div>
+              <div class="item">
+                <div class="nick fl">{{contacts.user_nickname}}</div>
               </div>
               <div class="item" style="margin-bottom: 55px;">
                 <div class="title">{{contacts.card_nickname}}</div>
@@ -35,7 +38,7 @@
                   <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
                 </div>
                 <div class="block">
-                  <div class="tag" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
+                  <div class="tag" style="margin-top: 12px" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
                 </div>
               </div>
               <!--项目库-->
@@ -45,7 +48,7 @@
                 </div>
                 <div class="ul_lists clearfix" v-loading.body="loading1" element-loading-text="拼命加载中">
                   <div class="list" v-for="projectList in projectLists" >
-                    <div class="li title">{{projectList.pro_intro}}</div>
+                    <div class="li title" style="line-height: 24px;width: 292px;">{{projectList.pro_intro}}</div>
                     <div class="img" v-show="projectList.is_exclusive=='独家'"><img src="../../../assets/images/dujia.png"></div>
                     <div class="img" v-show="projectList.is_exclusive=='非独家'"><img src="../../../assets/images/feidujia.png"></div>
                     <div class="li">
@@ -78,8 +81,8 @@
                   <span class="title fl"><img class="img1" src="../../../assets/images/anli.png">投资案例</span>
                 </div>
                 <div class="block lh" v-for="cased in contacts.project_case">
-                  <span class="radio"><img src="../../../assets/images/radioTag.png"></span>
-                  <span class="time">{{cased.case_deal_time}}</span>
+                  <span class="radio" style=" line-height: 14px;"><img src="../../../assets/images/radioTag.png"></span>
+                  <span class="time" style="margin-left: 15px">{{cased.case_deal_time}}</span>
                   <span class="tag_To">{{cased.case_stage_name}}</span>
                   <span class="title1">{{cased.case_name}}</span>
                   <span class="title2">{{cased.case_money}}万元</span>
@@ -248,9 +251,9 @@
           obj.pro_intro=data[i].pro_intro || "暂无信息";//项目介绍
           obj.is_exclusive=data[i].is_exclusive;//独家/非独家
           obj.pro_industry=this.setIndustry(data[i].pro_industry) || [];//项目标签
-          obj.pro_scale =data[i].scale_money || '-';//项目估值
-          obj.pro_area =data[i].pro_area.area_title || '-';//地区
-          obj.pro_stage =data[i].pro_stage.stage_name || '-';//投资轮次
+          obj.pro_scale =data[i].pro_scale[0].scale_money || '-';//项目估值
+          obj.pro_area =data[i].pro_area[0].area_title || '-';//地区
+          obj.pro_stage =data[i].pro_stage[0].stage_name || '-';//投资轮次
           obj.pro_finance_stock_after =data[i].pro_finance_stock_after || '-';//股权
           arr.push(obj);
         }

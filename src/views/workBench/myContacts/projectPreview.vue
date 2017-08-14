@@ -15,7 +15,7 @@
         <p v-if="email.body==''">邮件正文 : 尊敬的{{user.user_real_name}}，下面是来自{{user.firse_user_company_name}}-{{user.firse_user_company_career}}-{{user.firse_user_real_name}}的项目推荐。你可以注册/登录微天使工作站找到更多精选FA项目资源。</p>
         <p v-else>邮件正文 : {{email.body}}</p>
       </div>
-      <div class="contain-grid contain-center1 fl">
+      <div class="contain-grid contain-center2 fl">
         <div class="main-box clearfix">
           <div class="item-lists item-lists-top clearfix">
             <div class="item-lists-inner-left fl">

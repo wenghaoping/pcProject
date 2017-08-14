@@ -43,7 +43,7 @@
           </div>
           <div class="onlyone">
             <img v-if="project.is_exclusive==1" src="../assets/images/onlyonedark.png"/>
-            <img v-if="project.is_exclusive==0" src="../assets/images/onlyonelight.png"/>
+            <img v-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>
             <!--<img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>-->
           </div>
         </div>
@@ -78,7 +78,7 @@
             <!--<div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">-->
             <div class="bot-det" style="margin-left:150px;">
               <span class="det-title">产品链接：</span>
-              <span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}www.weitianshi.cn</a></span>
+              <span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}</a></span>
             </div>
             <!--<div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">-->
             <div class="bot-det" v-show="project.pro_company_scale.comp_scale_value!=''" style="float:right;">
@@ -312,7 +312,7 @@
           pro_industry: [
             {
               "industry_id": 12,
-              "industry_name": "社交网络",
+              "industry_name": "",
               "parent_id": 0,
               "created_at": null,
               "updated_at": null,
@@ -353,19 +353,19 @@
           }],
           /*自定义标签*/
           tag: [
-            {
+            /*{
               tag_id: 1,
-              tag_name: "海贼王",
+              tag_name: "",
               user_id: 0,
               project_id: 37,
               created_time: null,
               updated_time: null,
               type: 0//项目标签
-            }
+            }*/
           ],
           /*文件列表*/
           pro_file: [
-            {
+           /* {
               file_id: 1,
               project_id: 37,
               file_title: "项目文件1",
@@ -374,17 +374,17 @@
               created_at: null,
               updated_at: null,
               deleted_at: null
-            }],
+            }*/],
           /*里程碑*/
           pro_develop: [
             {
               project_dh_id: 6,
-              dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
+              dh_index: "",
               project_id: 37,
-              project_index: "275fa4f135eecf08e5660d23e294e6cd",
-              dh_start_time: "1436112000",//时间
-              dh_end_time: "1443542400",
-              dh_event: "组建团队和设立办公室",//事件
+              project_index: "",
+              dh_start_time: "",//时间
+              dh_end_time: "",
+              dh_event: "",//事件
               created_at: null,
               updated_at: null
             }],
@@ -666,6 +666,18 @@
       height: 16px;
       opacity:0.5;
     }
+    .mid-tag{
+      border:1px solid #e6e0ed;
+      border-radius:20px;
+      height:24px;
+      line-height: 22px;
+      box-sizing: border-box;
+      margin-right:11px;
+      text-align: center;
+      padding:0 10px;
+      font-size: 12px;
+      color: #8492a6;
+    }
     /*下层弹框*/
     .down-floor{
       padding: 27px 24px;
@@ -790,18 +802,7 @@
           text-align:right;
           padding-right: 15px;
         }
-        .mid-tag{
-          border:1px solid #e6e0ed;
-          border-radius:20px;
-          height:24px;
-          line-height: 22px;
-          box-sizing: border-box;
-          margin-right:11px;
-          text-align: center;
-          padding:0 10px;
-          font-size: 12px;
-          color: #8492a6;
-        }
+
         .big-tag{
           font-size:14px;
           color:#8492a6;
