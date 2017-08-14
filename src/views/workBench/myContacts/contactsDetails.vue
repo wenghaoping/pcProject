@@ -277,7 +277,7 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px; border-top: 1px solid #eff2f7">
-                          <button class="button fl" @click="handlePush(0)" v-if="matchProject.push_statues==-1">
+                          <button class="button fl" @click="handlePush(0)" v-if="matchProject.push_statues==1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button  class="button fl"  @click="handlePush(matchProject)" v-else>
@@ -572,6 +572,7 @@
           this.userMessage.user_company_career=this.contacts.user_company_career;
           this.userMessage.user_company_name=this.contacts.user_company_name;
           this.userMessage.card_id=this.contacts.card_id;
+          this.userMessage.type=this.contacts.type || '';
           this.userEmail=this.contacts.user_email;
           this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
 //          this.dialogPushVisible=true;
@@ -587,6 +588,7 @@
         this.userMessage.user_company_career=this.contacts.user_company_career;
         this.userMessage.user_company_name=this.contacts.user_company_name;
         this.userMessage.card_id=this.contacts.card_id;
+        this.userMessage.type=this.contacts.type || '';
         this.userEmail=this.contacts.user_email;
         this.dialogPushVisibleComplete=true;
       },//点击推送完整版,并且传送数据给推送弹框

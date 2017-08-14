@@ -317,7 +317,7 @@
                       </div>
                       <div class="list_main">
                         <div @click="toDetail(enjoyInvestor)" class="click">
-                          <div class="block">
+                          <div class="block" style="width: 290px;">
                             <span class="name">{{enjoyInvestor.user_real_name}}</span>
                             <span class="zhiwei">{{enjoyInvestor.user_company_career}}</span>
                             <span class="imgs" v-if="enjoyInvestor.user_group!=''"><img src="../../../assets/images/renzhen.png"/></span>
@@ -404,7 +404,7 @@
                       </div>
                       <div class="list_main">
                         <div @click="toDetail(projectMatchInvestor)" class="click">
-                          <div class="block">
+                          <div class="block" style="width: 290px;">
                             <span class="name">{{projectMatchInvestor.user_real_name}}</span>
                             <span class="zhiwei">{{projectMatchInvestor.user_company_career}}</span>
                             <span class="imgs" v-if="projectMatchInvestor.user_group!=''"><img src="../../../assets/images/renzhen.png"/></span>
@@ -422,11 +422,10 @@
                         </div>
 
                         <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
-
-                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==-1">
+                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
-                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-else><!---->
+                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-else>
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
                           <span class="lineLine fl"></span>
@@ -1038,7 +1037,7 @@
             this.schedule = this.$global.data.schedule;//设置项目跟进状态
             this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
             this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
-//            this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+            this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
             resolve(2);
           }, 500);
         });
@@ -1066,6 +1065,7 @@
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },//编辑项目
       toDetail(data){
+          console.log(data)
         this.cardid=data.card_id;
         this.userid=data.user_id;
         this.dialogConVisible=true;

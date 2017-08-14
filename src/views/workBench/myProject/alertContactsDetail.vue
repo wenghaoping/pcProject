@@ -2,7 +2,7 @@
   <div id="alertContactsDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================人脉详情弹窗=============================================-->
     <el-dialog :visible="dialogConVisible" custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
-      <div class="contain-grid contain-center1 fl">
+      <div class="contain-grid contain-center3 fl">
         <div class="main-box clearfix">
           <div class="item-lists clearfix">
             <div class="item-list item-lists-top clearfix">

@@ -468,7 +468,7 @@ export default {
         this.$http.post(this.URL.getConnectUser,this.getPra)
           .then(res=>{
             let data = res.data.data;
-            this.tableData=this.getProjectList(data);
+            this.tableData=this.setProjectList(data);
             this.totalData=res.data.count;
             this.loading=false;
             resolve(3)
@@ -489,7 +489,7 @@ export default {
       this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
           let data = res.data.data;
-          this.tableData=this.getProjectList(data);
+          this.tableData=this.setProjectList(data);
           this.totalData=res.data.count;
           this.loading=false;
         })
@@ -526,7 +526,7 @@ export default {
         .then(res=>{
           this.loading=false;
           let data = res.data.data;
-          this.tableData=this.getProjectList(data);
+          this.tableData=this.setProjectList(data);
           this.totalData=res.data.count;
         })
         .catch(err=>{
@@ -539,12 +539,12 @@ export default {
       this.loading=true;
       this.getPra.user_id=localStorage.user_id;
       this.getPra.page=page;//控制当前页码
-      this.$tool.console(this.getPra);
+//      this.$tool.console(this.getPra);
       this.$http.post(this.URL.getConnectUser,this.getPra)
         .then(res=>{
           let data = res.data.data;
           this.$tool.console(res);
-          this.tableData=this.getProjectList(data);
+          this.tableData=this.setProjectList(data);
           this.loading=false;
           this.$tool.getTop();
         })
@@ -576,7 +576,7 @@ export default {
         return string;
     },//判断要不要用文字显示头像
 
-    getProjectList(list){
+    setProjectList(list){
       let arr = new Array;
       for(let i=0; i<list.length; i++){
         let obj=new Object;
@@ -598,6 +598,7 @@ export default {
         obj.login_time=list[i].login_time;//活跃时间
         obj.card_id=list[i].card_id;//活跃时间
         obj.investor_id=list[i].investor_id;//活跃时间
+        obj.type=list[i].type;//类型
         arr.push(obj);
       }
       return arr;
