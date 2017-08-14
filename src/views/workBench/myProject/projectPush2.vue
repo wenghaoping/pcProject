@@ -1,6 +1,6 @@
 <template>
   <!--项目推送项目入口-->
-  <div id="projectPush" v-loading.fullscreen.lock="loading" element-loading-text="加载中">
+  <div id="projectPush">
     <el-dialog :visible="dialogPush" :before-close="handleClose">
       <!--弹窗头部-->
       <span slot="title" class="dialog-title clearfix">
@@ -153,8 +153,6 @@
         <!--全网人脉-->
         <el-tab-pane label="全网人脉" name="netContacts">
           <el-table
-            v-loading="loading"
-            element-loading-text="拼命加载中"
             ref="netContacts"
             :data="netContacts"
             tooltip-effect="dark"
@@ -292,7 +290,7 @@
             <el-input v-model="customerAddForm.email" auto-complete="off" placeholder="请输入邮箱"
                       :rules="[{ required: false}]"></el-input>
           </el-form-item>
-          <el-form-item label="姓名" :label-width="formLabelWidth" prop="name" :rules="[{ required: false, max:20, message: '姓名不得超过20个字符长度'}]">
+          <el-form-item label="姓名" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, max:20, message: '姓名不得超过20个字符长度'}]">
             <el-input v-model="customerAddForm.name" auto-complete="off" placeholder="请输入姓名"
                       :rules="[{ required: false}]"></el-input>
           </el-form-item>
@@ -460,6 +458,17 @@
           if (res.data.status_code === 2000000) {
 //          console.log('全网人脉',res.data.data)
             this.netContacts = res.data.data;
+            if(this.myContacts.length>0){
+              console.log(1);
+              this.matchUser()
+            }else{
+              console.log(2);
+              setTimeout(()=>{
+                console.log(this.myContacts,this.netContacts)
+                this.matchUser()
+              },1000)
+            }
+            //项目搜索时调用此接口
             if (remote) {
               //强置刷新checkBox状态
               this.reBorn = false;
@@ -470,6 +479,19 @@
           } else {
 //          console.log(res.data.error_msg)
           }
+        })
+      },
+      //匹配我的人脉和全网人脉是否有同个用户
+      matchUser(){
+        this.myContacts.forEach(x=>{
+          this.netContacts.forEach((y,index)=>{
+            if(x.card.card_id===y.card.card_id){
+              this.netContacts.splice(index,1)
+            }
+            if(x.card.user_id===y.card.user_id){
+              this.netContacts.splice(index,1)
+            }
+          })
         })
       },
       //获取可用推送次娄
@@ -487,6 +509,8 @@
         this.pushData = [];
         this.myContactsShow = [];
         this.netContactsShow = [];
+        this.myContacts=[];
+        this.netContacts=[];
         this.pushTitle = '';
         this.pushBody = '';
         this.myCheckList = {};
@@ -523,6 +547,8 @@
           this.$tool.error('请输入邮箱')
         } else if (!this.$tool.checkEmail(form.email)) {
           this.$tool.error('请正确输入邮箱')
+        }else if(!form.name){
+          this.$tool.error('请输入姓名')
         }else if(form.name.length>20){
           this.$tool.error('姓名不得超过20个字符长度')
         }else if(form.company.length>40){
@@ -728,7 +754,11 @@
       },
       //预览
       preview(){
-        if (this.pushData.length > 0) {
+        if(this.pushTitle.length>40){
+          this.$tool.error('标题不能大于40个字')
+        }else if(this.pushBody.length>500){
+          this.$tool.error('正文不能大于500个字')
+        }else if (this.pushData.length > 0) {
           let targetUser = this.pushData[0].card
           let user = {
             user_real_name: targetUser.user_real_name,
@@ -770,7 +800,7 @@
             dealData.push([x.card.user_id, x.type, x.card.user_email])
           }
         })
-        console.log(this.pushData)
+        console.log(dealData)
         if (dealData.length === 0) {
           this.$tool.error('请选择推送人脉')
         } else if (dealData.length > this.pushCount) {
@@ -789,9 +819,18 @@
           }).then(res => {
             if (res.data.status_code === 2000000) {
               this.$tool.success('推送成功');
-              this.initData();
+             /* this.initData();
+              this.myContactsShow = [];
+              this.netContactsShow = [];
+              for (let x in this.myCheckList) {
+                this.myCheckList[x] = false;
+              }
+              for (let x in this.netCheckList) {
+                x = false;
+              }
               this.initReborn();
-              this.$emit('changeClose', false);
+              this.$emit('changeClose', false);*/
+             this.handleClose();
             }
           })
         }
@@ -826,6 +865,7 @@
       },
     }),
     mounted(){
+
     },
     created(){
 
@@ -834,6 +874,7 @@
       //打开该弹框时
       dialogPush: function (e) {
         if (e === true) {
+          this.loading=true;
           this.project_name = this.proIntro;
           this.project_id = this.proid;
           this.initData();
@@ -853,6 +894,7 @@
               search: this.filterString,
             }).then(res => {
               if (res.data.status_code === 2000000) {
+                this.loading=false;
                 res.data.data.forEach(x => {
                   if (x.type === 'card') {
                     this.myCheckList[x.card.card_id] = false;
@@ -863,7 +905,7 @@
                 this.myContacts = res.data.data;
                 //如果我的人脉为空,则默认显示全网人脉页面
                 if (res.data.data.length === 0) {
-                  this.activeTab = 'netContacts'
+                  this.activeName = 'netContacts'
                 }
               } else {
 //          console.log(res.data.error_msg)
