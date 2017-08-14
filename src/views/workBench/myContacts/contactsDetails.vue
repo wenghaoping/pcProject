@@ -1106,7 +1106,6 @@
           this.getMatchPro.card_id=this.contacts.card_id;
           this.getMatchPro.card_link_user_id=this.contacts.user_id;
           this.getMatchPro.page=1;
-
           this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
             .then(res=>{
               if(res.data.status_code==2000000) {

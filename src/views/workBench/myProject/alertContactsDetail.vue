@@ -248,9 +248,9 @@
           obj.pro_intro=data[i].pro_intro || "暂无信息";//项目介绍
           obj.is_exclusive=data[i].is_exclusive;//独家/非独家
           obj.pro_industry=this.setIndustry(data[i].pro_industry) || [];//项目标签
-          obj.pro_scale =data[i].scale_money || '-';//项目估值
-          obj.pro_area =data[i].pro_area.area_title || '-';//地区
-          obj.pro_stage =data[i].pro_stage.stage_name || '-';//投资轮次
+          obj.pro_scale =data[i].pro_scale[0].scale_money || '-';//项目估值
+          obj.pro_area =data[i].pro_area[0].area_title || '-';//地区
+          obj.pro_stage =data[i].pro_stage[0].stage_name || '-';//投资轮次
           obj.pro_finance_stock_after =data[i].pro_finance_stock_after || '-';//股权
           arr.push(obj);
         }
