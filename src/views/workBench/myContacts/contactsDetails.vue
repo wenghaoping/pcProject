@@ -784,7 +784,7 @@
               this.tagsValue = this.setTag(data.user_invest_tag);
               this.tags.changecont = this.setTag(data.user_invest_tag);
               this.contacts = data;
-              console.log(data);
+//              console.log(data);
               this.loading = false;
             })
             .catch(err=>{
@@ -947,6 +947,7 @@
       eChart(going,hold,reject){
         if(this.chartCheck) this.chart = this.$echart.init(document.getElementById('echart'));
         let option = {
+          color: ['#13CE66', '#009eff', '#F44C4C'],
           tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -966,21 +967,20 @@
               name: '访问来源',
               type: 'pie',
               selectedMode: 'single',
-              radius: ['70%','90%'],
+              radius: ['60%','70%'],
               center: ['35%', '55%'],
               label: {
                 normal: {
                   show: true,
                   position: 'center',
                   textStyle:{
-                    fontSize:"16",
+                    fontSize:"12",
                   }
                 },
                 emphasis: {
                   show: true,
                   textStyle: {
-                    fontSize: '20',
-                    fontWeight: 'bold'
+                    fontSize: '16'
                   }
                 }
               },

@@ -13,16 +13,17 @@
               <div class="item" style="margin-bottom: 55px;">
                 <div class="title">{{contacts.card_nickname}}</div>
               </div>
-              <div class="header fr">
-                <img :src="contacts.user_avatar_url" v-if="contacts.user_avatar_url!=''">
-                <div class="img" v-else><img src="../../../assets/images/logo.png"></div>
-
+              <div class="header fr" v-if="contacts.user_avatar_url!=''">
+                <img :src="contacts.user_avatar_url">
+              </div>
+              <div class="header fr" v-else>
+                <span class="change">{{contacts.user_avatar_txt}}</span>
               </div>
               <div class="item com"><img src="../../../assets/images/company.png">{{contacts.user_company_name}} | {{contacts.user_brand}}</div>
               <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.user_mobile}}</div>
               <div class="item com" style="width: 780px;">
                 <img src="../../../assets/images/email.png">{{contacts.user_email}}
-                <div class="fr" v-if="contacts.import_user_name!=''">
+                <div class="fr" v-if="contacts.import_user_name!=''" style="color: #8492A6">
                   来源: {{contacts.import_user_name}}
                 </div>
               </div>
@@ -370,6 +371,7 @@
             data.user_resource_find = this.set_GiveFind(data.user_resource_find);
             data.user_resource_give = this.set_GiveFind(data.user_resource_give);
             data.project_case = this.setProjectCase(data.project_case);
+            data.user_avatar_txt=this.$tool.setUrlChange(data.user_avatar_url,data.user_real_name);
             if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
               this.user_invest=false;//投资需求
             }else{
