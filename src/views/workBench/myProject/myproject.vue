@@ -749,6 +749,10 @@
   .el-table-filter__bottom button:first-child{
     color:#20a0ff;
   }
+  /*thead tr:nth-last-child(2)*/
+  /*{*/
+    /*color:#ff0000!important;*/
+  /*}*/
   .el-dialog{
     .el-dialog__header{
       padding-left: 64px;
