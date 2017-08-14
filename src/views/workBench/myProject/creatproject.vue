@@ -306,10 +306,10 @@
       },//设置二级城市下拉列表
       getNumberFull(data,title1,title2){
         let check=true;
-        if(this.getNull(data)){
+        if(this.$tool.getNull(data)){
 
         }else {
-          if (this.checkNumber(parseFloat(data))) {
+          if (this.$tool.checkNumber(data)) {
             if (parseFloat(data) > 100) {
               this.$tool.error(title1);
               check = false;

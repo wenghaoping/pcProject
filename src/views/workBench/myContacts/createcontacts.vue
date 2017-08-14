@@ -633,17 +633,25 @@ export default {
       return check;
     },//提交用
     getWxProjectCategory(){
-      this.area = this.$global.data.hotCity;//设置热门城市
-      this.scale = this.$global.data.scale;//设置期望融资
-      this.stage = this.$global.data.stage;//设置轮次信息
-      this.industry = this.$global.data.industry;//设置轮次信息
-      this.tags.changecont = this.$global.data.tags_user;//设置人脉标签
-      this.tags_con = this.$global.data.tags_user;//设置人脉标签
-      this.giveTo = this.$global.data.resource;//设置提供的资源和对接的资源
-      this.pushTo = this.$global.data.resource;//设置提供的资源和对接的资源
+      var getWxProjectCategory = new Promise((resolve, reject)=>{
+        //做一些异步操作
+        setTimeout(()=>{
+          this.area = this.$global.data.hotCity;//设置热门城市
+          this.scale = this.$global.data.scale;//设置期望融资
+          this.stage = this.$global.data.stage;//设置轮次信息
+          this.industry = this.$global.data.industry;//设置轮次信息
+          this.tags.changecont = this.$global.data.tags_user;//设置人脉标签
+          this.tags_con = this.$global.data.tags_user;//设置人脉标签
+          this.giveTo = this.$global.data.resource;//设置提供的资源和对接的资源
+          this.pushTo = this.$global.data.resource;//设置提供的资源和对接的资源
+          resolve(2);
+        },500)
+
+      });
+      return getWxProjectCategory;
+
 
     },//获取所有下拉框的数据
-
     /*以下都是辅助函数*/
     set_industry(arr){
       let newArr = new Array;
@@ -697,49 +705,62 @@ export default {
 
     },//设置名片
     getOneUserInfo(){
-      this.loading=true;
-      this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.card_id})
-        .then(res => {
-          let data = res.data.data;
-
-          data.user_invest_industry=this.set_industry(data.user_invest_industry);
-          data.user_invest_stage=this.set_stage(data.user_invest_stage);
-          data.user_invest_scale=this.set_scale(data.user_invest_scale);
-          data.user_resource_find=this.set_GiveFind(data.user_resource_find);
-          data.user_resource_give=this.set_GiveFind(data.user_resource_give);
-          data.user_invest_area=this.set_area(data.user_invest_area);
-          data.user_invest_tag=this.setTag(data.user_invest_tag);
-          this.setImage(data.user_image);
-          if(data.user_image.length==0) {this.uploadShow = {};this.planList = [];}
-          this.contacts=data;
-          this.tags_con=this.tags.changecont.slice(0);
-          this.loading=false;
+      var getOneUserInfo = new Promise((resolve, reject)=>{
+        //做一些异步操作
+        if(this.card_id!='creat'){
+          this.loading=true;
+          this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.card_id})
+            .then(res => {
+              let data = res.data.data;
+              data.user_invest_industry=this.set_industry(data.user_invest_industry);
+              data.user_invest_stage=this.set_stage(data.user_invest_stage);
+              data.user_invest_scale=this.set_scale(data.user_invest_scale);
+              data.user_resource_find=this.set_GiveFind(data.user_resource_find);
+              data.user_resource_give=this.set_GiveFind(data.user_resource_give);
+              data.user_invest_area=this.set_area(data.user_invest_area);
+              data.user_invest_tag=this.setTag(data.user_invest_tag);
+              this.setImage(data.user_image);
+              if(data.user_image.length==0) {this.uploadShow = {};this.planList = [];}
+              this.contacts=data;
+              this.tags_con=this.tags.changecont.slice(0);
+              this.loading=false;
 //          this.$tool.console(this.$tool.getToObject(data));
-          console.log(this.$tool.getToObject(data));
-        })
-        .catch(err=>{
-          this.$tool.console(err,2);
-          this.loading=false;
-          this.$tool.error("加载超时");
-        })
+//            console.log(this.$tool.getToObject(data));
+              if (this.planList.length != 0) this.planButton = false;
+              else this.planButton = true;
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.loading=false;
+              this.$tool.error("加载超时");
+            })
+        }
+        resolve(1);
+      });
+      return getOneUserInfo;
     },//获取个人详情
     getContactsId(){
       this.card_id = this.$route.query.card_id;
     },//获取id
-    getNewPro(){
-      this.$global.func.getWxProjectCategory();
-    },
+    getNewWxPro(){
+      var getNewPro = new Promise((resolve, reject)=>{
+        //做一些异步操作
+        this.$global.func.getWxProjectCategory();
+        resolve(1);
+      });
+      return getNewPro;
+    },//获取最新的下拉框数据
   },
   created(){
     this.$tool.getTop();
     this.getContactsId();
-    this.getNewPro();
-    setTimeout(() =>{
-      this.getWxProjectCategory();
-      if(this.card_id!='creat') this.getOneUserInfo();
-      if (this.planList.length != 0) this.planButton = false;
-      else this.planButton = true;
-    },500)
+    this.getNewWxPro()
+      .then((data)=>{
+        return this.getWxProjectCategory();
+      })
+      .then((data)=>{
+        return this.getOneUserInfo();
+      })
   }
 }
 </script>

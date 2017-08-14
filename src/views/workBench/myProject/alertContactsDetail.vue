@@ -2,7 +2,7 @@
   <div id="alertContactsDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================人脉详情弹窗=============================================-->
     <el-dialog :visible="dialogConVisible" custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
-      <div class="contain-grid contain-center1 fl">
+      <div class="contain-grid contain-center3 fl">
         <div class="main-box clearfix">
           <div class="item-lists clearfix">
             <div class="item-list item-lists-top clearfix">
@@ -251,9 +251,9 @@
           obj.pro_intro=data[i].pro_intro || "暂无信息";//项目介绍
           obj.is_exclusive=data[i].is_exclusive;//独家/非独家
           obj.pro_industry=this.setIndustry(data[i].pro_industry) || [];//项目标签
-          obj.pro_scale =data[i].scale_money || '-';//项目估值
-          obj.pro_area =data[i].pro_area.area_title || '-';//地区
-          obj.pro_stage =data[i].pro_stage.stage_name || '-';//投资轮次
+          obj.pro_scale =data[i].pro_scale[0].scale_money || '-';//项目估值
+          obj.pro_area =data[i].pro_area[0].area_title || '-';//地区
+          obj.pro_stage =data[i].pro_stage[0].stage_name || '-';//投资轮次
           obj.pro_finance_stock_after =data[i].pro_finance_stock_after || '-';//股权
           arr.push(obj);
         }

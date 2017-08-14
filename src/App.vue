@@ -30,9 +30,9 @@
         <li v-show="!user_id" class="login" @click="login">
           登录
         </li>
-        <li @click="loginOut">
+<!--        <li @click="loginOut">
           退出登录(测试)
-        </li>
+        </li>-->
       </ul>
     </header>
     <div style="height: 60px;"></div>

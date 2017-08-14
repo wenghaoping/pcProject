@@ -200,10 +200,10 @@
                             <span class="big-tag" v-if="enjoyProject.industry!=0"><i v-for="industry in enjoyProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
-                            <span class="big-tag">{{enjoyProject.scale}}</span><span class="split">｜</span>
+                            <span class="big-tag"  :class="{ newColor: enjoyProject.scale.is_match==1}">{{enjoyProject.scale.scale_money}}</span><span class="split">｜</span>
                             <span class="big-tag">{{enjoyProject.pro_finance_stock_after}}%</span><span class="split">｜</span>
-                            <span class="big-tag">{{enjoyProject.stage}}</span><span class="split">｜</span>
-                            <span class="big-tag">{{enjoyProject.area}}</span>
+                            <span class="big-tag"  :class="{ newColor: enjoyProject.stage.is_match==1}">{{enjoyProject.stage.stage_name}}</span><span class="split">｜</span>
+                            <span class="big-tag"  :class="{ newColor: enjoyProject.area.is_match==1}">{{enjoyProject.area.area_title}}</span>
                           </div>
                         </div>
                         <div class="li change_li">
@@ -270,14 +270,14 @@
                             <span class="big-tag" v-if="matchProject.industry!=0"><i v-for="industry in matchProject.industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
                           <div class="li" style="margin-top: 12px;">
-                            <span class="big-tag">{{matchProject.scale}}</span><span class="split">｜</span>
+                            <span class="big-tag" :class="{ newColor: matchProject.scale.is_match==1 }">{{matchProject.scale.scale_money}}</span><span class="split">｜</span>
                             <span class="big-tag">{{matchProject.pro_finance_stock_after}}%</span><span class="split">｜</span>
-                            <span class="big-tag">{{matchProject.stage}}</span><span class="split">｜</span>
-                            <span class="big-tag">{{matchProject.area}}</span>
+                            <span class="big-tag" :class="{ newColor: matchProject.stage.is_match==1 }">{{matchProject.stage.stage_name}}</span><span class="split">｜</span>
+                            <span class="big-tag" :class="{ newColor: matchProject.area.is_match==1 }">{{matchProject.area.area_title}}</span>
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px; border-top: 1px solid #eff2f7">
-                          <button class="button fl" @click="handlePush(0)" v-if="matchProject.push_statues==-1">
+                          <button class="button fl" @click="handlePush(0)" v-if="matchProject.push_statues==1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
                           <button  class="button fl"  @click="handlePush(matchProject)" v-else>
@@ -572,18 +572,23 @@
           this.userMessage.user_company_career=this.contacts.user_company_career;
           this.userMessage.user_company_name=this.contacts.user_company_name;
           this.userMessage.card_id=this.contacts.card_id;
+          this.userMessage.type=this.contacts.type || '';
           this.userEmail=this.contacts.user_email;
           this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
-          this.dialogPushVisible=true;
+//          this.dialogPushVisible=true;
+          this.dialogPushVisibleComplete=true;
           this.pushData.email=this.contacts.user_email;
           this.pushData.project_id=data.project_id;
         }
-      },//点击推送精简版.
+      },//点击推送完整版,并且传送数据给推送弹框(右边)
       handlePushComplete(){
+        this.pushData.project_id='';
+        this.$store.state.pushProject.projectMessgae={pro_id:'',pro_intro:''};
         this.userMessage.user_real_name=this.contacts.user_real_name;
         this.userMessage.user_company_career=this.contacts.user_company_career;
         this.userMessage.user_company_name=this.contacts.user_company_name;
         this.userMessage.card_id=this.contacts.card_id;
+        this.userMessage.type=this.contacts.type || '';
         this.userEmail=this.contacts.user_email;
         this.dialogPushVisibleComplete=true;
       },//点击推送完整版,并且传送数据给推送弹框
@@ -612,7 +617,7 @@
             this.dialogPreviewVisible = true
           }
         }else{
-          this.$tool.warning("您今日的推送次数已经达到5次,请明天再试")
+          this.$tool.warning("您今日的推送次数已用完,请明天再试")
         }
 
       },//项目预览
@@ -926,16 +931,16 @@
         arr.forEach((x)=> {
           let obj = new Object;
           obj.follow_id=x.follow_id;
-          obj.area=x.area.area_title;
+          obj.area=x.area;
           obj.industry=x.industry;
           obj.is_exclusive=x.is_exclusive;
           obj.match=x.match;
           obj.pro_finance_stock_after=x.pro_finance_stock_after;
           obj.pro_intro=x.pro_intro;
           obj.project_id=x.project_id;
-          obj.scale=x.scale.scale_money;
+          obj.scale=x.scale;
           obj.schedule_id=x.schedule_id;
-          obj.stage=x.stage.stage_name;
+          obj.stage=x.stage;
           obj.width=this.selectChange(x.schedule_id);
           newArr.push(obj);
         });
@@ -1101,7 +1106,6 @@
           this.getMatchPro.card_id=this.contacts.card_id;
           this.getMatchPro.card_link_user_id=this.contacts.user_id;
           this.getMatchPro.page=1;
-
           this.$http.post(this.URL.getInvestorsMatchProjects,this.getMatchPro)
             .then(res=>{
               if(res.data.status_code==2000000) {
@@ -1128,15 +1132,15 @@
         let newArr = new Array;
         arr.forEach((x)=> {
           let obj = new Object;
-          obj.area=x.pro_area.area_title;
+          obj.area=x.pro_area;
           obj.industry=x.pro_industry;
           obj.is_exclusive=x.is_exclusive;
           obj.match=x.match;
           obj.pro_finance_stock_after=x.pro_finance_stock_after;
           obj.pro_intro=x.pro_intro;
           obj.project_id=x.project_id;
-          obj.scale=x.pro_scale.scale_money;
-          obj.stage=x.pro_stage.stage_name;
+          obj.scale=x.pro_scale;
+          obj.stage=x.pro_stage;
           obj.is_follow=x.is_follow;
           newArr.push(obj);
         });

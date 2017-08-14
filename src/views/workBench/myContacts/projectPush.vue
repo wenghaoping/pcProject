@@ -223,7 +223,7 @@ export default {
           this.$emit('changeall', false);
         }
       }else{
-        this.$tool.warning("您今日的推送次数已经达到5次,请明天再试")
+        this.$tool.warning("您今日的推送次数已用完,请明天再试")
       }
     },//推送预览
     push(type){
@@ -304,6 +304,7 @@ export default {
       this.searchProject.card_id=this.user.card_id;
       this.searchProject.pro_intro=query;
       this.searchProject.page=1;
+      this.searchProject.type=this.user.type || '';
       this.$http.post(this.URL.matchProject,this.searchProject)
         .then(res=>{
           let data = res.data.data;
