@@ -525,7 +525,7 @@
       sync(){
         this.dialogVisible = false;
         console.log(this.queryData)
-        if(this.project.pro_intro=="") {this.project.pro_intro=this.queryData.project_info.project_introduce};
+        if(this.project.pro_intro=="") {this.project.pro_intro=this.queryData.project_info.project_introduce || ''};
         this.project.pro_company_name=this.queryData.company_name;
       },
       getprojectId(){

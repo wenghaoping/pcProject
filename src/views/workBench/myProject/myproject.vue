@@ -139,21 +139,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_company_name" label="公司名称" width="96" show-overflow-tooltip>
-              <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.pro_company_name.length > 5 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.pro_company_name}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.pro_company_name}}
-                  </div>
-                </el-tooltip>
-                <div v-if="scope.row.pro_company_name.length === 0">
-                  -
-                </div>
-              </template>
-            </el-table-column>
+
 
             <el-table-column prop="pro_source" label="项目来源" width="96" :filters="pro_sourceFilters"
                              filter-placement="bottom-end"
@@ -262,6 +248,22 @@
                 </div>
               </template>
             </el-table-column>
+
+              <el-table-column prop="created_at" label="创建时间" width="96" show-overflow-tooltip>
+                <template scope="scope">
+                  <el-tooltip placement="top" :disabled="scope.row.created_at.length > 5 ? false:true">
+                    <div slot="content">
+                      <div class="tips-txt">{{scope.row.created_at}}</div>
+                    </div>
+                    <div>
+                      {{scope.row.created_at}}
+                    </div>
+                  </el-tooltip>
+                  <div v-if="scope.row.created_at.length === 0">
+                    -
+                  </div>
+                </template>
+              </el-table-column>
             <el-table-column
               prop="reset"
               label="重置"
@@ -670,6 +672,7 @@
           obj.pro_area=this.$tool.setTagToString(list[i].pro_area,'area_title');
           obj.pro_scale=this.$tool.setTagToString(list[i].pro_scale,'scale_money');
           obj.project_id=list[i].project_id;
+          obj.created_at=list[i].created_at;
           obj.moreShow="";
           arr.push(obj);
         }

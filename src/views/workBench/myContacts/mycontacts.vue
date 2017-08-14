@@ -202,7 +202,7 @@
             <el-table-column
               prop="reset"
               label="重置"
-              width="130" class="set-th btn-cur">
+              width="130" class="edits-btn btn-cur">
               <template scope="scope">
                 <el-button
                   @click="handlePush(scope.$index, scope.row)"
@@ -362,7 +362,7 @@ export default {
         { text: '一天前活跃', value: 1 },
         { text: '两天前活跃', value: 2 },
         { text: '三天前活跃', value: 3 },
-        { text: '一周前活跃', value: 4 }
+        { text: '一周前活跃', value: 7 }
       ],//最近活跃
       stateCheck:false,//跟进状态单选
     }
