@@ -288,12 +288,11 @@
       <el-dialog class="customerAddForm" title="自定义添加" :visible.sync="dialogFormVisible" :modal='false' size="full"
                  :close-on-click-modal="false">
         <el-form :model="customerAddForm" ref="customerAddForm">
-          <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email"
-                        :rules="[{ required: true, message: '邮箱不能为空'}]">
+          <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email" :rules="[{ required: true, message: '邮箱不能为空'}]">
             <el-input v-model="customerAddForm.email" auto-complete="off" placeholder="请输入邮箱"
                       :rules="[{ required: false}]"></el-input>
           </el-form-item>
-          <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
+          <el-form-item label="姓名" :label-width="formLabelWidth" prop="name" :rules="[{ required: false, max:20, message: '姓名不得超过20个字符长度'}]">
             <el-input v-model="customerAddForm.name" auto-complete="off" placeholder="请输入姓名"
                       :rules="[{ required: false}]"></el-input>
           </el-form-item>
@@ -301,15 +300,14 @@
             <el-input v-model="customerAddForm.mobile" auto-complete="off" placeholder="请输入手机"
                       :rules="[{ required: false}]" type="number"></el-input>
           </el-form-item>
-          <el-form-item label="公司" :label-width="formLabelWidth" prop="company">
-            <el-input v-model="customerAddForm.company" auto-complete="off" placeholder="请输入公司"
-                      :rules="[{ required: false}]"></el-input>
+          <el-form-item label="公司" :label-width="formLabelWidth" prop="company" :rules="[{ required: false, max:40, message:'公司不得超过40个字符长度'}]">
+            <el-input v-model="customerAddForm.company" auto-complete="off" placeholder="请输入公司"></el-input>
           </el-form-item>
-          <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand">
+          <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand" :rules="[{ required: false, max:40, message:'品牌不得超过40个字符长度'}]">
             <el-input v-model="customerAddForm.brand" auto-complete="off" placeholder="请输入品牌"
                       :rules="[{ required: false}]"></el-input>
           </el-form-item>
-          <el-form-item label="职位" :label-width="formLabelWidth" prop="career">
+          <el-form-item label="职位" :label-width="formLabelWidth" prop="career" :rules="[{ required: false, max:40, message:'职位不得超过40个字符长度'}]">
             <el-input v-model="customerAddForm.career" auto-complete="off" placeholder="请输入职位"
                       :rules="[{ required: false}]"></el-input>
           </el-form-item>
@@ -525,6 +523,14 @@
           this.$tool.error('请输入邮箱')
         } else if (!this.$tool.checkEmail(form.email)) {
           this.$tool.error('请正确输入邮箱')
+        }else if(form.name.length>20){
+          this.$tool.error('姓名不得超过20个字符长度')
+        }else if(form.company.length>40){
+          this.$tool.error('公司不得超过40个字符长度')
+        }else if(form.brand.length>40){
+          this.$tool.error('品牌不得超过40个字符长度')
+        }else if(form.career.length>40){
+          this.$tool.error('职位不得超过40个字符长度')
         } else if (form.mobile) {
           if (!this.$tool.checkPhoneNubmer(form.mobile)) {
             this.$tool.error('请正确填写手机号码')
@@ -690,22 +696,26 @@
       netCheck(e){
         let thisId = e.target.value;
         let thisName = e.currentTarget.name;
+        console.log(thisId)
         if (this.netCheckList[thisId] === false) {
           this.netContactsShow.push(thisName);
           this.netCheckList[thisId] = true;
           //预处理推送项目接口的参数
           this.netContacts.forEach(x => {
-              if(x.type==='card'){
-                if (x.card.card_id === thisId) {
-                  this.pushData.push(x)
-                  return
-                }
-              }else{
-                if (x.card.user_id === thisId) {
-                  this.pushData.push(x)
-                  return
-                }
+            if(x.type==='card'){
+              if (x.card.card_id === thisId) {
+                this.pushData.push(x)
+                return
               }
+            }else{
+              console.log(x.card.user_id,thisId)
+              if (x.card.user_id === thisId) {
+                console.log(thisId)
+                console.log(x)
+                this.pushData.push(x)
+                return
+              }
+            }
           })
 //        console.log(this.pushData)
         } else {
@@ -760,7 +770,7 @@
             dealData.push([x.card.user_id, x.type, x.card.user_email])
           }
         })
-        console.log(dealData)
+        console.log(this.pushData)
         if (dealData.length === 0) {
           this.$tool.error('请选择推送人脉')
         } else if (dealData.length > this.pushCount) {
