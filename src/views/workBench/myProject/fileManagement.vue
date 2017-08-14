@@ -1,7 +1,7 @@
 <template>
   <div id="fileManagement" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--新建文件分组按钮-->
-    <el-button class="createNewGroup" @click.prevent="toGroup">新建文件分组</el-button>
+    <el-button class="createNewGroup" style="border-radius: 2px" @click.prevent="toGroup">新建文件分组</el-button>
     <!--文件类别-->
     <el-collapse v-model="activeNames">
       <el-collapse-item :name="index" v-for="(item,index) in groupList" :key="item.type_id">
