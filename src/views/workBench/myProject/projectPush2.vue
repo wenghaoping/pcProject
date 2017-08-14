@@ -460,7 +460,7 @@
           if (res.data.status_code === 2000000) {
 //          console.log('全网人脉',res.data.data)
             this.netContacts = res.data.data;
-           /* if(this.myContacts.length>0){
+            if(this.myContacts.length>0){
               console.log(1);
               this.matchUser()
             }else{
@@ -469,7 +469,7 @@
                 console.log(this.myContacts,this.netContacts)
                 this.matchUser()
               },1000)
-            }*/
+            }
             //项目搜索时调用此接口
             if (remote) {
               //强置刷新checkBox状态
