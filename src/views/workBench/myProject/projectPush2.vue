@@ -52,7 +52,8 @@
             <el-table-column width="64" v-if="reBorn">
               <template scope="scope">
                 <el-checkbox :checked="myCheckList[scope.row.card.card_id] || myCheckList[scope.row.card.user_id]"
-                             :label="scope.row.card.card_id || scope.row.card.user_id" @change="myCheck"
+                             :label="scope.row.card.card_id || scope.row.card.user_id"
+                             @change="myCheck"
                              :name="scope.row.card.user_real_name+'( '+scope.row.card.user_email+' )'"></el-checkbox>
               </template>
             </el-table-column>
@@ -161,7 +162,8 @@
             :row-class-name="tableRowClassName">
             <el-table-column width="64" v-if="reBorn">
               <template scope="scope">
-                <el-checkbox :checked="netCheckList[scope.row.card.user_id]" :label="scope.row.card.user_id"
+                <el-checkbox :checked="netCheckList[scope.row.card.user_id] || netCheckList[scope.row.card.card_id]"
+                             :label="scope.row.card.user_id ||scope.row.card.card_id"
                              @change="netCheck"
                              :name="scope.row.card.user_real_name+'( '+scope.row.card.user_email+' )'"></el-checkbox>
               </template>
@@ -458,7 +460,7 @@
           if (res.data.status_code === 2000000) {
 //          console.log('全网人脉',res.data.data)
             this.netContacts = res.data.data;
-            if(this.myContacts.length>0){
+           /* if(this.myContacts.length>0){
               console.log(1);
               this.matchUser()
             }else{
@@ -467,7 +469,7 @@
                 console.log(this.myContacts,this.netContacts)
                 this.matchUser()
               },1000)
-            }
+            }*/
             //项目搜索时调用此接口
             if (remote) {
               //强置刷新checkBox状态
@@ -606,7 +608,6 @@
       //项目搜索
       remoteMethod(query) {
         this.filterString = query;
-        console.log(this.myCheckList)
         if (this.activeTab === "myContacts") {
           this.getMyContacts('remote')
         } else {
@@ -693,6 +694,7 @@
       myCheck(e){
         let thisId = e.target.value;
         let thisName = e.currentTarget.name;
+        console.log(this.myCheckList[thisId])
         if (this.myCheckList[thisId] === false) {
           this.myContactsShow.push(thisName);
           this.myCheckList[thisId] = true;
@@ -722,8 +724,9 @@
       netCheck(e){
         let thisId = e.target.value;
         let thisName = e.currentTarget.name;
-        console.log(thisId)
+        console.log(this.netCheckList[thisId])
         if (this.netCheckList[thisId] === false) {
+          console.log(1)
           this.netContactsShow.push(thisName);
           this.netCheckList[thisId] = true;
           //预处理推送项目接口的参数
@@ -734,7 +737,6 @@
                 return
               }
             }else{
-              console.log(x.card.user_id,thisId)
               if (x.card.user_id === thisId) {
                 console.log(thisId)
                 console.log(x)
@@ -745,6 +747,7 @@
           })
 //        console.log(this.pushData)
         } else {
+          console.log(2)
           let thisName = e.currentTarget.name;
           let thisId = e.target.value;
           this.netCheckList[thisId] = false;
@@ -920,7 +923,11 @@
             }).then(res => {
               if (res.data.status_code === 2000000) {
                 res.data.data.forEach(x => {
-                  this.netCheckList[x.card.user_id] = false;
+                  if(x.type === 'user'){
+                    this.netCheckList[x.card.user_id] = false;
+                  }else{
+                    this.netCheckList[x.card.card_id] = false;
+                  }
                 })
                 this.netContacts = res.data.data;
               } else {
