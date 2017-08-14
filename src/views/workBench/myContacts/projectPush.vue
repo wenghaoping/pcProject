@@ -243,6 +243,7 @@ export default {
             pushData.email=this.email2.nameEmail;
             pushData.title=this.email.title;
             pushData.body=this.email.body;
+            pushData.type=this.userMessage.type || '';
             pushData.project_ids=new Array;
             pushData.project_ids.push(this.projectRadio);
             this.loading=true;
@@ -304,7 +305,7 @@ export default {
       this.searchProject.card_id=this.user.card_id;
       this.searchProject.pro_intro=query;
       this.searchProject.page=1;
-      this.searchProject.type=this.user.type || '';
+      this.searchProject.type=this.userMessage.type || '';
       this.$http.post(this.URL.matchProject,this.searchProject)
         .then(res=>{
           let data = res.data.data;

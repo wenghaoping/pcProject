@@ -1065,7 +1065,6 @@
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },//编辑项目
       toDetail(data){
-          console.log(data)
         this.cardid=data.card_id;
         this.userid=data.user_id;
         this.dialogConVisible=true;
