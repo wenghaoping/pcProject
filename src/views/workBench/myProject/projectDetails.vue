@@ -423,10 +423,10 @@
 
                         <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
 
-<!--                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==-1">
+                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==-1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
-                          </button>-->
-                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" ><!--v-else-->
+                          </button>
+                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-else><!---->
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
                           <span class="lineLine fl"></span>

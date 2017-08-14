@@ -433,6 +433,7 @@ export default {
       this.userMessage.user_company_name=row.user_company_name;
       this.userMessage.card_id=row.card_id;
       this.userMessage.investor_id=row.investor_id;
+      this.userMessage.type=row.type || '';
       this.userEmail=row.user_email;
       this.dialogPushVisible=true;
 
