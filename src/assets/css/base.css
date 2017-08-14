@@ -107,3 +107,14 @@ input:focus{
 textarea:focus{
   border-color: #40587A !important;
 }
+textarea{
+  border-radius: 2px !important;
+}
+input[type='text']{
+  border-radius: 2px !important;
+}
+button{
+  border-radius: 2px !important;
+}
+
+

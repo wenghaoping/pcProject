@@ -32,7 +32,7 @@
           <div class="item-list item-list-main">
             <!--个人标签-->
             <div class="item">
-              <div class="block clearfix" style="margin-bottom: 33px;">
+              <div class="block clearfix" style="margin-bottom: 0px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
                 <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editYag.png">修改</span>
               </div>
