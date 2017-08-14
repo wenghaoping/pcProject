@@ -562,7 +562,6 @@
       },//提交用
       allSave(){
         let follow=this.submitForm('follow');
-        console.log(this.follow)
         if(this.follow.card_name=="") this.follow.card_id='';
         if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
             this.$tool.error("请选择或添加正确的投资人")

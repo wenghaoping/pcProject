@@ -1939,7 +1939,6 @@
               check=false;
             }
           }
-
         }
         return check;
       },//判断成员股权比例
@@ -1948,7 +1947,7 @@
         if(this.$tool.getNull(data)){
 
         }else {
-          if (this.$tool.checkNumber(parseFloat(data))) {
+          if (this.$tool.checkNumber(data)) {
             if (parseFloat(data) > 100) {
               this.$tool.error(title1);
               check = false;
@@ -2001,10 +2000,10 @@
         else if (this.milepostMust) this.$tool.error("里程碑必填项不能为空")
         else if (!this.getMemberHunder(this.team.core_users)) {}
         else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){this.$tool.console("投后股份没过")}
-        else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字")){this.$tool.console("签约没过")}
-        else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字")){this.$tool.console("股权赠与没过")}
-        else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字")){this.$tool.console("跟投权没过")}
-        else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字")){this.$tool.console("其他权益没过")}
+        else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字(去处%号)")){this.$tool.console("签约没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字(去处%号)")){this.$tool.console("股权赠与没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字(去处%号)")){this.$tool.console("跟投权没过")}
+        else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字(去处%号)")){this.$tool.console("其他权益没过")}
         else if (!this.getNumber(this.financing.pro_finance_value)){this.$tool.console("pro_finance_value没过")}
         else if (this.$tool.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else{
@@ -2227,7 +2226,7 @@
         this.getWxProjectCategory();
         this.getProjectDetail();
         this.setFileType();
-      },200);
+      },500);
       this.ProjectShow=false;
       this.teamShow=false;
       this.financingShow=false;

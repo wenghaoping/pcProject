@@ -488,7 +488,7 @@ export default {
                 newState.label = tagName;
                 newState.value = res.data.tag_id;
                 this.tags.changecont.push(newState);
-                this.$global.func.getWxProjectCategory();
+//                this.$global.func.getWxProjectCategory();
               })
               .catch(err => {
                 this.$tool.error("添加失败");
@@ -641,6 +641,7 @@ export default {
       this.tags_con = this.$global.data.tags_user;//设置人脉标签
       this.giveTo = this.$global.data.resource;//设置提供的资源和对接的资源
       this.pushTo = this.$global.data.resource;//设置提供的资源和对接的资源
+
     },//获取所有下拉框的数据
 
     /*以下都是辅助函数*/
@@ -726,12 +727,7 @@ export default {
       this.card_id = this.$route.query.card_id;
     },//获取id
     getNewPro(){
-      var getNewPro = new Promise((resolve, reject)=>{
-        //做一些异步操作
-        this.$global.func.getWxProjectCategory();
-        resolve(1);
-      });
-      return getNewPro;
+      this.$global.func.getWxProjectCategory();
     },
   },
   created(){
@@ -743,7 +739,7 @@ export default {
       if(this.card_id!='creat') this.getOneUserInfo();
       if (this.planList.length != 0) this.planButton = false;
       else this.planButton = true;
-    },200)
+    },500)
   }
 }
 </script>

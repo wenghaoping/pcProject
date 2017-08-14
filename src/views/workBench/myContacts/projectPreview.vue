@@ -5,10 +5,11 @@
     <el-dialog :visible="dialogPreviewVisible" :show-close="close"  custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <div class="top_pro">
         <p v-if="email.title==''">邮件标题 :
-          <i v-if="user.firse_user_company_name!=''">{{user.firse_user_company_name}}－</i>
-          <i v-if="user.firse_user_company_name==''">{{user.user_brand}}－</i>
-          <i v-if="user.firse_user_company_career==''">{{user.firse_user_company_career}}－</i>
-          <i v-if="user.firse_user_real_name==''">{{user.firse_user_real_name}}－</i>
+
+          <i v-if="user.user_brand!=''">{{user.user_brand}}－</i>
+          <i v-else>{{user.firse_user_company_name}}－</i>
+          <i v-if="user.firse_user_company_career!=''">{{user.firse_user_company_career}}－</i>
+          <i v-if="user.firse_user_real_name!=''">{{user.firse_user_real_name}}</i>
           推送给您一个项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行</p>
         <p v-else>邮件标题 : {{email.title}}</p>
         <p v-if="email.body==''">邮件正文 : 尊敬的{{user.user_real_name}}，下面是来自{{user.firse_user_company_name}}-{{user.firse_user_company_career}}-{{user.firse_user_real_name}}的项目推荐。你可以注册/登录微天使工作站找到更多精选FA项目资源。</p>
