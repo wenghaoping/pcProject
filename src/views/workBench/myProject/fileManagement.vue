@@ -49,7 +49,7 @@
                     <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img :src="uploadIcon">上传文件</el-button>
                </el-upload>
             </div>
-            <el-button v-if="item.type_id>4"  style="margin-top: 2px" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img :src="renameIcon">重命名</el-button>
+            <el-button v-if="item.type_id>4"  style="margin-top: 1px" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img :src="renameIcon">重命名</el-button>
             </span>
         </template>
         <!--文件列表-->
@@ -61,7 +61,7 @@
             <div class="fr" style="margin-right: 21px">
               <!--bp上传-->
               <el-button v-if="item.type_id===1" type="text"  style="font-size: 12px" @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
-              
+
               <!--非bp上传-->
               <el-dropdown v-if="item.type_id!=1"  @command="fileDeal" trigger="click">
                 <span class="el-dropdown-link" @click="getFileId(file.file_id,item.type_id)">
