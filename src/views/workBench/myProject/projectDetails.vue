@@ -1435,6 +1435,7 @@
           })
       },//控制买家图谱页码
       industryPush(data){
+//          console.log(data);
         if(data==0){
           this.$tool.warning("已推送过");
         }else{
@@ -1448,7 +1449,8 @@
           this.userMessage.type=data.type || '';
           this.userEmail=data.user_eamil;
           this.$store.state.pushProject.projectMessgae={pro_id:this.project.project_id || '',pro_intro:this.project.pro_intro || ''};
-          this.dialogPushVisible=true;
+          this.$store.state.pushProject.pushMessage.investor_id=data.investor_id;
+//          this.dialogPushVisible=true;
           this.dialogPushVisibleComplete=true;
           this.pushData.email=data.user_eamil;
           this.pushData.project_id=this.project.project_id;
@@ -1554,6 +1556,7 @@
       },//项目推送预览显隐控制
       previewPush(x){
         this.emitPush=x;
+
       },//项目推送预览隐藏
       closePreview(msg){
         this.dialogPreviewVisible=msg;

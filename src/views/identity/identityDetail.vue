@@ -303,7 +303,7 @@
       },
       // 完成
       next(){
-        console.log(this.investCaseData)
+//        console.log(this.investCaseData)
         if (!this.ruleForm1.name.replace(/^\s+|\s+$/g, "")) {
           this.$tool.error('请正确填写姓名')
         } else if (!this.ruleForm1.company.replace(/^\s+|\s+$/g, "")) {
@@ -313,7 +313,7 @@
         }else if (this.ruleForm1.email && !this.$tool.checkEmail(this.ruleForm1.email)) {
           this.$tool.error('请正确填写邮箱')
         }else {
-          console.log(this.ruleForm1, this.ruleForm2);
+//          console.log(this.ruleForm1, this.ruleForm2);
           this.$http.post(this.URL.saveUserIdentity, {
             authenticate_id: localStorage.authenticate_id,
             user_id: localStorage.user_id,

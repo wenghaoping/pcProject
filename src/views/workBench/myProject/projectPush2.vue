@@ -802,8 +802,7 @@
             dealData.push([x.card.user_id, x.type, x.card.user_email])
           }
         })
-        console.log(dealData)
-        if (dealData.length === 0) {
+        if (this.pushData.length>0 && dealData.length === 0) {
           this.$tool.error('请选择推送人脉')
         } else if (dealData.length > this.pushCount) {
           this.$tool.error('推送人数不能超过今日剩余推送次数')
