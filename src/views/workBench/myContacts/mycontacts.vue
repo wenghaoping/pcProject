@@ -434,9 +434,9 @@ export default {
       this.userMessage.card_id=row.card_id;
       this.userMessage.investor_id=row.investor_id;
       this.userMessage.type=row.type || '';
+      if(row.type=='user'){this.userMessage.card_id=row.user_id;}
       this.userEmail=row.user_email;
       this.dialogPushVisible=true;
-
     },//点击推送,并且传送数据给推送弹框
     addContacts(){
       this.$router.push({name: 'createContacts',query: {card_id: 'creat'}})//路由传参

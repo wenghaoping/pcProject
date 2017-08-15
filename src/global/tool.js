@@ -70,7 +70,7 @@ const tool={
     target.value ="";
     return false;
   }
-},/*设置上传文件大小以及类型fileChange(this)*/
+},//*设置上传文件大小以及类型fileChange(this)
   getTitleSift(data){
     let arr = [];
     for(let key in data){

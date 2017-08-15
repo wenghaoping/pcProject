@@ -565,9 +565,10 @@
         this['node' + v] = true ;
         this.$http.post(this.getProjectListURL,{user_id: localStorage.user_id,pro_schedule:parseInt(v)})
           .then(res=>{
-            this.loading=false
-            let data = res.data.data
-            this.tableData=this.getProjectList(data)
+            this.loading=false;
+            let data = res.data.data;
+            this.tableData=this.getProjectList(data);
+            this.totalData=res.data.count//页码
           })
           .catch(err=>{
             this.loading=false

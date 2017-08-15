@@ -251,9 +251,13 @@
           obj.pro_intro=data[i].pro_intro || "暂无信息";//项目介绍
           obj.is_exclusive=data[i].is_exclusive;//独家/非独家
           obj.pro_industry=this.setIndustry(data[i].pro_industry) || [];//项目标签
-          obj.pro_scale =data[i].pro_scale[0].scale_money || '-';//项目估值
-          obj.pro_area =data[i].pro_area[0].area_title || '-';//地区
-          obj.pro_stage =data[i].pro_stage[0].stage_name || '-';//投资轮次
+          obj.pro_stage=this.$tool.setTagToString(data[i].pro_stage,'stage_name');
+
+          obj.pro_area=this.$tool.setTagToString(data[i].pro_area,'area_title');
+          obj.pro_scale=this.$tool.setTagToString(data[i].pro_scale,'scale_money');
+          if(obj.pro_stage=="") obj.pro_stage="-";
+          if(obj.pro_area=="") obj.pro_area="-";
+          if(obj.pro_scale=="") obj.pro_scale="-";
           obj.pro_finance_stock_after =data[i].pro_finance_stock_after || '-';//股权
           arr.push(obj);
         }
@@ -281,12 +285,16 @@
           this.$http.post(this.URL.getProjectList, this.getPra)
             .then(res => {
               let data = res.data.data;
+              console.log(data)
               this.projectListsAll = this.setProjectList(data);
-              this.projectListsSmall = this.setProjectList(data).slice(0, 2);
-              if (this.listShow) this.projectLists = this.projectListsAll.slice(0);
-              else this.projectLists = this.projectListsSmall.slice(0)
 
+              this.projectListsSmall = this.setProjectList(data).slice(0, 2);
+
+              console.log(this.projectListsSmall)
+              if (this.listShow) this.projectLists = this.projectListsAll.slice(0)
+              else this.projectLists = this.projectListsSmall.slice(0);
               this.totalData = res.data.count;
+
             })
             .catch(err => {
               this.$tool.console(err, 2);

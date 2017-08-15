@@ -277,10 +277,11 @@
                           </div>
                         </div>
                         <div class="li clearfix" style="margin-top: 12px; border-top: 1px solid #eff2f7">
+
                           <button class="button fl" @click="handlePush(0)" v-if="matchProject.push_statues==1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
-                          <button  class="button fl"  @click="handlePush(matchProject)" v-else>
+                          <button  class="button fl"  @click="handlePush(matchProject)" v-if="matchProject.push_statues==0">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送</button>
                           <span class="lineLine fl"></span>
                           <button class="button fl" @click="delMatchAction(matchProject)" style="border-right: none">
@@ -572,7 +573,10 @@
           this.userMessage.user_company_career=this.contacts.user_company_career;
           this.userMessage.user_company_name=this.contacts.user_company_name;
           this.userMessage.card_id=this.contacts.card_id;
-          this.userMessage.type=this.contacts.type || '';
+          if(this.contacts.type=='user'){
+            this.userMessage.card_id=this.contacts.user_id;
+          }
+          this.userMessage.type=this.contacts.type;
           this.userEmail=this.contacts.user_email;
           this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
 //          this.dialogPushVisible=true;
@@ -594,6 +598,7 @@
       },//点击推送完整版,并且传送数据给推送弹框
       handleClose(){
         this.dialogPushVisible=false;
+
       },//关闭项目推送
       dialogVisiblechange(msg){
 //      this.dialogPushVisible=msg;
@@ -627,6 +632,7 @@
       dialogVisiblechangeCloase(msg){
         this.dialogPushVisibleComplete=msg;
         this.getpushCount();
+        this.getInvestorsMatchProjects();
       },//关闭项目推送弹窗
       filterChangeCurrent(page){
         this.getProjectList(page);
@@ -709,6 +715,7 @@
           //做一些异步操作
           this.loading=true;
           this.getPra.user_id=this.contacts.user_id;
+          console.log(this.contacts.user_id,1)
 //      this.getPra.user_id="2rzyz5vp";
           this.currentPage=page;
           this.getPra.page=page;
@@ -758,7 +765,6 @@
       getOneUserInfo(){
         var getOneUserInfo = new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.loading=true;
           this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
             .then(res => {
               let data = res.data.data;
@@ -789,15 +795,14 @@
               this.tagsValue = this.setTag(data.user_invest_tag);
               this.tags.changecont = this.setTag(data.user_invest_tag);
               this.contacts = data;
-//              console.log(data);
-              this.loading = false;
+              resolve(3);
             })
             .catch(err=>{
               this.$tool.console(err,2);
 //              this.loading=false;
               this.$tool.error("加载超时");
             })
-          resolve(3);
+
         });
         return getOneUserInfo;
 
@@ -882,13 +887,14 @@
                 this.eChart(data.going,data.hold,data.reject);
               }
               this.loading = false;
+              resolve(5);
             })
             .catch(err=>{
               this.$tool.console(err,2);
               this.loading1=false;
               this.$tool.error("加载超时");
             })
-            resolve(5);
+
         });
         return getEchartData;
 
@@ -914,6 +920,7 @@
                     this.activeName='2';
                     this.tabs=false;
                 }
+                resolve(7);
               }
               this.loading = false;
             })
@@ -921,7 +928,7 @@
               this.$tool.console(err,2);
               this.$tool.error("加载超时");
             })
-          resolve(7);
+
         });
         return getEnjoyProjects;
 
@@ -1114,7 +1121,7 @@
                   this.matchProjects=this.setMatchProject(data);
 //                  console.log(this.matchProjects);
                   this.totalData3 = res.data.count;
-
+                  resolve(6);
                 }
               }
             })
@@ -1123,7 +1130,7 @@
               this.loading=false;
               this.$tool.error("加载超时");
             })
-          resolve(6);
+
         });
         return getInvestorsMatchProjects;
 
@@ -1142,6 +1149,7 @@
           obj.scale=x.pro_scale;
           obj.stage=x.pro_stage;
           obj.is_follow=x.is_follow;
+          obj.push_statues=x.push_statues;
           newArr.push(obj);
         });
         return newArr;
@@ -1257,23 +1265,14 @@
           this.$tool.warning("您今日的推送次数已用完")
         }
       },//推送
-      getNewWxPro(){
-        var getNewPro = new Promise((resolve, reject)=>{
-          //做一些异步操作
-          this.$global.func.getWxProjectCategory();
-          resolve(1);
-        });
-        return getNewPro;
-      },//获取最新的下拉框数据
     },
     created(){
       this.$tool.getTop();
       this.loading=true;
       this.getUserId();
       this.getpushCount();
-      if(this.contacts.user_id!=0) this.getProjectList(1)
-      else this.projectLists=[];
-      this.getNewWxPro()
+
+      this.$global.func.getWxProjectCategory()
         .then((data)=>{
           return this.getWxProjectCategory();
         })
@@ -1281,6 +1280,8 @@
           return this.getOneUserInfo();
         })
         .then((data)=>{
+          if(this.contacts.user_id!=0) this.getProjectList(1)
+          else this.projectLists=[];
           return this.getEchartData();
         })
         .then((data)=>{
@@ -1304,8 +1305,8 @@
     watch : {
       dialogVisibleTag : function (e) {
         if (e) {
-          this.$global.func.getWxProjectCategory();
-          setTimeout(()=>{this.getWxProjectCategory();},200)
+/*          this.$global.func.getWxProjectCategory();
+          setTimeout(()=>{this.getWxProjectCategory();},200)*/
         }
       }
     }

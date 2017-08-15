@@ -86,7 +86,7 @@
           </div>
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
-        <div class="item-lists clearfix" style="padding-top: 10px;">
+        <div class="item-lists clearfix" style="padding:16px;padding-top: 10px;">
           <!--===============================================================================================================================tab页面-->
           <el-tabs v-model="show" @tab-click="handleClick" style="position: relative">
             <el-tab-pane label="项目详情" name="detail">
@@ -425,7 +425,7 @@
                           <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
-                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-else>
+                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-if="projectMatchInvestor.push_statues==0">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
                           <span class="lineLine fl"></span>
@@ -1022,24 +1022,23 @@
               this.project.pro_source=this.getProjectTag(data.tag);
               this.project.team_tag=this.getteam_tag(data.tag);
               this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
+              resolve(3);
             })
             .catch(err=>{
               this.$tool.console(err,2)
             })
-          resolve(3);
+
         });
         return getProjectDetail;
       },//获取项目详情数据
       getWxProjectCategory(){
         var getWxProjectCategory = new Promise((resolve, reject)=>{
           //做一些异步操作
-          setTimeout(()=>{
-            this.schedule = this.$global.data.schedule;//设置项目跟进状态
-            this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
-            this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
-            this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
-            resolve(2);
-          }, 500);
+          this.schedule = this.$global.data.schedule;//设置项目跟进状态
+          this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
+          this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
+          this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
+          resolve(2);
         });
         return getWxProjectCategory;
       },//获取所有下拉框的数据
@@ -1065,7 +1064,6 @@
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },//编辑项目
       toDetail(data){
-          console.log(data)
         this.cardid=data.card_id;
         this.userid=data.user_id;
         this.dialogConVisible=true;
@@ -1242,8 +1240,6 @@
         this.scheduleIndex=index;
       },//获取意向投资人索引
       filterChangeCurrent(page){
-
-
         this.loading=true;
         this.getConCon.user_id=localStorage.user_id;
         this.getConCon.project_id=this.project.project_id;
@@ -1542,20 +1538,12 @@
       previewPush(x){
         this.emitPush=x;
       },//项目推送预览隐藏
-      getNewPro(){
-        var getNewPro = new Promise((resolve, reject)=>{
-          //做一些异步操作
-          this.$global.func.getWxProjectCategory();
-          resolve(1);
-        });
-        return getNewPro;
-      },
       closePreview(msg){
         this.dialogPreviewVisible=msg;
       },//关闭项目预览
       getAllData(){
         this.loading=true;
-        this.getNewPro()
+        this.$global.func.getWxProjectCategory()
           .then((data)=>{
             return this.getWxProjectCategory();
           })
@@ -1576,7 +1564,6 @@
     },
     created () {
       this.$tool.getTop();
-      this.loading=true;
       this.getprojectId();
       this.getAllData();
     },
