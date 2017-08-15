@@ -18,6 +18,17 @@ this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}}
 this.$route.query.project_id;
 //state.show?false:true;
 
+function add() {
+  var getOneUserInfo = new Promise((resolve, reject)=>{
+    //做一些异步操作
+    resolve(1);
+  })
+  return getOneUserInfo;
+}
+add()
+.then((data)=>{
+  return this.getWxProjectCategory();
+})
 
 /*================输入框================*/
 // <el-input v-model="input" placeholder="请输入内容"></el-input>

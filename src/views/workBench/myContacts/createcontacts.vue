@@ -554,7 +554,7 @@ export default {
           allData.card_id=this.contacts.card_id || '';
           allData.image_id=this.uploadShow.image_id || '';
 //          this.$tool.console(allData);
-          console.log(allData);
+//          console.log(allData);
           this.$http.post(this.URL.createUserCard, allData)
             .then(res => {
               this.card_id=res.data.card_id;
