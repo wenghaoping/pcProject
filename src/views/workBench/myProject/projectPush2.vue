@@ -711,7 +711,6 @@
           this.myCheckList[thisId] = false;
           this.netCheckList[thisId] = false;
           this.myContactsShow.splice(this.myContactsShow.indexOf(thisName), 1)
-          this.netContactsShow.splice(this.myContactsShow.indexOf(thisName), 1)
           this.pushData.splice(this.pushData.indexOf(thisId), 1)
         }
         this.initReborn();
@@ -746,7 +745,6 @@
           let thisId = e.target.value;
           this.netCheckList[thisId] = false;
           this.myCheckList[thisId] = false;
-          this.myContactsShow.splice(this.netContactsShow.indexOf(thisName), 1)
           this.netContactsShow.splice(this.netContactsShow.indexOf(thisName), 1)
           this.pushData.splice(this.pushData.indexOf(thisId), 1)
         }
