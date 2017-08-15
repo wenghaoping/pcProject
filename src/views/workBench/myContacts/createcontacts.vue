@@ -742,19 +742,11 @@ export default {
     getContactsId(){
       this.card_id = this.$route.query.card_id;
     },//获取id
-    getNewWxPro(){
-      var getNewPro = new Promise((resolve, reject)=>{
-        //做一些异步操作
-        this.$global.func.getWxProjectCategory();
-        resolve(1);
-      });
-      return getNewPro;
-    },//获取最新的下拉框数据
   },
   created(){
     this.$tool.getTop();
     this.getContactsId();
-    this.getNewWxPro()
+    this.$global.func.getWxProjectCategory()
       .then((data)=>{
         return this.getWxProjectCategory();
       })

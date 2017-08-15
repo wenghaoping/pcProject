@@ -1,5 +1,5 @@
 <template>
-  <div id="followUpDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="followUpDetail">
     <div  class="followDetail" v-for="(item,index) in content" >
       <!--信息介绍-->
       <div class="followItem" style="margin-top: 0px">

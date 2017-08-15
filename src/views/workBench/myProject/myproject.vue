@@ -220,6 +220,7 @@
                 </div>
               </template>
             </el-table-column>
+
             <el-table-column prop="pro_area" label="地区" width="80"
                              column-key="pro_area"
                              :filters="pro_areaFilters"
@@ -234,6 +235,7 @@
                 </div>
               </template>
             </el-table-column>
+
             <el-table-column prop="pro_scale" label="期望融资" width="102"
                              :filters="pro_scaleFilters"
                              filter-placement="bottom-end"
@@ -249,7 +251,8 @@
               </template>
             </el-table-column>
 
-              <el-table-column prop="created_at" label="创建时间" width="96" show-overflow-tooltip>
+              <el-table-column prop="created_at" label="创建时间" width="96" show-overflow-tooltip
+                               sortable="custom" column-key="created_at">
                 <template scope="scope">
                   <el-tooltip placement="top" :disabled="scope.row.created_at.length > 5 ? false:true">
                     <div slot="content">
@@ -518,7 +521,8 @@
             delete this.getPra[key];
           }
         }//删除空的查询项
-        this.$tool.console(this.getPra);
+//        this.$tool.console(this.getPra);
+        console.log(this.getPra);
         this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{
             this.loading=false;
@@ -729,7 +733,6 @@
     },
     created () {
       // 组件创建完后获取数据，
-
       this.getProjectListURL=this.URL.getProjectList;
       this.loading=true;
       this.getNodeCount();

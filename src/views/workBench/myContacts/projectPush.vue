@@ -325,7 +325,6 @@ export default {
 
       })
       return remoteMethod;
-
     },//项目搜索
     filterChangeMatchProject(page){
 
@@ -348,6 +347,7 @@ export default {
     },//页码控制
     removeTag(e){
       this.projectRadio='';
+      this.remoteMethod("");
     },//删除标签
     setProjectAll(data){
       let arr = [];
@@ -406,7 +406,9 @@ export default {
         })
     },//获取剩余推送次数
     handleSelect(row, event, column) {
+        console.log(row)
       this.projectRadio=row.project_id;
+      this.remoteMethod(row.pro_intro);
     },//点击单选
     open2(title, main, confirm, cancel) {
       this.$confirm(main, title, {
@@ -456,6 +458,7 @@ export default {
             this.remoteMethod(this.firstInData.project.pro_intro)
               .then((data)=>{
                 this.projectRadio=this.firstInData.project.pro_id;
+
               })
           }else{
             this.remoteMethod("");

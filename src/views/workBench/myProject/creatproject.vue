@@ -288,10 +288,16 @@
     methods: {
       /*获取列表各种数据*/
       getWxProjectCategory(){
-        this.area=this.$global.data.area;//设置人脉标签
-        this.scale=this.$global.data.scale;//设置期望融资
-        this.stage=this.$global.data.stage;//设置轮次信息
-        this.industry=this.$global.data.industry;//设置轮次信息
+        var getWxProjectCategory = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.area=this.$global.data.area;//设置人脉标签
+          this.scale=this.$global.data.scale;//设置期望融资
+          this.stage=this.$global.data.stage;//设置轮次信息
+          this.industry=this.$global.data.industry;//设置轮次信息
+          resolve(1);
+        })
+        return getWxProjectCategory;
+
       },//获取所有下拉框的数据
       area1Change(data){
         this.project.pro_area_city="";
@@ -534,53 +540,56 @@
         console.log(this.project.project_id);
       },
       getWxosProjectData(){
-        if(localStorage.credential==undefined || localStorage.credential=="" || localStorage.credential==null){
-
-        }else{
-          this.$http.post(this.URL.getWxosProjectData,{credential:localStorage.credential})
-            .then(res=>{
-              let data=res.data.project;
+        var getOneUserInfo = new Promise((resolve, reject) => {
+          //做一些异步操作
+          if (localStorage.credential == undefined || localStorage.credential == "" || localStorage.credential == null) {
+            resolve(1);
+          } else {
+            this.$http.post(this.URL.getWxosProjectData, {credential: localStorage.credential})
+              .then(res => {
+                let data = res.data.project;
 //              this.$tool.console(this.$tool.getToObject(data));
-              console.log(this.$tool.getToObject(data));
-              this.project.pro_industry=data.industry;
-              if(data.is_exclusive==4) data.is_exclusive=0;
-              this.project.is_exclusive=data.is_exclusive;
-              if(data.pro_finance_scale==0) data.pro_finance_scale="";
-              this.project.pro_finance_scale=data.pro_finance_scale;
-              if(data.pro_finance_stage==0) data.pro_finance_stage={stage_id:""};
-              this.project.pro_finance_stage=data.pro_finance_stage;
-              this.project.pro_goodness=data.pro_goodness;
-              this.project.pro_intro=data.pro_intro;
-              localStorage.credential="";
-            })
-            .catch(err=>{
-              this.alert("获取失败");
-              this.$tool.console(err);
-            });
-        }
-      }//微信进入的时候获取
+//                console.log(this.$tool.getToObject(data));
+                this.project.pro_industry = data.industry;
+                if (data.is_exclusive == 4) data.is_exclusive = 0;
+                this.project.is_exclusive = data.is_exclusive;
+                if (data.pro_finance_scale == 0) data.pro_finance_scale = "";
+                this.project.pro_finance_scale = data.pro_finance_scale;
+                if (data.pro_finance_stage == 0) data.pro_finance_stage = {stage_id: ""};
+                this.project.pro_finance_stage = data.pro_finance_stage;
+                this.project.pro_goodness = data.pro_goodness;
+                this.project.pro_intro = data.pro_intro;
+                localStorage.credential = "";
+                resolve(1);
+              })
+              .catch(err => {
+                this.alert("获取失败");
+                this.$tool.console(err);
+              });
+            return getOneUserInfo;
+          }
+        })
+        //微信进入的时候获取
+      }
     },
     mounted() {
 
     },
     created(){
       this.$tool.getTop();
-      if(this.planList.length!=0) this.planButton=false;
-      else this.planButton=true;
+      this.loading=true;
       this.getprojectId();
-      this.$global.func.getWxProjectCategory();
-      setTimeout(() => {
-        this.getWxProjectCategory();
-        this.getWxosProjectData();
-      },500)
-
-
+      this.$global.func.getWxProjectCategory()
+        .then((data)=>{
+          return this.getWxProjectCategory();
+        })
+        .then((data)=>{
+          this.loading=false;
+          return this.getWxosProjectData();
+        })
+        if(this.planList.length!=0) this.planButton=false;
+        else this.planButton=true;
     },
-    /*watch: {
-     // 如果路由有变化，会再次执行该方法
-     "$route": "getWxosProjectData"
-     }*/
-
   }
 </script>
 

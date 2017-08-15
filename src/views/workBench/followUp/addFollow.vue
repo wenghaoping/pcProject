@@ -340,8 +340,6 @@
               resolve(1);
         });
         return getScheduleName;
-
-
       },// 获取跟进进度
       getFileType(data){
         let arr = [];
@@ -635,16 +633,6 @@
         this.investor_id=this.investorid || '';
         this.saveJumpData=this.follow;
       },//清除所有数据
-      getNewWxPro(){
-        var getNewPro = new Promise((resolve, reject)=>{
-          //做一些异步操作
-          this.$global.func.getWxProjectCategory()
-            .then((data)=>{
-              resolve(1);
-            })
-        });
-        return getNewPro;
-      },//获取最新的下拉框数据
     },
     created(){
 //      alert("吊接口啦")
@@ -658,7 +646,7 @@
         if(e) {
           this.clearData();
           this.follow_id=this.followid || '';
-          this.getNewWxPro()
+          this.$global.func.getWxProjectCategory()
             .then((data)=>{
               return this.getScheduleName();
             })

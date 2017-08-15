@@ -341,7 +341,7 @@ export default {
           this.getPra.card_name=this.filterInvestors(this.getPra.card_name);
         }
       }//删除空的查询项
-      this.$tool.console(this.getPra);
+//      this.$tool.console(this.getPra);
 
       this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
@@ -361,7 +361,7 @@ export default {
       this.loading=true;
       this.getPra.user_id=localStorage.user_id;
       this.getPra.page=page;//控制当前页码
-      this.$tool.console(this.getPra);
+//      this.$tool.console(this.getPra);
       this.$http.post(this.URL.get_follow_records,this.getPra)
         .then(res=>{
           let data = res.data.data;

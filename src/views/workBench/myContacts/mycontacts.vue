@@ -664,20 +664,12 @@ export default {
           this.addTags = this.$tool.getTags_pro(data.tags_user);//设置人脉标签
         })
     },//设置人脉标签
-    getNewWxPro(){
-      var getNewPro = new Promise((resolve, reject)=>{
-        //做一些异步操作
-        this.$global.func.getWxProjectCategory();
-        resolve(1);
-      });
-      return getNewPro;
-    },//获取最新的下拉框数据
 
   },
   created(){
     this.$tool.getTop();
     this.loading=true;
-    this.getNewWxPro()
+    this.$global.func.getWxProjectCategory()
       .then((data)=>{
         return this.getWxProjectCategory();
       })
