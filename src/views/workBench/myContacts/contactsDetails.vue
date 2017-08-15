@@ -713,7 +713,6 @@
         var getProjectList = new Promise((resolve, reject)=>{
           //做一些异步操作
           this.getPra.user_id=this.contacts.user_id;
-          console.log(this.contacts.user_id,1)
 //      this.getPra.user_id="2rzyz5vp";
           this.currentPage=page;
           this.getPra.page=page;
@@ -730,7 +729,7 @@
             })
             .catch(err=>{
               this.$tool.console(err,2);
-              this.loading1=false;
+              this.loading=false;
               this.$tool.error("加载超时");
             })
           resolve(4);
@@ -1277,6 +1276,7 @@
           return this.getEchartData();
         })
         .then((data)=>{
+          this.loading=false;
           return this.getInvestorsMatchProjects();
         })
         .then((data)=>{
@@ -1297,8 +1297,7 @@
     watch : {
       dialogVisibleTag : function (e) {
         if (e) {
-/*          this.$global.func.getWxProjectCategory();
-          setTimeout(()=>{this.getWxProjectCategory();},200)*/
+
         }
       }
     }

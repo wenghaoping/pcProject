@@ -436,7 +436,6 @@ export default {
   },
   created(){
     this.$tool.getTop();
-    this.loading=true;
     this.titleSift();
     this.handleIconClick();
   },

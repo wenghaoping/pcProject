@@ -530,6 +530,7 @@
             .then(res => {
               this.getProjectIndustry(res.data.data);
               this.project = res.data.data;
+              this.loading=false;
               resolve(1);
             })
             .catch(err => {
@@ -574,7 +575,7 @@
             return this.getCrawlerCompeting();
           })
           .then((data)=>{
-            this.loading=false;
+
             return this.getCrawlerProject();
           })
       },//获取公司id

@@ -2179,7 +2179,7 @@
           }
         }
       },
-      getTeamSync(data){
+      getTeamSync(data=[]){
         let arr = [];
         for(let i=0; i<data.length; i++){
           let obj=new Object;
@@ -2192,7 +2192,7 @@
         }
         return arr;
       },//team同步数据修改
-      getFinancingMoney(data){
+      getFinancingMoney(data=[]){
         let arr = [];
         this.setDateTime5(data);
         for(let i=0; i<data.length; i++){
@@ -2206,7 +2206,7 @@
         }
         return arr;
       },//历史融资同步数据修改
-      getMilestone(data){
+      getMilestone(data=[]){
         let arr = [];
         this.setDateTime6(data);
         for(let i=0; i<data.length; i++){
@@ -2224,8 +2224,8 @@
       sync(){
         this.loading=true;
         this.dialogVisible = false;
-        if(this.project.pro_intro=="") this.project.pro_intro = this.queryData.project_info.project_introduce;
-        if(this.project.pro_website=="") this.project.pro_website = this.queryData.project_info.project_website;
+        if(this.project.pro_intro=="") this.project.pro_intro = this.queryData.project_info.project_introduce || '';
+        if(this.project.pro_website=="") this.project.pro_website = this.queryData.project_info.project_website || '';
         if(this.team.core_users.length==0) this.team.core_users=this.getTeamSync(this.queryData.team);
         if(this.financing.pro_history_finance.length==0) this.financing.pro_history_finance = this.getFinancingMoney(this.queryData.history_finance);
         if(this.milepost.pro_develop.length==0) this.milepost.pro_develop=this.getMilestone(this.queryData.milestone_list);

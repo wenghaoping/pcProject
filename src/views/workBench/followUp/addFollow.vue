@@ -94,8 +94,6 @@
               <span class="f-title fl">{{list.bp_type}}：</span>
           </el-tooltip>
 
-
-
           <el-tooltip placement="top">
             <div slot="content">{{list.file_title}}</div>
             <span class="f-name fl" @click.prevent="download(list)"
@@ -550,9 +548,9 @@
       },//发送分组设置请求
       toGroup(item){
         this.groups.type=item.type;
-        console.log(item);
         let index = this.uploadShow.lists.indexOf(item);
         this.groups.index = index;
+        this.groups.name = item.bp_type;
         this.dialogFileVisible = true;
       },//获取分组的位置
       submitForm(formName) {
@@ -670,7 +668,7 @@
   #addFollow{
     .el-radio-group{
       line-height: 3!important;
-      width: 470px;
+      width: 400px;
     }
     .el-radio{
       margin-left:0px!important;
