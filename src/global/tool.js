@@ -363,9 +363,9 @@ const tool={
   },
 
 
-  console(text,data) {
+  console() {
     let type=false;//true代表开发环境,false代表上线环境
-    if(type) console.log(text,data);
+    if(type) console.log(...arguments);
   },//console控制
 
 }
