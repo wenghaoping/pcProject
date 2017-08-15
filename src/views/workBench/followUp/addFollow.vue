@@ -334,7 +334,14 @@
         return newArr;
       },//获取用户
       getScheduleName(){
-        this.schedule_name=this.$global.data.follow_schedule;//设置项目跟进状态
+        var getScheduleName = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.schedule_name=this.$global.data.follow_schedule;//设置项目跟进状态
+              resolve(1);
+        });
+        return getScheduleName;
+
+
       },// 获取跟进进度
       getFileType(data){
         let arr = [];
@@ -362,6 +369,8 @@
         }
       },//设置批量上传文件显示
       getFollowUp(){
+        var getFollowUp = new Promise((resolve, reject)=>{
+          //做一些异步操作
           if(this.follow_id!=''){
             this.loading=true;
             this.uploadShow.lists=[];
@@ -373,14 +382,15 @@
                 data.file_id=[];
                 this.follow=data;
                 this.setUploadShow(data.files);
+                resolve(1);
                 this.loading=false;
               })
               .catch(err => {
                 this.$tool.console(err);
-                this.loading=false;
               })
           }
-
+        });
+        return getFollowUp;
       },//获取跟进记录
 
       /*项目文件上传*/
@@ -625,6 +635,16 @@
         this.investor_id=this.investorid || '';
         this.saveJumpData=this.follow;
       },//清除所有数据
+      getNewWxPro(){
+        var getNewPro = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$global.func.getWxProjectCategory()
+            .then((data)=>{
+              resolve(1);
+            })
+        });
+        return getNewPro;
+      },//获取最新的下拉框数据
     },
     created(){
 //      alert("吊接口啦")
@@ -637,13 +657,15 @@
       dialogFollow: function(e){
         if(e) {
           this.clearData();
-          this.$global.func.getWxProjectCategory();
-          this.getScheduleName();
           this.follow_id=this.followid || '';
+          this.getNewWxPro()
+            .then((data)=>{
+              return this.getScheduleName();
+            })
+            .then((data)=>{
+              return this.getFollowUp();
+            })
           this.setFileType();
-          setTimeout(()=>{
-            this.getFollowUp();
-          },200)
         }else{
           this.follow_id="";
         }

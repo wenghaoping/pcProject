@@ -218,6 +218,7 @@ export default {
           this.$store.state.pushProject.pushMessage.body = this.email.body;
           this.$store.state.pushProject.pushMessage.project_ids = new Array;
           this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
+          this.$store.state.pushProject.pushMessage.type=this.user.type;
           this.$store.state.pushProject.email.title = this.email.title;
           this.$store.state.pushProject.email.body = this.email.body;
           this.$emit('changeall', false);
@@ -243,6 +244,7 @@ export default {
             pushData.email=this.email2.nameEmail;
             pushData.title=this.email.title;
             pushData.body=this.email.body;
+            pushData.type=this.userMessage.type || '';
             pushData.project_ids=new Array;
             pushData.project_ids.push(this.projectRadio);
             this.loading=true;
@@ -297,27 +299,33 @@ export default {
       }
     },//推送按钮1推送1次,2继续推送
     remoteMethod(query) {
-      if(query=="") this.projectRadio="";
-      this.loading=true;
-      this.currentPageMatchProject=1;
-      this.searchProject.user_id=localStorage.user_id;
-      this.searchProject.card_id=this.user.card_id;
-      this.searchProject.pro_intro=query;
-      this.searchProject.page=1;
-      this.searchProject.type=this.user.type || '';
-      this.$http.post(this.URL.matchProject,this.searchProject)
-        .then(res=>{
-          let data = res.data.data;
+      var remoteMethod = new Promise((resolve, reject)=>{
+        if(query=="") this.projectRadio="";
+        this.loading=true;
+        this.currentPageMatchProject=1;
+        this.searchProject.user_id=localStorage.user_id;
+        this.searchProject.card_id=this.user.card_id;
+        this.searchProject.pro_intro=query;
+        this.searchProject.page=1;
+        this.searchProject.type=this.userMessage.type || '';
+        this.$http.post(this.URL.matchProject,this.searchProject)
+          .then(res=>{
+            let data = res.data.data;
 //          this.$tool.console(data);
-          this.tableData3=data.projects;
-          this.projectAll=this.setProjectAll(data.projects);
-          this.totalMatchProject=data.count;
-          this.loading=false;
-        })
-        .catch(err =>{
-          this.$tool.console(err,2);
-          this.loading=false;
-        })
+            this.tableData3=data.projects;
+            this.projectAll=this.setProjectAll(data.projects);
+            this.totalMatchProject=data.count;
+            this.loading=false;
+            resolve(1);
+          })
+          .catch(err =>{
+            this.$tool.console(err,2);
+            this.loading=false;
+          })
+
+      })
+      return remoteMethod;
+
     },//项目搜索
     filterChangeMatchProject(page){
 
@@ -445,9 +453,10 @@ export default {
            this.email.body=this.$store.state.pushProject.email.body || '';
            this.projectRadio=this.$store.state.pushProject.project_id || '';*/
           if(this.firstInData.project.pro_id!=""){
-            this.remoteMethod(this.firstInData.project.pro_intro);
-            setTimeout(()=>{this.projectRadio=this.firstInData.project.pro_id;},200)
-
+            this.remoteMethod(this.firstInData.project.pro_intro)
+              .then((data)=>{
+                this.projectRadio=this.firstInData.project.pro_id;
+              })
           }else{
             this.remoteMethod("");
           }
