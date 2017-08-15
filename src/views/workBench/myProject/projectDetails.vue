@@ -86,7 +86,7 @@
           </div>
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
-        <div class="item-lists clearfix" style="padding-top: 10px;">
+        <div class="item-lists clearfix" style="padding:16px;padding-top: 10px;">
           <!--===============================================================================================================================tab页面-->
           <el-tabs v-model="show" @tab-click="handleClick" style="position: relative">
             <el-tab-pane label="项目详情" name="detail">

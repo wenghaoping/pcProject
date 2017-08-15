@@ -4,7 +4,7 @@
     width: 97%;
     margin-left: 24px;
     height:auto;
-    border-left:1px solid #e0e6ed;
+    border-left:1px solid rgba(224,230,237,0.5);
     padding-bottom: 40px;
     // 信息介绍
     .followItem{
@@ -12,30 +12,36 @@
       //margin-top:20px ;
       height:18px;
       .item-cicle{
-        background: #cccccc;
-        border-radius: 20px;
+        //background: #cccccc;
+        //border-radius: 20px;
         width: 12px;
         height: 12px;
         float: left;
         margin-left: -6px;
-        margin-top: 0px;
+        margin-top: -3px;
         position: relative;
-        .item-cicle1{
+        img{
+          width: 100%;
           position: absolute;
-          background:#40587a;
-          border-radius:20px;
-          width:6px;
-          height:6px;
-          z-index: 111;
-          left:3px;
-          top:3px;
+          left:0px;
+            top:3px;
         }
+        //.item-cicle1{
+        //  position: absolute;
+        //  background:#40587a;
+        //  border-radius:20px;
+        //  width:6px;
+        //  height:6px;
+        //  z-index: 111;
+        //  left:3px;
+        //  top:3px;
+        //}
       }
       .item-time{
         font-family:PingFangSC-Regular;
         font-size:20px;
         color:#1f2d3d;
-        line-height:20px;
+        line-height:14px;
         text-align:left;
         float: left;
         margin-left: 24px;
@@ -44,15 +50,16 @@
         font-family:PingFangSC-Regular;
         font-size:18px;
         color:#1f2d3d;
-        line-height:18px;
+        line-height:12px;
         text-align:right;
         float: left;
         margin-left: 20px;
       }
       .item-edit{
         float: right;
-        margin-right: 10px;
+        margin-right: 11px;
         line-height: 18px;
+        margin-top: -7px;
         .item-edit1{
           font-family:MicrosoftYaHei;
           font-size:12px;
@@ -70,12 +77,15 @@
     .followContent{
       background: #f9fafc;
       border-radius: 2px;
-      width: 95%;
+      width: 96%;
       margin-left: 25px;
       margin-top: 15px;
       height: auto;
       padding-left: 24px;
       padding-right: 24px;
+      -webkit-border-radius:2px;
+      -moz-border-radius:2px;
+      border-radius:2px;
       .followLine{
         height:1px;
         background:#e0e6ed;
@@ -109,8 +119,8 @@
         line-height: 24px;
         text-align: left;
         //padding-bottom: 9px;
-        margin-top: 5px;
-        margin-bottom: 8px;
+        margin-top: 9px;
+        margin-bottom: 3px;
       }
       .followFile{
         font-size:12px;
@@ -118,9 +128,12 @@
         line-height:14px;
         text-align:left;
         text-decoration: underline;
-        padding-bottom: 10px;
+        padding-bottom: 16px;
       }
     }
+  }
+  .followDetail:nth-last-child(2){
+    border-left: none;
   }
 }
 
