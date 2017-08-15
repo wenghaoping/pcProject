@@ -1,7 +1,7 @@
 <template>
-  <div id="projectDetails" class="clearfix" >
+  <div id="projectDetails" class="clearfix">
     <div class="contain-grid contain-center1 fl"
-         v-loading="loading"
+         v-loading="loadingPD"
          element-loading-text="拼命加载中">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
@@ -281,7 +281,7 @@
       </div>
     </div>
     <div class="contain-grid contain-right-1 fl"
-         v-loading="loading"
+         v-loading="loadingPD"
          element-loading-text="拼命加载中">
       <div class="main-box">
         <el-tabs v-model="activeName" @tab-click="handleClick2" style="position: relative">
@@ -575,7 +575,7 @@
           name: '',
           region: ''
         },
-        loading: false,
+        loadingPD: true,
         project: {
           project_id: "",//项目id59W2a0GE
           pro_name: "",//项目名称HoopEASY商业计划PPT+for+pitch
@@ -906,7 +906,7 @@
             let data =res.data.data;
             if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
             else this.seachCompanys=data;
-            this.$tool.console(res);
+//            this.$tool.console(res);
           })
           .catch(err=>{
             this.$tool.console(err);
@@ -1075,19 +1075,19 @@
             project_id: this.project.project_id,
             schedule_id: e
           };
-          this.loading = true;
+          this.loadingPD = true;
           this.$http.post(this.URL.setProjectSchedule, getData)
             .then(res => {
               let data = res.data.data;
               this.$tool.success("设置成功");
-              this.loading = false;
+              this.loadingPD = false;
               this.project.pro_schedule.schedule_id=data.schedule_id;
               this.project.pro_schedule.schedule_name=data.schedule_name;
 
             })
             .catch(err => {
               this.$tool.console(err, 2);
-              this.loading = false;
+              this.loadingPD = false;
               this.$tool.error("加载超时");
             })
         }
@@ -1240,7 +1240,7 @@
         this.scheduleIndex=index;
       },//获取意向投资人索引
       filterChangeCurrent(page){
-        this.loading=true;
+        this.loadingPD=true;
         this.getConCon.user_id=localStorage.user_id;
         this.getConCon.project_id=this.project.project_id;
         this.getConCon.page=page;
@@ -1251,12 +1251,12 @@
               this.enjoyInvestors=this.setEnjoyInvestor(data);
               this.totalData = res.data.count;
             }
-            this.loading = false;
+            this.loadingPD = false;
 
           })
           .catch(err=>{
             this.$tool.console(err,2);
-            this.loading=false;
+            this.loadingPD=false;
             this.$tool.error("加载超时");
           })
       },//控制意向投资人页码
@@ -1319,7 +1319,7 @@
         return width;
       },//设置项目跟进进度
       selectSearch(e){
-        this.loading=true;
+        this.loadingPD=true;
         this.getConCon.schedule_id=e;
         this.getConCon.user_id=localStorage.user_id;
         this.currentPage=1;
@@ -1332,7 +1332,7 @@
                 let data = res.data.data;
                 this.enjoyInvestors=this.setEnjoyInvestor(data);
                 this.totalData = res.data.count;
-                this.loading = false;
+                this.loadingPD = false;
               }
             }else{
               this.enjoyInvestors=[];
@@ -1341,7 +1341,7 @@
           })
           .catch(err=>{
             this.$tool.console(err,2);
-            this.loading=false;
+            this.loadingPD=false;
             this.$tool.error("加载超时");
           })
 
@@ -1398,7 +1398,7 @@
         return getProjectMatchInvestors;
       },//买家图谱列表
       filterChangeInvestors(page){
-        this.loading=true;
+        this.loadingPD=true;
         this.getInvestors.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
         this.currentPageInvestors=page;
@@ -1415,7 +1415,7 @@
           })
           .catch(err=>{
             this.$tool.console(err,2);
-            this.loading=false;
+            this.loadingPD=false;
             this.$tool.error("加载超时");
           })
       },//控制买家图谱页码
@@ -1447,18 +1447,18 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.loading = true;
+          this.loadingPD = true;
           this.$http.post(this.URL.exceptMatchAction, delData)
             .then(res => {
               if (res.data.status_code == 2000000) {
                 this.$tool.success("移除成功");
                 this.getProjectMatchInvestors();
               }
-              this.loading = false;
+              this.loadingPD = false;
             })
             .catch(err => {
               this.$tool.console(err, 2);
-              this.loading = false;
+              this.loadingPD = false;
               this.$tool.error("加载超时");
             })
         }).catch(() => {
@@ -1542,7 +1542,6 @@
         this.dialogPreviewVisible=msg;
       },//关闭项目预览
       getAllData(){
-        this.loading=true;
         this.$global.func.getWxProjectCategory()
           .then((data)=>{
             return this.getWxProjectCategory();
@@ -1557,13 +1556,14 @@
             return this.getProjectMatchInvestors();
           })
           .then((data)=>{
-            this.loading=false;
+            this.loadingPD=false;
             return this.getEnjoyedInvestors();
           });
       },//重新获取所有数据
     },
     created () {
       this.$tool.getTop();
+      this.loadingPD=true;
       this.getprojectId();
       this.getAllData();
     },
@@ -1575,6 +1575,7 @@
 
 <style lang="less">
   @import '../../../assets/css/projectDetail.less';
+
 .scheduleColor{
   color:#20a0ff!important;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div id="fileManagement" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="fileManagement">
     <!--新建文件分组按钮-->
     <el-button class="createNewGroup" style="border-radius: 2px" @click.prevent="toGroup">新建文件分组</el-button>
     <!--文件类别-->
@@ -61,6 +61,7 @@
             <div class="fr" style="margin-right: 21px">
               <!--bp上传-->
               <el-button v-if="item.type_id===1" type="text"  style="font-size: 12px" @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
+              
               <!--非bp上传-->
               <el-dropdown v-if="item.type_id!=1"  @command="fileDeal" trigger="click">
                 <span class="el-dropdown-link" @click="getFileId(file.file_id,item.type_id)">
@@ -82,7 +83,7 @@
                :key="newF.file_id">
             <span class="f-name" style="cursor: pointer">{{newF.name}}</span>
             <img src="../../../assets/images/loading.gif" style="width:16px;height: 16px;margin-left: 10px;">
-            <span class="upLoading" v-loading.body="true"></span>
+            <!--<span class="upLoading" v-loading.body="true"></span>-->
           </div>
         </div>
       </el-collapse-item>
@@ -595,11 +596,11 @@
 
 <style lang="less">
   @import '../../../assets/css/fileManagement';
-  .el-loading-mask{
+/*  .el-loading-mask{
     display: none;
-    /*left:205px!important;*/
-    /*top:610px!important;*/
-  }
+    !*left:205px!important;*!
+    !*top:610px!important;*!
+  }*/
   .el-dialog--small{
     width:390px;
   }

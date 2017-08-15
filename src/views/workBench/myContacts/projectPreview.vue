@@ -552,7 +552,7 @@ export default {
         this.project_id=this.$store.state.pushProject.project_id;
         this.user=this.$store.state.pushProject.user;
         this.pushMessage=this.$store.state.pushProject.pushMessage;
-        console.log(this.$store.state.pushProject.pushMessage)
+//        console.log(this.$store.state.pushProject.pushMessage);
         this.project_intro=this.$store.state.pushProject.pro_intro;
         this.email=this.$store.state.pushProject.email;
         this.getFirstUser();

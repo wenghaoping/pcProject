@@ -1,8 +1,11 @@
 <template>
-  <div id="research" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="research" >
     <!--===========================================一键尽调弹窗=============================================-->
-    <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose" close-on-press-escape close-on-click-modal>
-      <div class="contain-grid" style="width: 893px;">
+    <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose"
+               close-on-press-escape close-on-click-modal
+               >
+      <div class="contain-grid" style="width: 893px;" v-loading="loading"
+           element-loading-text="拼命加载中1">
         <div class="contain-position">
           <p>您要尽调的公司：<span>{{compname}}</span><button class="fr button" @click="goToEdit">修改公司</button></p>
         </div>
@@ -413,104 +416,128 @@
         })
       },
       getCrawlerTeam(){
-          this.loading=true;
-        this.$http.post(this.URL.getCrawlerTeam, {
-          user_id: localStorage.user_id,
-          com_id: this.com_id
+        var getCrawlerTeam = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerTeam, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              this.team = res.data.data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
         })
-        .then(res => {
-          this.team = res.data.data;
-          this.loading=false;
-        })
-        .catch(err => {
-          this.$tool.console(err);
-          this.loading=false;
-        })
+        return getCrawlerTeam;
       },//获取核心成员
       getCrawlerHistoryFinance(){
-        this.loading=true;
-        this.$http.post(this.URL.getCrawlerHistoryFinance, {
-          user_id: localStorage.user_id,
-          com_id: this.com_id
+        var getCrawlerHistoryFinance = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerHistoryFinance, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.$tool.setTime(data,'history_financing_time');
+              this.history_finance = data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
         })
-        .then(res => {
-          let data=res.data.data;
-          this.$tool.setTime(data,'history_financing_time');
-          this.history_finance = data;
-          this.loading=false;
-        })
-        .catch(err => {
-          this.$tool.console(err);
-          this.loading=false;
-        })
+        return getCrawlerHistoryFinance;
+
       },//获取历史融资
       getCrawlerMilestone(){
-        this.loading=true;
-        this.$http.post(this.URL.getCrawlerMilestone, {
-          user_id: localStorage.user_id,
-          com_id: this.com_id
+        var getCrawlerMilestone = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerMilestone, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.$tool.setTime(data,'milestone_time');
+              this.milestone_list = data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
         })
-        .then(res => {
-          let data=res.data.data;
-          this.$tool.setTime(data,'milestone_time');
-          this.milestone_list = data;
-          this.loading=false;
-        })
-        .catch(err => {
-          this.$tool.console(err);
-          this.loading=false;
-        })
+        return getCrawlerMilestone;
       },//获取里程碑
       getCrawlerNews(){
-        this.loading=true;
-        this.$http.post(this.URL.getCrawlerNews, {
-          user_id: localStorage.user_id,
-          com_id: this.com_id
+        var getCrawlerNews = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerNews, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.$tool.setTime(data,'project_news_time');
+              this.news =data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
         })
-        .then(res => {
-            let data=res.data.data;
-            this.$tool.setTime(data,'project_news_time');
-            this.news =data;
-            this.loading=false;
-        })
-        .catch(err => {
-          this.$tool.console(err);
-          this.loading=false;
-        })
+        return getCrawlerNews;
       },//获取新闻
       getCrawlerCompeting(){
-        this.loading=true;
-        this.$http.post(this.URL.getCrawlerCompeting, {
-          user_id: localStorage.user_id,
-          com_id: this.com_id
+
+        var getCrawlerCompeting = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerCompeting, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.$tool.setTime(data,'competing_goods_Financing_time');
+              this.$tool.setTime(data,'competing_goods_Set_up');
+              this.competing =data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
         })
-        .then(res => {
-          let data=res.data.data;
-          this.$tool.setTime(data,'competing_goods_Financing_time');
-          this.$tool.setTime(data,'competing_goods_Set_up');
-          this.competing =data;
-          this.loading=false;
-        })
-        .catch(err => {
-          this.$tool.console(err);
-          this.loading=false;
-        })
+        return getCrawlerCompeting;
       },//获取竞品
       getCrawlerProject(){
-        this.loading=true;
-        this.$http.post(this.URL.getCrawlerProject, {
-          user_id: localStorage.user_id,
-          com_id: this.com_id
+        var getCrawlerProject = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerProject, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              this.getProjectIndustry(res.data.data);
+              this.project = res.data.data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
         })
-        .then(res => {
-          this.getProjectIndustry(res.data.data);
-          this.project = res.data.data;
-          this.loading=false;
-        })
-        .catch(err => {
-          this.$tool.console(err);
-          this.loading=false;
-        })
+        return getCrawlerProject;
       },//获取项目
       getProjectIndustry(data){
         for(let i=0; i<data.length; i++){
@@ -533,13 +560,23 @@
         this.loading=true;
         this.com_id=e;
         this.compname=this.compName;
-        this.getCrawlerTeam();
-        this.getCrawlerHistoryFinance();
-        this.getCrawlerMilestone();
-        this.getCrawlerNews();
-        this.getCrawlerCompeting();
-        this.getCrawlerProject();
-
+        this.getCrawlerTeam()
+          .then((data)=>{
+            return this.getCrawlerHistoryFinance();
+          })
+          .then((data)=>{
+            return this.getCrawlerMilestone();
+          })
+          .then((data)=>{
+            return this.getCrawlerNews();
+          })
+          .then((data)=>{
+            return this.getCrawlerCompeting();
+          })
+          .then((data)=>{
+            this.loading=false;
+            return this.getCrawlerProject();
+          })
       },//获取公司id
       dialogVisible:function(e){
 

@@ -1391,12 +1391,13 @@
               this.tags_pro=this.tags.changepro.slice(0);
               this.tags_team=this.tags.changeTeam.slice(0);
               this.tags_source=this.tags.changesource.slice(0);
+              resolve(3);
             })
             .catch(err => {
               this.loading = false
               this.$tool.console(err, 2)
             })
-            resolve(3);
+
 
         });
         return getProjectDetail;
@@ -2233,22 +2234,13 @@
       getprojectId(){
         this.project_id = this.$route.query.project_id || '';
       },
-
-      getNewWxPro(){
-        var getNewPro = new Promise((resolve, reject)=>{
-          //做一些异步操作
-          this.$global.func.getWxProjectCategory();
-          resolve(1);
-        });
-        return getNewPro;
-      },//获取最新的下拉框数据
     },
     //    当dom一创建时
     created(){
       this.$tool.getTop();
       this.loading = true;
       this.getprojectId();
-      this.getNewWxPro()
+      this.$global.func.getWxProjectCategory()
         .then((data)=>{
           return this.getWxProjectCategory();
         })

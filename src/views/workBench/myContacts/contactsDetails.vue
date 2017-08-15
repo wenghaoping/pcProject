@@ -32,11 +32,11 @@
           <div class="item-list item-list-main">
             <!--个人标签-->
             <div class="item">
-              <div class="block clearfix" style="margin-bottom: 0px;">
+              <div class="block clearfix" style="margin-bottom: 0px;height: 30px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
                 <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editYag.png">修改</span>
               </div>
-              <div class="block" style="margin-top: 32px">
+              <div class="block" style="">
                 <div class="tag" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
               </div>
             </div>
@@ -311,7 +311,6 @@
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-        <button class="btn" @click="addFollow">添加意向项目</button>
       </div>
     </div>
 
@@ -713,7 +712,6 @@
       getProjectList(page){
         var getProjectList = new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.loading=true;
           this.getPra.user_id=this.contacts.user_id;
           console.log(this.contacts.user_id,1)
 //      this.getPra.user_id="2rzyz5vp";
@@ -729,7 +727,6 @@
                 else this.projectLists = this.projectListsSmall.slice(0);
                 this.totalData = res.data.count;
               }
-              this.loading = false;
             })
             .catch(err=>{
               this.$tool.console(err,2);
@@ -876,7 +873,6 @@
       },//设置人脉标签
       /*设置意向项目右边*/
       getEchartData(){
-        this.loading = true;
         var getEchartData = new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id,card_link_user_id:this.contacts.user_id})
@@ -886,12 +882,11 @@
                 this.chartData=data;
                 this.eChart(data.going,data.hold,data.reject);
               }
-              this.loading = false;
               resolve(5);
             })
             .catch(err=>{
               this.$tool.console(err,2);
-              this.loading1=false;
+              this.loading=false;
               this.$tool.error("加载超时");
             })
 
@@ -900,7 +895,6 @@
 
       },//获取意向项目数据(图表)
       getEnjoyProjects(){
-        this.loading = true;
         var getEnjoyProjects = new Promise((resolve, reject)=>{
           //做一些异步操作
           this.getConpro.user_id=localStorage.user_id;
@@ -922,7 +916,6 @@
                 }
                 resolve(7);
               }
-              this.loading = false;
             })
             .catch(err=>{
               this.$tool.console(err,2);
@@ -1271,7 +1264,6 @@
       this.loading=true;
       this.getUserId();
       this.getpushCount();
-
       this.$global.func.getWxProjectCategory()
         .then((data)=>{
           return this.getWxProjectCategory();
