@@ -56,9 +56,10 @@
                v-for="(file, index) in item.file"
                :key="file.file_id">
             <span class="f-name" style="cursor: pointer;font-size: 10px" @click="download(file.file_id)">{{file.file_title}}.{{file.file_ext}}</span>
-            <div class="fr">
+            <div class="fr" style="margin-right: 21px">
               <!--bp上传-->
-              <el-button v-if="item.type_id===1" type="text"  @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
+              <el-button v-if="item.type_id===1" type="text"  style="font-size: 12px" @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
+              
               <!--非bp上传-->
               <el-dropdown v-if="item.type_id!=1"  @command="fileDeal" trigger="click">
                 <span class="el-dropdown-link" @click="getFileId(file.file_id,item.type_id)">

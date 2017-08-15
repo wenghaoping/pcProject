@@ -4,7 +4,8 @@
       <!--信息介绍-->
       <div class="followItem" style="margin-top: 0px">
         <div class="item-cicle">
-          <div class="item-cicle1"></div>
+          <!--<div class="item-cicle1"></div>-->
+          <img :src="cirIcon">
         </div>
         <div class="item-time">{{item.follow_time}}</div>
         <div class="item-name">{{item.follow_user_name}}</div>
@@ -35,10 +36,10 @@
             </div>
             <span style="width:58px;max-width:58px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left;text-align: center">{{item.investor_name}}</span>
           </el-tooltip>
-          <span class="followProject1" style="display: inline-block;line-height: 24px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
+          <span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
         </div>
         <div v-show=" item.follow_desc!=''|| item.follow_file.length!=''"  class="followLine"></div>
-        <div class="followContent1" >{{item.follow_desc}}</div>
+        <div class="followContent1" :class="{ padbottom: item.follow_desc!=''|| item.follow_file.length!=''}" >{{item.follow_desc}}</div>
         <!--信息文件名-->
         <div class="followFile" v-for="(file,item1) in item.follow_file" :key="file.id">
           <span @click.prevent="upload(item1,index)" style="cursor: pointer">{{file.file_title}}.{{file.file_ext}}</span>
@@ -72,12 +73,14 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import cirIcon from '../../../../static/images/circle.png'
   export default {
     components: {
     },
     props: ["proid","proName","getDataTrue"],
     data () {
       return {
+        cirIcon:cirIcon,
         newTime:'',
         dialogFollow:false,//控制写跟进弹框
         pro_id: this.proid,
@@ -189,5 +192,8 @@
   .el-dialog--tiny{
     width:44%;
     box-shadow: none;
+  }
+  .padbottom{
+    padding-bottom: 10px;
   }
 </style>
