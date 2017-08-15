@@ -7,7 +7,8 @@ import qs from 'qs'
 axios.defaults.timeout = 60000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 // axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
-axios.defaults.baseURL = 'https://pc.debug.weitianshi.cn';
+// axios.defaults.baseURL = 'https://pc.debug.weitianshi.cn';
+axios.defaults.baseURL = 'https://wts.weitianshi.cn';
 // axios.defaults.baseURL = 'http://192.168.9.74';
 
 

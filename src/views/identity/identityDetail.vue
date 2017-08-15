@@ -176,7 +176,7 @@
               </el-form-item>
             </div>
             <!--新添单选项-卖方FA身份-->
-            <div class="flex" v-if="group_id==19">
+            <div class="flex" v-if="group_id==21">
               <el-form-item class="item mr32" label="是否申请试用为FA量身定制的sass系统">
                 <el-radio class="radio mr120" v-model="ruleForm2.is_saas" label="1">是</el-radio>
                 <el-radio class="radio" v-model="ruleForm2.is_saas" label="0">否</el-radio>
@@ -409,10 +409,10 @@
 //        console.log('图片上传返回数据',response)
       },
       getWxProjectCategory(){
-        this.industry = that.$global.data.industry;
-        this.scale = that.$global.data.scale;
-        this.stage = that.$global.data.stage;
-        this.hotCity = that.$global.data.hotCity;
+        this.industry = this.$global.data.industry;
+        this.scale = this.$global.data.scale;
+        this.stage = this.$global.data.stage;
+        this.hotCity = this.$global.data.hotCity;
       }
     },
     mounted(){

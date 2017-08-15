@@ -1350,6 +1350,7 @@
             }else{
               this.enjoyInvestors=[];
               this.totalData = 0;
+              this.loading = false;
             }
           })
           .catch(err=>{
