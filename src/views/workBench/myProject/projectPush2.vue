@@ -31,7 +31,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button style="margin-top: 25px;" type="primary" @click="customerAdd">自定义添加</el-button>
+          <el-button style="margin-top: 25px;background: #40587A;border-color:#40587A;" type="primary" @click="customerAdd">自定义添加</el-button>
         </el-form-item>
       </el-form>
 
@@ -140,10 +140,10 @@
               <template scope="scope">
                 <el-tooltip placement="top">
                   <div slot="content">
-                    <div class="tips-txt">{{scope.row.match}}</div>
+                    <div class="tips-txt" style="color:#FC703E">{{scope.row.match}}</div>
                   </div>
                   <div>
-                    {{scope.row.match}}
+                    {{scope.row.match}}%
                   </div>
                 </el-tooltip>
               </template>
@@ -248,10 +248,10 @@
               <template scope="scope">
                 <el-tooltip placement="top">
                   <div slot="content">
-                    <div class="tips-txt">{{scope.row.match}}</div>
+                    <div class="tips-txt"  style="color:#FC703E">{{scope.row.match}}</div>
                   </div>
                   <div>
-                    {{scope.row.match}}
+                    {{scope.row.match}}%
                   </div>
                 </el-tooltip>
               </template>
@@ -420,11 +420,7 @@
             this.myContacts = res.data.data;
             //有参数remote传则是项目搜索时调用当前接口
             if (remote) {
-              //强置刷新checkBox状态
-              this.reBorn = false;
-              setTimeout(() => {
-                this.reBorn = true;
-              }, 0)
+              this.initReborn();
             }
             //如果this.newAddContacts有数据则是自定义人脉时调用当前接口
             if (this.newAddContacts.name && this.newAddContacts.email) {
@@ -461,22 +457,15 @@
 //          console.log('全网人脉',res.data.data)
             this.netContacts = res.data.data;
             if(this.myContacts.length>0){
-              console.log(1);
               this.matchUser()
             }else{
-              console.log(2);
               setTimeout(()=>{
-                console.log(this.myContacts,this.netContacts)
                 this.matchUser()
               },1000)
             }
             //项目搜索时调用此接口
             if (remote) {
-              //强置刷新checkBox状态
-              this.reBorn = false;
-              setTimeout(() => {
-                this.reBorn = true;
-              }, 0)
+              this.initReborn();
             }
           } else {
 //          console.log(res.data.error_msg)
@@ -641,10 +630,12 @@
             if (x.card.user_real_name === name) {
               if (x.type === 'card') {
                 let thisId = x.card.card_id
-                this.myCheckList[thisId] = !this.myCheckList[thisId]
+                this.myCheckList[thisId] = false;
+                this.netCheckList[thisId] =  false;
               } else {
                 let thisId = x.card.user_id
-                this.myCheckList[thisId] = !this.myCheckList[thisId]
+                this.myCheckList[thisId] =  false;
+                this.netCheckList[thisId] =  false;
               }
               return
             }
@@ -653,9 +644,17 @@
         this.netContacts.forEach((x, index) => {
           if (x.card.user_email === email) {
             if (x.card.user_real_name === name) {
-              let thisId = x.card.user_id;
-              this.netCheckList[thisId] = !this.netCheckList[thisId];
-              return
+              if(x.type==='user'){
+                let thisId = x.card.user_id;
+                this.netCheckList[thisId] =  false;
+                this.myCheckList[thisId] =  false;
+                return
+              }else{
+                let thisId = x.card.card_id;
+                this.netCheckList[thisId] =  false;
+                this.myCheckList[thisId] =  false;
+                return
+              }
             }
           }
         })
@@ -694,10 +693,10 @@
       myCheck(e){
         let thisId = e.target.value;
         let thisName = e.currentTarget.name;
-        console.log(this.myCheckList[thisId])
         if (this.myCheckList[thisId] === false) {
           this.myContactsShow.push(thisName);
           this.myCheckList[thisId] = true;
+          this.netCheckList[thisId] = true;
           //预处理推送项目接口的参数
           this.myContacts.forEach(x => {
               if(x.type==='card'){
@@ -717,18 +716,23 @@
           let thisName = e.currentTarget.name;
           let thisId = e.target.value;
           this.myCheckList[thisId] = false;
+          this.netCheckList[thisId] = false;
           this.myContactsShow.splice(this.myContactsShow.indexOf(thisName), 1)
+          this.netContactsShow.splice(this.myContactsShow.indexOf(thisName), 1)
           this.pushData.splice(this.pushData.indexOf(thisId), 1)
         }
+        this.initReborn();
+        /*console.log(this.myContactsShow)
+        console.log(this.pushData)*/
       },
       netCheck(e){
         let thisId = e.target.value;
         let thisName = e.currentTarget.name;
-        console.log(this.netCheckList[thisId])
+        console.log(thisId)
         if (this.netCheckList[thisId] === false) {
-          console.log(1)
           this.netContactsShow.push(thisName);
           this.netCheckList[thisId] = true;
+          this.myCheckList[thisId] = true;
           //预处理推送项目接口的参数
           this.netContacts.forEach(x => {
             if(x.type==='card'){
@@ -738,8 +742,6 @@
               }
             }else{
               if (x.card.user_id === thisId) {
-                console.log(thisId)
-                console.log(x)
                 this.pushData.push(x)
                 return
               }
@@ -747,13 +749,17 @@
           })
 //        console.log(this.pushData)
         } else {
-          console.log(2)
           let thisName = e.currentTarget.name;
           let thisId = e.target.value;
           this.netCheckList[thisId] = false;
+          this.myCheckList[thisId] = false;
+          this.myContactsShow.splice(this.netContactsShow.indexOf(thisName), 1)
           this.netContactsShow.splice(this.netContactsShow.indexOf(thisName), 1)
           this.pushData.splice(this.pushData.indexOf(thisId), 1)
         }
+        this.initReborn();
+        /*console.log(this.allShow)
+        console.log(this.pushData)*/
       },
       //预览
       preview(){
