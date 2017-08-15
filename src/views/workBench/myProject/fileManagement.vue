@@ -7,11 +7,13 @@
       <el-collapse-item :name="index" v-for="(item,index) in groupList" :key="item.type_id">
         <!--分组表头-->
         <template slot="title">
-          <span class="clearfix collapseHead groupName">
+          <span class="clearfix  groupName">
             {{item.type_name}}  (<span>{{item.fileNum}}</span>)
+               </span>
+           <span class=" clearfix collapseHead" style=" display: inline-block;float: right;margin-top: -41px;">
              <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img :src="deleteIcon">删除</el-button>
             <!--bp上传-->
-             <div class="fr" v-if="item.type_id===1 && parseInt(item.fileNum)===0 && item.newFile.length===0">
+             <div class="fr" style="margin-top: -3px" v-if="item.type_id===1 && parseInt(item.fileNum)===0 && item.newFile.length===0">
                <el-upload
                  class="upload"
                  ref="upload"
@@ -29,7 +31,7 @@
                </el-upload>
             </div>
             <!--非bp上传-->
-            <div class="fr" v-if="item.type_id!=1">
+            <div class="fr" style="margin-top: -1px" v-if="item.type_id!=1">
                <el-upload
                  class="upload"
                  ref="upload"
@@ -47,8 +49,8 @@
                     <el-button class="upload" type="text" @click="getTypeId(item.type_id,2)"><img :src="uploadIcon">上传文件</el-button>
                </el-upload>
             </div>
-            <el-button v-if="item.type_id>4" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img :src="renameIcon">重命名</el-button>
-          </span>
+            <el-button v-if="item.type_id>4"  style="margin-top: 2px" class="upload rename fr" type="text" @click.stop="getTypeId(item.type_id,1,item.type_name)"><img :src="renameIcon">重命名</el-button>
+            </span>
         </template>
         <!--文件列表-->
         <div class="fileList" style="padding-left: 37px">
