@@ -72,7 +72,7 @@
                 v-show="listShow">
               </el-pagination>
               <span class="b-hander" @click="closeDiv('listShow')" v-show="listShow">收起</span>
-              <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow">展开</span>
+              <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow" v-if="projectLists.length>2">展开</span>
             </div>
             <!--投资案例-->
             <div class="item" v-if="contacts.project_case.length!=0">
@@ -350,7 +350,7 @@
 
     <!--写跟进弹框-->
     <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow"
-               :cardid="contacts.card_id" :cardname="contacts.user_real_name"></addfollow>
+               :cardid="contacts.card_id" :userid="contacts.user_id" :cardname="contacts.user_real_name" :type="contacts.type"></addfollow>
 
     <!--项目推送弹窗,人脉入口精简版-->
     <el-dialog :visible="dialogPushVisible"
@@ -572,9 +572,7 @@
           this.userMessage.user_company_career=this.contacts.user_company_career;
           this.userMessage.user_company_name=this.contacts.user_company_name;
           this.userMessage.card_id=this.contacts.card_id;
-          if(this.contacts.type=='user'){
-            this.userMessage.card_id=this.contacts.user_id;
-          }
+          if(this.contacts.type=='user'){ this.userMessage.card_id=this.contacts.user_id; }
           this.userMessage.type=this.contacts.type;
           this.userEmail=this.contacts.user_email;
           this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
@@ -591,6 +589,7 @@
         this.userMessage.user_company_career=this.contacts.user_company_career;
         this.userMessage.user_company_name=this.contacts.user_company_name;
         this.userMessage.card_id=this.contacts.card_id;
+        if(this.contacts.type=='user') this.userMessage.card_id=this.contacts.user_id;
         this.userMessage.type=this.contacts.type || '';
         this.userEmail=this.contacts.user_email;
         this.dialogPushVisibleComplete=true;
@@ -631,7 +630,17 @@
       dialogVisiblechangeCloase(msg){
         this.dialogPushVisibleComplete=msg;
         this.getpushCount();
-        this.getInvestorsMatchProjects();
+        this.getOneUserInfo()
+          .then((data)=>{
+            return this.getEchartData();
+          })
+          .then((data)=>{
+              return this.getInvestorsMatchProjects();
+            })
+          .then((data)=>{
+            return this.getEnjoyProjects();
+          });
+
       },//关闭项目推送弹窗
       filterChangeCurrent(page){
         this.getProjectList(page);
@@ -670,6 +679,7 @@
       },//项目详情弹窗
       addFollow(){
         this.dialogFollow=true;
+
       },//点击添加意向项目按钮
       closeFollow(msg){
         this.dialogFollow=msg;
@@ -753,6 +763,7 @@
           obj.case_name=x.case_name;
           obj.case_money=x.case_money;
           obj.has_many_industry=this.$tool.setTagToString(x.has_many_industry,'industry_name');
+          if(x.has_one_cit==null) x.has_one_city.area_title='';
           obj.has_one_city=x.has_one_city.area_title;
           newArr.push(obj);
         });
@@ -771,7 +782,7 @@
               data.user_resource_find = this.$tool.setTagToString(data.user_resource_find,'resource_name');
               data.user_resource_give = this.$tool.setTagToString(data.user_resource_give,'resource_name');
               data.project_case = this.setProjectCase(data.project_case);
-              data.user_email=data.user_email || '暂无填写';
+              data.user_email=data.user_email;
               data.user_company_name=data.user_company_name || '暂无填写';
               data.user_brand=data.user_brand || '暂无填写';
               data.user_company_career=data.user_company_career || '暂无填写';
@@ -1113,9 +1124,9 @@
                   this.matchProjects=this.setMatchProject(data);
 //                  console.log(this.matchProjects);
                   this.totalData3 = res.data.count;
-                  resolve(6);
                 }
               }
+              resolve(6);
             })
             .catch(err=>{
               this.$tool.console(err,2);

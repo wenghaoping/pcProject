@@ -146,7 +146,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname"],
+    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname","type","userid"],
     data () {
       return {
         uploadAddress:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
@@ -207,6 +207,7 @@
 
         },
         submitButton:false,//是否允许提交false允许/true不允许
+        typein:''
       }
     },
     methods: {
@@ -245,8 +246,10 @@
       },//项目搜索
 
       handleSelect(item) {
+          console.log(item)
         this.follow.card_id = item.label;
-        this.follow.type = item.type || 'card';
+        this.follow.type = item.type;
+        this.typein = item.type;
         let name=item.value;
         let na = item.na || '';
         if(item.label==0) {
@@ -271,6 +274,8 @@
                   this.$tool.success("添加成功");
                   this.follow.card_id = res.data.card_id;
                   this.follow.card_name = item.na;
+                  this.follow.type = 'card';
+                  this.typein = 'card';
                 })
                 .catch(err => {
                   this.loading = false;
@@ -489,7 +494,6 @@
         }
       },//当文件没有全部上传完时,不能提交
 
-
       groupchange(label){
         let index = this.groups.index;
         let data = this.groups.group;
@@ -580,7 +584,11 @@
           if(this.follow.follow_id=="") delete this.follow.follow_id;
           delete this.follow.files;
           this.follow.user_id=localStorage.user_id;
-          this.$tool.console(this.$tool.getToObject(this.follow));
+          this.follow.type=this.typein;
+//          this.follow.card_id=this.card_id;
+          if(this.userid!=undefined){
+            if(this.follow.type=='user'){ this.follow.card_id = this.userid; }
+          }
           this.loading=true;
           this.$http.post(this.URL.add_follow_record, this.follow)
             .then(res => {
@@ -644,6 +652,7 @@
         if(e) {
           this.clearData();
           this.follow_id=this.followid || '';
+          this.typein=this.type
           this.$global.func.getWxProjectCategory()
             .then((data)=>{
               return this.getScheduleName();

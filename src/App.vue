@@ -65,7 +65,7 @@
         active: 0,
         tabs: [
           {type: '首页', jump: '/'},
-          {type: '工作台', jump: '/workBench'},
+          {type: '工作站', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
 //          {type: '测试页面', jump: '/test'},
 //          {type: '测试页面2', jump: '/test2'}

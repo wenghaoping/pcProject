@@ -452,7 +452,7 @@
       addFollow(index, row){
         this.dialogFollow=true;
         this.projecmessage.project_id=row.project_id;
-        this.projecmessage.project_name=row.pro_name;
+        this.projecmessage.project_name=row.pro_intro;
       },//点击写跟近按钮
       closeFollow(msg){
         this.dialogFollow=msg;
@@ -750,20 +750,5 @@
 
 <style type="text/css" lang="less">
   @import '../../../assets/css/myproject';
-  .el-table-filter__list{
-    min-width: 130px!important;;
-  }
-  .el-table-filter__bottom button:first-child{
-    color:#20a0ff;
-  }
-  /*thead tr:nth-last-child(2)*/
-  /*{*/
-    /*color:#ff0000!important;*/
-  /*}*/
-  .el-dialog{
-    .el-dialog__header{
-      padding-left: 64px;
-      padding-top: 32px;
-    }
-  }
+
 </style>
