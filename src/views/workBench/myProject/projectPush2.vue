@@ -485,7 +485,7 @@
           })
         })
       },
-      //获取可用推送次娄
+      //获取可用推送次数
       getPushCount(){
         this.$http.post(this.URL.pushCount, {
           user_id: localStorage.user_id
@@ -767,7 +767,7 @@
           this.$tool.error('标题不能大于40个字')
         }else if(this.pushBody.length>500){
           this.$tool.error('正文不能大于500个字')
-        }else if(this.pushData.lenth<0){
+        }else if(this.pushData.length<0){
           this.$tool.error('请先选择推送人脉 ')
         }else if(this.pushData.length>this.pushCount){
           this.$tool.error('推送人数不能超过今日剩余推送次数')
