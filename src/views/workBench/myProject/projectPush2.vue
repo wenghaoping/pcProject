@@ -456,13 +456,6 @@
           if (res.data.status_code === 2000000) {
 //          console.log('全网人脉',res.data.data)
             this.netContacts = res.data.data;
-            if(this.myContacts.length>0){
-              this.matchUser()
-            }else{
-              setTimeout(()=>{
-                this.matchUser()
-              },1000)
-            }
             //项目搜索时调用此接口
             if (remote) {
               this.initReborn();
