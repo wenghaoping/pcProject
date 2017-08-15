@@ -1,4 +1,4 @@
-<template>
+<template v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
   <div class="creatproject">
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
@@ -515,24 +515,32 @@
         };
       },
       handleSelect(item) {
+          this.loading=true;
         this.companyTitle=item.value;
         this.$http.post(this.URL.getOneCompany,{user_id:localStorage.user_id,com_id:item.address})
           .then(res=>{
             let data=res.data.data;
+            if(data.project_info==null) {
+                data.project_info={};
+                data.project_info.project_introduce='';
+            }
             this.queryData=data;
+            this.dialogVisible=true;
+            this.loading=false;
           })
           .catch(err=>{
             this.$tool.error("获取失败");
             this.$tool.console(err);
           });
-        this.dialogVisible=true;
+
       },
       /*一键同步按钮*/
       sync(){
         this.dialogVisible = false;
-        console.log(this.queryData);
+//        console.log(this.queryData);
         if(this.project.pro_intro=="") {this.project.pro_intro=this.queryData.project_info.project_introduce || ''};
         this.project.pro_company_name=this.queryData.company_name || '';
+        this.project.pro_industr=[]//项目领域
       },
       getprojectId(){
         this.project.project_id = this.$route.query.project_id || '';

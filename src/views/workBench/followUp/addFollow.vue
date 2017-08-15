@@ -146,7 +146,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname"],
+    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname","type","userid"],
     data () {
       return {
         uploadAddress:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
@@ -246,7 +246,8 @@
 
       handleSelect(item) {
         this.follow.card_id = item.label;
-        this.follow.type = item.type || 'card';
+        this.follow.type = item.type;
+
         let name=item.value;
         let na = item.na || '';
         if(item.label==0) {
@@ -580,7 +581,11 @@
           if(this.follow.follow_id=="") delete this.follow.follow_id;
           delete this.follow.files;
           this.follow.user_id=localStorage.user_id;
-          this.$tool.console(this.$tool.getToObject(this.follow));
+          this.follow.type=this.type || this.follow.type;
+          console.log(this.follow.type)
+          console.log(this.follow)
+        if(this.follow.type=='user'){ this.follow.card_id=this.userid;}
+//          this.$tool.console(this.$tool.getToObject(this.follow));
           this.loading=true;
           this.$http.post(this.URL.add_follow_record, this.follow)
             .then(res => {

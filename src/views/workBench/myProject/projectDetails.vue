@@ -858,6 +858,7 @@
           user_company_name:'杭州投着乐网络科技有限公司',//公司名称
         },//传递给推送的数据
         userEmail:'',
+        scrolled: false
       }
     },
     computed:{
@@ -877,7 +878,16 @@
     //Echart组件
     mounted(){
       this.eChart();
+/*        let leftWidth=document.body.clientHeight-document.body.scrollHeight;
+      console.log(document.body.clientHeight)
+      console.log(document.body.scrollHeight)
+      console.log(window.screen.height)
+      console.log(document.body.offsetHeight)
+      window.addEventListener('scroll', this.handleScroll);
+        console.log(leftWidth)*/
+ /*        this.$refs.right.style.left = leftWidth +'px';*/
     },
+
     methods:{
       addFollow(){
         this.followid='';
@@ -972,10 +982,12 @@
       },//项目详情弹窗关闭
       dialogVisiblechangeCloase(msg){
         this.dialogPushVisible=msg;
+        this.getAllData();
       },
       dialogVisiblechangeCloasePush(msg){
         this.dialogPushVisibleComplete=false;
         this.dialogPushVisible=false;
+        this.getAllData();
 //        this.getpushCount();
       },
       getProjectTag(arr){
@@ -1565,12 +1577,19 @@
             return this.getEnjoyedInvestors();
           });
       },//重新获取所有数据
+      handleScroll () {
+        this.scrolled = window.scrollY;
+        console.log(this.scrolled)
+      }
     },
     created () {
       this.$tool.getTop();
 
       this.getprojectId();
       this.getAllData();
+    },
+    ready () {
+
     },
     watch:{
 

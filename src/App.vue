@@ -50,7 +50,7 @@
     <div class="Infooter tc">
       <p style="height: 20px;line-height: 20px;">关于我们 | 联系我们</p>
       <div style="width:525px;margin:0 auto;vertical-align: middle;height: 20px;">
-        <img class="fl" src="/static/images/备案图标.png">
+        <img class="fl" src="https://pc.debug.weitianshi.cn/static/images/备案图标.png">
         <a class="fl" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602008444" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33010602008444号</p></a>
         <span style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</span>
       </div>

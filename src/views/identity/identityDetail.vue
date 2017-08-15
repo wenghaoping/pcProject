@@ -149,7 +149,7 @@
                 <el-radio class="radio" v-model="ruleForm2.is_alliance" label="0">否</el-radio>
               </el-form-item>
               <!--卖方FA身份-->
-              <el-form-item v-if="group_id==19" class="item" label="是否申请加入FA行业联盟">
+              <el-form-item v-if="group_id==21" class="item" label="是否申请加入FA行业联盟">
                 <el-radio class="radio mr120" v-model="ruleForm2.is_alliance" label="1">是</el-radio>
                 <el-radio class="radio" v-model="ruleForm2.is_alliance" label="0">否</el-radio>
               </el-form-item>
@@ -406,20 +406,22 @@
       },
       // 接收上传图片时返回的authenticate_id
       uploadSuccess(response){
-        console.log('图片上传返回数据',response)
+//        console.log('图片上传返回数据',response)
       },
+      getWxProjectCategory(){
+        this.industry = that.$global.data.industry;
+        this.scale = that.$global.data.scale;
+        this.stage = that.$global.data.stage;
+        this.hotCity = that.$global.data.hotCity;
+      }
     },
     mounted(){
     },
     created(){
-      var that=this;
-      setTimeout(function(){
-        that.industry = that.$global.data.industry;
-        that.scale = that.$global.data.scale;
-        that.stage = that.$global.data.stage;
-        that.hotCity = that.$global.data.hotCity;
-      },200)
-
+      this.$global.func.getWxProjectCategory()
+        .then((data)=>{
+          return this.getWxProjectCategory();
+        })
       //核对是否认证过身份
       this.$http.post(this.URL.getUserGroupByStatus, {
         user_id: localStorage.user_id
@@ -433,7 +435,7 @@
         }
       })
       this.group_id=localStorage.group_id;
-      console.log(this.group_id)
+//      console.log(this.group_id)
     }
   }
 </script>
