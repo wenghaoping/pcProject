@@ -82,7 +82,7 @@ export default {
       return data
     },//获取爬来的数据
     handleClick(tab, event) {
-      let index=tab.index;
+      let index=tab.index
 //      console.log(tab.index);
       switch (index){
         case '0':
@@ -166,15 +166,9 @@ export default {
       this.chartCheck=false;
       },
     getdownload(){
-      var getdownload = new Promise((resolve, reject)=>{
-        //做一些异步操作
-        this.title="累计下载量";
-        this.main="综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。";
-        this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
-        resolve(1);
-      })
-      return getdownload;
-
+      this.title="累计下载量";
+      this.main="综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。";
+      this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
     },//累计下载量
     getdau(){
       this.title="累计用户";
@@ -197,22 +191,19 @@ export default {
       this.eChart(this.xdata,this.time.ydataTotal,this.time.ydataAverage);
     },//访问时长
     getCrawlerProject(){
-      var getCrawlerProject = new Promise((resolve, reject)=>{
-        //做一些异步操作
-        this.$http.post(this.URL.getCrawlerProject, {
-          user_id: localStorage.user_id,
-          com_id: this.comid
-        })
-          .then(res => {
-//            console.log(res);
+      this.$http.post(this.URL.getCrawlerProject, {
+        user_id: localStorage.user_id,
+        com_id: this.comid
+      })
+        .then(res => {
             let data=this.getChart(res.data.data).data;
 //            console.log(data);
             this.xdata=data.three_month;
             this.download.ydataTotal=this.getAverage(data.total_download_mid);
             this.download.ydataAverage=this.getTotal(data.total_download[0].value);
 
-            /*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
-             this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
+/*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
+            this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
 
             this.pv.ydataTotal=this.getAverage(data.pv_mid);
             this.pv.ydataAverage=this.getTotal(data.pv[0].value);
@@ -222,15 +213,11 @@ export default {
 
             this.time.ydataTotal=this.getAverage(data.time_mid);
             this.time.ydataAverage=this.getTotal(data.time[0].value);
-            resolve(1);
-          })
-          .catch(err => {
-            console.log(err);
-          })
-
-      })
-      return getCrawlerProject;
-
+            this.getdownload();
+        })
+        .catch(err => {
+          console.log(err);
+        })
     },//获取项目
 
   },
@@ -252,10 +239,10 @@ export default {
       this.time.ydataTotal=[];
       this.time.ydataAverage=[];
       this.downloadEchartName='1';
-      this.getCrawlerProject()
-        .then((data)=>{
-          return this.getdownload();
-        })
+      this.getCrawlerProject();
+      setTimeout(() =>{
+        this.getdownload();
+      },500)
     },//获取公司id
     compName: function(e){
       this.compaName=e;

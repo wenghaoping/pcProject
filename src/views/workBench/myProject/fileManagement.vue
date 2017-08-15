@@ -59,7 +59,7 @@
             <div class="fr" style="margin-right: 21px">
               <!--bp上传-->
               <el-button v-if="item.type_id===1" type="text"  style="font-size: 12px" @click="getFileId(file.file_id,item.type_id,'bp')">删除</el-button>
-              
+
               <!--非bp上传-->
               <el-dropdown v-if="item.type_id!=1"  @command="fileDeal" trigger="click">
                 <span class="el-dropdown-link" @click="getFileId(file.file_id,item.type_id)">
@@ -599,8 +599,6 @@
     !*left:205px!important;*!
     !*top:610px!important;*!
   }*/
-  .el-dialog--small{
-    width:390px;
-  }
+
 </style>
 

@@ -188,7 +188,7 @@
     /*overflow: auto!important;*/
   }
   .newColor{
-    color:#40587A;
+    color:#40587A!important;
   }
   /*  .is-light{
       border: none!important;

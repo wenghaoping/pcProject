@@ -406,7 +406,6 @@ export default {
         })
     },//获取剩余推送次数
     handleSelect(row, event, column) {
-        console.log(row)
       this.projectRadio=row.project_id;
       this.remoteMethod(row.pro_intro);
     },//点击单选

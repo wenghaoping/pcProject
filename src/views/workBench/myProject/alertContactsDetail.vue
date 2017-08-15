@@ -285,12 +285,12 @@
           this.$http.post(this.URL.getProjectList, this.getPra)
             .then(res => {
               let data = res.data.data;
-              console.log(data)
+//              console.log(data)
               this.projectListsAll = this.setProjectList(data);
 
               this.projectListsSmall = this.setProjectList(data).slice(0, 2);
 
-              console.log(this.projectListsSmall)
+//              console.log(this.projectListsSmall)
               if (this.listShow) this.projectLists = this.projectListsAll.slice(0)
               else this.projectLists = this.projectListsSmall.slice(0);
               this.totalData = res.data.count;
