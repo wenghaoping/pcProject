@@ -58,7 +58,6 @@
         <div class="bloack change" style="display: block">
           <el-table
             :data="business.company_change"
-
             border
             style="width: 100%">
             <el-table-column
@@ -89,7 +88,6 @@
         <div class="block" style="display: block">
           <el-table
             :data="business.brand"
-
             border
             style="width: 100%">
             <el-table-column

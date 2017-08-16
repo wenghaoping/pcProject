@@ -1,13 +1,8 @@
 <template>
-  <div id="research" >
-    <!--===========================================一键尽调弹窗=============================================-->
-    <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose"
-               close-on-press-escape close-on-click-modal>
-      <div class="contain-grid" style="width: 893px;" v-loading="loading"
-           element-loading-text="拼命加载中1">
-        <div class="contain-position">
-          <p>您要尽调的公司：<span>{{compname}}</span><button class="fr button" @click="goToEdit">修改公司</button></p>
-        </div>
+  <div id="researchAlone" class="clearfix" v-loading="loading"
+       element-loading-text="拼命加载中">
+    <!--===========================================一键尽调单独页面=============================================-->
+      <div class="contain-grid contain-center1 fl dialog">
         <div class="contain-inner">
           <div class="item-lists1">
             <!--项目信息-->
@@ -15,7 +10,7 @@
               <div class="title">项目信息</div>
               <div v-for="project1 in project" class="clearfix" style="margin-bottom: 20px;">
                 <div class="portrait fl">
-                  <img src="../../../assets/images/logo.png" v-if="project1.project_logo==''">
+                  <img src="../../assets/images/logo.png" v-if="project1.project_logo==''">
                   <img :src="project1.project_logo" v-else>
                 </div>
                 <div class="portrait-right fl ">
@@ -33,18 +28,18 @@
                                     </div>-->
                   <div class="block clearfix" style="height: 24px;display: block">
                     <span class="mid-tag" v-for="pro in project1.project_industry" v-if="project1.project_industry!=''">{{pro}}</span>
-                    <!--                    <span class="big-tag" style="margin-left: 191px;">-&#45;&#45;</span><span class="split">｜</span>
-                                        <span class="big-tag">&#45;&#45;</span><span class="split">｜</span>
-                                        <span class="big-tag">&#45;&#45;</span>-->
+                    <!--                    <span class="big-tag" style="margin-left: 191px;">---</span><span class="split">｜</span>
+                                        <span class="big-tag">--</span><span class="split">｜</span>
+                                        <span class="big-tag">--</span>-->
                   </div>
                 </div>
                 <div class="tag" style="padding-top: 20px;    display: inline-block;">
-                  <span class="tag-bottom" style="margin-right: 11px;" v-if="project1.project_label!=''"><img src="../../../assets/images/tag2.png"></span>
+                  <span class="tag-bottom" style="margin-right: 11px;" v-if="project1.project_label!=''"><img src="../../assets/images/tag2.png"></span>
                   <span class="tag-bottom" v-if="project1.project_label!=''">{{project1.project_label}}</span>
                   <!--                  <span class="tag-bottom">创业</span>
                                     <span class="tag-bottom">大数据</span>
                                     <span class="tag-bottom">人工智能</span>-->
-                  <span class="url fr" v-if="project1.project_website!=''"><img src="../../../assets/images/tag3.png" >
+                  <span class="url fr" v-if="project1.project_website!=''"><img src="../../assets/images/tag3.png" >
                     <a :href="project1.project_website" target="_Blank">{{project1.project_website}}</a>
                   </span>
                 </div>
@@ -63,7 +58,7 @@
             </div>
             <!--公司信息-->
             <div class="item">
-              <company-message :comp-name="compname"></company-message>
+              <company-message :comp-name="compName"></company-message>
             </div>
             <!--工商信息-->
             <div class="item">
@@ -76,7 +71,7 @@
                 <div class="border clearfix" v-for="teamin in team">
                   <div class="portrait fl clearfix">
                     <img :src="teamin.team_member_photo" v-if="teamin.team_member_photo!=''">
-                    <img src="../../../assets/images/logo.png" v-else>
+                    <img src="../../assets/images/logo.png" v-else>
                   </div>
                   <div class="portrait-right fl ">
                     <div class="block clearfix" style="display: block">
@@ -128,7 +123,7 @@
               </div>
               <!--
                             <div class="border clearfix">
-                              <div class="portrait fl clearfix"><img src="../../../assets/images/header3.png"></div>
+                              <div class="portrait fl clearfix"><img src="../../assets/images/header3.png"></div>
                               <div class="portrait-right fl ">
                                 <div class="block">
                                   <span class="block-title fl clearfix">顾嘉</span>
@@ -144,7 +139,7 @@
             </div>
             <!--图表-->
             <div class="item">
-              <downloadechart :comid="com_id" :comp-name="compname"></downloadechart>
+              <downloadechart :comid="com_id" :comp-name="compName"></downloadechart>
             </div>
             <!--历史融资-->
             <div class="item" v-if="history_finance.length!=0">
@@ -158,12 +153,7 @@
                   <span class="date fl">{{history.history_financing_time}}</span>
                   <span class="blood fl">{{history.history_financing_money}}</span>
                   <span class="blood1 fl">{{history.history_financing_rounds}}</span>
-                  <span class="main fl">
-                     <el-tooltip placement="top" :disabled="history.history_financing_who.length > 25 ? false:true">
-                      <div slot="content">{{history.history_financing_who}}</div>
-                      <i>{{history.history_financing_who}}</i>
-                    </el-tooltip>
-                  </span>
+                  <span class="main fl">{{history.history_financing_who}}</span>
                 </div>
               </div>
             </div>
@@ -213,11 +203,11 @@
               <div class="title">竞品</div>
               <ul class="ulfl h-table">
                 <li class="table1">项目</li>
-                <li class="table2">行业</li>
-                <li class="table7">成立时间</li>
-                <li class="table4">地域</li>
-                <li class="table5">最新融资轮次</li>
-                <li class="table6">最近融资时间</li>
+                <li class="table2">领域</li>
+                <!--<li class="table3">投资方</li>-->
+                <li class="table4">融资时间</li>
+                <li class="table5">融资轮次</li>
+                <li class="table6">融资金额</li>
               </ul>
               <div v-for="compet in competing">
                 <ul  class="ulfl m-table">
@@ -233,7 +223,7 @@
                   <li class="table1">
                     <div class="img fl">
                       <img :src="compet.competing_goods_logo" v-if="compet.competing_goods_logo!=''">
-                      <img src="../../../assets/images/logo.png" v-else>
+                      <img src="../../assets/images/logo.png" v-else>
                     </div>
                     <div class="clearfix" style="margin-left: 70px;">
                       <div class="title2">
@@ -241,98 +231,118 @@
                       </div>
                       <div class="bo">
                         <span style="margin-left: 5px;">
-
+                          {{compet.competing_goods_Financing_amount}}
+                        </span>
+                        <span style="margin-left: 5px;">
+                          {{compet.competing_goods_Set_up}}
                         </span>
                       </div>
                     </div>
                   </li>
 
                   <li class="table2" style="height: 101px;">{{compet.competing_goods_industry}}</li>
-                  <li class="table7" style="height: 101px;">{{compet.competing_goods_Set_up}}</li>
-                  <li class="table4" style="height: 101px;">{{compet.competing_goods_Financing_amount}}</li>
+                  <li class="table4" style="height: 101px;">{{compet.competing_goods_Financing_time}}</li>
                   <li class="table5" style="height: 101px;">{{compet.competing_goods_Financing_rounds}}</li>
-                  <li class="table6" style="height: 101px;">
-                    <i>{{compet.competing_goods_Financing_time}}</i>
-                    <i style="margin-left: 10px;">{{compet.competing_goods_region}}</i>
-                    <i>{{compet.competing_founder}}</i>
-                  </li>
+                  <li class="table6" style="height: 101px;">{{compet.competing_goods_region}}</li>
                 </ul>
                 <div class="line2"></div>
               </div>
 
-              <!--              <ul  class="ulfl m-table">
-                              <li class="table1">
-                                <div class="img fl">
-                                  <img src="../../../assets/images/message.png">
-                                </div>
-                                <div class="title2 fl">
-                                  微天使乐投平台
-                                </div>
-                                <div class="bo fl">杭州<span style="margin-left: 20px;">2014-07</span></div>
-                              </li>
-                              <li class="table2">医疗健康,医疗器械及硬件</li>
-                              <li class="table3">华兴资本</li>
-                              <li class="table4">2017-07</li>
-                              <li class="table5">战略投资</li>
-                              <li class="table6">亿元及以上人民币</li>
-                            </ul>
-                            <div class="line2"></div>
-                            <ul  class="ulfl m-table">
-                              <li class="table1">
-                                <div class="img fl">
-                                  <img src="../../../assets/images/message.png">
-                                </div>
-                                <div class="title2 fl">
-                                  微天使乐投平台
-                                </div>
-                                <div class="bo fl">杭州<span style="margin-left: 20px;">2014-07</span></div>
-                              </li>
-                              <li class="table2">医疗健康,医疗器械及硬件</li>
-                              <li class="table3">华兴资本</li>
-                              <li class="table4">2017-07</li>
-                              <li class="table5">战略投资</li>
-                              <li class="table6">亿元及以上人民币</li>
-                            </ul>-->
             </div>
 
           </div>
         </div>
       </div>
+    <div class="contain-grid contain-right-1 fl"
+         v-loading="loading"
+         element-loading-text="拼命加载中">
+      <div class="main-box">
+        <el-tabs v-model="activeName">
+          <el-tab-pane name="1">
+            <span slot="label">买家图谱
+              <el-tooltip class="item" effect="dark" placement="top-start">
+                <div slot="content">根据微天使匹配算法从您的人脉库，全网人脉库算出<br/>该项目的意向投资人</div>
+                <div class="img"><img src="../../assets/images/why.png"></div>
+    </el-tooltip>
+            </span>
+                <div class="main_right main_left">
+                  <div class="item_top">
+                    <span class="top_inn fl">匹配推荐=我的+全网人脉</span>
+                    <div class="selectIn fr" style="height: 36px;">
+                      <el-select v-model="isFollow" placeholder="请选择" @change="selectFollow">
+                        <el-option
+                          v-for="item in myAllCont"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                  <div class="item_lists">
+                    <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors" v-if="ProjectMatchInvestors.length!=0">
+                      <div class="list_header">
+                        <span class="pipei">匹配度 : </span>
+                        <span class="bili">{{projectMatchInvestor.match}}%</span>
+                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==1">我的人脉</span>
+                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==0">全网人脉</span>
+                      </div>
+                      <div class="list_main">
+                        <div class="click">
+                          <div class="block" style="width: 290px;">
+                            <span class="name">{{projectMatchInvestor.user_real_name}}</span>
+                            <span class="zhiwei">{{projectMatchInvestor.user_company_career}}</span>
+                            <span class="imgs" v-if="projectMatchInvestor.user_group!=''"><img src="../../assets/images/renzhen.png"/></span>
+                            <span class="ren">{{projectMatchInvestor.user_group}}</span>
+                          </div>
+                          <div class="block" style="margin-top: 5px;">
+                            <span class="company">{{projectMatchInvestor.user_company_name}}</span>
+                          </div>
+                          <div class="block" style="margin-top: 42px;">
+                            <span class="company ft13">投资领域：<i v-for="industry in projectMatchInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                          </div>
+                          <div class="block" style="margin-top: 5px;">
+                            <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
+                          </div>
+                        </div>
+                        <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
+                        <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
+                      </div>
+                    </div>
+                    <div class="emptyImg" v-if="ProjectMatchInvestors.length==0">
+                      <img src="../../assets/images/zanwushuju.png">
+                    </div>
+                    <el-pagination
+                      class="pagination fr"
+                      small
+                      v-if="totalInvestors>5"
+                      @current-change="filterChangeInvestors"
+                      :current-page.sync="currentPageInvestors"
+                      layout="prev, pager, next"
+                      :page-size="5"
+                      :total="totalInvestors">
+                    </el-pagination>
+                  </div>
+                </div>
+          </el-tab-pane>
 
-      <!--<div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisibleTo">取 消</el-button>
-        <el-button type="primary" @click="dialogVisibleTo">确 定</el-button>
-      </div>-->
-    </el-dialog>
+        </el-tabs>
+      </div>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import companyMessage from './onkeyresearch/companyMessage.vue'
-  import business from './onkeyresearch/business.vue'
-  import downloadechart from './onkeyresearch/downloadEchart.vue'
+  import companyMessage from '../workBench/myProject/onkeyresearch/companyMessage.vue'
+  import business from '../workBench/myProject/onkeyresearch/business.vue'
+  import downloadechart from '../workBench/myProject/onkeyresearch/downloadEchart.vue'
   export default {
-    props: ["dialogVisible","companyId","compName"],
     data () {
       return {
-        compname: "",//一键尽调公司的名称
+        compName: "",//一键尽调公司的名称
         com_id: 0,//公司Id
         conmanyName: '3',
         productMessage: '产品信息',
-        recruitMessage: '招聘信息',
-        recruitData: [{
-          position: 'JAVA',
-          money: '20-30K',
-          experience: '1-2年',
-          address: "北京",
-          date: '2016-05-04'
-        }, {
-          position: 'IOS',
-          money: '1-2K',
-          experience: '1年',
-          address: "北京",
-          date: '2016-05-04'
-        }],
 
         /*项目信息*/
         project: [
@@ -403,38 +413,44 @@
             team_member_position: "",//成员职位
           }
         ],
-        loading:false
-
+        loading:false,
+        activeName:'1',
+        isFollow:-1,//人脉筛选绑定
+        myAllCont:[{
+          value: -1,
+          label: '全部'
+        }, {
+          value: 0,
+          label: '全网人脉'
+        }, {
+          value: 1,
+          label: '我的人脉'
+        }
+        ],//人脉筛选条件
+        ProjectMatchInvestors:[
+            {
+           follow_status:0,
+           industry_tag:"暂无匹配",//领域
+           investor_career:"暂无匹配",//职位
+           investor_company:"暂无匹配",//公司
+           investor_desc:"暂无匹配",//介绍
+           investor_id:"0",//id
+           investor_logo_text:"暂无匹配",//名片名字
+           investor_logo_url:"",
+           investor_name:"暂无匹配",//名字
+           investor_type:2,
+           stage_tag:"暂无匹配",//轮次
+           user_id: "0",
+           match:0,//匹配度
+           }
+        ],//买家图谱数据
+        currentPageInvestors:1,//当前第几页(买家图谱)
+        totalInvestors:0,//总数(买家图谱)
+        getInvestors:{},//获取买家图谱请求参数
+        project_id:'k0xol2rv',
       }
     },
     methods: {
-      dialogVisibleTo() {
-        this.$emit('changeall', false)
-      },
-      handleClose(done) {
-        done();
-        this.dialogVisibleTo()
-      },
-      goToEdit(){
-//      this.$router.push({name: 'editproject', query: {}})
-        this.$emit('changeall', false)
-        this.$emit('changeallin', true)
-      },
-      loadMore(){
-        this.recruitData.push({
-          position: 'IOS',
-          money: '1-2K',
-          experience: '1年',
-          address: "北京",
-          date: '2016-05-04'
-        }, {
-          position: 'IOS',
-          money: '1-2K',
-          experience: '1年',
-          address: "北京",
-          date: '2016-05-04'
-        })
-      },
       getCrawlerTeam(){
         var getCrawlerTeam = new Promise((resolve, reject)=>{
           //做一些异步操作
@@ -565,6 +581,100 @@
           data[i].project_industry=data[i].project_industry.split(",");
         }
       },//设置数据
+
+      /*买家图谱*/
+      setProjectMatchInvestors(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          let obj = new Object;
+          obj.match=x.match;
+          obj.is_follow=x.is_follow;
+          obj.type=x.type;
+          obj.push_statues=x.push_statues;
+          obj.user_avatar_url=x.card.user_avatar_url;
+          obj.user_avatar_txt=this.$tool.setUrlChange(x.card.user_avatar_url,x.card.user_real_name);
+          obj.user_real_name=x.card.user_real_name;
+          obj.user_company_career=x.card.user_company_career;
+          obj.user_company_name=x.card.user_company_name;
+          obj.user_invest_industry=x.card.user_invest_industry;
+          obj.user_invest_stage=x.card.user_invest_stage;
+          obj.user_id=x.card.user_id;
+          obj.card_id=x.card.card_id;
+          obj.user_eamil=x.card.user_email;
+          obj.investor_id=x.card.investor_id;
+          obj.type=x.type;
+          obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
+          newArr.push(obj);
+        });
+        return newArr;
+      },//设置买家图谱列表
+      getProjectMatchInvestors(){
+        var getProjectMatchInvestors = new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.getInvestors.user_id=localStorage.user_id;
+          this.getInvestors.user_id="EWgX21Zp";
+          this.currentPageInvestors=1;
+          this.getInvestors.project_id=this.project_id;
+          this.getInvestors.page=1;
+          this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                let data = res.data.data;
+                this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+                this.totalInvestors = res.data.count;
+                resolve(6);
+              }
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.$tool.error("加载超时");
+            })
+        });
+        return getProjectMatchInvestors;
+      },//买家图谱列表
+      filterChangeInvestors(page){
+        this.$tool.getTop();
+        this.loading=true;
+        this.getInvestors.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+        this.currentPageInvestors=page;
+        this.getInvestors.project_id=this.project_id;
+        this.getInvestors.page=page;
+        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+          .then(res=>{
+            if(res.data.status_code===2000000) {
+              let data = res.data.data;
+              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.totalInvestors = res.data.count;
+            }
+            this.loading = false;
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.loading=false;
+            this.$tool.error("加载超时");
+          })
+      },//控制买家图谱页码
+      selectFollow(e){
+        this.getInvestors.user_id=localStorage.user_id;
+        this.getInvestors.user_id="EWgX21Zp";
+        this.currentPageInvestors=1;
+        this.getInvestors.project_id=this.project.project_id;
+        this.getInvestors.page=1;
+        this.getInvestors.is_follow=e;
+        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+          .then(res=>{
+            if(res.data.status_code==2000000) {
+              let data = res.data.data;
+              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.totalInvestors = res.data.count;
+            }
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.$tool.error("加载超时");
+          })
+      },//筛选买家图谱
     },
     computed: {},
     components: {
@@ -573,14 +683,35 @@
       downloadechart
     },
     created(){
-
+      this.loading=true;
+      this.com_id=12298;
+      this.compName='北京大杰致远信息技术有限公司';
+      this.getCrawlerTeam()
+        .then((data)=>{
+          return this.getCrawlerHistoryFinance();
+        })
+        .then((data)=>{
+          return this.getCrawlerMilestone();
+        })
+        .then((data)=>{
+          return this.getCrawlerNews();
+        })
+        .then((data)=>{
+          return this.getCrawlerCompeting();
+        })
+        .then((data)=>{
+          return this.getCrawlerProject();
+        })
+        .then((data)=>{
+          return this.getProjectMatchInvestors();
+        })
     },
 
     watch : {
       companyId : function(e){
-        this.loading=true;
+        /*this.loading=true;
         this.com_id=e;
-        this.compname=this.compName;
+        this.compName='';
         this.getCrawlerTeam()
           .then((data)=>{
             return this.getCrawlerHistoryFinance();
@@ -595,39 +726,17 @@
             return this.getCrawlerCompeting();
           })
           .then((data)=>{
-
             return this.getCrawlerProject();
-          })
+          })*/
       },//获取公司id
-      dialogVisible:function(e){
-
-      }
-
     }
   }
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/onekeyresearch';
+  @import '../../assets/css/onekeyresearchAlone.less';
   .el-carousel__item img {
     width: 100%;
   }
-  #research{
 
-
-    .el-tabs__item{
-      font-size:18px;
-      color:#8492a6;
-      line-height:20px;
-    }
-    .el-tabs__item.is-active{
-      color:#1f2d3d;
-    }
-    .el-tabs__header{
-      border:none;
-    }
-    .el-tabs__active-bar{
-      display: none;
-    }
-  }
 </style>
