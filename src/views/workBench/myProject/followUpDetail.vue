@@ -105,7 +105,7 @@
         this.getProjectFollowList(page);
       },//控制项目页码1
       getProjectFollowList(page){
-        this.loading1=true;
+//        this.loading1=true;
         this.getData1.user_id=localStorage.user_id;
         this.getData1.project_id=this.pro_id;
         this.currentPage=page;
@@ -121,19 +121,37 @@
 //              console.log(this.content);
               this.totalData = res.data.count;
             }
-            this.loading1 = false;
+//            this.loading1 = false;
           })
           .catch(err=>{
 //            this.$tool.console(err,2);
-            this.loading1=false;
+//            this.loading1=false;
             this.$tool.error("加载超时");
           })
-      },//获取跟进记录
+      },//获取跟进记录.toLocaleString('chinese',{hour12:false}).substr(0, 15).replace(/\//g,'.').replace(/:$/,"")
+      /*时间戳的处理*/
+      formatDateTime1(timeStamp) {
+        if(timeStamp=='') return '';
+        var date = new Date();
+        date.setTime(timeStamp * 1000);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d+' '+h+':'+minute/*+':'+second*/;
+      },//时间戳转化为正常时间yyyy-mm-dd-hh-m===========单个时间的处理
       setDateTime(data){
         for (let i = 0; i < data.length; i++) {
-          data[i].follow_time=new Date(data[i].follow_time*1000).toLocaleString('chinese',{hour12:false}).substr(0, 15).replace(/\//g,'.').replace(/:$/,"");
+          data[i].follow_time=this.formatDateTime1(data[i].follow_time);
         }
-//        console.log(data[i].follow_time);
+
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
