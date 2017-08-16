@@ -45,7 +45,9 @@
                   <!--                  <span class="tag-bottom">创业</span>
                                     <span class="tag-bottom">大数据</span>
                                     <span class="tag-bottom">人工智能</span>-->
-                  <span class="url fr" v-if="project1.project_website!=''"><img src="../../../assets/images/tag3.png" >{{project1.project_website}}</span>
+                  <span class="url fr" v-if="project1.project_website!=''"><img src="../../../assets/images/tag3.png" >
+                    <a :href="project1.project_website" target="_Blank">{{project1.project_website}}</a>
+                  </span>
                 </div>
                 <!--                <div class="file">
                                   {{project1.project_introduce}}
@@ -150,14 +152,19 @@
               <div class="title">历史融资</div>
               <div class="lists">
                 <div class="list" v-for="history in history_finance">
-                    <span class="radio_line">
+                    <span class="radio_line fl">
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
                     </span>
-                  <span class="date">{{history.history_financing_time}}</span>
-                  <span class="blood">{{history.history_financing_money}}</span>
-                  <span class="blood1">{{history.history_financing_rounds}}</span>
-                  <span class="main">{{history.history_financing_who}}</span>
+                  <span class="date fl">{{history.history_financing_time}}</span>
+                  <span class="blood fl">{{history.history_financing_money}}</span>
+                  <span class="blood1 fl">{{history.history_financing_rounds}}</span>
+                  <span class="main fl">
+                     <el-tooltip placement="top" :disabled="history.history_financing_who.length > 25 ? false:true">
+                      <div slot="content">{{history.history_financing_who}}</div>
+                      <i>{{history.history_financing_who}}</i>
+                    </el-tooltip>
+                  </span>
                 </div>
               </div>
             </div>
@@ -171,7 +178,13 @@
                       <!--<span class="l-line"></span>-->
                     </span>
                   <span class="date">{{milestone.milestone_time}}</span>
-                  <span class="blood blood2">{{milestone.milestone_event}}</span>
+                  <span class="blood blood2">
+
+                    <el-tooltip placement="top" :disabled="milestone.milestone_event.length > 40 ? false:true">
+                      <div slot="content">{{milestone.milestone_event}}</div>
+                      <i>{{milestone.milestone_event}}</i>
+                    </el-tooltip>
+                  </span>
                 </div>
               </div>
             </div>
@@ -184,9 +197,15 @@
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
                     </span>
-                  <span class="date">{{new1.project_news_time}}<el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
+                  <span class="date">{{new1.project_news_time}}</span>
+                  <span class="dateTag"><el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
                   <span class="blood blood3">{{new1.project_news_title}}</span>
-                  <span class="mian2">{{new1.source}}</span>
+                  <span class="mian2">
+  <!--                  <el-tooltip placement="top">
+                      <div slot="content">{{new1.source}}</div>-->
+                      <a :href="new1.source" target="_Blank">新闻链接</a>
+                    <!--</el-tooltip>-->
+                  </span>
                 </div>
               </div>
             </div>

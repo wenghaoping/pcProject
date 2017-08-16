@@ -233,7 +233,8 @@ const tool={
   formatDateTime(timeStamp) {
     if(timeStamp=='') return '';
     var date = new Date();
-    date.setTime(timeStamp * 1000);
+    if(timeStamp.length>11) date.setTime(timeStamp)
+    else date.setTime(timeStamp * 1000);
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
     m = m < 10 ? ('0' + m) : m;
