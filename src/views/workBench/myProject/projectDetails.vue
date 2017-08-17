@@ -12,7 +12,7 @@
               <el-tag type="primary" v-else>私密</el-tag>
               <el-tooltip class="item height" effect="dark" placement="top-start">
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
-              <span class="icon"><img src="../../../assets/images/why.png"/></span>
+                <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
               <span class="title">{{project.pro_name}}</span>
               <span class="company">{{project.pro_company_name}}</span>
@@ -80,9 +80,9 @@
               <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商、核心团队、产品数据、历史融资、新闻谬论等全方面信息</div>
               <span class="icon icon2" style="cursor: pointer"><img src="../../../assets/images/why.png"/></span>
             </el-tooltip>
-            <div class="button-float" @click="goOnkey" style="cursor:pointer" >
-            一键尽调
-          </div>
+            <!--<div class="qrTab fr"><img src="../../../assets/images/qrTab.png"></div>-->
+            <div class="button-float fr" @click="goOnkey" style="cursor:pointer" >一键尽调</div>
+            <!--<span class="qrposition"><img :src="qrImg"></span>-->
           </div>
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
@@ -187,7 +187,7 @@
                       <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
                       <span class="radio_line">
                       <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
+                        <!--<span class="l-line"></span>-->
                       </span>
                         <span class="pro-txt-1">{{finance.finance_time}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
@@ -489,21 +489,21 @@
     <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :pro-intro="project.pro_intro" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
 
     <!--项目推送项目入口小弹窗-->
-<!--    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel" >
-      <span class="pushCount">今日剩余推送<span>{{pushCount}}</span>次</span>
-      <el-form :model="littlePush" ref="littlePush">
-        <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
-          <el-input v-model="littlePush.email" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="一句话" prop="content" :label-width="formLabelWidth">
-          <el-input v-model="littlePush.content" auto-complete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="littlePushCancel">取 消</el-button>
-        <el-button type="primary" @click="littlePushCertain">确 定</el-button>
-      </div>
-    </el-dialog>-->
+    <!--    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel" >
+          <span class="pushCount">今日剩余推送<span>{{pushCount}}</span>次</span>
+          <el-form :model="littlePush" ref="littlePush">
+            <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
+              <el-input v-model="littlePush.email" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="一句话" prop="content" :label-width="formLabelWidth">
+              <el-input v-model="littlePush.content" auto-complete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="littlePushCancel">取 消</el-button>
+            <el-button type="primary" @click="littlePushCertain">确 定</el-button>
+          </div>
+        </el-dialog>-->
 
     <!--项目推送弹窗,人脉入口完整版============================-->
     <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage"
@@ -594,22 +594,22 @@
           pro_website: "",//官方网址www.baidu.com
           contact: {
             /*user_name: "",//赵工佐
-            user_mobile: ""//18551711000*/
+             user_mobile: ""//18551711000*/
           },//项目联系人
 
           pro_schedule: {
             /*"schedule_id": 3,
-            "schedule_name": "",//考察
-            "created_at": null,
-            "updated_at": "2017-06-06 11:00:21",
-            "user_id": 0*/
+             "schedule_name": "",//考察
+             "created_at": null,
+             "updated_at": "2017-06-06 11:00:21",
+             "user_id": 0*/
           },//项目进度
 
           pro_status: {
             /*"status_id": 3,
-            "status_name": "",//上线
-            "created_at": null,
-            "updated_at": null*/
+             "status_name": "",//上线
+             "created_at": null,
+             "updated_at": null*/
           },//运营状态
 
           pro_area: {
@@ -672,7 +672,7 @@
             }
           ],//领域标签
 
-        /*核心团队人员*/
+          /*核心团队人员*/
           core_users: [
             {
               project_ct_id: 30,
@@ -687,19 +687,19 @@
               stock_scale: null
             }
           ],
-        /*//历史融资信息*/
-        pro_history_finance: [{
-          project_id: 37,
-          pro_finance_stage: 1,//轮次
-          pro_finance_scale: "100.00",//金额
-          pro_finance_investor: "周杰伦",//投资人
-          created_time: null,
-          updated_time: null,
-          belongs_to_stage:{
+          /*//历史融资信息*/
+          pro_history_finance: [{
+            project_id: 37,
+            pro_finance_stage: 1,//轮次
+            pro_finance_scale: "100.00",//金额
+            pro_finance_investor: "周杰伦",//投资人
+            created_time: null,
+            updated_time: null,
+            belongs_to_stage:{
 
-          }
-        }],
-        /*自定义标签*/
+            }
+          }],
+          /*自定义标签*/
           tag: [
             {
               tag_id: 1,
@@ -711,7 +711,7 @@
               type: 0//项目标签
             }
           ],
-        /*文件列表*/
+          /*文件列表*/
           pro_file: [
             {
               file_id: 1,
@@ -723,7 +723,7 @@
               updated_at: null,
               deleted_at: null
             }],
-        /*里程碑*/
+          /*里程碑*/
           pro_develop: [
             {
               project_dh_id: 6,
@@ -746,7 +746,7 @@
             created_at: null,
             updeted_at: null
           },
-         /*BP文件*/
+          /*BP文件*/
           pro_BP: {
             file_id: 34,
             project_id: 37,
@@ -788,21 +788,21 @@
         },//图表的数据
         enjoyInvestors:[
           /*{
-            card_id: "1Np889pR",
-            import_user_name: "李凯强",
-            is_add:false,
-            is_bind:0,
-            schedule_id:2,
-            user_invest_industry:"人工智能、大数据、理财、企业服务台",
-            user_invest_stage:"轮次",
-            type:"card",
-            user_avatar_url:"",//头像地址
-            user_company_career:"投资总监",//职位
-            user_company_name:"杭州偷着乐",// 公司名称
-            match:"12",//匹配度
-            user_group:"投资机构",
-            width:40
-          }*/
+           card_id: "1Np889pR",
+           import_user_name: "李凯强",
+           is_add:false,
+           is_bind:0,
+           schedule_id:2,
+           user_invest_industry:"人工智能、大数据、理财、企业服务台",
+           user_invest_stage:"轮次",
+           type:"card",
+           user_avatar_url:"",//头像地址
+           user_company_career:"投资总监",//职位
+           user_company_name:"杭州偷着乐",// 公司名称
+           match:"12",//匹配度
+           user_group:"投资机构",
+           width:40
+           }*/
         ],//意向投资人数据
         scheduleIndex:-1,//设置跟进状态的位置(单独需要)
         takechange:false,//这个我就是随便用用
@@ -811,21 +811,21 @@
 
         getInvestors:{},//获取买家图谱请求参数
         ProjectMatchInvestors:[
-/*          {
-            follow_status:0,
-            industry_tag:"暂无匹配",//领域
-            investor_career:"暂无匹配",//职位
-            investor_company:"暂无匹配",//公司
-            investor_desc:"暂无匹配",//介绍
-            investor_id:"0",//id
-            investor_logo_text:"暂无匹配",//名片名字
-            investor_logo_url:"",
-            investor_name:"暂无匹配",//名字
-            investor_type:2,
-            stage_tag:"暂无匹配",//轮次
-            user_id: "0",
-            match:0,//匹配度
-          }*/
+          /*          {
+           follow_status:0,
+           industry_tag:"暂无匹配",//领域
+           investor_career:"暂无匹配",//职位
+           investor_company:"暂无匹配",//公司
+           investor_desc:"暂无匹配",//介绍
+           investor_id:"0",//id
+           investor_logo_text:"暂无匹配",//名片名字
+           investor_logo_url:"",
+           investor_name:"暂无匹配",//名字
+           investor_type:2,
+           stage_tag:"暂无匹配",//轮次
+           user_id: "0",
+           match:0,//匹配度
+           }*/
         ],//买家图谱数据
         littlePushShow:false,//买家图谱推送弹窗
         littlePush:{
@@ -844,12 +844,12 @@
           value: -1,
           label: '全部'
         }, {
-            value: 0,
-            label: '全网人脉'
-          }, {
-            value: 1,
-            label: '我的人脉'
-          }
+          value: 0,
+          label: '全网人脉'
+        }, {
+          value: 1,
+          label: '我的人脉'
+        }
         ],//人脉筛选条件
         isFollow:-1,//人脉筛选绑定
         userMessage:{
@@ -858,7 +858,8 @@
           user_company_name:'杭州投着乐网络科技有限公司',//公司名称
         },//传递给推送的数据
         userEmail:'',
-        scrolled: false
+        scrolled: false,
+        qrImg:'',//二维码地址
       }
     },
     computed:{
@@ -878,14 +879,14 @@
     //Echart组件
     mounted(){
       this.eChart();
-/*        let leftWidth=document.body.clientHeight-document.body.scrollHeight;
-      console.log(document.body.clientHeight)
-      console.log(document.body.scrollHeight)
-      console.log(window.screen.height)
-      console.log(document.body.offsetHeight)
-      window.addEventListener('scroll', this.handleScroll);
-        console.log(leftWidth)*/
- /*        this.$refs.right.style.left = leftWidth +'px';*/
+      /*        let leftWidth=document.body.clientHeight-document.body.scrollHeight;
+       console.log(document.body.clientHeight)
+       console.log(document.body.scrollHeight)
+       console.log(window.screen.height)
+       console.log(document.body.offsetHeight)
+       window.addEventListener('scroll', this.handleScroll);
+       console.log(leftWidth)*/
+      /*        this.$refs.right.style.left = leftWidth +'px';*/
     },
 
     methods:{
@@ -961,7 +962,7 @@
         this.show = tab.name ;
       },
       goBack(){
-          if(this.activeFrom==0) this.$router.push({name: 'myProject',query: {activeTo: 0}})
+        if(this.activeFrom==0) this.$router.push({name: 'myProject',query: {activeTo: 0}})
         else if(this.activeFrom==2) this.$router.push({name: 'followUp',query: {activeTo: 2}})//路由传参
       },//返回上一层
       dialogVisiblechange(msg){
@@ -1150,8 +1151,8 @@
                 this.enjoyInvestors=this.setEnjoyInvestor(data);
                 this.totalData = res.data.count;
                 if(this.enjoyInvestors.length==0) {
-                    this.activeName='2';
-                    this.tabs=false;
+                  this.activeName='2';
+                  this.tabs=false;
                 }
                 resolve(5);
               }
@@ -1581,19 +1582,34 @@
             return this.getEnjoyedInvestors();
           });
       },//重新获取所有数据
-      handleScroll () {
-        this.scrolled = window.scrollY;
-        console.log(this.scrolled)
-      }
+
+      getWX(){
+        this.$http.post(this.URL.getProjectQr, {
+          user_id: localStorage.user_id,
+          width:1000,
+          path:"pages/oneKeyResearch/oneKeyResearch?id="+this.project.project_id,
+          project_id:this.project.project_id
+        })
+          .then(res => {
+            let data=res.data;
+            if(data.status_code===2000000){
+              this.qrImg=data.qr_src;
+            }else{
+
+            }
+            console.log(res)
+          })
+          .catch(err => {
+            this.$tool.console(err);
+          })//请求函数
+      },//获取二维码
     },
     created () {
       this.$tool.getTop();
 
       this.getprojectId();
       this.getAllData();
-    },
-    ready () {
-
+//      this.getWX();
     },
     watch:{
 
@@ -1604,7 +1620,7 @@
 <style lang="less">
   @import '../../../assets/css/projectDetail.less';
 
-.scheduleColor{
-  color:#20a0ff!important;
-}
+  .scheduleColor{
+    color:#20a0ff!important;
+  }
 </style>

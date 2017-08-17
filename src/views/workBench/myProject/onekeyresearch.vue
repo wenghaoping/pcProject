@@ -28,14 +28,8 @@
                   <div class="block clearfix" style="margin-bottom: 20px;display: block">
                     <div class="doc fl">{{project1.project_introduce}}</div>
                   </div>
-                  <!--                  <div class="block">
-                                      <span class="doc fl">{{project1.project_industry}}</span>
-                                    </div>-->
                   <div class="block clearfix" style="height: 24px;display: block">
                     <span class="mid-tag" v-for="pro in project1.project_industry" v-if="project1.project_industry!=''">{{pro}}</span>
-                    <!--                    <span class="big-tag" style="margin-left: 191px;">-&#45;&#45;</span><span class="split">｜</span>
-                                        <span class="big-tag">&#45;&#45;</span><span class="split">｜</span>
-                                        <span class="big-tag">&#45;&#45;</span>-->
                   </div>
                 </div>
                 <div class="tag" style="padding-top: 20px;    display: inline-block;">
@@ -48,18 +42,7 @@
                     <a :href="project1.project_website" target="_Blank">{{project1.project_website}}</a>
                   </span>
                 </div>
-                <!--                <div class="file">
-                                  {{project1.project_introduce}}
-                                </div>-->
               </div>
-              <!-- <div class="picture">
-                 <el-carousel :interval="4000" type="card" height="200px">
-                   <el-carousel-item v-for="image in images" :key="image">
-                     <img :src="image.url">
-                   </el-carousel-item>
-                 </el-carousel>
-               </div>-->
-
             </div>
             <!--公司信息-->
             <div class="item">
@@ -82,65 +65,13 @@
                     <div class="block clearfix" style="display: block">
                       <span class="block-title fl clearfix">{{teamin.team_member_name}}</span>
                       <span class="block-company fl">{{teamin.team_member_position}}</span>
-                      <!--<span class="block-tag fl"><el-tag type="primary">{{teamin.team_member_position}}</el-tag></span>-->
-                      <!--                      <span class="bloack-right fr">股权占比：12%</span>-->
                     </div>
                     <div class="block" style="display: block">
                       <span class="doc fl">{{teamin.team_member_introduce}}</span>
                     </div>
                   </div>
-                  <!--                  <div class="clearfix" style="margin-top:16px;">
-                                      <div style="margin-top:6px;" class="clearfix">
-                                        <div class="v-progress" style="height: 182px;">
-                                          <span class="circle circle-s">&nbsp;</span>
-
-                                          <span class="v-line v-line-1">&nbsp;</span>
-                                          <span class="circle circle-c">&nbsp;</span>
-                                          <span class="v-line v-line-2">&nbsp;</span>
-
-                                          <span class="circle circle-e">&nbsp;</span>
-                                        </div>
-                                        <div class="v-progress-table" style="height: 182px;position: relative">
-                                          <div class="v-progress-txt">
-                                            <span class="pro-txt-1">2011.05-至今</span>
-                                            <span class="pro-txt-2"  style="color:#5e6d82;">杭州城市大学</span>
-                                            <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
-                                          </div>
-                                          <div class="v-progress-txt">
-                                            <span class="pro-txt-1">2011.05-2015.05</span>
-                                            <span class="pro-txt-2"  style="color:#5e6d82;">杭州投着乐网络科技有限公司</span>
-                                            <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
-                                          </div>
-                                          <div class="v-progress-txt">
-                                            <span class="pro-txt-1">2011.05-2015.05</span>
-                                            <span class="pro-txt-2"  style="color:#5e6d82;">微天使乐投平台</span>
-                                            <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
-                                          </div>
-                                          <div class="v-progress-txt">
-                                            <span class="pro-txt-1">2011.05-2015.05</span>
-                                            <span class="pro-txt-2"  style="color:#5e6d82;">百度</span>
-                                            <span class="pro-txt-3"  style="color:#5e6d82;">工商管理</span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>-->
                 </div>
               </div>
-              <!--
-                            <div class="border clearfix">
-                              <div class="portrait fl clearfix"><img src="../../../assets/images/header3.png"></div>
-                              <div class="portrait-right fl ">
-                                <div class="block">
-                                  <span class="block-title fl clearfix">顾嘉</span>
-                                  <span class="block-company fl">CEO</span>
-                                  <span class="block-tag fl"><el-tag type="primary">创业者</el-tag></span>
-                                  <span class="bloack-right fr">股权占比：12%</span>
-                                </div>
-                                <div class="block">
-                                  <span class="doc fl">13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下13年开发经验，这里是一段话，这里是一段他的个人绍，字数可能会有点多，多到一样显示不下</span>
-                                </div>
-                              </div>
-                            </div>-->
             </div>
             <!--图表-->
             <div class="item">
@@ -158,12 +89,7 @@
                   <span class="date fl">{{history.history_financing_time}}</span>
                   <span class="blood fl">{{history.history_financing_money}}</span>
                   <span class="blood1 fl">{{history.history_financing_rounds}}</span>
-                  <span class="main fl">
-                     <el-tooltip placement="top" :disabled="history.history_financing_who.length > 25 ? false:true">
-                      <div slot="content">{{history.history_financing_who}}</div>
-                      <i>{{history.history_financing_who}}</i>
-                    </el-tooltip>
-                  </span>
+                  <span class="main fl">{{history.history_financing_who}}</span>
                 </div>
               </div>
             </div>
@@ -199,12 +125,7 @@
                   <span class="date">{{new1.project_news_time}}</span>
                   <span class="dateTag"><el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
                   <span class="blood blood3">{{new1.project_news_title}}</span>
-                  <span class="mian2">
-  <!--                  <el-tooltip placement="top">
-                      <div slot="content">{{new1.source}}</div>-->
-                      <a :href="new1.source" target="_Blank">新闻链接</a>
-                    <!--</el-tooltip>-->
-                  </span>
+                  <span class="mian2"><a :href="new1.source" target="_Blank">新闻链接</a></span>
                 </div>
               </div>
             </div>
@@ -213,23 +134,14 @@
               <div class="title">竞品</div>
               <ul class="ulfl h-table">
                 <li class="table1">项目</li>
-                <li class="table2">行业</li>
+                <li class="table2" style="line-height: 40px;">行业</li>
                 <li class="table7">成立时间</li>
                 <li class="table4">地域</li>
                 <li class="table5">最新融资轮次</li>
-                <li class="table6">最近融资时间</li>
+                <li class="table6"  style="line-height: 40px;">最近融资时间</li>
               </ul>
               <div v-for="compet in competing">
                 <ul  class="ulfl m-table">
-                  <!--<li class="table1">
-                    <div class="img fl">
-                      <img :src="compet.competing_goods_logo">
-                    </div>
-                    <div class="title2 fl">
-                      {{compet.competing_goods_name}}
-                    </div>
-                    <div class="bo fl">{{compet.competing_goods_region}}<span style="margin-left: 20px;">{{compet.competing_goods_Set_up}}</span></div>
-                  </li>-->
                   <li class="table1">
                     <div class="img fl">
                       <img :src="compet.competing_goods_logo" v-if="compet.competing_goods_logo!=''">
@@ -239,70 +151,36 @@
                       <div class="title2">
                         {{compet.competing_goods_name}}
                       </div>
-                      <div class="bo">
-                        <span style="margin-left: 5px;">
-
-                        </span>
-                      </div>
+                      <!--<div class="bo">
+                          我是介绍啦我是介绍啦我是介绍啦我是介绍啦我是介绍啦
+                      </div>-->
                     </div>
                   </li>
+                  <li class="table2" style="margin-top: 21px;" v-if="compet.competing_goods_industry!=''">{{compet.competing_goods_industry}}</li>
+                  <li class="table2" style="margin-top: 21px;" v-else>----</li>
 
-                  <li class="table2" style="height: 101px;">{{compet.competing_goods_industry}}</li>
-                  <li class="table7" style="height: 101px;">{{compet.competing_goods_Set_up}}</li>
-                  <li class="table4" style="height: 101px;">{{compet.competing_goods_Financing_amount}}</li>
+                  <li class="table7" style="height: 101px;" v-if="compet.competing_goods_Set_up!=''">{{compet.competing_goods_Set_up}}</li>
+                  <li class="table7" style="height: 101px;" v-else>----</li>
+
+                  <li class="table4" style="height: 101px;" v-if="compet.competing_goods_Financing_amount!=''">{{compet.competing_goods_Financing_amount}}</li>
+                  <li class="table4" style="height: 101px;" v-else>--</li>
+
                   <li class="table5" style="height: 101px;">{{compet.competing_goods_Financing_rounds}}</li>
                   <li class="table6" style="height: 101px;">
-                    <i>{{compet.competing_goods_Financing_time}}</i>
+                    <i style="margin-top: 16px;display: inline-block;">{{compet.competing_goods_Financing_time}}</i>
                     <i style="margin-left: 10px;">{{compet.competing_goods_region}}</i>
-                    <i>{{compet.competing_founder}}</i>
+                    <!--<i class="founder">{{compet.competing_founder}}</i>-->
+
+                    <!--<i class="founder">我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是</i>-->
                   </li>
                 </ul>
                 <div class="line2"></div>
               </div>
-
-              <!--              <ul  class="ulfl m-table">
-                              <li class="table1">
-                                <div class="img fl">
-                                  <img src="../../../assets/images/message.png">
-                                </div>
-                                <div class="title2 fl">
-                                  微天使乐投平台
-                                </div>
-                                <div class="bo fl">杭州<span style="margin-left: 20px;">2014-07</span></div>
-                              </li>
-                              <li class="table2">医疗健康,医疗器械及硬件</li>
-                              <li class="table3">华兴资本</li>
-                              <li class="table4">2017-07</li>
-                              <li class="table5">战略投资</li>
-                              <li class="table6">亿元及以上人民币</li>
-                            </ul>
-                            <div class="line2"></div>
-                            <ul  class="ulfl m-table">
-                              <li class="table1">
-                                <div class="img fl">
-                                  <img src="../../../assets/images/message.png">
-                                </div>
-                                <div class="title2 fl">
-                                  微天使乐投平台
-                                </div>
-                                <div class="bo fl">杭州<span style="margin-left: 20px;">2014-07</span></div>
-                              </li>
-                              <li class="table2">医疗健康,医疗器械及硬件</li>
-                              <li class="table3">华兴资本</li>
-                              <li class="table4">2017-07</li>
-                              <li class="table5">战略投资</li>
-                              <li class="table6">亿元及以上人民币</li>
-                            </ul>-->
             </div>
 
           </div>
         </div>
       </div>
-
-      <!--<div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisibleTo">取 消</el-button>
-        <el-button type="primary" @click="dialogVisibleTo">确 定</el-button>
-      </div>-->
     </el-dialog>
   </div>
 </template>
@@ -379,10 +257,10 @@
         history_finance: [
           {
             com_id: "",//公司id
-            History_financing_time: "2017.05.04",//融资时间
-            History_financing_rounds: "A轮",//融资轮次
-            History_financing_money: "100-500万",//融资金额
-            History_financing_who: "天使投资",//融资方
+            History_financing_time: "",//融资时间
+            History_financing_rounds: "",//融资轮次
+            History_financing_money: "",//融资金额
+            History_financing_who: "",//融资方
           }
         ],
         /*里程碑信息表*/
@@ -436,7 +314,7 @@
         })
       },
       getCrawlerTeam(){
-        var getCrawlerTeam = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerTeam, {
             user_id: localStorage.user_id,
@@ -450,11 +328,10 @@
               this.$tool.console(err);
               this.loading=false;
             })
-        })
-        return getCrawlerTeam;
+        });
       },//获取核心成员
       getCrawlerHistoryFinance(){
-        var getCrawlerHistoryFinance = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerHistoryFinance, {
             user_id: localStorage.user_id,
@@ -471,12 +348,11 @@
               this.loading=false;
             })
 
-        })
-        return getCrawlerHistoryFinance;
+        });
 
       },//获取历史融资
       getCrawlerMilestone(){
-        var getCrawlerMilestone = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerMilestone, {
             user_id: localStorage.user_id,
@@ -493,11 +369,10 @@
               this.loading=false;
             })
 
-        })
-        return getCrawlerMilestone;
+        });
       },//获取里程碑
       getCrawlerNews(){
-        var getCrawlerNews = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerNews, {
             user_id: localStorage.user_id,
@@ -514,12 +389,10 @@
               this.loading=false;
             })
 
-        })
-        return getCrawlerNews;
+        });
       },//获取新闻
       getCrawlerCompeting(){
-
-        var getCrawlerCompeting = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerCompeting, {
             user_id: localStorage.user_id,
@@ -537,11 +410,10 @@
               this.loading=false;
             })
 
-        })
-        return getCrawlerCompeting;
+        });
       },//获取竞品
       getCrawlerProject(){
-        var getCrawlerProject = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerProject, {
             user_id: localStorage.user_id,
@@ -557,8 +429,7 @@
               this.$tool.console(err);
               this.loading=false;
             })
-        })
-        return getCrawlerProject;
+        });
       },//获取项目
       getProjectIndustry(data){
         for(let i=0; i<data.length; i++){

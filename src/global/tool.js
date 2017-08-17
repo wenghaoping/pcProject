@@ -131,7 +131,7 @@ const tool={
     }
   },//判断是不是数字
   checkEmail(data){
-    let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    let reg = /@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
     if (reg.test(data)) {
       return true;
     }else{

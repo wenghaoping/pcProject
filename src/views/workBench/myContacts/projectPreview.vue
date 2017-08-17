@@ -523,7 +523,7 @@ export default {
         })
     },//获取项目详情数据
     pushProject(){
-        console.log(this.pushMessage)
+//        console.log(this.pushMessage)
       if(this.comeFrom==='contacts'){
         this.$http.post(this.URL.pushUser, this.pushMessage)
         .then(res => {
@@ -532,6 +532,7 @@ export default {
             this.$tool.success("推送成功");
             this.$emit('changeCloseProjectpush',false);
             this.$emit('changeCon', false);
+            this.$emit("changeCloseProjectpush",false);
           }else{
 //            this.$tool.error(res.data.error_msg)
           }
