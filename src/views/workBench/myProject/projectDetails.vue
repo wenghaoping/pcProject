@@ -80,9 +80,11 @@
               <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商、核心团队、产品数据、历史融资、新闻谬论等全方面信息</div>
               <span class="icon icon2" style="cursor: pointer"><img src="../../../assets/images/why.png"/></span>
             </el-tooltip>
-            <!--<div class="qrTab fr"><img src="../../../assets/images/qrTab.png"></div>-->
+            <div class="qrTab fr"><img src="../../../assets/images/qrTab.png"></div>
+
+            <span class="qrposition"><img :src="qrImg"></span>
             <div class="button-float fr" @click="goOnkey" style="cursor:pointer" >一键尽调</div>
-            <!--<span class="qrposition"><img :src="qrImg"></span>-->
+            <span class="sanjiao"><img src="../../../assets/images/sanjiao.png"/></span>
           </div>
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
@@ -1594,10 +1596,7 @@
             let data=res.data;
             if(data.status_code===2000000){
               this.qrImg=data.qr_src;
-            }else{
-
             }
-            console.log(res)
           })
           .catch(err => {
             this.$tool.console(err);
@@ -1609,7 +1608,7 @@
 
       this.getprojectId();
       this.getAllData();
-//      this.getWX();
+      this.getWX();
     },
     watch:{
 

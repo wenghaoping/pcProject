@@ -90,7 +90,7 @@
         }
         .icon2{
           position: absolute;
-          right: 100px;
+          right: 140px;
           bottom: 12px;
           width: 16px;
           height: 16px;
@@ -115,22 +115,43 @@
           height: 25px;
           cursor: pointer;
           margin: 50px 0 0 18px ;
+          position: relative;
           img{
             width: 100%;
           }
+
         }
+        .qrTab:hover +.qrposition {
+
+          opacity: 1;
+        }
+        .qrTab:hover +.sanjiao{
+            opacity: 1;
+          }
+
         .qrposition{
           background:#ffffff;
           border:1px solid #e0e6ed;
-          display: inline-block;
           width: 172px;
           height: 190px;
           position: absolute;
-          top: -15px;
+          top: -10px;
           right: -20px;
+          opacity: 0;
           img{
             width: 85%;
             margin: 11px;
+          }
+        }
+        .sanjiao{
+          width: 20px;
+          height: 10px;
+          position: absolute;
+          right: 3px;
+          bottom: 43px;
+          opacity: 0;
+          img{
+            width: 100%;
           }
         }
       }

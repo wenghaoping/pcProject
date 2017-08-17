@@ -67,7 +67,7 @@
           {type: '首页', jump: '/'},
           {type: '工作站', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
-//          {type: '一键尽调', jump: '/onekeyresearchalone'},
+          {type: '一键尽调', jump: '/onekeyresearchalone'},
 //          {type: '测试页面2', jump: '/test2'}
         ],
         user_name:'',
