@@ -633,7 +633,7 @@ export default {
       return check;
     },//提交用
     getWxProjectCategory(){
-      var getWxProjectCategory = new Promise((resolve, reject)=>{
+      return new Promise((resolve, reject)=>{
         //做一些异步操作
         setTimeout(()=>{
           this.area = this.$global.data.hotCity;//设置热门城市
@@ -648,7 +648,6 @@ export default {
         },500)
 
       });
-      return getWxProjectCategory;
 
 
     },//获取所有下拉框的数据
@@ -705,7 +704,7 @@ export default {
 
     },//设置名片
     getOneUserInfo(){
-      var getOneUserInfo = new Promise((resolve, reject)=>{
+      return new Promise((resolve, reject)=>{
         //做一些异步操作
         if(this.card_id!='creat'){
           this.loading=true;
@@ -737,7 +736,6 @@ export default {
         }
         resolve(1);
       });
-      return getOneUserInfo;
     },//获取个人详情
     getContactsId(){
       this.card_id = this.$route.query.card_id;

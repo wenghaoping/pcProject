@@ -165,7 +165,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["comid"],
+    props: ["comid","busData"],
     data () {
       return {
         bussinessName: '1',
@@ -221,31 +221,19 @@
     },
     methods: {
       getCrawlerBrand(){
-        this.$http.post(this.URL.getCrawlerBrand, {
-          user_id: localStorage.user_id,
-          com_id: this.comid
-        })
-          .then(res => {
-            let data=res.data.data;
-            this.$tool.setTime(data.company_change,'company_change_time');
-            this.$tool.setTime(data.brand,'company_brand_time');
-            this.business=data;
-//            console.log(this.business);
-            this.trademarkMessage="商标信息"+"("+data.brand.length+")"
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        let data=this.busData || {};
+        this.$tool.setTime(data.company_change,'company_change_time');
+        this.$tool.setTime(data.brand,'company_brand_time');
+        this.business=data;
+        this.trademarkMessage="商标信息"+"("+data.brand.length+")"
       }//获取商标信息
     },
     created(){
-      this.getCrawlerBrand();
+
     },
     watch : {
-      comid : function(e){
-        this.com_id=e;
+      busData : function(){
         this.getCrawlerBrand();
-        this.$tool.console(e);
       }//获取公司id
     }
   }

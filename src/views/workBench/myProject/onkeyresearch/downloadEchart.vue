@@ -23,7 +23,7 @@
 
 <script type="text/ecmascript-6">
 export default {
-  props: ["comid","compName"],
+  props: ["comid","compName","chartData"],
   data () {
     return {
       compaName:"",
@@ -191,45 +191,25 @@ export default {
       this.eChart(this.xdata,this.time.ydataTotal,this.time.ydataAverage);
     },//访问时长
     getCrawlerProject(){
-      this.$http.post(this.URL.getCrawlerProject, {
-        user_id: localStorage.user_id,
-        com_id: this.comid
-      })
-        .then(res => {
-            let data=this.getChart(res.data.data).data;
-//            console.log(data);
-            this.xdata=data.three_month;
-            this.download.ydataTotal=this.getAverage(data.total_download_mid);
-            this.download.ydataAverage=this.getTotal(data.total_download[0].value);
+      let data=this.getChart(this.chartData || []).data;
+      this.xdata=data.three_month;
+      this.download.ydataTotal=this.getAverage(data.total_download_mid);
+      this.download.ydataAverage=this.getTotal(data.total_download[0].value);
 
-/*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
-            this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
+      /*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
+       this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
 
-            this.pv.ydataTotal=this.getAverage(data.pv_mid);
-            this.pv.ydataAverage=this.getTotal(data.pv[0].value);
+      this.pv.ydataTotal=this.getAverage(data.pv_mid);
+      this.pv.ydataAverage=this.getTotal(data.pv[0].value);
 
-            this.uv.ydataTotal=this.getAverage(data.uv_mid);
-            this.uv.ydataAverage=this.getTotal(data.uv[0].value);
+      this.uv.ydataTotal=this.getAverage(data.uv_mid);
+      this.uv.ydataAverage=this.getTotal(data.uv[0].value);
 
-            this.time.ydataTotal=this.getAverage(data.time_mid);
-            this.time.ydataAverage=this.getTotal(data.time[0].value);
-            this.getdownload();
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    },//获取项目
-
-  },
-  //Echart组件
-  mounted(){
-/*    setTimeout(() =>{
+      this.time.ydataTotal=this.getAverage(data.time_mid);
+      this.time.ydataAverage=this.getTotal(data.time[0].value);
       this.getdownload();
-    },100)*/
-  },
-  watch : {
-
-    comid : function(e){
+    },//获取项目
+    clearData(){
       this.download.ydataTotal=[];
       this.download.ydataAverage=[];
       this.pv.ydataTotal=[];
@@ -239,24 +219,30 @@ export default {
       this.time.ydataTotal=[];
       this.time.ydataAverage=[];
       this.downloadEchartName='1';
-      this.getCrawlerProject();
-      setTimeout(() =>{
-        this.getdownload();
-      },500)
-    },//获取公司id
-    compName: function(e){
-      this.compaName=e;
-//      this.getdownload();
-
-    },//获取公司名称
+    }
 
   },
-  created(){
-    this.getCrawlerProject();
+  //Echart组件
+  mounted(){
 /*    setTimeout(() =>{
       this.getdownload();
-    },500)*/
+    },100)*/
+  },
+  watch : {
+    comid : function(e){
 
+    },//获取公司id
+    compName: function(e){
+
+
+    },//获取公司名称
+    chartData: function(e){
+      this.clearData();
+      this.getCrawlerProject();
+
+    },//获取图表数据
+  },
+  created(){
   },
 }
 </script>

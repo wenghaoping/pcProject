@@ -5,9 +5,9 @@
 
     </div>
     <!--===========================================一键尽调单独页面=============================================-->
-      <div class="contain-grid contain-center1 fl dialog">
+      <div class="contain-grid contain-center1 fl dialog" >
         <div class="contain-inner">
-          <div class="item-lists1">
+          <div class="item-lists1" v-if="!empty">
             <!--项目信息-->
 
             <div style="height: 24px;"></div>
@@ -44,11 +44,11 @@
             </div>
             <!--公司信息-->
             <div class="item">
-              <company-message :comp-name="compName"></company-message>
+              <company-message :com-message="comMessage"></company-message>
             </div>
             <!--工商信息-->
             <div class="item">
-              <business style="position: relative" :comid="com_id"></business>
+              <business style="position: relative" :bus-data="busData"></business>
             </div>
             <!--核心成员-->
             <div class="item clearfix" v-if="team.length!=0">
@@ -73,7 +73,7 @@
             </div>
             <!--图表-->
             <div class="item">
-              <downloadechart :comid="com_id" :comp-name="compName"></downloadechart>
+              <downloadechart :chart-data="chartData"></downloadechart>
             </div>
             <!--历史融资-->
             <div class="item" v-if="history_finance.length!=0">
@@ -176,9 +176,12 @@
             </div>
 
           </div>
+          <div class="empty fl" v-if="empty">
+            <img src="../../assets/images/sorryKong.png">
+          </div>
         </div>
       </div>
-    <div class="contain-grid contain-right-1 fl"
+      <div class="contain-grid contain-right-1 fl"
          v-loading="loading"
          element-loading-text="拼命加载中">
       <div class="main-box">
@@ -250,10 +253,10 @@
                   </div>
                 </div>
           </el-tab-pane>
-
         </el-tabs>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -264,12 +267,13 @@
   export default {
     data () {
       return {
+        empty:false,//是否查不到公司
         compName: "",//一键尽调公司的名称
         com_id: 0,//公司Id
         conmanyName: '3',
         productMessage: '产品信息',
 
-        /*项目信息*/
+        //*项目信息
         project: [
           {
             project_id: 1,
@@ -284,7 +288,7 @@
             project_score: ""
           }
         ],
-        /*产品新闻*/
+        //*产品新闻
         news: [
 /*            {
           project_id: "",//产品ID
@@ -294,7 +298,7 @@
           source: ""//资源链接
         }*/
         ],
-        /*竞品表*/
+        //*竞品表
         competing: [
           /*{
             com_id: "",//
@@ -310,9 +314,26 @@
             competing_goods_label: "",//竞品标签
             ranking_day: "",//行业内排名
             competing_founder: "",//竞品相似度
-          }*/
+          },
+           "com_id": 56079,
+           "company_name": "微观时空（北京）信息技术有限公司",
+           "project_id": 69723,
+           "project_name": "微观资讯/微观时空",
+           "project_industry": "文化娱乐,媒体及阅读",
+           "project_introduce": "微观资讯是一个主打个性化阅读的手机资讯和信息应用，提供最个性化最精准的资讯获取、资讯社交服务，微观时空（北京）信息技术有限公司旗下产品。",
+           "project_label": "阅读,新媒体,个性化推荐,媒体,媒体及阅读,文化娱乐",
+           "project_website": "http://weiguanzixun.com/",
+           "project_logo": "https://cdn.itjuzi.com/images/archive/10960.png?imageView2/0/w/100/q/100",
+           "project_score": "",
+           "project_state": "已关闭",
+           "project_views": "",
+           "project_date": "",
+           "project_location_first": "",
+           "project_location_second": ""
+           }
+           */
         ],
-        /*历史融资表*/
+        //*历史融资表
         history_finance: [
           /*{
             com_id: "",//公司id
@@ -322,7 +343,7 @@
             History_financing_who: "暂无信息",//融资方
           }*/
         ],
-        /*里程碑信息表*/
+        //*里程碑信息表
         milestone_list: [
           /*{
             project_id: "",//产品ID
@@ -330,7 +351,7 @@
             milestone_time: "暂无信息",//里程碑时间
           }*/
         ],
-        /*团队成员*/
+        //*团队成员
         team: [
           /*{
             project_id: "",//产品ID
@@ -355,7 +376,7 @@
         }
         ],//人脉筛选条件
         ProjectMatchInvestors:[
-            {
+/*            {
            follow_status:0,
            industry_tag:"暂无匹配",//领域
            investor_career:"暂无匹配",//职位
@@ -369,12 +390,16 @@
            stage_tag:"暂无匹配",//轮次
            user_id: "0",
            match:0,//匹配度
-           }
+           }*/
         ],//买家图谱数据
         currentPageInvestors:1,//当前第几页(买家图谱)
         totalInvestors:0,//总数(买家图谱)
         getInvestors:{},//获取买家图谱请求参数
+        comMessage:{},//公司信息
+        chartData:[],//图标数据
+        busData:{},//工商信息
         project_id:'NrXjmnWK',
+        user_id:"EWgX21Zp"
       }
     },
     methods: {
@@ -391,6 +416,7 @@
             })
             .catch(err => {
               this.$tool.console(err);
+              this.loading=false;
               this.loading=false;
             })
         });
@@ -474,7 +500,6 @@
               this.$tool.console(err);
               this.loading=false;
             })
-
         });
       },//获取竞品
       getCrawlerProject(){
@@ -487,6 +512,7 @@
             .then(res => {
               this.getProjectIndustry(res.data.data);
               this.project = res.data.data;
+              this.chartData = res.data.data;
               this.loading=false;
               resolve(1);
             })
@@ -502,7 +528,7 @@
         }
       },//设置数据
 
-      /*买家图谱*/
+      //买家图谱
       setProjectMatchInvestors(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -531,12 +557,10 @@
       getProjectMatchInvestors(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.getInvestors.user_id=localStorage.user_id;
-          this.getInvestors.user_id="8W1ERo3W";
+          this.getInvestors.user_id=this.user_id;
           this.currentPageInvestors=1;
           this.getInvestors.project_id=this.project_id;
           this.getInvestors.page=1;
-
           this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
             .then(res=>{
               if(res.data.status_code==2000000) {
@@ -549,6 +573,7 @@
             .catch(err=>{
               this.$tool.console(err,2);
               this.$tool.error("加载超时");
+              this.loading=false;
             })
         });
       },//买家图谱列表
@@ -576,10 +601,9 @@
           })
       },//控制买家图谱页码
       selectFollow(e){
-        this.getInvestors.user_id=localStorage.user_id;
-        this.getInvestors.user_id="EWgX21Zp";
+        this.getInvestors.user_id=this.user_id;
         this.currentPageInvestors=1;
-        this.getInvestors.project_id=this.project.project_id;
+        this.getInvestors.project_id=this.project_id;
         this.getInvestors.page=1;
         this.getInvestors.is_follow=e;
         this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
@@ -596,40 +620,95 @@
           })
       },//筛选买家图谱
 
-      toNewOneKey(data){
-          console.log(data);
 
-      },//跳转到新的一键尽调
-      getCompanyMessage(data,type){
-        let compName=this.compName || data.compName;
+      getCrawlerCompany(){
+        let compName=this.compName;
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           if(compName==""){
-            this.$tool.error("请输入公司名称");
+            this.$tool.error("请填写公司名称");
+            this.empty=true;
+            this.loading=false;
           }else{
             this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: compName})
               .then(res => {
                 let data = res.data.data;
                 if(data.length==0) {//搜索不到信息
                   this.$tool.error("匹配不到当前公司");
+                  this.empty=true;
+                  this.loading=false;
                 }else{//搜索到了
                   this.com_id=data.company.com_id;
-                  this.compName=this.project.pro_company_name;
+                  this.comMessage=data;
+                  resolve(1);
+                  this.empty=false;
+                }
+              })
+              .catch(err => {
+                this.$tool.error("请求失败");
+                this.$tool.console(err);
+                this.loading=false;
+              })
+          }
+        });
+      },//查询公司名称公司id
+
+      getCrawlerBrand(){
+        return new Promise((resolve, reject)=>{
+          this.$http.post(this.URL.getCrawlerBrand, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.busData=data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+        });
+      },//获取商标信息
+
+      toNewOneKey(data){
+        console.log(data);
+        /*        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
+         window.open("http://cwhois.cnnic.cn/validatecode/validate.jsp?value="+strName+"&entity=domain&service=/whois&inputfield=value);
+         */
+        window.open("http://www.baidu.com")
+      },//跳转到新的一键尽调
+      getRouter(){
+        return new Promise((resolve, reject)=>{
+          this.loading=true;
+          /*
+          * this.compName=this.$route.query.compName;
+          * */
+          let compName=this.compName;
+          if(compName==""){
+            this.$tool.error("请填写公司名称");
+            this.empty=true;
+            this.loading=false;
+          }else{
+            this.$http.post(this.URL.selectCompanyByName, {user_id: localStorage.user_id, company_name: compName})
+              .then(res => {
+                let data = res.data.data;
+                if(data.length==0) {//搜索不到信息
+                  this.$tool.error("匹配不到当前公司");
+                  this.empty=true;
+                  this.loading=false;
+                }else{//搜索到了
+                  this.com_id=data[0].com_id;
+                  this.empty=false;
                   resolve(1);
                 }
               })
               .catch(err => {
                 this.$tool.error("请求失败");
                 this.$tool.console(err);
+                this.loading=false;
               })
           }
-        });
-      },//获取API请求的数据
-      getRouter(){
-        return new Promise((resolve, reject)=>{
-          //做一些异步操作
-
-          resolve(1);
         });
       },//获取API请求的数据
     },
@@ -640,12 +719,21 @@
       downloadechart
     },
     created(){
-      this.loading=true;
-      this.com_id=12298;
-      this.compName='北京大杰致远信息技术有限公司';
-      this.getCrawlerTeam()
+//      this.loading=true;
+//      this.com_id=12298;
+      this.compName='阿里巴巴（中国）有限公司';
+      this.getRouter()
+        .then((data)=>{
+          return this.getCrawlerCompany();
+        })
+        .then((data)=>{
+          return this.getCrawlerTeam();
+        })
         .then((data)=>{
           return this.getCrawlerHistoryFinance();
+        })
+        .then((data)=>{
+          return this.getCrawlerBrand();
         })
         .then((data)=>{
           return this.getCrawlerMilestone();
@@ -654,38 +742,14 @@
           return this.getCrawlerNews();
         })
         .then((data)=>{
-          return this.getCrawlerCompeting();
-        })
-        .then((data)=>{
           return this.getCrawlerProject();
         })
         .then((data)=>{
-          return this.getProjectMatchInvestors();
+//          return this.getCrawlerCompeting();
         })
-    },
-
-    watch : {
-      companyId : function(e){
-        /*this.loading=true;
-        this.com_id=e;
-        this.compName='';
-        this.getCrawlerTeam()
-          .then((data)=>{
-            return this.getCrawlerHistoryFinance();
-          })
-          .then((data)=>{
-            return this.getCrawlerMilestone();
-          })
-          .then((data)=>{
-            return this.getCrawlerNews();
-          })
-          .then((data)=>{
-            return this.getCrawlerCompeting();
-          })
-          .then((data)=>{
-            return this.getCrawlerProject();
-          })*/
-      },//获取公司id
+        .then((data)=>{
+//          return this.getProjectMatchInvestors();
+        })
     }
   }
 </script>

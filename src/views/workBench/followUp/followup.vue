@@ -207,7 +207,7 @@
     </div>
 
   <!--写跟进弹框-->
-  <addfollow :dialog-follow="dialogFollow" :followid="followid" @changeClose="closeFollow"></addfollow>
+  <addfollow :dialog-follow="followDisplay" :followid="followid" @changeClose="closeFollow"></addfollow>
   </div>
 </template>
 
@@ -219,7 +219,7 @@ export default {
   },
   data () {
     return {
-      dialogFollow:false,//控制写跟进弹框
+      followDisplay:false,//控制写跟进弹框
       followid:'',//跟进id
 
       loading: false,//加载动画
@@ -271,7 +271,7 @@ export default {
         })
     },//搜索===首次进入页面加载的数据
     addFollow(){
-      this.dialogFollow=true;
+      this.followDisplay=true;
 
     },//点击写跟近按钮
     handleSelect(row, event, column) {
@@ -280,7 +280,7 @@ export default {
       }
     },//跳转到更近详情页
     handleEdit(index, row){
-        this.dialogFollow=true;
+        this.followDisplay=true;
         this.followid=row.follow_id;
     },//点击编辑按钮,跳转
     headerClick(column, event){
@@ -407,7 +407,7 @@ export default {
         })
     },//筛选时间
     closeFollow(msg){
-      this.dialogFollow=msg;
+      this.followDisplay=msg;
       this.followid="";
     },//关闭添加跟进
 
@@ -440,7 +440,7 @@ export default {
     this.handleIconClick();
   },
   watch :{
-    dialogFollow : function (e) {
+    followDisplay : function (e) {
       if (!e) {
         this.handleIconClick();
       }

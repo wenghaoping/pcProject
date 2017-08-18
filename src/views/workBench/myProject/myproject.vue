@@ -321,13 +321,21 @@
     </div>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
+    <addfollow :dialog-follow="followDisplay" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"
+               @changeClose="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush" @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
+    <projectpush2 :project-push-show2="projectPushDiplay2" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush"
+                  @closeProjectPush2="closeProjectPush2"
+                  @closePreviewANDProjectPush="closePreviewANDProjectPush"
+                  @openPreview="openPreview"></projectpush2>
+
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @closePreview="closePreview" @previewPush="previewPush"></projectpreview>
+    <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
+                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
+                    @closePreview="closePreview"
+                    @previewPush="previewPush"></projectpreview>
 
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
@@ -358,8 +366,8 @@
     },
     data() {
       return {
-        dialogFollow:false,//控制写跟进弹框
-        dialogPushVisible:false,//项目推送弹窗
+        followDisplay:false,//控制写跟进弹框
+        projectPushDiplay2:false,//项目推送弹窗
         projecmessage:{
           project_id:'',
           project_name:''
@@ -429,7 +437,7 @@
         }],//更多的选项表单
         pushId:'',//推送项目传值-项目ID
         pushIntro:'',//推送项目传值-项目名称
-        dialogPreviewVisible:false,//控制项目推送预览显隐
+        previewDisplay:false,//控制项目推送预览显隐
         emitPush:false,//控制项目推送-项目入口的推送函数触发
       }
     },
@@ -450,22 +458,28 @@
       },//控制弹窗
       /*跟进*/
       addFollow(index, row){
-        this.dialogFollow=true;
+        this.followDisplay=true;
         this.projecmessage.project_id=row.project_id;
         this.projecmessage.project_name=row.pro_intro;
       },//点击写跟近按钮
       closeFollow(msg){
-        this.dialogFollow=msg;
+        this.followDisplay=msg;
       },//关闭添加跟进
       addprojectPush(index, row){
-        console.log(row)
         this.pushId=row.project_id;
         this.pushIntro=row.pro_intro;
-        this.dialogPushVisible=true;
+        this.projectPushDiplay2=true;
       },//点击项目推送
-      dialogVisiblechangeCloase(msg){
-        this.dialogPushVisible=msg;
+      closeProjectPush2(msg){
+        this.projectPushDiplay2=msg;
       },//关闭项目推送弹窗
+      closePreviewANDProjectPush(msg){
+          this.previewDisplay=false;
+          this.projectPushDiplay2=false;
+      },//关闭项目预览弹窗AND关闭项目推送弹框
+      closePreview(msg){
+        this.previewDisplay=msg;
+      },//关闭项目预览
       /*请求函数*/
       handleIconClick(){
         this.$tool.getTop();
@@ -721,12 +735,10 @@
       previewPush(x){
         this.emitPush=x;
       },//项目推送预览隐藏
-      dialogPrechange(msg){
-        this.dialogPreviewVisible=msg;
+      openPreview(msg){
+        this.previewDisplay=true;
       },//项目推送预览显隐控制
-      closePreview(msg){
-        this.dialogPreviewVisible=msg;
-      },//关闭项目预览
+
     },
     computed: {
 

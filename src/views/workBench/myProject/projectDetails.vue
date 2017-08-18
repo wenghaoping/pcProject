@@ -82,9 +82,12 @@
             </el-tooltip>
             <div class="qrTab fr"><img src="../../../assets/images/qrTab.png"></div>
 
-            <span class="qrposition"><img :src="qrImg"></span>
+            <span class="qrposition">
+              <img :src="qrImg">
+              <span class="sanjiao"><img src="../../../assets/images/sanjiao.png"/></span>
+            </span>
             <div class="button-float fr" @click="goOnkey" style="cursor:pointer" >一键尽调</div>
-            <span class="sanjiao"><img src="../../../assets/images/sanjiao.png"/></span>
+
           </div>
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
@@ -276,7 +279,7 @@
             <div class="toButton" style="padding-left: 0;z-index: 111">
               <button  @click="toEdit" class="btn1">编辑</button>
               <button  @click="addFollow" class="btn1">写跟进</button>
-              <button  @click="projectPush" class="btn1">项目推送</button>
+              <button  @click="projectPush2" class="btn1">项目推送</button>
             </div>
           </div>
         </div>
@@ -461,7 +464,7 @@
       </div>
     </div>
     <!--一键尽调弹窗-->
-    <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" @changeall="dialogVisiblechange" v-on:changeallin="dialogVisiblechangeIn" lock-scroll>
+    <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" @changeall="dialogVisiblechange" @changeallin="dialogVisiblechangeIn" lock-scroll>
 
     </research>
 
@@ -478,62 +481,33 @@
     </el-dialog>
 
     <!--人脉详情弹窗-->
-    <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid" v-on:changeCon="dialogConchange"></alertcontactsdetail>
+    <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid"
+                         @changeCon="dialogConchange"></alertcontactsdetail>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="dialogFollow"
+    <addfollow :dialog-follow="followDisplay"
                :projectid="projecmessage.project_id"
                :projectname="projecmessage.pro_intro"
                @changeClose="closeFollow"
                :followid="followid"></addfollow>
 
-    <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="project.project_id" :pro-intro="project.pro_intro" :emitPush="emitPush"  @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
+    <!--项目推送弹窗,项目入口弹窗-->
+    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="project.project_id" :pro-intro="project.pro_intro" :emitPush="emitPush"
+                  @openPreview="openPreview"
+                  @closeProjectPush2="closeProjectPush2"></projectpush2>
 
-    <!--项目推送项目入口小弹窗-->
-    <!--    <el-dialog class="littlePush" title="推送" :visible.sync="littlePushShow" :before-close="littlePushCancel" >
-          <span class="pushCount">今日剩余推送<span>{{pushCount}}</span>次</span>
-          <el-form :model="littlePush" ref="littlePush">
-            <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
-              <el-input v-model="littlePush.email" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="一句话" prop="content" :label-width="formLabelWidth">
-              <el-input v-model="littlePush.content" auto-complete="off"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="littlePushCancel">取 消</el-button>
-            <el-button type="primary" @click="littlePushCertain">确 定</el-button>
-          </div>
-        </el-dialog>-->
+    <!--项目推送弹窗,人脉入口弹窗============================-->
+    <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage"
+                 :user-email="userEmail"
+                 @openPreview="openPreview"
+                 @closeProjectPush="closeProjectPush"></projectpush>
 
-    <!--项目推送弹窗,人脉入口完整版============================-->
-    <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage"
-                 :user-email="userEmail" @changeall="dialogVisiblechangePush"
-                 @changeCloseProjectpush="dialogVisiblechangeCloasePush"></projectpush>
-
-    <!--项目推送项目入口小弹窗2-->
-    <el-popover
-      ref="popover4"
-      placement="right"
-      width="400"
-      trigger="click">
-      <el-form :model="littlePush" ref="littlePush">
-        <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth" :rules="[{ required: true, message: '邮箱不能为空'}]">
-          <el-input v-model="littlePush.email" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="一句话" prop="content" :label-width="formLabelWidth">
-          <el-input v-model="littlePush.content" auto-complete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="littlePushCancel">取 消</el-button>
-        <el-button type="primary" @click="littlePushCertain">确 定</el-button>
-      </div>
-    </el-popover>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @closePreview="closePreview" @changeCon="dialogPreviewVisible=false;" @previewPush="previewPush"></projectpreview>
+    <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
+                    @closePreview="closePreview"
+                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
+                    @previewPush="previewPush"></projectpreview>
 
     <!--自定义添加-->
     <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
@@ -556,7 +530,8 @@
     data(){
       return {
         dialogFormVisible:true,
-        dialogPushVisibleComplete:false,//项目推送弹框,完整版
+        projectPushDisplay:false,//项目推送弹框,人脉入口
+        projectPushDisplay2:false,//项目推送弹框,项目入口
         companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
         cardid:"",//人脉详情弹框用(点击的那个人的cardid)
@@ -565,13 +540,12 @@
           project_id:'',
           pro_intro:''
         },//项目名称,ID
-        dialogFollow:false,//添加意向投资人
+        followDisplay:false,//添加意向投资人
         show: "detail",
         dialogVisible: false,//一键尽调弹框
         dialogSearchVisible:false,//公司搜索弹框
-        dialogPushVisible:false,//项目推送入口弹框
+
         dialogConVisible:false ,//人脉详情弹窗
-        dialogConVisible2:false,//项目详情弹窗
         searchName:"",
         form: {
           name: '',
@@ -837,7 +811,7 @@
         formLabelWidth:'74px',
         pushData:[],//买家图谱推送接口参数
         activeFrom:0,//从哪个路由进来的
-        dialogPreviewVisible:false,//项目推送预览显隐控制
+        previewDisplay:false,//项目推送预览显隐控制
         emitPush:false,//控制项目推送-项目入口的推送函数触发
         getFollowData:false,//看是否要获取跟进的数据
         followid:'',//得到followid
@@ -894,12 +868,12 @@
     methods:{
       addFollow(){
         this.followid='';
-        this.dialogFollow=true;
+        this.followDisplay=true;
         this.projecmessage.project_id=this.project.project_id;
         this.projecmessage.pro_intro=this.project.pro_intro;
       },//点击写跟近按钮
       closeFollow(msg){
-        this.dialogFollow=msg;
+        this.followDisplay=msg;
         this.getEnjoyedInvestors();
         this.getFollowData=true;
       },//关闭添加跟进
@@ -929,6 +903,7 @@
         if(this.project.pro_company_name==""){
           this.dialogSearchVisible = true;
         }else{
+          this.loading=true;
           this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.project.pro_company_name})
             .then(res => {
               let data = res.data.data;
@@ -937,7 +912,9 @@
                 this.searchName=this.project.pro_company_name;
                 this.companyname=this.project.pro_company_name;
                 this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
+                this.loading=false;
               }else{//搜索到了
+                this.loading=false;
                 this.dialogVisible = true;
                 this.companyid=data.company.com_id;
                 this.companyname=this.project.pro_company_name;
@@ -970,29 +947,30 @@
       dialogVisiblechange(msg){
         this.dialogVisible=msg;
       },//传递给一键尽调窗口
-      dialogVisiblechangePush(msg){
-//      this.dialogPushVisible=msg;
-        this.dialogPreviewVisible=true;
-      },//关闭推送弹框,打开预览弹框
+      openPreview(msg){
+        this.previewDisplay=true;
+      },//打开预览弹框
       dialogVisiblechangeIn(msg){
         this.dialogSearchVisible=msg;
       },//传递给一键尽调搜索窗口
       dialogConchange(msg){
         this.dialogConVisible=msg;
       },//人脉详情弹窗关闭
-      dialogConchange2(msg){
-        this.dialogConVisible2=msg;
-      },//项目详情弹窗关闭
-      dialogVisiblechangeCloase(msg){
-        this.dialogPushVisible=msg;
+
+      closeProjectPush(msg){
+        this.projectPushDisplay=msg;
         this.getAllData();
-      },
-      dialogVisiblechangeCloasePush(msg){
-        this.dialogPushVisibleComplete=false;
-        this.dialogPushVisible=false;
+      },//关闭项目推送弹框(人脉入口)
+      closeProjectPush2(msg){
+        this.projectPushDisplay2=msg;
         this.getAllData();
-//        this.getpushCount();
-      },
+      },//关闭项目推送弹框(项目入口)
+      closePreviewANDProjectPush(msg){
+        this.projectPushDisplay=false;
+        this.projectPushDisplay2=false;
+        this.previewDisplay=false;
+        this.getAllData();
+      },//关闭预览AND关闭项目推送1,关闭项目推送2
       getProjectTag(arr){
         let str=""
         for(let i=0;i<arr.length;i++){
@@ -1012,7 +990,7 @@
         return str
       },//项目来源编辑
       getProjectDetail () {
-        var getProjectDetail = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project.project_id})
             .then(res=>{
@@ -1044,10 +1022,9 @@
             })
 
         });
-        return getProjectDetail;
       },//获取项目详情数据
       getWxProjectCategory(){
-        var getWxProjectCategory = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.schedule = this.$global.data.schedule;//设置项目跟进状态
           this.follow_schedule = this.$global.data.follow_schedule;//设置项目状态
@@ -1055,13 +1032,12 @@
           this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
           resolve(2);
         });
-        return getWxProjectCategory;
       },//获取所有下拉框的数据
       toEdit(){
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },
-      projectPush(){
-        this.dialogPushVisible=true;
+      projectPush2(){
+        this.projectPushDisplay2=true;
         this.$http.post(this.URL.pushCount,{
           user_id:localStorage.user_id
         }).then(res=>{
@@ -1069,7 +1045,7 @@
             this.pushCount=res.data.data.push_count.remain_times;
           }
         })
-      },//项目推送入口
+      },//项目推送入口,项目入口
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
         this.activeFrom=this.$route.query.activeTo || 0;
@@ -1117,7 +1093,7 @@
 
       /*设置意向投资人右边*/
       getEchartData(){
-        var getEchartData = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getEnjoyedInvestorsGroup,{user_id:localStorage.user_id,project_id:this.project.project_id})
             .then(res=>{
@@ -1134,11 +1110,10 @@
             })
 
         });
-        return getEchartData;
 
       },//获取意向项目数据(图表)
       getEnjoyedInvestors(){
-        var getEnjoyedInvestors = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.getConCon.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
@@ -1164,7 +1139,6 @@
               this.$tool.error("加载超时");
             })
         });
-        return getEnjoyedInvestors;
       },//获取意向投资人列表
       setEnjoyInvestor(arr){
         let newArr = new Array;
@@ -1391,7 +1365,7 @@
         return newArr;
       },//设置买家图谱列表
       getProjectMatchInvestors(){
-        var getProjectMatchInvestors = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.getInvestors.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
@@ -1412,7 +1386,6 @@
               this.$tool.error("加载超时");
             })
         });
-        return getProjectMatchInvestors;
       },//买家图谱列表
       filterChangeInvestors(page){
         this.$tool.getTop();
@@ -1438,7 +1411,6 @@
           })
       },//控制买家图谱页码
       industryPush(data){
-//          console.log(data);
         if(data==0){
           this.$tool.warning("已推送过");
         }else{
@@ -1453,8 +1425,7 @@
           this.userEmail=data.user_eamil;
           this.$store.state.pushProject.projectMessgae={pro_id:this.project.project_id || '',pro_intro:this.project.pro_intro || ''};
           this.$store.state.pushProject.pushMessage.investor_id=data.investor_id;
-//          this.dialogPushVisible=true;
-          this.dialogPushVisibleComplete=true;
+          this.projectPushDisplay=true;
           this.pushData.email=data.user_eamil;
           this.pushData.project_id=this.project.project_id;
         }
@@ -1512,7 +1483,7 @@
       },//筛选买家图谱
       /*编辑跟进记录*/
       getFollowId(id){
-        this.dialogFollow=true;
+        this.followDisplay=true;
         this.followid=id;
         this.getFollowData=false;
       },//拿到跟进记录id
@@ -1554,15 +1525,14 @@
       },//买家图谱推送取消
 
       /*项目推送*/
-      dialogPrechange(msg){
-        this.dialogPreviewVisible=msg;
-      },//项目推送预览显隐控制
+      openPreview(msg){
+        this.previewDisplay=msg;
+      },//打开项目预览
       previewPush(x){
         this.emitPush=x;
-
       },//项目推送预览隐藏
       closePreview(msg){
-        this.dialogPreviewVisible=msg;
+        this.previewDisplay=msg;
       },//关闭项目预览
       getAllData(){
         this.loading=true;
@@ -1605,7 +1575,6 @@
     },
     created () {
       this.$tool.getTop();
-
       this.getprojectId();
       this.getAllData();
       this.getWX();

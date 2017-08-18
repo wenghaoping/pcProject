@@ -288,7 +288,7 @@
     methods: {
       /*获取列表各种数据*/
       getWxProjectCategory(){
-        var getWxProjectCategory = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.area=this.$global.data.area;//设置人脉标签
           this.scale=this.$global.data.scale;//设置期望融资
@@ -296,7 +296,6 @@
           this.industry=this.$global.data.industry;//设置轮次信息
           resolve(1);
         })
-        return getWxProjectCategory;
 
       },//获取所有下拉框的数据
       area1Change(data){

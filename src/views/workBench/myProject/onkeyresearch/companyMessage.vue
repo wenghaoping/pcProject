@@ -84,7 +84,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["compName"],
+    props: ["compName","comMessage"],
     data () {
       return {
         compaName:"", //搜索用的公司名称
@@ -133,8 +133,6 @@
             }*/
           ]
         },
-
-
       }
     },
     methods: {
@@ -142,32 +140,19 @@
 //      this.$tool.console(tab, event);
       },
       getCrawlerCompany(){
-        this.$http.post(this.URL.getCrawlerCompany, {
-          user_id: localStorage.user_id,
-          company_name: this.compName
-        })
-          .then(res => {
-            let data=res.data.data;
-            data.company.company_register_date=this.$tool.formatDateTime(data.company.company_register_date);
-            this.company=data.company;
-            this.company.company_project=data.project_product;
-            this.productMessage="产品信息"+"("+data.project_product.length+")";
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        let data=this.comMessage || {};
+        data.company.company_register_date=this.$tool.formatDateTime(data.company.company_register_date);
+        this.company=data.company;
+        this.company.company_project=data.project_product;
+        this.productMessage="产品信息"+"("+data.project_product.length+")";
       },//获取公司信息
 
     },
     created(){
-//    this.$tool.console(this.compName)
-      this.getCrawlerCompany();
+
     },
     watch: {
-      compName: function(e){
-//        this.$tool.console(e);
-        this.compaName=e;
-//        this.$tool.console(this.compaName);
+      comMessage: function(e){
         this.getCrawlerCompany();
       }//获取公司名称
     }

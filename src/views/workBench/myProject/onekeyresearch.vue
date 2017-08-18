@@ -46,11 +46,11 @@
             </div>
             <!--公司信息-->
             <div class="item">
-              <company-message :comp-name="compname"></company-message>
+              <company-message :comp-name="compname" :com-message="comMessage"></company-message>
             </div>
             <!--工商信息-->
             <div class="item">
-              <business style="position: relative" :comid="com_id"></business>
+              <business style="position: relative" :bus-data="busData"></business>
             </div>
             <!--核心成员-->
             <div class="item clearfix" v-if="team.length!=0">
@@ -75,7 +75,7 @@
             </div>
             <!--图表-->
             <div class="item">
-              <downloadechart :comid="com_id" :comp-name="compname"></downloadechart>
+              <downloadechart :chart-data="chartData"></downloadechart>
             </div>
             <!--历史融资-->
             <div class="item" v-if="history_finance.length!=0">
@@ -281,7 +281,10 @@
             team_member_position: "",//成员职位
           }
         ],
-        loading:false
+        loading:false,
+        comMessage:{},//公司信息
+        busData:{},//工商信息
+        chartData:[],//图标数据
 
       }
     },
@@ -297,21 +300,6 @@
 //      this.$router.push({name: 'editproject', query: {}})
         this.$emit('changeall', false)
         this.$emit('changeallin', true)
-      },
-      loadMore(){
-        this.recruitData.push({
-          position: 'IOS',
-          money: '1-2K',
-          experience: '1年',
-          address: "北京",
-          date: '2016-05-04'
-        }, {
-          position: 'IOS',
-          money: '1-2K',
-          experience: '1年',
-          address: "北京",
-          date: '2016-05-04'
-        })
       },
       getCrawlerTeam(){
         return new Promise((resolve, reject)=>{
@@ -422,6 +410,7 @@
             .then(res => {
               this.getProjectIndustry(res.data.data);
               this.project = res.data.data;
+              this.chartData = res.data.data;
               this.loading=false;
               resolve(1);
             })
@@ -436,6 +425,44 @@
           data[i].project_industry=data[i].project_industry.split(",");
         }
       },//设置数据
+      getCrawlerCompany(){
+        let compName=this.compName;
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+            this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: compName})
+              .then(res => {
+                let data = res.data.data;
+                if(data.length==0) {//搜索不到信息
+                  this.$tool.error("匹配不到当前公司");
+                }else{//搜索到了
+                  this.comMessage=data;
+                  resolve(1);
+                }
+              })
+              .catch(err => {
+                this.$tool.error("请求失败");
+                this.$tool.console(err);
+                this.loading=false;
+              })
+
+        });
+      },//查询公司名称公司id
+      getCrawlerBrand(){
+        return new Promise((resolve, reject)=>{
+          this.$http.post(this.URL.getCrawlerBrand, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.busData=data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+            })
+        });
+      },//获取商标信息
     },
     computed: {},
     components: {
@@ -452,9 +479,18 @@
         this.loading=true;
         this.com_id=e;
         this.compname=this.compName;
-        this.getCrawlerTeam()
+        this.getCrawlerCompany()
+          .then((data)=>{
+            return this.getCrawlerTeam();
+          })
+          .then((data)=>{
+            return this.getCrawlerProject();
+          })
           .then((data)=>{
             return this.getCrawlerHistoryFinance();
+          })
+          .then((data)=>{
+            return this.getCrawlerBrand();
           })
           .then((data)=>{
             return this.getCrawlerMilestone();
@@ -465,10 +501,7 @@
           .then((data)=>{
             return this.getCrawlerCompeting();
           })
-          .then((data)=>{
 
-            return this.getCrawlerProject();
-          })
       },//获取公司id
       dialogVisible:function(e){
 

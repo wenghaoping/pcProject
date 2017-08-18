@@ -124,10 +124,8 @@
         .qrTab:hover +.qrposition {
 
           opacity: 1;
+          transition: all 0.5s;
         }
-        .qrTab:hover +.sanjiao{
-            opacity: 1;
-          }
 
         .qrposition{
           background:#ffffff;
@@ -137,23 +135,25 @@
           position: absolute;
           top: -10px;
           right: -20px;
+          //opacity: 0;
           opacity: 0;
+          transition: all 4s;
           img{
             width: 85%;
             margin: 11px;
           }
-        }
-        .sanjiao{
-          width: 20px;
-          height: 10px;
-          position: absolute;
-          right: 3px;
-          bottom: 43px;
-          opacity: 0;
-          img{
-            width: 100%;
+          .sanjiao{
+            width: 20px;
+            height: 10px;
+            position: absolute;
+            right: 32px;
+            bottom: 1px;
+            img{
+              width: 100%;
+            }
           }
         }
+
       }
 
       /*=================================*/

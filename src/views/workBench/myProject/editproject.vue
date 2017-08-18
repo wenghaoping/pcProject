@@ -1158,21 +1158,20 @@
       },//获取项目分组信息
 
       setFileType(){
-        var setFileType = new Promise((resolve, reject)=>{
-        this.$http.post(this.URL.getFileType, {user_id: localStorage.user_id})
-          .then(res => {
-            let data = res.data.data;
-            this.groups.group = this.getFileType(data);
-            resolve(4);
-          })
-          .catch(err => {
-            this.$tool.console(err)
-          })
+        return new Promise((resolve, reject)=>{
+          this.$http.post(this.URL.getFileType, {user_id: localStorage.user_id})
+            .then(res => {
+              let data = res.data.data;
+              this.groups.group = this.getFileType(data);
+              resolve(4);
+            })
+            .catch(err => {
+              this.$tool.console(err)
+            })
         });
-        return setFileType;
       },//设置文件分组标签
       getWxProjectCategory(){
-        var getWxProjectCategory = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           setTimeout(()=>{
             this.area = this.$global.data.area;//设置城市1列表
@@ -1190,7 +1189,6 @@
             resolve(2);
           },500)
         });
-        return getWxProjectCategory;
 
 
       },//获取所有下拉框的数据
@@ -1291,7 +1289,7 @@
         }
       },//期望融资,融资金额
       getProjectDetail () {
-        var getProjectDetail = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
             .then(res => {
@@ -1397,11 +1395,7 @@
               this.loading = false
               this.$tool.console(err, 2)
             })
-
-
         });
-        return getProjectDetail;
-
       },//获取项目详情数据
 
       /*商业计划书*/
