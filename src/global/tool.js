@@ -106,7 +106,7 @@ const tool={
 /*验证类*/
   trim(string){
     return string.replace(/(^\s*)|(\s*$)/g,"");
-  },
+  },//去除参数前后空格
   getNull(data) {
     let reg=/\S/;
     if (!reg.test(data))
@@ -131,8 +131,11 @@ const tool={
     }
   },//判断是不是数字
   checkEmail(data){
-    let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-    if (reg.test(data)) {
+    let data1=this.trim(data);
+    // let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    // let reg= /^[_a-z0-9]+@([_a-z0-9]+\.)+[a-z0-9]{2,3}$/;
+    let reg=/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+    if (reg.test(data1)) {
       return true;
     }else{
       return false;

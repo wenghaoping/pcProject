@@ -39,6 +39,7 @@
                   <span class="justIlook">(仅自己可见)</span>
                   <el-form-item
                     label="项目名称"
+                    :rules="[{min: 1, max:40,message: '长度不能大于40个字符', trigger: 'blur'}]"
                     prop="pro_name">
                     <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
                   </el-form-item>
@@ -47,6 +48,7 @@
                   <span class="justIlook2">(仅自己可见)</span>
                   <el-form-item
                     label="公司名称"
+                    :rules="[{min: 1, max:40,message: '长度不能大于40个字符', trigger: 'blur'}]"
                     prop="pro_company_name">
                     <el-autocomplete v-model="project.pro_company_name"
                                      :fetch-suggestions="querySearchAsync"
@@ -79,7 +81,7 @@
                   <el-form-item
                     label="项目介绍"
                     prop="pro_intro"
-                    :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]">
+                    :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},{min: 1, max:40,message: '长度不能大于40个字符', trigger: 'blur'}]">
                     <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
                   </el-form-item>
                 </el-col>

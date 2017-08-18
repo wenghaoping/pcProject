@@ -90,8 +90,8 @@
                       <span class="justIlook">(仅自己可见)</span>
                       <el-form-item
                         label="项目名称"
-                        prop="name"
-                        :rules="[{min: 1, max:30,message: '最大30个字符',trigger: 'blur'}]">
+                        prop="pro_name"
+                        :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]">
                         <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -99,7 +99,8 @@
                       <span class="justIlook2">(仅自己可见)</span>
                       <el-form-item
                         label="公司名称"
-                        prop="company">
+                        :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]"
+                        prop="pro_company_name">
                         <el-autocomplete v-model="project.pro_company_name"
                                          :fetch-suggestions="querySearchAsync"
                                          placeholder="请输入内容"
@@ -213,6 +214,7 @@
                     <el-col :span="12">
                       <el-form-item
                         label="公司规模"
+
                         prop="pro_company_scale.comp_scale_id">
                         <el-select v-model="project.pro_company_scale.comp_scale_id" placeholder="请选择" class="width360">
                           <el-option
@@ -227,6 +229,7 @@
                     <el-col :span="12">
                       <el-form-item
                         label="产品链接"
+                        :rules="[{ type: 'url', message: '请输入正确的链接', trigger: 'blur' }]"
                         prop="pro_website">
                         <el-input v-model="project.pro_website" placeholder="请输入项目主页地址"></el-input>
                       </el-form-item>
@@ -236,13 +239,14 @@
                     <el-col :span="6">
                       <el-form-item
                         label="项目联系人"
+                        :rules="{min: 1, max:20,message: '最大20个字符',trigger: 'blur'}"
                         prop="contact.user_name">
                         <el-input v-model="project.contact.user_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="手机号">
-                        <el-input v-model="project.contact.user_mobile" placeholder="请输入"></el-input>
+                      <el-form-item label="手机号" prop="contact.user_mobile" :rules="PhoneRule">
+                        <el-input v-model.number="project.contact.user_mobile" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -301,7 +305,7 @@
                     <el-col :span="24">
                       <el-form-item label="项目亮点"
                                     prop="pro_goodness"
-                                    :rules="[{min: 3, message: '最少2个字符',required: true, message: '项目亮点不能为空', trigger: 'blur'}]">
+                                    :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'},{min: 1, max:500,message: '最大500个字符'}]">
                         <el-input type="textarea"
                                   v-model="project.pro_goodness"
                                   :autosize="{ minRows: 4, maxRows: 7}"></el-input>
@@ -600,7 +604,7 @@
                       <el-form-item
                         label="签约佣金（%）"
                         prop="commission"
-                        :rules="[{message: '比例必须为数字值'}]">
+                        :rules="[NumberRule,{min: 1, max:100,message: '最大100个字符',trigger: 'blur',}]">
                         <el-input v-model="pro_FA.commission" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
@@ -794,6 +798,53 @@
   import projectpush2 from './projectPush2.vue'
   export default {
     data(){
+      var checkFinance = (rule, value, callback) => {
+        this.$tool.console(value);
+        if (!value) {
+          return callback(new Error('不能为空'));
+        }
+        /*setTimeout(() => {
+         if (!Number.isInteger(value)) {
+         callback(new Error('请输入数字值'));
+         } else {
+         if (value < 18) {
+         callback(new Error('必须年满18岁'));
+         } else {
+         callback();
+         }
+         }
+         }, 1000);*/
+      };
+      var checkPhoneNumber = (rule, value, callback) => {
+        if (!this.$tool.getNull(value)) {
+          setTimeout(() => {
+            if (!this.$tool.checkNumber(value)) {
+              callback(new Error('请输入数字值'));
+            } else {
+              if (!this.$tool.checkPhoneNubmer(value)) {
+                callback(new Error('请输入正确的手机号'));
+              }else{
+                callback();
+              }
+            }
+          }, 100);
+        }else{
+          callback();
+        }
+      };//电话号码正则判断
+      var checkNumber = (rule, value, callback) => {
+        if (!this.$tool.getNull(value)) {
+          setTimeout(() => {
+            if (!this.$tool.checkNumber(value)) {
+              callback(new Error('请输入数字值'));
+            } else {
+              callback();
+            }
+          }, 100);
+        }else{
+          callback();
+        }
+      };//电话号码正则判断
       return {
         uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
         uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
@@ -998,29 +1049,15 @@
         finance:[
           { validator: checkFinance, trigger: 'blur' }
         ],
+        PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
+        NumberRule: { validator: checkNumber, trigger: 'blur' },
         one:false,//第一次进来的时候
         submitButton:false,//是否允许提交false允许/true不允许
         uploadLoading:false,//BP上传动画
 
 
       };
-      var checkFinance = (rule, value, callback) => {
-          this.$tool.console(value);
-         if (!value) {
-          return callback(new Error('不能为空'));
-         }
-         /*setTimeout(() => {
-           if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-           } else {
-             if (value < 18) {
-              callback(new Error('必须年满18岁'));
-             } else {
-              callback();
-             }
-           }
-         }, 1000);*/
-       };
+
     },
     computed: {
       /*项目完整度判断*/
@@ -1114,6 +1151,25 @@
         this.$refs.right.style.left = leftWidth +'px';
     },
     methods: {
+      checkPhoneNumber(value){
+        let check=false;
+        if (!this.$tool.getNull(value)) {
+          if (!this.$tool.checkNumber(value)) {
+            this.$tool.error('请输入数字值');
+            check=false;
+          } else {
+            if (!this.$tool.checkPhoneNubmer(value)) {
+              this.$tool.error('请输入正确的手机号');
+              check=false;
+            }else{
+              check=true;
+            }
+          }
+        }else{
+          check=true;
+        }
+        return check;
+      },//验证手机号高级版
       /*获取列表各种数据*/
       getCompanyStatus(data){
         let arr = [];
@@ -2019,6 +2075,7 @@
         else if (this.financingMust) this.$tool.error("融资信息必填项不能为空")
         else if (this.milepostMust) this.$tool.error("里程碑必填项不能为空")
         else if (!this.getMemberHunder(this.team.core_users)) {}
+         else if(!this.checkPhoneNumber(this.project.contact.user_mobile)) {this.$tool.console("电话不过")}
         else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){this.$tool.console("投后股份没过")}
         else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字(去处%号)")){this.$tool.console("签约没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字(去处%号)")){this.$tool.console("股权赠与没过")}
