@@ -16,6 +16,10 @@ export default
   //  weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
   // weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
 
+  //一键尽调跳转用接口
+  openUrl:"http://192.168.9.19:8090/#/onekeyresearchalone",
+
+
   /*上传用*/
 
   /*登陆接口*/

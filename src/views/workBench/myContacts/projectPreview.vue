@@ -531,8 +531,6 @@ export default {
             this.$tool.success("推送成功");
             this.$emit('closePreviewANDProjectPush', false);//关闭所有的弹框包括预览,推送
             this.$emit('closePreview', false);//关闭预览弹框
-          }else{
-//            this.$tool.error(res.data.error_msg)
           }
         })
         .catch(err => {

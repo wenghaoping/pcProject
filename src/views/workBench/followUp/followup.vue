@@ -207,7 +207,7 @@
     </div>
 
   <!--写跟进弹框-->
-  <addfollow :dialog-follow="followDisplay" :followid="followid" @changeClose="closeFollow"></addfollow>
+  <addfollow :follow-display="followDisplay" :followid="followid" @closeFollow="closeFollow"></addfollow>
   </div>
 </template>
 

@@ -464,12 +464,12 @@
       </div>
     </div>
     <!--一键尽调弹窗-->
-    <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname" @changeall="dialogVisiblechange" @changeallin="dialogVisiblechangeIn" lock-scroll>
-
+    <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname"
+              @changeall="dialogVisiblechange" @changeallin="dialogVisiblechangeIn" lock-scroll>
     </research>
 
     <!--尽调搜索弹窗-->
-    <el-dialog title="一键尽调" :visible.sync="dialogSearchVisible">
+    <el-dialog title="一键尽调" :visible="dialogSearchVisible">
       <el-form label-position="top" label-width="140px">
         <el-form-item label="请输入你要尽调的公司">
           <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick" ></el-input><!--@change="searchChange"-->
@@ -485,23 +485,23 @@
                          @changeCon="dialogConchange"></alertcontactsdetail>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="followDisplay"
+    <addfollow :follow-display="followDisplay"
                :projectid="projecmessage.project_id"
                :projectname="projecmessage.pro_intro"
-               @changeClose="closeFollow"
-               :followid="followid"></addfollow>
+               :followid="followid"
+               @closeFollow="closeFollow"></addfollow>
 
     <!--项目推送弹窗,项目入口弹窗-->
     <projectpush2 :project-push-show2="projectPushDisplay2" :proid="project.project_id" :pro-intro="project.pro_intro" :emitPush="emitPush"
                   @openPreview="openPreview"
-                  @closeProjectPush2="closeProjectPush2"></projectpush2>
+                  @closeProjectPush2="closeProjectPush2"
+                  @previewPush="previewPush"></projectpush2>
 
     <!--项目推送弹窗,人脉入口弹窗============================-->
     <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage"
                  :user-email="userEmail"
                  @openPreview="openPreview"
                  @closeProjectPush="closeProjectPush"></projectpush>
-
 
     <!--项目预览弹窗-->
     <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
@@ -1577,10 +1577,9 @@
       this.$tool.getTop();
       this.getprojectId();
       this.getAllData();
-      this.getWX();
+//      this.getWX();
     },
     watch:{
-
     },
   }
 </script>

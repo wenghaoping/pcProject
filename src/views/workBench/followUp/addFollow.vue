@@ -1,7 +1,7 @@
 <template>
   <div id="addFollow" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================添加或编辑跟进记录弹窗=============================================-->
-    <el-dialog :visible="dialogFollow" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll>
+    <el-dialog :visible="followDisplay" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll>
       <div class="addTitle">
         <span> | </span>添加跟进
       </div>
@@ -146,7 +146,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname","type","userid"],
+    props: ["followDisplay","followid","projectid","projectname","cardid","cardname","type","userid"],
     data () {
       return {
         uploadAddress:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
@@ -212,13 +212,12 @@
     },
     methods: {
       handleClose(e){
-        this.$emit("changeClose",false);
+        this.$emit("closeFollow",false);
       },//关闭
       saveSecond(){
         this.allSave();//添加
         this.follow=this.saveJumpData;
       },//继续添加
-
       handleSelectProject(item){
         this.follow.project_id='';
         this.follow.project_id = item.label;
@@ -621,7 +620,7 @@
           this.clearData();
           this.follow_id='';
         }).catch(() => {
-          this.$emit("changeClose",false);
+          this.$emit("closeFollow",false);
           this.clearData();
           this.follow_id='';
         });
@@ -649,7 +648,7 @@
 
       },//获取跟进id
 
-      dialogFollow: function(e){
+      followDisplay: function(e){
         if(e) {
           this.clearData();
           this.follow_id=this.followid || '';

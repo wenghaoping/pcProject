@@ -321,20 +321,20 @@
     </div>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="followDisplay" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"
-               @changeClose="closeFollow"></addfollow>
+    <addfollow :follow-display="followDisplay" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"
+               @closeFollow="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :project-push-show2="projectPushDiplay2" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush"
+    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush"
+                  @openPreview="openPreview"
                   @closeProjectPush2="closeProjectPush2"
-                  @closePreviewANDProjectPush="closePreviewANDProjectPush"
-                  @openPreview="openPreview"></projectpush2>
-
+                  @previewPush="previewPush"
+    ></projectpush2>
 
     <!--项目预览弹窗-->
     <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
-                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
                     @closePreview="closePreview"
+                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
                     @previewPush="previewPush"></projectpreview>
 
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
@@ -367,7 +367,7 @@
     data() {
       return {
         followDisplay:false,//控制写跟进弹框
-        projectPushDiplay2:false,//项目推送弹窗
+        projectPushDisplay2:false,//项目推送弹窗
         projecmessage:{
           project_id:'',
           project_name:''
@@ -462,24 +462,27 @@
         this.projecmessage.project_id=row.project_id;
         this.projecmessage.project_name=row.pro_intro;
       },//点击写跟近按钮
+      openPreview(msg){
+        this.previewDisplay=msg;
+      },//打开预览弹框
       closeFollow(msg){
         this.followDisplay=msg;
       },//关闭添加跟进
       addprojectPush(index, row){
         this.pushId=row.project_id;
         this.pushIntro=row.pro_intro;
-        this.projectPushDiplay2=true;
+        this.projectPushDisplay2=true;
       },//点击项目推送
       closeProjectPush2(msg){
-        this.projectPushDiplay2=msg;
+        this.projectPushDisplay2=msg;
+        this.handleIconClick();
       },//关闭项目推送弹窗
       closePreviewANDProjectPush(msg){
-          this.previewDisplay=false;
-          this.projectPushDiplay2=false;
-      },//关闭项目预览弹窗AND关闭项目推送弹框
-      closePreview(msg){
-        this.previewDisplay=msg;
-      },//关闭项目预览
+        this.projectPushDisplay2=false;
+        this.previewDisplay=false;
+        this.handleIconClick();
+      },//关闭预览AND关闭项目推送1,关闭项目推送2
+
       /*请求函数*/
       handleIconClick(){
         this.$tool.getTop();
@@ -735,10 +738,9 @@
       previewPush(x){
         this.emitPush=x;
       },//项目推送预览隐藏
-      openPreview(msg){
-        this.previewDisplay=true;
-      },//项目推送预览显隐控制
-
+      closePreview(msg){
+        this.previewDisplay=msg;
+      },//关闭项目预览
     },
     computed: {
 

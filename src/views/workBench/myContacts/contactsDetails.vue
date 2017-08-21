@@ -349,9 +349,9 @@
                         @changeCon2="dialogVisiblechangeIn"></alertprojectdetail>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="followDisplay" :cardid="contacts.card_id" :userid="contacts.user_id"
+    <addfollow :follow-display="followDisplay" :cardid="contacts.card_id" :userid="contacts.user_id"
                :cardname="contacts.user_real_name" :type="contacts.type"
-               @changeClose="closeFollow"
+               @closeFollow="closeFollow"
                ></addfollow>
 
     <!--项目推送弹窗,人脉入口完整版-->

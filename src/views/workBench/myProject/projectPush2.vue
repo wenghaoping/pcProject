@@ -326,7 +326,7 @@
   import customerAddContacts from '../../../components/customerAddContacts.vue'
   import {mapState} from 'vuex'
   export default {
-    props: ["projectPushShow2", 'proid', 'proIntro', 'emitPush'],
+    props: ["projectPushShow2", 'proid', 'proIntro','emitPush'],
     data () {
       return {
         project_name: this.proIntro,
@@ -794,7 +794,8 @@
       },
       //推送
       push(){
-        let dealData = []
+        this.loading=true;
+        let dealData = [];
         this.pushData.forEach(x => {
           if (x.type === 'card') {
             dealData.push([x.card.card_id, x.type, x.card.user_email])
@@ -820,19 +821,10 @@
           }).then(res => {
             if (res.data.status_code === 2000000) {
               this.$tool.success('推送成功');
-              this.$emit('closeProjectPush2', false);
               this.$emit('closePreviewANDProjectPush', false);
-             /* this.initData();
-              this.myContactsShow = [];
-              this.netContactsShow = [];
-              for (let x in this.myCheckList) {
-                this.myCheckList[x] = false;
-              }
-              for (let x in this.netCheckList) {
-                x = false;
-              }
-              this.initReborn();
-              this.$emit('closeProjectPush2', false);*/
+              this.$emit('openPreview', false);
+              this.$emit('previewPush',false);
+              this.loading=false;
              this.handleClose();
             }
           })

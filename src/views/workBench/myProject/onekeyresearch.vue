@@ -74,7 +74,7 @@
               </div>
             </div>
             <!--图表-->
-            <div class="item">
+            <div class="item" v-if="chartData.length!=0">
               <downloadechart :chart-data="chartData"></downloadechart>
             </div>
             <!--历史融资-->
@@ -144,34 +144,38 @@
                 <ul  class="ulfl m-table">
                   <li class="table1">
                     <div class="img fl">
-                      <img :src="compet.competing_goods_logo" v-if="compet.competing_goods_logo!=''">
+                      <img :src="compet.project_logo" v-if="compet.project_logo!=''">
                       <img src="../../../assets/images/logo.png" v-else>
                     </div>
                     <div class="clearfix" style="margin-left: 70px;">
                       <div class="title2">
-                        {{compet.competing_goods_name}}
+                        {{compet.project_name}}
                       </div>
-                      <!--<div class="bo">
-                          我是介绍啦我是介绍啦我是介绍啦我是介绍啦我是介绍啦
-                      </div>-->
+                      <div class="bo">
+                        {{compet.project_introduce}}<!--介绍-->
+                      </div>
                     </div>
                   </li>
-                  <li class="table2" style="margin-top: 21px;" v-if="compet.competing_goods_industry!=''">{{compet.competing_goods_industry}}</li>
+                  <li class="table2" style="margin-top: 15px;" v-if="compet.project_industry.length!=0">
+                    <div>
+                      <i v-for="industr in compet.project_industry">{{industr}}</i>
+                    </div>
+                  </li>
                   <li class="table2" style="margin-top: 21px;" v-else>----</li>
 
-                  <li class="table7" style="height: 101px;" v-if="compet.competing_goods_Set_up!=''">{{compet.competing_goods_Set_up}}</li>
+                  <li class="table7" style="height: 101px;" v-if="compet.company_register_date!=''">{{compet.company_register_date}}</li>
                   <li class="table7" style="height: 101px;" v-else>----</li>
 
-                  <li class="table4" style="height: 101px;" v-if="compet.competing_goods_Financing_amount!=''">{{compet.competing_goods_Financing_amount}}</li>
+                  <li class="table4" style="height: 101px;" v-if="compet.project_location!=''">{{compet.project_location}}</li>
                   <li class="table4" style="height: 101px;" v-else>--</li>
 
-                  <li class="table5" style="height: 101px;">{{compet.competing_goods_Financing_rounds}}</li>
-                  <li class="table6" style="height: 101px;">
-                    <i style="margin-top: 16px;display: inline-block;">{{compet.competing_goods_Financing_time}}</i>
-                    <i style="margin-left: 10px;">{{compet.competing_goods_region}}</i>
-                    <!--<i class="founder">{{compet.competing_founder}}</i>-->
+                  <li class="table5" style="height: 101px;" v-if="compet.history_financing_rounds!=''">{{compet.history_financing_rounds}}</li>
+                  <li class="table5" style="height: 101px;" v-else>--</li>
 
-                    <!--<i class="founder">我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是</i>-->
+                  <li class="table6" style="height: 101px;">
+                    <i style="margin-top: 16px;display: inline-block;">{{compet.history_financing_time}}</i>
+                    <i style="margin-left: 10px;">{{compet.history_financing_money}}</i>
+                    <i class="founder">{{compet.history_financing_who}}</i>
                   </li>
                 </ul>
                 <div class="line2"></div>
@@ -237,7 +241,7 @@
         }],
         /*竞品表*/
         competing: [
-          {
+          /*{
             com_id: "",//
             project_id: "",//竞品ID
             competing_goods_name: "微天使平台",//竞品名字
@@ -251,7 +255,7 @@
             competing_goods_label: "",//竞品标签
             ranking_day: "",//行业内排名
             competing_founder: "",//竞品相似度
-          }
+          }*/
         ],
         /*历史融资表*/
         history_finance: [
@@ -388,9 +392,7 @@
           })
             .then(res => {
               let data=res.data.data;
-              this.$tool.setTime(data,'competing_goods_Financing_time');
-              this.$tool.setTime(data,'competing_goods_Set_up');
-              this.competing =data;
+              this.competing = this.setCrawlerCompeting(data);
               resolve(1);
             })
             .catch(err => {
@@ -400,6 +402,29 @@
 
         });
       },//获取竞品
+      setCrawlerCompeting(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          let obj = new Object;
+          obj.com_id=x.com_id || '';
+          obj.company_name=x.company_name || '';
+          obj.company_register_date=this.$tool.formatDateTime(x.company_register_date) || '';
+          obj.history_financing_money=x.history_financing.history_financing_money || '';
+          obj.history_financing_rounds=x.history_financing.history_financing_rounds || '';
+          obj.history_financing_time=this.$tool.formatDateTime(x.history_financing.history_financing_time || '');
+          obj.history_financing_who=x.history_financing.history_financing_who || '';
+          obj.project_industry=x.project_industry.split(",") || [];
+          obj.project_introduce=x.project_introduce || '';
+          obj.project_label=x.project_label || '';
+          obj.project_logo=x.project_logo || '';
+          obj.project_name=x.project_name || '';
+          obj.project_website=x.project_website || '';
+          obj.project_location=x.project_location || '';
+          newArr.push(obj);
+        });
+        return newArr;
+      },//设置竞品
+
       getCrawlerProject(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作

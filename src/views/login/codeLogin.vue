@@ -40,6 +40,7 @@
               localStorage.user_real_name=res.data.user_real_name;
               this.$store.state.logining.user_id=res.data.user_id;
               this.$store.state.logining.user_real_name=res.data.user_real_name;
+              localStorage.token=res.data.token;
               //重新获取个人标签(因为获取个人标签必须要有user_id)
               this.$global.func.getWxProjectCategory();
               this.$router.push({name:localStorage.entrance})

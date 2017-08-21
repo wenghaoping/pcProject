@@ -71,6 +71,7 @@
                     localStorage.user_email=res.data.user_email;
                     localStorage.user_id=res.data.user_id;
                     localStorage.user_real_name=res.data.user_real_name;
+                    localStorage.token=res.data.token;
                     this.$store.state.logining.user_id=res.data.user_id;
                     this.$store.state.logining.user_real_name=res.data.user_real_name;
                       //is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码

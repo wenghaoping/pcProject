@@ -238,7 +238,11 @@ export default {
     },//获取公司名称
     chartData: function(e){
       this.clearData();
-      this.getCrawlerProject();
+      if(e.length!=0){
+        this.getCrawlerProject();
+      }
+
+
 
     },//获取图表数据
   },

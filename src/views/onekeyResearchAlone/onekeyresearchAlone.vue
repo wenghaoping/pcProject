@@ -142,33 +142,39 @@
                 <ul  class="ulfl m-table" @click="toNewOneKey(compet)">
                   <li class="table1">
                     <div class="img fl">
-                      <img :src="compet.competing_goods_logo" v-if="compet.competing_goods_logo!=''">
+                      <img :src="compet.project_logo" v-if="compet.project_logo!=''">
                       <img src="../../assets/images/logo.png" v-else>
                     </div>
                     <div class="clearfix" style="margin-left: 70px;">
                       <div class="title2">
-                        {{compet.competing_goods_name}}
+                        {{compet.project_name}}
                       </div>
                       <div class="bo">
-                        我是介绍啦我是介绍啦我是介绍啦我是介绍啦我是介绍啦
+                        {{compet.project_introduce}}<!--介绍-->
                       </div>
                     </div>
                   </li>
-                  <li class="table2" style="margin-top: 21px;" v-if="compet.competing_goods_industry!=''">{{compet.competing_goods_industry}}</li>
+                  <li class="table2" style="margin-top: 15px;" v-if="compet.project_industry.length!=0">
+                    <div>
+                      <i v-for="industr in compet.project_industry">{{industr}}</i>
+                    </div>
+
+                  </li>
                   <li class="table2" style="margin-top: 21px;" v-else>----</li>
 
-                  <li class="table7" style="height: 101px;" v-if="compet.competing_goods_Set_up!=''">{{compet.competing_goods_Set_up}}</li>
+                  <li class="table7" style="height: 101px;" v-if="compet.company_register_date!=''">{{compet.company_register_date}}</li>
                   <li class="table7" style="height: 101px;" v-else>----</li>
 
-                  <li class="table4" style="height: 101px;" v-if="compet.competing_goods_Financing_amount!=''">{{compet.competing_goods_Financing_amount}}</li>
+                  <li class="table4" style="height: 101px;" v-if="compet.project_location!=''">{{compet.project_location}}</li>
                   <li class="table4" style="height: 101px;" v-else>--</li>
 
-                  <li class="table5" style="height: 101px;">{{compet.competing_goods_Financing_rounds}}</li>
+                  <li class="table5" style="height: 101px;" v-if="compet.history_financing_rounds!=''">{{compet.history_financing_rounds}}</li>
+                  <li class="table5" style="height: 101px;" v-else>--</li>
+
                   <li class="table6" style="height: 101px;">
-                    <i style="margin-top: 16px;display: inline-block;">{{compet.competing_goods_Financing_time}}</i>
-                    <i style="margin-left: 10px;">{{compet.competing_goods_region}}</i>
-                    <!--<i class="founder">{{compet.competing_founder}}</i>-->
-                    <i class="founder">我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是</i>
+                    <i style="margin-top: 16px;display: inline-block;">{{compet.history_financing_time}}</i>
+                    <i style="margin-left: 10px;">{{compet.history_financing_money}}</i>
+                    <i class="founder">{{compet.history_financing_who}}</i>
                   </li>
                 </ul>
                 <div class="line2"></div>
@@ -302,12 +308,15 @@
         competing: [
           /*{
             com_id: "",//
+            company_name: "微观时空（北京）信息技术有限公司",
             project_id: "",//竞品ID
-            competing_goods_name: "暂无信息",//竞品名字
-            competing_goods_logo: "",//竞品LOGO
-            competing_goods_industry: "暂无信息",//竞品行业
+           project_name: "暂无信息",//竞品名字
+           "project_industry": "文化娱乐,媒体及阅读",
+           project_logo: "",//竞品LOGO
+           "project_industry": "文化娱乐,媒体及阅读",
+           company_register_date:'',//时间
             competing_goods_Set_up: "",//竞品成立日期
-            competing_goods_Financing_rounds: "暂无信息",//竞品获投轮次
+           history_financing_rounds: "暂无信息",//竞品获投轮次
             competing_goods_region: "暂无信息",//竞品区域
             competing_goods_Financing_amount: "暂无信息",//竞品获投总额
             competing_goods_Financing_time: "暂无信息",//竞品获投时间
@@ -315,22 +324,30 @@
             ranking_day: "",//行业内排名
             competing_founder: "",//竞品相似度
           },
-           "com_id": 56079,
-           "company_name": "微观时空（北京）信息技术有限公司",
-           "project_id": 69723,
-           "project_name": "微观资讯/微观时空",
-           "project_industry": "文化娱乐,媒体及阅读",
-           "project_introduce": "微观资讯是一个主打个性化阅读的手机资讯和信息应用，提供最个性化最精准的资讯获取、资讯社交服务，微观时空（北京）信息技术有限公司旗下产品。",
-           "project_label": "阅读,新媒体,个性化推荐,媒体,媒体及阅读,文化娱乐",
-           "project_website": "http://weiguanzixun.com/",
-           "project_logo": "https://cdn.itjuzi.com/images/archive/10960.png?imageView2/0/w/100/q/100",
-           "project_score": "",
-           "project_state": "已关闭",
-           "project_views": "",
-           "project_date": "",
-           "project_location_first": "",
-           "project_location_second": ""
+           com_id:30900
+           company_name:"深圳市蝶讯网科技股份有限公司"
+           company_register_date:"1110816000"
+           history_financing:{
+            com_id:30900
+            history_financing_money:"680万人民币"
+            history_financing_rounds:"A轮"
+            history_financing_time:"1431360000"
+            history_financing_who:"力维投资"
+            id:47022
            }
+           project_date:""
+           project_id:43532
+           project_industry:"电子商务,垂直类电商,垂直类电商综合"
+           project_introduce:"服装资讯图片网"
+           project_label:"图片网,服装,资讯"
+           project_location_first:""
+           project_location_second:""
+           project_logo:"http://7xnnx4.com2.z0.glb.qiniucdn.com/f3391e757c1035112b1af03ae5e01c49"
+           project_name:"蝶讯网"
+           project_score:"581"
+           project_state:""
+           project_views
+           project_website:"http://www.sxxl.com/"
            */
         ],
         //*历史融资表
@@ -491,9 +508,8 @@
           })
             .then(res => {
               let data=res.data.data;
-              this.$tool.setTime(data,'competing_goods_Financing_time');
-              this.$tool.setTime(data,'competing_goods_Set_up');
-              this.competing =data;
+              this.competing = this.setCrawlerCompeting(data);
+              this.loading=false;
               resolve(1);
             })
             .catch(err => {
@@ -502,6 +518,52 @@
             })
         });
       },//获取竞品
+
+      getCrawlerCompany(){
+        let compName=this.compName;
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: compName})
+            .then(res => {
+              let data = res.data.data;
+              if(data.length==0) {//搜索不到信息
+                this.$tool.error("匹配不到当前公司");
+              }else{//搜索到了
+                this.comMessage=data;
+                resolve(1);
+              }
+            })
+            .catch(err => {
+              this.$tool.error("请求失败");
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
+        });
+      },//查询公司信息
+
+      setCrawlerCompeting(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          let obj = new Object;
+          obj.com_id=x.com_id;
+          obj.company_name=x.company_name;
+          obj.company_register_date=this.$tool.formatDateTime(x.company_register_date);
+          obj.history_financing_money=x.history_financing.history_financing_money || '';
+          obj.history_financing_rounds=x.history_financing.history_financing_rounds || '';
+          obj.history_financing_time=this.$tool.formatDateTime(x.history_financing.history_financing_time || '');
+          obj.history_financing_who=x.history_financing.history_financing_who || '';
+          obj.project_industry=x.project_industry.split(",");
+          obj.project_introduce=x.project_introduce;
+          obj.project_label=x.project_label;
+          obj.project_logo=x.project_logo;
+          obj.project_name=x.project_name;
+          obj.project_website=x.project_website;
+          obj.project_location=x.project_location || '';
+          newArr.push(obj);
+        });
+        return newArr;
+      },//设置竞品
       getCrawlerProject(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
@@ -513,7 +575,7 @@
               this.getProjectIndustry(res.data.data);
               this.project = res.data.data;
               this.chartData = res.data.data;
-              this.loading=false;
+
               resolve(1);
             })
             .catch(err => {
@@ -620,39 +682,6 @@
           })
       },//筛选买家图谱
 
-
-      getCrawlerCompany(){
-        let compName=this.compName;
-        return new Promise((resolve, reject)=>{
-          //做一些异步操作
-          if(compName==""){
-            this.$tool.error("请填写公司名称");
-            this.empty=true;
-            this.loading=false;
-          }else{
-            this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: compName})
-              .then(res => {
-                let data = res.data.data;
-                if(data.length==0) {//搜索不到信息
-                  this.$tool.error("匹配不到当前公司");
-                  this.empty=true;
-                  this.loading=false;
-                }else{//搜索到了
-                  this.com_id=data.company.com_id;
-                  this.comMessage=data;
-                  resolve(1);
-                  this.empty=false;
-                }
-              })
-              .catch(err => {
-                this.$tool.error("请求失败");
-                this.$tool.console(err);
-                this.loading=false;
-              })
-          }
-        });
-      },//查询公司名称公司id
-
       getCrawlerBrand(){
         return new Promise((resolve, reject)=>{
           this.$http.post(this.URL.getCrawlerBrand, {
@@ -672,25 +701,24 @@
       },//获取商标信息
 
       toNewOneKey(data){
-        console.log(data);
-        /*        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
-         window.open("http://cwhois.cnnic.cn/validatecode/validate.jsp?value="+strName+"&entity=domain&service=/whois&inputfield=value);
-         */
-        window.open("http://www.baidu.com")
+        const companyName = data.company_name.toString();
+        const openUrl = this.URL.openUrl;
+        const url=encodeURI(openUrl+"?company="+companyName);
+        window.open(url);
       },//跳转到新的一键尽调
       getRouter(){
         return new Promise((resolve, reject)=>{
           this.loading=true;
-          /*
-          * this.compName=this.$route.query.compName;
-          * */
-          let compName=this.compName;
-          if(compName==""){
+//          this.$http.defaults.headers.stats['Authorization'] = 1232132;
+          const routerCompany=this.$tool.getUrlArgObject(decodeURI(window.location.href)) || '';
+          this.compName=this.$tool.getUrlArgObject(decodeURI(window.location.href));
+          console.log(this.$tool.getUrlArgObject(decodeURI(window.location.href)));
+          if(routerCompany===""){
             this.$tool.error("请填写公司名称");
             this.empty=true;
             this.loading=false;
           }else{
-            this.$http.post(this.URL.selectCompanyByName, {user_id: localStorage.user_id, company_name: compName})
+            this.$http.post(this.URL.selectCompanyByName, {user_id: localStorage.user_id, company_name: routerCompany})
               .then(res => {
                 let data = res.data.data;
                 if(data.length==0) {//搜索不到信息
@@ -721,7 +749,7 @@
     created(){
 //      this.loading=true;
 //      this.com_id=12298;
-      this.compName='阿里巴巴（中国）有限公司';
+//      this.compName='北京新浪互联信息服务有限公司';
       this.getRouter()
         .then((data)=>{
           return this.getCrawlerCompany();
@@ -745,7 +773,7 @@
           return this.getCrawlerProject();
         })
         .then((data)=>{
-//          return this.getCrawlerCompeting();
+          return this.getCrawlerCompeting();
         })
         .then((data)=>{
 //          return this.getProjectMatchInvestors();
