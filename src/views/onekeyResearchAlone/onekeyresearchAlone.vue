@@ -1,0 +1,699 @@
+<template>
+  <div id="researchAlone" class="clearfix" v-loading="loading"
+       element-loading-text="拼命加载中">
+    <div class="titleDi">
+
+    </div>
+    <!--===========================================一键尽调单独页面=============================================-->
+      <div class="contain-grid contain-center1 fl dialog">
+        <div class="contain-inner">
+          <div class="item-lists1">
+            <!--项目信息-->
+
+            <div style="height: 24px;"></div>
+            <div class="item2">
+              <div class="title">项目信息</div>
+              <div v-for="project1 in project" class="clearfix" style="margin-bottom: 20px;">
+                <div class="portrait fl">
+                  <img src="../../assets/images/logo.png" v-if="project1.project_logo==''">
+                  <img :src="project1.project_logo" v-else>
+                </div>
+                <div class="portrait-right fl ">
+                  <div class="block clearfix" style="display: block">
+                    <span class="block-title fl">{{project1.project_name}}</span>
+                    <span class="line1 fl"> | </span>
+                    <span class="block-company fl">{{project1.company_name}}</span>
+                    <span class="block-tag fl" v-if="project1.project_state!=null"><el-tag type="primary" v-if="project1.project_state!=''" >{{project1.project_state}}</el-tag><!--<el-tag type="success">{{project1.project_industry}}</el-tag>--></span>
+                  </div>
+                  <div class="block clearfix" style="margin-bottom: 20px;display: block">
+                    <div class="doc fl">{{project1.project_introduce}}</div>
+                  </div>
+                  <div class="block clearfix" style="height: 24px;display: block">
+                    <span class="mid-tag" v-for="pro in project1.project_industry" v-if="project1.project_industry!=''">{{pro}}</span>
+                </div>
+                </div>
+                <div class="tag" style="padding-top: 20px;    display: inline-block;">
+                  <span class="tag-bottom" style="margin-right: 11px;" v-if="project1.project_label!=''"><img src="../../assets/images/tag2.png"></span>
+                  <span class="tag-bottom" v-if="project1.project_label!=''">{{project1.project_label}}</span>
+
+                  <span class="url fr" v-if="project1.project_website!=''"><img src="../../assets/images/tag3.png" >
+                    <a :href="project1.project_website" target="_Blank">{{project1.project_website}}</a>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!--公司信息-->
+            <div class="item">
+              <company-message :comp-name="compName"></company-message>
+            </div>
+            <!--工商信息-->
+            <div class="item">
+              <business style="position: relative" :comid="com_id"></business>
+            </div>
+            <!--核心成员-->
+            <div class="item clearfix" v-if="team.length!=0">
+              <div class="clearfix">
+                <div class="title">核心成员</div>
+                <div class="border clearfix" v-for="teamin in team">
+                  <div class="portrait fl clearfix">
+                    <img :src="teamin.team_member_photo" v-if="teamin.team_member_photo!=''">
+                    <img src="../../assets/images/logo.png" v-else>
+                  </div>
+                  <div class="portrait-right fl ">
+                    <div class="block clearfix" style="display: block">
+                      <span class="block-title fl clearfix">{{teamin.team_member_name}}</span>
+                      <span class="block-company fl">{{teamin.team_member_position}}</span>
+                    </div>
+                    <div class="block" style="display: block">
+                      <span class="doc fl">{{teamin.team_member_introduce}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--图表-->
+            <div class="item">
+              <downloadechart :comid="com_id" :comp-name="compName"></downloadechart>
+            </div>
+            <!--历史融资-->
+            <div class="item" v-if="history_finance.length!=0">
+              <div class="title">历史融资</div>
+              <div class="lists">
+                <div class="list" v-for="history in history_finance">
+                    <span class="radio_line fl">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                  <span class="date fl">{{history.history_financing_time}}</span>
+                  <span class="blood fl">{{history.history_financing_money}}</span>
+                  <span class="blood1 fl">{{history.history_financing_rounds}}</span>
+                  <span class="main fl">{{history.history_financing_who}}</span>
+                </div>
+              </div>
+            </div>
+            <!--里程碑-->
+            <div class="item"  v-if="milestone_list.length!=0">
+              <div class="title">里程碑</div>
+              <div class="lists">
+                <div class="list" v-for="milestone in milestone_list">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                  <span class="date">{{milestone.milestone_time}}</span>
+                  <span class="blood blood2">
+
+                    <el-tooltip placement="top" :disabled="milestone.milestone_event.length > 40 ? false:true">
+                      <div slot="content">{{milestone.milestone_event}}</div>
+                      <i>{{milestone.milestone_event}}</i>
+                    </el-tooltip>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!--新闻-->
+            <div class="item" v-if="news.length!=0">
+              <div class="title">新闻</div>
+              <div class="lists">
+                <div class="list" v-for="new1 in news">
+                    <span class="radio_line">
+                      <span class="radio"></span>
+                      <!--<span class="l-line"></span>-->
+                    </span>
+                  <span class="date">{{new1.project_news_time}}</span>
+                  <span class="dateTag"><el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
+                  <span class="blood blood3">{{new1.project_news_title}}</span>
+                  <span class="mian2"><a :href="new1.source" target="_Blank">新闻链接</a></span>
+                </div>
+              </div>
+            </div>
+            <!--竞品-->
+            <div class="item" v-if="competing.length!=0">
+              <div class="title">竞品</div>
+              <ul class="ulfl h-table">
+                <li class="table1">项目</li>
+                <li class="table2" style="line-height: 40px;">行业</li>
+                <li class="table7">成立时间</li>
+                <li class="table4">地域</li>
+                <li class="table5">最新融资轮次</li>
+                <li class="table6" style="line-height: 40px;">最近融资时间</li>
+              </ul>
+              <div v-for="compet in competing">
+                <ul  class="ulfl m-table" @click="toNewOneKey(compet)">
+                  <li class="table1">
+                    <div class="img fl">
+                      <img :src="compet.competing_goods_logo" v-if="compet.competing_goods_logo!=''">
+                      <img src="../../assets/images/logo.png" v-else>
+                    </div>
+                    <div class="clearfix" style="margin-left: 70px;">
+                      <div class="title2">
+                        {{compet.competing_goods_name}}
+                      </div>
+                      <div class="bo">
+                        我是介绍啦我是介绍啦我是介绍啦我是介绍啦我是介绍啦
+                      </div>
+                    </div>
+                  </li>
+                  <li class="table2" style="margin-top: 21px;" v-if="compet.competing_goods_industry!=''">{{compet.competing_goods_industry}}</li>
+                  <li class="table2" style="margin-top: 21px;" v-else>----</li>
+
+                  <li class="table7" style="height: 101px;" v-if="compet.competing_goods_Set_up!=''">{{compet.competing_goods_Set_up}}</li>
+                  <li class="table7" style="height: 101px;" v-else>----</li>
+
+                  <li class="table4" style="height: 101px;" v-if="compet.competing_goods_Financing_amount!=''">{{compet.competing_goods_Financing_amount}}</li>
+                  <li class="table4" style="height: 101px;" v-else>--</li>
+
+                  <li class="table5" style="height: 101px;">{{compet.competing_goods_Financing_rounds}}</li>
+                  <li class="table6" style="height: 101px;">
+                    <i style="margin-top: 16px;display: inline-block;">{{compet.competing_goods_Financing_time}}</i>
+                    <i style="margin-left: 10px;">{{compet.competing_goods_region}}</i>
+                    <!--<i class="founder">{{compet.competing_founder}}</i>-->
+                    <i class="founder">我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是我是资本我是资本我是本是资本我是资本我是</i>
+                  </li>
+                </ul>
+                <div class="line2"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    <div class="contain-grid contain-right-1 fl"
+         v-loading="loading"
+         element-loading-text="拼命加载中">
+      <div class="main-box">
+        <el-tabs v-model="activeName">
+          <el-tab-pane name="1">
+            <span slot="label">买家图谱
+              <el-tooltip class="item" effect="dark" placement="top-start">
+                <div slot="content">根据微天使匹配算法从您的人脉库，全网人脉库算出<br/>该项目的意向投资人</div>
+                <div class="img"><img src="../../assets/images/why.png"></div>
+    </el-tooltip>
+            </span>
+                <div class="main_right main_left">
+                  <div class="item_top">
+                    <span class="top_inn fl">匹配推荐=我的+全网人脉</span>
+                    <div class="selectIn fr" style="height: 36px;">
+                      <el-select v-model="isFollow" placeholder="请选择" @change="selectFollow">
+                        <el-option
+                          v-for="item in myAllCont"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                  <div class="item_lists">
+                    <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors" v-if="ProjectMatchInvestors.length!=0">
+                      <div class="list_header">
+                        <span class="pipei">匹配度 : </span>
+                        <span class="bili">{{projectMatchInvestor.match}}%</span>
+                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==1">我的人脉</span>
+                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==0">全网人脉</span>
+                      </div>
+                      <div class="list_main">
+                        <div class="click">
+                          <div class="block" style="width: 290px;">
+                            <span class="name">{{projectMatchInvestor.user_real_name}}</span>
+                            <span class="zhiwei">{{projectMatchInvestor.user_company_career}}</span>
+                            <span class="imgs" v-if="projectMatchInvestor.user_group!=''"><img src="../../assets/images/renzhen.png"/></span>
+                            <span class="ren">{{projectMatchInvestor.user_group}}</span>
+                          </div>
+                          <div class="block" style="margin-top: 5px;">
+                            <span class="company">{{projectMatchInvestor.user_company_name}}</span>
+                          </div>
+                          <div class="block" style="margin-top: 42px;">
+                            <span class="company ft13">投资领域：<i v-for="industry in projectMatchInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
+                          </div>
+                          <div class="block" style="margin-top: 5px;">
+                            <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
+                          </div>
+                        </div>
+                        <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
+                        <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
+                      </div>
+                    </div>
+                    <div class="emptyImg" v-if="ProjectMatchInvestors.length==0">
+                      <img src="../../assets/images/zanwushuju.png">
+                    </div>
+                    <el-pagination
+                      class="pagination fr"
+                      small
+                      v-if="totalInvestors>5"
+                      @current-change="filterChangeInvestors"
+                      :current-page.sync="currentPageInvestors"
+                      layout="prev, pager, next"
+                      :page-size="5"
+                      :total="totalInvestors">
+                    </el-pagination>
+                  </div>
+                </div>
+          </el-tab-pane>
+
+        </el-tabs>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import companyMessage from '../workBench/myProject/onkeyresearch/companyMessage.vue'
+  import business from '../workBench/myProject/onkeyresearch/business.vue'
+  import downloadechart from '../workBench/myProject/onkeyresearch/downloadEchart.vue'
+  export default {
+    data () {
+      return {
+        compName: "",//一键尽调公司的名称
+        com_id: 0,//公司Id
+        conmanyName: '3',
+        productMessage: '产品信息',
+
+        /*项目信息*/
+        project: [
+          {
+            project_id: 1,
+            com_id: 4,
+            company_name: "暂无信息",
+            project_name: "暂无信息",
+            project_industry: "暂无信息",
+            project_introduce: "暂无信息",
+            project_label: [],
+            project_website: "暂无信息",
+            project_logo: "",
+            project_score: ""
+          }
+        ],
+        /*产品新闻*/
+        news: [
+/*            {
+          project_id: "",//产品ID
+          project_news_time: "",//新闻时间
+          project_news_label: "",//新闻标签
+          project_news_title: "",//新闻标题
+          source: ""//资源链接
+        }*/
+        ],
+        /*竞品表*/
+        competing: [
+          /*{
+            com_id: "",//
+            project_id: "",//竞品ID
+            competing_goods_name: "暂无信息",//竞品名字
+            competing_goods_logo: "",//竞品LOGO
+            competing_goods_industry: "暂无信息",//竞品行业
+            competing_goods_Set_up: "",//竞品成立日期
+            competing_goods_Financing_rounds: "暂无信息",//竞品获投轮次
+            competing_goods_region: "暂无信息",//竞品区域
+            competing_goods_Financing_amount: "暂无信息",//竞品获投总额
+            competing_goods_Financing_time: "暂无信息",//竞品获投时间
+            competing_goods_label: "",//竞品标签
+            ranking_day: "",//行业内排名
+            competing_founder: "",//竞品相似度
+          }*/
+        ],
+        /*历史融资表*/
+        history_finance: [
+          /*{
+            com_id: "",//公司id
+            History_financing_time: "",//融资时间
+            History_financing_rounds: "暂无信息",//融资轮次
+            History_financing_money: "暂无信息",//融资金额
+            History_financing_who: "暂无信息",//融资方
+          }*/
+        ],
+        /*里程碑信息表*/
+        milestone_list: [
+          /*{
+            project_id: "",//产品ID
+            milestone_event: "暂无信息",//里程碑事件
+            milestone_time: "暂无信息",//里程碑时间
+          }*/
+        ],
+        /*团队成员*/
+        team: [
+          /*{
+            project_id: "",//产品ID
+            team_member_introduce: "暂无信息",//成员介绍
+            team_member_photo: "暂无信息",//成员头像
+            team_member_name: "暂无信息",//成员名字
+            team_member_position: "暂无信息",//成员职位
+          }*/
+        ],
+        loading:false,
+        activeName:'1',
+        isFollow:-1,//人脉筛选绑定
+        myAllCont:[{
+          value: -1,
+          label: '全部'
+        }, {
+          value: 0,
+          label: '全网人脉'
+        }, {
+          value: 1,
+          label: '我的人脉'
+        }
+        ],//人脉筛选条件
+        ProjectMatchInvestors:[
+            {
+           follow_status:0,
+           industry_tag:"暂无匹配",//领域
+           investor_career:"暂无匹配",//职位
+           investor_company:"暂无匹配",//公司
+           investor_desc:"暂无匹配",//介绍
+           investor_id:"0",//id
+           investor_logo_text:"暂无匹配",//名片名字
+           investor_logo_url:"",
+           investor_name:"暂无匹配",//名字
+           investor_type:2,
+           stage_tag:"暂无匹配",//轮次
+           user_id: "0",
+           match:0,//匹配度
+           }
+        ],//买家图谱数据
+        currentPageInvestors:1,//当前第几页(买家图谱)
+        totalInvestors:0,//总数(买家图谱)
+        getInvestors:{},//获取买家图谱请求参数
+        project_id:'NrXjmnWK',
+      }
+    },
+    methods: {
+      getCrawlerTeam(){
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerTeam, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              this.team = res.data.data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+        });
+      },//获取核心成员
+      getCrawlerHistoryFinance(){
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerHistoryFinance, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.$tool.setTime(data,'history_financing_time');
+              this.history_finance = data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
+        });
+
+      },//获取历史融资
+      getCrawlerMilestone(){
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerMilestone, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.$tool.setTime(data,'milestone_time');
+              this.milestone_list = data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
+        });
+      },//获取里程碑
+      getCrawlerNews(){
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerNews, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.$tool.setTime(data,'project_news_time');
+              this.news =data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
+        });
+      },//获取新闻
+      getCrawlerCompeting(){
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerCompeting, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              let data=res.data.data;
+              this.$tool.setTime(data,'competing_goods_Financing_time');
+              this.$tool.setTime(data,'competing_goods_Set_up');
+              this.competing =data;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+
+        });
+      },//获取竞品
+      getCrawlerProject(){
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.$http.post(this.URL.getCrawlerProject, {
+            user_id: localStorage.user_id,
+            com_id: this.com_id
+          })
+            .then(res => {
+              this.getProjectIndustry(res.data.data);
+              this.project = res.data.data;
+              this.loading=false;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.loading=false;
+            })
+        });
+      },//获取项目
+      getProjectIndustry(data){
+        for(let i=0; i<data.length; i++){
+          data[i].project_industry=data[i].project_industry.split(",");
+        }
+      },//设置数据
+
+      /*买家图谱*/
+      setProjectMatchInvestors(arr){
+        let newArr = new Array;
+        arr.forEach((x)=> {
+          let obj = new Object;
+          obj.match=x.match;
+          obj.is_follow=x.is_follow;
+          obj.type=x.type;
+          obj.push_statues=x.push_statues;
+          obj.user_avatar_url=x.card.user_avatar_url;
+          obj.user_avatar_txt=this.$tool.setUrlChange(x.card.user_avatar_url,x.card.user_real_name);
+          obj.user_real_name=x.card.user_real_name;
+          obj.user_company_career=x.card.user_company_career;
+          obj.user_company_name=x.card.user_company_name;
+          obj.user_invest_industry=x.card.user_invest_industry;
+          obj.user_invest_stage=x.card.user_invest_stage;
+          obj.user_id=x.card.user_id;
+          obj.card_id=x.card.card_id;
+          obj.user_eamil=x.card.user_email;
+          obj.investor_id=x.card.investor_id;
+          obj.type=x.type;
+          obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
+          newArr.push(obj);
+        });
+        return newArr;
+      },//设置买家图谱列表
+      getProjectMatchInvestors(){
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          this.getInvestors.user_id=localStorage.user_id;
+          this.getInvestors.user_id="8W1ERo3W";
+          this.currentPageInvestors=1;
+          this.getInvestors.project_id=this.project_id;
+          this.getInvestors.page=1;
+
+          this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+            .then(res=>{
+              if(res.data.status_code==2000000) {
+                let data = res.data.data;
+                this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+                this.totalInvestors = res.data.count;
+                resolve(6);
+              }
+            })
+            .catch(err=>{
+              this.$tool.console(err,2);
+              this.$tool.error("加载超时");
+            })
+        });
+      },//买家图谱列表
+      filterChangeInvestors(page){
+        this.$tool.getTop();
+        this.loading=true;
+        this.getInvestors.user_id=localStorage.user_id;
+//      this.getPra.user_id="2rzyz5vp";
+        this.currentPageInvestors=page;
+        this.getInvestors.project_id=this.project_id;
+        this.getInvestors.page=page;
+        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+          .then(res=>{
+            if(res.data.status_code===2000000) {
+              let data = res.data.data;
+              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.totalInvestors = res.data.count;
+            }
+            this.loading = false;
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.loading=false;
+            this.$tool.error("加载超时");
+          })
+      },//控制买家图谱页码
+      selectFollow(e){
+        this.getInvestors.user_id=localStorage.user_id;
+        this.getInvestors.user_id="EWgX21Zp";
+        this.currentPageInvestors=1;
+        this.getInvestors.project_id=this.project.project_id;
+        this.getInvestors.page=1;
+        this.getInvestors.is_follow=e;
+        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+          .then(res=>{
+            if(res.data.status_code==2000000) {
+              let data = res.data.data;
+              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+              this.totalInvestors = res.data.count;
+            }
+          })
+          .catch(err=>{
+            this.$tool.console(err,2);
+            this.$tool.error("加载超时");
+          })
+      },//筛选买家图谱
+
+      toNewOneKey(data){
+          console.log(data);
+
+      },//跳转到新的一键尽调
+      getCompanyMessage(data,type){
+        let compName=this.compName || data.compName;
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+          if(compName==""){
+            this.$tool.error("请输入公司名称");
+          }else{
+            this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: compName})
+              .then(res => {
+                let data = res.data.data;
+                if(data.length==0) {//搜索不到信息
+                  this.$tool.error("匹配不到当前公司");
+                }else{//搜索到了
+                  this.com_id=data.company.com_id;
+                  this.compName=this.project.pro_company_name;
+                  resolve(1);
+                }
+              })
+              .catch(err => {
+                this.$tool.error("请求失败");
+                this.$tool.console(err);
+              })
+          }
+        });
+      },//获取API请求的数据
+      getRouter(){
+        return new Promise((resolve, reject)=>{
+          //做一些异步操作
+
+          resolve(1);
+        });
+      },//获取API请求的数据
+    },
+    computed: {},
+    components: {
+      companyMessage,
+      business,
+      downloadechart
+    },
+    created(){
+      this.loading=true;
+      this.com_id=12298;
+      this.compName='北京大杰致远信息技术有限公司';
+      this.getCrawlerTeam()
+        .then((data)=>{
+          return this.getCrawlerHistoryFinance();
+        })
+        .then((data)=>{
+          return this.getCrawlerMilestone();
+        })
+        .then((data)=>{
+          return this.getCrawlerNews();
+        })
+        .then((data)=>{
+          return this.getCrawlerCompeting();
+        })
+        .then((data)=>{
+          return this.getCrawlerProject();
+        })
+        .then((data)=>{
+          return this.getProjectMatchInvestors();
+        })
+    },
+
+    watch : {
+      companyId : function(e){
+        /*this.loading=true;
+        this.com_id=e;
+        this.compName='';
+        this.getCrawlerTeam()
+          .then((data)=>{
+            return this.getCrawlerHistoryFinance();
+          })
+          .then((data)=>{
+            return this.getCrawlerMilestone();
+          })
+          .then((data)=>{
+            return this.getCrawlerNews();
+          })
+          .then((data)=>{
+            return this.getCrawlerCompeting();
+          })
+          .then((data)=>{
+            return this.getCrawlerProject();
+          })*/
+      },//获取公司id
+    }
+  }
+</script>
+
+<style lang="less">
+  @import '../../assets/css/onekeyresearchAlone.less';
+  .el-carousel__item img {
+    width: 100%;
+  }
+
+</style>

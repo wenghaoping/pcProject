@@ -212,13 +212,15 @@ export default {
           this.$store.state.pushProject.user = this.user;
           this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
           this.$store.state.pushProject.pushMessage.card_id = this.user.card_id;
-          this.$store.state.pushProject.pushMessage.investor_id=this.user.investor_id;
+//          this.$store.state.pushProject.pushMessage.investor_id=this.user.investor_id;
           this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
           this.$store.state.pushProject.pushMessage.title = this.email.title;
           this.$store.state.pushProject.pushMessage.body = this.email.body;
           this.$store.state.pushProject.pushMessage.project_ids = new Array;
           this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
           this.$store.state.pushProject.pushMessage.type=this.user.type;
+/*          console.log(this.$store.state.pushProject.pushMessage)
+          console.log(this.user)*/
           this.$store.state.pushProject.email.title = this.email.title;
           this.$store.state.pushProject.email.body = this.email.body;
           this.$emit('changeall', false);
@@ -247,6 +249,7 @@ export default {
             pushData.type=this.userMessage.type || '';
             pushData.project_ids=new Array;
             pushData.project_ids.push(this.projectRadio);
+//            alert("过")
             this.loading=true;
             this.$http.post(this.URL.pushUser, pushData)
               .then(res => {

@@ -40,19 +40,20 @@ const followUp = r => require.ensure([], () => r(require('@/views/workBench/foll
 //小程序页面
 const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRoutine/index.vue')), 'SmallRoutine');
 
-
+/*======================================一键尽调单独页面=========================================*/
+const onekeyResearchAlone = r => require.ensure([], () => r(require('@/views/onekeyResearchAlone/onekeyresearchAlone.vue')), 'onekeyResearchAlone');
 //测试路由
 // import createForm from '@/test/createForm.vue'
 // import watch from '@/test/watch.vue'
 // import jump from '@/test/jump.vue'
 // import selectbox from '@/test/dialog.vue'
-import dialog2 from '@/test/dialog2.vue'
+// import dialog2 from '@/test/dialog2.vue'
 // import alertUpload from '@/test/alertUpload.vue'
 // import upload from '@/test/upload.vue'
 // import open from '@/test/open.vue'
-
-const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
-const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vue')), 'checkArray')
+//
+// const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
+// const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vue')), 'checkArray')
 
 
 /*配置路由*/
@@ -103,6 +104,9 @@ export default [
   },
   {
     path: '/identityDetail', name: 'identityDetail', component:identityDetail
+  },
+  {
+    path: '/onekeyresearchalone', name: 'onekeyResearchAlone', component:onekeyResearchAlone
   },
 /*  {
     path: '/test', name: 'test', component: checkone

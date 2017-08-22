@@ -9,10 +9,14 @@
 export default
 {
   /*总地址,下载用的*/
-  weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
-  weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传
+/*  weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
+  weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传*/
   // weitianshi:"http://192.168.9.74",//下载用
   // weitianshiLine:"http://192.168.9.74",//上传接口汇总
+  // weitianshi:"https://pc.debug.weitianshi.cn/",//上线接口下载用
+  // weitianshiLine:"https://pc.debug.weitianshi.cn/",//上线接口上传
+   weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
+  weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
 
   /*上传用*/
 
@@ -129,4 +133,8 @@ export default
   pushCount:'/api/v/project/pushCount',//推送剩余次数
   getConnectUserSortByMatch:'api/v/project/getConnectUserSortByMatch',//推送项目时获取我的人脉
   getAllConnectUserSortByMatch:'api/v/project/getAllConnectUserSortByMatch',//推送项目时获取全网人脉
+
+
+  /*使用*/
+  getProjectQr:'https://wx.weitianshi.cn/api/wx/getProjectQr',//
 }

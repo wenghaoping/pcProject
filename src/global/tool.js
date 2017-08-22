@@ -235,7 +235,8 @@ const tool={
   formatDateTime(timeStamp) {
     if(timeStamp=='') return '';
     var date = new Date();
-    date.setTime(timeStamp * 1000);
+    if(timeStamp.length>11) date.setTime(timeStamp)
+    else date.setTime(timeStamp * 1000);
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
     m = m < 10 ? ('0' + m) : m;
@@ -365,9 +366,9 @@ const tool={
   },
 
 
-  console(text,data) {
+  console() {
     let type=false;//true代表开发环境,false代表上线环境
-    if(type) console.log(text,data);
+    if(type) console.log(...arguments);
   },//console控制
 
 }

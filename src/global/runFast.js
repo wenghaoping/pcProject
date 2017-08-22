@@ -25,11 +25,22 @@ function add() {
   })
   return getOneUserInfo;
 }
+
 add()
 .then((data)=>{
   return this.getWxProjectCategory();
 })
 
+window.addEventListener('scroll',()=> {
+  var sh = document.documentElement.scrollHeight || document.body.scrollHeight ;
+  var ch = window.innerHeight || document.documentElement.clientHeight;
+  var t = document.documentElement.scrollTop || document.body.scrollTop;
+  if( sh>ch && t >= ch ) {
+    this.isHidden = false;
+  } else {
+    this.isHidden = true;
+  }
+})
 /*================输入框================*/
 // <el-input v-model="input" placeholder="请输入内容"></el-input>
 

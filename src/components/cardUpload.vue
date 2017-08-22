@@ -27,7 +27,7 @@
     export default {
         data () {
             return {
-              uploadAddress:this.URL.weitianshiLine+"api/v/user/uploadConnectCard",//上传地址
+              uploadAddress:this.URL.weitianshiLine+"api/user/uploadCard",//上传地址
               uploadData:{
                 user_id:localStorage.user_id,
                 authenticate_id:localStorage.authenticate_id,

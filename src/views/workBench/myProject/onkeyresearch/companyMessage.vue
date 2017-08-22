@@ -110,7 +110,7 @@
           company_name: "",//公司名称杭州投着乐网络科技有限公司
           company_type: "",//企业类型企业类型：有限责任公司(自然人投资或控股)
           company_registered_capital: "",//注册资本ff
-          company_Operating_state: "",//经营状态ss
+          company_Operating_state: "暂无信息",//经营状态ss
           company_business_number: "",//工商注册号123
           company_legal_representative: "",//法定代表人jdjjf
           company_address: "",//公司地址浙江省杭州市西湖区文三路90号东部软件园一楼之韵社

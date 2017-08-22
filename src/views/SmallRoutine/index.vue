@@ -143,10 +143,11 @@ export default {
     height: 60px;
     width: 90%;
     background: #40587a;
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     margin-left: 136px;
+    z-index: 9999;
   }
 
 }

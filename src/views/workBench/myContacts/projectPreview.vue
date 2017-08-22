@@ -523,7 +523,7 @@ export default {
         })
     },//获取项目详情数据
     pushProject(){
-      console.log(this.comeFrom);
+//        console.log(this.pushMessage)
       if(this.comeFrom==='contacts'){
         this.$http.post(this.URL.pushUser, this.pushMessage)
         .then(res => {
@@ -532,8 +532,9 @@ export default {
             this.$tool.success("推送成功");
             this.$emit('changeCloseProjectpush',false);
             this.$emit('changeCon', false);
+            this.$emit("changeCloseProjectpush",false);
           }else{
-            this.$tool.error(res.data.error_msg)
+//            this.$tool.error(res.data.error_msg)
           }
         })
         .catch(err => {
@@ -542,7 +543,23 @@ export default {
         })
       }else{
         this.$emit('previewPush',true);
-        this.$emit('changeCon', false);
+//        this.$emit('changeCon', false);
+        this.$http.post(this.URL.pushUser, this.pushMessage)
+          .then(res => {
+            if(res.data.status_code===2000000){
+              let data=res.data.data;
+              this.$tool.success("推送成功");
+              this.$emit('changeCloseProjectpush',false);
+              this.$emit('previewPush',false);
+              this.$emit('changeCon', false);
+            }else{
+//            this.$tool.error(res.data.error_msg)
+            }
+          })
+          .catch(err => {
+            this.$tool.console(err);
+            this.$tool.success("推送失败");
+          })
       }
     },//推送项目
   },

@@ -1,5 +1,5 @@
 <template>
-  <div id="editproject" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中" class="clearfix">
+  <div id="editproject" class="clearfix" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <div id="wid" class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
@@ -1786,18 +1786,21 @@
         };
       },
       handleSelect(item) {
+          this.loading=true;
         this.companyTitle = item.value;
         this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
           .then(res => {
             let data = res.data.data;
-            this.$tool.console(this.$tool.getToObject(data))
+//            console.log(this.$tool.getToObject(data))
             this.queryData = data;
+            this.dialogVisible = true;
+            this.loading=false;
           })
           .catch(err => {
             this.$tool.error("获取失败");
             this.$tool.console(err);
           });
-        this.dialogVisible = true;
+
       },//选择了搜索出来的数据后
 
       radiochange(label){
@@ -2301,7 +2304,11 @@
         this.loading=true;
         this.dialogVisible = false;
         if(this.project.pro_intro=="") this.project.pro_intro = this.queryData.project_info.project_introduce || '';
-        if(this.project.pro_website=="") this.project.pro_website = this.queryData.project_info.project_website || '';
+        if(this.project.pro_website=="") {
+            this.queryData.project_info={};
+            this.queryData.project_info.project_website='';
+            this.project.pro_website = this.queryData.project_info.project_website;
+        }
         if(this.team.core_users.length==0) this.team.core_users=this.getTeamSync(this.queryData.team);
         if(this.financing.pro_history_finance.length==0) this.financing.pro_history_finance = this.getFinancingMoney(this.queryData.history_finance);
         if(this.milepost.pro_develop.length==0) this.milepost.pro_develop=this.getMilestone(this.queryData.milestone_list);
