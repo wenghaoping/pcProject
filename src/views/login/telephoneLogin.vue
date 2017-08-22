@@ -27,7 +27,7 @@
     methods: {
 //    获取验证码
       getCode(){
-        if (!this.$tool.checkPhoneNubmer(this.telephone)) {
+        if (!this.$tool.checkPhoneNumber(this.telephone)) {
           this.$tool.error('请正确输入手机号码')
         } else {
           this.$http.post(this.URL.authCaptcha, {

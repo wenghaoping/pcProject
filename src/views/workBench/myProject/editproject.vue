@@ -359,13 +359,14 @@
                         :prop="'core_users.' + index + '.ct_member_name'"
                         v-for="(member, index) in team.core_users"
                         :key="member.index"
-                        :rules="[{min: 2, message: '最少2个字符',required: true, message: '成员姓名不能为空', trigger: 'blur'}]">
+                        :rules="[{required: true, message: '成员姓名不能为空', trigger: 'blur'},{min: 1, max:20,message: '最大20个字符'}]">
                         <el-input v-model="member.ct_member_name" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="4">
                       <el-form-item
                         label="成员职位"
+                        :rules="{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}"
                         :prop="'core_users.' + index + '.ct_member_career'"
                         v-for="(member, index) in team.core_users"
                         :key="member.index">
@@ -377,13 +378,15 @@
                         label="股权比例"
                         :prop="'core_users.' + index + '.stock_scale'"
                         v-for="(member, index) in team.core_users"
-                        :key="member.index">
-                        <el-input v-model.number="member.stock_scale" placeholder="请输入"></el-input>
+                        :key="member.index"
+                        :rules="ScaleRule">
+                        <el-input v-model.number="member.stock_scale" placeholder="请输入数值"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="11">
                       <el-form-item
                         label="成员介绍"
+                        :rules="{min: 1, max:500,message: '最大500个字符',trigger: 'blur',}"
                         :prop="'core_users.' + index + '.ct_member_intro'"
                         v-for="(member, index) in team.core_users"
                         :key="member.index">
@@ -434,6 +437,7 @@
                     <el-col :span="12">
                       <el-form-item
                         label="资金用途"
+                        :rules="{min: 1, max:500,message: '最大500个字符',trigger: 'blur'}"
                         prop="pro_finance_use">
                         <el-input v-model="financing.pro_finance_use" placeholder="请输入"></el-input>
                       </el-form-item>
@@ -444,13 +448,14 @@
                       <el-form-item
                         label="投后股份( % )"
                         prop="pro_finance_stock_after"
-                        :rules="finance">
+                        :rules="[NumberRule,{min: 1, max:100,message: '最大100个字符',trigger: 'blur',}]">
                         <el-input v-model="financing.pro_finance_stock_after" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
                         label="项目估值( 万 )"
+                        :rules="NumberRule"
                         prop="pro_finance_value">
                         <el-input v-model="financing.pro_finance_value" placeholder="请输入具体数值，如：1000"></el-input>
                       </el-form-item>
@@ -494,7 +499,7 @@
                         :prop="'pro_history_finance.' + index + '.pro_finance_scale'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
-                        :rules="[{required: true, message: '融资金额不能为空', trigger: 'change'}]">
+                        :rules="[NumberRule,{required: true, message: '融资金额不能为空', trigger: 'change'}]">
                         <el-input v-model="history.pro_finance_scale" placeholder="输入金额"></el-input>
                       </el-form-item>
                     </el-col>
@@ -504,7 +509,7 @@
                         :prop="'pro_history_finance.' + index + '.pro_finance_investor'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
-                        :rules="[{required: true, message: '投资方不能为空', trigger: 'blur'}]" class="width360">
+                        :rules="[{required: true, message: '历史投资方不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]" class="width360">
                         <el-input v-model="history.pro_finance_investor" placeholder="请添加"></el-input>
                       </el-form-item>
                     </el-col>
@@ -557,7 +562,7 @@
                         :prop="'pro_develop.' + index + '.dh_event'"
                         v-for="(milePostSomeThing, index) in milepost.pro_develop"
                         :key="milePostSomeThing.index"
-                        :rules="[{min: 3, message: '最少2个字符',required: true, message: '请输入事件', trigger: 'blur'}]" class="width360">
+                        :rules="[{required: true, message: '事件不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]" class="width360">
                         <el-input v-model="milePostSomeThing.dh_event" placeholder="请添加"></el-input>
                       </el-form-item>
                     </el-col>
@@ -604,7 +609,7 @@
                       <el-form-item
                         label="签约佣金（%）"
                         prop="commission"
-                        :rules="[NumberRule,{min: 1, max:100,message: '最大100个字符',trigger: 'blur',}]">
+                        :rules="ScaleRule">
                         <el-input v-model="pro_FA.commission" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
@@ -612,7 +617,7 @@
                       <el-form-item
                         label="股权赠与（%）"
                         prop="stock_right"
-                        :rules="[{message: '估值必须为数字值'}]">
+                        :rules="ScaleRule">
                         <el-input v-model="pro_FA.stock_right" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
@@ -622,7 +627,7 @@
                       <el-form-item
                         label="其他权益（%）"
                         prop="stock_other"
-                        :rules="[{message: '比例必须为数字值'}]">
+                        :rules="ScaleRule">
                         <el-input v-model="pro_FA.stock_other" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
@@ -630,7 +635,7 @@
                       <el-form-item
                         label="跟投权（%）"
                         prop="stock_follow"
-                        :rules="[{message: '估值必须为数字值'}]">
+                        :rules="ScaleRule">
                         <el-input v-model="pro_FA.stock_follow" placeholder="请输入具体数值，如：10"></el-input>
                       </el-form-item>
                     </el-col>
@@ -821,7 +826,7 @@
             if (!this.$tool.checkNumber(value)) {
               callback(new Error('请输入数字值'));
             } else {
-              if (!this.$tool.checkPhoneNubmer(value)) {
+              if (!this.$tool.checkPhoneNumber(value)) {
                 callback(new Error('请输入正确的手机号'));
               }else{
                 callback();
@@ -844,7 +849,20 @@
         }else{
           callback();
         }
-      };//电话号码正则判断
+      };//数字正则判断
+      var checkHundred1 = (rule, value, callback) => {
+        if (!this.$tool.getNull(value)) {
+          setTimeout(() => {
+            if (parseFloat(value)>100){
+              callback(new Error('请输入小于100的值'));
+            } else {
+              callback();
+            }
+          }, 100);
+        }else{
+          callback();
+        }
+      };//数值1-100判断
       return {
         uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
         uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
@@ -1051,6 +1069,7 @@
         ],
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
         NumberRule: { validator: checkNumber, trigger: 'blur' },
+        ScaleRule:{ validator:checkHundred1, trigger:'blur'},
         one:false,//第一次进来的时候
         submitButton:false,//是否允许提交false允许/true不允许
         uploadLoading:false,//BP上传动画
@@ -1158,7 +1177,7 @@
             this.$tool.error('请输入数字值');
             check=false;
           } else {
-            if (!this.$tool.checkPhoneNubmer(value)) {
+            if (!this.$tool.checkPhoneNumber(value)) {
               this.$tool.error('请输入正确的手机号');
               check=false;
             }else{
