@@ -326,7 +326,7 @@ export default {
           if (!this.$tool.checkNumber(value)) {
             callback(new Error('请输入数字值'));
           } else {
-            if (!this.$tool.checkPhoneNubmer(value)) {
+            if (!this.$tool.checkPhoneNumber(value)) {
               callback(new Error('请输入正确的手机号'));
             }else{
               callback();
@@ -504,7 +504,7 @@ export default {
           this.$tool.error('请输入数字值');
           check=false;
         } else {
-          if (!this.$tool.checkPhoneNubmer(value)) {
+          if (!this.$tool.checkPhoneNumber(value)) {
             this.$tool.error('请输入正确的手机号');
             check=false;
           }else{
