@@ -471,8 +471,13 @@
       /*全部保存按钮*/
       allSave(){
         if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){}
+        else if(this.$tool.checkLength1(this.project.pro_name)){this.$tool.error("项目名称不超过40个字")}
+        else if(this.$tool.checkLength1(this.project.pro_company_name)){this.$tool.error("公司名称不超过40个字")}
         else if(this.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
+        else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
         else if(this.getNull(this.project.pro_goodness)){this.$tool.error("项目亮点不能为空")}
+        else if(this.$tool.checkLength2(this.project.pro_goodness)){this.$tool.error("项目亮点不能超过500字")}
+
         else if(this.submitForm('project')) {
           this.project.user_id=localStorage.user_id;
           this.project.project_id=this.uploadShow.project_id;
