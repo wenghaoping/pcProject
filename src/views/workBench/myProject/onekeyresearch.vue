@@ -1,7 +1,7 @@
 <template>
   <div id="research" >
     <!--===========================================一键尽调弹窗=============================================-->
-    <el-dialog :visible="dialogVisible" custom-class="dialog" :before-close="handleClose"
+    <el-dialog :visible="searchDisplay" custom-class="dialog" :before-close="handleClose"
                close-on-press-escape close-on-click-modal>
       <div class="contain-grid" style="width: 893px;" v-loading="loading"
            element-loading-text="拼命加载中1">
@@ -194,7 +194,7 @@
   import business from './onkeyresearch/business.vue'
   import downloadechart from './onkeyresearch/downloadEchart.vue'
   export default {
-    props: ["dialogVisible","companyId","compName"],
+    props: ["searchDisplay","companyId","compName"],
     data () {
       return {
         compname: "",//一键尽调公司的名称

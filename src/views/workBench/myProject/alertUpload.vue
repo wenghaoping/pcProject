@@ -1,6 +1,6 @@
 <template>
   <div id="alertUpload" v-loading.fullscreen.lock="loading" element-loading-text="上传中">
-    <el-dialog title="批量上传BP" :visible="dialogUploadVisible" :before-close="handleClose" :show-close="showList">
+    <el-dialog title="批量上传BP" :visible="uploadDisplay" :before-close="handleClose" :show-close="showList">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
                    :action="uploadAddress"
@@ -110,7 +110,7 @@
 
 <script type="text/ecmascript-6">
 export default {
-  props: ["dialogUploadVisible"],
+  props: ["uploadDisplay"],
   data () {
     return {
       uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
@@ -145,7 +145,7 @@ export default {
   methods: {
     //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
     handleChange(file, fileList) {
-      this.$emit('changeupload',false);
+      this.$emit('uploadDisplayChange',false);
       this.dialogUpload2Visible=true;
       this.subButtonCheck(this.dateForm.domains);
     },
@@ -294,23 +294,20 @@ export default {
               this.$tool.console(err)
             })
           }
-          this.$emit('changeupload',false);
+          this.$emit('uploadDisplayChange',false);
           this.dialogUpload2Visible=false;
           this.dateForm.domains=[];
           this.fileList=[];
-          conosle.log("删除啦")
+//          conosle.log("删除啦")
         })
         .catch(_ => {
 
         });
     },
-//    dialogVisiblechange() {
-//      this.$emit('changeupload',false)
-//    },
     handleClose(done) {
       this.$confirm('确认关闭？关闭后所有数据清空')
         .then(_ => {
-          this.$emit('changeupload',false);
+          this.$emit('uploadDisplayChange',false);
           this.dialogUpload2Visible=false;
           done()
         })

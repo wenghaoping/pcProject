@@ -734,7 +734,7 @@
       </div>
     </div>
     <!--添加运营状态的弹窗-->
-    <el-dialog title="添加运营状态" :visible.sync="dialogFormVisible" :show-close="showList">
+    <el-dialog title="添加运营状态" :visible.sync="addStateDisplay" :show-close="showList">
       <el-form :model="form">
         <el-form-item label="运营状态" :label-width="formLabelWidth">
           <el-input v-model="form.state" auto-complete="off"></el-input>
@@ -746,7 +746,7 @@
       </div>
     </el-dialog>
     <!--文件分组的弹窗-->
-    <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
+    <el-dialog title="文件分组设置" :visible.sync="setFileDisplay" :show-close="showList">
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
                       :rules="[{required: true, message: '分组不能为空', trigger: 'blur',max: 40, message: '最多40个字符'}]">
@@ -770,7 +770,7 @@
         </el-radio-group>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFileVisible = false">取 消</el-button>
+        <el-button @click="setFileDisplay = false">取 消</el-button>
         <el-button type="primary" @click="saveGroupChange">保　存</el-button>
       </div>
     </el-dialog>
@@ -795,9 +795,11 @@
   export default {
     data(){
       return {
+        addStateDisplay: false,
+        setFileDisplay: false,
+
         uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
         uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
-        screenWidth: document.body.clientWidth,  // 屏幕大小变动
         num:0,//一次上传最多选5个
         project_id: "",//项目Id全局保存
         planList: [],//商业计划书上传列表
@@ -954,8 +956,7 @@
         tags_pro: [],
         tags_source:[],//项目来源
         formLabelWidth: '120px',
-        dialogFormVisible: false,
-        dialogFileVisible: false,
+
         /*运营状态*/
         form: {
           state: ''
@@ -995,32 +996,12 @@
         showList: false,
         loadingcheck:false,
         statusLast:0,
-        finance:[
-          { validator: checkFinance, trigger: 'blur' }
-        ],
         one:false,//第一次进来的时候
         submitButton:false,//是否允许提交false允许/true不允许
         uploadLoading:false,//BP上传动画
 
 
       };
-      var checkFinance = (rule, value, callback) => {
-          this.$tool.console(value);
-         if (!value) {
-          return callback(new Error('不能为空'));
-         }
-         /*setTimeout(() => {
-           if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-           } else {
-             if (value < 18) {
-              callback(new Error('必须年满18岁'));
-             } else {
-              callback();
-             }
-           }
-         }, 1000);*/
-       };
     },
     computed: {
       /*项目完整度判断*/
@@ -1623,7 +1604,7 @@
         });
       },//添加分组设置的分组选项
       cancelGroupChange(){
-        this.dialogFormVisible = false;
+        this.addStateDisplay = false;
         this.project.pro_status = this.statusLast;
       },//取消后
       saveGroupChange(){//file_id type_id user_id
@@ -1638,7 +1619,7 @@
           .then(res => {
             if (index !== -1) {
               this.uploadShow2.lists[index].bp_type = type_name;
-              this.dialogFileVisible = false
+              this.setFileDisplay = false
             }
           })
           .catch(err => {
@@ -1650,7 +1631,7 @@
         this.groups.type=item.type;
         var index = this.uploadShow2.lists.indexOf(item)
         this.groups.index = index;
-        this.dialogFileVisible = true;
+        this.setFileDisplay = true;
 
       },//获取分组的位置
 
@@ -1724,7 +1705,7 @@
 
       radiochange(label){
         if (label == "自定义添加") {
-          this.dialogFormVisible = true;
+          this.addStateDisplay = true;
         }
       },//*控制添加radio
       /*添加运营状态*/
@@ -1737,7 +1718,7 @@
             newState.value = this.form.state;
             this.project.companystate = this.form.state;
             this.company_status.splice(length - 1, 0, newState);
-            this.dialogFormVisible = false;
+            this.addStateDisplay = false;
             this.project.pro_status=data.status_id;;
             this.form.state="";
           })

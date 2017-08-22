@@ -93,12 +93,10 @@
           </el-input>
         </div>
         <div class="btns-box">
-          <el-button type="primary" @click="dialogUploadVisible = true">批量上传项目</el-button>
+          <el-button type="primary" @click="uploadDisplay = true">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
 
-          <alertUpload :dialog-upload-visible="dialogUploadVisible" v-on:changeupload="dialogUploadVisiblechange" @reload="handleIconClick">
 
-          </alertUpload>
         </div>
       </div>
       <div class="top-lists" style="cursor: pointer">
@@ -320,6 +318,10 @@
       </div>
     </div>
 
+    <!--上传弹框-->
+    <alertUpload :upload-display="uploadDisplay"
+                 @uploadDisplayChange="uploadDisplayChange"
+                 @reload="handleIconClick"></alertUpload>
     <!--写跟进弹框-->
     <addfollow :follow-display="followDisplay" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"
                @closeFollow="closeFollow"></addfollow>
@@ -401,7 +403,7 @@
         pro_scaleFilters:[/*{ text: '3000万', value: '3000万' }*/],
         stateCheck:false,//状态单选
         searchinput:'',//搜索输入框
-        dialogUploadVisible: false,//第一个弹窗的控制
+        uploadDisplay: false,//上传弹框控制
         node0:true,
         node1:false,
         node2:false,
@@ -453,9 +455,9 @@
       createProject(){
         this.$router.push({ name: 'creatproject'})
       },//跳转到创建项目页面
-      dialogUploadVisiblechange(msg){
-        this.dialogUploadVisible=msg;
-      },//控制弹窗
+      uploadDisplayChange(msg){
+        this.uploadDisplay=msg;
+      },//控制上传弹窗
       /*跟进*/
       addFollow(index, row){
         this.followDisplay=true;

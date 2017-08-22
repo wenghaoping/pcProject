@@ -464,12 +464,13 @@
       </div>
     </div>
     <!--一键尽调弹窗-->
-    <research :dialog-visible="dialogVisible" :company-id="companyid" :comp-name="companyname"
-              @changeall="dialogVisiblechange" @changeallin="dialogVisiblechangeIn" lock-scroll>
+    <research :search-display="searchDisplay" :company-id="companyid" :comp-name="companyname"
+              @changeall="dialogVisiblechange"
+              @changeallin="dialogVisiblechangeIn" lock-scroll>
     </research>
 
     <!--尽调搜索弹窗-->
-    <el-dialog title="一键尽调" :visible="dialogSearchVisible">
+    <el-dialog title="一键尽调" :visible="companySearchDisplay">
       <el-form label-position="top" label-width="140px">
         <el-form-item label="请输入你要尽调的公司">
           <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick" ></el-input><!--@change="searchChange"-->
@@ -481,8 +482,8 @@
     </el-dialog>
 
     <!--人脉详情弹窗-->
-    <alertcontactsdetail :dialog-con-visible="dialogConVisible" :cardid="cardid" :userid="userid"
-                         @changeCon="dialogConchange"></alertcontactsdetail>
+    <alertcontactsdetail :contact-display="contactDisplay" :cardid="cardid" :userid="userid"
+                         @closeContact="closeContact"></alertcontactsdetail>
 
     <!--写跟进弹框-->
     <addfollow :follow-display="followDisplay"
@@ -509,9 +510,6 @@
                     @closePreviewANDProjectPush="closePreviewANDProjectPush"
                     @previewPush="previewPush"></projectpreview>
 
-    <!--自定义添加-->
-    <customer-add-contacts :dialog-form-visible="dialogFormVisible"></customer-add-contacts>
-
   </div>
 </template>
 
@@ -520,18 +518,20 @@
   import folowup from './followUpDetail.vue'
   import filemanagement from './fileManagement.vue'
   import alertcontactsdetail from './alertContactsDetail.vue'
-  import alertprojectdetail from '../../../components/alertProjectDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
   import projectpush2 from './projectPush2.vue'
-  import customerAddContacts from '../../../components/customerAddContacts.vue'
   import projectpreview from '../myContacts/projectPreview.vue'
   import projectpush from '../myContacts/projectPush.vue'
   export default {
     data(){
       return {
-        dialogFormVisible:true,
         projectPushDisplay:false,//项目推送弹框,人脉入口
         projectPushDisplay2:false,//项目推送弹框,项目入口
+        searchDisplay: false,//一键尽调弹框
+        companySearchDisplay:false,//公司搜索弹框
+        contactDisplay:false ,//人脉详情弹窗
+
+
         companyname:"",//公司名称给一键尽调用的
         companyid:"",//公司id给一键尽调用的
         cardid:"",//人脉详情弹框用(点击的那个人的cardid)
@@ -542,10 +542,6 @@
         },//项目名称,ID
         followDisplay:false,//添加意向投资人
         show: "detail",
-        dialogVisible: false,//一键尽调弹框
-        dialogSearchVisible:false,//公司搜索弹框
-
-        dialogConVisible:false ,//人脉详情弹窗
         searchName:"",
         form: {
           name: '',
@@ -845,10 +841,8 @@
       folowup,
       filemanagement,
       alertcontactsdetail,
-      alertprojectdetail,
       addfollow,
       projectpush2,
-      customerAddContacts,
       projectpreview,
       projectpush
     },
@@ -901,21 +895,21 @@
       },//搜索公司
       goOnkey(){
         if(this.project.pro_company_name==""){
-          this.dialogSearchVisible = true;
+          this.companySearchDisplay = true;
         }else{
           this.loading=true;
           this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.project.pro_company_name})
             .then(res => {
               let data = res.data.data;
               if(data.length==0) {//搜索不到信息
-                this.dialogSearchVisible = true;
+                this.companySearchDisplay = true;
                 this.searchName=this.project.pro_company_name;
                 this.companyname=this.project.pro_company_name;
                 this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
                 this.loading=false;
               }else{//搜索到了
                 this.loading=false;
-                this.dialogVisible = true;
+                this.searchDisplay = true;
                 this.companyid=data.company.com_id;
                 this.companyname=this.project.pro_company_name;
               }
@@ -931,7 +925,7 @@
         else {
           this.companyid=data.com_id;
           this.companyname=data.company_name;
-          this.dialogVisible = true;
+          this.searchDisplay = true;
         }
       },//点击下拉选择公司后
       handleIconClick(){
@@ -945,16 +939,16 @@
         else if(this.activeFrom==2) this.$router.push({name: 'followUp',query: {activeTo: 2}})//路由传参
       },//返回上一层
       dialogVisiblechange(msg){
-        this.dialogVisible=msg;
+        this.searchDisplay=msg;
       },//传递给一键尽调窗口
       openPreview(msg){
         this.previewDisplay=true;
       },//打开预览弹框
       dialogVisiblechangeIn(msg){
-        this.dialogSearchVisible=msg;
+        this.companySearchDisplay=msg;
       },//传递给一键尽调搜索窗口
-      dialogConchange(msg){
-        this.dialogConVisible=msg;
+      closeContact(msg){
+        this.contactDisplay=msg;
       },//人脉详情弹窗关闭
 
       closeProjectPush(msg){
@@ -1057,7 +1051,7 @@
       toDetail(data){
         this.cardid=data.card_id;
         this.userid=data.user_id;
-        this.dialogConVisible=true;
+        this.contactDisplay=true;
       },//打开人脉详情弹窗
       selectChange2(e){
         if(this.takechange){

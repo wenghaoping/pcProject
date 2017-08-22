@@ -1,7 +1,9 @@
 <template>
-  <div id="alertContactsDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="alertContactsDetail" >
     <!--===========================================人脉详情弹窗=============================================-->
-    <el-dialog :visible="dialogConVisible" custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="contactDisplay" custom-class="dialogCon" :before-close="closeContact" close-on-press-escape close-on-click-modal
+               v-loading="loading"
+               element-loading-text="拼命加载中">
       <div class="contain-grid contain-center3 fl">
         <div class="main-box clearfix">
           <div class="item-lists clearfix">
@@ -155,12 +157,11 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["dialogConVisible","cardid","userid"],
+    props: ["contactDisplay","cardid","userid"],
     data () {
       return {
         loading:false,//加载动画
         loading1:false,//加载动画2
-
         listShow:true,//项目库
         currentPage:1,//当前第几页
         totalData:0,//总数
@@ -227,11 +228,8 @@
       }
     },
     methods: {
-      handleClose(){
-        this.$emit('changeCon', false)
-      },
-      dialogVisibleTo(){
-        this.$emit('changeCon', false)
+      closeContact(){
+        this.$emit('closeContact', false)
       },
       openDiv(v){
         this[v] = true;
@@ -414,7 +412,7 @@
       cardid : function(e){
         this.pro_id=e;
       },//获取项目id
-      dialogConVisible : function (e){
+      contactDisplay : function (e){
         for(let key in this.contacts){
           if(this.$tool.isArray(this.contacts[key])){
             this.contacts[key]=[];

@@ -1,6 +1,6 @@
 <template>
   <div id="alertProjectDetail" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <el-dialog :visible="dialogVisiblePro"  :before-close="handleClose" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="alertProjectDetailDisplay"  :before-close="handleClose" close-on-press-escape close-on-click-modal>
       <!--弹窗上半部分-->
       <div class="up-floor item-lists item-lists-top clearfix" style="background: white;">
         <div class="item-lists-inner-left">
@@ -225,7 +225,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["dialogVisiblePro","proid"],
+    props: ["alertProjectDetailDisplay","proid"],
     data () {
       return {
         loading:false,//加载动画
@@ -421,7 +421,7 @@
       },//下载文件
       //关闭弹窗
       handleClose(){
-        this.$emit('changeCon2', false);
+        this.$emit('changeAlertProjectDetail', false);
       },
       //获取项目详情数据
       getProjectDetail () {
@@ -462,7 +462,7 @@
 
     },
     watch : {
-      dialogVisiblePro : function (e) {
+      alertProjectDetailDisplay : function (e) {
           if(e){
             this.pro_id =this.proid
             this.getProjectDetail();

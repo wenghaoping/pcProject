@@ -34,7 +34,7 @@
             <div class="item">
               <div class="block clearfix" style="margin-bottom: 0px;height: 30px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
-                <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editYag.png">修改</span>
+                <span class="edit fr" @click="setTagDisplay = true"><img class="img" src="../../../assets/images/editYag.png">修改</span>
               </div>
               <div class="block" style="">
                 <div class="tag" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
@@ -317,7 +317,7 @@
     <!--标签设置弹框-->
     <el-dialog
       title="标签设置"
-      :visible.sync="dialogVisibleTag"
+      :visible.sync="setTagDisplay"
       :show-close="close"
       size="tiny">
       <el-select
@@ -339,14 +339,14 @@
       </el-select>
       <div class="tagTitle">准确设置项目标签便于查找，并参与项目匹配度计算</div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisibleTag = false">取 消</el-button>
+        <el-button @click="setTagDisplay = false">取 消</el-button>
         <el-button type="primary" @click="addTag">确 定</el-button>
       </span>
     </el-dialog>
 
     <!--项目详情弹窗-->
-    <alertprojectdetail :dialog-visible-pro="dialogVisiblePro" :proid="pro_id"
-                        @changeCon2="dialogVisiblechangeIn"></alertprojectdetail>
+    <alertprojectdetail :alert-project-detail-display="alertProjectDetailDisplay" :proid="pro_id"
+                        @changeAlertProjectDetail="changeAlertProjectDetail"></alertprojectdetail>
 
     <!--写跟进弹框-->
     <addfollow :follow-display="followDisplay" :cardid="contacts.card_id" :userid="contacts.user_id"
@@ -379,11 +379,11 @@
       return {
         close:false,
         /*设置标签*/
-        dialogVisibleTag:false,//标签弹框设置
+        setTagDisplay:false,//标签弹框设置
         followDisplay:false,//添加更近弹框
         previewDisplay:false,//项目预览弹窗
         projectPushDisplay:false,//项目推送弹框,完整版
-        dialogVisiblePro:false,//控制项目详情弹窗
+        alertProjectDetailDisplay:false,//控制项目详情弹窗
         tagsValue:[],//标签弹框数据绑定
         addTags:[{
           value: '',
@@ -639,7 +639,7 @@
       toDetail(data){
 //          console.log(data);
           this.pro_id=data.project_id;
-        this.dialogVisiblePro=true;
+        this.alertProjectDetailDisplay=true;
       },//项目详情弹窗
       addFollow(){
         this.followDisplay=true;
@@ -650,9 +650,8 @@
         this.getEnjoyProjects();
         this.getEchartData();
       },//关闭添加意向项目
-      dialogVisiblechangeIn(msg){
-        this.dialogVisiblePro=msg;
-//      this.previewDisplay=true;
+      changeAlertProjectDetail(msg){
+        this.alertProjectDetailDisplay=msg;
       },//项目详情弹窗关闭函数
 
       closePreviewANDProjectPush(msg){
@@ -820,7 +819,7 @@
         .then(res => {
           this.loading=false;
           this.$tool.success("设置成功");
-          this.dialogVisibleTag = false;
+          this.setTagDisplay = false;
           this.gettags_user();
           setTimeout(()=>{this.getOneUserInfo();},100);
         })
@@ -828,7 +827,7 @@
           this.loading=false;
           this.$tool.error("添加失败");
           this.$tool.console(err);
-          this.dialogVisibleTag = false;
+          this.setTagDisplay = false;
 
         })
       },//保存标签选择
@@ -1259,7 +1258,7 @@
       projectpreview
     },
     watch : {
-      dialogVisibleTag : function (e) {
+      setTagDisplay : function (e) {
         if (e) {
 
         }

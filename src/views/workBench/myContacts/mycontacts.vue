@@ -259,7 +259,7 @@
     <!--标签设置弹框-->
     <el-dialog
       title="标签设置"
-      :visible.sync="dialogVisible"
+      :visible.sync="addTagDislpay"
       :show-close="close"
       size="tiny">
       <el-select
@@ -281,7 +281,7 @@
       </el-select>
       <div class="tagTitle">准确设置项目标签便于查找，并参与项目匹配度计算</div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="addTagDislpay = false">取 消</el-button>
         <el-button type="primary" @click="addTag">确 定</el-button>
       </span>
     </el-dialog>
@@ -304,15 +304,17 @@ import projectpreview from './projectPreview.vue'
 export default {
   data () {
     return {
+      addTagDislpay:false,//标签弹框设置
+      projectPushDisplay:false,//项目推送弹框设置(人脉入口)
+      previewDisplay:false,//项目预览弹窗
+
       close:false,
       activeName:'second',
 
       loading: false,//加载
-      dialogUploadVisible:false,//控制添加人脉弹窗
+
       searchinput:'',//搜索绑定
-      dialogVisible:false,//标签弹框设置
-      projectPushDisplay:false,//项目推送弹框设置(人脉入口)
-      previewDisplay:false,//项目预览弹窗
+
       totalData:1,//总页数
       currentPage:1,//当前页数
       getPra:{},//筛选的请求参数
@@ -391,7 +393,7 @@ export default {
       return arr;
     },//将标签的id循环取出来
     handleTag(index,row){
-        this.dialogVisible = true;
+        this.addTagDislpay = true;
         this.tags.index=index;
         this.tags.card_id=row.card_id;
         this.tagsValue=this.getTagId(this.tableData[index].tagArray);
@@ -643,7 +645,7 @@ export default {
         .then(res => {
           this.loading=false;
           this.$tool.success("设置成功");
-          this.dialogVisible = false;
+          this.addTagDislpay = false;
           this.handleIconClick();
           this.gettags_user();
         })
@@ -651,7 +653,7 @@ export default {
           this.loading=false;
           this.$tool.error("设置失败");
           this.$tool.console(err);
-          this.dialogVisible = false;
+          this.addTagDislpay = false;
 
         })
     },//保存标签选择
