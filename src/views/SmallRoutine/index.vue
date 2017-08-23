@@ -36,23 +36,20 @@ export default {
     reload(){
       window.location.reload();
     },
-
-    change(){
-      this.config.value=this.input
-    },
     getUserId(){
       this.num++;
       if(parseInt(this.num)>45) {
         clearInterval(this.timeout);
-        this.dialogVisible=true;
       }
       this.$http.post(this.URL.ajaxPolling,{credential:localStorage.credential})
         .then(res=>{
 //          clearInterval(this.timeout);
           let data=res.data;
-          this.$tool.console(res);
+//          this.$tool.console(res);
+          console.log(res);
           if(data.status_msg=="success"){
             clearInterval(this.timeout);
+            localStorage.token=res.data.token;
             if(data.type=="create") this.$router.push({ name: 'creatproject'});
             if(data.type=="update") this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});
             localStorage.user_id=data.user_info.user_id;
@@ -61,7 +58,6 @@ export default {
             this.$store.state.logining.user_real_name=data.user_info.user_real_name;
           }else if(data.status_msg=="timeout"){
             clearInterval(this.timeout);
-            this.dialogVisible=true;
             this.checkout=false;
           }else if(data.status_msg=="continue") {
             this.$tool.console("等待登陆");

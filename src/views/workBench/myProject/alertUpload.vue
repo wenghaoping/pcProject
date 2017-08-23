@@ -96,7 +96,6 @@
             </el-row>
           </el-form>
         </div>
-        <!--<p class="alertIn">{{alentTitle}}</p>-->
         <div slot="footer" class="dialog-footer clearfix" style="padding-top: 40px;">
           <div class="fr">
             <el-button type="primary" @click="submitUpload('dateForm',dateForm)" :disabled="submitButton">确 定</el-button>
@@ -278,8 +277,8 @@ export default {
     cancel(){
       this.$confirm('确认关闭？关闭后所有数据清空?')
         .then(_ => {
+          let arr=this.dateForm.domains;
 
-          let arr=this.dateForm.domains
           this.$tool.console(this.dateForm.domains);
           for(let i=0; i<arr.length; i++){
             this.$http.post(this.URL.deleteUpload,{user_id: localStorage.user_id,project_id:arr[i].project_id})
@@ -310,6 +309,7 @@ export default {
           this.$emit('uploadDisplayChange',false);
           this.dialogUpload2Visible=false;
           done()
+
         })
         .catch(_ => {});
     },

@@ -1,8 +1,6 @@
 <template>
-  <div id="projectDetails" class="clearfix">
-    <div class="contain-grid contain-center1 fl"
-         v-loading="loading"
-         element-loading-text="拼命加载中">
+  <div id="projectDetails" class="clearfix" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+    <div class="contain-grid contain-center1 fl">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
         <div class="item-lists item-lists-top clearfix">
@@ -29,7 +27,6 @@
               <span class="big-tag">{{project.pro_finance_stock_after}}%</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               <span class="flower" v-if="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
-
             </div>
             <div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">
               <span class="flower2">来源 : {{project.pro_source}}</span>

@@ -309,7 +309,7 @@ const tool={
     for(let key in args){
       name=args[key];
     }
-    return name;//返回对象
+    return name.split("&");//返回对象
   },
 
 

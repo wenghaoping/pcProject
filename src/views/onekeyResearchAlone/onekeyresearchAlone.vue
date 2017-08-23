@@ -1,5 +1,5 @@
 <template>
-  <div id="researchAlone" class="clearfix" v-loading="loading"
+  <div id="researchAlone" class="clearfix" v-loading.fullscreen.lock="loading"
        element-loading-text="拼命加载中">
     <div class="titleDi">
 
@@ -72,7 +72,7 @@
               </div>
             </div>
             <!--图表-->
-            <div class="item">
+            <div class="item" v-if="chartDataCheck">
               <downloadechart :chart-data="chartData"></downloadechart>
             </div>
             <!--历史融资-->
@@ -189,7 +189,8 @@
       </div>
       <div class="contain-grid contain-right-1 fl"
          v-loading="loading"
-         element-loading-text="拼命加载中">
+         element-loading-text="拼命加载中"
+        v-if="includeInvestorMap">
       <div class="main-box">
         <el-tabs v-model="activeName">
           <el-tab-pane name="1">
@@ -201,17 +202,7 @@
             </span>
                 <div class="main_right main_left">
                   <div class="item_top">
-                    <span class="top_inn fl">匹配推荐=我的+全网人脉</span>
-                    <div class="selectIn fr" style="height: 36px;">
-                      <el-select v-model="isFollow" placeholder="请选择" @change="selectFollow">
-                        <el-option
-                          v-for="item in myAllCont"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-                    </div>
+
                   </div>
                   <div class="item_lists">
                     <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors" v-if="ProjectMatchInvestors.length!=0">
@@ -235,7 +226,7 @@
                           <div class="block" style="margin-top: 42px;">
                             <span class="company ft13">投资领域：<i v-for="industry in projectMatchInvestor.user_invest_industry" :class="{ newColor: industry.is_match==1 }">{{industry.industry_name}}、</i></span>
                           </div>
-                          <div class="block" style="margin-top: 5px;">
+                          <div class="block" style="margin-top: 5px;margin-bottom: 14px;">
                             <span class="company ft13">投资轮次：<i v-for="stage in projectMatchInvestor.user_invest_stage" :class="{ newColor: stage.is_match==1 }">{{stage.stage_name}}、</i></span>
                           </div>
                         </div>
@@ -415,8 +406,9 @@
         comMessage:{},//公司信息
         chartData:[],//图标数据
         busData:{},//工商信息
-        project_id:'NrXjmnWK',
-        user_id:"EWgX21Zp"
+        chartDataCheck:true,//图表判断
+        id:'NC81sv9XmvLTsIQ5g7PeHWD0iOySYBrtAHC5M5poeOlkITcTYTChn92kadP9Kau8',
+        includeInvestorMap:false,
       }
     },
     methods: {
@@ -424,7 +416,6 @@
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerTeam, {
-            user_id: localStorage.user_id,
             com_id: this.com_id
           })
             .then(res => {
@@ -442,7 +433,6 @@
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerHistoryFinance, {
-            user_id: localStorage.user_id,
             com_id: this.com_id
           })
             .then(res => {
@@ -463,7 +453,6 @@
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerMilestone, {
-            user_id: localStorage.user_id,
             com_id: this.com_id
           })
             .then(res => {
@@ -483,7 +472,6 @@
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerNews, {
-            user_id: localStorage.user_id,
             com_id: this.com_id
           })
             .then(res => {
@@ -503,7 +491,6 @@
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerCompeting, {
-            user_id: localStorage.user_id,
             com_id: this.com_id
           })
             .then(res => {
@@ -523,7 +510,8 @@
         let compName=this.compName;
         return new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: compName})
+          this.$http.post(this.URL.getCrawlerCompany, {
+              company_name: compName})
             .then(res => {
               let data = res.data.data;
               if(data.length==0) {//搜索不到信息
@@ -568,14 +556,13 @@
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getCrawlerProject, {
-            user_id: localStorage.user_id,
             com_id: this.com_id
           })
             .then(res => {
               this.getProjectIndustry(res.data.data);
               this.project = res.data.data;
               this.chartData = res.data.data;
-
+              this.getCrawlerProjectChart(res.data.data);
               resolve(1);
             })
             .catch(err => {
@@ -583,7 +570,14 @@
               this.loading=false;
             })
         });
-      },//获取项目
+      },//获取项目(和图表数据)
+      getCrawlerProjectChart(data){
+        if(data[0].project_views!=""){
+          this.chartDataCheck=true;
+        }else{
+          this.chartDataCheck=false;
+        }
+      },//判断图标数据为空吗
       getProjectIndustry(data){
         for(let i=0; i<data.length; i++){
           data[i].project_industry=data[i].project_industry.split(",");
@@ -596,58 +590,54 @@
         arr.forEach((x)=> {
           let obj = new Object;
           obj.match=x.match;
-          obj.is_follow=x.is_follow;
-          obj.type=x.type;
-          obj.push_statues=x.push_statues;
-          obj.user_avatar_url=x.card.user_avatar_url;
-          obj.user_avatar_txt=this.$tool.setUrlChange(x.card.user_avatar_url,x.card.user_real_name);
-          obj.user_real_name=x.card.user_real_name;
-          obj.user_company_career=x.card.user_company_career;
-          obj.user_company_name=x.card.user_company_name;
-          obj.user_invest_industry=x.card.user_invest_industry;
-          obj.user_invest_stage=x.card.user_invest_stage;
-          obj.user_id=x.card.user_id;
-          obj.card_id=x.card.card_id;
-          obj.user_eamil=x.card.user_email;
-          obj.investor_id=x.card.investor_id;
-          obj.type=x.type;
-          obj.user_group=this.$tool.setTagToString(x.card.user_group,'group_title');
+          obj.user_avatar_url=x.user_avatar_url;
+          obj.user_avatar_txt=this.$tool.setUrlChange(x.user_avatar_url,x.user_real_name);
+          obj.user_real_name=x.user_real_name;
+          obj.user_company_career=x.user_company_career;
+          obj.user_company_name=x.user_company_name;
+          obj.user_invest_industry=x.user_invest_industry;
+          obj.user_invest_stage=x.user_invest_stage;
+          obj.user_group=this.$tool.setTagToString(x.user_group,'group_title');
           newArr.push(obj);
         });
         return newArr;
       },//设置买家图谱列表
-      getProjectMatchInvestors(){
+      getInvestorMatch(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.getInvestors.user_id=this.user_id;
-          this.currentPageInvestors=1;
-          this.getInvestors.project_id=this.project_id;
-          this.getInvestors.page=1;
-          this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
-            .then(res=>{
-              if(res.data.status_code==2000000) {
-                let data = res.data.data;
-                this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
-                this.totalInvestors = res.data.count;
-                resolve(6);
-              }
-            })
-            .catch(err=>{
-              this.$tool.console(err,2);
-              this.$tool.error("加载超时");
-              this.loading=false;
-            })
+          if(this.includeInvestorMap){
+            this.currentPageInvestors=1;
+            this.getInvestors.id=this.id;
+            this.getInvestors.page=1;
+            this.getInvestors.company_name=this.compName;
+            this.$http.post(this.URL.investorMatch,this.getInvestors)
+              .then(res=>{
+                if(res.data.status_code==2000000) {
+                  let data = res.data.data;
+                  this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
+                  this.totalInvestors = res.data.count;
+                  resolve(6);
+                }
+                /*else{
+                  this.$tool.error(res.data.error_msg);
+                }*/
+              })
+              .catch(err=>{
+                this.$tool.console(err,2);
+                this.$tool.error("加载超时");
+                this.loading=false;
+              })
+          }
         });
       },//买家图谱列表
       filterChangeInvestors(page){
         this.$tool.getTop();
         this.loading=true;
-        this.getInvestors.user_id=localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
         this.currentPageInvestors=page;
-        this.getInvestors.project_id=this.project_id;
+        this.getInvestors.id=this.id;
         this.getInvestors.page=page;
-        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
+        this.getInvestors.company_name=this.compName;
+        this.$http.post(this.URL.investorMatch,this.getInvestors)
           .then(res=>{
             if(res.data.status_code===2000000) {
               let data = res.data.data;
@@ -662,30 +652,10 @@
             this.$tool.error("加载超时");
           })
       },//控制买家图谱页码
-      selectFollow(e){
-        this.getInvestors.user_id=this.user_id;
-        this.currentPageInvestors=1;
-        this.getInvestors.project_id=this.project_id;
-        this.getInvestors.page=1;
-        this.getInvestors.is_follow=e;
-        this.$http.post(this.URL.getProjectMatchInvestors,this.getInvestors)
-          .then(res=>{
-            if(res.data.status_code==2000000) {
-              let data = res.data.data;
-              this.ProjectMatchInvestors=this.setProjectMatchInvestors(data);
-              this.totalInvestors = res.data.count;
-            }
-          })
-          .catch(err=>{
-            this.$tool.console(err,2);
-            this.$tool.error("加载超时");
-          })
-      },//筛选买家图谱
 
       getCrawlerBrand(){
         return new Promise((resolve, reject)=>{
           this.$http.post(this.URL.getCrawlerBrand, {
-            user_id: localStorage.user_id,
             com_id: this.com_id
           })
             .then(res => {
@@ -703,22 +673,31 @@
       toNewOneKey(data){
         const companyName = data.company_name.toString();
         const openUrl = this.URL.openUrl;
-        const url=encodeURI(openUrl+"?company="+companyName);
+        const url=encodeURI(openUrl+"?company="+companyName+"&id="+this.id+"&includeInvestorMap="+this.includeInvestorMap);
         window.open(url);
       },//跳转到新的一键尽调
       getRouter(){
         return new Promise((resolve, reject)=>{
+          this.$tool.getTop();
           this.loading=true;
 //          this.$http.defaults.headers.stats['Authorization'] = 1232132;
-          const routerCompany=this.$tool.getUrlArgObject(decodeURI(window.location.href)) || '';
-          this.compName=this.$tool.getUrlArgObject(decodeURI(window.location.href));
-          console.log(this.$tool.getUrlArgObject(decodeURI(window.location.href)));
+//          const routerCompany=this.$tool.getUrlArgObject(decodeURI(window.location.href)) || '';
+//          this.compName=this.$tool.getUrlArgObject(decodeURI(window.location.href));
+//          console.log(this.$tool.getUrlArgObject(decodeURI(window.location.href)));
+          const routerCompany=decodeURI(this.$route.query.company) || '';
+          this.includeInvestorMap=decodeURI(this.$route.query.includeInvestorMap) || '';
+          this.compName=decodeURI(this.$route.query.company) || '';
+          this.id=this.$route.query.id || '';
+//          console.log(this.$route.query.company);
+//          console.log(this.$route.query.id);
+//          console.log(this.$route.query.includeInvestorMap);
+
           if(routerCompany===""){
             this.$tool.error("请填写公司名称");
             this.empty=true;
             this.loading=false;
           }else{
-            this.$http.post(this.URL.selectCompanyByName, {user_id: localStorage.user_id, company_name: routerCompany})
+            this.$http.post(this.URL.selectCompanyByName, {user_id: localStorage.user_id, company_name: routerCompany, id:this.id})
               .then(res => {
                 let data = res.data.data;
                 if(data.length==0) {//搜索不到信息
@@ -735,6 +714,7 @@
                 this.$tool.error("请求失败");
                 this.$tool.console(err);
                 this.loading=false;
+                this.empty=true;
               })
           }
         });
@@ -747,21 +727,19 @@
       downloadechart
     },
     created(){
-//      this.loading=true;
-//      this.com_id=12298;
-//      this.compName='北京新浪互联信息服务有限公司';
+      this.$tool.getTop();
       this.getRouter()
+        .then((data)=>{
+          return this.getCrawlerProject();
+        })
         .then((data)=>{
           return this.getCrawlerCompany();
         })
         .then((data)=>{
-          return this.getCrawlerTeam();
+          return this.getCrawlerBrand();
         })
         .then((data)=>{
           return this.getCrawlerHistoryFinance();
-        })
-        .then((data)=>{
-          return this.getCrawlerBrand();
         })
         .then((data)=>{
           return this.getCrawlerMilestone();
@@ -770,13 +748,13 @@
           return this.getCrawlerNews();
         })
         .then((data)=>{
-          return this.getCrawlerProject();
+          return this.getCrawlerTeam();
         })
         .then((data)=>{
           return this.getCrawlerCompeting();
         })
         .then((data)=>{
-//          return this.getProjectMatchInvestors();
+          return this.getInvestorMatch();
         })
     }
   }

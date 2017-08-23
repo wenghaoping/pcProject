@@ -18,7 +18,7 @@ export default
 
   //一键尽调跳转用接口
   openUrl:"http://192.168.9.19:8090/#/onekeyresearchalone",
-
+  investorMatch:"/api/project/InvestorMatch",//一键尽调买家图谱
 
   /*上传用*/
 
@@ -138,6 +138,10 @@ export default
   getAllConnectUserSortByMatch:'api/v/project/getAllConnectUserSortByMatch',//推送项目时获取全网人脉
 
 
-  /*使用*/
+  /*使用微信二维码*/
   getProjectQr:'https://wx.weitianshi.cn/api/wx/getProjectQr',//
+
+  /*上传进度*/
+  uploadProgress:"api/project/uploadProgress"
+
 }

@@ -61,10 +61,10 @@ export default {
   },
   methods: {
     getChart(data){
-      for(let i=0; i<data.length; i++){
-          if(data[i].project_views!=""){
-              return JSON.parse(data[i].project_views);
-          }
+      if(data[0].project_views!=""){
+          return JSON.parse(data[0].project_views);
+      }else{
+        return {data:[]};
       }
     },//获取图表数据变成json
     getAverage(data){
@@ -191,23 +191,30 @@ export default {
       this.eChart(this.xdata,this.time.ydataTotal,this.time.ydataAverage);
     },//访问时长
     getCrawlerProject(){
-      let data=this.getChart(this.chartData || []).data;
-      this.xdata=data.three_month;
-      this.download.ydataTotal=this.getAverage(data.total_download_mid);
-      this.download.ydataAverage=this.getTotal(data.total_download[0].value);
+      let data=this.getChart(this.chartData).data;
+      console.log(data)
+      console.log(data.length)
+      this.chartDataCheck=data.length;
+      if(data.length!=0){
+        this.xdata=data.three_month;
+        this.download.ydataTotal=this.getAverage(data.total_download_mid);
+        this.download.ydataAverage=this.getTotal(data.total_download[0].value);
 
-      /*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
-       this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
+        /*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
+         this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
 
-      this.pv.ydataTotal=this.getAverage(data.pv_mid);
-      this.pv.ydataAverage=this.getTotal(data.pv[0].value);
+        this.pv.ydataTotal=this.getAverage(data.pv_mid);
+        this.pv.ydataAverage=this.getTotal(data.pv[0].value);
 
-      this.uv.ydataTotal=this.getAverage(data.uv_mid);
-      this.uv.ydataAverage=this.getTotal(data.uv[0].value);
+        this.uv.ydataTotal=this.getAverage(data.uv_mid);
+        this.uv.ydataAverage=this.getTotal(data.uv[0].value);
 
-      this.time.ydataTotal=this.getAverage(data.time_mid);
-      this.time.ydataAverage=this.getTotal(data.time[0].value);
-      this.getdownload();
+        this.time.ydataTotal=this.getAverage(data.time_mid);
+        this.time.ydataAverage=this.getTotal(data.time[0].value);
+        this.getdownload();
+      }else{
+          this.clearData();
+      }
     },//获取项目
     clearData(){
       this.download.ydataTotal=[];

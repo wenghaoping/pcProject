@@ -74,7 +74,7 @@
               </div>
             </div>
             <!--图表-->
-            <div class="item" v-if="chartData.length!=0">
+            <div class="item" v-if="chartDataCheck">
               <downloadechart :chart-data="chartData"></downloadechart>
             </div>
             <!--历史融资-->
@@ -289,6 +289,7 @@
         comMessage:{},//公司信息
         busData:{},//工商信息
         chartData:[],//图标数据
+        chartDataCheck:true,//图表判断
 
       }
     },
@@ -424,7 +425,14 @@
         });
         return newArr;
       },//设置竞品
+      getCrawlerProjectChart(data){
 
+        if(data[0].project_views!=""){
+          this.chartDataCheck=true;
+        }else{
+          this.chartDataCheck=false;
+        }
+      },//获取图表数据变成json
       getCrawlerProject(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
@@ -436,6 +444,7 @@
               this.getProjectIndustry(res.data.data);
               this.project = res.data.data;
               this.chartData = res.data.data;
+              this.getCrawlerProjectChart(res.data.data);
               this.loading=false;
               resolve(1);
             })
