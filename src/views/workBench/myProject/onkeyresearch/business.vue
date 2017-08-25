@@ -83,7 +83,7 @@
           </el-table>
         </div>
       </el-tab-pane>
-      <!--商标信息-->
+      <!--知识产权-商标信息-->
       <el-tab-pane :label="trademarkMessage" name="3">
         <div class="block" style="display: block">
           <el-table
@@ -225,7 +225,7 @@
         this.$tool.setTime(data.company_change,'company_change_time');
         this.$tool.setTime(data.brand,'company_brand_time');
         this.business=data;
-        this.trademarkMessage="商标信息"+"("+data.brand.length+")"
+        this.trademarkMessage="知识产权-商标信息"+"("+data.brand.length+")"
       }//获取商标信息
     },
     created(){

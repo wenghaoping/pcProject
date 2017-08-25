@@ -17,7 +17,8 @@ export default
   // weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
 
   //一键尽调跳转用接口
-  openUrl:"http://192.168.9.19:8090/#/onekeyresearchalone",
+  // openUrl:"http://192.168.9.19:8090/#/onekeyresearchalone",
+  openUrl:"https://dev.weitianshi.cn/workbench/#/onekeyresearchalone",
   investorMatch:"/api/project/InvestorMatch",//一键尽调买家图谱
 
   /*上传用*/

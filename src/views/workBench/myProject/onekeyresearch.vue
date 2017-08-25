@@ -131,7 +131,7 @@
             </div>
             <!--竞品-->
             <div class="item" v-if="competing.length!=0">
-              <div class="title">竞品</div>
+              <div class="title">相似公司</div>
               <ul class="ulfl h-table">
                 <li class="table1">项目</li>
                 <li class="table2" style="line-height: 40px;">行业</li>
@@ -426,7 +426,7 @@
         return newArr;
       },//设置竞品
       getCrawlerProjectChart(data){
-
+        if(data.length==0) this.chartDataCheck=false;
         if(data[0].project_views!=""){
           this.chartDataCheck=true;
         }else{
@@ -441,10 +441,14 @@
             com_id: this.com_id
           })
             .then(res => {
-              this.getProjectIndustry(res.data.data);
-              this.project = res.data.data;
-              this.chartData = res.data.data;
-              this.getCrawlerProjectChart(res.data.data);
+              if(res.data.status_code==2000000){
+                this.getProjectIndustry(res.data.data);
+                this.project = res.data.data;
+                this.chartData = res.data.data;
+                this.getCrawlerProjectChart(res.data.data);
+              }else{
+                this.chartDataCheck=false;
+              }
               this.loading=false;
               resolve(1);
             })

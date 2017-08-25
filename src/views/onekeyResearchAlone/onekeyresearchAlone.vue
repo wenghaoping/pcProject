@@ -129,7 +129,7 @@
             </div>
             <!--竞品-->
             <div class="item" v-if="competing.length!=0">
-              <div class="title">竞品</div>
+              <div class="title">相似公司</div>
               <ul class="ulfl h-table">
                 <li class="table1">项目</li>
                 <li class="table2" style="line-height: 40px;">行业</li>
@@ -190,7 +190,7 @@
       <div class="contain-grid contain-right-1 fl"
          v-loading="loading"
          element-loading-text="拼命加载中"
-        v-if="includeInvestorMap">
+        v-if="includeInvestorMap=='true'">
       <div class="main-box">
         <el-tabs v-model="activeName">
           <el-tab-pane name="1">
@@ -559,19 +559,24 @@
             com_id: this.com_id
           })
             .then(res => {
-              this.getProjectIndustry(res.data.data);
-              this.project = res.data.data;
-              this.chartData = res.data.data;
-              this.getCrawlerProjectChart(res.data.data);
-              resolve(1);
+              if(res.data.status_code==2000000){
+                this.getProjectIndustry(res.data.data);
+                this.project = res.data.data;
+                this.chartData = res.data.data;
+                this.getCrawlerProjectChart(res.data.data);
+              }else{
+                this.chartDataCheck=false;
+              }
             })
             .catch(err => {
               this.$tool.console(err);
               this.loading=false;
             })
+          resolve(1);
         });
       },//获取项目(和图表数据)
       getCrawlerProjectChart(data){
+        if(data.length==0) this.chartDataCheck=false;
         if(data[0].project_views!=""){
           this.chartDataCheck=true;
         }else{
@@ -605,7 +610,7 @@
       getInvestorMatch(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
-          if(this.includeInvestorMap){
+          if(this.includeInvestorMap=='true'){
             this.currentPageInvestors=1;
             this.getInvestors.id=this.id;
             this.getInvestors.page=1;
@@ -680,14 +685,11 @@
         return new Promise((resolve, reject)=>{
           this.$tool.getTop();
           this.loading=true;
-//          this.$http.defaults.headers.stats['Authorization'] = 1232132;
-//          const routerCompany=this.$tool.getUrlArgObject(decodeURI(window.location.href)) || '';
-//          this.compName=this.$tool.getUrlArgObject(decodeURI(window.location.href));
-//          console.log(this.$tool.getUrlArgObject(decodeURI(window.location.href)));
           const routerCompany=decodeURI(this.$route.query.company) || '';
           this.includeInvestorMap=decodeURI(this.$route.query.includeInvestorMap) || '';
           this.compName=decodeURI(this.$route.query.company) || '';
           this.id=this.$route.query.id || '';
+          console.log(this.includeInvestorMap);
 //          console.log(this.$route.query.company);
 //          console.log(this.$route.query.id);
 //          console.log(this.$route.query.includeInvestorMap);
@@ -700,15 +702,26 @@
             this.$http.post(this.URL.selectCompanyByName, {user_id: localStorage.user_id, company_name: routerCompany, id:this.id})
               .then(res => {
                 let data = res.data.data;
-                if(data.length==0) {//搜索不到信息
-                  this.$tool.error("匹配不到当前公司");
+//                console.log(res);
+                if(res.data.status_code==2000000){
+                  this.com_id=data[0].com_id;
+                  this.empty=false;
+                  this.loading=false;
+                  resolve(1);
+                }else{
+                  this.$tool.error(res.data.error_msg);
                   this.empty=true;
                   this.loading=false;
+                }
+
+                /*if(data.length==0) {//搜索不到信息
+                  this.$tool.error("匹配不到当前公司");
+
                 }else{//搜索到了
                   this.com_id=data[0].com_id;
                   this.empty=false;
                   resolve(1);
-                }
+                }*/
               })
               .catch(err => {
                 this.$tool.error("请求失败");

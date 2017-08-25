@@ -192,8 +192,6 @@ export default {
     },//访问时长
     getCrawlerProject(){
       let data=this.getChart(this.chartData).data;
-      console.log(data)
-      console.log(data.length)
       this.chartDataCheck=data.length;
       if(data.length!=0){
         this.xdata=data.three_month;

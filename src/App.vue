@@ -67,8 +67,8 @@
           {type: '首页', jump: '/'},
           {type: '工作站', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
-          {type: '一键尽调', jump: '/onekeyresearchalone?company=杭州卓健信息科技有限公司&id=NC81sv9XmvLTsIQ5g7PeHWD0iOySYBrtAHC5M5poeOlkITcTYTChn92kadP9Kau8&includeInvestorMap=false;'},
-          {type: '测试页面2', jump: '/test2'}
+//          {type: '一键尽调', jump: '/onekeyresearchalone?company=杭州卓健信息科技有限公司&id=NC81sv9XmvLTsIQ5g7PeHWD0iOySYBrtAHC5M5poeOlkITcTYTChn92kadP9Kau8&includeInvestorMap=false;'},
+//          {type: '测试页面2', jump: '/test2'}
         ],
         user_name:'',
         user_id:'',
