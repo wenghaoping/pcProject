@@ -1545,12 +1545,16 @@
             return this.getProjectMatchInvestors();
           })
           .then((data)=>{
+            return this.getWX();
+          })
+          .then((data)=>{
             this.loading=false;
             return this.getEnjoyedInvestors();
           });
       },//重新获取所有数据
 
       getWX(){
+        new Promise((resolve, reject)=>{
         this.$http.post(this.URL.getProjectQr, {
           user_id: localStorage.user_id,
           width:1000,
@@ -1566,13 +1570,15 @@
           .catch(err => {
             this.$tool.console(err);
           })//请求函数
+          resolve(6);
+        })
       },//获取二维码
     },
     created () {
       this.$tool.getTop();
       this.getprojectId();
       this.getAllData();
-//      this.getWX();
+
     },
     watch:{
     },
