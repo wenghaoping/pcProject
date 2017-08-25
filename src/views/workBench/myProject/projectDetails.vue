@@ -462,19 +462,19 @@
     </div>
     <!--一键尽调弹窗-->
     <research :search-display="searchDisplay" :company-id="companyid" :comp-name="companyname"
-              @changeall="dialogVisiblechange"
-              @changeallin="dialogVisiblechangeIn" lock-scroll>
+              @closeSearchDisplay="closeSearchDisplay"
+              @closeCompanySearchDisplay="closeCompanySearchDisplay" lock-scroll>
     </research>
 
     <!--尽调搜索弹窗-->
-    <el-dialog title="一键尽调" :visible="companySearchDisplay">
+    <el-dialog title="一键尽调" :visible="companySearchDisplay" close-on-click-modal close-on-press-escape :before-close="dialogVisibleTo">
       <el-form label-position="top" label-width="140px">
         <el-form-item label="请输入你要尽调的公司">
           <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick" ></el-input><!--@change="searchChange"-->
         </el-form-item>
       </el-form>
       <ul class="onsearch">
-        <li v-for="seachCompany in seachCompanys" @click="search(seachCompany)">{{seachCompany.company_name}}</li>
+        <li v-for="seachCompany in seachCompanys" @click="search(seachCompany)" v-html="seachCompany.company_name">{{seachCompany.company_name}}</li>
       </ul>
     </el-dialog>
 
@@ -882,6 +882,7 @@
           .then(res=>{
             this.seachCompanys=[];
             let data =res.data.data;
+//            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入<i style='color: red'>点击添加公司</i>",com_id:-1}];
             if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
             else this.seachCompanys=data;
 //            this.$tool.console(res);
@@ -918,13 +919,16 @@
         }
       },//一键尽调按钮
       search(data){
-        if(data.com_id==-1) this.$tool.error("请输入公司")
+        if(data.com_id==-1) this.$tool.error("请输入公司");
         else {
           this.companyid=data.com_id;
           this.companyname=data.company_name;
           this.searchDisplay = true;
         }
       },//点击下拉选择公司后
+      dialogVisibleTo(){
+        this.companySearchDisplay = false;
+      },//关闭搜索弹框
       handleIconClick(){
         this.searchChange(this.searchName);
       },//输入搜索
@@ -935,13 +939,13 @@
         if(this.activeFrom==0) this.$router.push({name: 'myProject',query: {activeTo: 0}})
         else if(this.activeFrom==2) this.$router.push({name: 'followUp',query: {activeTo: 2}})//路由传参
       },//返回上一层
-      dialogVisiblechange(msg){
+      closeSearchDisplay(msg){
         this.searchDisplay=msg;
       },//传递给一键尽调窗口
       openPreview(msg){
         this.previewDisplay=true;
       },//打开预览弹框
-      dialogVisiblechangeIn(msg){
+      closeCompanySearchDisplay(msg){
         this.companySearchDisplay=msg;
       },//传递给一键尽调搜索窗口
       closeContact(msg){

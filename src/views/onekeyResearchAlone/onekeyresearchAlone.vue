@@ -1,9 +1,9 @@
 <template>
   <div id="researchAlone" class="clearfix" v-loading.fullscreen.lock="loading"
        element-loading-text="拼命加载中">
-    <div class="titleDi">
+<!--    <div class="titleDi">
 
-    </div>
+    </div>-->
     <!--===========================================一键尽调单独页面=============================================-->
       <div class="contain-grid contain-center1 fl dialog" >
         <div class="contain-inner">
@@ -71,10 +71,7 @@
                 </div>
               </div>
             </div>
-            <!--图表-->
-            <div class="item" v-if="chartDataCheck">
-              <downloadechart :chart-data="chartData"></downloadechart>
-            </div>
+
             <!--历史融资-->
             <div class="item" v-if="history_finance.length!=0">
               <div class="title">历史融资</div>
@@ -179,6 +176,10 @@
                 </ul>
                 <div class="line2"></div>
               </div>
+            </div>
+            <!--图表-->
+            <div class="item" v-if="chartDataCheck">
+              <downloadechart :chart-data="chartData"></downloadechart>
             </div>
 
           </div>
@@ -407,7 +408,8 @@
         chartData:[],//图标数据
         busData:{},//工商信息
         chartDataCheck:true,//图表判断
-        id:'NC81sv9XmvLTsIQ5g7PeHWD0iOySYBrtAHC5M5poeOlkITcTYTChn92kadP9Kau8',
+//        id:'NC81sv9XmvLTsIQ5g7PeHWD0iOySYBrtAHC5M5poeOlkITcTYTChn92kadP9Kau8',
+        id:'',
         includeInvestorMap:false,
       }
     },
@@ -689,7 +691,6 @@
           this.includeInvestorMap=decodeURI(this.$route.query.includeInvestorMap) || '';
           this.compName=decodeURI(this.$route.query.company) || '';
           this.id=this.$route.query.id || '';
-          console.log(this.includeInvestorMap);
 //          console.log(this.$route.query.company);
 //          console.log(this.$route.query.id);
 //          console.log(this.$route.query.includeInvestorMap);
@@ -706,22 +707,12 @@
                 if(res.data.status_code==2000000){
                   this.com_id=data[0].com_id;
                   this.empty=false;
-                  this.loading=false;
                   resolve(1);
                 }else{
                   this.$tool.error(res.data.error_msg);
                   this.empty=true;
                   this.loading=false;
                 }
-
-                /*if(data.length==0) {//搜索不到信息
-                  this.$tool.error("匹配不到当前公司");
-
-                }else{//搜索到了
-                  this.com_id=data[0].com_id;
-                  this.empty=false;
-                  resolve(1);
-                }*/
               })
               .catch(err => {
                 this.$tool.error("请求失败");

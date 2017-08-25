@@ -9,16 +9,17 @@
 export default
 {
   /*总地址,下载用的*/
-  weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
-  weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传
+  // weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
+  // weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传
   // weitianshi:"https://pc.debug.weitianshi.cn/",//接口下载用
   // weitianshiLine:"https://pc.debug.weitianshi.cn/",//接口上传
-  //  weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
-  // weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
-
+   weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
+  weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
+  openUrl:"https://wts.weitianshi.cn/workbench/#/API/DD",
   //一键尽调跳转用接口
-  // openUrl:"http://192.168.9.19:8090/#/onekeyresearchalone",
-  openUrl:"https://dev.weitianshi.cn/workbench/#/onekeyresearchalone",
+  // openUrl:"http://192.168.9.19:8090/#/API/DD",
+  // openUrl:"https://dev.weitianshi.cn/workbench/#/API/DD",
+
   investorMatch:"/api/project/InvestorMatch",//一键尽调买家图谱
 
   /*上传用*/

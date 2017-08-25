@@ -107,7 +107,7 @@ export default [
     path: '/identityDetail', name: 'identityDetail', component:identityDetail
   },
   {
-    path: '/onekeyresearchalone', name: 'onekeyResearchAlone', component:onekeyResearchAlone
+    path: '/API/DD', name: 'onekeyResearchAlone', component:onekeyResearchAlone
   },
 /*  {
     path: '/test', name: 'test', component: checkone

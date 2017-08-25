@@ -1,7 +1,7 @@
 <template>
   <div id="research" >
     <!--===========================================一键尽调弹窗=============================================-->
-    <el-dialog :visible="searchDisplay" custom-class="dialog" :before-close="handleClose"
+    <el-dialog :visible="searchDisplay" custom-class="dialog" :before-close="goToEdit"
                close-on-press-escape close-on-click-modal>
       <div class="contain-grid" style="width: 893px;" v-loading="loading"
            element-loading-text="拼命加载中1">
@@ -73,10 +73,7 @@
                 </div>
               </div>
             </div>
-            <!--图表-->
-            <div class="item" v-if="chartDataCheck">
-              <downloadechart :chart-data="chartData"></downloadechart>
-            </div>
+
             <!--历史融资-->
             <div class="item" v-if="history_finance.length!=0">
               <div class="title">历史融资</div>
@@ -181,7 +178,10 @@
                 <div class="line2"></div>
               </div>
             </div>
-
+            <!--图表-->
+            <div class="item" v-if="chartDataCheck">
+              <downloadechart :chart-data="chartData"></downloadechart>
+            </div>
           </div>
         </div>
       </div>
@@ -294,17 +294,9 @@
       }
     },
     methods: {
-      dialogVisibleTo() {
-        this.$emit('changeall', false)
-      },
-      handleClose(done) {
-        done();
-        this.dialogVisibleTo()
-      },
       goToEdit(){
-//      this.$router.push({name: 'editproject', query: {}})
-        this.$emit('changeall', false)
-        this.$emit('changeallin', true)
+        this.$emit('closeSearchDisplay', false);
+        this.$emit('closeCompanySearchDisplay', true);
       },
       getCrawlerTeam(){
         return new Promise((resolve, reject)=>{
