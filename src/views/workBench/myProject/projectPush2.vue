@@ -542,7 +542,7 @@
         }else if(form.career.length>40){
           this.$tool.error('职位不得超过40个字符长度')
         } else if (form.mobile) {
-          if (!this.$tool.checkPhoneNubmer(form.mobile)) {
+          if (!this.$tool.checkPhoneNumber(form.mobile)) {
             this.$tool.error('请正确填写手机号码')
           } else {
             this.$http.post(this.URL.createUserCard, {

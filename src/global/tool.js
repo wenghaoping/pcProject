@@ -106,7 +106,7 @@ const tool={
 /*验证类*/
   trim(string){
     return string.replace(/(^\s*)|(\s*$)/g,"");
-  },
+  },//去除参数前后空格
   getNull(data) {
     let reg=/\S/;
     if (!reg.test(data))
@@ -131,14 +131,17 @@ const tool={
     }
   },//判断是不是数字
   checkEmail(data){
-    let reg = /@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-    if (reg.test(data)) {
+    let data1=this.trim(data);
+    // let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    // let reg= /^[_a-z0-9]+@([_a-z0-9]+\.)+[a-z0-9]{2,3}$/;
+    let reg=/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+    if (reg.test(data1)) {
       return true;
     }else{
       return false;
     }
   },//邮箱验证
-  checkPhoneNubmer(data){
+  checkPhoneNumber(data){
     let reg = /^1(3|4|5|7|8)\d{9}$/;
     if (reg.test(data)) {
       return true;
@@ -146,27 +149,27 @@ const tool={
       return false;
     }
   },//电话号码验证
-  checkPhoneNumber(value){
-    let check=false;
-    if (!this.$tool.getNull(value)) {
-      setTimeout(() => {
-        if (!this.$tool.checkNumber(value)) {
-          this.$tool.error('请输入数字值');
-          check=false;
-        } else {
-          if (!this.$tool.checkPhoneNubmer(value)) {
-            this.$tool.error('请输入正确的手机号');
-            check=false;
-          }else{
-            check=true;
-          }
-        }
-      }, 100);
-    }else{
-      check=true;
-    }
-    return check;
-  },//验证手机号高级版
+  // checkPhoneNumber(value){
+  //   let check=false;
+  //   if (!this.$tool.getNull(value)) {
+  //     setTimeout(() => {
+  //       if (!this.$tool.checkNumber(value)) {
+  //         this.$tool.error('请输入数字值');
+  //         check=false;
+  //       } else {
+  //         if (!this.$tool.checkPhoneNubmer(value)) {
+  //           this.$tool.error('请输入正确的手机号');
+  //           check=false;
+  //         }else{
+  //           check=true;
+  //         }
+  //       }
+  //     }, 100);
+  //   }else{
+  //     check=true;
+  //   }
+  //   return check;
+  // },//验证手机号高级版
   checkPassword(data){
     if (data.length>20 || data.length<6){
       return true

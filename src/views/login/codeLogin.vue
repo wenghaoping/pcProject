@@ -25,7 +25,7 @@
       },
       // 登录
       login(){
-        if (!this.$tool.checkPhoneNubmer(this.telephone)) {
+        if (!this.$tool.checkPhoneNumber(this.telephone)) {
           this.$tool.error('请正确填写手机号码')
         } else if (this.$tool.getNull(this.password)) {
           this.$tool.error('请正确填写密码')

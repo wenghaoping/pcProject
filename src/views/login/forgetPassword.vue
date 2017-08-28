@@ -39,7 +39,7 @@
       },
       // 获取验证码
       getCode(){
-        if (!this.$tool.checkPhoneNubmer(this.telephone)) {
+        if (!this.$tool.checkPhoneNumber(this.telephone)) {
           this.$tool.error('请正确输入手机号码')
         } else {
           this.$http.post(this.URL.resetPasswordCaptcha, {
@@ -64,7 +64,7 @@
       },
       // 登录
       next(){
-        if(!this.$tool.checkPhoneNubmer(this.telephone)){
+        if(!this.$tool.checkPhoneNumber(this.telephone)){
             this.$tool.error('请正确输入手机号码')
         }else if(this.$tool.getNull(this.captcha)){
           this.$tool.error('请正确输入验证码')
