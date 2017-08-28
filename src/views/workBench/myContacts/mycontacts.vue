@@ -259,7 +259,7 @@
     <!--标签设置弹框-->
     <el-dialog
       title="标签设置"
-      :visible.sync="dialogVisible"
+      :visible.sync="addTagDislpay"
       :show-close="close"
       size="tiny">
       <el-select
@@ -281,19 +281,20 @@
       </el-select>
       <div class="tagTitle">准确设置项目标签便于查找，并参与项目匹配度计算</div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="addTagDislpay = false">取 消</el-button>
         <el-button type="primary" @click="addTag">确 定</el-button>
       </span>
     </el-dialog>
 
-    <!--项目推送弹窗-->
-    <projectpush :dialog-push="dialogPushVisible" :user-message="userMessage" :user-email="userEmail"
-                 @changeall="dialogVisiblechange" @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
+    <!--项目推送弹窗人脉入口-->
+    <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage" :user-email="userEmail"
+                 @openPreview="openPreview"
+                 @closeProjectPush="closeProjectPush"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" @changeCon="dialogPrechange"
-                    @closePreview="closePreview" :comeFrom="'contacts'"></projectpreview>
-
+    <projectpreview :preview-show="previewDisplay" :comeFrom="'contacts'"
+                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
+                    @closePreview="closePreview"></projectpreview>
   </div>
 </template>
 
@@ -303,15 +304,17 @@ import projectpreview from './projectPreview.vue'
 export default {
   data () {
     return {
+      addTagDislpay:false,//标签弹框设置
+      projectPushDisplay:false,//项目推送弹框设置(人脉入口)
+      previewDisplay:false,//项目预览弹窗
+
       close:false,
       activeName:'second',
 
       loading: false,//加载
-      dialogUploadVisible:false,//控制添加人脉弹窗
+
       searchinput:'',//搜索绑定
-      dialogVisible:false,//标签弹框设置
-      dialogPushVisible:false,//项目推送弹框设置
-      dialogPreviewVisible:false,//项目预览弹窗
+
       totalData:1,//总页数
       currentPage:1,//当前页数
       getPra:{},//筛选的请求参数
@@ -390,7 +393,7 @@ export default {
       return arr;
     },//将标签的id循环取出来
     handleTag(index,row){
-        this.dialogVisible = true;
+        this.addTagDislpay = true;
         this.tags.index=index;
         this.tags.card_id=row.card_id;
         this.tagsValue=this.getTagId(this.tableData[index].tagArray);
@@ -436,29 +439,31 @@ export default {
       this.userMessage.type=row.type || '';
       if(row.type=='user'){this.userMessage.card_id=row.user_id;}
       this.userEmail=row.user_email;
-      this.dialogPushVisible=true;
+      this.projectPushDisplay=true;
     },//点击推送,并且传送数据给推送弹框
     addContacts(){
       this.$router.push({name: 'createContacts',query: {card_id: 'creat'}})//路由传参
     },//添加人脉
-    dialogVisiblechange(msg){
-//      this.dialogPushVisible=msg;
-      this.dialogPreviewVisible=true;
-    },//关闭推送弹框,打开预览弹框
-    dialogVisiblechangeCloase(msg){
-      this.dialogPushVisible=msg;
-      this.handleIconClick();
-    },//关闭项目推送弹窗
-    dialogPrechange(msg){
-      this.dialogPushVisible=msg;
-      this.dialogPreviewVisible=msg;
-    },//关闭项目预览
+
+    openPreview(msg){
+      this.previewDisplay=true;
+    },//打开项目预览弹框
     closePreview(msg){
-      this.dialogPreviewVisible=msg;
+      this.previewDisplay=msg;
     },//关闭项目预览
+    closeProjectPush(msg){
+      this.projectPushDisplay=msg;
+      this.handleIconClick();
+    },//关闭项目推送弹窗(人脉入口)
+    closePreviewANDProjectPush(msg){
+      this.projectPushDisplay=msg;
+      this.previewDisplay=msg;
+      this.handleIconClick();
+    },//关闭项目预览AND关闭项目推送(人脉入口)
+
     /*请求函数*/
     handleIconClick(){
-      var handleIconClick = new Promise((resolve, reject)=>{
+      return new Promise((resolve, reject)=>{
         //做一些异步操作
         this.loading=true;
         this.getPra.user_id=localStorage.user_id;
@@ -478,8 +483,6 @@ export default {
             this.$tool.console(err,2)
           })
       });
-      return handleIconClick;
-
     },//搜索===首次进入页面加载的数据
     timeChange(time){
       this.loading=true;
@@ -605,16 +608,13 @@ export default {
     },//总设置列表的数据处理
 
     getWxProjectCategory(){
-      var getWxProjectCategory = new Promise((resolve, reject)=>{
+      return new Promise((resolve, reject)=>{
         //做一些异步操作
         setTimeout(()=>{
           this.addTags = this.$global.data.tags_user;//设置人脉标签
           resolve(2);
         },500)
       });
-      return getWxProjectCategory;
-
-
     },//获取所有下拉框的数据
     addChangeTag(e){
       let tagName = this.$tool.checkArr(e, this.addTags);
@@ -645,7 +645,7 @@ export default {
         .then(res => {
           this.loading=false;
           this.$tool.success("设置成功");
-          this.dialogVisible = false;
+          this.addTagDislpay = false;
           this.handleIconClick();
           this.gettags_user();
         })
@@ -653,7 +653,7 @@ export default {
           this.loading=false;
           this.$tool.error("设置失败");
           this.$tool.console(err);
-          this.dialogVisible = false;
+          this.addTagDislpay = false;
 
         })
     },//保存标签选择

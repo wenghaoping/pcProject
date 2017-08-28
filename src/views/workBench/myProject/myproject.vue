@@ -93,12 +93,10 @@
           </el-input>
         </div>
         <div class="btns-box">
-          <el-button type="primary" @click="dialogUploadVisible = true">批量上传项目</el-button>
+          <el-button type="primary" @click="uploadDisplay = true">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
 
-          <alertUpload :dialog-upload-visible="dialogUploadVisible" v-on:changeupload="dialogUploadVisiblechange" @reload="handleIconClick">
 
-          </alertUpload>
         </div>
       </div>
       <div class="top-lists" style="cursor: pointer">
@@ -320,14 +318,26 @@
       </div>
     </div>
 
+    <!--上传弹框-->
+    <alertUpload :upload-display="uploadDisplay"
+                 @uploadDisplayChange="uploadDisplayChange"
+                 @reload="handleIconClick"></alertUpload>
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="dialogFollow" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name" @changeClose="closeFollow"></addfollow>
+    <addfollow :follow-display="followDisplay" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"
+               @closeFollow="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :dialog-push="dialogPushVisible" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush" @changeClose="dialogVisiblechangeCloase" @preview="dialogPrechange"></projectpush2>
+    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush"
+                  @openPreview="openPreview"
+                  @closeProjectPush2="closeProjectPush2"
+                  @previewPush="previewPush"
+    ></projectpush2>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible" :comeFrom="'project'" @changeCon="dialogPreviewVisible=false;" @closePreview="closePreview" @previewPush="previewPush"></projectpreview>
+    <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
+                    @closePreview="closePreview"
+                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
+                    @previewPush="previewPush"></projectpreview>
 
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
@@ -358,8 +368,8 @@
     },
     data() {
       return {
-        dialogFollow:false,//控制写跟进弹框
-        dialogPushVisible:false,//项目推送弹窗
+        followDisplay:false,//控制写跟进弹框
+        projectPushDisplay2:false,//项目推送弹窗
         projecmessage:{
           project_id:'',
           project_name:''
@@ -393,7 +403,7 @@
         pro_scaleFilters:[/*{ text: '3000万', value: '3000万' }*/],
         stateCheck:false,//状态单选
         searchinput:'',//搜索输入框
-        dialogUploadVisible: false,//第一个弹窗的控制
+        uploadDisplay: false,//上传弹框控制
         node0:true,
         node1:false,
         node2:false,
@@ -429,7 +439,7 @@
         }],//更多的选项表单
         pushId:'',//推送项目传值-项目ID
         pushIntro:'',//推送项目传值-项目名称
-        dialogPreviewVisible:false,//控制项目推送预览显隐
+        previewDisplay:false,//控制项目推送预览显隐
         emitPush:false,//控制项目推送-项目入口的推送函数触发
       }
     },
@@ -445,27 +455,36 @@
       createProject(){
         this.$router.push({ name: 'creatproject'})
       },//跳转到创建项目页面
-      dialogUploadVisiblechange(msg){
-        this.dialogUploadVisible=msg;
-      },//控制弹窗
+      uploadDisplayChange(msg){
+        this.uploadDisplay=msg;
+      },//控制上传弹窗
       /*跟进*/
       addFollow(index, row){
-        this.dialogFollow=true;
+        this.followDisplay=true;
         this.projecmessage.project_id=row.project_id;
         this.projecmessage.project_name=row.pro_intro;
       },//点击写跟近按钮
+      openPreview(msg){
+        this.previewDisplay=msg;
+      },//打开预览弹框
       closeFollow(msg){
-        this.dialogFollow=msg;
+        this.followDisplay=msg;
       },//关闭添加跟进
       addprojectPush(index, row){
-        console.log(row)
         this.pushId=row.project_id;
         this.pushIntro=row.pro_intro;
-        this.dialogPushVisible=true;
+        this.projectPushDisplay2=true;
       },//点击项目推送
-      dialogVisiblechangeCloase(msg){
-        this.dialogPushVisible=msg;
+      closeProjectPush2(msg){
+        this.projectPushDisplay2=msg;
+        this.handleIconClick();
       },//关闭项目推送弹窗
+      closePreviewANDProjectPush(msg){
+        this.projectPushDisplay2=false;
+        this.previewDisplay=false;
+        this.handleIconClick();
+      },//关闭预览AND关闭项目推送1,关闭项目推送2
+
       /*请求函数*/
       handleIconClick(){
         this.$tool.getTop();
@@ -721,11 +740,8 @@
       previewPush(x){
         this.emitPush=x;
       },//项目推送预览隐藏
-      dialogPrechange(msg){
-        this.dialogPreviewVisible=msg;
-      },//项目推送预览显隐控制
       closePreview(msg){
-        this.dialogPreviewVisible=msg;
+        this.previewDisplay=msg;
       },//关闭项目预览
     },
     computed: {

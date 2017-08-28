@@ -1,7 +1,7 @@
 <template>
   <div id="addFollow" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================添加或编辑跟进记录弹窗=============================================-->
-    <el-dialog :visible="dialogFollow" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll>
+    <el-dialog :visible="followDisplay" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll>
       <div class="addTitle">
         <span> | </span>添加跟进
       </div>
@@ -146,7 +146,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["dialogFollow","followid","projectid","projectname","cardid","cardname","type","userid"],
+    props: ["followDisplay","followid","projectid","projectname","cardid","cardname","type","userid"],
     data () {
       return {
         uploadAddress:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
@@ -212,13 +212,12 @@
     },
     methods: {
       handleClose(e){
-        this.$emit("changeClose",false);
+        this.$emit("closeFollow",false);
       },//关闭
       saveSecond(){
         this.allSave();//添加
         this.follow=this.saveJumpData;
       },//继续添加
-
       handleSelectProject(item){
         this.follow.project_id='';
         this.follow.project_id = item.label;
@@ -337,12 +336,11 @@
         return newArr;
       },//获取用户
       getScheduleName(){
-        var getScheduleName = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.schedule_name=this.$global.data.follow_schedule;//设置项目跟进状态
-              resolve(1);
+          resolve(1);
         });
-        return getScheduleName;
       },// 获取跟进进度
       getFileType(data){
         let arr = [];
@@ -370,7 +368,7 @@
         }
       },//设置批量上传文件显示
       getFollowUp(){
-        var getFollowUp = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           if(this.follow_id!=''){
             this.loading=true;
@@ -386,14 +384,13 @@
                 this.setUploadShow(data.files);
                 resolve(1);
                 this.loading=false;
-                console.log(this.follow)
+//                console.log(this.follow)
               })
               .catch(err => {
                 this.$tool.console(err);
               })
           }
         });
-        return getFollowUp;
       },//获取跟进记录
 
       /*项目文件上传*/
@@ -623,7 +620,7 @@
           this.clearData();
           this.follow_id='';
         }).catch(() => {
-          this.$emit("changeClose",false);
+          this.$emit("closeFollow",false);
           this.clearData();
           this.follow_id='';
         });
@@ -651,7 +648,7 @@
 
       },//获取跟进id
 
-      dialogFollow: function(e){
+      followDisplay: function(e){
         if(e) {
           this.clearData();
           this.follow_id=this.followid || '';

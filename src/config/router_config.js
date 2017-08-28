@@ -49,6 +49,7 @@ const onekeyResearchAlone = r => require.ensure([], () => r(require('@/views/one
 // import selectbox from '@/test/dialog.vue'
 // import dialog2 from '@/test/dialog2.vue'
 // import alertUpload from '@/test/alertUpload.vue'
+import upload from '@/test/upload.vue'
 // import upload from '@/test/upload.vue'
 // import open from '@/test/open.vue'
 //
@@ -106,13 +107,17 @@ export default [
     path: '/identityDetail', name: 'identityDetail', component:identityDetail
   },
   {
-    path: '/onekeyresearchalone', name: 'onekeyResearchAlone', component:onekeyResearchAlone
+    path: '/API/DD', name: 'onekeyResearchAlone', component:onekeyResearchAlone
   },
 /*  {
     path: '/test', name: 'test', component: checkone
   },*/
   {
+<<<<<<< HEAD
     path: '/test2', name: 'test2', component: test
+=======
+    path: '/test2', name: 'test2', component: upload
+>>>>>>> 52155f5c86e93c814cb55637cd7ff210c01185f0
   }
   ]
 

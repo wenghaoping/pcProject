@@ -2,7 +2,7 @@
 
   <div id="projectPreview" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================项目推送预览弹框=============================================-->
-    <el-dialog :visible="dialogPreviewVisible" :show-close="close"  custom-class="dialogCon" :before-close="handleClose" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="previewShow" :show-close="close"  custom-class="dialogCon" :before-close="closePreview" close-on-press-escape close-on-click-modal>
       <div class="top_pro">
         <p v-if="email.title==''">邮件标题 :
 
@@ -239,7 +239,7 @@
 
             <div class="ul-lists list tc" >
               <div class="toButton" style="padding-left: 0">
-                <button  @click="handleClose" class="btn1">返回</button>
+                <button  @click="closePreview" class="btn1">返回</button>
                 <button  @click="pushProject" class="btn1">推送</button>
               </div>
             </div>
@@ -253,7 +253,7 @@
 <script type="text/ecmascript-6">
 
 export default {
-  props: ["dialogPreviewVisible","investorid",'comeFrom'],
+  props: ["previewShow","investorid",'comeFrom'],
   data () {
     return {
       close:false,//默认关闭
@@ -464,7 +464,7 @@ export default {
     }
   },
   methods: {
-    handleClose(){
+    closePreview(){
       this.$emit('closePreview', false);
     },//关闭当前弹窗
     getFirstUser(){
@@ -523,18 +523,14 @@ export default {
         })
     },//获取项目详情数据
     pushProject(){
-//        console.log(this.pushMessage)
       if(this.comeFrom==='contacts'){
         this.$http.post(this.URL.pushUser, this.pushMessage)
         .then(res => {
           if(res.data.status_code===2000000){
             let data=res.data.data;
             this.$tool.success("推送成功");
-            this.$emit('changeCloseProjectpush',false);
-            this.$emit('changeCon', false);
-            this.$emit("changeCloseProjectpush",false);
-          }else{
-//            this.$tool.error(res.data.error_msg)
+            this.$emit('closePreviewANDProjectPush', false);//关闭所有的弹框包括预览,推送
+            this.$emit('closePreview', false);//关闭预览弹框
           }
         })
         .catch(err => {
@@ -543,15 +539,13 @@ export default {
         })
       }else{
         this.$emit('previewPush',true);
-//        this.$emit('changeCon', false);
-        this.$http.post(this.URL.pushUser, this.pushMessage)
+        /*this.$http.post(this.URL.pushUser, this.pushMessage)
           .then(res => {
             if(res.data.status_code===2000000){
               let data=res.data.data;
               this.$tool.success("推送成功");
-              this.$emit('changeCloseProjectpush',false);
-              this.$emit('previewPush',false);
-              this.$emit('changeCon', false);
+              this.$emit('closePreviewANDProjectPush', false);//关闭所有的弹框包括预览,推送
+              this.$emit('closePreview', false);//关闭预览弹框
             }else{
 //            this.$tool.error(res.data.error_msg)
             }
@@ -559,12 +553,12 @@ export default {
           .catch(err => {
             this.$tool.console(err);
             this.$tool.success("推送失败");
-          })
+          })*/
       }
     },//推送项目
   },
   watch:{
-    dialogPreviewVisible:function(e){
+    previewShow:function(e){
       if(e){
         this.project_id=this.$store.state.pushProject.project_id;
         this.user=this.$store.state.pushProject.user;

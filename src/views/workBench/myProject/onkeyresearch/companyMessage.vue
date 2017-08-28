@@ -84,7 +84,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["compName"],
+    props: ["compName","comMessage"],
     data () {
       return {
         compaName:"", //搜索用的公司名称
@@ -110,7 +110,7 @@
           company_name: "",//公司名称杭州投着乐网络科技有限公司
           company_type: "",//企业类型企业类型：有限责任公司(自然人投资或控股)
           company_registered_capital: "",//注册资本ff
-          company_Operating_state: "暂无信息",//经营状态ss
+          company_operating_state: "暂无信息",//经营状态ss
           company_business_number: "",//工商注册号123
           company_legal_representative: "",//法定代表人jdjjf
           company_address: "",//公司地址浙江省杭州市西湖区文三路90号东部软件园一楼之韵社
@@ -133,8 +133,6 @@
             }*/
           ]
         },
-
-
       }
     },
     methods: {
@@ -142,32 +140,19 @@
 //      this.$tool.console(tab, event);
       },
       getCrawlerCompany(){
-        this.$http.post(this.URL.getCrawlerCompany, {
-          user_id: localStorage.user_id,
-          company_name: this.compName
-        })
-          .then(res => {
-            let data=res.data.data;
-            data.company.company_register_date=this.$tool.formatDateTime(data.company.company_register_date);
-            this.company=data.company;
-            this.company.company_project=data.project_product;
-            this.productMessage="产品信息"+"("+data.project_product.length+")";
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          })
+        let data=this.comMessage || {};
+        data.company.company_register_date=this.$tool.formatDateTime(data.company.company_register_date);
+        this.company=data.company;
+        this.company.company_project=data.project_product;
+        this.productMessage="产品信息"+"("+data.project_product.length+")";
       },//获取公司信息
 
     },
     created(){
-//    this.$tool.console(this.compName)
-      this.getCrawlerCompany();
+
     },
     watch: {
-      compName: function(e){
-//        this.$tool.console(e);
-        this.compaName=e;
-//        this.$tool.console(this.compaName);
+      comMessage: function(e){
         this.getCrawlerCompany();
       }//获取公司名称
     }

@@ -16,7 +16,7 @@
     },
     created(){
       this.loading=true;
-      var that=this;
+
       var a='';
       if(localStorage.entrance){
         a=localStorage.entrance
@@ -28,12 +28,13 @@
       localStorage.user_real_name=this.$route.query.name;
       this.$store.state.logining.user_id=this.$route.query.id;
       this.$store.state.logining.user_real_name=this.$route.query.name;
+      localStorage.token=this.$route.query.token || '';
       //重新获取个人标签(因为获取个人标签必须要有user_id)
       this.$global.func.getWxProjectCategory();
-      setTimeout(function(){
-        that.$router.push({name:a});
-        that.loading=false;
-      },100)
+      setTimeout(()=>{
+        this.$router.push({name:a});
+        this.loading=false;
+      },200)
     }
   }
 </script>

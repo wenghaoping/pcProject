@@ -9,14 +9,18 @@
 export default
 {
   /*总地址,下载用的*/
-/*  weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
-  weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传*/
-  // weitianshi:"http://192.168.9.74",//下载用
-  // weitianshiLine:"http://192.168.9.74",//上传接口汇总
-  // weitianshi:"https://pc.debug.weitianshi.cn/",//上线接口下载用
-  // weitianshiLine:"https://pc.debug.weitianshi.cn/",//上线接口上传
+  // weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
+  // weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传
+  // weitianshi:"https://pc.debug.weitianshi.cn/",//接口下载用
+  // weitianshiLine:"https://pc.debug.weitianshi.cn/",//接口上传
    weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
   weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
+  openUrl:"https://www.weitianshi.cn/workbench/#/API/DD",
+  //一键尽调跳转用接口
+  // openUrl:"http://192.168.9.19:8090/#/API/DD",
+  // openUrl:"https://dev.weitianshi.cn/workbench/#/API/DD",
+
+  investorMatch:"/api/project/InvestorMatch",//一键尽调买家图谱
 
   /*上传用*/
 
@@ -54,7 +58,8 @@ export default
   createFileType:"api/category/createFileType",  //添加文件分组设置
 
   /*一键尽调*/
-  getCrawlerCompany:"api/dataTeam/getCrawlerCompany",  //一键尽调-公司
+  getCrawlerCompany:"api/dataTeam/getCrawlerCompany",  //一键尽调-公司(模糊匹配)
+  selectCompanyByName:"api/dataTeam/selectCompanyByName",  //一键尽调-公司(精准匹配)
   getCrawlerLeader:"api/dataTeam/getCrawlerLeader",  //一键尽调-公司高管
   getCrawlerBrand:"api/dataTeam/getCrawlerBrand",  //一键尽调-商标
   getCrawlerTeam:"api/dataTeam/getCrawlerTeam",  //一键尽调-核心成员
@@ -135,6 +140,10 @@ export default
   getAllConnectUserSortByMatch:'api/v/project/getAllConnectUserSortByMatch',//推送项目时获取全网人脉
 
 
-  /*使用*/
+  /*使用微信二维码*/
   getProjectQr:'https://wx.weitianshi.cn/api/wx/getProjectQr',//
+
+  /*上传进度*/
+  uploadProgress:"api/project/uploadProgress"
+
 }

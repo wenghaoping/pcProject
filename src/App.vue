@@ -67,7 +67,7 @@
           {type: '首页', jump: '/'},
           {type: '工作站', jump: '/workBench'},
 //          {type: '扫码登陆',jump:'/logining'},
-//          {type: '一键尽调', jump: '/onekeyresearchalone'},
+//          {type: '一键尽调', jump: '/API/DD?company=杭州卓健信息科技有限公司&id=NC81sv9XmvLTsIQ5g7PeHWD0iOySYBrtAHC5M5poeOlkITcTYTChn92kadP9Kau8&includeInvestorMap=false;'},
 //          {type: '测试页面2', jump: '/test2'}
         ],
         user_name:'',
@@ -112,7 +112,13 @@
           this.active=1
         }
         //未登录状态下拦截
-        if(!localStorage.user_id && this.$route.path!=='/' && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin' && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword' && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/' && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/' && this.$route.path!=='/workBench' && this.$route.path!=='/qr'){
+        if(!localStorage.user_id && this.$route.path!=='/'
+          && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin'
+          && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword'
+          && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/'
+          && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/'
+          && this.$route.path!=='/workBench' && this.$route.path!=='/qr'
+          && this.$route.path!=='/API/DD'){
 //          this.$tool.error('请先登录');
           this.$router.push({name:'index'});
         }
@@ -133,22 +139,17 @@
     },
     //当dom一创建时
     created(){
-//    this.setUserId();
       this.user_name= localStorage.user_real_name;
-//      console.log(localStorage.user_real_name,3);
-
     },
     computed:{
       userRealName(){
         let user_real_name=this.$store.state.logining.user_real_name || localStorage.user_real_name;
-//        this.user_name=this.$store.state.logining.user_real_name;
         return user_real_name;
       }
     },
     watch: {
       user_name: function (e) {
-//        this.user_name=e;
-//        console.log(e, 1);
+
       },
       "$route": "checkUser"
     }

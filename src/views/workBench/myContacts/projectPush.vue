@@ -1,7 +1,7 @@
 <template>
   <!--项目推送人脉入口-->
   <div id="projectPush">
-    <el-dialog :visible="dialogPush" :before-close="handleClose">
+    <el-dialog :visible="projectPushShow" :before-close="closeProjectPush">
 
      <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
@@ -128,7 +128,7 @@
 <script type="text/ecmascript-6">
 
 export default {
-  props: ["dialogPush", "userMessage", "userEmail"],
+  props: ["projectPushShow", "userMessage", "userEmail"],
   data () {
     var checkEmail = (rule, value, callback) => {
       if (this.$tool.getNull(value)) {
@@ -223,7 +223,7 @@ export default {
           console.log(this.user)*/
           this.$store.state.pushProject.email.title = this.email.title;
           this.$store.state.pushProject.email.body = this.email.body;
-          this.$emit('changeall', false);
+          this.$emit('openPreview', true);//
         }
       }else{
         this.$tool.warning("您今日的推送次数已用完,请明天再试")
@@ -255,9 +255,7 @@ export default {
               .then(res => {
                 let data=res.data.data;
 //              this.$tool.console(res);
-//              this.$emit('changeall',false)
                 this.$tool.success("推送成功");
-//                this.$emit('changeCloseProjectpush',false);
                 this.getpushCount();
                 this.loading=false;
                 this.open2('推送成功', '推送成功', '继续推送', '返回');
@@ -302,7 +300,7 @@ export default {
       }
     },//推送按钮1推送1次,2继续推送
     remoteMethod(query) {
-      var remoteMethod = new Promise((resolve, reject)=>{
+      return new Promise((resolve, reject)=>{
         if(query=="") this.projectRadio="";
         this.loading=true;
         this.currentPageMatchProject=1;
@@ -327,7 +325,6 @@ export default {
           })
 
       })
-      return remoteMethod;
     },//项目搜索
     filterChangeMatchProject(page){
 
@@ -392,9 +389,9 @@ export default {
       });
       return check;
     },
-    handleClose(){
-      this.$emit('changeCloseProjectpush',false);
-    },
+    closeProjectPush(){
+      this.$emit('closeProjectPush',false);
+    },//关闭项目推送
     getpushCount(){
       this.$http.post(this.URL.pushCount,{
         user_id: localStorage.user_id})
@@ -422,7 +419,7 @@ export default {
         this.getpushCount();
         this.clearData();
       }).catch(() => {
-        this.$emit("changeCloseProjectpush",false);
+        this.$emit("closeProjectPush",false);
         this.clearData();
       });
     },
@@ -440,7 +437,7 @@ export default {
     projectRadio : function(e){
       this.getIntroduce(e);
     },
-    dialogPush : function (e) {
+    projectPushShow : function (e) {
         if(e){
           this.user={};
           this.email2.nameEmai="";

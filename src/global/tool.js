@@ -329,6 +329,40 @@ const tool={
     return string;
   },
 
+  //返回的是字符串形式的参数，例如：class_id=3&id=2&
+  getUrlArgStr(data){
+    var q=data;
+    var qs=q.split('&');
+    var argStr='';
+    if(qs){
+      for(var i=0;i<qs.length;i++){
+        argStr+=qs[i].substring(0,qs[i].indexOf('='))+'='+qs[i].substring(qs[i].indexOf('=')+1)+'&';
+      }
+    }
+    return argStr;
+  },
+  //返回的是对象形式的参数
+  getUrlArgObject(data){
+    var args=new Object();
+    var query=data;//获取查询串
+    var pairs=query.split(",");//在逗号处断开
+    for(var i=0;i<pairs.length;i++){
+      var pos=pairs[i].indexOf('=');//查找name=value
+      if(pos==-1){//如果没有找到就跳过
+        continue;
+      }
+      var argname=pairs[i].substring(0,pos);//提取name
+      var value=pairs[i].substring(pos+1);//提取value
+      args[argname]=unescape(value);//存为属性
+    }
+    var name = "";
+    for(let key in args){
+      name=args[key];
+    }
+    return name.split("&");//返回对象
+  },
+
+
 /*弹框类*/
   error(text) {
     Notification.error({

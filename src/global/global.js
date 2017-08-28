@@ -121,7 +121,7 @@ var func = {
     return arr;
   },//获取项目状态和项目进度
   getWxProjectCategory() {
-    var getWxProjectCategory = new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject)=>{
       //做一些异步操作
       axios.post(URL.getWxProjectCategory, {user_id: localStorage.user_id})
         .then(res => {
@@ -150,7 +150,6 @@ var func = {
           console.log('出现错误');
         })
     });
-    return getWxProjectCategory;
 
   },//获取所有下拉框的数据
 

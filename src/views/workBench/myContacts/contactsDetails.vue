@@ -34,7 +34,7 @@
             <div class="item">
               <div class="block clearfix" style="margin-bottom: 0px;height: 30px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
-                <span class="edit fr" @click="dialogVisibleTag = true"><img class="img" src="../../../assets/images/editYag.png">修改</span>
+                <span class="edit fr" @click="setTagDisplay = true"><img class="img" src="../../../assets/images/editYag.png">修改</span>
               </div>
               <div class="block" style="">
                 <div class="tag" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
@@ -317,7 +317,7 @@
     <!--标签设置弹框-->
     <el-dialog
       title="标签设置"
-      :visible.sync="dialogVisibleTag"
+      :visible.sync="setTagDisplay"
       :show-close="close"
       size="tiny">
       <el-select
@@ -339,58 +339,31 @@
       </el-select>
       <div class="tagTitle">准确设置项目标签便于查找，并参与项目匹配度计算</div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisibleTag = false">取 消</el-button>
+        <el-button @click="setTagDisplay = false">取 消</el-button>
         <el-button type="primary" @click="addTag">确 定</el-button>
       </span>
     </el-dialog>
 
     <!--项目详情弹窗-->
-    <alertprojectdetail :dialog-visible-pro="dialogVisiblePro" :proid="pro_id"
-                        @changeCon2="dialogVisiblechangeIn"></alertprojectdetail>
+    <alertprojectdetail :alert-project-detail-display="alertProjectDetailDisplay" :proid="pro_id"
+                        @changeAlertProjectDetail="changeAlertProjectDetail"></alertprojectdetail>
 
     <!--写跟进弹框-->
-    <addfollow :dialog-follow="dialogFollow" @changeClose="closeFollow"
-               :cardid="contacts.card_id" :userid="contacts.user_id" :cardname="contacts.user_real_name" :type="contacts.type"></addfollow>
-
-    <!--项目推送弹窗,人脉入口精简版-->
-    <el-dialog :visible="dialogPushVisible"
-               :before-close="handleClose" size="tiny" :show-close="close">
-     <span slot="title" class="dialog-title clearfix">
-        <div class="title fl">项目推送</div>
-        <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
-        <div class="img fl"><img src="../../../assets/images/why.png"></div>
-      </span>
-      <el-form :model="pushData" label-position="right" label-width="80px"
-               ref="pushData">
-        <el-form-item
-          prop="email"
-          label="邮箱"
-          :rules="[
-          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
-        ]">
-          <el-input v-model="pushData.email" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="邮件标题" prop="body"
-        :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-          <el-input v-model="pushData.body" auto-complete="off" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <!--<el-button @click="preview">预 览</el-button>-->
-        <el-button @click="dialogPushVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('pushData')">确 定</el-button>
-      </div>
-    </el-dialog>
+    <addfollow :follow-display="followDisplay" :cardid="contacts.card_id" :userid="contacts.user_id"
+               :cardname="contacts.user_real_name" :type="contacts.type"
+               @closeFollow="closeFollow"
+               ></addfollow>
 
     <!--项目推送弹窗,人脉入口完整版-->
-    <projectpush :dialog-push="dialogPushVisibleComplete" :user-message="userMessage"
-                 :user-email="userEmail" @changeall="dialogVisiblechange"
-                 @changeCloseProjectpush="dialogVisiblechangeCloase"></projectpush>
+    <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage"
+                 :user-email="userEmail"
+                 @openPreview="openPreview"
+                 @closeProjectPush="closeProjectPush"></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :dialog-preview-visible="dialogPreviewVisible"
-                    @changeCon="dialogPrechange" @closePreview="closePreview"
+    <projectpreview :preview-show="previewDisplay"
+                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
+                    @closePreview="closePreview"
                     :comeFrom="'contacts'"></projectpreview>
   </div>
 </template>
@@ -406,12 +379,11 @@
       return {
         close:false,
         /*设置标签*/
-        dialogVisibleTag:false,//标签弹框设置
-        dialogFollow:false,//添加更近弹框
-        dialogPreviewVisible:false,//项目预览弹窗
-        dialogPushVisible:false,//项目推送弹框设置,简易版
-        dialogPushVisibleComplete:false,//项目推送弹框,完整版
-        dialogVisiblePro:false,//控制项目详情弹窗
+        setTagDisplay:false,//标签弹框设置
+        followDisplay:false,//添加更近弹框
+        previewDisplay:false,//项目预览弹窗
+        projectPushDisplay:false,//项目推送弹框,完整版
+        alertProjectDetailDisplay:false,//控制项目详情弹窗
         tagsValue:[],//标签弹框数据绑定
         addTags:[{
           value: '',
@@ -576,8 +548,7 @@
           this.userMessage.type=this.contacts.type;
           this.userEmail=this.contacts.user_email;
           this.$store.state.pushProject.projectMessgae={pro_id:data.project_id || '',pro_intro:data.pro_intro || ''};
-//          this.dialogPushVisible=true;
-          this.dialogPushVisibleComplete=true;
+          this.projectPushDisplay=true;
           this.pushData.email=this.contacts.user_email;
           this.pushData.project_id=data.project_id;
         }
@@ -592,16 +563,11 @@
         if(this.contacts.type=='user') this.userMessage.card_id=this.contacts.user_id;
         this.userMessage.type=this.contacts.type || '';
         this.userEmail=this.contacts.user_email;
-        this.dialogPushVisibleComplete=true;
+        this.projectPushDisplay=true;
       },//点击推送完整版,并且传送数据给推送弹框
-      handleClose(){
-        this.dialogPushVisible=false;
-
-      },//关闭项目推送
-      dialogVisiblechange(msg){
-//      this.dialogPushVisible=msg;
-        this.dialogPreviewVisible=true;
-      },//关闭推送弹框,打开预览弹框
+      openPreview(msg){
+        this.previewDisplay=true;
+      },//打开预览弹框
       preview(){
         if(this.pushCount!=0) {
           if (!this.$tool.checkEmail(this.pushData.email)) this.$tool.error("请输入正确的邮箱")
@@ -617,18 +583,16 @@
             this.$store.state.pushProject.pushMessage.project_ids = new Array;
             this.$store.state.pushProject.pushMessage.project_ids.push(this.$store.state.pushProject.projectMessgae.pro_id);
             this.$store.state.pushProject.email.title = this.pushData.body;
-            this.dialogPreviewVisible = true
+            this.previewDisplay = true
           }
         }else{
           this.$tool.warning("您今日的推送次数已用完,请明天再试")
         }
 
       },//项目预览
-      closePreview(msg){
-        this.dialogPreviewVisible=msg;
-      },//关闭项目预览
-      dialogVisiblechangeCloase(msg){
-        this.dialogPushVisibleComplete=msg;
+
+      closeProjectPush(msg){
+        this.projectPushDisplay=msg;
         this.getpushCount();
         this.getOneUserInfo()
           .then((data)=>{
@@ -675,26 +639,29 @@
       toDetail(data){
 //          console.log(data);
           this.pro_id=data.project_id;
-        this.dialogVisiblePro=true;
+        this.alertProjectDetailDisplay=true;
       },//项目详情弹窗
       addFollow(){
-        this.dialogFollow=true;
+        this.followDisplay=true;
 
       },//点击添加意向项目按钮
       closeFollow(msg){
-        this.dialogFollow=msg;
+        this.followDisplay=msg;
         this.getEnjoyProjects();
         this.getEchartData();
       },//关闭添加意向项目
-      dialogVisiblechangeIn(msg){
-        this.dialogVisiblePro=msg;
-//      this.dialogPreviewVisible=true;
+      changeAlertProjectDetail(msg){
+        this.alertProjectDetailDisplay=msg;
       },//项目详情弹窗关闭函数
-      dialogPrechange(msg){
-        this.dialogPushVisible=msg;
-        this.dialogPushVisibleComplete=msg;
-        this.dialogPreviewVisible=msg;
+
+      closePreviewANDProjectPush(msg){
+        this.projectPushDisplay=msg;
+        this.previewDisplay=msg;
+      },//关闭项目预览AND关闭项目推送
+      closePreview(msg){
+        this.previewDisplay=msg;
       },//关闭项目预览
+
       setProjectList(data){
         let arr = new Array;
         for(let i=0; i<data.length; i++){
@@ -720,7 +687,7 @@
       },//设置项目库项目的标签
       /*请求函数*/
       getProjectList(page){
-        var getProjectList = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.getPra.user_id=this.contacts.user_id;
 //      this.getPra.user_id="2rzyz5vp";
@@ -744,7 +711,6 @@
             })
           resolve(4);
         });
-        return getProjectList;
 
       },//获取项目列表
       setTag(arr){
@@ -770,7 +736,7 @@
         return newArr;
       },//设置投资案例
       getOneUserInfo(){
-        var getOneUserInfo = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
             .then(res => {
@@ -809,13 +775,10 @@
 //              this.loading=false;
               this.$tool.error("加载超时");
             })
-
         });
-        return getOneUserInfo;
-
       },//获取个人详情
       getWxProjectCategory(){
-        var getWxProjectCategory = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           setTimeout(()=>{
             this.addTags = this.$global.data.tags_user;//设置人脉标签()
@@ -825,11 +788,7 @@
             this.follow_scheduleAll.unshift({label:'全部', value:0});//设置项目状态
             resolve(2);
           },500)
-
         });
-        return getWxProjectCategory;
-
-
       },//获取所有下拉框的数据
       addChangeTag(e){
         let tagName = this.$tool.checkArr(e, this.addTags);
@@ -860,7 +819,7 @@
         .then(res => {
           this.loading=false;
           this.$tool.success("设置成功");
-          this.dialogVisibleTag = false;
+          this.setTagDisplay = false;
           this.gettags_user();
           setTimeout(()=>{this.getOneUserInfo();},100);
         })
@@ -868,7 +827,7 @@
           this.loading=false;
           this.$tool.error("添加失败");
           this.$tool.console(err);
-          this.dialogVisibleTag = false;
+          this.setTagDisplay = false;
 
         })
       },//保存标签选择
@@ -883,7 +842,7 @@
       },//设置人脉标签
       /*设置意向项目右边*/
       getEchartData(){
-        var getEchartData = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getEnjoyProjectsGroup,{user_id:localStorage.user_id,card_id:this.contacts.card_id,card_link_user_id:this.contacts.user_id})
             .then(res=>{
@@ -901,11 +860,10 @@
             })
 
         });
-        return getEchartData;
 
       },//获取意向项目数据(图表)
       getEnjoyProjects(){
-        var getEnjoyProjects = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.getConpro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
@@ -921,8 +879,8 @@
                 this.enjoyProjects=this.setEnjoyProject(data);
                 this.totalData2 = res.data.count || 0;
                 if(this.enjoyProjects.length==0) {
-                    this.activeName='2';
-                    this.tabs=false;
+                  this.activeName='2';
+                  this.tabs=false;
                 }
                 resolve(7);
               }
@@ -931,10 +889,7 @@
               this.$tool.console(err,2);
               this.$tool.error("加载超时");
             })
-
         });
-        return getEnjoyProjects;
-
       },//获取意向项目列表
       setEnjoyProject(arr){
         let newArr = new Array;
@@ -1107,7 +1062,7 @@
       },//筛选意向项目
       /*设置匹配项目(右边)*/
       getInvestorsMatchProjects(){
-        var getInvestorsMatchProjects = new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.getMatchPro.user_id=localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
@@ -1133,10 +1088,7 @@
               this.loading=false;
               this.$tool.error("加载超时");
             })
-
         });
-        return getInvestorsMatchProjects;
-
       },//获取匹配项目列表
       setMatchProject(arr){
         let newArr = new Array;
@@ -1306,7 +1258,7 @@
       projectpreview
     },
     watch : {
-      dialogVisibleTag : function (e) {
+      setTagDisplay : function (e) {
         if (e) {
 
         }

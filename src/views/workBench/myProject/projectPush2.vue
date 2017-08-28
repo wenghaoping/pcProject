@@ -1,7 +1,7 @@
 <template>
   <!--项目推送项目入口-->
   <div id="projectPush">
-    <el-dialog :visible="dialogPush" :before-close="handleClose">
+    <el-dialog :visible="projectPushShow2" :before-close="handleClose">
       <!--弹窗头部-->
       <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
@@ -326,7 +326,7 @@
   import customerAddContacts from '../../../components/customerAddContacts.vue'
   import {mapState} from 'vuex'
   export default {
-    props: ["dialogPush", 'proid', 'proIntro', 'emitPush'],
+    props: ["projectPushShow2", 'proid', 'proIntro','emitPush'],
     data () {
       return {
         project_name: this.proIntro,
@@ -786,7 +786,7 @@
             this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
             this.$store.state.pushProject.email.title = this.pushTitle;
             this.$store.state.pushProject.email.body = this.pushBody;
-            this.$emit('preview', true);
+            this.$emit('openPreview', true);
           } else {
             this.$tool.warning("您今日的推送次数已用完")
           }
@@ -794,7 +794,8 @@
       },
       //推送
       push(){
-        let dealData = []
+        this.loading=true;
+        let dealData = [];
         this.pushData.forEach(x => {
           if (x.type === 'card') {
             dealData.push([x.card.card_id, x.type, x.card.user_email])
@@ -820,17 +821,10 @@
           }).then(res => {
             if (res.data.status_code === 2000000) {
               this.$tool.success('推送成功');
-             /* this.initData();
-              this.myContactsShow = [];
-              this.netContactsShow = [];
-              for (let x in this.myCheckList) {
-                this.myCheckList[x] = false;
-              }
-              for (let x in this.netCheckList) {
-                x = false;
-              }
-              this.initReborn();
-              this.$emit('changeClose', false);*/
+              this.$emit('closePreviewANDProjectPush', false);
+              this.$emit('openPreview', false);
+              this.$emit('previewPush',false);
+              this.loading=false;
              this.handleClose();
             }
           })
@@ -849,7 +843,7 @@
         }
         //强置刷新checkBox状态
         this.initReborn();
-        this.$emit('changeClose', false);
+        this.$emit('closeProjectPush2', false);
       },
       //强制刷新checkbox
       initReborn(){
@@ -873,7 +867,7 @@
     },
     watch: {
       //打开该弹框时
-      dialogPush: function (e) {
+      projectPushShow2: function (e) {
         if (e === true) {
           this.loading=true;
           this.project_name = this.proIntro;
@@ -935,8 +929,9 @@
       },
       //项目预览提交推送时
       emitPush: function (e) {
-        this.push();
-        this.$emit('changeClose', false)
+          if(e){
+            this.push();
+          }
       }
     }
   }
