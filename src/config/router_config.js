@@ -54,7 +54,7 @@ const onekeyResearchAlone = r => require.ensure([], () => r(require('@/views/one
 //
 // const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
 // const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vue')), 'checkArray')
-
+const test = r => require.ensure([], () => r(require('@/test/swiper.vue')), 'test');
 
 /*配置路由*/
 export default [
@@ -110,9 +110,9 @@ export default [
   },
 /*  {
     path: '/test', name: 'test', component: checkone
-  },
+  },*/
   {
-    path: '/test2', name: 'test2', component: alertUpload
-  }*/
+    path: '/test2', name: 'test2', component: test
+  }
   ]
 

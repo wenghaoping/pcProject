@@ -238,6 +238,24 @@ const tool={
       }
     }
   },//input框长度验证(超出40字就返回true)
+  getMemberHunder(data){
+    let check=true;
+      if(this.getNull(data)){
+
+      }else{
+        if(this.checkNumber(parseFloat(data))){
+          if(parseFloat(data)>100) {
+            this.error("核心团队股权比例不能大于100");
+            check=false;
+          }
+        }else{
+          this.error("核心团队股权比例必须为数字");
+          check=false;
+        }
+      }
+
+    return check;
+  },//判断成员股权比例
   isArray(o) {
   return Object.prototype.toString.call(o) == '[object Array]';
 },//是否为数组

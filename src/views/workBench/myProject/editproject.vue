@@ -2082,13 +2082,51 @@
 
   /*全部保存按钮*/
       allSave(){
-          var arr1=[];
-        for (var a = 0; a < this.team.core_users.length; a++) {
-          var obj1 = {};
-          obj1.member_name = this.team.core_users[a].ct_member_name;
-           arr1.push(obj1);
-        }
-        console.log(arr1[a].member_name)
+        for (let a = 0; a < this.team.core_users.length; a++) {
+          if (this.$tool.getNull(this.team.core_users[a].ct_member_name))
+          { this.$tool.error("团队成员姓名不能为空");
+            return;
+          }
+          if(this.$tool.checkLength(this.team.core_users[a].ct_member_name)){
+            this.$tool.error("团队成员姓名不能超过20个字");
+            return;
+          }
+          if(this.$tool.checkLength1(this.team.core_users[a].ct_member_career)){
+            this.$tool.error("团队成员职位不能超过40个字");
+            return;
+          }
+          if(this.$tool.checkLength2(this.team.core_users[a].ct_member_intro)){
+            this.$tool.error("团队成员介绍不能超过500个字");
+            return;
+          }
+//          if(this.$tool.getMemberHunder(this.team.core_users[a].stock_scale)){
+//            this.$tool.console("11");
+//            return;
+//          }financing.pro_finance_value
+
+        }//核心团队新增成员判断
+        for (let b = 0; b < this.financing.pro_history_finance.length; b++) {
+          if (this.$tool.getNull(this.financing.pro_history_finance[b].pro_finance_scale))
+          { this.$tool.error("融资金额不能为空");
+            return;
+          }
+//          if (this.$tool.checkNumber(this.financing.pro_history_finance[b].pro_finance_scale))
+//          { this.$tool.error("融资金额必须为数字");
+//            return;
+//          }
+          if (this.$tool.getNull(this.financing.pro_history_finance[b].finance_time))
+          { this.$tool.error("投资时间不能为空");
+            return;
+          }
+          if (this.$tool.getNull(this.financing.pro_history_finance[b].pro_finance_investor))
+          { this.$tool.error("历史投资方不能为空");
+            return;
+          }
+          if (this.$tool.checkLength1(this.financing.pro_history_finance[b].pro_finance_investor))
+          { this.$tool.error("历史投资方不能超过40个字");
+            return;
+          }
+        }//新增历史融资判断
 //        if (this.planList.length === 0) this.fileMust = true;
 //        else this.fileMust = false;
         this.projectMust = !this.submitForm('project');
@@ -2103,19 +2141,20 @@
         else if (this.milepostMust) this.$tool.error("里程碑必填项不能为空")
         else if (!this.getMemberHunder(this.team.core_users)) {}
         else if(this.$tool.checkLength1(this.project.pro_name)){this.$tool.error("项目名称不超过40个字")}
-         else if(!this.$tool.checkPhoneNumber1(this.project.contact.user_mobile)) {this.$tool.console("电话不过")}
+        else if(!this.$tool.checkPhoneNumber1(this.project.contact.user_mobile)) {this.$tool.console("电话不过")}
         else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){this.$tool.console("投后股份没过")}
         else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字(去处%号)")){this.$tool.console("签约没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字(去处%号)")){this.$tool.console("股权赠与没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字(去处%号)")){this.$tool.console("跟投权没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字(去处%号)")){this.$tool.console("其他权益没过")}
-        else if (!this.getNumber(this.financing.pro_finance_value)){this.$tool.console("pro_finance_value没过")}
+
+//**************************************************************************************************************
+        else if (this.$tool.checkNumber(this.financing.pro_finance_value)){this.$tool.error("项目估值必须为数字")}
         else if (this.$tool.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else if (this.$tool.getNull(this.project.pro_goodness)){this.$tool.error("项目亮点不能为空")}
-
-        else if (this.$tool.getNull(this.arr1[a].member_name)){this.$tool.error("团队成员姓名不能为空")}
         else if(this.$tool.checkLength1(this.project.pro_company_name)){this.$tool.error("公司名称不超过40个字")}
         else if(this.$tool.checkLength1(this.project.pro_goodness)){this.$tool.error("项目亮点不超过500个字")}
+        else if(this.$tool.checkLength1(this.financing.pro_finance_use)){this.$tool.error("资金用途不超过500个字")}
         else if(this.$tool.checkLength(this.project.contact.user_name)){this.$tool.error("项目联系人不超过20个字")}
         else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
         else{
