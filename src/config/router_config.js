@@ -39,6 +39,7 @@ const followUp = r => require.ensure([], () => r(require('@/views/workBench/foll
 /*===============================小程序页面路由配置===============================*/
 //小程序页面
 const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRoutine/index.vue')), 'SmallRoutine');
+// const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRoutine/index.vue')), 'SmallRoutine');
 
 /*======================================一键尽调单独页面=========================================*/
 const onekeyResearchAlone = r => require.ensure([], () => r(require('@/views/onekeyResearchAlone/onekeyresearchAlone.vue')), 'onekeyResearchAlone');
@@ -113,11 +114,10 @@ export default [
     path: '/test', name: 'test', component: checkone
   },*/
   {
-<<<<<<< HEAD
-    path: '/test2', name: 'test2', component: test
-=======
+
+    // path: '/test2', name: 'test2', component: test
+
     path: '/test2', name: 'test2', component: upload
->>>>>>> 52155f5c86e93c814cb55637cd7ff210c01185f0
-  }
+}
   ]
 
