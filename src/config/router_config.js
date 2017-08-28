@@ -39,6 +39,7 @@ const followUp = r => require.ensure([], () => r(require('@/views/workBench/foll
 /*===============================小程序页面路由配置===============================*/
 //小程序页面
 const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRoutine/index.vue')), 'SmallRoutine');
+// const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRoutine/index.vue')), 'SmallRoutine');
 
 /*======================================一键尽调单独页面=========================================*/
 const onekeyResearchAlone = r => require.ensure([], () => r(require('@/views/onekeyResearchAlone/onekeyresearchAlone.vue')), 'onekeyResearchAlone');
@@ -55,7 +56,7 @@ import upload from '@/test/upload.vue'
 //
 // const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
 // const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vue')), 'checkArray')
-
+const test = r => require.ensure([], () => r(require('@/test/swiper.vue')), 'test');
 
 /*配置路由*/
 export default [
@@ -113,7 +114,10 @@ export default [
     path: '/test', name: 'test', component: checkone
   },*/
   {
+
+    // path: '/test2', name: 'test2', component: test
+
     path: '/test2', name: 'test2', component: upload
-  }
+}
   ]
 

@@ -536,13 +536,13 @@ export default {
           let contacts1=this.submitForm('contacts1');
           let contacts2=this.submitForm('contacts2');
         if(this.$tool.getNull(this.contacts.user_real_name)) {this.$tool.error("姓名不能为空")}
-        else if(this.contacts.user_real_name.length>20) {this.$tool.error("姓名不超过20字")}
-        else if(!this.checkEmail(this.contacts.user_email)) {this.$tool.console("邮箱不过")}
-        else if(!this.checkPhoneNumber(this.contacts.user_mobile)) {this.$tool.console("电话不过")}
-        else if(this.contacts.user_nickname.length>20) {this.$tool.error("昵称不超过20字")}
-        else if(this.contacts.user_company_name.length>40) {this.$tool.error("公司不超过40字")}
-        else if(this.contacts.user_brand.length>40) {this.$tool.error("品牌不超过40字")}
-        else if(this.contacts.user_company_career.length>40) {this.$tool.error("职位不超过40字")}
+        else if(this.$tool.checkLength(this.contacts.user_real_name)) {this.$tool.error("姓名不超过20字")}
+        else if(this.$tool.checkLength(this.contacts.user_nickname)) {this.$tool.error("昵称不超过20字")}
+        else if(!this.checkEmail(this.contacts.user_email)) {this.$tool.console("请输入正确的邮箱邮箱")}
+        else if(!this.checkPhoneNumber(this.contacts.user_mobile)) {this.$tool.console("请输入正确的电话")}
+        else if(this.$tool.checkLength1(this.contacts.user_company_name)) {this.$tool.error("公司不超过40字")}
+        else if(this.$tool.checkLength1(this.contacts.user_brand)) {this.$tool.error("品牌不超过40字")}
+        else if(this.$tool.checkLength1(this.contacts.user_company_career)) {this.$tool.error("职位不超过40字")}
         else if(!contacts) {}
         else if(!contacts1) {this.$tool.error("投资需求不超过500字")}
         else if(!contacts2) {this.$tool.error("资源需求不超过500字")}
