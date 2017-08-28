@@ -55,7 +55,7 @@ import upload from '@/test/upload.vue'
 //
 // const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
 // const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vue')), 'checkArray')
-
+const test = r => require.ensure([], () => r(require('@/test/swiper.vue')), 'test');
 
 /*配置路由*/
 export default [
@@ -113,7 +113,11 @@ export default [
     path: '/test', name: 'test', component: checkone
   },*/
   {
+<<<<<<< HEAD
+    path: '/test2', name: 'test2', component: test
+=======
     path: '/test2', name: 'test2', component: upload
+>>>>>>> 52155f5c86e93c814cb55637cd7ff210c01185f0
   }
   ]
 
