@@ -115,7 +115,9 @@ export default [
   },*/
   {
 
-    // path: '/test2', name: 'test2', component: test
+    path: '/test3', name: 'test3', component: test
+  },
+    {
 
     path: '/test2', name: 'test2', component: upload
 }
