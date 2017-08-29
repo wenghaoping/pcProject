@@ -1,6 +1,6 @@
 <template>
   <div id="projectDetails" class="clearfix" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="contain-grid contain-center1 fl" ref="left">
+    <div class="contain-grid contain-center1 fl" ref="left" id="wid">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
         <div class="item-lists item-lists-top clearfix">
@@ -830,8 +830,10 @@
         userEmail:'',
         scrolled: false,
         qrImg:'',//二维码地址
-        screenWidth: document.body.clientWidth,
-        timer:null
+/*        screenWidth: document.body.clientWidth,
+        timer:null,
+        timer2:null,
+        scrollTop:0,*/
       }
     },
     computed:{
@@ -849,26 +851,21 @@
     //Echart组件
     mounted(){
       this.eChart();
-//        let leftWidth=document.body.clientHeight-document.body.scrollHeight;
-//       console.log(document.body.clientHeight);
-//       console.log(document.body.scrollHeight);
-//       console.log(window.screen.height);
-//      $(window).scroll(function () {
-//        let scrollTop = $(this).scrollTop()
-//        let scrollHeight = $(document).height()
-//        let windowHeight = $(this).height()
-//      })
-//       console.log(document.body.offsetHeight);
-//       window.addEventListener('scroll', this.handleScroll);
-//       console.log(leftWidth)
+      /*let leftWidth=document.getElementById("wid").offsetLeft+868;
+      this.$refs.right.style.left = leftWidth +'px';
+
       const that = this;
       window.onresize = () => {
         return (() => {
           window.screenWidth = document.body.clientWidth;
           that.screenWidth = window.screenWidth
         })()
-      }
-
+      };
+      window.onscroll = () => {
+        return (() => {
+          that.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        })()
+      }*/
     },
 
     methods:{
@@ -1602,18 +1599,32 @@
       })
     },
     watch:{
-      screenWidth (val) {
+      /*screenWidth (val) {
         if (!this.timer) {
           this.screenWidth = val;
           this.timer = true;
           let that = this;
           setTimeout(function () {
-//            console.log(that.screenWidth);
-//            console.log(that.$refs.left.offsetLeft);
+            that.$refs.right.style.left=that.$refs.left.offsetLeft +868+'px';
             that.timer = false
-          }, 200)
+          }, 100)
         }
-      }
+      },
+      scrollTop(val){
+        if (!this.timer2) {
+          this.scrollTop = val;
+          this.timer2 = true;
+          let that = this;
+          setTimeout(function () {
+            if(that.scrollTop>90){
+              that.$refs.right.style.top=50+'px';
+            }else{
+              that.$refs.right.style.top=81+'px';
+            }
+            that.timer2 = false;
+          }, 100)
+        }
+      }*/
     },
   }
 </script>

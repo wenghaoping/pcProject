@@ -1,6 +1,7 @@
 <template>
-  <div id="alertUpload" v-loading.fullscreen.lock="loading" element-loading-text="上传中">
-    <el-dialog title="批量上传BP" :visible="uploadDisplay" :before-close="handleClose" :show-close="showList">
+  <div id="alertUpload" v-loading.body="loading" element-loading-text="上传中">
+    <el-dialog title="批量上传创建项目" :visible="uploadDisplay" :before-close="handleClose" :show-close="showList"
+               :close-on-click-modal="showList" :close-on-press-escape="showList">
       <div style="height:250px;"></div><!--老子就是一个占位的-->
         <el-upload class="uploadProjec"
                    :action="uploadAddress"
@@ -12,13 +13,13 @@
                    :before-upload="beforeUpload"
                    :on-progress="handleProgress"
                    :data="uploadDate"
-                   :show-file-list="showList"_
+                   :show-file-list="showList"
                    ref="upload"
                    accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                    drag multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text"><!--将文件拖到此处，或--><em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip" >BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</div>
+          <div class="el-upload__tip" slot="tip" >BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式<br>单个文件最大50M</div>
         </el-upload>
 
       <div slot="footer" class="dialog-footer" style="padding-top: 40px;padding-right: 44px;padding-bottom: 15px;">
@@ -27,7 +28,8 @@
     </el-dialog>
 
 
-    <el-dialog title="批量上传BP" :visible="dialogUpload2Visible" :before-close="handleClose" :show-close="showList">
+    <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose"
+               :show-close="showList" :close-on-click-modal="showList" :close-on-press-escape="showList">
       <div class="loadmodel">
         <el-upload
           class="upload-demo"
@@ -46,8 +48,8 @@
           accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
           multiple>
           <div class="inner">
-            <el-button slot="trigger" type="primary" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
-            <p class="bp fl">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</p>
+            <button slot="trigger" class="fr contentUpload">继续上传</button>
+            <!--<p class="bp fl">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</p>-->
           </div>
 
         </el-upload>
@@ -79,8 +81,8 @@
                   label="商业计划书"
                   :prop="'domains.' + index + '.pro_name'"
                   v-for="(domain, index) in dateForm.domains"
-                  :key="domain.index">
-                  <el-input v-model="domain.file_title" :disabled="true"></el-input>
+                  :key="domain.index" style="padding-left: 15px;">
+                  <i class="pro_name">{{domain.file_title}}</i>
                 </el-form-item>
 
               </el-col>
@@ -89,8 +91,9 @@
                   v-for="(domain, index) in dateForm.domains"
                   :key="domain.index"
                   style="padding-top: 23px;">
-                  <el-button v-show="!domain.load" @click.prevent="removeDomain(domain)">删除</el-button>
                   <span v-show="domain.load" class="uploadImg"><img src="../../../assets/images/loading.gif"></span>
+                  <i v-show="!domain.load" class="delete" @click.prevent="removeDomain(domain)">删除</i>
+                  <i v-show="domain.load" class="delete" @click.prevent="cancelUpload(domain)">取消</i>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -98,8 +101,8 @@
         </div>
         <div slot="footer" class="dialog-footer clearfix" style="padding-top: 40px;">
           <div class="fr">
+            <el-button @click="cancel" :disabled="submitButton">取 消</el-button>
             <el-button type="primary" @click="submitUpload('dateForm',dateForm)" :disabled="submitButton">确 定</el-button>
-            <el-button @click="cancel">取 消</el-button>
           </div>
         </div>
       </div>
@@ -115,7 +118,7 @@ export default {
       uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
       num:0,//控制一次最多选择个数
 //      dialogUploadVisible: false,//第一个弹窗的控制
-      dialogUpload2Visible:false,//第二个弹窗的控制
+      dialogUpload2Visible:true,//第二个弹窗的控制
       status:"",//状态success/exception
       percentage:0,//进度
       formLabelWidth: '880px',
@@ -146,7 +149,6 @@ export default {
     handleChange(file, fileList) {
       this.$emit('uploadDisplayChange',false);
       this.dialogUpload2Visible=true;
-      this.subButtonCheck(this.dateForm.domains);
     },
     uploadsuccess(response, file, fileList){
         let data=response.data;
@@ -189,6 +191,7 @@ export default {
         return false;
       }
       this.addDomain(file.name, file.name, file.name,0,true,file.uid);
+      this.subButtonCheck(this.dateForm.domains);
     },
     deleteLoad(uid){
       let lists=this.dateForm.domains;//所有的文件的数组
@@ -199,7 +202,12 @@ export default {
       }
     },//剔除Load
     subButtonCheck(arr){
+      if(arr.length===0){
+        this.submitButton=false;
+        return false;
+      }
       for(let i=0; i<arr.length; i++){
+//        console.log(arr[i].load)
         if(arr[i].load){
           this.submitButton=true;
           return false;
@@ -248,19 +256,23 @@ export default {
         this.dateForm.domains.splice(index, 1)
         this.fileList.splice(index, 1)
       }
-
       this.$http.post(deleteUpload,{user_id: localStorage.user_id,project_id:item.project_id})
         .then(res=>{
           if(res.status===200){
             this.loading=false;
             this.$tool.success("删除成功");
           }
-            this.$tool.console(res)
         })
         .catch(err=>{
           this.$tool.console(err)
 
         })
+    },
+    //取消上传
+    cancelUpload(file){
+      this.$refs.upload.abort(file);
+      this.deleteLoad(file.uid);
+      this.subButtonCheck(this.dateForm.domains);
     },
     //添加上传文件时,加入显示列表
     addDomain(pro_intro,pro_name,file_title,project_id,load,uid) {
@@ -279,7 +291,7 @@ export default {
         .then(_ => {
           let arr=this.dateForm.domains;
 
-          this.$tool.console(this.dateForm.domains);
+//          this.$tool.console(this.dateForm.domains);
           for(let i=0; i<arr.length; i++){
             this.$http.post(this.URL.deleteUpload,{user_id: localStorage.user_id,project_id:arr[i].project_id})
             .then(res=>{
@@ -296,73 +308,21 @@ export default {
           this.$emit('uploadDisplayChange',false);
           this.dialogUpload2Visible=false;
           this.dateForm.domains=[];
-          this.fileList=[];
-//          conosle.log("删除啦")
+          this.$refs.upload.clearFiles();
         })
         .catch(_ => {
 
         });
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？关闭后所有数据清空')
-        .then(_ => {
-          this.$emit('uploadDisplayChange',false);
-          this.dialogUpload2Visible=false;
-          done()
-
-        })
-        .catch(_ => {});
+    handleClose() {
+      this.$emit('uploadDisplayChange',false);
+      this.dialogUpload2Visible=false;
     },
   }
 }
 </script>
 
-<style scoped lang="less">
-  .alertIn{
-    color: red;
-  }
-  .el-notification{
-    z-index: 2005;
-  }
-  .el-upload__tip{
-    text-align: center;
-  }
-.uploadProjec{
-  width: 360px;
-  height: 180px;
-  position: absolute;
-  right: 0px;
-  top:0px;
-  left: 0px;
-  bottom: 0px;
-  margin: auto;
-  .el-upload-dragger{
-    background-color:#f9fafc!important;
-    font-size: 40px;
-  }
-}
-.bp{
-  display: inline-block;
-  font-size:12px;
-  color:#5e6d82;
-  letter-spacing:0;
-  padding-left: 10px;
-}
-  .el-progress--circle{
-    left: 30%;
-  }
-  .loadmodel{
-    width: 100%;
-  }
-  .el-notification{
-    z-index: 2004;
-  }
-  .uploadImg{
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    img{
-      width: 100%;
-    }
-  }
+<style lang="less">
+  @import '../../../assets/css/alertUpload.less';
+
 </style>

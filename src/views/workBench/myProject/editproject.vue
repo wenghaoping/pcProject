@@ -1148,20 +1148,19 @@
       },
     },
     mounted() {
-        let leftWidth=document.getElementById("wid").offsetLeft+935;
-        this.$refs.right.style.left = leftWidth +'px';
-      this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-
-
+      let leftWidth=document.getElementById("wid").offsetLeft+935;
+      this.$refs.right.style.left = leftWidth +'px';
       const that = this;
       window.onresize = () => {
         return (() => {
           window.screenWidth = document.body.clientWidth;
           that.screenWidth = window.screenWidth
         })()
-      }
+      };
       window.onscroll = () => {
-
+        return (() => {
+          that.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        })()
       }
     },
     methods: {
@@ -2120,7 +2119,7 @@
         else if (this.milepostMust) this.$tool.error("里程碑必填项不能为空")
         else if (!this.getMemberHunder(this.team.core_users)) {}
         else if(this.$tool.checkLength1(this.project.pro_name)){this.$tool.error("项目名称不超过40个字")}
-        else if(!this.$tool.checkPhoneNumber1(this.project.contact.user_mobile)) {this.$tool.console("电话不过")}
+        else if(this.$tool.checkPhoneNumber1(this.project.contact.user_mobile)) {console.log("电话不过")}
         else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){this.$tool.console("投后股份没过")}
         else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字(去处%号)")){this.$tool.console("签约没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字(去处%号)")){this.$tool.console("股权赠与没过")}
@@ -2132,8 +2131,8 @@
         else if (this.$tool.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else if (this.$tool.getNull(this.project.pro_goodness)){this.$tool.error("项目亮点不能为空")}
         else if(this.$tool.checkLength1(this.project.pro_company_name)){this.$tool.error("公司名称不超过40个字")}
-        else if(this.$tool.checkLength1(this.project.pro_goodness)){this.$tool.error("项目亮点不超过500个字")}
-        else if(this.$tool.checkLength1(this.financing.pro_finance_use)){this.$tool.error("资金用途不超过500个字")}
+        else if(this.$tool.checkLength2(this.project.pro_goodness)){this.$tool.error("项目亮点不超过500个字")}
+        else if(this.$tool.checkLength2(this.financing.pro_finance_use)){this.$tool.error("资金用途不超过500个字")}
         else if(this.$tool.checkLength(this.project.contact.user_name)){this.$tool.error("项目联系人不超过20个字")}
         else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
         else{
@@ -2376,8 +2375,6 @@
           this.timer = true;
           let that = this;
           setTimeout(function () {
-//            console.log(that.screenWidth);
-//            console.log(that.$refs.left.offsetLeft);
             that.$refs.right.style.left=that.$refs.left.offsetLeft +935+'px';
             that.timer = false
           }, 100)
@@ -2389,7 +2386,12 @@
           this.timer2 = true;
           let that = this;
           setTimeout(function () {
-            console.log(this.scrollTop);
+//            console.log(that.scrollTop);
+            if(that.scrollTop>90){
+              that.$refs.right.style.top=80+'px';
+            }else{
+              that.$refs.right.style.top=153+'px';
+            }
             that.timer2 = false;
           }, 100)
         }

@@ -5,14 +5,16 @@
     <el-dialog :visible="previewShow" :show-close="close"  custom-class="dialogCon" :before-close="closePreview" close-on-press-escape close-on-click-modal>
       <div class="top_pro">
         <p v-if="email.title==''">邮件标题 :
-
           <i v-if="user.user_brand!=''">{{user.user_brand}}－</i>
           <i v-else>{{user.firse_user_company_name}}－</i>
           <i v-if="user.firse_user_company_career!=''">{{user.firse_user_company_career}}－</i>
           <i v-if="user.firse_user_real_name!=''">{{user.firse_user_real_name}}</i>
           推送给您一个项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行</p>
         <p v-else>邮件标题 : {{email.title}}</p>
-        <p v-if="email.body==''">邮件正文 : 尊敬的{{user.user_real_name}}，下面是来自{{user.firse_user_company_name}}-{{user.firse_user_company_career}}-{{user.firse_user_real_name}}的项目推荐。你可以注册/登录微天使工作站找到更多精选FA项目资源。</p>
+        <p v-if="email.body==''">邮件正文 : 尊敬的{{user.user_real_name}}: <i>{{user.firse_user_company_name}}-{{user.firse_user_company_career}}-{{user.firse_user_real_name}}</i>
+          通过微天使乐投平台（www.weitianshi.cn）向您推荐了一个投资项目，
+          如果感兴趣请回复邮件，微天使帮您约见。您可以注册/登录微天使乐投平台，
+          找到更多FA精选优质项目</p>
         <p v-else>邮件正文 : {{email.body}}</p>
       </div>
       <div class="contain-grid contain-center2 fl">
@@ -20,8 +22,8 @@
           <div class="item-lists item-lists-top clearfix">
             <div class="item-lists-inner-left fl">
               <div class="item height">
-                <el-tag type="success" v-if="project.open_status==1">公开</el-tag>
-                <el-tag type="primary" v-else>私密</el-tag>
+                <!--<el-tag type="success" v-if="project.open_status==1">公开</el-tag>
+                <el-tag type="primary" v-else>私密</el-tag>-->
                 <span class="title">{{project.pro_intro}}</span>
               </div>
               <div class="item height" style="margin-top:18px;">
@@ -47,16 +49,16 @@
                 </div>
                 <div class="txt end" :class="{ scheduleColor: project.pro_schedule.schedule_id==9}">佣金收讫</div>-->
               </div>
-              <div class="onlyone">
+              <!--<div class="onlyone">
                 <img v-if="project.is_exclusive==1" src="../../../assets/images/onlyonedark.png"/>
                 <img v-else-if="project.is_exclusive==2" src="../../../assets/images/onlyonelight.png"/>
-              </div>
+              </div>-->
             </div>
           </div>
           <div class="item-lists clearfix" style="padding-top: 10px;">
 
             <!--推送用户-->
-            <div class="ul-lists">
+            <!--<div class="ul-lists">
               <div class="item">
                 <span class="title"><img class="img" src="../../../assets/images/team.png">推送用户</span>
               </div>
@@ -67,16 +69,16 @@
                   <span class="p-mg">{{user.firse_user_company_name}}</span>
                 </div>
               </div>
-            </div>
+            </div>-->
             <!--项目资料-->
             <div class="ul-lists" style="margin-top:18px;">
               <div class="item">
                 <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目资料</span>
-                <div class="person-info" v-if="project.contact.user_name!=''">
+                <!--<div class="person-info" v-if="project.contact.user_name!=''">
                   <span>项目联系人 : </span>
                   <span>{{project.contact.user_name}}</span>
                   <span>{{project.contact.user_mobile}}</span>
-                </div>
+                </div>-->
               </div>
               <div class="item" style="margin-top:33px;">
                 <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
@@ -213,7 +215,7 @@
 
             </div>
             <!--FA签约协议-->
-            <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
+            <!--<div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
               <div class="item">
                 <span class="title">FA签约协议</span>
                 <div class="rz-details" >
@@ -235,7 +237,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
 
             <div class="ul-lists list tc" >
               <div class="toButton" style="padding-left: 0">

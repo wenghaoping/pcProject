@@ -1,6 +1,6 @@
 <template>
   <div id="codeLogin" v-loading="loading"
-       element-loading-text="拼命加载中">
+       element-loading-text="正在登陆中">
     <input class="telephone" v-model="telephone" placeholder="请输入常用手机号码">
     <input class="code" @keyup.enter="login" type="password" v-model="password" placeholder="请输入密码">
     <div class="clearfix">
