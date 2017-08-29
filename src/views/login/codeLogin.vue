@@ -1,5 +1,6 @@
 <template>
-  <div id="codeLogin">
+  <div id="codeLogin" v-loading="loading"
+       element-loading-text="拼命加载中">
     <input class="telephone" v-model="telephone" placeholder="请输入常用手机号码">
     <input class="code" @keyup.enter="login" type="password" v-model="password" placeholder="请输入密码">
     <div class="clearfix">
@@ -16,6 +17,7 @@
       return {
         telephone: '',
         password: '',
+        loading:false
       }
     },
     methods: {
@@ -30,6 +32,7 @@
         } else if (this.$tool.getNull(this.password)) {
           this.$tool.error('请正确填写密码')
         } else {
+            this.loading=true;
           this.$http.post(this.URL.loginForPassword,{
             user_mobile:this.telephone,
             user_passwd:this.password,
@@ -43,9 +46,15 @@
               localStorage.token=res.data.token;
               //重新获取个人标签(因为获取个人标签必须要有user_id)
               this.$global.func.getWxProjectCategory();
-              this.$router.push({name:localStorage.entrance})
+              this.loading=false;
+              if(localStorage.entrance==undefined){
+                this.$router.push({name:'myProject'});
+              }else{
+                this.$router.push({name:localStorage.entrance})
+              }
             }else{
-                this.$tool.error(res.data.error_msg)
+                this.$tool.error(res.data.error_msg);
+                this.loading=false;
             }
           })
         }

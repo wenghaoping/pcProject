@@ -24,18 +24,18 @@
                 <span class="getClick"></span>
             </span>
           </el-tooltip>
-          <el-tooltip placement="top" :class="{'pp-cur':node3}" >
+          <!--<el-tooltip placement="top" :class="{'pp-cur':node3}" >
             <div slot="content">
               <div style="width:50px;text-align: center;">考察 : {{nodeCount.investigate}} </div>
             </div>
             <span class="circle circle-5" @click="setNode('3')">
               <span class="getClick"></span>
             </span>
-          </el-tooltip>
+          </el-tooltip>-->
         </div>
         <div class="pp-item pp-node" :class="{'pp-cur':node4}" @click="setNode('4')">
           <p class="pp-num pp-txt">{{nodeCount.sign}}</p>
-          <span class="pp-sec-title">签署FA协议</span>
+          <span class="pp-sec-title">FA签约</span>
         </div>
         <div class="pp-item pp-lines">
           <span class="lp-line">&nbsp;</span>

@@ -2,8 +2,8 @@
   <div id="editproject" class="clearfix" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <div id="wid" class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
-      <div class="main-box">
-        <div class="left-wrap" ref="left" style="margin-top:24px;">
+      <div class="main-box" ref="left" >
+        <div class="left-wrap" style="margin-top:24px;">
           <!--=================================项目文件=================================-->
           <div class="d_jump"></div>
           <div class="item-block" style="margin-top:0;">
@@ -1054,6 +1054,10 @@
         one:false,//第一次进来的时候
         submitButton:false,//是否允许提交false允许/true不允许
         uploadLoading:false,//BP上传动画
+        screenWidth: document.body.clientWidth,
+        timer:null,
+        timer2:null,
+        scrollTop:0,
       };
     },
     computed: {
@@ -1144,8 +1148,21 @@
       },
     },
     mounted() {
-        let leftWidth=document.getElementById("wid").offsetLeft+936;
+        let leftWidth=document.getElementById("wid").offsetLeft+935;
         this.$refs.right.style.left = leftWidth +'px';
+      this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+
+      const that = this;
+      window.onresize = () => {
+        return (() => {
+          window.screenWidth = document.body.clientWidth;
+          that.screenWidth = window.screenWidth
+        })()
+      }
+      window.onscroll = () => {
+
+      }
     },
     methods: {
       //*获取列表各种数据
@@ -2353,8 +2370,30 @@
       this.SignShow=false;
     },
     watch: {
-      // 如果路由有变化，会再次执行该方法
-      "$route": "getprojectId"
+      screenWidth (val) {
+        if (!this.timer) {
+          this.screenWidth = val;
+          this.timer = true;
+          let that = this;
+          setTimeout(function () {
+//            console.log(that.screenWidth);
+//            console.log(that.$refs.left.offsetLeft);
+            that.$refs.right.style.left=that.$refs.left.offsetLeft +935+'px';
+            that.timer = false
+          }, 100)
+        }
+      },
+      scrollTop(val){
+        if (!this.timer2) {
+          this.scrollTop = val;
+          this.timer2 = true;
+          let that = this;
+          setTimeout(function () {
+            console.log(this.scrollTop);
+            that.timer2 = false;
+          }, 100)
+        }
+      }
     }
   }
 </script>
