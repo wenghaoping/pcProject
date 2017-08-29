@@ -88,9 +88,9 @@
           </div>
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
-        <div class="item-lists clearfix" style="padding:16px;padding-top: 10px;">
+        <div class="item-lists clearfix" style="">
           <!--===============================================================================================================================tab页面-->
-          <el-tabs v-model="show" @tab-click="handleClick" style="position: relative">
+          <el-tabs v-model="show" type="card" @tab-click="handleClick" style="position: relative">
             <el-tab-pane label="项目详情" name="detail">
               <div class="ul-lists">
                 <div class="item">
@@ -264,7 +264,8 @@
             </el-tab-pane>
 
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData" @getfollowid="getFollowId" @changefollowdata="changefollowdata"></folowup>
+              <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData"
+                       @getfollowid="getFollowId" @changefollowdata="changefollowdata"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id">
@@ -285,7 +286,7 @@
     <div class="contain-grid contain-right-1 fl"
          v-loading="loading"
          element-loading-text="拼命加载中">
-      <div class="main-box">
+      <div class="main-box header_none">
         <el-tabs v-model="activeName" @tab-click="handleClick2" style="position: relative">
           <el-tab-pane name="1">
             <button class="btn" @click="addFollow">添加意向投资人</button>
@@ -877,13 +878,13 @@
         window.location.href=url;
       },//下载文件
       searchChange(queryString){
-        this.$tool.console(queryString)
+//        this.$tool.console(queryString);
         this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
           .then(res=>{
             this.seachCompanys=[];
             let data =res.data.data;
-//            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入<i style='color: red'>点击添加公司</i>",com_id:-1}];
-            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
+            if(data.length==0) this.seachCompanys=[{company_name:"未查询到结果，<i style='color: #009eff;'>保存公司名称</i>",com_id:-1}];
+//            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
             else this.seachCompanys=data;
 //            this.$tool.console(res);
           })

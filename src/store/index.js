@@ -6,6 +6,7 @@ import actions from './actions'
 import getters from './getters'
 import pushProject from './modules/pushProject.js'
 import login from './modules/login.js'
+import pageAndSelect from './modules/pageAndSelect.js'
 Vue.use(Vuex);
 
 const state = {
@@ -20,7 +21,8 @@ export default  new Vuex.Store({
   mutations,
   modules: {
     pushProject: pushProject,
-    logining:login
+    logining:login,
+    pageANDSelect:pageAndSelect,
   }
 
 })

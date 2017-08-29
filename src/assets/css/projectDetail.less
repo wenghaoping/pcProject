@@ -15,10 +15,12 @@
     /*  float:left;*/
   }
   .main-box{
-    .el-tabs__item{
+    .el-tabs__item {
       font-size: 14px;
-      color:#8492a6
+      //color:#8492a6
     }
+  }
+  .header_none{
     .el-tabs{
       .el-tabs__header{
         border-bottom: none;
@@ -58,6 +60,12 @@
 
 
     .item-lists{
+      .el-tabs__header{
+        background-color: #eff2f7;
+      }
+      .el-tabs__content{
+        padding:24px;padding-top: 0px;
+      }
       .list{
         .toButton{
           position: fixed;bottom:0px;left: 0px;
@@ -71,7 +79,7 @@
         }
       }
 
-      padding:24px;
+      //padding:24px;
 
       .item-lists-inner-left{
         position: relative;
@@ -590,6 +598,10 @@
     .item-lists-top{
       height: 273px;
       background: #ffffff;
+      padding: 24px;
+    }
+    .is-active{
+      background: #ffffff;
     }
   }
   /* ==================右侧样式 第二部分===================== */
@@ -1009,6 +1021,9 @@
     li:hover{
       background:#009eff;
       color:#ffffff;
+      i{
+        color:#ffffff!important;
+      }
     }
   }
   .el-tabs__content{

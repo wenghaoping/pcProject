@@ -4,8 +4,8 @@
 
     </div>
       <div class="scan">
-        <p class="title">微天使，帮您成交的项目管理工具</p>
-        <p class="samll">扫一扫，快速创建融资项目</p>
+        <p class="title">微天使，FA的智能工作站</p>
+        <p class="samll">请用“微天使乐投平台”【小程序】扫一扫</p>
         <div class="img" v-html="qr" v-if="checkout" v-loading.body="loadIn">
           {{qr}}
         </div>
@@ -14,6 +14,7 @@
           <br>
           <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面</el-button>
         </div>
+        <p class="samll2">微信>发现>小程序>微天使乐投平台</p>
       </div>
   </div>
 </template>
@@ -123,10 +124,14 @@ export default {
       padding-top: 40px;
     }
     .samll{
-      font-size:13px;
+      font-size:14px;
       color:#5e6d82;
       line-height:13px;
       margin-top: 71px;
+    }
+    .samll2{
+      font-size:14px;
+      color:#5f6d81;
     }
     .img{
       width: 195px;

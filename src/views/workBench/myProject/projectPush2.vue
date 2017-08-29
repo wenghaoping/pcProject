@@ -940,18 +940,7 @@
 <style lang="less">
   @import '../../../assets/css/projectPush';
 
-  .el-table .cell .el-tooltip {
-    max-width: 105px !important;
-    overflow: hidden !important;
-    white-space: nowrap !important;
-    text-overflow: ellipsis !important;
-    word-break: break-all !important;
-    line-height: 24px !important;
-  }
 
-  .el-table td, .el-table th {
-    height: 60px !important;
-  }
 
   .popper {
     display: none;

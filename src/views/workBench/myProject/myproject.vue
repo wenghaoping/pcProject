@@ -108,9 +108,9 @@
                       @filter-change="filterChange" stripe
                       v-loading="loading"
                       element-loading-text="拼命加载中">
-            <el-table-column prop="pro_name" label="项目名称" width="144" show-overflow-tooltip>
+            <el-table-column prop="pro_name" label="项目名称" width="170" show-overflow-tooltip>
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 7 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 14 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.pro_name}}</div>
                   </div>
@@ -124,15 +124,15 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_intro" label="一句话介绍" width="174" show-overflow-tooltip>
+            <el-table-column prop="pro_intro" label="一句话介绍" width="222">
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 10 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 14 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.pro_intro}}</div>
                   </div>
-                  <div>
+                  <span class="pro_intro" :class="{ prointro: scope.row.pro_intro.length < 15, prointrolone: scope.row.pro_intro.length >= 15 }">
                     {{scope.row.pro_intro}}
-                  </div>
+                  </span>
                 </el-tooltip>
               </template>
             </el-table-column>
@@ -153,10 +153,10 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_follow_up_user" label="跟进人" width="96" show-overflow-tooltip>
-            </el-table-column>
+<!--            <el-table-column prop="pro_follow_up_user" label="跟进人" width="96" show-overflow-tooltip>
+            </el-table-column>-->
 
-            <el-table-column prop="pro_schedule" label="跟进状态" width="96" :filters="pro_scheduleFilters"
+            <el-table-column prop="pro_schedule" label="项目进度" width="96" :filters="pro_scheduleFilters"
                              filter-placement="bottom-end"
                              :filter-multiple="stateCheck"
                              column-key="pro_schedule"
@@ -171,7 +171,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_industry" label="领域" width="144"
+            <el-table-column prop="pro_industry" label="领域" width="166"
                              :filters="pro_industryFilters"
                              filter-placement="bottom-end"
                              show-overflow-tooltip
@@ -446,19 +446,31 @@
     methods:{
       handleSelect(row, event, column) {
         if(column.label!="重置"){
-          this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'detail'}})
+          this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'detail'}});
+          this.setRouterData();
         }
       },//跳转到项目详情页面传参数
+      setRouterData(){
+        this.$store.state.pageANDSelect.getPra = this.getPra;
+        this.$store.state.pageANDSelect.pracurrentPage = this.currentPage;
+      },//跳转之后设置参数
+      getRouterData(){
+        this.getPra=this.$store.state.pageANDSelect.getPra;
+        this.currentPage=this.$store.state.pageANDSelect.pracurrentPage || 1;
+        this.getPra.page=this.$store.state.pageANDSelect.pracurrentPage || 1;
+      },//从vuex中取数据
       handleEdit(index, row){
-        this.$router.push({ name: 'editproject', query: { project_id:row.project_id}})
+        this.$router.push({ name: 'editproject', query: { project_id:row.project_id}});
+        this.setRouterData();
       },//跳转到编辑页
       createProject(){
-        this.$router.push({ name: 'creatproject'})
+        this.$router.push({ name: 'creatproject'});
+        this.setRouterData();
       },//跳转到创建项目页面
       uploadDisplayChange(msg){
         this.uploadDisplay=msg;
       },//控制上传弹窗
-      /*跟进*/
+      //*跟进
       addFollow(index, row){
         this.followDisplay=true;
         this.projecmessage.project_id=row.project_id;
@@ -477,15 +489,15 @@
       },//点击项目推送
       closeProjectPush2(msg){
         this.projectPushDisplay2=msg;
-        this.handleIconClick();
+//        this.handleIconClick();
       },//关闭项目推送弹窗
       closePreviewANDProjectPush(msg){
         this.projectPushDisplay2=false;
         this.previewDisplay=false;
-        this.handleIconClick();
+//        this.handleIconClick();
       },//关闭预览AND关闭项目推送1,关闭项目推送2
 
-      /*请求函数*/
+      //*请求函数
       handleIconClick(){
         this.$tool.getTop();
         this.loading=true;
@@ -496,7 +508,7 @@
         this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{
             let data = res.data.data
-            this.tableData=this.getProjectList(data)
+            this.tableData=this.getProjectList(data);
             this.loading=false;
             this.totalData=res.data.count;
           })
@@ -565,6 +577,7 @@
             let data = res.data.data;
             this.$tool.console(res);
             this.tableData=this.getProjectList(data);
+            this.totalData=res.data.count;
             this.$tool.getTop();
           })
           .catch(err=>{
@@ -703,8 +716,9 @@
         return arr
       },//总设置列表的数据处理
 
-      /*更多按钮*/
+      //*更多按钮
       moreChange(index,row){
+        this.setRouterData();
         this.moreShow=!this.moreShow;
         if(this.moreShow){
           this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
@@ -717,8 +731,8 @@
               .then(res => {
                 this.loading=false;
                 this.$tool.success("删除成功");
-                this.handleIconClick();
-
+                this.getRouterData();
+                this.filterChangeCurrent(this.currentPage || 1);
               })
               .catch(err => {
                 this.loading=false;
@@ -750,10 +764,12 @@
     created () {
       // 组件创建完后获取数据，
       this.getProjectListURL=this.URL.getProjectList;
+      this.getRouterData();
+
       this.loading=true;
       this.getNodeCount();
       this.titleSift();
-      this.handleIconClick();
+      this.filterChangeCurrent(this.currentPage || 1);
 
     },
     watch: {

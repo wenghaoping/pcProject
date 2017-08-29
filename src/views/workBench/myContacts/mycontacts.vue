@@ -317,7 +317,7 @@ export default {
 
       totalData:1,//总页数
       currentPage:1,//当前页数
-      getPra:{},//筛选的请求参数
+      getCon:{},//筛选的请求参数
       tagsValue:[],//标签弹框数据绑定
       addTags:[],//人脉标签展示数据
       tableData:[
@@ -378,13 +378,23 @@ export default {
 
     handleSelect(row, event, column) {
       if(column.label!="重置"){
-        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id , card_id:row.card_id, investor_id:row.investor_id}})
+        this.$router.push({ name: 'contactsDetails', query: { user_id:row.user_id , card_id:row.card_id, investor_id:row.investor_id}});
+        this.setRouterData();
       }
     },//跳转到人脉详情页面传参数
     handleEdit(index, row){
       this.$router.push({ name: 'createContacts', query: { card_id:row.card_id}})
+      this.setRouterData();
     },//点击编辑按钮,跳转
-
+    setRouterData(){
+      this.$store.state.pageANDSelect.getPra = this.getCon;
+      this.$store.state.pageANDSelect.concurrentPage = this.currentPage;
+    },//跳转之后设置参数
+    getRouterData(){
+      this.getCon=this.$store.state.pageANDSelect.getCon;
+      this.getCon.page=this.$store.state.pageANDSelect.concurrentPage || 1;
+      this.currentPage=this.$store.state.pageANDSelect.concurrentPage || 1;
+    },//从vuex中取数据
     getTagId(data){
       let arr = [];
       for(let i=0; i<data.length; i++){
@@ -400,6 +410,7 @@ export default {
         this.tags.changecont=this.getTagId(this.tableData[index].tagArray);
     },//点击标签按钮
     handleDelete(index,row){
+      this.setRouterData();
       this.$confirm('此操作将永久删除该人脉, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -410,7 +421,8 @@ export default {
           .then(res => {
             this.loading=false;
             this.$tool.success("删除成功");
-            this.handleIconClick();
+            this.getRouterData();
+            this.filterChangeCurrent(this.currentPage || 1);
           })
           .catch(err => {
             this.loading=false;
@@ -461,16 +473,16 @@ export default {
       this.handleIconClick();
     },//关闭项目预览AND关闭项目推送(人脉入口)
 
-    /*请求函数*/
+    //*请求函数
     handleIconClick(){
       return new Promise((resolve, reject)=>{
         //做一些异步操作
         this.loading=true;
-        this.getPra.user_id=localStorage.user_id;
-        this.getPra.search=this.searchinput;
+        this.getCon.user_id=localStorage.user_id;
+        this.getCon.search=this.searchinput;
         this.currentPage=1;
-        this.getPra.page=1;
-        this.$http.post(this.URL.getConnectUser,this.getPra)
+        this.getCon.page=1;
+        this.$http.post(this.URL.getConnectUser,this.getCon)
           .then(res=>{
             let data = res.data.data;
             this.tableData=this.setProjectList(data);
@@ -487,9 +499,9 @@ export default {
     timeChange(time){
       this.loading=true;
       this.currentPage=1;
-      this.getPra.created_at_time=time;
-      console.log(this.getPra)
-      this.$http.post(this.URL.getConnectUser,this.getPra)
+      this.getCon.created_at_time=time;
+      console.log(this.getCon);
+      this.$http.post(this.URL.getConnectUser,this.getCon)
         .then(res=>{
           let data = res.data.data;
           this.tableData=this.setProjectList(data);
@@ -504,28 +516,28 @@ export default {
     filterChange(filters){
       this.loading=true;
       this.currentPage=1;
-      this.getPra.page=1;//控制当前页码
-      this.getPra.user_id=localStorage.user_id;
+      this.getCon.page=1;//控制当前页码
+      this.getCon.user_id=localStorage.user_id;
       if(filters.order){
         if(filters.order=="ascending") filters.order="asc"//升降序
         else filters.order="desc";
-        this.getPra.order=filters.prop;
-        this.getPra.sort=filters.order;
+        this.getCon.order=filters.prop;
+        this.getCon.sort=filters.order;
       }else{
         for(let key in filters){
-          this.getPra[key]=filters[key];
+          this.getCon[key]=filters[key];
         }
       } //筛选
-      for(let key in this.getPra){
-        if(this.getPra[key]=='' || this.getPra[key]=='NaN'){
-          delete this.getPra[key];
+      for(let key in this.getCon){
+        if(this.getCon[key]=='' || this.getCon[key]=='NaN'){
+          delete this.getCon[key];
         }
       }//删除空的查询项
-      if(this.getPra.login_time){
-        this.getPra.login_time=this.getPra.login_time[0];
+      if(this.getCon.login_time){
+        this.getCon.login_time=this.getCon.login_time[0];
       }
-      this.$tool.console(this.getPra);
-      this.$http.post(this.URL.getConnectUser,this.getPra)
+      this.$tool.console(this.getCon);
+      this.$http.post(this.URL.getConnectUser,this.getCon)
         .then(res=>{
           this.loading=false;
           let data = res.data.data;
@@ -538,16 +550,17 @@ export default {
         })
     },//筛选 ascending升/descending降/
     filterChangeCurrent(page){
-      delete this.getPra.page;
+      delete this.getCon.page;
       this.loading=true;
-      this.getPra.user_id=localStorage.user_id;
-      this.getPra.page=page;//控制当前页码
-//      this.$tool.console(this.getPra);
-      this.$http.post(this.URL.getConnectUser,this.getPra)
+      this.getCon.user_id=localStorage.user_id;
+      this.getCon.page=page;//控制当前页码
+//      this.$tool.console(this.getCon);
+      this.$http.post(this.URL.getConnectUser,this.getCon)
         .then(res=>{
           let data = res.data.data;
           this.$tool.console(res);
           this.tableData=this.setProjectList(data);
+          this.totalData=res.data.count;
           this.loading=false;
           this.$tool.getTop();
         })
@@ -668,13 +681,14 @@ export default {
   },
   created(){
     this.$tool.getTop();
+    this.getRouterData();
     this.loading=true;
     this.$global.func.getWxProjectCategory()
       .then((data)=>{
         return this.getWxProjectCategory();
       })
       .then((data)=>{
-        return this.handleIconClick();
+        return this.filterChangeCurrent(this.currentPage || 1);
       })
     this.titleSift();
 

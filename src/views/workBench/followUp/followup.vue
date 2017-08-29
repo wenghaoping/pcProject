@@ -226,7 +226,7 @@ export default {
       searchinput:'',//搜索输入框
       totalData:1,//总页数
       currentPage:1,//当前页数
-      getPra:{},//筛选的请求参数
+      getFollow:{},//筛选的请求参数
       tableData:[
 /*        {
          follow_id: 15,
@@ -242,7 +242,7 @@ export default {
       schedule_nameFilters:[],//跟进状态筛选
       card_nameFilters:[],//意向投资人
       created_atFilters:[],//更近时间选择
-      stateCheck:false,//跟进状态单选
+      stateCheck:false,//跟进状 态单选
       timeSelect:'',//时间选择器
       pickerOptions: {
         disabledDate(time) {
@@ -254,11 +254,11 @@ export default {
   methods: {
     handleIconClick(){
       this.loading=true;
-      this.getPra.user_id=localStorage.user_id;
-      this.getPra.pro_name=this.searchinput;
+      this.getFollow.user_id=localStorage.user_id;
+      this.getFollow.pro_name=this.searchinput;
       this.currentPage=1;
-      this.getPra.page=1;
-      this.$http.post(this.URL.get_follow_records,this.getPra)
+      this.getFollow.page=1;
+      this.$http.post(this.URL.get_follow_records,this.getFollow)
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
@@ -270,18 +270,29 @@ export default {
           this.$tool.console(err,2)
         })
     },//搜索===首次进入页面加载的数据
+
+    setRouterData(){
+      this.$store.state.pageANDSelect.getFollow = this.getFollow;
+      this.$store.state.pageANDSelect.folcurrentPage = this.currentPage;
+    },//跳转之后设置参数
+    getRouterData(){
+      this.getFollow=this.$store.state.pageANDSelect.getFollow;
+      this.currentPage=this.$store.state.pageANDSelect.folcurrentPage || 1;
+      this.getFollow.page=this.$store.state.pageANDSelect.folcurrentPage || 1;
+    },//从vuex中取数据
     addFollow(){
       this.followDisplay=true;
-
     },//点击写跟近按钮
     handleSelect(row, event, column) {
       if(column.label!="重置"){
         this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'flow',activeTo: 2}})
+        this.setRouterData();
       }
     },//跳转到更近详情页
     handleEdit(index, row){
         this.followDisplay=true;
         this.followid=row.follow_id;
+        this.setRouterData();
     },//点击编辑按钮,跳转
     headerClick(column, event){
       if(column.label==="重置"){
@@ -289,6 +300,7 @@ export default {
       }
     },//点击重置按钮时
     handleDelete(index,row){
+      this.setRouterData();
       this.$confirm('您确认要删除当前项目跟进记录及关联文件吗?, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -299,7 +311,8 @@ export default {
           .then(res => {
             this.loading=false;
             this.$tool.success("删除成功");
-            this.handleIconClick();
+            this.getRouterData();
+            this.filterChangeCurrent(this.currentPage || 1);
           })
           .catch(err => {
             this.loading=false;
@@ -320,30 +333,30 @@ export default {
       }*/
       this.loading=true;
       this.currentPage=1;
-      this.getPra.page=1;//控制当前页码
-      this.getPra.user_id=localStorage.user_id;
+      this.getFollow.page=1;//控制当前页码
+      this.getFollow.user_id=localStorage.user_id;
       if(filters.order){
         if(filters.order=="ascending") filters.order="asc"//升降序
         else filters.order="desc";
-//        this.getPra.order=filters.prop;
-        this.getPra[filters.prop]=filters.order;
+//        this.getFollow.order=filters.prop;
+        this.getFollow[filters.prop]=filters.order;
       }else{
         for(let key in filters){
-          this.getPra[key]=filters[key];
-          if(key === 'schedule_id') this.getPra[key]=filters[key][0];
+          this.getFollow[key]=filters[key];
+          if(key === 'schedule_id') this.getFollow[key]=filters[key][0];
         }
       } //筛选
-      for(let key in this.getPra){
-        if(this.getPra[key]=='' || this.getPra[key]=='NaN'){
-          delete this.getPra[key];
+      for(let key in this.getFollow){
+        if(this.getFollow[key]=='' || this.getFollow[key]=='NaN'){
+          delete this.getFollow[key];
         }
         if(key == "card_name"){
-          this.getPra.card_name=this.filterInvestors(this.getPra.card_name);
+          this.getFollow.card_name=this.filterInvestors(this.getFollow.card_name);
         }
       }//删除空的查询项
-//      this.$tool.console(this.getPra);
+//      this.$tool.console(this.getFollow);
 
-      this.$http.post(this.URL.get_follow_records,this.getPra)
+      this.$http.post(this.URL.get_follow_records,this.getFollow)
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
@@ -357,19 +370,20 @@ export default {
     },//筛选 ascending升/descending降/
     filterChangeCurrent(page){
       this.$tool.getTop();
-      delete this.getPra.page;
+      delete this.getFollow.page;
       this.loading=true;
-      this.getPra.user_id=localStorage.user_id;
-      this.getPra.page=page;//控制当前页码
-//      this.$tool.console(this.getPra);
-      this.$http.post(this.URL.get_follow_records,this.getPra)
+      this.getFollow.user_id=localStorage.user_id;
+      this.getFollow.page=page;//控制当前页码
+//      this.$tool.console(this.getFollow);
+      this.$http.post(this.URL.get_follow_records,this.getFollow)
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
+          this.totalData=data.count;
           this.loading=false;
         })
         .catch(err=>{
-          this.loading=false
+          this.loading=false;
           this.$tool.console(err,2)
         })
     },//控制页码
@@ -393,8 +407,8 @@ export default {
     timeChange(time){
       this.loading=true;
       this.currentPage=1;
-      this.getPra.created_at_time=time;
-      this.$http.post(this.URL.get_follow_records,this.getPra)
+      this.getFollow.created_at_time=time;
+      this.$http.post(this.URL.get_follow_records,this.getFollow)
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
@@ -435,9 +449,10 @@ export default {
     },// 获取表头
   },
   created(){
+    this.getRouterData();
     this.$tool.getTop();
     this.titleSift();
-    this.handleIconClick();
+    this.filterChangeCurrent(this.currentPage || 1);
   },
   watch :{
     followDisplay : function (e) {
