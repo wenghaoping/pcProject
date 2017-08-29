@@ -41,7 +41,7 @@
       </div>
     </div>
     <h1>我们能提供</h1>
-    <div class="content flex content1" style="height: 481px;">
+    <div class="content flex content1">
       <div class="fullPageText fullPageText1">
         <div>投资业务工作场景--团队/个人工作</div>
         <div>项目、人脉数据永久留存,人员流动带不走</div>
@@ -75,7 +75,7 @@
         <img src='../../assets/images/index3.png'/>
       </div>
     </div>
-    <div style="height: 300px;background:#f9fafc"></div>
+    <!--<div style="height: 300px;background:#f9fafc"></div>-->
     <div class="qrCode">
       <img src='../../assets/images/indexQr.png'/>
     </div>
