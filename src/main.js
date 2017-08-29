@@ -16,7 +16,7 @@ import './assets/css/animate.css';
 import $ from 'jquery';
 import './global/jquery.fullPage';
 import tool from './global/tool.js';
-
+import '../theme/index.css'
 
 import axios from './config/api.js';//axios请求配置
 Vue.prototype.$http = axios;
