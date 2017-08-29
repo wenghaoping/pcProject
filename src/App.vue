@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <el-row>
+      <el-col :span="24">
     <!--     头部导航 -->
     <header id="header">
       <ul class="select ulfl tc" style="position: relative">
@@ -21,18 +23,36 @@
             <img src="./assets/images/arrow.png">
           </div>
         </div>
-        <li>
-          <a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>
-        </li>
-        <li v-if="user_name" style="float: right;">
+        <!--<li>-->
+          <!--<a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>-->
+        <!--</li>-->
+        <li v-if="user_name" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
           {{user_name}}
+          <span style="display:inline-block;margin-left: 5px"><i class="el-icon-caret-bottom" style="font-size: 10px"></i></span>
+          <div class="login-show" v-show="user_id" style="position: absolute;top: -10px;">
+            <el-select v-model="value" style="opacity: 0;height: 33px;color: #000000" placeholder="请选择" @change="loginOut">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+            <!--<div class="sss" @click="opp" style="position: absolute;top: 36px;z-index: 111111">-->
+             <!--<i class="el-icon-caret-bottom "></i>-->
+            <!--</div>-->
+          <!--<div class="out" v-if="flag" @click="loginOut" >退出登录</div>-->
+
+          </div>
+
         </li>
         <li v-show="!user_id" class="login" @click="login">
           登录
         </li>
-<!--        <li @click="loginOut">
-          退出登录(测试)
-        </li>-->
+      <!--<li @click="loginOut">-->
+          <!--退出登录-->
+        <!--</li>-->
       </ul>
     </header>
     <div style="height: 60px;"></div>
@@ -41,20 +61,21 @@
     <main>
       <transition name="fade" mode="out-in">
         <router-view class="view">
-
-
         </router-view>
       </transition>
     </main>
 
     <div class="Infooter tc">
-      <p style="height: 20px;line-height: 20px;">关于我们 | 联系我们</p>
+      <p style="height: 20px;line-height: 20px;"><span @click="aboutUs">关于我们</span>
+        | 联系我们</p>
       <div style="width:525px;margin:0 auto;vertical-align: middle;height: 20px;">
         <img class="fl" src="../src/assets/images/beian.png">
         <a class="fl" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602008444" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33010602008444号</p></a>
         <span style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</span>
       </div>
     </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -62,6 +83,12 @@
   export default {
     data () {
       return {
+        options: [{
+          value: 1,
+          label: '退出登录'
+        }],
+        value:'',
+        flag:false,
         active: 0,
         tabs: [
           {type: '首页', jump: '/'},
@@ -73,6 +100,12 @@
         user_name:'',
         user_id:'',
       }
+    },
+    mounted(){
+//       const vm=this;
+//      document.getElementsByTagName('body')[0].addEventListener('click',function(){
+//        vm.flag=false;
+//      })
     },
     methods: {
       // 切换选项卡
@@ -102,6 +135,15 @@
         localStorage.entrance='myProject';
         this.$router.push('/login');
       },
+      //
+      //关于我们
+      aboutUs(){
+        this.$router.push('/aboutUs');
+      },
+      //显示退出登录
+      opp(){
+        this.flag=!this.flag;
+      },
       // 检查localStorage.user_id
       checkUser(){
         //this.$tool.console(this.$route.path)
@@ -118,7 +160,7 @@
           && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/'
           && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/'
           && this.$route.path!=='/workBench' && this.$route.path!=='/qr'
-          && this.$route.path!=='/API/DD'){
+          && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'){
 //          this.$tool.error('请先登录');
           this.$router.push({name:'index'});
         }
@@ -132,7 +174,8 @@
         }*/
 
       },
-      loginOut(){
+      loginOut(e){
+          console.log(e)
         localStorage.clear();
         window.location.reload()
       }
@@ -157,6 +200,36 @@
 </script>
 
 <style lang="less">
+  .el-select-dropdown__list{
+    padding: 0!important;
+  }
+  .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover, .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
+    background-color: #ffffff;
+  }
+.el-select-dropdown__item{
+  font-size: 14px;
+  padding: 0px 10px!important;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #48576a;
+  height: 33px!important;
+  line-height: 33px!important;
+  box-sizing: border-box;
+  cursor: pointer;
+  }
+  .sss{
+    width:30px;
+    height:30px;
+background: red;
+  }
+  .out{
+    /*display: none;*/
+  }
+  /*.sss:focus + .out{*/
+    /*display: block;*/
+  /*}*/
   .el-table-filter__content{
     max-height: 250px;
     overflow-y: auto;

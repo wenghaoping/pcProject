@@ -43,6 +43,9 @@ const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRouti
 
 /*======================================一键尽调单独页面=========================================*/
 const onekeyResearchAlone = r => require.ensure([], () => r(require('@/views/onekeyResearchAlone/onekeyresearchAlone.vue')), 'onekeyResearchAlone');
+
+/*===============================关于我们路由配置=======================================*/
+const aboutUs = r => require.ensure([], () => r(require('@/views/workBench/aboutUs.vue')), 'aboutUs');
 //测试路由
 // import createForm from '@/test/createForm.vue'
 // import watch from '@/test/watch.vue'
@@ -110,12 +113,17 @@ export default [
   {
     path: '/API/DD', name: 'onekeyResearchAlone', component:onekeyResearchAlone
   },
+  {
+    path: '/aboutUs',name: 'aboutUs', component: aboutUs
+  },
 /*  {
     path: '/test', name: 'test', component: checkone
   },*/
   {
 
-    // path: '/test2', name: 'test2', component: test
+    path: '/test3', name: 'test3', component: test
+  },
+    {
 
     path: '/test2', name: 'test2', component: upload
 }
