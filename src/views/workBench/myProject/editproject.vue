@@ -229,7 +229,7 @@
                     <el-col :span="12">
                       <el-form-item
                         label="产品链接"
-                        :rules="[{ type: 'url', message: '请输入正确的链接', trigger: 'blur' }]"
+                        :rules="[{ type: '', message: '请输入正确的链接', trigger: 'blur' }]"
                         prop="pro_website">
                         <el-input v-model="project.pro_website" placeholder="请输入项目主页地址"></el-input>
                       </el-form-item>
@@ -836,11 +836,16 @@
       var checkHundred1 = (rule, value, callback) => {
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
+              if(this.$tool.checkNumber(value)){
             if (parseFloat(value)>100){
               callback(new Error('请输入小于100的值'));
             } else {
               callback();
             }
+              }
+              else{
+                callback(new Error('请输入数字'));
+              }
           }, 100);
         }else{
           callback();
@@ -1165,25 +1170,25 @@
     },
     methods: {
       //*获取列表各种数据
-      checkPhoneNumber(value){
-        let check=false;
-        if (!this.$tool.getNull(value)) {
-          if (!this.$tool.checkNumber(value)) {
-            this.$tool.error('请输入数字值');
-            check=false;
-          } else {
-            if (!this.$tool.checkPhoneNumber(value)) {
-              this.$tool.error('请输入正确的手机号');
-              check=false;
-            }else{
-              check=true;
-            }
-          }
-        }else{
-          check=true;
-        }
-        return check;
-      },//验证手机号高级版
+//      checkPhoneNumber(value){
+//        let check=false;
+//        if (!this.$tool.getNull(value)) {
+//          if (!this.$tool.checkNumber(value)) {
+//            this.$tool.error('请输入数字值');
+//            check=false;
+//          } else {
+//            if (!this.$tool.checkPhoneNumber(value)) {
+//              this.$tool.error('请输入正确的手机号');
+//              check=false;
+//            }else{
+//              check=true;
+//            }
+//          }
+//        }else{
+//          check=true;
+//        }
+//        return check;
+//      },//验证手机号高级版
       /*获取列表各种数据*/
       getCompanyStatus(data){
         let arr = [];
@@ -2119,15 +2124,13 @@
         else if (this.milepostMust) this.$tool.error("里程碑必填项不能为空")
         else if (!this.getMemberHunder(this.team.core_users)) {}
         else if(this.$tool.checkLength1(this.project.pro_name)){this.$tool.error("项目名称不超过40个字")}
-        else if(this.$tool.checkPhoneNumber1(this.project.contact.user_mobile)) {console.log("电话不过")}
+        else if(!this.$tool.checkPhoneNumber(this.project.contact.user_mobile)) {this.$tool.error("请输入正确的手机号码")}
         else if (!this.getNumberFull(this.financing.pro_finance_stock_after,"投后股份不能大于100","投后股份必须为数字")){this.$tool.console("投后股份没过")}
         else if (!this.getNumberFull(this.pro_FA.commission,"签约佣金不能大于100","签约佣金必须为数字(去处%号)")){this.$tool.console("签约没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字(去处%号)")){this.$tool.console("股权赠与没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字(去处%号)")){this.$tool.console("跟投权没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字(去处%号)")){this.$tool.console("其他权益没过")}
-
-//**************************************************************************************************************
-        else if (this.$tool.checkNumber(this.financing.pro_finance_value)){this.$tool.error("项目估值必须为数字")}
+        else if (!this.$tool.checkNumber(this.financing.pro_finance_value)){this.$tool.error("项目估值必须为数字")}
         else if (this.$tool.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else if (this.$tool.getNull(this.project.pro_goodness)){this.$tool.error("项目亮点不能为空")}
         else if(this.$tool.checkLength1(this.project.pro_company_name)){this.$tool.error("公司名称不超过40个字")}

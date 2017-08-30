@@ -47,10 +47,19 @@
           </div>
 
         </li>
-        <li v-show="!user_id" class="login" @click="login">
+        <li v-if="!user_name" class="login" @click="login">
           登录
         </li>
-      <!--<li @click="loginOut">-->
+        <el-autocomplete
+          v-model="state4"
+          icon="search"
+          :fetch-suggestions="querySearchAsync"
+          placeholder="查竞品，查工商，请输入公司或品牌名称"
+          @select="handleSelect"
+          :on-icon-click="handleIconClick"
+          class="width350"
+        ></el-autocomplete>
+        <!--<li @click="loginOut">-->
           <!--退出登录-->
         <!--</li>-->
       </ul>
@@ -64,9 +73,8 @@
         </router-view>
       </transition>
     </main>
-
     <div class="Infooter tc">
-      <p style="height: 20px;line-height: 20px;"><span @click="aboutUs">关于我们</span>
+      <p style="height: 20px;line-height: 20px;"><span style="cursor: pointer" @click="aboutUs">关于我们</span>
         | 联系我们</p>
       <div style="width:525px;margin:0 auto;vertical-align: middle;height: 20px;">
         <img class="fl" src="../src/assets/images/beian.png">
@@ -78,11 +86,14 @@
     </el-row>
   </div>
 </template>
-
 <script>
   export default {
     data () {
       return {
+        restaurants: [],
+        state4: '',
+        timeout:  null,
+        cb:'',
         options: [{
           value: 1,
           label: '退出登录'
@@ -102,10 +113,6 @@
       }
     },
     mounted(){
-//       const vm=this;
-//      document.getElementsByTagName('body')[0].addEventListener('click',function(){
-//        vm.flag=false;
-//      })
     },
     methods: {
       // 切换选项卡
@@ -144,6 +151,67 @@
       opp(){
         this.flag=!this.flag;
       },
+      //*获取远程数据模拟
+      loadData(arr){
+        let newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+          let obj = {};
+          obj.value = arr[i].company_name;
+          obj.address = arr[i].com_id;
+          newArr.push(obj)
+        }
+        return newArr;
+      },
+      //*自动搜索,接口写这里面
+      querySearchAsync(queryString, cb) {
+        if(queryString.length>2) {
+          this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+            .then(res => {
+              this.restaurants = [];
+              let data = res.data.data;
+                this.restaurants = this.loadData(data);
+                console.log(this.restaurants);
+//              if (queryString == "") this.restaurants = [];
+              let restaurants = this.restaurants;
+              /*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
+              clearTimeout(this.timeout);
+              this.timeout = setTimeout(() => {
+                  if(data.length==0){
+                    cb([{value:"匹配不到你要搜索的公司,请重新继续输入",address:-1}]);
+                  }else{
+                    cb(restaurants);
+                  }
+              }, 300);
+            })
+            .catch(err => {
+//          this.alert("加载失败");
+              this.$tool.console(this.restaurants);
+            })
+        }else{
+          cb([]);
+        }
+      },
+      handleSelect(item) {
+        this.loading=true;
+        this.companyTitle = item.value;
+        this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
+          .then(res => {
+            let data = res.data.data;
+//            console.log(this.$tool.getToObject(data))
+            this.queryData = data;
+            this.dialogVisible = true;
+            this.loading=false;
+          })
+          .catch(err => {
+            this.$tool.error("获取失败");
+            this.$tool.console(err);
+          });
+
+      },//选择了搜索出来的数据后
+      handleIconClick(ev){
+          console.log(ev);
+        this.querySearchAsync(this.state4,this.cb(this.restaurants));
+      },//输入搜索
       // 检查localStorage.user_id
       checkUser(){
         //this.$tool.console(this.$route.path)
@@ -200,6 +268,9 @@
 </script>
 
 <style lang="less">
+  .width350{
+    width: 350px;float: right; margin-top: 12px;margin-right: 18%;
+  }
   .el-select-dropdown__list{
     padding: 0!important;
   }
@@ -383,9 +454,9 @@ background: red;
   }
   .login{
     float: right !important;
-    margin-right: 18% !important;
+    margin-right: 0% !important;
     @media screen and(max-width: 1400px){
-      margin-right: 10% !important;
+      margin-right: 0% !important;
     }
   }
 </style>

@@ -45,7 +45,7 @@ const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRouti
 const onekeyResearchAlone = r => require.ensure([], () => r(require('@/views/onekeyResearchAlone/onekeyresearchAlone.vue')), 'onekeyResearchAlone');
 
 /*===============================关于我们路由配置=======================================*/
-const aboutUs = r => require.ensure([], () => r(require('@/views/workBench/aboutUs.vue')), 'aboutUs');
+const aboutUs = r => require.ensure([], () => r(require('@/views/aboutUs/aboutUs.vue')), 'aboutUs');
 //测试路由
 // import createForm from '@/test/createForm.vue'
 // import watch from '@/test/watch.vue'

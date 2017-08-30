@@ -76,6 +76,12 @@
       </div>
     </div>
     <!--<div style="height: 300px;background:#f9fafc"></div>-->
+    <div class="megagame">
+      <span style="font-size:14px;color:#475669; line-height:14px;display: inline-block;margin-top: 8px;">微天使数据支持：</span><br>
+      <a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;"><span style="font-size:14px;
+color:#40587a;
+letter-spacing:0;">团中央·青年APP大赛</span></a>
+    </div>
     <div class="qrCode">
       <img src='../../assets/images/indexQr.png'/>
     </div>
