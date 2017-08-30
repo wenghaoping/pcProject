@@ -28,10 +28,10 @@
               <span class="big-tag">{{project.pro_stage.stage_name}}</span>
 
             </div>
-            <div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">
-              <span class="flower2">来源 : {{project.pro_source}}</span>
-            </div>
-            <div class="item height" style="margin-top:18px;    display: inline-block;">
+            <!--<div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">-->
+              <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
+            <!--</div>-->
+            <div class="item height" style="margin-top:45px;    display: inline-block;">
             <span class="project" >
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
@@ -170,6 +170,21 @@
                   </div>
                 </div>
               </div>
+              <!--品牌-->
+              <div class="ul-lists" style="margin-top:16px;">
+                <div class="item">
+                  <span class="title"><img class="img" src="../../../assets/images/money.png">品牌</span>
+                  <div class="brand">
+                    <div class="brand1" v-for="brandd in brand">
+                      <span style="font-size:16px;
+color:#4e4563;">{{brandd.brand1}}</span>
+                      <span class="brand1_lei">{{brandd.brand2}}</span>
+                      <div class="brand1_introduce">{{brandd.brand3}}</div>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </div>
+              </div>
               <!--融资信息-->
               <div class="ul-lists" style="margin-top:16px;">
                 <div class="item">
@@ -262,6 +277,10 @@
               <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
                 <div class="item">
                   <span class="title"><img class="img" src="../../../assets/images/money.png">FA业务</span>
+                  <div class="item" style="margin-top:33px;" v-if="project.tag!=''">
+                    <span style="font-size:14px;color:#8492a6;">项目来源:&nbsp;&nbsp;</span>
+                    <span class="person-tag" v-for="source in project.tag"> {{source.tag_name}}</span>
+                  </div>
                   <div class="rz-details" >
                     <div class="rz-detail" style="width: 50%">
                       <p class="det-title">签约佣金</p>
@@ -570,6 +589,33 @@
   export default {
     data(){
       return {
+        brand: [
+          {
+            brand1:'标题一',
+            brand2:'APP',
+            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
+          },
+          {
+            brand1:'标题二',
+            brand2:'APP',
+            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
+          },
+          {
+            brand1:'标题三',
+            brand2:'APP',
+            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
+          },
+          {
+            brand1:'标题三',
+            brand2:'APP',
+            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
+          },
+          {
+            brand1:'标题五',
+            brand2:'APP',
+            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
+          }
+        ],
         cirIcon:cirIcon,
         projectPushDisplay:false,//项目推送弹框,人脉入口
         projectPushDisplay2:false,//项目推送弹框,项目入口
