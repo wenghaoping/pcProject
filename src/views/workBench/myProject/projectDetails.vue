@@ -26,7 +26,7 @@
               <span class="big-tag">{{project.pro_area.area_title}}</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_finance_stock_after}}%</span><span class="split">｜</span>
               <span class="big-tag">{{project.pro_stage.stage_name}}</span>
-              <span class="flower" v-if="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
+
             </div>
             <div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">
               <span class="flower2">来源 : {{project.pro_source}}</span>
@@ -95,11 +95,12 @@
               <div class="ul-lists">
                 <div class="item">
                   <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
-                  <div class="person-info" v-if="project.contact.user_name!=''">
-                    <span>项目联系人 : </span>
-                    <span>{{project.contact.user_name}}</span>
-                    <span>{{project.contact.user_mobile}}</span>
-                  </div>
+                  <span class="flower" v-if="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
+                  <!--<div class="person-info" v-if="project.contact.user_name!=''">-->
+                    <!--<span>项目联系人 : </span>-->
+                    <!--<span>{{project.contact.user_name}}</span>-->
+                    <!--<span>{{project.contact.user_mobile}}</span>-->
+                  <!--</div>-->
                 </div>
                 <div class="item" style="margin-top:33px;">
                   <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
@@ -112,21 +113,18 @@
                     <el-button type="text" size="mini" @click="download(project.pro_BP.file_id)">下载</el-button>
                   </div>
                 </div>
-                <div class="item" style="margin-top:24px;height: 49px;">
-                  <div class="bot-det" v-if="project.pro_status!=''">
-                    <span class="det-title">运营状态：</span>
-                    <span class="del-info">{{project.pro_status.status_name}}</span>
-                  </div>
-                  <div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">
-                    <span class="det-title">产品链接：</span>
-                    <span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}</a></span>
-                  </div>
-                  <div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">
-                    <span class="det-title">公司规模：</span>
-                    <span class="del-info">{{project.pro_company_scale.comp_scale_value}} 人</span>
-                  </div>
-                </div>
-                <div class="line"></div>
+                <!--<div class="item" style="margin-top:24px;height: 49px;">-->
+                  <!--<div class="bot-det" v-if="project.pro_status!=''">-->
+                   <!---->
+                  <!--</div>-->
+                  <!--<div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">-->
+                   <!---->
+                  <!--</div>-->
+                  <!--<div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">-->
+                  <!---->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="line"></div>-->
                 <div class="ul-lists" style="margin-top:16px;padding: 0">
                   <div class="item">
                     <span class="title" style="font-size: 16px;">项目亮点</span>
@@ -151,6 +149,26 @@
                   <div class="line"></div>
                 </div>
 
+              </div>
+              <!--公司运营-->
+              <div class="ul-lists" style="margin-top:16px;">
+                <div class="item">
+                  <span class="title"><img class="img" src="../../../assets/images/money.png">公司运营</span>
+                  <div class="rz-details">
+                    <div class="rz-detail" v-if="project.pro_status!=''">
+                      <span class="det-title" style="width: 100%;line-height: 21px">运营状态</span>
+                      <span class="del-info" style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{project.pro_status.status_name}}</span>
+                    </div>
+                    <div class="rz-detail" v-if="project.pro_website!=''">
+                      <span class="det-title" style="width: 100%;line-height: 21px">产品链接</span>
+                      <span class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}</a></span>
+                    </div>
+                    <div class="rz-detail" v-if="project.pro_company_scale!=''">
+                      <span class="det-title"style="width: 100%;line-height: 21px">公司规模</span>
+                      <span class="del-info"  style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{project.pro_company_scale.comp_scale_value}} 人</span>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!--融资信息-->
               <div class="ul-lists" style="margin-top:16px;">
@@ -177,8 +195,9 @@
                     {{project.pro_finance_use}}
                   </div>
                 </div>
-                <div class="item" style="margin-top:6px;" v-if="project.pro_history_finance.length!=0">
+                <div class="item" style="margin-top:18px;" v-if="project.pro_history_finance.length!=0">
                   <div>
+                    <span class="sec-title">历史融资</span>
 
                     <!--                <div class="v-progress" style="height: 121px;">
                                       <span class="circle circle-s">&nbsp;</span>
@@ -186,16 +205,17 @@
                                       <span class="circle circle-e">&nbsp;</span>
                                     </div>-->
                     <div class="v-progress-table">
-                      <div class="v-progress-txt" v-for="finance in project.pro_history_finance">
-                      <span class="radio_line">
-                      <span class="radio"></span>
-                        <!--<span class="l-line"></span>-->
-                      </span>
+                      <div class="v-progress-txt" style="height: 45px;" v-for="finance in project.pro_history_finance">
+                      <!--<span class="radio_line">-->
+                      <!--<span class="radio"></span>-->
+                        <!--&lt;!&ndash;<span class="l-line"></span>&ndash;&gt;-->
+                      <!--</span>-->
+                        <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                         <span class="pro-txt-1">{{finance.finance_time}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
-                        <span class="pro-txt-4">{{finance.pro_finance_investor}}</span>
-                        <div class="line"></div>
+                        <span class="pro-txt-4" style=" width: 202px; white-space: normal;overflow: hidden; word-break: break-all;line-height:22px;">{{finance.pro_finance_investor}}</span>
+                        <!--<div class="line"></div>-->
                       </div>
                     </div>
                   </div>
@@ -218,18 +238,19 @@
                                       <span class="circle circle-e">&nbsp;</span>
                                     </div>-->
                     <div class="v-progress-table">
-                      <div class="v-progress-txt" v-for="develop in project.pro_develop">
-                    <span class="radio_line">
-                      <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
-                    </span>
+                      <div class="v-progress-txt" style="height: 45px;" v-for="develop in project.pro_develop">
+                    <!--<span class="radio_line">-->
+                      <!--<span class="radio"></span>-->
+                      <!--&lt;!&ndash;<span class="l-line"></span>&ndash;&gt;-->
+                    <!--</span>-->
+                        <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                         <span class="pro-txt-1">
                       {{develop.dh_start_time}}
                     </span>
-                        <span class="pro-txt-2"  style="color:#5e6d82;">
+                        <span class="pro-txt-2"  style="color:#5e6d82;white-space: normal;word-break: break-all;width: 500px;line-height: 20px">
                       {{develop.dh_event}}
                     </span>
-                        <div class="line"></div>
+                        <!--<div class="line"></div>-->
                       </div>
                     </div>
                   </div>
@@ -240,24 +261,49 @@
               <!--FA签约协议-->
               <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" v-if="project.pro_FA!=''">
                 <div class="item">
-                  <span class="title"><img class="img" src="../../../assets/images/money.png">FA签约协议</span>
+                  <span class="title"><img class="img" src="../../../assets/images/money.png">FA业务</span>
                   <div class="rz-details" >
-                    <div class="rz-detail" style="width: 25%">
+                    <div class="rz-detail" style="width: 50%">
                       <p class="det-title">签约佣金</p>
                       <p class="det-info">{{project.pro_FA.commission}}%</p>
                     </div>
-                    <div class="rz-detail" style="width: 25%">
+                    <div class="rz-detail" style="width: 50%">
                       <p class="det-title">股权赠与</p>
                       <p class="det-info">{{project.pro_FA.stock_right}}%</p>
                     </div>
-                    <div class="rz-detail" style="width: 25%">
-                      <p class="det-title">其他权益</p>
-                      <p class="det-info">{{project.pro_FA.stock_other}}%</p>
+                    <!--<div class="rz-detail" style="width: 25%">-->
+                      <!--<p class="det-title">其他权益</p>-->
+                      <!--<p class="det-info">{{project.pro_FA.stock_other}}%</p>-->
+                    <!--</div>-->
+                    <!--<div class="rz-detail" style="width: 25%">-->
+                      <!--<p class="det-title">跟投权</p>-->
+                      <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
+                    <!--</div>-->
+                  </div>
+                  <div class="item" style="margin-top:24px;height: 49px;">
+                    <div class="bot-det" v-if="project.contact.user_name!=''">
+                      <!--<span>项目联系人 : </span>-->
+                      <!--<span>{{project.contact.user_name}}</span>-->
+                      <!--<span>{{project.contact.user_mobile}}</span>-->
+                      <span class="det-title">项目联系人:</span>
+                      <span class="del-info">{{project.contact.user_name}}</span>
                     </div>
-                    <div class="rz-detail" style="width: 25%">
-                      <p class="det-title">跟投权</p>
-                      <p class="det-info">{{project.pro_FA.stock_follow}}%</p>
+                    <div class="bot-det" style="margin-left:170px;" v-if="project.contact.user_name!=''">
+                      <span class="det-title">项目联系人:</span>
+                      <span class="del-info">{{project.contact.user_name}}</span>
                     </div>
+                    <div class="bot-det" style="float:right;" v-if="project.contact.user_mobile!=''">
+                      <span class="det-title">手机号:</span>
+                      <span class="del-info">{{project.contact.user_mobile}}</span>
+                    </div>
+                  </div>
+                  <div class="bot-det" style="float: none" v-if="project.pro_FA.stock_follow!=''">
+                    <span class="det-title">跟投权:</span>
+                    <span class="del-info">{{project.pro_FA.stock_follow}}%</span>
+                  </div>
+                  <div class="bot-det" style="float: none;margin-top: 8px" v-if="project.pro_FA.stock_other!=''">
+                    <span class="det-title">其他权益:</span>
+                    <span class="del-info">{{project.pro_FA.stock_other}}%</span>
                   </div>
                 </div>
               </div>
@@ -512,6 +558,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import cirIcon from '../../../../static/images/circle.png'
   import research from './onekeyresearch.vue'
   import folowup from './followUpDetail.vue'
   import filemanagement from './fileManagement.vue'
@@ -523,6 +570,7 @@
   export default {
     data(){
       return {
+        cirIcon:cirIcon,
         projectPushDisplay:false,//项目推送弹框,人脉入口
         projectPushDisplay2:false,//项目推送弹框,项目入口
         searchDisplay: false,//一键尽调弹框
