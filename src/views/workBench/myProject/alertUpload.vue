@@ -1,8 +1,8 @@
 <template>
-  <div id="alertUpload" v-loading.body="loading" element-loading-text="上传中">
-    <el-dialog title="批量上传创建项目" :visible="uploadDisplay" :before-close="handleClose" :show-close="showList"
+  <div id="alertUpload" v-loading.body="loading" element-loading-text="提交中">
+   <!-- <el-dialog title="批量上传创建项目" :visible="uploadDisplay" :before-close="handleClose" :show-close="showList"
                :close-on-click-modal="showList" :close-on-press-escape="showList">
-      <div style="height:250px;"></div><!--老子就是一个占位的-->
+      <div style="height:250px;"></div>&lt;!&ndash;老子就是一个占位的&ndash;&gt;
         <el-upload class="uploadProjec"
                    :action="uploadAddress"
                    :on-preview="handlePreview"
@@ -18,17 +18,24 @@
                    accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                    drag multiple>
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text"><!--将文件拖到此处，或--><em>点击上传</em></div>
+          <div class="el-upload__text">&lt;!&ndash;将文件拖到此处，或&ndash;&gt;<em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip" >BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式<br>单个文件最大50M</div>
+
+
+            &lt;!&ndash;<p class="bp fl">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</p>&ndash;&gt;
+
+            <i class="el-icon-upload"></i>
+            <button class="contentUpload2">上传</button>
+
         </el-upload>
 
       <div slot="footer" class="dialog-footer" style="padding-top: 40px;padding-right: 44px;padding-bottom: 15px;">
         <el-button @click="handleClose">取 消</el-button>
       </div>
-    </el-dialog>
+    </el-dialog>-->
 
 
-    <el-dialog title="批量上传创建项目" :visible="dialogUpload2Visible" :before-close="handleClose"
+    <el-dialog title="批量上传创建项目" :visible="uploadDisplay" :before-close="handleClose"
                :show-close="showList" :close-on-click-modal="showList" :close-on-press-escape="showList">
       <div class="loadmodel">
         <el-upload
@@ -47,9 +54,14 @@
           :show-file-list="showList"
           accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
           multiple>
-          <div class="inner">
-            <button slot="trigger" class="fr contentUpload">继续上传</button>
-            <!--<p class="bp fl">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</p>-->
+          <div :class="{inner:isCheck}">
+            <i class="el-icon-upload" v-show="isCheck"></i>
+            <button slot="trigger" class="fr" :class="{ contentUpload2: isCheck, contentUpload: !isCheck }">
+              <i>点击上传</i>
+            </button>
+            <div class="el-upload__tip" slot="tip" v-show="isCheck">
+              BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式<br>单个文件最大50M
+            </div>
           </div>
 
         </el-upload>
@@ -59,10 +71,11 @@
               <el-col :span="6">
                 <el-form-item
                   label="项目名称"
-                  :prop="'domains.' + index + '.file_title'"
+                  :prop="'domains.' + index + '.pro_name'"
                   v-for="(domain, index) in dateForm.domains"
                   :key="domain.index"
-                  :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'}]">
+                  :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'},
+                            {max: 40, message: '不能大于40个汉字', trigger: 'blur' }]">
                   <el-input v-model="domain.pro_name"></el-input>
                 </el-form-item>
               </el-col>
@@ -72,7 +85,8 @@
                   :prop="'domains.' + index + '.pro_intro'"
                   v-for="(domain, index) in dateForm.domains"
                   :key="domain.index"
-                  :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'}]">
+                  :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},
+                        {max: 40, message: '不能大于40个汉字', trigger: 'blur' }]">
                   <el-input v-model="domain.pro_intro"></el-input>
                 </el-form-item>
               </el-col>
@@ -101,8 +115,9 @@
         </div>
         <div slot="footer" class="dialog-footer clearfix" style="padding-top: 40px;">
           <div class="fr">
-            <el-button @click="cancel" :disabled="submitButton">取 消</el-button>
-            <el-button type="primary" @click="submitUpload('dateForm',dateForm)" :disabled="submitButton">确 定</el-button>
+            <el-button @click="cancel(2)" :disabled="submitButton" v-show="!isCheck">取 消</el-button>
+            <el-button @click="cancel(1)" v-show="isCheck">取 消</el-button>
+            <el-button type="primary" @click="submitUpload('dateForm',dateForm)" :disabled="submitButton" v-show="!isCheck">确 定</el-button>
           </div>
         </div>
       </div>
@@ -118,7 +133,7 @@ export default {
       uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
       num:0,//控制一次最多选择个数
 //      dialogUploadVisible: false,//第一个弹窗的控制
-      dialogUpload2Visible:true,//第二个弹窗的控制
+      dialogUpload2Visible:false,//第二个弹窗的控制
       status:"",//状态success/exception
       percentage:0,//进度
       formLabelWidth: '880px',
@@ -142,21 +157,23 @@ export default {
       showList:false,
       alentTitle:"",
       submitButton:false,//是否允许提交false允许/true不允许
+      isCheck:true,//显示大上传
     }
   },
   methods: {
     //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
     handleChange(file, fileList) {
-      this.$emit('uploadDisplayChange',false);
-      this.dialogUpload2Visible=true;
+//      this.$emit('uploadDisplayChange',false);
+//      this.dialogUpload2Visible=true;
+      this.isCheck=false;
     },
     uploadsuccess(response, file, fileList){
         let data=response.data;
         if(response.status_code==2000000) {
-          this.$tool.success("上传成功");
           this.deleteLoad(file.uid);
           this.addDomain(data.pro_intro,data.pro_name,data.file_title,data.project_id,false,file.uid);
           this.subButtonCheck(this.dateForm.domains);
+//          this.$tool.success("上传成功");
         }
     },
     uploaderror(err, file, fileList){
@@ -179,14 +196,14 @@ export default {
           }
         }
       }
-      this.loading=false;
+
       if(!isnext){
         setTimeout(()=>{this.$tool.error(file.name+"是不支持的文件格式");},200);
         this.num=0;
         return false;
       }
-      if(parseInt(file.size) > parseInt(20971521)){
-        setTimeout(()=>{this.$tool.error(file.name+"超过20m哦");},200);
+      if(parseInt(file.size) > parseInt(52428810)){
+        setTimeout(()=>{this.$tool.error(file.name+"超过50m哦");},200);
         this.num=0;
         return false;
       }
@@ -207,7 +224,6 @@ export default {
         return false;
       }
       for(let i=0; i<arr.length; i++){
-//        console.log(arr[i].load)
         if(arr[i].load){
           this.submitButton=true;
           return false;
@@ -221,22 +237,24 @@ export default {
     },
     //提交表单服务器时
     submitUpload(formName,formData) {
+      this.loading=true;
       let obj = this.dateForm.domains;
         this.$refs[formName].validate((valid) => {
         if (valid) {
-          const saveUploadURL=this.URL.saveUpload
+          const saveUploadURL=this.URL.saveUpload;
           this.$http.post(saveUploadURL,obj)
             .then(res=>{
-              this.$tool.console(res)
+//              this.$tool.console(res);
               if(res.status===200){
-                this.dialogUpload2Visible=false;
+                this.$emit('uploadDisplayChange',false);
                 this.$emit('reload', true);
                 this.dateForm.domains=[];
                 this.fileList=[];
+                this.$tool.success("批量上传成功");
               }
+              this.loading=false;
             }).catch(err=>{
             this.$tool.console(err)
-//            this.closeLoading();
           })
           this.$refs.upload.submit();
         } else {
@@ -251,7 +269,7 @@ export default {
     //删除当前上传文件
     removeDomain(item) {
       const deleteUpload=this.URL.deleteUpload
-      var index = this.dateForm.domains.indexOf(item)
+      var index = this.dateForm.domains.indexOf(item);
       if (index !== -1) {
         this.dateForm.domains.splice(index, 1)
         this.fileList.splice(index, 1)
@@ -260,7 +278,7 @@ export default {
         .then(res=>{
           if(res.status===200){
             this.loading=false;
-            this.$tool.success("删除成功");
+
           }
         })
         .catch(err=>{
@@ -286,38 +304,53 @@ export default {
       this.dateForm.domains.push(object);
     },
     //当取消时,清空上传列表
-    cancel(){
-      this.$confirm('确认关闭？关闭后所有数据清空?')
-        .then(_ => {
-          let arr=this.dateForm.domains;
-
-//          this.$tool.console(this.dateForm.domains);
-          for(let i=0; i<arr.length; i++){
-            this.$http.post(this.URL.deleteUpload,{user_id: localStorage.user_id,project_id:arr[i].project_id})
-            .then(res=>{
-              if(res.status===200){
-              this.loading=false;
-              this.$tool.success("删除成功");
-            }
-              this.$tool.console(res)
-            })
-            .catch(err=>{
-              this.$tool.console(err)
-            })
-          }
+    cancel(e){
+        if(e==1){
           this.$emit('uploadDisplayChange',false);
-          this.dialogUpload2Visible=false;
-          this.dateForm.domains=[];
-          this.$refs.upload.clearFiles();
-        })
-        .catch(_ => {
+        }else{
+          this.$confirm('确认关闭？关闭后所有数据清空?')
+            .then(_ => {
+              let arr=this.dateForm.domains;
+//          this.$tool.console(this.dateForm.domains);
+              for(let i=0; i<arr.length; i++){
+                this.$http.post(this.URL.deleteUpload,{user_id: localStorage.user_id,project_id:arr[i].project_id})
+                  .then(res=>{
+                    if(res.status===200){
+                      this.loading=false;
+                      this.$tool.success("删除成功");
+                    }
+                    this.$tool.console(res)
+                  })
+                  .catch(err=>{
+                    this.$tool.console(err)
+                  })
+              }
+              this.$emit('uploadDisplayChange',false);
+              this.dialogUpload2Visible=false;
+              this.dateForm.domains=[];
+              this.$refs.upload.clearFiles();
+            })
+            .catch(_ => {
 
-        });
+            });
+        }
+
     },
     handleClose() {
       this.$emit('uploadDisplayChange',false);
-      this.dialogUpload2Visible=false;
+//      this.dialogUpload2Visible=false;
     },
+  },
+  created(){
+
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    uploadDisplay: function (e) {
+      if(e){
+        this.isCheck=true;
+      }
+    }
   }
 }
 </script>

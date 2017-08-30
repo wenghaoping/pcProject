@@ -1,11 +1,12 @@
 <template>
-  <div id="addFollow" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="addFollow" >
     <!--===========================================添加或编辑跟进记录弹窗=============================================-->
-    <el-dialog :visible="followDisplay" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll>
+    <el-dialog :visible="followDisplay" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll
+               :close-on-click-modal="showList" :close-on-press-escape="showList">
       <div class="addTitle">
         <span> | </span>添加跟进
       </div>
-      <div class="main">
+      <div class="main" v-loading.body="loading" element-loading-text="拼命加载中">
         <el-form :model="follow" ref="follow" label-width="100px" class="padding" label-position="top">
           <el-row :span="24">
             <el-col :span="24">
@@ -103,6 +104,7 @@
           <span v-if="!list.load" class="del-btn fl" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
           <span v-if="!list.load" class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
           <span v-if="list.load" class="uploadImg"><img src="../../../assets/images/loading.gif"></span>
+          <span v-if="list.load"  class="del-btn  fl" @click.prevent="cancelUpload(list)">取消</span>
         </div>
         <div slot="footer" class="dialog-footer fr" style="margin: 32px 0">
           <!--<el-button @click="saveSecond">继续添加</el-button>-->
@@ -212,7 +214,11 @@
     },
     methods: {
       handleClose(e){
-        this.$emit("closeFollow",false);
+          if(!this.submitButton){
+            this.$emit("closeFollow",false);
+          }else{
+              this.$tool.error("请等待上传成功后关闭或取消上传")
+          }
       },//关闭
       saveSecond(){
         this.allSave();//添加
@@ -393,7 +399,7 @@
         });
       },//获取跟进记录
 
-      /*项目文件上传*/
+      //*项目文件上传
       beforeUpload(file){
         this.num++;
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
@@ -412,13 +418,19 @@
           this.$tool.error(file.name+"是不支持的文件格式");
           return false;
         }
-        if(parseInt(file.size) > parseInt(20971521)){
-          this.$tool.error(file.name+"超过20m文件大小");
+        if(parseInt(file.size) > parseInt(52428810)){
+          this.$tool.error(file.name+"超过50m文件大小");
           return false;
         };
         this.addDomain("其他", file.name, 0, 4,true,file.uid);
         this.subButtonCheck(this.uploadShow.lists);
       },//项目文件上传验证
+      //取消上传
+      cancelUpload(file){
+        this.$refs.upload.abort(file);
+        this.deleteLoad(file.uid);
+        this.subButtonCheck(this.uploadShow.lists);
+      },
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
       },
@@ -483,6 +495,10 @@
         }
       },//剔除Load
       subButtonCheck(arr){
+        if(arr.length===0){
+          this.submitButton=false;
+          return false;
+        }
         for(let i=0; i<arr.length; i++){
           if(arr[i].load){
             this.submitButton=true;

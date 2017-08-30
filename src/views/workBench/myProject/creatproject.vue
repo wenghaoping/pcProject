@@ -421,8 +421,8 @@
           this.$tool.error("不支持的文件格式");
           return false;
         }
-        if(parseInt(file.size) > parseInt(20971521)){
-          this.$tool.error("暂不支持超过20m文件上传哦");
+        if(parseInt(file.size) > parseInt(52428810)){
+          this.$tool.error("暂不支持超过50m文件上传哦");
           return false;
         }
       },//上传前的验证

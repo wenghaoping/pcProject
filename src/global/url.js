@@ -56,7 +56,7 @@ export default
   getFileType:"api/category/getFileType",  //文件分组设置选项
   getAllFileType:"api/category/getAllFileType",  //文件分组设置选项(全)
   createFileType:"api/category/createFileType",  //添加文件分组设置
-
+  updateProjectCompany:'api/v/project/updateProjectCompany',//更新公司,一键尽调的时候,是否将此公司作为自己的公司
   /*一键尽调*/
   getCrawlerCompany:"api/dataTeam/getCrawlerCompany",  //一键尽调-公司(模糊匹配)
   selectCompanyByName:"api/dataTeam/selectCompanyByName",  //一键尽调-公司(精准匹配)

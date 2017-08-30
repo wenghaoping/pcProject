@@ -895,7 +895,7 @@
           .then(res=>{
             this.seachCompanys=[];
             let data =res.data.data;
-            if(data.length==0) this.seachCompanys=[{company_name:"未查询到结果，<i style='color: #009eff;'>保存公司名称</i>",com_id:-1}];
+            if(data.length==0) this.seachCompanys=[{company_name:"未查询到结果，<i style='color: #009eff;'>保存公司名称</i>",com_id:-1,newName:queryString}];
 //            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
             else this.seachCompanys=data;
 //            this.$tool.console(res);
@@ -917,7 +917,7 @@
                 this.companySearchDisplay = true;
                 this.searchName=this.project.pro_company_name;
                 this.companyname=this.project.pro_company_name;
-                this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
+                this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-2}];
                 this.loading=false;
               }else{//搜索到了
                 this.loading=false;
@@ -933,7 +933,29 @@
         }
       },//一键尽调按钮
       search(data){
-        if(data.com_id==-1) this.$tool.error("请输入公司");
+        if(data.com_id==-1) {
+          this.$confirm('把'+data.newName+'添加为您的公司?, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$http.post(this.URL.updateProjectCompany,{user_id:localStorage.user_id,pro_company_name:data.newName,project_id:this.project.project_id})
+              .then(res=>{
+                console.log(res);
+                if(res.data.status_code===2000000){
+                  this.$tool.success("修改成功");
+                  this.companySearchDisplay = false;
+                }
+              })
+              .catch(err=>{
+                this.$tool.console(err);
+              })
+          }).catch(() => {
+
+          });
+        }else if(data.com_id==-2){
+          this.$tool.error("匹配不到你要搜索的公司,请重新继续输入")
+        }
         else {
           this.companyid=data.com_id;
           this.companyname=data.company_name;

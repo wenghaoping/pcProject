@@ -69,6 +69,7 @@
                   <span v-if="!list.load"  class="del-btn" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
                   <span v-if="!list.load"  class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
                   <span v-if="list.load" class="uploadImg"><img src="../../../assets/images/loading.gif"></span>
+                  <span v-if="list.load"  class="del-btn" @click.prevent="cancelUpload(list)">取消</span>
                 </div>
               </div>
             </el-collapse-transition>
@@ -1468,9 +1469,9 @@
         else this.planButton = false;
       },
       planuploadsuccess(response, file, fileList){
-        this.$tool.success("上传成功")
+        this.$tool.success("上传成功");
         let data = response.data;
-        this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id)
+        this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id);
         this.uploadLoading=false;
         this.submitButton=false;
       },//上传成功后添加字段
@@ -1480,12 +1481,15 @@
       planRemove(file, fileList) {
         const deleteAtUpload = this.URL.deleteAtUpload;
         if (fileList.length == 0) this.planButton = true;
-        else this.planButton = true;
+        else {
+          this.planButton = true;
+          this.uploadLoading=false;
+          this.submitButton=false;
+        }
         this.$http.post(deleteAtUpload, {user_id: localStorage.user_id, project_id: this.uploadShow.project_id})
           .then(res => {
             if (res.status === 200) {
               this.loading = false;
-//              this.success("删除成功")
             }
           })
           .catch(err => {
@@ -1527,14 +1531,19 @@
           this.$tool.error("不支持的文件格式");
           return false;
         }
-        if(parseInt(file.size) > parseInt(20971521)){
-          this.$tool.error("暂不支持超过20M文件上传哦");
+        if(parseInt(file.size) > parseInt(52428810)){
+          this.$tool.error("暂不支持超过50M文件上传哦");
           return false;
         };
         this.uploadLoading=true;
         this.submitButton=true;
       },//上传前的验证
-
+      //取消上传
+      cancelUpload(file){
+        this.$refs.upload.abort(file);
+        this.deleteLoad(file.uid);
+        this.subButtonCheck(this.uploadShow2.lists);
+      },
       //*批量上传
 
       beforeUpload1(file){
@@ -1558,11 +1567,12 @@
           this.$tool.error("不支持的文件格式");
           return false;
         }
-        if(parseInt(file.size) > parseInt(20971521)){
-          this.$tool.error("暂不支持超过20m文件上传哦");
+        if(parseInt(file.size) > parseInt(52428810)){
+          this.$tool.error("暂不支持超过50m文件上传哦");
           return false;
         };
         this.addDomain("其他", file.name, 0, 4,true,file.uid);
+        this.subButtonCheck(this.uploadShow2.lists);
       },//项目文件上传验证
       //当添加文件时,添加入上传列表
       handleChange(file, fileList){
@@ -1575,7 +1585,7 @@
       },
       uploadsuccess(response, file, fileList){
         let data = response.data;
-        this.$tool.success("上传成功");
+//        this.$tool.success("上传成功");
         this.deleteLoad(file.uid);
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type,false,file.uid);
         this.loadingcheck=true;
@@ -1597,7 +1607,7 @@
       },//点击下载
 
       removeList(item) {
-        var index = this.uploadShow2.lists.indexOf(item)
+        var index = this.uploadShow2.lists.indexOf(item);
         if (index !== -1) {
           this.fileList.splice(index, 1)
           const deleteAtFile = this.URL.deleteAtFile;
@@ -1610,7 +1620,7 @@
               if (res.status === 200) {
                 this.loading = false;
                 this.uploadShow2.lists.splice(index, 1)
-                this.$tool.success("删除成功")
+//                this.$tool.success("删除成功");
               }
             })
             .catch(err => {
@@ -1639,6 +1649,10 @@
         }
       },//剔除Load
       subButtonCheck(arr){
+        if(arr.length===0){
+          this.submitButton=false;
+          return false;
+        }
         for(let i=0; i<arr.length; i++){
           if(arr[i].load){
             this.submitButton=true;

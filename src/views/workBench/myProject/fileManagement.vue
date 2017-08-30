@@ -83,6 +83,7 @@
                :key="newF.file_id">
             <span class="f-name" style="cursor: pointer">{{newF.name}}</span>
             <img src="../../../assets/images/loading.gif" style="width:16px;height: 16px;margin-left: 10px;">
+            <i @click="cancelUpload(newF,'')">取消</i>
             <!--<span class="upLoading" v-loading.body="true"></span>-->
           </div>
         </div>
@@ -205,6 +206,7 @@
         }).then(res => {
 //          console.log('fisrt-groupList',res.data.data)
           var groupList = res.data.data;
+
           //获取分组列表内部文件数据
           this.$http.post(this.URL.getProjectFiles, {
             user_id: localStorage.user_id,
@@ -382,6 +384,12 @@
           })
         })
       },
+      //取消上传
+      cancelUpload(file,formName){
+      this.$refs[formName].abort(file);
+//      this.deleteLoad(file.uid);
+//      this.subButtonCheck(this.dateForm.domains);
+      },
       //上传文件上传之前的钩子函数(允许上传的文件格式不同)
       beforeUpload(file){
         let filetypes = ['.pdf','.ppt','.pptx', '.doc', '.docx', '.rar', '.zip'];
@@ -403,8 +411,8 @@
           this.$tool.error("不支持的文件格式");
           return false;
         }
-        if (parseInt(file.size) > parseInt(20971521)) {
-          this.$tool.error("暂不支持超过20m文件上传哦");
+        if (parseInt(file.size) > parseInt(52428810)) {
+          this.$tool.error("暂不支持超过50m文件上传哦");
           return false;
         };
 
@@ -439,14 +447,14 @@
           this.$tool.error("不支持的文件格式");
           return false;
         }
-        if (parseInt(file.size) > parseInt(20971521)) {
-          this.$tool.error("暂不支持超过20m文件上传哦");
+        if (parseInt(file.size) > parseInt(52428810)) {
+          this.$tool.error("暂不支持超过50m文件上传哦");
           return false;
         };
 
         //给上传文件加typeId属性标志其分组后存入uploadList
-        file.typeId=this.typeId
-        this.uploadList.push(file)
+        file.typeId=this.typeId;
+        this.uploadList.push(file);
 
         //将上传文件放入相应数据的newFile属性中
         this.groupList.forEach(x=>{
