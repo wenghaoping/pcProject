@@ -243,7 +243,7 @@
 
       },
       loginOut(e){
-          console.log(e)
+        console.log(e)
         localStorage.clear();
         window.location.reload()
       }
@@ -332,11 +332,11 @@ background: red;
     position: relative;
     /*overflow: auto!important;*/
   }
-  .el-button--primary{
+/*  .el-button--primary{
     background:#40587a!important;
     border-radius:2px!important;
     border-color:#40587a!important;
-  }
+  }*/
   .newColor{
     color:#40587A!important;
   }

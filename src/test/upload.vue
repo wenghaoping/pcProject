@@ -41,8 +41,13 @@
     },
     methods: {
       beforeUpload(file){
-          this.fileList.push(file);
-        this.uploadProgress();
+          console.log(file);
+          let arr = {}
+          arr.uid=file.uid;
+console.log(arr)
+          this.fileList.push(arr);
+          console.log(this.fileList)
+          this.uploadProgress();
       },
       submitUpload() {
         this.$refs.upload.submit();
@@ -74,7 +79,7 @@
 
       },
       uploadProgress(){
-        this.timeout = setInterval(()=>{
+/*        this.timeout = setInterval(()=>{
           this.$http.get(this.URL.uploadProgress,{params: {
             'PHP_SESSION_UPLOAD_PROGRESS' : 'test'}
           })
@@ -86,7 +91,7 @@
               this.$tool.console(err);
             })//请求函数
         },1000)
-        setTimeout(()=>{clearInterval(this.timeout);},10000)
+        setTimeout(()=>{clearInterval(this.timeout);},10000)*/
       }
 
 

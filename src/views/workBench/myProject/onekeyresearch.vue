@@ -1,10 +1,9 @@
 <template>
-  <div id="research" >
+  <div id="research" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================一键尽调弹窗=============================================-->
     <el-dialog :visible="searchDisplay" custom-class="dialog" :before-close="goToEdit"
                close-on-press-escape close-on-click-modal>
-      <div class="contain-grid" style="width: 893px;" v-loading="loading"
-           element-loading-text="拼命加载中1">
+      <div class="contain-grid" style="width: 893px;">
         <div class="contain-position">
           <p>您要尽调的公司：<span>{{compname}}</span><button class="fr button" @click="goToEdit">修改公司</button></p>
         </div>
@@ -232,13 +231,15 @@
           }
         ],
         /*产品新闻*/
-        news: [{
+        news: [
+            /*{
           project_id: "",//产品ID
           project_news_time: "",//新闻时间
           project_news_label: "",//新闻标签
           project_news_title: "",//新闻标题
           source: ""//资源链接
-        }],
+        }*/
+        ],
         /*竞品表*/
         competing: [
           /*{
@@ -259,31 +260,31 @@
         ],
         /*历史融资表*/
         history_finance: [
-          {
+          /*{
             com_id: "",//公司id
             History_financing_time: "",//融资时间
             History_financing_rounds: "",//融资轮次
             History_financing_money: "",//融资金额
             History_financing_who: "",//融资方
-          }
+          }*/
         ],
         /*里程碑信息表*/
         milestone_list: [
-          {
+          /*{
             project_id: "",//产品ID
-            milestone_event: "获汉鼎宇佑集团和盛大亿元投资 P2P行业再掀波澜，获得1.5亿B轮融资，获得1.5亿B轮融资佑集团",//里程碑事件
-            milestone_time: "2017.05.04",//里程碑时间
-          }
+            milestone_event: "",//里程碑事件
+            milestone_time: "",//里程碑时间
+          }*/
         ],
         /*团队成员*/
         team: [
-          {
+          /*{
             project_id: "",//产品ID
             team_member_introduce: "",//成员介绍
             team_member_photo: "",//成员头像
             team_member_name: "",//成员名字
             team_member_position: "",//成员职位
-          }
+          }*/
         ],
         loading:false,
         comMessage:{},//公司信息
@@ -441,13 +442,12 @@
               }else{
                 this.chartDataCheck=false;
               }
-              this.loading=false;
-              resolve(1);
             })
             .catch(err => {
               this.$tool.console(err);
               this.loading=false;
             })
+          resolve(12);
         });
       },//获取项目
       getProjectIndustry(data){
@@ -529,6 +529,7 @@
             return this.getCrawlerNews();
           })
           .then((data)=>{
+            this.loading=false;
             return this.getCrawlerCompeting();
           })
 

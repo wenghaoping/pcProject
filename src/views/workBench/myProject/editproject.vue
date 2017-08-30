@@ -2,8 +2,8 @@
   <div id="editproject" class="clearfix" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <div id="wid" class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
-      <div class="main-box">
-        <div class="left-wrap" ref="left" style="margin-top:24px;">
+      <div class="main-box" ref="left" >
+        <div class="left-wrap" style="margin-top:24px;">
           <!--=================================项目文件=================================-->
           <div class="d_jump"></div>
           <div class="item-block" style="margin-top:0;">
@@ -1059,6 +1059,10 @@
         one:false,//第一次进来的时候
         submitButton:false,//是否允许提交false允许/true不允许
         uploadLoading:false,//BP上传动画
+        screenWidth: document.body.clientWidth,
+        timer:null,
+        timer2:null,
+        scrollTop:0,
       };
     },
     computed: {
@@ -1149,8 +1153,20 @@
       },
     },
     mounted() {
-        let leftWidth=document.getElementById("wid").offsetLeft+936;
-        this.$refs.right.style.left = leftWidth +'px';
+      let leftWidth=document.getElementById("wid").offsetLeft+935;
+      this.$refs.right.style.left = leftWidth +'px';
+      const that = this;
+      window.onresize = () => {
+        return (() => {
+          window.screenWidth = document.body.clientWidth;
+          that.screenWidth = window.screenWidth
+        })()
+      };
+      window.onscroll = () => {
+        return (() => {
+          that.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        })()
+      }
     },
     methods: {
       //*获取列表各种数据
@@ -2114,13 +2130,11 @@
         else if (!this.getNumberFull(this.pro_FA.stock_right,"股权赠与不能大于100","股权赠与必须为数字(去处%号)")){this.$tool.console("股权赠与没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_follow,"跟投权不能大于100","跟投权必须为数字(去处%号)")){this.$tool.console("跟投权没过")}
         else if (!this.getNumberFull(this.pro_FA.stock_other,"其他权益不能大于100","其他权益必须为数字(去处%号)")){this.$tool.console("其他权益没过")}
-
-//**************************************************************************************************************
         else if (!this.$tool.checkNumber(this.financing.pro_finance_value)){this.$tool.error("项目估值必须为数字")}
         else if (this.$tool.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else if (this.$tool.getNull(this.project.pro_goodness)){this.$tool.error("项目亮点不能为空")}
         else if(this.$tool.checkLength1(this.project.pro_company_name)){this.$tool.error("公司名称不超过40个字")}
-        else if(this.$tool.checkLength1(this.project.pro_goodness)){this.$tool.error("项目亮点不超过500个字")}
+        else if(this.$tool.checkLength2(this.project.pro_goodness)){this.$tool.error("项目亮点不超过500个字")}
         else if(this.$tool.checkLength2(this.financing.pro_finance_use)){this.$tool.error("资金用途不超过500个字")}
         else if(this.$tool.checkLength(this.project.contact.user_name)){this.$tool.error("项目联系人不超过20个字")}
         else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
@@ -2358,8 +2372,33 @@
       this.SignShow=false;
     },
     watch: {
-      // 如果路由有变化，会再次执行该方法
-      "$route": "getprojectId"
+      screenWidth (val) {
+        if (!this.timer) {
+          this.screenWidth = val;
+          this.timer = true;
+          let that = this;
+          setTimeout(function () {
+            that.$refs.right.style.left=that.$refs.left.offsetLeft +935+'px';
+            that.timer = false
+          }, 100)
+        }
+      },
+      scrollTop(val){
+        if (!this.timer2) {
+          this.scrollTop = val;
+          this.timer2 = true;
+          let that = this;
+          setTimeout(function () {
+//            console.log(that.scrollTop);
+            if(that.scrollTop>90){
+              that.$refs.right.style.top=80+'px';
+            }else{
+              that.$refs.right.style.top=153+'px';
+            }
+            that.timer2 = false;
+          }, 100)
+        }
+      }
     }
   }
 </script>
