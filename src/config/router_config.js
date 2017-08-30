@@ -44,6 +44,9 @@ const SmallRoutine = r => require.ensure([], () => r(require('@/views/SmallRouti
 /*======================================一键尽调单独页面=========================================*/
 const onekeyResearchAlone = r => require.ensure([], () => r(require('@/views/onekeyResearchAlone/onekeyresearchAlone.vue')), 'onekeyResearchAlone');
 
+/*======================================首页一键尽调单独页面=========================================*/
+const onekeyResearch = r => require.ensure([], () => r(require('@/views/onekeyResearchAlone/onekeyResearch.vue')), 'onekeyResearch');
+
 /*===============================关于我们路由配置=======================================*/
 const aboutUs = r => require.ensure([], () => r(require('@/views/aboutUs/aboutUs.vue')), 'aboutUs');
 //测试路由
@@ -112,6 +115,9 @@ export default [
   },
   {
     path: '/API/DD', name: 'onekeyResearchAlone', component:onekeyResearchAlone
+  },
+  {
+    path: '/onekeyResearch', name: 'onekeyResearch', component:onekeyResearch
   },
   {
     path: '/aboutUs',name: 'aboutUs', component: aboutUs

@@ -92,7 +92,7 @@
                         label="项目名称"
                         prop="pro_name"
                         :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]">
-                        <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
+                        <el-input v-model="project.pro_name" placeholder="项目代号，快速识别"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -103,7 +103,7 @@
                         prop="pro_company_name">
                         <el-autocomplete v-model="project.pro_company_name"
                                          :fetch-suggestions="querySearchAsync"
-                                         placeholder="请输入内容"
+                                         placeholder="一句话吸引投资人，是决定投资人查看项目的重要因素"
                                          @select="handleSelect"
                                          class="width360">
                         </el-autocomplete>
