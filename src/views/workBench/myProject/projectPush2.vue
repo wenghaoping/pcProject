@@ -832,7 +832,15 @@
       },
       //关闭弹窗前回调
       handleClose(){
-        this.initData();
+        this.pushData = [];
+        this.myContactsShow = [];
+        this.netContactsShow = [];
+        this.myContacts=[];
+        this.netContacts=[];
+        this.pushTitle = '';
+        this.pushBody = '';
+        this.myCheckList = {};
+        this.netCheckList = {};
         this.myContactsShow = [];
         this.netContactsShow = [];
         for (let x in this.myCheckList) {
@@ -872,7 +880,6 @@
           this.loading=true;
           this.project_name = this.proIntro;
           this.project_id = this.proid;
-          this.initData();
           //为了重置checkBox状态
           if (e === true) {
             this.reBorn = true
@@ -880,7 +887,17 @@
             this.reBorn = false
           }
           //重置推送项目接口参数
+
           this.pushData = [];
+          this.myContactsShow = [];
+          this.netContactsShow = [];
+          this.myContacts=[];
+          this.netContacts=[];
+          this.pushTitle = '';
+          this.pushBody = '';
+          this.myCheckList = {};
+          this.netCheckList = {};
+          this.getPushCount();
           //获取我的人脉和全网人脉的姓名作为勾选框标记
           if (this.project_id) {
             this.$http.post(this.URL.getConnectUserSortByMatch, {

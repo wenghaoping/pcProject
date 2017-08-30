@@ -96,7 +96,7 @@
                         <el-input v-model="project.pro_name" placeholder="项目代号，快速识别"></el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="9">
                       <span class="justIlook2">(仅自己可见)</span>
                       <el-form-item
                         label="公司名称"
@@ -104,12 +104,12 @@
                         prop="pro_company_name">
                         <el-autocomplete v-model="project.pro_company_name"
                                          :fetch-suggestions="querySearchAsync"
-                                         placeholder="一句话吸引投资人，是决定投资人查看项目的重要因素"
-                                         @select="handleSelect"
-                                         class="width360">
+                                         placeholder="公司全网检索，一键同步公司信息"
+                                         @select="handleSelect" style="width:260px;">
                         </el-autocomplete>
                       </el-form-item>
                     </el-col>
+                    <el-button class="tong">一键同步</el-button>
                     <span class="ques">
                         <el-tooltip placement="bottom-end">
                             <div slot="content">
@@ -126,7 +126,7 @@
                         label="项目介绍"
                         prop="pro_intro"
                         :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]">
-                        <el-input v-model="project.pro_intro" placeholder="一句话介绍，如帮助FA成交的项目管理工具"></el-input>
+                        <el-input v-model="project.pro_intro" placeholder="一句话吸引投资人，是决定投资人查看项目的重要因素"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6" >
@@ -183,9 +183,9 @@
                         :rules="[{type: 'array',required: true, message: '项目领域不能为空', trigger: 'change'}]">
                         <el-select
                           v-model="project.pro_industry"
-                          multiple
+                          multiple filterable
                           :multiple-limit="multiplelimit"
-                          placeholder="请添加(最多5个)" class="width360">
+                          placeholder="请添加领域（最多5个），支持检索" class="width360">
                           <el-option
                             v-for="item in industry"
                             :key="item.value"
@@ -196,6 +196,160 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="期望融资"
+                        prop="pro_finance_scale"
+                        :rules="[{type: 'number',required: true, message: '期望融资不能为空', trigger: 'change'}]">
+                        <el-select v-model="financing.pro_finance_scale" placeholder="请选择" class="width360">
+                          <el-option
+                            v-for="item in scale"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="投后股份)"
+                        prop="pro_finance_stock_after"
+                        :rules="[NumberRule]">
+                        <el-input v-model="financing.pro_finance_stock_after" placeholder="请输入具体数值，如：10">
+                          <el-button slot="append" >%</el-button>
+                        </el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+
+
+
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="项目估值( 万 )"
+                        :rules="NumberRule"
+                        prop="pro_finance_value">
+                        <el-input v-model="financing.pro_finance_value" placeholder="请输入具体数值，如：1000"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="私密设置"
+                        prop="open_status">
+                        <el-select v-model="project.open_status" placeholder="请选择" class="width360">
+                          <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="0"></el-option>
+                          <el-option label="公开项目（投放到交易易市场参与融资匹配，投资人可以申请查看bp，每日限公开一次)" value="1"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="24">
+                      <el-form-item
+                        label="项目标签"
+                        prop="tags_pro">
+                        <el-select v-model="project.tags_pro" multiple placeholder="请输入项目的亮点标签，投资人可通过标签检索，如优秀团队，技术壁垒"
+                                   :multiple-limit="multiplelimit" filterable
+                                   allow-create default-first-option
+                                   @change="addChangepro"
+                        style="width: 100%">
+                          <el-option
+                            v-for="item in tags_pro"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+
+
+
+
+                  <el-row :span="24" :gutter="10">
+                    <el-col :span="5">
+                      <el-form-item label="项目亮点"
+                                    prop="pro_goodness"
+                                    :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'},{min: 1, max:500,message: '最大500个字符'}]">
+                        <el-input  v-model="project.pro_goodness"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="19">
+                      <el-form-item label="　"
+                                    prop="pro_goodness">
+                        <el-input  v-model="project.pro_goodness"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="10">
+                    <el-col :span="5">
+                      <el-form-item label="　"
+                                    prop="pro_goodness">
+                        <el-input  v-model="project.pro_goodness"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="19">
+                      <el-form-item label="　"
+                                    prop="pro_goodness">
+                        <el-input  v-model="project.pro_goodness"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="10">
+                    <el-col :span="5">
+                      <el-form-item label="　"
+                                    prop="pro_goodness">
+                        <el-input  v-model="project.pro_goodness"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="19">
+                      <el-form-item label="　"
+                                    prop="pro_goodness">
+                        <el-input  v-model="project.pro_goodness"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item

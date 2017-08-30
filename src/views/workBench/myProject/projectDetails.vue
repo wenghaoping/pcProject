@@ -857,7 +857,6 @@
         emitPush:false,//控制项目推送-项目入口的推送函数触发
         getFollowData:false,//看是否要获取跟进的数据
         followid:'',//得到followid
-        pushCount:5,//当前用户今日剩余推送次数
         myAllCont:[{
           value: -1,
           label: '全部'
@@ -1117,13 +1116,6 @@
       },
       projectPush2(){
         this.projectPushDisplay2=true;
-        this.$http.post(this.URL.pushCount,{
-          user_id:localStorage.user_id
-        }).then(res=>{
-          if(res.data.status_code===2000000){
-            this.pushCount=res.data.data.push_count.remain_times;
-          }
-        })
       },//项目推送入口,项目入口
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;

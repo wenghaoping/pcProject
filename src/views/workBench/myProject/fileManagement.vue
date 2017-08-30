@@ -10,13 +10,13 @@
           <span class="clearfix  groupName">
             {{item.type_name}}  (<span>{{item.fileNum}}</span>)
                </span>
-           <span class=" clearfix collapseHead" style=" display: inline-block;float: right;margin-top: -41px;">
+          <span class=" clearfix collapseHead" style=" display: inline-block;float: right;margin-top: -41px;">
              <el-button v-if="item.type_id>4" class="upload delete fr" type="text" @click.stop="getTypeId(item.type_id,3)"><img :src="deleteIcon">删除</el-button>
             <!--bp上传-->
              <div class="fr" style="margin-top: -3px" v-if="item.type_id===1 && parseInt(item.fileNum)===0 && item.newFile.length===0">
                <el-upload
                  class="upload"
-                 ref="upload"
+                 :ref="item.type_name"
                  :action="uploadAddress"
                  :on-change="handleChange"
                  :on-progress="uploadProgress"
@@ -34,7 +34,7 @@
             <div class="fr" style="margin-top: -1px" v-if="item.type_id!=1">
                <el-upload
                  class="upload"
-                 ref="upload"
+                 :ref="item.type_name"
                  :action="uploadAddressFile"
                  :on-change="handleChange"
                  :on-progress="uploadProgress"
@@ -83,7 +83,7 @@
                :key="newF.file_id">
             <span class="f-name" style="cursor: pointer">{{newF.name}}</span>
             <img src="../../../assets/images/loading.gif" style="width:16px;height: 16px;margin-left: 10px;">
-            <i @click="cancelUpload(newF,'')">取消</i>
+            <i @click.prevent="cancelUpload(item.type_name,newF,index)" style="font-size:12px;color:#f44c4c;cursor: pointer">取消</i>
             <!--<span class="upLoading" v-loading.body="true"></span>-->
           </div>
         </div>
@@ -108,9 +108,9 @@
     </el-dialog>
     <!--移动文件分组弹框-->
     <el-dialog class="moveFileFrame" title="移至" :visible.sync="fileMoveFrame">
-        <el-radio-group v-model="radio">
-          <el-radio v-if="group.type_id!=1" class="groupRadio" v-for="group in groupList" :key="group.type_id" :label="group.type_id">{{group.type_name}}</el-radio>
-        </el-radio-group>
+      <el-radio-group v-model="radio">
+        <el-radio v-if="group.type_id!=1" class="groupRadio" v-for="group in groupList" :key="group.type_id" :label="group.type_id">{{group.type_name}}</el-radio>
+      </el-radio-group>
       <div slot="footer" class="dialog-footer">
         <el-button @click="fileMoveFrame = false">取 消</el-button>
         <el-button type="primary" @click="fileMove">确 定</el-button>
@@ -132,7 +132,6 @@
         <el-button type="primary" @click="renameCertain" style="background: #40587a;border-color: #40587a;">保　存</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -206,7 +205,6 @@
         }).then(res => {
 //          console.log('fisrt-groupList',res.data.data)
           var groupList = res.data.data;
-
           //获取分组列表内部文件数据
           this.$http.post(this.URL.getProjectFiles, {
             user_id: localStorage.user_id,
@@ -279,6 +277,7 @@
             }).then(res=>{
               if(res.data.status_code===2000000){
                 this.$tool.success('新建文件分组成功')
+                console.log(this.$refs)
                 this.$refs['newGroupName'].resetFields();
                 this.dialogFileVisible=false;
                 this.initData();
@@ -309,27 +308,27 @@
       },
       //重命名分组(打开弹框)
       renameGroup(groupName){
-       /* this.$prompt('请输入分组名', '新建文件分组', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(({ value }) => {
-          this.$http.post(this.URL.renameFileType,{
-            user_id:localStorage.user_id,
-            type_id:this.typeId,
-            type_name:value
-          }).then(res => {
-            console.log(res)
-            if (res.data.status_code === 2000000) {
-              this.loading = false;
-              this.$tool.success("分组重命名成功")
-              this.initData()
-            }else{
-              this.$tool.error(res.data.error_msg)
-            }
-          })
-        });*/
-       this.exGroupName=groupName;
-       this.renameFrame=true;
+        /* this.$prompt('请输入分组名', '新建文件分组', {
+         confirmButtonText: '确定',
+         cancelButtonText: '取消',
+         }).then(({ value }) => {
+         this.$http.post(this.URL.renameFileType,{
+         user_id:localStorage.user_id,
+         type_id:this.typeId,
+         type_name:value
+         }).then(res => {
+         console.log(res)
+         if (res.data.status_code === 2000000) {
+         this.loading = false;
+         this.$tool.success("分组重命名成功")
+         this.initData()
+         }else{
+         this.$tool.error(res.data.error_msg)
+         }
+         })
+         });*/
+        this.exGroupName=groupName;
+        this.renameFrame=true;
       },
       //重命名确定
       renameCertain(){
@@ -370,25 +369,19 @@
           type: 'warning'
         }).then(() => {
           this.$http.post(this.URL.deleteFileType,{
-              user_id:localStorage.user_id,
-              type_id:this.typeId,
-              project_id:this.project_id
-            }).then(res => {
-              if (res.data.status_code === 2000000) {
-                this.loading = false;
-                this.$tool.success("删除成功")
-                this.initData()
-              }else{
-                this.$tool.error(res.data.error_msg)
-              }
+            user_id:localStorage.user_id,
+            type_id:this.typeId,
+            project_id:this.project_id
+          }).then(res => {
+            if (res.data.status_code === 2000000) {
+              this.loading = false;
+              this.$tool.success("删除成功")
+              this.initData()
+            }else{
+              this.$tool.error(res.data.error_msg)
+            }
           })
         })
-      },
-      //取消上传
-      cancelUpload(file,formName){
-      this.$refs[formName].abort(file);
-//      this.deleteLoad(file.uid);
-//      this.subButtonCheck(this.dateForm.domains);
       },
       //上传文件上传之前的钩子函数(允许上传的文件格式不同)
       beforeUpload(file){
@@ -411,8 +404,8 @@
           this.$tool.error("不支持的文件格式");
           return false;
         }
-        if (parseInt(file.size) > parseInt(52428810)) {
-          this.$tool.error("暂不支持超过50m文件上传哦");
+        if (parseInt(file.size) > parseInt(20971521)) {
+          this.$tool.error("暂不支持超过20m文件上传哦");
           return false;
         };
 
@@ -447,14 +440,14 @@
           this.$tool.error("不支持的文件格式");
           return false;
         }
-        if (parseInt(file.size) > parseInt(52428810)) {
-          this.$tool.error("暂不支持超过50m文件上传哦");
+        if (parseInt(file.size) > parseInt(20971521)) {
+          this.$tool.error("暂不支持超过20m文件上传哦");
           return false;
         };
 
         //给上传文件加typeId属性标志其分组后存入uploadList
-        file.typeId=this.typeId;
-        this.uploadList.push(file);
+        file.typeId=this.typeId
+        this.uploadList.push(file)
 
         //将上传文件放入相应数据的newFile属性中
         this.groupList.forEach(x=>{
@@ -477,9 +470,9 @@
       uploadProgress(event,file,fileList){
         //不知道为什么文件上传中的勾子函数内的console会触发两次,且event的值不同
         /*console.log('文件上传中')
-        console.log(event)
-        console.log(file)
-        console.log(fileList)*/
+         console.log(event)
+         console.log(file)
+         console.log(fileList)*/
       },
       //上传文件成功
       uploadsuccess(response, file, fileList){
@@ -487,23 +480,30 @@
         this.$tool.success("上传成功");
         this.loadingcheck = true;
 //        console.log('3',response,file)
+        console.log(file)
         this.initData(file)
         //将还未上传成功的文件重新放回newFile中
 //        console.log('重点',this.groupList)
 //        console.log(this.uploadList)
-      /*  this.uploadList.forEach((x)=>{
-          this.groupList.forEach((y,index)=>{
-            if(x.typeId===y.type_id){
-              y.newFile.push(x);
-            }
-          })
-        })*/
+        /*  this.uploadList.forEach((x)=>{
+         this.groupList.forEach((y,index)=>{
+         if(x.typeId===y.type_id){
+         y.newFile.push(x);
+         }
+         })
+         })*/
       },
       //上传失败
       uploaderror(err, file, fileList){
         this.$tool.error("上传失败,请联系管理员")
         this.loadingcheck = false;
         this.loading = false;
+      },
+      //取消上传
+      cancelUpload(type_name,file){
+//        console.log(file);
+        this.$refs[type_name][0].abort(file)
+        this.initData(file)
       },
       //获取fileId(辅助函数)
       getFileId(fileId,groupId,bp){
@@ -523,17 +523,17 @@
             type: 'warning'
           }).then(() => {
             this.$http.post(this.URL.deleteAtFile,{
-             user_id:localStorage.user_id,
-             file_id:this.fileId
-             }).then(res => {
-             if (res.data.status_code === 2000000) {
-             this.loading = false;
-             this.$tool.success("删除成功")
-             this.initData()
-             }else{
-             this.$tool.error(res.data.error_msg)
-             }
-             })
+              user_id:localStorage.user_id,
+              file_id:this.fileId
+            }).then(res => {
+              if (res.data.status_code === 2000000) {
+                this.loading = false;
+                this.$tool.success("删除成功")
+                this.initData()
+              }else{
+                this.$tool.error(res.data.error_msg)
+              }
+            })
           }).catch(() => {});
         }
         //移动文件
@@ -558,8 +558,8 @@
       },
       //点击下载
       download(fileId){
-          const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
-          window.location.href=url;
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
+        window.location.href=url;
       },
       //点击分组设置中的单选框
       groupchange(label){
@@ -582,15 +582,15 @@
           file_id: this.uploadShow2.lists[index].file_id,
           type: this.uploadShow2.lists[index].type
         })
-        .then(res => {
-          if (index !== -1) {
-            this.uploadShow2.lists[index].bp_type = type_name;
-            this.dialogFileVisible = false
-          }
-        })
-        .catch(err => {
-          this.$tool.console(err)
-        })
+          .then(res => {
+            if (index !== -1) {
+              this.uploadShow2.lists[index].bp_type = type_name;
+              this.dialogFileVisible = false
+            }
+          })
+          .catch(err => {
+            this.$tool.console(err)
+          })
 
       },
     },
@@ -604,11 +604,11 @@
 
 <style lang="less">
   @import '../../../assets/css/fileManagement';
-/*  .el-loading-mask{
-    display: none;
-    !*left:205px!important;*!
-    !*top:610px!important;*!
-  }*/
+  /*  .el-loading-mask{
+      display: none;
+      !*left:205px!important;*!
+      !*top:610px!important;*!
+    }*/
 
 </style>
 
