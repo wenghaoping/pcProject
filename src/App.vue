@@ -56,7 +56,7 @@
           :fetch-suggestions="querySearchAsync"
           placeholder="查竞品，查工商，请输入公司或品牌名称"
           @select="handleSelect"
-          :on-icon-click="handleIconClick"
+          :on-icon-click="parameter"
           class="width350"
         ></el-autocomplete>
         <!--<li @click="loginOut">-->
@@ -170,7 +170,7 @@
               this.restaurants = [];
               let data = res.data.data;
                 this.restaurants = this.loadData(data);
-                console.log(this.restaurants);
+//                console.log(this.restaurants);
 //              if (queryString == "") this.restaurants = [];
               let restaurants = this.restaurants;
               /*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
@@ -194,6 +194,7 @@
       handleSelect(item) {
         this.loading=true;
         this.companyTitle = item.value;
+        this.companyid=item.address;
         this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
           .then(res => {
             let data = res.data.data;
@@ -206,12 +207,12 @@
             this.$tool.error("获取失败");
             this.$tool.console(err);
           });
-
       },//选择了搜索出来的数据后
-      handleIconClick(ev){
-          console.log(ev);
-        this.querySearchAsync(this.state4,this.cb(this.restaurants));
-      },//输入搜索
+      parameter(){
+          console.log( this.companyTitle);
+        this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
+        this.$route.query.company;
+      },
       // 检查localStorage.user_id
       checkUser(){
         //this.$tool.console(this.$route.path)
@@ -268,8 +269,17 @@
 </script>
 
 <style lang="less">
+  /*.el-autocomplete, .el-dropdown{*/
+    /*position: relative;*/
+    /*top: 12px!important;*/
+    /*right: 15%!important;*/
+  /*}*/
   .width350{
-    width: 350px;float: right; margin-top: 12px;margin-right: 18%;
+    width: 350px;
+    display: inline-block;
+    position: relative;
+    top: 12px!important;
+    right: 4%!important;
   }
   .el-select-dropdown__list{
     padding: 0!important;
@@ -454,9 +464,9 @@ background: red;
   }
   .login{
     float: right !important;
-    margin-right: 0% !important;
+    margin-right: 6% !important;
     @media screen and(max-width: 1400px){
-      margin-right: 0% !important;
+      margin-right: 6% !important;
     }
   }
 </style>
