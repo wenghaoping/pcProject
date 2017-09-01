@@ -1,10 +1,13 @@
 <template>
   <div id="identityDetail">
-    <div class="title clearfix tc">
+    <div class="title clearfix tc" v-show="!this.$route.query.user">
       创建您的投资名片?
       <div class="fr">
         <el-button class="skip" type="text" @click="skip">跳过</el-button>
       </div>
+    </div>
+    <div class="title clearfix tc" v-show="this.$route.query.user">
+      个人信息
     </div>
     <!--基本资料-->
     <div class="item-block" style="margin-top: 0">

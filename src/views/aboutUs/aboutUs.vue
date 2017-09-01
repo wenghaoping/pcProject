@@ -18,7 +18,7 @@
       </div>
       <div class="recommend_left">
        <div class="recommend1">
-         <a href="www.weitianshi.cn"><div class="recommend11">网站：www.weitianshi.cn</div></a>
+         <div class="recommend11">网站：www.weitianshi.cn</div>
          <div class="recommend11">小程序：微天使乐投平台
           &nbsp; <span style="color:#e6e0ed ">|</span>&nbsp;
            绿茶妹</div>
@@ -32,7 +32,7 @@
           </div>
           <div class="recommend22" style="margin-right: 16px">
             <img class="recommend2_Xiaochengxu" :src="xiaochengxu">
-            <div class="recommend2_name">微天使乐投平台</div>
+            <div class="recommend2_name">小程序体验</div>
           </div>
         </div>
       </div>
@@ -40,28 +40,45 @@
         <div class="line"></div>
         <h3 class="abstract1">联系我们</h3>
       </div>
-      <div class="contact1" style="margin-bottom: 200px">
-        <div class="contact11">
-          <img :src="dianhua">
-          <span>0571-85026758</span>
+      <!--<div class="contact1" style="margin-bottom: 200px">-->
+        <!--<div class="contact11">-->
+          <!--<img :src="dianhua">-->
+          <!--<span>0571-85026758</span>-->
+        <!--</div>-->
+        <!--<div class="contact11">-->
+          <!--<img :src="youxiang">-->
+          <!--<span>fa@weitian.cn</span>-->
+        <!--</div>-->
+        <!--<div class="contact11" style="text-align: right">-->
+         <!--<span>微信&nbsp;:</span>-->
+          <!--<span>weitianshicn</span>-->
+        <!--</div>-->
+        <!--<div class="contact11" style="width: 80%;">-->
+          <!--<img :src="dizhi" style="float: left;margin-top: 2px;margin-right: 5px">-->
+          <!--<span>杭州市文三路90号东部软件园8号楼1楼智云社</span>-->
+        <!--</div>-->
+      <!--</div>-->
+      <div class="recommend_left" style="height: 200px;margin-bottom: 150px">
+        <div class="recommend1">
+          <div class="recommend11"><img  :src="dianhua" class="contact_img"><span>0571-85026758</span></div>
+          <div class="recommend11"> <img :src="youxiang" class="contact_img">
+            <a href="http://www.baidu.com"><span>fa@weitian.cn</span></a></div>
+          <div class="recommend11"> <img :src="dizhi" class="contact_img">
+            <span>杭州市文三路90号东部软件园8号楼1楼智云社</span></div>
         </div>
-        <div class="contact11">
-          <img :src="youxiang">
-          <span>fa@weitian.cn</span>
-        </div>
-        <div class="contact11" style="text-align: right">
-         <span>微信&nbsp;:</span>
-          <span>weitianshicn</span>
-        </div>
-        <div class="contact11" style="width: 80%;">
-          <img :src="dizhi" style="float: left;margin-top: 2px;margin-right: 5px">
-          <span>杭州市文三路90号东部软件园8号楼1楼智云社</span>
+        <div class="recommend2" style="height: 100px;margin-top: 0">
+          <div class="recommend22">
+            <img class="recommend2_Xiaochengxu" :src="weixin">
+            <div class="recommend2_name">weitianshi.cn</div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import weixin from '../../../static/images/img-weixin.png'
   import dianhua from '../../../static/images/icon-dianhua.png'
   import youxiang from '../../../static/images/icon-youxiang.png'
   import dizhi from '../../../static/images/icon-dizhi.png'
@@ -74,7 +91,8 @@
         youxiang:youxiang,
         dizhi:dizhi,
         xiaochengxu:xiaochengxu,
-        ios:ios
+        ios:ios,
+        weixin:weixin
       }
     },
 
@@ -82,6 +100,9 @@
 </script>
 
 <style scoped lang="less">
+  .contact_img{
+    width:16px;
+  }
 .content{
   width:100%;
   .content1{

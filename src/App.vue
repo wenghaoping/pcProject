@@ -95,6 +95,9 @@
         timeout:  null,
         cb:'',
         options: [{
+          value: 0,
+          label: '个人信息'
+        },{
           value: 1,
           label: '退出登录'
         }],
@@ -177,7 +180,7 @@
               clearTimeout(this.timeout);
               this.timeout = setTimeout(() => {
                   if(data.length==0){
-                    cb([{value:"匹配不到你要搜索的公司,请重新继续输入",address:-1}]);
+                    cb([{value:"未查询到结果，换个关键词试试",address:-1}]);
                   }else{
                     cb(restaurants);
                   }
@@ -194,7 +197,7 @@
       handleSelect(item) {
         this.loading=true;
         this.companyTitle = item.value;
-        this.companyid=item.address;
+        this.companyId = item.address ;
         this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
           .then(res => {
             let data = res.data.data;
@@ -209,9 +212,12 @@
           });
       },//选择了搜索出来的数据后
       parameter(){
+        if(!this.companyTitle){
           console.log( this.companyTitle);
-        this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
-        this.$route.query.company;
+        }else{
+          this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
+          this.$route.query.company;
+        }
       },
       // 检查localStorage.user_id
       checkUser(){
@@ -245,8 +251,15 @@
       },
       loginOut(e){
         console.log(e)
-        localStorage.clear();
-        window.location.reload()
+        if(e==0){
+//          this.$router.push('/identityDetail');
+          this.$router.push({name: 'identityDetail', query: {user:  111}})//路由传参
+          this.$route.query.user;
+        }else{
+          localStorage.clear();
+          window.location.reload()
+        }
+
       }
     },
     //当dom一创建时
@@ -257,12 +270,13 @@
       userRealName(){
         let user_real_name=this.$store.state.logining.user_real_name || localStorage.user_real_name;
         return user_real_name;
-      }
+      },
     },
     watch: {
       user_name: function (e) {
 
       },
+
       "$route": "checkUser"
     }
   }
