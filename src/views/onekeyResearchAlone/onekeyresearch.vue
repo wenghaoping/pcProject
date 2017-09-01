@@ -281,9 +281,10 @@
   export default {
     data () {
       return {
+        currentPathName:'',
         dialogVisible: false,
         empty:false,//是否查不到公司
-        compName: "",//一键尽调公司的名称
+        compName: '',//一键尽调公司的名称
         com_id: 0,//公司Id
         conmanyName: '3',
         productMessage: '产品信息',
@@ -431,6 +432,9 @@
       }
     },
     methods: {
+      myrefresh(){
+        window.location.reload();
+      },
       handleClose(done) {
         this.$confirm('确认关闭？')
           .then(_ => {
@@ -784,6 +788,22 @@
         .then((data)=>{
           return this.getInvestorMatch();
         })
+    },
+    watch:{
+        //监听路由改变
+      "$route": "getRouter"
+//        '$route':function(to,form){
+//            this.compName=to.name;
+//             localStorage.setItem('compName',to.name);
+//             this.getRouter();
+//        },
+//      compName:function(val,old){
+//       if(val!=old){
+//         this.getRouter();
+//       }
+//        }
+
+
     }
   }
 </script>
