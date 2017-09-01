@@ -320,8 +320,61 @@ const tool={
       return data;
     }
   },
+  //如果数据为0,则返回空字符串data为总的数组,title为要改变的字段(字符串格式)
+  setZeroToNull(data,title){
+  if(tool.isArray(data)){
+    data.forEach((x)=>{
+      if(x[title]==0)  x[title]="";
+    });
+  }else{
+    return data;
+  }
+},
+  //如果数据为空字符串,则返回0,data为总的数组,title为要改变的字段(字符串格式)
+  setNullToZero(data,title){
+    if(tool.isArray(data)){
+      data.forEach((x)=>{
+        if(x[title]=="" || x[title]==undefined)  x[title]=0;
+      });
+    }else{
+      return data;
+    }
+  },
 
-  /*在没有头像的时候,转化为文字,url为头像的URL地址,name为当前人的名字*/
+//时间转化接受从时间戳转化为中国标准时间
+  setTimeToReallyTime(time,title){
+    if(tool.isArray(time)){
+      time.forEach((x)=>{
+        x[title] = new Date(x[title]*1000);
+      });
+    }else{
+      return data;
+    }
+  },
+//时间转化接受从中国标准时间转化为时间戳
+  setReallyTimeToTime(time,title){
+    if(tool.isArray(time)){
+      time.forEach((x)=>{
+        x[title] = Date.parse(x[title]);
+      });
+    }else{
+      return data;
+    }
+  },
+//将数组中需要的id取出来合并为一个数组
+  setIdToArr(arr,title){
+    if(tool.isArray(arr)){
+      let tags = [];
+      arr.forEach((x)=>{
+        tags.push(x[title]);
+      });
+      return tags;
+    }else{
+      return arr;
+    }
+  },
+
+  //*在没有头像的时候,转化为文字,url为头像的URL地址,name为当前人的名字
   setUrlChange(url,name=''){
     let string='';
     if(url=='') string = name.charAt(0);
@@ -363,7 +416,7 @@ const tool={
   },
 
 
-/*弹框类*/
+//*弹框类
   error(text) {
     Notification.error({
       message: text,
@@ -386,7 +439,7 @@ const tool={
     })
   },//警告弹窗,(黄色叹号)
 
-/*请求类*/
+//*请求类
   getCity(data){
     let arr = [];
     for (let i = 0; i < data.length; i++) {
@@ -439,7 +492,7 @@ const tool={
     return arr
   },//设置标签
 
-/*页面回到顶部*/
+//*页面回到顶部
   getTop(){
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;

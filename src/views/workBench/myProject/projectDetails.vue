@@ -1140,6 +1140,7 @@ color:#4e4563;">{{brandd.brand1}}</span>
               this.project.team_tag=this.getteam_tag(data.tag);
               this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
               resolve(3);
+              this.loading=false;
             })
             .catch(err=>{
               this.$tool.console(err,2)
@@ -1497,6 +1498,7 @@ color:#4e4563;">{{brandd.brand1}}</span>
                 this.totalInvestors = res.data.count;
                 resolve(6);
               }
+
             })
             .catch(err=>{
               this.$tool.console(err,2);
@@ -1652,7 +1654,7 @@ color:#4e4563;">{{brandd.brand1}}</span>
         this.previewDisplay=msg;
       },//关闭项目预览
       getAllData(){
-        this.loading=true;
+//        this.loading=true;
         this.$global.func.getWxProjectCategory()
           .then((data)=>{
             return this.getWxProjectCategory();
@@ -1700,39 +1702,9 @@ color:#4e4563;">{{brandd.brand1}}</span>
       this.$tool.getTop();
       this.getprojectId();
       this.getAllData();
-      $(window).scroll(function () {
-        let scrollTop = $(this).scrollTop()
-        let scrollHeight = $(document).height()
-        let windowHeight = $(this).height()
-      })
     },
     watch:{
-      /*screenWidth (val) {
-        if (!this.timer) {
-          this.screenWidth = val;
-          this.timer = true;
-          let that = this;
-          setTimeout(function () {
-            that.$refs.right.style.left=that.$refs.left.offsetLeft +868+'px';
-            that.timer = false
-          }, 100)
-        }
-      },
-      scrollTop(val){
-        if (!this.timer2) {
-          this.scrollTop = val;
-          this.timer2 = true;
-          let that = this;
-          setTimeout(function () {
-            if(that.scrollTop>90){
-              that.$refs.right.style.top=50+'px';
-            }else{
-              that.$refs.right.style.top=81+'px';
-            }
-            that.timer2 = false;
-          }, 100)
-        }
-      }*/
+
     },
   }
 </script>
