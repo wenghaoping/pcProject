@@ -129,7 +129,10 @@
                 <div class="ul-lists" style="margin-top:16px;padding: 0">
                   <div class="item" v-if="project.goodness!=''">
                     <span class="title" style="font-size: 16px;">项目亮点</span>
-                    <div class="prod-doc" style="font-size: 13px;">{{project.goodness}}</div>
+                     <div class="prod-doc" style="font-size: 13px;">{{project.goodness}}</div>
+                  </div>
+                  <div else>
+                  --
                   </div>
                 </div>
               </div>
@@ -160,9 +163,12 @@
                       <span class="det-title" style="width: 100%;line-height: 21px">运营状态</span>
                       <span class="del-info" style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{company.pro_status.status_name}}</span>
                     </div>
-                    <div class="rz-detail" v-if="company.pro_website!=''">
+                    <div class="rz-detail" >
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
-                      <span class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px"><a :href="company.pro_website"  target=_blank>{{project.pro_website}}</a></span>
+                       <span v-if="company.pro_website==''">
+                                        -
+                          </span>
+                      <span else class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px"><a :href="company.pro_website"  target=_blank>{{company.pro_website}}</a></span>
                     </div>
                     <div class="rz-detail" v-if="company.pro_company_scale.comp_scale_value!=''">
                       <span class="det-title"style="width: 100%;line-height: 21px">公司规模</span>
@@ -206,9 +212,9 @@ color:#4e4563;">{{brandd.brand1}}</span>
                   </div>
                 </div>
                 <div class="item" style="margin-top:35px;" >
-                  <span class="sec-title" v-if="project.pro_finance_use!=''">资金用途</span>
+                  <span class="sec-title" v-if="financing.pro_finance_use!=''">资金用途</span>
                   <div class="yt-doc">
-                    {{project.pro_finance_use}}
+                    {{financing.pro_finance_use}}
                   </div>
                 </div>
                 <div class="item" style="margin-top:18px;" v-if="financing.pro_history_finance.length!=0">
@@ -221,7 +227,7 @@ color:#4e4563;">{{brandd.brand1}}</span>
                                       <span class="circle circle-e">&nbsp;</span>
                                     </div>-->
                     <div class="v-progress-table">
-                      <div class="v-progress-txt" style="height: 45px;" v-for="finance in project.pro_history_finance">
+                      <div class="v-progress-txt" style="height: 45px;" v-for="finance in financing.pro_history_finance">
                       <!--<span class="radio_line">-->
                       <!--<span class="radio"></span>-->
                         <!--&lt;!&ndash;<span class="l-line"></span>&ndash;&gt;-->
@@ -1200,14 +1206,7 @@ color:#4e4563;">{{brandd.brand1}}</span>
             .then(res=>{
 
               let data = res.data.data;
-              /*            for(let key in data){
-               if(data[key]=="") data[key]="-"
-               }
-               for(let i=0; i<data.core_users.length; i++){
-               if(data.core_users[i].stock_scale==null){
-               data.core_users[i].stock_scale="－"
-               }
-               }*/
+
                // 项目介绍
               if(data.project.follow_user==''){data.project.follow_user=='-'}
               if(data.project.goodness==''){data.project.goodness=='-'}
@@ -1216,49 +1215,52 @@ color:#4e4563;">{{brandd.brand1}}</span>
               if(data.project.pro_stage.stage_name=''){data.project.pro_stage.stage_name='-'}
               if(data.project.pro_area.area_title=''){data.project.pro_area.area_title='-'}
               this.project=data.project;
+               console.log('项目');
+                            console.log(this.project);
               //公司运营
-              if(data.company.pro_website=''){data.company.pro_website='-'}
-              if(data.company.pro_company_scale.comp_scale_value=''){data.company.pro_company_scale.comp_scale_value='-'}
-              if(data.company.pro_status.status_name=''){data.company.pro_status.status_name='-'}
+ // if(data.company.pro_website=''){data.company.pro_website='-'}
+            //  if(data.company.pro_company_scale.comp_scale_value=''){data.company.pro_company_scale.comp_scale_value='-'}
+             // if(data.company.pro_status.status_name=''){data.company.pro_status.status_name='-'}
+
               this.company=data.company;
-//              console.log('公司');
-//              console.log(this.company);
+              console.log('公司');
+              console.log(this.company);
              //项目文件
               this.file.pro_BP.file_title=data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext;
               this.file=data.file;
               //融资信息
-              if(data.financing.pro_finance_use=''){data.financing.pro_finance_use='-'}
-              if(data.financing.pro_history_finance.pro_finance_investor=''){data.financing.pro_history_finance.pro_finance_investor='-'}
-              if(data.financing.pro_history_finance.pro_finance_scale=''){data.financing.pro_history_finance.pro_finance_scale='-'}
-              if(data.financing.pro_history_finance.belongs_to_stage.stage_name=''){data.financing.pro_history_finance.belongs_to_stage.stage_name='-'}
+  //if(data.financing.pro_finance_use=''){data.financing.pro_finance_use='-'}
+             // if(data.financing.pro_history_finance.pro_finance_investor=''){data.financing.pro_history_finance.pro_finance_investor='-'}
+             // if(data.financing.pro_history_finance.pro_finance_scale=''){data.financing.pro_history_finance.pro_finance_scale='-'}
+              //if(data.financing.pro_history_finance.belongs_to_stage.stage_name=''){data.financing.pro_history_finance.belongs_to_stage.stage_name='-'}
               this.$tool.setTime(data.financing.pro_history_finance,'finance_time');
               this.financing=data.financing;
               console.log('融资信息');
               console.log(this.financing);
               //里程碑
-              if(data.milepost.pro_develop.dh_event=''){data.milepost.pro_develop.dh_event='-'};
-               this.$tool.setTime(data.milepost.pro_develop.dh_start_time,'dh_start_time');
+ //if(data.milepost.pro_develop.dh_event=''){data.milepost.pro_develop.dh_event='-'};
+               this.$tool.setTime(data.milepost.pro_develop,'dh_start_time');
                this.milepost=data.milepost;
               console.log('里程碑');
               console.log(this.milepost);
               //FA业务
-//              this.project.pro_source=this.getProjectTag(data.team.tag);
-              if(data.private.pro_source.tag_name=''){data.private.pro_source.tag_name='-'}
-              if(data.private.user_name=''){data.private.user_name='-'}
-              if(data.private.user_mobile=''){data.private.user_mobile='-'}
-              if(data.private.stock_right=''){data.private.stock_right='-'}
-              if(data.private.stock_other=''){data.private.stock_other='-'}
-              if(data.private.stock_follow=''){data.private.stock_follow='-'}
-              if(data.private.pro_remark=''){data.private.pro_remark='-'}
-              if(data.private.contact_user_career=''){data.private.contact_user_career='-'}
-              if(data.private.commission=''){data.private.commission='-'}
+     // if(data.private.pro_source.tag_name=''){data.private.pro_source.tag_name='-'}
+             // if(data.private.user_name=''){data.private.user_name='-'}
+             // if(data.private.user_mobile=''){data.private.user_mobile='-'}
+             // if(data.private.stock_right=''){data.private.stock_right='-'}
+             // if(data.private.stock_other=''){data.private.stock_other='-'}
+             // if(data.private.stock_follow=''){data.private.stock_follow='-'}
+             // if(data.private.pro_remark=''){data.private.pro_remark='-'}
+             // if(data.private.contact_user_career=''){data.private.contact_user_career='-'}
+             // if(data.private.commission=''){data.private.commission='-'}
                this.private=data.private;
               console.log('业务');
               console.log(this.private);
               //团队
-              if(data.team.core_users.ct_member_career=''){data.team.core_users.ct_member_career='-'}
-              if(data.team.core_users.ct_member_name=''){data.team.core_users.ct_member_name='-'}
-              if(data.team.core_users.ct_member_intro=''){data.team.core_users.ct_member_intro='-'}
+
+  // if(data.team.core_users.ct_member_career=''){data.team.core_users.ct_member_career='-'}
+             // if(data.team.core_users.ct_member_name=''){data.team.core_users.ct_member_name='-'}
+             // if(data.team.core_users.ct_member_intro=''){data.team.core_users.ct_member_intro='-'}
               this.team.tag=this.getteam_tag(data.team.tag);
               if(data.team.tag.tag_name=''){data.team.tag.tag_name='-'}
               this.team=data.team;
@@ -1267,6 +1269,8 @@ color:#4e4563;">{{brandd.brand1}}</span>
               //is_exclusive
               if(data.pro_FA.is_exclusive=''){data.pro_FA.is_exclusive='-'}
               this.pro=data.pro_FA;
+              //brand
+              this.brand=data.brand;
 //              if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
 //              if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
 //              if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
