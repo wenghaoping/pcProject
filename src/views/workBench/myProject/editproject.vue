@@ -109,7 +109,7 @@
                         </el-autocomplete>
                       </el-form-item>
                     </el-col>
-                    <el-button class="tong">一键同步</el-button>
+                    <el-button class="tong" @click="syncOne">一键同步</el-button>
                     <span class="ques">
                         <el-tooltip placement="bottom-end">
                             <div slot="content">
@@ -464,7 +464,7 @@
                 </el-form>
                 <div class="marginAuto">
                   <el-button type="text" @click="addBrand" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加品牌</el-button>
-                  <el-button type="text" @click="sync" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                  <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
                 </div>
               </div>
             </el-collapse-transition>
@@ -559,7 +559,7 @@
                 </el-form>
                 <div class="marginAuto">
                   <el-button type="text" @click="addMember" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加成员</el-button>
-                  <el-button type="text" @click="sync" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                  <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
                 </div>
               </div>
             </el-collapse-transition>
@@ -654,7 +654,7 @@
                 </el-form>
                 <div class="marginAuto">
                   <el-button type="text" @click="addHistory" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加历史融资</el-button>
-                  <el-button type="text" @click="sync" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                  <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
                 </div>
               </div>
             </el-collapse-transition>
@@ -710,7 +710,7 @@
                 </el-form>
                 <div class="marginAuto">
                   <el-button type="text" @click="addmilePost" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加里程碑</el-button>
-                  <el-button type="text" @click="sync" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                  <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
                 </div>
               </div>
             </el-collapse-transition>
@@ -980,7 +980,7 @@
       </div>
     </div>
     <!--添加运营状态的弹窗-->
-    <el-dialog title="添加运营状态" :visible.sync="addStateDisplay" :show-close="showList">
+    <el-dialog title="添加运营状态" :visible="addStateDisplay" :show-close="showList">
       <el-form :model="form">
         <el-form-item label="运营状态" :label-width="formLabelWidth">
           <el-input v-model="form.state" auto-complete="off"></el-input>
@@ -992,7 +992,7 @@
       </div>
     </el-dialog>
     <!--文件分组的弹窗-->
-    <el-dialog title="文件分组设置" :visible.sync="setFileDisplay" :show-close="showList">
+    <el-dialog title="文件分组设置" :visible="setFileDisplay" :show-close="showList">
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
                       :rules="[{required: true, message: '分组不能为空', trigger: 'blur',max: 40, message: '最多40个字符'}]">
@@ -1020,23 +1020,17 @@
         <el-button type="primary" @click="saveGroupChange">保　存</el-button>
       </div>
     </el-dialog>
-    <!--搜索同步的弹窗-->
-    <el-dialog
-      :title="companyTitle"
-      :visible.sync="dialogVisible"
-      size="tiny"
-      :show-close="close">
-      <span>微天使为您找到相似公司，是否一键同步</span>
-      <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="sync">一键同步</el-button>
-          </span>
-    </el-dialog>
+    <!--一键同步选择框-->
+    <syncprojectdetail :sync-project-detail-display="syncProjectDetailDisplay" :proid="this.project.project_id"
+                         @changeSyncProjectDetail="changeSyncProjectDetail">
+
+    </syncprojectdetail>
 
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import syncprojectdetail from '../../../components/syncProjectDetail.vue'
   export default {
     data(){
       var checkPhoneNumber = (rule, value, callback) => {
@@ -1182,7 +1176,6 @@
         setFileDisplay: false,
         uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
         uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
-        num:0,//一次上传最多选5个
         project_id: "",//项目Id全局保存
         planList: [],//商业计划书上传列表
         fileList: [],//批量上传文件列表
@@ -1211,7 +1204,6 @@
         },//分组用的所有参数
         name: "",
         show: "detail",
-
         multiplelimit: 5,
 
         //标签设置
@@ -1407,12 +1399,12 @@
         privateMust: false,//FA业务
 
 
-        dialogVisible: false,//是否同步弹窗
+        syncProjectDetailDisplay: false,//同步弹窗
         close: false,
         restaurants: [],//数据存放
         loading: false,//加载
         add_pro: [],//添加个人标签暂存
-        companyTitle: "",
+        companyTitle: "",//尽调搜索的公司的名称
         queryData: {},
         timeout: null,
         showList: false,
@@ -1561,7 +1553,7 @@
       }
     },
     components:{
-
+      syncprojectdetail
     },
     methods: {
         //获得项目亮点焦点
@@ -1701,9 +1693,8 @@
                 data.project.pro_stage = {stage_id: ""}
               }//轮次设置
               data.project.pro_industry = this.$tool.setIdToArr(data.project.pro_industry,'industry_id');//领域标签取出id
-
+              this.companyTitle=data.project.pro_company_name;
               localStorage.pid=data.project.pro_area.pid;
-
 
 
               data.project.tag = this.$tool.setIdToArr(data.project.tag,'tag_id');//设置项目标签
@@ -1712,11 +1703,7 @@
 
               if(data.project.pro_finance_value==0) data.project.pro_finance_value="";//项目估值
 
-
-//              console.log(data.project);
               this.project=data.project;
-
-
 
               //公司运营设置=============================================
 
@@ -1861,7 +1848,6 @@
       //*批量上传
 
       beforeUpload1(file){
-        this.num++;
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
         let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
@@ -2093,9 +2079,9 @@
         };
       },
       handleSelect(item) {
-          this.loading=true;
+//        this.loading=true;
         this.companyTitle = item.value;
-        this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
+        /*this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
           .then(res => {
             let data = res.data.data;
 //            console.log(this.$tool.getToObject(data))
@@ -2106,10 +2092,11 @@
           .catch(err => {
             this.$tool.error("获取失败");
             this.$tool.console(err);
-          });
+          });*/
 
       },//选择了搜索出来的数据后
-      //*控制添加radio
+
+      //控制添加radio
       radiochange(label){
         if (label == "自定义添加") {
           this.addStateDisplay = true;
@@ -2349,60 +2336,6 @@
           this[checkName]=!valid;
         });
       },
-      getMemberHunder(data){
-        let check=true;
-        for(let i=0; i<data.length; i++){
-          if(this.$tool.getNull(data[i].stock_scale)){
-
-          }else{
-            if(this.$tool.checkNumber(parseFloat(data[i].stock_scale))){
-              if(parseFloat(data[i].stock_scale)>100) {
-                this.$tool.error("核心团队股权比例不能大于100");
-                check=false;
-              }
-            }else{
-              this.$tool.error("核心团队股权比例必须为数字");
-              check=false;
-            }
-          }
-        }
-        return check;
-      },//判断成员股权比例
-      getNumberFull(data,title1,title2){
-        let check=true;
-        if(this.$tool.getNull(data)){
-        }else {
-          if (this.$tool.checkNumber(data)) {
-            if (parseFloat(data) > 100) {
-              this.$tool.error(title1);
-              check = false;
-            }
-          } else {
-            this.$tool.error(title2);
-            check = false;
-          }
-        }
-        return check;
-      },//1大于100,2必须为数字
-      getNumber(data){
-        let check=true;
-        if(this.$tool.getNull(data)){
-
-        }else{
-          if(this.$tool.checkNumber(parseFloat(data))){
-            if(parseInt(data)>99999999) {
-              this.$tool.error("项目估值必须小于99999999");
-              check=false;
-            }
-          }else{
-            this.$tool.error("项目估值必须为数字");
-            check=false;
-          }
-
-        }
-        return check;
-      },//判断是数字小雨99999
-
   //*全部保存按钮
       allSave(){
         var submit = ()=>{
@@ -2621,20 +2554,43 @@
       },//里程碑同步数据修改
 
       //*一键同步按钮
-      sync(){
-        this.loading=true;
-        this.dialogVisible = false;
-        if(this.project.pro_intro=="") this.project.pro_intro = this.queryData.project_info.project_introduce || '';
-        if(this.project.pro_website=="") {
-            this.queryData.project_info={};
-            this.queryData.project_info.project_website='';
-            this.project.pro_website = this.queryData.project_info.project_website;
+      syncOne(){
+        if(this.companyTitle===''){
+            this.$tool.warning("请先填写公司名称");
+        }else{
+/*          this.$confirm('微天使将为您同步'+this.companyTitle+'的相关信息，请先核实, 是否继续?', '一键同步', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.sync();
+          }).catch(() => {
+
+          });*/
+
+
+          const h = this.$createElement;
+          this.$msgbox({
+            title: '一键同步',
+            message: h('p', null, [
+              h('span', null, '微天使将为您同步 '),
+              h('i', { style: 'color:#99a9bf;' }, this.companyTitle),
+              h('span', null, '的相关信息，请先核实, 是否继续?')
+            ]),
+            confirmButtonText: '确定',
+            cancelButtonText: '取消'
+          }).then(action => {
+            this.sync();
+          });
         }
-        if(this.team.core_users.length==0) this.team.core_users=this.getTeamSync(this.queryData.team);
-        if(this.financing.pro_history_finance.length==0) this.financing.pro_history_finance = this.getFinancingMoney(this.queryData.history_finance);
-        if(this.milepost.pro_develop.length==0) this.milepost.pro_develop=this.getMilestone(this.queryData.milestone_list);
-        this.loading=false;
+
+      },//点击同步按钮
+      sync(){
+        this.syncProjectDetailDisplay = true;
       },//一键同步
+      changeSyncProjectDetail(msg){
+        this.syncProjectDetailDisplay=msg;
+      },//项目详情弹窗关闭函数
       getprojectId(){
         this.project_id = this.$route.query.project_id || '';
         this.project.project_id = this.$route.query.project_id || '';
