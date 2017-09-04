@@ -23,6 +23,7 @@ const data = {
   tags_team:'',
   tags_user:'',
   pro_source:'',
+  tags_source:'',
   company_status:'',
 }
 
@@ -89,6 +90,16 @@ var func = {
     });
     return arr
   },//获取提供的资源
+  getBrand(data){
+    let arr = [];
+    data.forEach((x)=>{
+      let obj = {};
+      obj.label = x.type_name;
+      obj.value = x.type_id;
+      arr.push(obj)
+    });
+    return arr
+  },//获取提供的资源
   getCompanyStatus(data){
     let arr = [];
     data.forEach((x)=>{
@@ -138,6 +149,7 @@ var func = {
           if(data.tags_user){global.data.tags_user = global.func.getTags_pro(data.tags_user)};//设置人脉标签
           if(data.pro_source){global.data.pro_source = global.func.getTags_pro(data.pro_source)};//设置项目来源
           if(data.company_status){global.data.company_status = global.func.getCompanyStatus(data.company_status)};//设置运营状态
+          if(data.brand_type){global.data.brand_type = global.func.getBrand(data.brand_type)};//设置品牌标签
 
           global.data.resource = global.func.getResource(data.resource);//设置项目来源111
           global.data.company_scale = global.func.getCompanyScale(data.company_scale);//设置公司规模几人

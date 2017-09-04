@@ -1283,6 +1283,7 @@ color:#4e4563;">{{brandd.brand1}}</span>
 //              this.project.team_tag=this.getteam_tag(data.tag);
 //              this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
               resolve(3);
+              this.loading=false;
             })
             .catch(err=>{
               this.$tool.console(err,2)
@@ -1640,6 +1641,7 @@ color:#4e4563;">{{brandd.brand1}}</span>
                 this.totalInvestors = res.data.count;
                 resolve(6);
               }
+
             })
             .catch(err=>{
               this.$tool.console(err,2);
@@ -1843,7 +1845,6 @@ color:#4e4563;">{{brandd.brand1}}</span>
       this.$tool.getTop();
       this.getprojectId();
       this.getAllData();
-
     },
     watch:{
 

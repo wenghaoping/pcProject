@@ -1,5 +1,5 @@
 <template>
-  <div id="editproject" class="clearfix" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="editproject" class="clearfix" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <div id="wid" class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box" ref="left" >
@@ -160,6 +160,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
+
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
@@ -200,9 +201,9 @@
                     <el-col :span="12">
                       <el-form-item
                         label="期望融资"
-                        prop="pro_finance_scale"
+                        prop="pro_scale.scale_id"
                         :rules="[{type: 'number',required: true, message: '期望融资不能为空', trigger: 'change'}]">
-                        <el-select v-model="financing.pro_finance_scale" placeholder="请选择" class="width360">
+                        <el-select v-model="project.pro_scale.scale_id" placeholder="请选择" class="width360">
                           <el-option
                             v-for="item in scale"
                             :key="item.value"
@@ -217,14 +218,12 @@
                         label="投后股份)"
                         prop="pro_finance_stock_after"
                         :rules="[NumberRule]">
-                        <el-input v-model="financing.pro_finance_stock_after" placeholder="请输入具体数值，如：10">
+                        <el-input v-model="project.pro_finance_stock_after" placeholder="请输入具体数值，如：10">
                           <el-button slot="append" >%</el-button>
                         </el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
-
-
 
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
@@ -232,7 +231,7 @@
                         label="项目估值( 万 )"
                         :rules="NumberRule"
                         prop="pro_finance_value">
-                        <el-input v-model="financing.pro_finance_value" placeholder="请输入具体数值，如：1000"></el-input>
+                        <el-input v-model="project.pro_finance_value" placeholder="请输入具体数值，如：1000"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -246,13 +245,12 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item
                         label="项目标签"
-                        prop="tags_pro">
-                        <el-select v-model="project.tags_pro" multiple placeholder="请输入项目的亮点标签，投资人可通过标签检索，如优秀团队，技术壁垒"
+                        prop="tag">
+                        <el-select v-model="project.tag" multiple filterable placeholder="请输入项目的亮点标签，投资人可通过标签检索，如优秀团队，技术壁垒"
                                    :multiple-limit="multiplelimit" filterable
                                    allow-create default-first-option
                                    @change="addChangepro"
@@ -269,93 +267,93 @@
                     </el-col>
                   </el-row>
 
+<!--                  <div class="goodness">
+                    <el-row :span="24" :gutter="10">
+                      <el-col :span="5">
+                        <el-form-item label="项目亮点"
+                                      prop="goodness_title">
+                          <el-input  v-model="project.goodnessnew.goodness1.goodness_title"
+                                     placeholder="项目亮点" ></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="19">
+                        <el-form-item label="　"
+                                      prop="goodness_desc">
+                          <el-input  v-model="project.goodnessnew.goodness1.goodness_desc"
+                                     placeholder="是决定投资人是否查看项目详情的重要因素，以不超过3点为宜" @focus="focus(1)" @blur="blur(1)"></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :span="24" :gutter="10">
+                      <el-col :span="5">
+                        <el-form-item label="　"
+                                      prop="goodness_title">
+                          <el-input  v-model="project.goodnessnew.goodness2.goodness_title" placeholder="市场概况" ></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="19">
+                        <el-form-item label="　"
+                                      prop="goodness_desc">
+                          <el-input  v-model="project.goodnessnew.goodness2.goodness_desc" placeholder="市场规模和增速、竞争格局、政策等，以不超过3点为宜"
+                                     @focus="focus(2)" @blur="blur(2)"></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :span="24" :gutter="10">
+                      <el-col :span="5">
+                        <el-form-item label="　"
+                                      prop="goodness_title">
+                          <el-input  v-model="project.goodnessnew.goodness3.goodness_title" placeholder="产品概况"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="19">
+                        <el-form-item label="　"
+                                      prop="goodness_desc">
+                          <el-input  v-model="project.goodnessnew.goodness3.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
+                                     @focus="focus(3)" @blur="blur(3)"></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :span="24" :gutter="10" style="margin-bottom: 32px;">
+                      <el-col :span="5">
+                        <el-form-item label="　"
+                                      prop="goodness_title">
+                          <el-input  v-model="project.goodnessnew.goodness4.goodness_title" placeholder="商业模式"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="19">
+                        <el-form-item label="　"
+                                      prop="goodness_desc">
+                          <el-input  v-model="project.goodnessnew.goodness4.goodness_desc" placeholder="用来说明通过什么方式盈利"
+                                     @focus="focus(4)" @blur="blur(4)"></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </div>-->
 
+                </el-form>
+              </div>
+            </el-collapse-transition>
+          </div>
 
-
-                  <el-row :span="24" :gutter="10">
-                    <el-col :span="5">
-                      <el-form-item label="项目亮点"
-                                    prop="pro_goodness"
-                                    :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'},{min: 1, max:500,message: '最大500个字符'}]">
-                        <el-input  v-model="project.pro_goodness"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="19">
-                      <el-form-item label="　"
-                                    prop="pro_goodness">
-                        <el-input  v-model="project.pro_goodness"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :span="24" :gutter="10">
-                    <el-col :span="5">
-                      <el-form-item label="　"
-                                    prop="pro_goodness">
-                        <el-input  v-model="project.pro_goodness"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="19">
-                      <el-form-item label="　"
-                                    prop="pro_goodness">
-                        <el-input  v-model="project.pro_goodness"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :span="24" :gutter="10">
-                    <el-col :span="5">
-                      <el-form-item label="　"
-                                    prop="pro_goodness">
-                        <el-input  v-model="project.pro_goodness"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="19">
-                      <el-form-item label="　"
-                                    prop="pro_goodness">
-                        <el-input  v-model="project.pro_goodness"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <!--=================================公司运营=================================-->
+          <div class="d_jump"></div>
+          <div class="item-block">
+            <div class="block-tt-line">
+              <span class="b-title">公司运营</span>
+              <span class="b-line"></span>
+              <span class="b-hander" @click="closeDiv('operateShow')" v-show="operateShow">收起</span>
+              <span class="b-hander" @click="openDiv('operateShow')" v-show="!operateShow">展开</span>
+            </div>
+            <el-collapse-transition>
+              <div v-show="operateShow">
+                <el-form :model="company" ref="company" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
                     <el-col :span="24">
                       <el-form-item
                         label="运营状态"
-                        prop="pro_status">
-                        <el-radio-group v-model="project.pro_status" @change="radiochange">
+                        prop="pro_status.status_id">
+                        <el-radio-group v-model="company.pro_status.status_id" @change="radiochange">
                           <el-radio v-for="companystate in company_status" class="radio"
                                     :label="companystate.label"
                                     :key="companystate.value"
@@ -365,13 +363,13 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
+
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
                         label="公司规模"
-
                         prop="pro_company_scale.comp_scale_id">
-                        <el-select v-model="project.pro_company_scale.comp_scale_id" placeholder="请选择" class="width360">
+                        <el-select v-model="company.pro_company_scale.comp_scale_id" placeholder="请选择" class="width360">
                           <el-option
                             v-for="item in company_scale"
                             :key="item.value"
@@ -383,87 +381,12 @@
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
-                        label="产品链接"
+                        label="公司官网"
                         :rules="[{ type: '', message: '请输入正确的链接', trigger: 'blur' }]"
                         prop="pro_website">
-                        <el-input v-model="project.pro_website" placeholder="请输入项目主页地址"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :span="24" :gutter="32">
-                    <el-col :span="6">
-                      <el-form-item
-                        label="项目联系人"
-                        :rules="{min: 1, max:20,message: '最大20个字符',trigger: 'blur'}"
-                        prop="contact.user_name">
-                        <el-input v-model="project.contact.user_name" placeholder="请输入"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="手机号" prop="contact.user_mobile" :rules="PhoneRule">
-                        <el-input v-model.number="project.contact.user_mobile" placeholder="请输入"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item
-                        label="项目来源"
-                        prop="pro_source">
-                        <el-select v-model="project.pro_source"
-                                   multiple
-                                   placeholder="请选择项目来源"
-                                   class="width360"
-                                   filterable
-                                   allow-create
-                                   default-first-option
-                                   @change="addChangesource"
-                                   :multiple-limit="multiplelimit">
-                          <el-option
-                            v-for="item in tags_source"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
-
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :span="24" :gutter="32">
-                    <el-col :span="12">
-                      <el-form-item
-                        label="私密设置"
-                        prop="open_status">
-                        <el-select v-model="project.open_status" placeholder="请选择" class="width360">
-                          <el-option label="私密项目（仅自己／团队成员可查看编辑）" value="0"></el-option>
-                          <el-option label="公开项目（投放到交易易市场参与融资匹配，投资人可以申请查看bp，每日限公开一次)" value="1"></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item
-                        label="项目标签"
-                        prop="tags_pro">
-                        <el-select v-model="project.tags_pro" multiple placeholder="请选择" class="width360" :multiple-limit="multiplelimit" filterable
-                                   allow-create default-first-option @change="addChangepro">
-                          <el-option
-                            v-for="item in tags_pro"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
-
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :span="24" :gutter="32">
-                    <el-col :span="24">
-                      <el-form-item label="项目亮点"
-                                    prop="pro_goodness"
-                                    :rules="[{required: true, message: '项目亮点不能为空', trigger: 'blur'},{min: 1, max:500,message: '最大500个字符'}]">
-                        <el-input type="textarea"
-                                  v-model="project.pro_goodness"
-                                  :autosize="{ minRows: 4, maxRows: 7}"></el-input>
+                        <el-input v-model="company.pro_website" placeholder="请输入网址">
+                          <template slot="prepend">Http://</template>
+                        </el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -471,6 +394,75 @@
               </div>
             </el-collapse-transition>
           </div>
+
+          <!--=================================品牌=================================-->
+          <div class="d_jump"></div>
+          <div class="item-block">
+            <div class="block-tt-line">
+              <span class="b-title">品牌</span>
+              <span class="b-line"></span>
+              <span class="b-hander" @click="closeDiv('brandShow')" v-show="brandShow">收起</span>
+              <span class="b-hander" @click="openDiv('brandShow')" v-show="!brandShow">展开</span>
+            </div>
+            <el-collapse-transition>
+              <div v-show="brandShow">
+                <el-form :model="brands" ref="brands" label-width="100px" class="padding" label-position="top">
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="6">
+                      <el-form-item
+                        label="名称"
+                        :prop="'brand.' + index + '.brand_name'"
+                        v-for="(brand, index) in brands.brand"
+                        :key="brand.index"
+                        :rules="[{required: true, message: '名称不能为空', trigger: 'blur'},{min: 1, max:20,message: '最大20个字符'}]">
+                        <el-input v-model="brand.brand_name" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item
+                        label="类型"
+                        :prop="'brand.' + index + '.type_id'"
+                        v-for="(brand, index) in brands.brand"
+                        :key="brand.index"
+                        :rules="[]">
+                        <el-select v-model="brand.type_id" placeholder="请选择">
+                          <el-option
+                            v-for="item in brand_type"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                      <el-form-item
+                        label="项目亮点"
+                        :rules="{min: 1, max:500,message: '最大500个字符',trigger: 'blur',}"
+                        :prop="'brand.' + index + '.brand_desc'"
+                        v-for="(brand, index) in brands.brand"
+                        :key="brand.index">
+                        <el-input v-model.number="brand.brand_desc" placeholder="一句话描述产品亮点" class="width360"> </el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="1">
+                      <el-form-item label="　　"
+                                    v-for="(brand, index) in brands.brand"
+                                    :key="brand.index"
+                                    style="margin-left: 50px;" class="clearfix">
+                        <span class="imgdele fr" @click.prevent="removeBrand(brand)">删除</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+                <div class="marginAuto">
+                  <el-button type="text" @click="addBrand" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加品牌</el-button>
+                  <el-button type="text" @click="sync" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                </div>
+              </div>
+            </el-collapse-transition>
+          </div>
+
           <!--=================================核心团队=================================-->
           <div class="d_jump"></div>
           <div class="item-block">
@@ -484,16 +476,17 @@
               <div v-show="teamShow">
                 <el-form :model="team" ref="team" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
-                    <el-col :span="12">
+                    <el-col :span="24">
                       <el-form-item
                         label="团队标签"
                         prop="tags_team">
                         <el-select
-                          v-model="team.tags_team"
+                          style="width: 100%"
+                          v-model="team.tag"
                           multiple
                           filterable
                           allow-create
-                          placeholder="请添加（最多5个)" class="width360"
+                          placeholder="团队的亮点标签，投资人可通过标签检索，如阿里系，海龟系（最多5个)"
                           default-first-option
                           :multiple-limit="multiplelimit"
                           @change="addChangeTeam">
@@ -507,7 +500,7 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="10">
+                  <el-row :span="24" :gutter="32">
                     <el-col :span="4">
                       <el-form-item
                         label="成员姓名"
@@ -535,7 +528,9 @@
                         v-for="(member, index) in team.core_users"
                         :key="member.index"
                         :rules="ScaleRule">
-                        <el-input v-model.number="member.stock_scale" placeholder="请输入数值"></el-input>
+                        <el-input v-model.number="member.stock_scale" placeholder="请输入数值">
+                          <template slot="append">%</template>
+                        </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="11">
@@ -549,18 +544,21 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
-                      <el-form-item label="　　" v-for="(member, index) in team.core_users" :key="member.index">
-                        <span class="imgdele" @click.prevent="removeMember(member)" style="margin-left: 22px"><img
-                          src="../../../assets/images/delete.png"></span>
+                      <el-form-item label="　　" v-for="(member, index) in team.core_users" :key="member.index" style="margin-left: 50px;" class="clearfix">
+                        <span class="imgdele fr" @click.prevent="removeMember(member)">删除</span>
                       </el-form-item>
                     </el-col>
                   </el-row>
                 </el-form>
-                <el-button type="text" @click="addMember" class="addMember"><i class="el-icon-plus"></i> 新增成员
-                </el-button>
+                <div class="marginAuto">
+                  <el-button type="text" @click="addMember" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加成员</el-button>
+                  <el-button type="text" @click="sync" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                </div>
               </div>
             </el-collapse-transition>
           </div>
+
+
           <!--=================================融资信息=================================-->
           <div class="d_jump"></div>
           <div class="item-block">
@@ -574,48 +572,19 @@
               <div v-show="financingShow">
                 <el-form :model="financing" ref="financing" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
-                    <el-col :span="12">
-                      <el-form-item
-                        label="期望融资"
-                        prop="pro_finance_scale"
-                        :rules="[{type: 'number',required: true, message: '期望融资不能为空', trigger: 'change'}]">
-                        <el-select v-model="financing.pro_finance_scale" placeholder="请选择" class="width360">
-                          <el-option
-                            v-for="item in scale"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
+                    <el-col :span="24">
                       <el-form-item
                         label="资金用途"
                         :rules="{min: 1, max:500,message: '最大500个字符',trigger: 'blur'}"
                         prop="pro_finance_use">
-                        <el-input v-model="financing.pro_finance_use" placeholder="请输入"></el-input>
+                        <el-input v-model="financing.pro_finance_use"
+                                  placeholder="请输入投资后的资金用途，如：团队搭建、运营推广······"
+                                  type="textarea"
+                                  :autosize="{ minRows: 4, maxRows: 12}"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :span="24" :gutter="32">
-                    <el-col :span="12">
-                      <el-form-item
-                        label="投后股份( % )"
-                        prop="pro_finance_stock_after"
-                        :rules="[NumberRule,{min: 1, max:100,message: '最大100个字符',trigger: 'blur',}]">
-                        <el-input v-model="financing.pro_finance_stock_after" placeholder="请输入具体数值，如：10"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item
-                        label="项目估值( 万 )"
-                        :rules="NumberRule"
-                        prop="pro_finance_value">
-                        <el-input v-model="financing.pro_finance_value" placeholder="请输入具体数值，如：1000"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
+
                   <el-row :span="24" :gutter="32">
                     <el-col :span="4">
                       <el-form-item
@@ -650,12 +619,12 @@
                     </el-col>
                     <el-col :span="4">
                       <el-form-item
-                        label="融资金额"
+                        label="融资金额(万)"
                         :prop="'pro_history_finance.' + index + '.pro_finance_scale'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
                         :rules="[NumberRule,{required: true, message: '融资金额不能为空', trigger: 'change'}]">
-                        <el-input v-model="history.pro_finance_scale" placeholder="输入金额"></el-input>
+                        <el-input v-model="history.pro_finance_scale" placeholder="请输入具体数值"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="11">
@@ -665,23 +634,26 @@
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
                         :rules="[{required: true, message: '历史投资方不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]" class="width360">
-                        <el-input v-model="history.pro_finance_investor" placeholder="请添加"></el-input>
+                        <el-input v-model="history.pro_finance_investor" placeholder="请输入历史投资方"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
                       <el-form-item label="　　" v-for="(history, index) in financing.pro_history_finance"
-                                    :key="history.index" style="padding-left: 13px;">
-                        <span class="imgdele" @click.prevent="removeHistory(history)"><img
-                          src="../../../assets/images/delete.png"></span>
+                                    :key="history.index" style="margin-left: 50px;" class="clearfix">
+                        <span class="imgdele fr" @click.prevent="removeHistory(history)">删除</span>
                       </el-form-item>
                     </el-col>
                   </el-row>
                 </el-form>
-                <el-button type="text" @click="addHistory" class="addMember"><i class="el-icon-plus"></i> 添加历史融资
-                </el-button>
+                <div class="marginAuto">
+                  <el-button type="text" @click="addHistory" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加历史融资</el-button>
+                  <el-button type="text" @click="sync" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                </div>
               </div>
             </el-collapse-transition>
           </div>
+
+
           <!--=================================里程碑=================================-->
           <div class="d_jump"></div>
           <div class="item-block">
@@ -718,24 +690,25 @@
                         v-for="(milePostSomeThing, index) in milepost.pro_develop"
                         :key="milePostSomeThing.index"
                         :rules="[{required: true, message: '事件不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]" class="width360">
-                        <el-input v-model="milePostSomeThing.dh_event" placeholder="请添加"></el-input>
+                        <el-input v-model="milePostSomeThing.dh_event" placeholder="请描述事件内容"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
                       <el-form-item label="　　" v-for="(milePostSomeThing, index) in milepost.pro_develop"
-                                    :key="milePostSomeThing.index" style="padding-left: 13px;">
-                        <span class="imgdele" @click.prevent="removemilePost(milePostSomeThing)"><img
-                          src="../../../assets/images/delete.png"></span>
+                                    :key="milePostSomeThing.index" style="margin-left: 50px;" class="clearfix">
+                        <span class="imgdele fr" @click.prevent="removemilePost(milePostSomeThing)">删除</span>
                       </el-form-item>
                     </el-col>
                   </el-row>
                 </el-form>
-                <el-button type="text" @click="addmilePost" class="addMember"><i class="el-icon-plus"></i> 添加里程碑
-                </el-button>
+                <div class="marginAuto">
+                  <el-button type="text" @click="addmilePost" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加里程碑</el-button>
+                  <el-button type="text" @click="sync" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                </div>
               </div>
             </el-collapse-transition>
-
           </div>
+
           <!--=================================FA签约协议===============================-->
           <div class="d_jump"></div>
           <div class="item-block">
@@ -752,46 +725,114 @@
                     <el-col :span="24">
                       <el-form-item
                         label="是否独家"
-                        prop="is_exclusive">
-                        <el-radio v-model="is_exclusive" :label=2 style="margin-right: 12px;">非独家FA签约</el-radio>
-                        <el-radio v-model="is_exclusive" :label=1>独家FA签约</el-radio>
-                        <el-radio v-model="is_exclusive" :label=0>其他</el-radio>
+                        prop="is_exclusive"
+                        :rules="[{ required: true, message: '请选择源', trigger: 'change' }]">
+                        <el-radio v-model="pro_FA.is_exclusive" :label=2 style="margin-right: 12px;">非独家FA签约</el-radio>
+                        <el-radio v-model="pro_FA.is_exclusive" :label=1>独家FA签约</el-radio>
+                        <el-radio v-model="pro_FA.is_exclusive" :label=0>其他</el-radio>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="24">
+                      <div class="zijikejian">
+                        <img src="../../../assets/images/zijikejian.png">
+                      </div>
+                    </el-col>
+                  </el-row>
+                </el-form>
+
+                <el-form :model="private" ref="private" label-width="100px" class="padding" label-position="top">
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="6">
+                      <el-form-item
+                        label="项目联系人"
+                        :rules="{min: 1, max:20,message: '最大20个字符',trigger: 'blur'}"
+                        prop="user_name">
+                        <el-input v-model="private.user_name" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="联系人手机号" prop="user_mobile" :rules="PhoneRule">
+                        <el-input v-model="private.user_mobile" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="职位"
+                        :rules="{min: 1, max:20,message: '最大20个字符',trigger: 'blur'}"
+                        prop="contact_user_career">
+                        <el-input v-model="private.contact_user_career" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
-                        label="签约佣金（%）"
+                        label="项目来源"
+                        prop="pro_source">
+                        <el-select v-model="private.pro_source"
+                                   multiple
+                                   placeholder="请输入项目来源，如：来源机构、来源人"
+                                   class="width360"
+                                   filterable
+                                   allow-create
+                                   default-first-option
+                                   @change="addChangesource"
+                                   :multiple-limit="multiplelimit">
+                          <el-option
+                            v-for="item in tags_source"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item
+                        label="项目备注"
+                        :rules="{min: 1, max:20,message: '最大20个字符',trigger: 'blur'}"
+                        prop="pro_remark">
+                        <el-input v-model="private.pro_remark" placeholder="项目执行上的备注信息"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :span="24" :gutter="32">
+                    <el-col :span="12">
+                      <el-form-item
+                        label="签约佣金"
                         prop="commission"
                         :rules="ScaleRule">
-                        <el-input v-model="pro_FA.commission" placeholder="请输入具体数值，如：10"></el-input>
+                        <el-input v-model="private.commission" placeholder="请输入具体数值，如：10">
+                          <el-button slot="append">%</el-button>
+                        </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
-                        label="股权赠与（%）"
+                        label="股权赠与"
                         prop="stock_right"
                         :rules="ScaleRule">
-                        <el-input v-model="pro_FA.stock_right" placeholder="请输入具体数值，如：10"></el-input>
+                        <el-input v-model="private.stock_right" placeholder="请输入具体数值，如：10">
+                          <el-button slot="append">%</el-button>
+                        </el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
                       <el-form-item
-                        label="其他权益（%）"
-                        prop="stock_other"
-                        :rules="ScaleRule">
-                        <el-input v-model="pro_FA.stock_other" placeholder="请输入具体数值，如：10"></el-input>
+                        label="跟投权"
+                        prop="stock_follow">
+                        <el-input v-model="private.stock_follow" placeholder="请输入跟投权"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item
-                        label="跟投权（%）"
-                        prop="stock_follow"
-                        :rules="ScaleRule">
-                        <el-input v-model="pro_FA.stock_follow" placeholder="请输入具体数值，如：10"></el-input>
+                        label="其他权益"
+                        prop="stock_other">
+                        <el-input v-model="private.stock_other" placeholder="请输入其他权益"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -799,8 +840,13 @@
               </div>
             </el-collapse-transition>
           </div>
-          <el-button type="primary" size="large" style="margin-top:32px;float: right;display: block;" @click="allSave" :disabled="submitButton">保存
-          </el-button>
+          <div class="ul-lists list tc"  style="padding:0">
+            <div class="toButton" style="padding-left: 0;z-index: 111">
+              <el-button type="primary" size="large" @click="allSave" :disabled="submitButton" style="margin: 0 auto">
+                保存
+              </el-button>
+            </div>
+          </div>
           <div style="height: 50px;"></div>
         </div>
         <div class="right-wrap" ref="right">
@@ -816,83 +862,107 @@
               <div class="progress-fg" :style="{ width: proportion+'%'}"></div>
             </div>
           </div>
-
-          <div class="check-block" v-bind:class="{'checked':node0}" @click="setNode('0')" style="margin-top:12px;">
+          <div style="margin-top:15px;background: #F9FAFC;border-radius: 2px;">
+            <div class="check-block" :class="{'checked':node0}" @click="setNode('0')" >
               <span class="block-icon">
                 <img src="../../../assets/images/arts.png" alt="">
               </span>
-            <span class="block-tlt">项目文件
+              <span class="block-tlt">项目文件
                 <span class="tlt-tips" v-show="fileMust">请添加商业计划书</span>
               </span>
-            <span class="check-flag">
+              <span class="check-flag">
                 <img v-if="filePerfect" src="../../../assets/images/gou.png" alt="">
                 <span v-else class="flag-txt">待完善</span>
               </span>
-          </div>
-          <div class="check-block" v-bind:class="{'checked':node1}" @click="setNode('1')">
+            </div>
+
+            <div class="check-block" :class="{'checked':node1}" @click="setNode('1')">
               <span class="block-icon">
                 <img src="../../../assets/images/arts.png" alt="">
               </span>
-            <span class="block-tlt">项目介绍
+              <span class="block-tlt">项目介绍
                 <span class="tlt-tips" v-show="projectMust">必填项不能为空</span>
               </span>
-            <span class="check-flag">
+              <span class="check-flag">
                 <img v-if="projectPerfect" src="../../../assets/images/gou.png" alt="">
                 <span v-else class="flag-txt">待完善</span>
               </span>
-          </div>
+            </div>
 
-          <div class="check-block" v-bind:class="{'checked':node2}" @click="setNode('2')">
+            <div class="check-block" :class="{'checked':node2}" @click="setNode('2')">
+              <span class="block-icon">
+                <img src="../../../assets/images/yunying.png" alt="">
+              </span>
+              <span class="block-tlt">公司运营
+            </span>
+              <span class="check-flag">
+                <img v-if="companyPerfect" src="../../../assets/images/gou.png" alt="">
+                <span v-else class="flag-txt">待完善</span>
+              </span>
+            </div>
+
+            <div class="check-block" :class="{'checked':node3}" @click="setNode('3')">
+              <span class="block-icon">
+                <img src="../../../assets/images/pinpai.png" alt="">
+              </span>
+              <span class="block-tlt">品牌
+              <span class="tlt-tips" v-show="brandtMust">必填项不能为空</span>
+            </span>
+              <span class="check-flag">
+                <img v-if="brandsPerfect" src="../../../assets/images/gou.png" alt="">
+                <span v-else class="flag-txt">待完善</span>
+              </span>
+            </div>
+
+            <div class="check-block" :class="{'checked':node4}" @click="setNode('4')">
               <span class="block-icon">
                 <img src="../../../assets/images/group.png" alt="">
               </span>
-            <span class="block-tlt">核心团队
+              <span class="block-tlt">核心团队
                 <span class="tlt-tips" v-show="teamMust">必填项不能为空</span>
               </span>
-            <span class="check-flag">
+              <span class="check-flag">
                 <img v-if="teamPerfect" src="../../../assets/images/gou.png" alt="">
               <span v-else class="flag-txt">待完善</span>
               </span>
-          </div>
+            </div>
 
-          <div class="check-block" v-bind:class="{'checked':node3}" @click="setNode('3')">
+            <div class="check-block" :class="{'checked':node5}" @click="setNode('5')">
               <span class="block-icon">
                 <img src="../../../assets/images/money.png" alt="">
               </span>
-            <span class="block-tlt">融资信息
+              <span class="block-tlt">融资信息
                 <span class="tlt-tips" v-show="financingMust">必填项不能为空</span>
               </span>
-            <span class="check-flag">
+              <span class="check-flag">
                  <img v-if="financingPerfect" src="../../../assets/images/gou.png" alt="">
                 <span v-else class="flag-txt">待完善</span>
               </span>
-          </div>
+            </div>
 
-          <div class="check-block" v-bind:class="{'checked':node4}" @click="setNode('4')">
+            <div class="check-block" :class="{'checked':node6}" @click="setNode('6')">
               <span class="block-icon">
                 <img src="../../../assets/images/time.png" alt="">
               </span>
-            <span class="block-tlt">里程碑
+              <span class="block-tlt">里程碑
                 <span class="tlt-tips" v-show="milepostMust">必填项不能为空</span>
               </span>
-            <span class="check-flag">
+              <span class="check-flag">
                  <img v-if="milepostPerfect" src="../../../assets/images/gou.png" alt="">
                 <span v-else class="flag-txt">待完善</span>
               </span>
-          </div>
+            </div>
 
-          <div class="check-block" v-bind:class="{'checked':node5}" @click="setNode('5')">
+            <div class="check-block" :class="{'checked':node7}" @click="setNode('7')">
               <span class="block-icon">
                 <img src="../../../assets/images/doc.png" alt="">
               </span>
-            <span class="block-tlt">FA签约协议</span>
-            <span class="check-flag">
-                 <img v-if="signPerfect" src="../../../assets/images/gou.png" alt="">
+              <span class="block-tlt">FA业务</span>
+              <span class="check-flag">
+                 <img v-if="privatePerfect" src="../../../assets/images/gou.png" alt="">
                 <span v-else class="flag-txt">待完善</span>
               </span>
-          </div>
-          <div class="bot-btn">
-            <el-button type="primary" size="large" @click="allSave" :disabled="submitButton">保存项目</el-button>
+            </div>
           </div>
         </div>
       </div>
@@ -955,7 +1025,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import projectpush2 from './projectPush2.vue'
   export default {
     data(){
       var checkPhoneNumber = (rule, value, callback) => {
@@ -1040,59 +1109,69 @@
         },//分组用的所有参数
         name: "",
         show: "detail",
-        fileShow: true,
-        ProjectShow: true,
-        teamShow: true,
-        financingShow: true,
-        milepostShow: true,
-        SignShow: true,
+
         multiplelimit: 5,
+
+        //标签设置
         tags:{
           changepro:[],//项目标签新增
           changeTeam:[],//团队标签
           changesource:[],//项目来源
         },
+        //项目详情
         project: {
-          pro_name: 'HoopEASY商业计划PPT+for+pitch',//项目名称
-          pro_company_name: '',//公司名称
-          pro_intro: '',//项目介绍
+/*          goodness:[{
+            created_at:"2017-08-31 17:06:05",
+            deleted_at:null,
+            goodness_desc:"我是亮点1",
+            goodness_id:1,
+            goodness_title:"我是亮点1",
+            project_id:7295,
+            updated_at:"2017-08-31 17:06:07"
+          }],*/
+          open_status: '1',//私密设置
           pro_area: {
             area_id: 2,
             area_title: "北京市",//市级
             pid: 1//省级
           },//所属地区1省级单位
-          pro_stage: {
-            "stage_id": 1,
-            "stage_name": "",
-            "sort": 2,
-            "created_at": null,
-            "updated_at": null
-          },//轮次
-          pro_industry: [],//领域标签
-          pro_status: 2,
+          pro_company_name:"",
+          pro_finance_stock_after:"0.00",//投后股份
+          pro_finance_value:"0.00",//项目估值
+          pro_industry:[
+/*              {
+            industry_id: 12,
+            industry_name: "",
+            parent_id: 0
+          }*/
+          ],
+          pro_intro:"",
+          pro_name:"",
           pro_scale: {
-            "scale_id": 1,
-            "scale_money": "100W以下",
-            "created_at": null,
-            "updated_at": null
+            scale_id: 1,
+            scale_money: "100W以下",
           },//规模多少钱
-          pro_company_scale: {
-            comp_scale_id: 1,
-            comp_scale_value: "1-20"
-          },//规模多少人
-          pro_website: '',//产品链接
-          contact: {
-            user_name: "",
-            user_mobile: ""
-          },//项目联系人
-          pro_source: [],//项目来源
-          open_status: '1',//私密设置
-          tags_pro: [],//项目标签
-          pro_goodness: "专注于篮球项目的移动端社交平台"//项目亮点
+          pro_stage:{
+            sort: 4,
+            stage_id: 13,
+            stage_name: "A轮"
+          },
+          project_id:"",
+          tag:[],
         },
-
+        //公司运营
+        company:{
+          pro_company_scale: {comp_scale_id: 1, comp_scale_value: "1-20"},
+          pro_status: {status_id: 3, status_name: "上线"},
+          pro_website:""
+        },
+        //品牌
+        brands:{
+          brand:[]
+        },
+        //核心团队
         team: {
-          tags_team: [],//团队标签
+          tag: [],//团队标签
           core_users: [
             /*{
               project_ct_id: 30,
@@ -1103,14 +1182,11 @@
               ct_member_career: "创始人兼首席执行官",
               ct_member_intro: "前高中和大学校队主力球员，"
             }*/],
-        },//核心团队
-
+        },
+        //融资信息
         financing: {
-          pro_finance_scale: 1,//期望融资
-          pro_finance_use: '买东西',//资金用途
-          pro_finance_stock_after: '10',//投后股份
-          pro_finance_value: '10',//项目估值
-          /*//历史融资信息*/
+          pro_finance_use: '',//资金用途
+          //历史融资信息
           pro_history_finance: [
               /*{
             project_id: 37,
@@ -1121,7 +1197,8 @@
             updated_time: null
           }*/
           ],
-        },//融资信息
+        },
+        //里程碑
         milepost: {
           pro_develop: [
             /*{
@@ -1135,23 +1212,31 @@
               created_at: null,
               updated_at: null
             }*/]
-        },//里程碑
-
+        },
+        //FA签约协议
         pro_FA: {
-          project_id: 37,
-          commission: "",//签约佣金
-          stock_right: "",//股权赠与
-          stock_follow: "",//跟投权
-          stock_other: "",//其他权益
-          created_at: null,
-          updeted_at: null,
+          is_exclusive: 1,//0其他 1独家 2非独家
+        },
+        //仅自己可见信息
+        private:{
+          commission: "0.00",//签约佣金
+          contact_user_career: "",
+          pro_remark: "",
+          pro_source: [
+            /*{
 
-        },//FA签约协议
-        is_exclusive: 1,//0其他 1独家 2非独家
+            }*/
+          ],
+          stock_follow: "0.00",
+          stock_other: "0.00",
+          stock_right: "0.00",//股权赠与
+          user_mobile: "",
+          user_name: ""
+        },
         companyList: [],//公司搜索的数据
         list: [],
         //*公司远程搜索
-        states: ["阿里", "百度", "投着乐网络科技有限公司"],
+        states: [],
         //*所属地区1省级选项
         area: [],
         //*所属地区2市级选项
@@ -1166,7 +1251,11 @@
         company_scale: [],
         //*项目标签
         tags_pro: [],
-        tags_source:[],//项目来源
+        //项目来源
+        tags_source:[],
+        //品牌选择
+        brand_type:[],
+
         formLabelWidth: '120px',
 
         //*运营状态
@@ -1178,31 +1267,51 @@
         tags_team: [],
         //*==================融资范围=====================
         scale: [],
+        //控制显示收起
+        fileShow: true,
+        ProjectShow: true,
+        teamShow: true,
+        financingShow: true,
+        milepostShow: true,
+        SignShow: true,
+        operateShow:true,//运营
+        brandShow:true,//品牌
+
+        //控制锚点跳转
         node0: true,
         node1: false,
         node2: false,
         node3: false,
         node4: false,
         node5: false,
-        //*判断项目完整度
-        filePerfect: false,
-        projectPerfect: false,
-        teamPerfect: false,
-        financingPerfect: false,
-        milepostPerfect: false,
-        signPerfect: false,
-        //*判断必填项是否填写
-        fileMust: false,
-        projectMust: false,
-        teamMust: false,
-        financingMust: false,
-        milepostMust: false,
+        node6: false,
+        node7: false,
+        //*判断项目完整度(是否全部填写完整)
+        filePerfect: false,//项目文件
+        projectPerfect: false,//项目详情
+        companyPerfect: false,//公司运营
+        brandsPerfect:false,//品牌
+        teamPerfect: false,//核心团队
+        financingPerfect: false,//融资信息
+        milepostPerfect: false,//里程碑
+        privatePerfect: false,//仅自己可见
+
+
+        //判断必填项是否填写
+        fileMust: false,//项目文件
+        projectMust: false,//项目详情
+        brandtMust:false,//品牌必填
+        teamMust: false,//核心团队
+        financingMust: false,//融资信息
+        milepostMust: false,//里程碑
+
+
         dialogVisible: false,//是否同步弹窗
         close: false,
         restaurants: [],//数据存放
         loading: false,//加载
         add_pro: [],//添加个人标签暂存
-        companyTitle: "微天使",
+        companyTitle: "",
         queryData: {},
         timeout: null,
         showList: false,
@@ -1224,17 +1333,23 @@
       //*项目完整度判断
       proportion(){
         let number = 0;//所有的空值数
-        let fileValue = this.planList;
-        let projectValue = this.project;
-        let teamValue = this.team;
-        let financingValue = this.financing;
-        let milepostValue = this.milepost;
-        let signValue = this.pro_FA;
+        let fileValue = this.planList;//项目文件
+        let projectValue = this.project;//项目详情
+        let companyValue = this.company;//公司运营
+        let brandsValue = this.brands;//品牌
+        let teamValue = this.team;//核心团队
+        let financingValue = this.financing;//融资信息
+        let milepostValue = this.milepost;//里程碑
+        let privateValue = this.private;//仅自己可见信息
+
         let sum = Object.keys(projectValue).length +//所有数据的总长度
+          Object.keys(companyValue).length +
+          Object.keys(brandsValue).length +
           Object.keys(teamValue).length +
           Object.keys(financingValue).length +
           Object.keys(milepostValue).length +
-          Object.keys(signValue).length + 6;
+          Object.keys(privateValue).length + 6;
+
         //判断所有为空的数值,包括数组内的第一组
         function forFor(value) {
           let inner = 0;//每一次调用的空值
@@ -1258,7 +1373,7 @@
                     }
                   }
                 }*/
-              } else if (value[key] == "") {
+              } else if (value[key] === "") {
                 number++;
                 inner++
               }
@@ -1286,7 +1401,13 @@
         else this.filePerfect = false;
 
         if (forFor(projectValue) == 0) this.projectPerfect = true;
-        else this.signPerfect = false;
+        else this.projectPerfect = false;
+
+        if (forFor(companyValue) == 0) this.companyPerfect = true;
+        else this.companyPerfect = false;
+
+        if (forFor(brandsValue) == 0) this.brandsPerfect = true;
+        else this.brandsPerfect = false;
 
         if (forFor(teamValue) == 0) this.teamPerfect = true;
         else this.teamPerfect = false;
@@ -1297,19 +1418,15 @@
         if (forFor(milepostValue) == 0) this.milepostPerfect = true;
         else this.milepostPerfect = false;
 
-        if (forFor(signValue) == 0) this.signPerfect = true;
-        else this.signPerfect = false;
+        if (forFor(privateValue) == 0) this.privatePerfect = true;
+        else this.privatePerfect = false;
 
-
-/*              this.$tool.console(parseInt(((sum-number)/sum)*100))
-         this.$tool.console(parseInt(number/sum))*/
-
-        return parseInt(((sum - number) / sum) * 100)
+        return parseInt(((sum - number) / sum) * 100);
       },
     },
     mounted() {
-      let leftWidth=document.getElementById("wid").offsetLeft+935;
-      this.$refs.right.style.left = leftWidth +'px';
+//      let leftWidth=document.getElementById("wid").offsetLeft+935;
+//      this.$refs.right.style.left = leftWidth +'px';
       const that = this;
       window.onresize = () => {
         return (() => {
@@ -1323,28 +1440,19 @@
         })()
       }
     },
+    components:{
+
+    },
     methods: {
+        //获得项目亮点焦点
+      focus(e){
+//          console.log(e)
+      },
+      //取消项目亮点焦点
+      blur(e){
+//        console.log(e)
+      },
       //*获取列表各种数据
-//      checkPhoneNumber(value){
-//        let check=false;
-//        if (!this.$tool.getNull(value)) {
-//          if (!this.$tool.checkNumber(value)) {
-//            this.$tool.error('请输入数字值');
-//            check=false;
-//          } else {
-//            if (!this.$tool.checkPhoneNumber(value)) {
-//              this.$tool.error('请输入正确的手机号');
-//              check=false;
-//            }else{
-//              check=true;
-//            }
-//          }
-//        }else{
-//          check=true;
-//        }
-//        return check;
-//      },//验证手机号高级版
-      /*获取列表各种数据*/
       getCompanyStatus(data){
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -1356,16 +1464,6 @@
         arr.push({label: '自定义添加', value: '自定义添加'})
         return arr
       },//获取运营状态
-      getTags_pro(data){
-        let arr = [];
-        for (let i = 0; i < data.length; i++) {
-          let obj = {};
-          obj.label = data[i].tag_name;
-          obj.value = data[i].tag_id;
-          arr.push(obj)
-        }
-        return arr
-      },//获取项目标签
       getFileType(data){
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -1405,6 +1503,7 @@
             this.tags_team = this.$global.data.tags_team;//设置团队标签
             this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
             this.tags_source = this.$global.data.pro_source;//设置项目来源
+            this.brand_type = this.$global.data.brand_type;//设置品牌来源
             this.tags.changesource = this.$global.data.pro_source;//设置项目来源
             resolve(2);
           },500)
@@ -1442,167 +1541,112 @@
       },//设置二级城市下拉列表2
 
       //*获取项目详情
-
-      getTag(data, num){
-        let tags = [];
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].type == num) {
-            tags.push(data[i].tag_id);
-          }
-        }
-        return tags
-      },//设置团队/项目标签
-      getindustry(data){
-        let tags = [];
-        for (let i = 0; i < data.length; i++) {
-          tags.push(data[i].industry_id);
-        }
-        return tags
-      },//设置领域标签
-      setDateTime(data){
-        for (let i = 0; i < data.length; i++) {
-          data[i].finance_time = new Date(data[i].finance_time*1000);
-        }
-      },//时间转化接受从时间戳转化为中国标准时间
-      setDateTime2(data){
-        for (let i = 0; i < data.length; i++) {
-          data[i].dh_start_time = new Date(data[i].dh_start_time*1000);
-        }
-      },//时间转化接受从时间戳转化为中国标准时间
-      setDateTime3(data){
-        for (let i = 0; i < data.length; i++) {
-          data[i].finance_time=Date.parse(data[i].finance_time);
-        }
-      },//时间转化中国标准时间发送转换回时间戳
-      setDateTime4(data){
-        for (let i = 0; i < data.length; i++) {
-          data[i].dh_start_time1=Date.parse(data[i].dh_start_time);
-        }
-      },//时间转化中国标准时间发送转换回时间戳
-      setDateTime5(data){
-        for (let i = 0; i < data.length; i++) {
-          data[i].history_financing_time = new Date(data[i].history_financing_time*1000);
-        }
-      },//时间转化接受从时间戳转化为中国标准时间(同步用)
-      setDateTime6(data){
-        for (let i = 0; i < data.length; i++) {
-          data[i].milestone_time = new Date(data[i].milestone_time*1000);
-        }
-      },//时间转化接受从时间戳转化为中国标准时间(同步用)
       setUploadShow2(data){
         for (let i = 0; i < data.length; i++) {
           if(data[i].belongs_to_type==null) {
-              data[i].belongs_to_type={type_name:"其他"};
+            data[i].belongs_to_type={type_name:"其他"};
           };
           this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title+'.'+data[i].file_ext, data[i].file_id, data[i].belongs_to_type.type_id);
         }
       },//设置批量上传文件显示
-      setMemberScale(data){
-          for(let i=0; i<data.length; i++){
-            if(data[i].stock_scale==0)  data[i].stock_scale="";
-          }
-      },//核心成员股权比例
-      setFinance(data){
-        for(let i=0; i<data.length; i++){
-          if(data[i].pro_finance_scale==0)  data[i].pro_finance_scale="";
-        }
-      },//期望融资,融资金额
+      setGoodNess(data){
+        let goodness = {};
+        goodness.goodness1=data[0] || {goodness_desc:'',goodness_title:''};
+        goodness.goodness2=data[1] || {goodness_desc:'',goodness_title:''};
+        goodness.goodness3=data[2] || {goodness_desc:'',goodness_title:''};
+        goodness.goodness4=data[3] || {goodness_desc:'',goodness_title:''};
+        return goodness;
+      },//设置项目亮点
+
       getProjectDetail () {
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
             .then(res => {
-
+//              console.log(res.data.data);
               this.uploadShow2.lists=[];
               let data = res.data.data;
-              this.area1Change(data.pro_area.pid);//设置市级
-              this.setDateTime(data.pro_history_finance);//时间格式设置
-              this.setDateTime2(data.pro_develop);//时间格式设置2
-
-              this.planList = [{name: data.pro_BP.file_title+'.'+data.pro_BP.file_ext, url: data.pro_BP.bp_url}];
+              //项目文件设置=============================================
+              if(data.file.pro_BP.length=="") {this.planList=[];this.uploadShow={};};//计划书清空
+              this.planList = [{name: data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext, url: data.file.pro_BP.file_url}];//设置计划书
               this.uploadShow = {
-                file_title: data.pro_BP.file_title,
-                pro_intro: data.pro_BP.file_title,
-                pro_name: data.pro_BP.file_title,
+                file_title: data.file.pro_BP.file_title,
+                pro_intro: data.file.pro_BP.file_title,
+                pro_name: data.file.pro_BP.file_title,
                 project_id: this.project_id,
-                file_id: data.pro_BP.file_id
+                file_id: data.file.pro_BP.file_id
               };//设置计划书上传列表
-
-              if(data.pro_BP.length=="") {
-                this.planList=[];
-                this.uploadShow={};
-              };
-
-              this.setUploadShow2(data.pro_file);
-              this.project.pro_name = data.pro_name;
-              this.project.pro_company_name = data.pro_company_name;
-              this.project.pro_intro = data.pro_intro;
-
-              this.project.pro_area = data.pro_area;
-              localStorage.pid=data.pro_area.pid;
-              if (data.pro_area == "") {
-                this.project.pro_area = {area_id: "", pid: "", area_title: ""}
-              };
-
-
-              this.project.pro_stage = data.pro_stage;
-
-              if (data.pro_stage == "") {
-                this.project.pro_stage = {stage_id: ""}
-              };
-
-              this.project.pro_industry = this.getindustry(data.pro_industry);//领域标签
-              this.project.pro_status = data.pro_status.status_id;//运营状态
-              this.statusLast = data.pro_status.status_id;//运营状态多余的
-              this.project.pro_scale = data.pro_scale;
-              this.project.pro_website = data.pro_website;
-              this.project.contact = data.contact;
-              this.project.pro_source = data.pro_source;
-              this.project.open_status = data.open_status.toString();//运营状态
-              this.project.tags_pro = this.getTag(data.tag, 0);//项目标签
-
-              this.project.pro_goodness = data.pro_goodness;
-              this.project.pro_source = this.getTag(data.tag, 2);//项目来源标签
-
-
-              this.project.pro_company_scale = data.pro_company_scale;
-              if (data.pro_company_scale == "") {
-                this.project.pro_company_scale = {comp_scale_id: 1, comp_scale_value: "1-20"}
-              };
-
-              this.team.tags_team = this.getTag(data.tag, 1);//团队标签
-              this.setMemberScale(data.core_users);
-              this.team.core_users = data.core_users;
-              this.financing.pro_finance_scale = data.pro_finance_scale;
-              this.financing.pro_finance_use = data.pro_finance_use;
-              if(data.pro_finance_stock_after==0) data.pro_finance_stock_after="";
-              this.financing.pro_finance_stock_after = data.pro_finance_stock_after;
-              if(data.pro_finance_value==0) data.pro_finance_value="";
-              this.financing.pro_finance_value = data.pro_finance_value;
-
-              this.setFinance(data.pro_history_finance);
-              this.financing.pro_history_finance = data.pro_history_finance;
-
-              if (data.pro_history_finance == "") this.financing.pro_history_finance = [];
-
-              this.milepost.pro_develop = data.pro_develop;
-
-              if (data.core_users == "") this.team.core_users = [];
-
-
-              this.is_exclusive = data.is_exclusive;//FA运营状态
-
-              if (data.pro_FA == "") data.pro_FA = {commission: "", stock_right: "", stock_follow: "", stock_other: ""};
-
-
-              if(data.pro_FA.commission==0) data.pro_FA.commission="";
-              if(data.pro_FA.stock_right==0) data.pro_FA.stock_right="";
-              if(data.pro_FA.stock_follow==0) data.pro_FA.stock_follow="";
-              if(data.pro_FA.stock_other==0) data.pro_FA.stock_other="";
-
-              this.pro_FA = data.pro_FA;
               if (this.planList.length != 0) this.planButton = false;
-              else this.planButton = true;
+              else this.planButton = true;//判断计划书上传按钮显示被否
+              this.setUploadShow2(data.file.pro_file);//设置项目文件上传列表
+
+              //项目介绍设置=============================================
+              if (data.project.pro_area == "") {
+                this.project.pro_area = {area_id: "", pid: "", area_title: ""}
+              }
+              if (data.project.pro_stage == "") {
+                data.project.pro_stage = {stage_id: ""}
+              }//轮次设置
+              data.project.pro_industry = this.$tool.setIdToArr(data.project.pro_industry,'industry_id');//领域标签取出id
+              this.area1Change(data.project.pro_area.pid);//取到省级设置市级
+              localStorage.pid=data.project.pro_area.pid;
+
+              data.project.tag = this.$tool.setIdToArr(data.project.tag,'tag_id');//设置项目标签
+              data.project.open_status = data.project.open_status.toString();//私密设置
+              if(data.project.pro_finance_stock_after==0) data.project.pro_finance_stock_after="";//投后股份
+
+              if(data.project.pro_finance_value==0) data.project.pro_finance_value="";//项目估值
+              data.project.goodnessnew = this.setGoodNess(data.project.goodness);//项目亮点
+//              console.log(data.project);
+
+              this.project=data.project;
+
+
+              //公司运营设置=============================================
+
+              if (data.company.pro_company_scale == "") {
+              data.company.pro_company_scale = {comp_scale_id: 1, comp_scale_value: "1-20"}
+            }//规模为空的时候
+              if (data.company.pro_status == "") {
+                data.company.pro_status = {status_id: ""}
+              }//规模为空的时候
+              this.statusLast = data.company.pro_status.status_id;//运营状态多余的
+
+              this.company=data.company;
+
+              //品牌设置=============================================
+              this.brands.brand=data.brand;
+
+              //核心团队设置=============================================
+              data.team.tag = this.$tool.setIdToArr(data.team.tag,'tag_id');//团队标签
+              this.$tool.setZeroToNull(data.team.core_users,'stock_scale');//项目成员
+              if (data.team.core_users == "") data.team.core_users = [];//项目成员为空判断
+              this.team=data.team;
+
+
+              //融资信息设置=============================================
+              this.$tool.setZeroToNull(data.financing.pro_history_finances,'pro_finance_scale');//设置历史融资信息
+              this.$tool.setTimeToReallyTime(data.financing.pro_history_finance,'finance_time');//历史融资信息时间格式设置
+              if (data.financing.pro_history_finance == "") data.financing.pro_history_finance = [];
+              this.financing=data.financing;
+
+              //里程碑设置=============================================
+
+              this.$tool.setTimeToReallyTime(data.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
+              this.milepost=data.milepost;
+
+              //FA业务=============================================
+              this.pro_FA=data.pro_FA;
+
+              //FA业务仅自己可见=============================================
+              data.private.pro_source = this.$tool.setIdToArr(data.private.pro_source,'tag_id');//项目来源标签
+              if(data.private.commission==0) data.private.commission="";
+              if(data.private.stock_right==0) data.private.stock_right="";
+              if(data.private.stock_follow==0) data.private.stock_follow="";
+              if(data.private.stock_other==0) data.private.stock_other="";
+
+              this.private=data.private;
+
               this.loading = false;
               this.tags_pro=this.tags.changepro.slice(0);
               this.tags_team=this.tags.changeTeam.slice(0);
@@ -1610,7 +1654,7 @@
               resolve(3);
             })
             .catch(err => {
-              this.loading = false
+              this.loading = false;
               this.$tool.console(err, 2)
             })
         });
@@ -1816,6 +1860,8 @@
           }
         }
       },//当文件没有全部上传完时,不能提交
+
+
       groupchange(label){
         let index = this.groups.index;
         let data = this.groups.group;
@@ -1825,8 +1871,7 @@
               this.uploadShow2.lists[index].type=label;
           }
         }
-      },//点击分组设置中的单选框
-
+      },//点击文件分组设置中的单选框
       addGroup(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -1852,11 +1897,7 @@
             return false;
           }
         });
-      },//添加分组设置的分组选项
-      cancelGroupChange(){
-        this.addStateDisplay = false;
-        this.project.pro_status = this.statusLast;
-      },//取消后
+      },//添加文件分组设置的分组选项
       saveGroupChange(){//file_id type_id user_id
         let type = this.groups.bp_type;
         let index = this.groups.index;
@@ -1876,14 +1917,14 @@
             this.$tool.console(err)
           })
 
-      },//发送分组设置请求
+      },//发送文件分组设置请求
       toGroup(item){
         this.groups.type=item.type;
         var index = this.uploadShow2.lists.indexOf(item)
         this.groups.index = index;
         this.setFileDisplay = true;
 
-      },//获取分组的位置
+      },//获取文件分组的位置
 
       openDiv(v){
         this[v] = true;
@@ -1891,9 +1932,9 @@
       closeDiv(v){
         this[v] = false;
       },
-      goBack(){//返回上一层
+      goBack(){
         this.$router.go(-1);
-      },
+      },//返回上一层
 
       //*获取远程数据模拟
       loadData(arr){
@@ -1952,13 +1993,16 @@
           });
 
       },//选择了搜索出来的数据后
-
+      //*控制添加radio
       radiochange(label){
         if (label == "自定义添加") {
           this.addStateDisplay = true;
         }
-      },//*控制添加radio
-      //*添加运营状态
+      },
+      cancelGroupChange(){
+        this.addStateDisplay = false;
+        this.company.pro_status.status_id = this.statusLast;
+      },//取消后添加运营状态
       addState(){
         this.$http.post(this.URL.createStatusPro, {user_id: localStorage.user_id, status_name: this.form.state})
           .then(res => {
@@ -1966,19 +2010,18 @@
             let newState = {};
             newState.label = data.status_id;
             newState.value = this.form.state;
-            this.project.companystate = this.form.state;
+//            this.project.companystate = this.form.state;
             this.company_status.splice(length - 1, 0, newState);
             this.addStateDisplay = false;
-            this.project.pro_status=data.status_id;;
+            this.company.pro_status.status_id=data.status_id;
+            this.statusLast=data.status_id;
             this.form.state="";
           })
           .catch(err => {
             this.$tool.error("添加失败");
             this.$tool.console(err);
           })
-
-
-      },
+      },//添加运营状态
       addChangepro(e){
         let tagName = this.$tool.checkArr(e, this.tags_pro);
         if (tagName != undefined) {
@@ -2040,32 +2083,43 @@
         }*/
       },//添加项目来源
 
-      //*添加团队成员
-      removeMember(item) {
-        if(item.project_ct_id=="" || item.project_ct_id==null) {
-          let index = this.team.core_users.indexOf(item);
+
+      //添加品牌
+      addBrand(){
+        this.brands.brand.push({
+          brand_desc: '',
+          brand_name: '',
+          type_id: '',
+          brand_id:''
+        });
+      },
+      removeBrand(item){
+        if(item.brand_id=="" || item.brand_id==null) {
+          let index = this.brands.brand.indexOf(item);
           if (index !== -1) {
-            this.team.core_users.splice(index, 1)
+            this.brands.brand.splice(index, 1)
           }
         }else{
           this.$http.post(this.URL.deleteCoreTeam, {
-             user_id: localStorage.user_id,
-             project_id: this.project_id,
-             project_ct_id: item.project_ct_id
-           })
-           .then(res => {
-             this.$tool.success("删除成功");
-             let index = this.team.core_users.indexOf(item);
-             if (index !== -1) {
-               this.team.core_users.splice(index, 1)
-             }
-           })
-           .catch(err => {
-             this.$tool.error("删除失败");
-             this.$tool.console(err);
-           })
+            user_id: localStorage.user_id,
+            project_id: this.project_id,
+            brand_id: item.brand_id
+          })
+            .then(res => {
+              this.$tool.success("删除成功");
+              let index = this.brands.brand.indexOf(item);
+              if (index !== -1) {
+                this.brands.brand.splice(index, 1)
+              }
+            })
+            .catch(err => {
+              this.$tool.error("删除失败");
+              this.$tool.console(err);
+            })
         }
       },
+
+      //*添加团队成员
       addMember() {
         this.team.core_users.push({
           ct_member_name: '',
@@ -2075,34 +2129,33 @@
           project_ct_id: '',
         });
       },
+      removeMember(item) {
+        if(item.project_ct_id=="" || item.project_ct_id==null) {
+          let index = this.team.core_users.indexOf(item);
+          if (index !== -1) {
+            this.team.core_users.splice(index, 1)
+          }
+        }else{
+          this.$http.post(this.URL.deleteCoreTeam, {
+            user_id: localStorage.user_id,
+            project_id: this.project_id,
+            project_ct_id: item.project_ct_id
+          })
+            .then(res => {
+              this.$tool.success("删除成功");
+              let index = this.team.core_users.indexOf(item);
+              if (index !== -1) {
+                this.team.core_users.splice(index, 1)
+              }
+            })
+            .catch(err => {
+              this.$tool.error("删除失败");
+              this.$tool.console(err);
+            })
+        }
+      },
 
       //*添加历史融资信息
-      removeHistory(item) {
-          if(item.history_id=="" || item.history_id==null){
-            let index = this.financing.pro_history_finance.indexOf(item)
-            if (index !== -1) {
-              this.financing.pro_history_finance.splice(index, 1)
-            }
-          }else{
-            this.$http.post(this.URL.deleteFinance, {
-              user_id: localStorage.user_id,
-              project_id: this.project_id,
-              history_id: item.history_id
-            })
-              .then(res => {
-                this.$tool.success("删除成功");
-                let index = this.financing.pro_history_finance.indexOf(item);
-                if (index !== -1) {
-                  this.financing.pro_history_finance.splice(index, 1)
-                }
-              })
-              .catch(err => {
-                this.$tool.error("删除失败");
-                this.$tool.console(err);
-              })
-          }
-
-      },
       addHistory() {
         this.financing.pro_history_finance.push({
           finance_time: '',
@@ -2112,33 +2165,34 @@
           history_id:''
         });
       },
+      removeHistory(item) {
+        if(item.history_id=="" || item.history_id==null){
+          let index = this.financing.pro_history_finance.indexOf(item)
+          if (index !== -1) {
+            this.financing.pro_history_finance.splice(index, 1)
+          }
+        }else{
+          this.$http.post(this.URL.deleteFinance, {
+            user_id: localStorage.user_id,
+            project_id: this.project_id,
+            history_id: item.history_id
+          })
+            .then(res => {
+              this.$tool.success("删除成功");
+              let index = this.financing.pro_history_finance.indexOf(item);
+              if (index !== -1) {
+                this.financing.pro_history_finance.splice(index, 1)
+              }
+            })
+            .catch(err => {
+              this.$tool.error("删除失败");
+              this.$tool.console(err);
+            })
+        }
+
+      },
 
       //*添加里程碑
-      removemilePost(item) {
-          if(item.project_dh_id=="" || item.project_dh_id==null){
-            let index = this.milepost.pro_develop.indexOf(item)
-            if (index !== -1) {
-              this.milepost.pro_develop.splice(index, 1)
-            }
-          }else{
-            this.$http.post(this.URL.deleteDevelop, {
-              user_id: localStorage.user_id,
-              project_id: this.project_id,
-              project_dh_id: item.project_dh_id
-            })
-              .then(res => {
-                this.$tool.success("删除成功");
-                let index = this.milepost.pro_develop.indexOf(item)
-                if (index !== -1) {
-                  this.milepost.pro_develop.splice(index, 1)
-                }
-              })
-              .catch(err => {
-                this.$tool.error("删除失败");
-                this.$tool.console(err);
-              })
-          }
-      },
       addmilePost() {
         this.milepost.pro_develop.push({
           dh_start_time: '',
@@ -2146,6 +2200,31 @@
           history_id: '',
           project_dh_id:''
         });
+      },
+      removemilePost(item) {
+        if(item.project_dh_id=="" || item.project_dh_id==null){
+          let index = this.milepost.pro_develop.indexOf(item)
+          if (index !== -1) {
+            this.milepost.pro_develop.splice(index, 1)
+          }
+        }else{
+          this.$http.post(this.URL.deleteDevelop, {
+            user_id: localStorage.user_id,
+            project_id: this.project_id,
+            project_dh_id: item.project_dh_id
+          })
+            .then(res => {
+              this.$tool.success("删除成功");
+              let index = this.milepost.pro_develop.indexOf(item)
+              if (index !== -1) {
+                this.milepost.pro_develop.splice(index, 1)
+              }
+            })
+            .catch(err => {
+              this.$tool.error("删除失败");
+              this.$tool.console(err);
+            })
+        }
       },
 
       //*检查所有必填项目以及获取所有数据
@@ -2160,17 +2239,6 @@
         });
         return check;
       },
-      takeData(data, obj){
-        for (let key in obj) {
-          data[key] = obj[key];
-        }
-      },
-
-      getMemberScale(data){
-        for(let i=0; i<data.length; i++){
-          if(data[i].stock_scale=="") data[i].stock_scale=0;
-        }
-      },//核心成员股权比例
       getMemberHunder(data){
         let check=true;
         for(let i=0; i<data.length; i++){
@@ -2206,11 +2274,6 @@
         }
         return check;
       },//1大于100,2必须为数字
-      getFinance(data){
-        for(let i=0; i<data.length; i++){
-          if(data[i].pro_finance_scale=="")  data[i].pro_finance_scale=0;
-        }
-      },//期望融资,融资金额
       getNumber(data){
         let check=true;
         if(this.$tool.getNull(data)){
@@ -2232,7 +2295,12 @@
 
   //*全部保存按钮
       allSave(){
-        for (let a = 0; a < this.team.core_users.length; a++) {
+        this.projectMust = !this.submitForm('project');
+        this.brandtMust = !this.submitForm('brands');
+        this.teamMust = !this.submitForm('team');
+        this.financingMust = !this.submitForm('financing');
+        this.milepostMust = !this.submitForm('milepost');
+/*        for (let a = 0; a < this.team.core_users.length; a++) {
           if (this.$tool.getNull(this.team.core_users[a].ct_member_name))
           { this.$tool.error("团队成员姓名不能为空");
             return;
@@ -2277,14 +2345,10 @@
             return;
           }
         }//新增历史融资判断
-//        if (this.planList.length === 0) this.fileMust = true;
-//        else this.fileMust = false;
         this.projectMust = !this.submitForm('project');
         this.teamMust = !this.submitForm('team');
         this.financingMust = !this.submitForm('financing');
         this.milepostMust = !this.submitForm('milepost');
-//        if (this.fileMust) this.alert("请添加商业计划书")
-//        else
         if (this.projectMust) this.$tool.error("项目介绍有误,请正确填写")
         else if (this.teamMust) this.$tool.error("核心团队必填项不能为空")
         else if (this.financingMust) this.$tool.error("融资信息必填项不能为空")
@@ -2307,21 +2371,33 @@
         else if(this.$tool.checkLength2(this.financing.pro_finance_use)){this.$tool.error("资金用途不超过500个字")}
         else if(this.$tool.checkLength(this.project.contact.user_name)){this.$tool.error("项目联系人不超过20个字")}
         else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
-        else{
-          this.loading=true;
+        else{*/
+//          this.loading=true;
           let allData = {};
 
-          this.$tool.setTag(this.project.tags_pro,this.tags.changepro);
-          this.$tool.setTag(this.team.tags_team,this.tags.changeTeam);
-          this.$tool.setTag(this.project.pro_source,this.tags.changesource);
+          this.$tool.setTag(this.project.tag,this.tags.changepro);//标签设置,去处ID存入数组
+          this.$tool.setTag(this.team.tag,this.tags.changeTeam);//标签设置,去处ID存入数组
+          this.$tool.setTag(this.private.pro_source,this.tags.changesource);//标签设置,去处ID存入数组
 
-          this.takeData(allData, this.project);
-          this.takeData(allData, this.team);
-          this.takeData(allData, this.financing);
-          this.takeData(allData, this.milepost);
-          this.takeData(allData, this.pro_FA);
-          this.setDateTime3(allData.pro_history_finance);
-          this.setDateTime4(allData.pro_develop);
+          allData.project=this.project;
+          allData.company=this.company;
+          allData.brands=this.brands;
+          allData.team=this.team;
+          allData.financing=this.financing;
+          allData.milepost=this.milepost;
+          allData.pro_FA=this.pro_FA;
+          allData.private=this.private;
+          allData.user_id = localStorage.user_id;
+          allData.pro_total_score=this.proportion;//完整度
+          this.$tool.setReallyTimeToTime(allData.financing.pro_history_finance,'finance_time');//标准时间转化为时间戳
+          this.$tool.setReallyTimeToTime(allData.milepost.pro_develop,'dh_start_time');//标准时间转化为时间戳
+          this.$tool.setNullToZero(allData.team.core_users,'stock_scale');//核心成员股权比例如果没填,就给0
+          this.$tool.setNullToZero(allData.financing.pro_history_finance,'pro_finance_scale');//期望融资,融资金额如果没填,就给0
+
+          if(allData.private.stock_right=="" || allData.private.stock_right==undefined) allData.private.stock_right=0;//股权赠与
+          if(allData.private.commission=="" || allData.private.commission==undefined) allData.private.commission=0;//签约佣金
+          console.log(allData);
+ /*
 
           allData.is_exclusive = this.is_exclusive;
           allData.project_id = this.project_id;
@@ -2334,21 +2410,18 @@
           allData.pro_core_team = this.team.core_users;
           allData.pro_finance_stage = this.project.pro_stage.stage_id;
           allData.pro_company_scale = this.project.pro_company_scale.comp_scale_id;
-          allData.user_id = localStorage.user_id;
-          allData.pro_total_score=this.proportion;
+
+
           if(allData.pro_finance_stock_after=="" || allData.pro_finance_stock_after==undefined) allData.pro_finance_stock_after=0;
           if(allData.pro_finance_value=="" || allData.pro_finance_value==undefined) allData.pro_finance_value=0;
-          if(allData.commission=="" || allData.commission==undefined) allData.commission=0;
-          if(allData.stock_right=="" || allData.stock_right==undefined) allData.stock_right=0;
+
+
           if(allData.stock_follow=="" || allData.stock_follow==undefined) allData.stock_follow=0;
           if(allData.stock_other=="" || allData.stock_other==undefined) allData.stock_other=0;
 
-          this.getMemberScale(allData.pro_core_team);
-          this.getFinance(allData.pro_history_finance);
+          */
 
-          this.$tool.console(allData,2);
-
-          this.$http.post(this.URL.editProject, allData)
+/*          this.$http.post(this.URL.editProject, allData)
             .then(res => {
               this.loading=false;
               this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '返回列表')
@@ -2356,22 +2429,9 @@
             .catch(err => {
               this.$tool.error("编辑失败");
               this.$tool.console(err);
-            })
+            })*/
 
-        }
-
-/*        pro_develop: [
-          {
-            project_dh_id: 6,
-            dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
-            project_id: 37,
-            project_index: "275fa4f135eecf08e5660d23e294e6cd",
-            dh_start_time: "2017-06-20 17:39:25",//时间
-            dh_end_time: "1443542400",
-            dh_event: "组建团队和设立办公室",//事件
-            created_at: null,
-            updated_at: null
-          }]*/
+//        }
       },
 
       //*编辑成功弹窗
@@ -2394,28 +2454,36 @@
         this.node3 = false;
         this.node4 = false;
         this.node5 = false;
+        this.node6 = false;
+        this.node7 = false;
         this['node' + v] = true;
         switch (v) {
           case "0":
-            this.fileShow = true
+            this.fileShow = true;
             break;
           case "1":
-            this.ProjectShow = true
+            this.ProjectShow = true;
             break;
           case "2":
-            this.teamShow = true
+            this.operateShow = true;
             break;
           case "3":
-            this.financingShow = true
+            this.brandShow = true;
             break;
           case "4":
-            this.milepostShow = true
+            this.teamShow = true;
             break;
           case "5":
-            this.SignShow = true
+            this.financingShow = true;
+            break;
+          case "6":
+            this.milepostShow = true;
+            break;
+          case "7":
+            this.SignShow = true;
             break;
           default:
-            this.fileShow = true
+            this.fileShow = true;
             break;
         };
         let jump = document.querySelectorAll('.d_jump')
@@ -2474,7 +2542,8 @@
       },//team同步数据修改
       getFinancingMoney(data=[]){
         let arr = [];
-        this.setDateTime5(data);
+//        this.setDateTime5(data);
+        this.$tool.setTimeToReallyTime(data,'history_financing_time');
         for(let i=0; i<data.length; i++){
           let obj=new Object;
           obj.pro_finance_scale=data[i].history_financing_money;
@@ -2488,7 +2557,8 @@
       },//历史融资同步数据修改
       getMilestone(data=[]){
         let arr = [];
-        this.setDateTime6(data);
+//        this.setDateTime6(data);
+        this.$tool.setTimeToReallyTime(data,'milestone_time');
         for(let i=0; i<data.length; i++){
           let obj=new Object;
           obj.dh_event=data[i].milestone_event;
@@ -2517,28 +2587,39 @@
       },//一键同步
       getprojectId(){
         this.project_id = this.$route.query.project_id || '';
+        this.project.project_id = this.$route.query.project_id || '';
       },
     },
     //    当dom一创建时
     created(){
       this.$tool.getTop();
-      this.loading = true;
+//      this.loading = true;
       this.getprojectId();
       this.$global.func.getWxProjectCategory()
         .then((data)=>{
           return this.getWxProjectCategory();
         })
-        .then((data)=>{
+         .then((data)=>{
+
           return this.setFileType();
         })
         .then((data)=>{
-          return this.getProjectDetail();
+//          return this.getProjectDetail();
         })
-      this.ProjectShow=false;
+     /* this.ProjectShow=false;
       this.teamShow=false;
       this.financingShow=false;
       this.milepostShow=false;
       this.SignShow=false;
+      this.operateShow=false;
+      this.brandShow=false;*/
+      this.ProjectShow=true;
+      this.teamShow=true;
+      this.financingShow=true;
+      this.milepostShow=true;
+      this.SignShow=true;
+      this.operateShow=true;
+      this.brandShow=true;
     },
     watch: {
       screenWidth (val) {
@@ -2558,7 +2639,6 @@
           this.timer2 = true;
           let that = this;
           setTimeout(function () {
-//            console.log(that.scrollTop);
             if(that.scrollTop>90){
               that.$refs.right.style.top=80+'px';
             }else{
@@ -2600,10 +2680,39 @@
         width: 100%;
       }
     }
-    .addMember {
+    .marginAuto{
       display: block;
       margin: 0 auto;
+      width: 246px;
+      height: 32px;
+      margin-bottom: 20px;
+      .addMember {
+        transition: all .5s;
+        font-size:16px;
+        color:#009eff;
+        i{
+          width: 17px;
+          height: 17px;
+          display: inline-block;
+          margin-right: 7px;
+          transition: all .5s;
+          img{
+            width: 100%;
+          }
+        }
+      }
+      .addMember:hover i{
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+      }
+      .addMember2{
+        margin-left: 22px;
+      }
     }
+
     .el-radio-group{
       line-height: 3!important;
     }
