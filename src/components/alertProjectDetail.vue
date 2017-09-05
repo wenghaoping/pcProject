@@ -224,11 +224,11 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                   <span class="pro-txt-1">{{finance.finance_time}}</span>
                   <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                   <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
-                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 30 ? false:true">
+                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 35 ? false:true">
                     <div slot="content">
                       <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                     </div>
-                    <span class="pro-txt-4" style="width:232px;max-width:232px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
+                    <span class="pro-txt-4" style="width:323px;max-width:323px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
                   </el-tooltip>
                   <div class="line"></div>
                 </div>

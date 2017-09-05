@@ -271,11 +271,11 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
                         <!--<span class="pro-txt-4" style=" width: 202px; white-space: normal;overflow: hidden; word-break: break-all;line-height:22px;">{{finance.pro_finance_investor}}</span>-->
-                        <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 30 ? false:true">
+                        <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 35 ? false:true">
                           <div slot="content">
                             <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                           </div>
-                          <span class="pro-txt-4" style="width:232px;max-width:232px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
+                          <span class="pro-txt-4" style="width:323px;max-width:323px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
                         </el-tooltip>
                         <!--<div class="line"></div>-->
                       </div>
@@ -328,7 +328,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                     <span style="font-size:14px;color:#8492a6;">项目来源:&nbsp;&nbsp;</span>
                     <span class="person-tag" v-for="source in private.pro_source"> {{source.tag_name}}</span>
                   </div>
-                  <div class="rz-details" v-show="private.commission!=''&&private.stock_right!==''" >
+                  <div class="rz-details" v-show="private.commission!=''&&private.stock_right!==0" >
                     <div class="rz-detail" style="width: 50%" v-show="private.commission!=''">
                       <p class="det-title">签约佣金</p>
                       <p class="det-info">{{private.commission}}%</p>
