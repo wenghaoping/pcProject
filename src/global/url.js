@@ -43,6 +43,7 @@ export default
   deleteCoreTeam:"api/v/project/deleteCoreTeam",  //删除核心成员
   deleteFinance:"api/v/project/deleteFinance",  //删除历史融资
   deleteDevelop:"api/v/project/deleteDevelop",  //删除里程碑
+  deleteBrand:'api/v/project/deleteBrand',   //删除品牌
   editProject:"api/v/project/editProject",  //项目编辑、新建
   getOneCompany:"api/dataTeam/getOneCompany",  //获取公司信息
   setProjectSchedule:'/api/project/setProjectSchedule',//设置项目进度
@@ -57,6 +58,8 @@ export default
   getAllFileType:"api/category/getAllFileType",  //文件分组设置选项(全)
   createFileType:"api/category/createFileType",  //添加文件分组设置
   updateProjectCompany:'api/v/project/updateProjectCompany',//更新公司,一键尽调的时候,是否将此公司作为自己的公司
+
+
   /*一键尽调*/
   getCrawlerCompany:"api/dataTeam/getCrawlerCompany",  //一键尽调-公司(模糊匹配)
   selectCompanyByName:"api/dataTeam/selectCompanyByName",  //一键尽调-公司(精准匹配)

@@ -2203,7 +2203,7 @@
             this.brands.brand.splice(index, 1)
           }
         }else{
-          this.$http.post(this.URL.deleteCoreTeam, {
+          this.$http.post(this.URL.deleteBrand, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
             brand_id: item.brand_id
