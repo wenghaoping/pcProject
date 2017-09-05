@@ -278,7 +278,7 @@ const tool={
 
     return myNewObj;
 },//对象深拷贝
-  /*时间戳的处理*/
+  //*时间戳的处理
   formatDateTime(timeStamp) {
     if(timeStamp=='') return '';
     var date = new Date();
@@ -303,7 +303,7 @@ const tool={
     });
   },//时间戳转化正常时间,在数组中循环,time为总的数组,title为要改变的字段(字符串格式)
 
-  /*将标签转化为字符长串==========例子'汽车交通、物流、房产服务、体育运动、工业生产'data为总的数组,title为要改变的字段(字符串格式)*/
+  //*将标签转化为字符长串==========例子'汽车交通、物流、房产服务、体育运动、工业生产'data为总的数组,title为要改变的字段(字符串格式)*/
   setTagToString(data,title){
     if(tool.isArray(data)){
       let str="";
@@ -348,17 +348,17 @@ const tool={
         x[title] = new Date(x[title]*1000);
       });
     }else{
-      return data;
+      return time;
     }
   },
-//时间转化接受从中国标准时间转化为时间戳
-  setReallyTimeToTime(time,title){
+//时间转化接受从中国标准时间转化为时间戳title为要转化的字段title2为新赋值的字段
+  setReallyTimeToTime(time,title,title2){
     if(tool.isArray(time)){
       time.forEach((x)=>{
-        x[title] = Date.parse(x[title]);
+        x[title2] = Date.parse(x[title]);
       });
     }else{
-      return data;
+      return time;
     }
   },
 //将数组中需要的id取出来合并为一个数组
@@ -380,6 +380,15 @@ const tool={
     if(url=='') string = name.charAt(0);
     else string='';
     return string;
+  },
+
+//对象深拷贝
+  simpleClone(initalObj) {
+    let obj = {};
+    for (let i in initalObj) {
+      obj[i] = initalObj[i];
+    }
+    return obj;
   },
 
   //返回的是字符串形式的参数，例如：class_id=3&id=2&

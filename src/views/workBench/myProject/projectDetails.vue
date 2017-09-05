@@ -1360,7 +1360,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         else this.tabs=false
       },//点击标签
 
-      /*设置意向投资人右边*/
+      //*设置意向投资人右边
       getEchartData(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
