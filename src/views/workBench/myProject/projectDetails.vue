@@ -132,7 +132,7 @@
                 <!--</div>-->
                 <!--<div class="line"></div>-->
                 <div class="ul-lists" style="margin-top:16px;padding: 0">
-                  <div class="item" v-show="project.goodness.pro_goodness!=''&&project.goodness.pro_market_genera!=''&&project.goodness.pro_business_model!=''&&project.goodness.pro_service!=''">
+                  <div class="item" v-show="project.goodness.pro_goodness!=''||project.goodness.pro_market_genera!=''||project.goodness.pro_business_model!=''||project.goodness.pro_service!=''">
                     <span class="title" style="font-size: 16px;">项目亮点</span>
                     <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_goodness.goodness_desc!=''&&project.goodness.pro_goodness.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
@@ -166,7 +166,7 @@
                 </div>
               </div>
               <!--核心团队-->
-              <div class="ul-lists" style="margin-top:16px;" v-show="team.core_users!=''&&team.tag!=''" >
+              <div class="ul-lists" style="margin-top:16px;" v-show="team.core_users!=''||team.tag!=''" >
                 <div class="item">
                   <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
                 </div>
@@ -184,7 +184,7 @@
 
               </div>
               <!--公司运营-->
-              <div class="ul-lists" style="margin-top:16px;" v-show="company.pro_company_scale!=''&&company.pro_status&&company.pro_website!==''" >
+              <div class="ul-lists" style="margin-top:16px;" v-show="company.pro_company_scale.comp_scale_value!=''||company.pro_status.status_name!=''||company.pro_website!==''" >
                 <div class="item">
                   <span class="title"><img class="img" :src="yunying" style="width: 37px;">公司运营</span>
                   <div class="rz-details">
@@ -194,7 +194,7 @@
                     </div>
                     <div class="rz-detail"  v-show="company.pro_website!=''">
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
-                      <span else class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px"><a :href="company.pro_website"  target=_blank>{{company.pro_website}}</a></span>
+                      <span else class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer" @click="urlOpen(company.pro_website)">{{company.pro_website}}</span>
                     </div>
                     <div class="rz-detail" v-show="company.pro_company_scale.comp_scale_value!=''">
                       <span class="det-title"style="width: 100%;line-height: 21px">公司规模</span>
@@ -227,7 +227,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                 </div>
               </div>
               <!--融资信息-->
-              <div class="ul-lists" v-show="financing.pro_finance_use!=''&&financing.pro_history_finance.length!=0" style="margin-top:16px;">
+              <div class="ul-lists" v-show="financing.pro_finance_use!=''||financing.pro_history_finance.length!=0" style="margin-top:16px;">
                 <div class="item">
                   <span class="title"><img class="img" src="../../../assets/images/money.png">融资信息</span>
                   <div class="rz-details">
@@ -271,11 +271,11 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
                         <!--<span class="pro-txt-4" style=" width: 202px; white-space: normal;overflow: hidden; word-break: break-all;line-height:22px;">{{finance.pro_finance_investor}}</span>-->
-                        <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 30 ? false:true">
+                        <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 35 ? false:true">
                           <div slot="content">
                             <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                           </div>
-                          <span class="pro-txt-4" style="width:232px;max-width:232px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
+                          <span class="pro-txt-4" style="width:323px;max-width:323px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
                         </el-tooltip>
                         <!--<div class="line"></div>-->
                       </div>
@@ -328,7 +328,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                     <span style="font-size:14px;color:#8492a6;">项目来源:&nbsp;&nbsp;</span>
                     <span class="person-tag" v-for="source in private.pro_source"> {{source.tag_name}}</span>
                   </div>
-                  <div class="rz-details" v-show="private.commission!=''&&private.stock_right!==''" >
+                  <div class="rz-details" v-show="private.commission!=''&&private.stock_right!==0" >
                     <div class="rz-detail" style="width: 50%" v-show="private.commission!=''">
                       <p class="det-title">签约佣金</p>
                       <p class="det-info">{{private.commission}}%</p>
@@ -1238,6 +1238,10 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         }
         return str
       },//项目来源编辑
+      urlOpen(url){
+          let url1='http://'+url;
+          window.open(url1);
+      },//链接跳转
       getProjectDetail () {
         return new Promise((resolve, reject)=>{
           //做一些异步操作
