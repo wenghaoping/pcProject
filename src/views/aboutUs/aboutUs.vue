@@ -62,7 +62,7 @@
         <div class="recommend1">
           <div class="recommend11"><img  :src="dianhua" class="contact_img"><span>0571-85026758</span></div>
           <div class="recommend11"> <img :src="youxiang" class="contact_img">
-            <a href="http://www.baidu.com"><span>fa@weitian.cn</span></a></div>
+          <span>fa@weitian.cn</span></div>
           <div class="recommend11"> <img :src="dizhi" class="contact_img">
             <span>杭州市文三路90号东部软件园8号楼1楼智云社</span></div>
         </div>

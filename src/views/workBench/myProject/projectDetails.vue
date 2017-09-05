@@ -77,7 +77,7 @@
             <div class="text">
               <span>扫描二维码，转发推送</span>
               <!--<img :src="qrImg">-->
-              <img src="../../../../static/images/xiaochengxu.png" alt="">
+              <img :src="xiaochengxu" alt="">
             </div>
             <el-tooltip class="item" effect="dark" placement="top-start">
               <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商、核心团队、产品数据、历史融资、新闻谬论等全方面信息</div>
@@ -184,7 +184,7 @@
 
               </div>
               <!--公司运营-->
-              <div class="ul-lists" style="margin-top:16px;" v-show="company.pro_company_scale.comp_scale_value!=''||company.pro_status.status_name!=''||company.pro_website!==''" >
+              <div class="ul-lists" style="margin-top:16px;" v-show="company.pro_company_scale!=''||company.pro_status!=''||company.pro_website!==''" >
                 <div class="item">
                   <span class="title"><img class="img" :src="yunying" style="width: 37px;">公司运营</span>
                   <div class="rz-details">
@@ -196,7 +196,7 @@
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
                       <span else class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer" @click="urlOpen(company.pro_website)">{{company.pro_website}}</span>
                     </div>
-                    <div class="rz-detail" v-show="company.pro_company_scale.comp_scale_value!=''">
+                    <div class="rz-detail" v-show="company.pro_company_scale!=''">
                       <span class="det-title"style="width: 100%;line-height: 21px">公司规模</span>
                       <span class="del-info"  style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{company.pro_company_scale.comp_scale_value}} 人</span>
                     </div>
@@ -328,7 +328,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                     <span style="font-size:14px;color:#8492a6;">项目来源:&nbsp;&nbsp;</span>
                     <span class="person-tag" v-for="source in private.pro_source"> {{source.tag_name}}</span>
                   </div>
-                  <div class="rz-details" v-show="private.commission!=''&&private.stock_right!==0" >
+                  <div class="rz-details" v-show="private.commission!=''&&private.stock_right!==''" >
                     <div class="rz-detail" style="width: 50%" v-show="private.commission!=''">
                       <p class="det-title">签约佣金</p>
                       <p class="det-info">{{private.commission}}%</p>
@@ -346,7 +346,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                       <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
                     <!--</div>-->
                   </div>
-                  <div class="item"   style="margin-top:24px;height: 49px;">
+                  <div class="item"   style="margin-top:24px;height: 49px;" v-show="private.contact_user_name!=''||private.contact_user_career!=''||private.contact_user_mobile!=''">
                     <div class="bot-det" v-show="private.contact_user_name!=''">
                       <!--<span>项目联系人 : </span>-->
                       <!--<span>{{project.contact.user_name}}</span>-->
@@ -628,6 +628,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
 </template>
 
 <script type="text/ecmascript-6">
+  import xiaochengxu from '../../../../static/images/xiaochengxu1.png'
   import pinpai from '../../../../static/images/icon-pinpa.png'
   import yunying from '../../../../static/images/icon-yunying.png'
   import cirIcon from '../../../../static/images/circle.png'
@@ -646,6 +647,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         yunying:yunying,
         pinpai:pinpai,
         cirIcon:cirIcon,
+        xiaochengxu:xiaochengxu,
         projectPushDisplay:false,//项目推送弹框,人脉入口
         projectPushDisplay2:false,//项目推送弹框,项目入口
         searchDisplay: false,//一键尽调弹框
@@ -668,115 +670,108 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         },
         loading: true,
         file:{
-            pro_BP:{
-              created_at: "2017-08-30 10:51:15",
-              deleted_at: null,
-              file_ext: "docx",
-              file_id: 3530,
-              file_title: "微天使PC端开发文档1",
-              file_url: "/test_file/20170830/egKaSAxsZ7UNshhkCIuvbpjqNzDW59a628010b3d0.docx",
-              follow_id: 0,
-              project_id: 8215,
-              type: 1,
-              updated_at: "2017-08-30 10:51:15",
-              user_id: 182510,
-            },
+          pro_BP:{
+            created_at: "",//2017-08-30 10:51:15
+            deleted_at: null,
+            file_ext: "",//docx
+            file_id: '',//3530
+            file_title: "",//微天使PC端开发文档1
+            file_url: "",///test_file/20170830/egKaSAxsZ7UNshhkCIuvbpjqNzDW59a628010b3d0.docx
+            follow_id: '',//0
+            project_id: '',//8215
+            type: '',//1
+            updated_at: "",//2017-08-30 10:51:15
+            user_id: '',//182510
+          },
 
         },
         team:{
-            core_users:{
-                ct_member_career:'技术',
-              ct_member_intro:'亮点亮点亮点亮点亮点亮点亮点亮点',
-              ct_member_name:'张三',
-              stock_scale:10,
+          core_users:{
+            ct_member_career:'',//技术
+            ct_member_intro:'',//亮点亮点亮点亮点亮点亮点亮点亮点
+            ct_member_name:'',//张三
+            stock_scale:'',//10
 
-            },
+          },
           tag:{
-            tag_name:'大海',
+            tag_name:'',//大海
           }
         },
         financing:{
-          pro_finance_use:'用途',
-          pro_history_finance:[{
-            finance_time:1503331200,
-            pro_finance_investor:'aS财经asaS财经asaS财经asaS财saSasaSS财经asaS',
-            pro_finance_scale:10000,
-            belongs_to_stage:{
-              sort: 5,
-              stage_id: 18,
-              stage_name: "A+轮"
-            }
-          },
+          pro_finance_use:'',//用途
+          pro_history_finance:[
             {
-              finance_time:1503331200,
-              pro_finance_investor:'aS财经asaS财经asaS财经asaS财saSasaSS财经asaS',
-              pro_finance_scale:10000,
+              finance_time:'',//1503331200
+              pro_finance_investor:'',//aS财经asaS财经asaS财经asaS财saSasaSS财经asaS
+              pro_finance_scale:'',//10000
               belongs_to_stage:{
-                sort: 5,
-                stage_id: 18,
-                stage_name: "A+轮"
+                sort: '',//5
+                stage_id: '',//18
+                stage_name: "",//A+轮
               }
             }
           ]
         },
         company:{
           pro_status:{
-            status_name: "上线1"
+            status_name: ""//上线1
           },
           pro_company_scale:{
-            comp_scale_value:'1-20'
+            comp_scale_value:''//1-20
           },
-          pro_website:'baidu.com'
+          pro_website:''//baidu.com
         },
         pro:{
-          is_exclusive:1,
+          is_exclusive:'',//1
         },
         milepost:{
           pro_develop:{
-            dh_start_time:1503331200,
-            dh_event:'事件'
+            dh_start_time:'',//1503331200
+            dh_event:''//事件
           }
 
         },
+        brands:{},
         private:{
-          commission:'10',
-          contact_user_career:'技术',
-          stock_follow:'12',
-          stock_other:'21',
-          stock_right:'12',
-          user_mobile:'18745852123',
-          user_name:'张三',
+          commission:'',//10
+          contact_user_career:'',//技术
+          stock_follow:'',//12
+          stock_other:'',//22
+          stock_right:'',//12
+          user_mobile:'',//18745852123
+          user_name:'',//张三
           pro_source:{
-            tag_name:'baidu'
+            tag_name:''//baidu
           }
         },
         project:{
-          follow_user:'张小五',
-          open_status:1,
-          pro_company_name:'aaa',
-          pro_intro: "微天使PC端开发文档",
-          pro_name: "微天使PC端开发文档",
-          pro_schedule:'10',
-          pro_total_score:'94',
+          pro_industry:{
+            industry_name:''//轮次
+          },
+          follow_user:'',//张小五
+          open_status:'',//1
+          pro_company_name:'',//aaa
+          pro_intro: "",//微天使PC端开发文档
+          pro_name: "",//微天使PC端开发文档
+          pro_schedule:'',//10
+          pro_total_score:'',//94
           pro_area:{
-            area_title:'北京市'
+            area_title:''//北京市
           },
           goodness:{
             pro_business_model:'',
             pro_goodness:{
-              goodness_desc: "凉凉凉凉",
-              goodness_title: "亮点亮点"
+              goodness_desc: "",//凉凉凉凉
+              goodness_title: ""//亮点亮点
             },
             pro_market_genera:{},
             pro_service:{},
           },
           pro_scale:{
-            scale_money:'1001W-200W',
+            scale_money:'',//1001W-200W
           },
           pro_stage:{
-            sort: 2,
-            stage_id: 2,
-            stage_name: "天使轮"
+            stage_name:''//天使论
           }
         },
 //        project: {
@@ -1105,6 +1100,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
       download(e){
         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
         window.location.href=url;
+        console.log(url);
       },//下载文件
       searchChange(queryString){
 //        this.$tool.console(queryString);

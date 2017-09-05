@@ -90,15 +90,18 @@
   export default {
     data () {
       return {
+        brand1:'',
         restaurants: [],
         state4: '',
         timeout:  null,
         cb:'',
-        options: [{
+        options: [
+//            {
+//          value: 0,
+//          label: '个人信息'
+//        },
+          {
           value: 0,
-          label: '个人信息'
-        },{
-          value: 1,
           label: '退出登录'
         }],
         value:'',
@@ -156,10 +159,12 @@
       },
       //*获取远程数据模拟
       loadData(arr){
-        let newArr = [];
+        var newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
           obj.value = arr[i].company_name;
+          obj.brand=arr[i].project_name;
+          this.brand1=arr[i].project_name;
           obj.address = arr[i].com_id;
           newArr.push(obj)
         }
@@ -172,7 +177,7 @@
             .then(res => {
               this.restaurants = [];
               let data = res.data.data;
-                this.restaurants = this.loadData(data);
+                this.restaurants = this.loadData(data)+this.brand1;
 //                console.log(this.restaurants);
 //              if (queryString == "") this.restaurants = [];
               let restaurants = this.restaurants;
@@ -252,12 +257,12 @@
       loginOut(e){
         console.log(e)
         if(e==0){
-//          this.$router.push('/identityDetail');
-          this.$router.push({name: 'identityDetail', query: {user:  111}})//路由传参
-          this.$route.query.user;
-        }else{
           localStorage.clear();
           window.location.reload()
+//          this.$router.push({name: 'identityDetail', query: {user_id:  localStorage.user_id}})//路由传参
+//          this.$route.query.user;
+        }else{
+
         }
 
       }
@@ -289,7 +294,7 @@
     /*right: 15%!important;*/
   /*}*/
   .width350{
-    width: 350px;
+    width:21%;
     display: inline-block;
     position: relative;
     top: 12px!important;
