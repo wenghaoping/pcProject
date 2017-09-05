@@ -89,7 +89,7 @@
           <!--</div>-->
           <div class="line"></div>
           <div class="ul-lists" style="margin-top:16px;padding: 0">
-            <div class="item" v-show="project.goodness.pro_goodness!=''&&project.goodness.pro_market_genera!=''&&project.goodness.pro_business_model!=''&&project.goodness.pro_service!=''">
+            <div class="item" v-show="project.goodness.pro_goodness!=''||project.goodness.pro_market_genera!=''||project.goodness.pro_business_model!=''||project.goodness.pro_service!=''">
               <span class="title" style="font-size: 16px;">项目亮点</span>
               <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_goodness.goodness_desc!=''&&project.goodness.pro_goodness.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
@@ -123,7 +123,7 @@
           </div>
         </div>
         <!--核心团队-->
-        <div class="ul-lists" style="margin-top: 16px;background: rgb(249, 250, 252); padding: 20px;" v-show="team.core_users!=''&&team.tag!=''">
+        <div class="ul-lists" style="margin-top: 16px;background: rgb(249, 250, 252); padding: 20px;" v-show="team.core_users!=''||team.tag!=''">
           <div class="item">
             <span class="title"><img class="img" src="../assets/images/team.png">核心团队</span>
           </div>
@@ -142,13 +142,13 @@
         </div>
 
         <!--公司运营-->
-        <div class="ul-lists" style="margin-top:16px;background: rgb(249, 250, 252); padding: 20px;"  v-show="company.pro_company_scale!=''&&company.pro_status&&company.pro_website!==''">
+        <div class="ul-lists" style="margin-top:16px;background: rgb(249, 250, 252); padding: 20px;" v-show="company.pro_status.status_name!=''||company.pro_website!=''||company.pro_company_scale.comp_scale_value!=''">
           <div class="item">
             <span class="title"><img class="img" :src="yunying" style="width: 37px;">公司运营</span>
             <div class="rz-details">
-              <div class="rz-detail"  v-show="company.pro_status.status_name!=''">
+              <div class="rz-detail"  v-show="company.pro_status!=''">
                 <p class="det-title">运营状态</p>
-                <p class="det-info" v-if="company.pro_status.status_name!==''">{{company.pro_status.status_name}}</p>
+                <p class="det-info">{{company.pro_status.status_name}}</p>
               </div>
               <div class="rz-detail" v-show="company.pro_website!=''">
                 <p class="det-title">公司官网</p>
@@ -224,11 +224,11 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                   <span class="pro-txt-1">{{finance.finance_time}}</span>
                   <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                   <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
-                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 30 ? false:true">
+                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 35 ? false:true">
                     <div slot="content">
                       <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                     </div>
-                    <span class="pro-txt-4" style="width:232px;max-width:232px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
+                    <span class="pro-txt-4" style="width:323px;max-width:323px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
                   </el-tooltip>
                   <div class="line"></div>
                 </div>
@@ -404,8 +404,9 @@ color:#4e4563;">{{brandd.brand_name}}</span>
           }
         },
         financing:{
-          pro_finance_use:'用途',
-          pro_history_finance:[{
+          pro_finance_use:'',
+          pro_history_finance:[
+              /*{
             finance_time:1503331200,
             pro_finance_investor:'aS财经asaS财经asaS财经asaS财saSasaSS财经asaS',
             pro_finance_scale:10000,
@@ -424,7 +425,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                 stage_id: 18,
                 stage_name: "A+轮"
               }
-            }
+            }*/
           ]
         },
         company:{
