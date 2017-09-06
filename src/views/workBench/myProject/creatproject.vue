@@ -555,7 +555,7 @@
           });
 
       },
-      /*一键同步按钮*/
+      //*一键同步按钮
       sync(){
         this.dialogVisible = false;
 //        console.log(this.queryData);

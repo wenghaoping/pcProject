@@ -255,12 +255,9 @@
 
       },
       loginOut(e){
-        console.log(e)
         if(e==0){
           localStorage.clear();
-          window.location.reload()
-//          this.$router.push({name: 'identityDetail', query: {user_id:  localStorage.user_id}})//路由传参
-//          this.$route.query.user;
+          window.location.reload();
         }else{
 
         }
@@ -294,7 +291,7 @@
     /*right: 15%!important;*/
   /*}*/
   .width350{
-    width:21%;
+    width:28%;
     display: inline-block;
     position: relative;
     top: 12px!important;
@@ -361,11 +358,6 @@ background: red;
     position: relative;
     /*overflow: auto!important;*/
   }
-/*  .el-button--primary{
-    background:#40587a!important;
-    border-radius:2px!important;
-    border-color:#40587a!important;
-  }*/
   .newColor{
     color:#40587A!important;
   }
