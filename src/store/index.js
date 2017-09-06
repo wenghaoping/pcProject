@@ -7,6 +7,7 @@ import getters from './getters'
 import pushProject from './modules/pushProject.js'
 import login from './modules/login.js'
 import pageAndSelect from './modules/pageAndSelect.js'
+import syncData from './modules/syncData.js'
 Vue.use(Vuex);
 
 const state = {
@@ -23,6 +24,7 @@ export default  new Vuex.Store({
     pushProject: pushProject,
     logining:login,
     pageANDSelect:pageAndSelect,
+    syncData:syncData
   }
 
 })

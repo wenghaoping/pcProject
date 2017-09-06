@@ -27,6 +27,9 @@ Vue.prototype.URL = URL_;
 import echarts from 'echarts';//echart封装
 Vue.prototype.$echart = echarts;
 
+import './global/filters';//过滤器
+
+
 import Vuex from 'vuex';
 import global from './global/global.js';
 Vue.prototype.$global= global;

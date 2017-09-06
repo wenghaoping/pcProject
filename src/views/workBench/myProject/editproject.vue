@@ -15,7 +15,7 @@
             </div>
             <el-collapse-transition>
               <div v-show="fileShow">
-                <div class="block-info block-cc-file">
+                <div class="block-info block-cc-file block-cc-pro">
                   <span class="f-title fl">商业计划书</span>
                   <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-if="uploadLoading"><img src="../../../assets/images/loading.gif"></span>
                   <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-else></span>
@@ -31,13 +31,12 @@
                                :file-list="planList"
                                accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                                :data="uploadDate">
-                      <el-button slot="trigger" type="primary" v-show="planButton"><i
-                        class="el-icon-plus"></i>计划书上传</el-button>
+                      <el-button slot="trigger" type="primary" v-show="planButton">计划书上传</el-button>
 
                     </el-upload>
 
                   </span>
-
+                  <span class="f-tips fl" style="margin-left: 8px;" v-show="planButton"><i>BP私密保护，投资人可通过申请查看来了解项目价值</i><i>支持pdf、ppt、doc、png，jpg，jpeg文件格式，单个文件最大50M</i></span>
                 </div>
                 <div class="block-info block-cc-pro" style="margin-top:15px;">
                   <span class="f-title fl">项目文件</span>
@@ -55,10 +54,10 @@
                         :show-file-list="showList"
                         accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
                         multiple>
-                        <el-button slot="trigger" type="primary"><i class="el-icon-plus"></i>批量上传</el-button>
+                        <el-button slot="trigger" type="primary">批量上传</el-button>
                       </el-upload>
                   </span>
-                  <span class="f-tips fl" style="margin-left: 8px;">（仅自己可见）</span>
+                  <span class="f-tips fl" style="margin-left: 8px;"><i>项目文件仅自己可见</i><i>支持pdf、ppt、doc、png，jpg，jpeg文件格式，单个文件最大50M</i></span>
                 </div>
                 <div class="block-info block-cc-other" style="margin-bottom: 15px;"
                      v-for="(list, index) in uploadShow2.lists"
@@ -980,7 +979,8 @@
       </div>
     </div>
     <!--添加运营状态的弹窗-->
-    <el-dialog title="添加运营状态" :visible="addStateDisplay" :show-close="showList">
+    <el-dialog title="添加运营状态" :visible="addStateDisplay" :show-close="showList"
+               close-on-press-escape close-on-click-modal lock-scroll>
       <el-form :model="form">
         <el-form-item label="运营状态" :label-width="formLabelWidth">
           <el-input v-model="form.state" auto-complete="off"></el-input>
@@ -992,7 +992,8 @@
       </div>
     </el-dialog>
     <!--文件分组的弹窗-->
-    <el-dialog title="文件分组设置" :visible="setFileDisplay" :show-close="showList">
+    <el-dialog title="文件分组设置" :visible="setFileDisplay" :show-close="showList"
+               close-on-press-escape close-on-click-modal lock-scroll>
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
                       :rules="[{required: true, message: '分组不能为空', trigger: 'blur',max: 40, message: '最多40个字符'}]">
@@ -1021,10 +1022,26 @@
       </div>
     </el-dialog>
     <!--一键同步选择框-->
-    <syncprojectdetail :sync-project-detail-display="syncProjectDetailDisplay" :proid="this.project.project_id"
-                         @changeSyncProjectDetail="changeSyncProjectDetail">
+    <syncprojectdetail :sync-project-detail-display="syncProjectDetailDisplay" :companyid="this.companyid"
+                         @changeSyncProjectDetail="changeSyncProjectDetail"
+                          @syncCompanyData="syncCompanyData">
 
     </syncprojectdetail>
+
+<!--一键同步提示框-->
+    <el-dialog
+      title="一键同步"
+      :visible="syncDialogDisplay"
+      size="tiny" :show-close="showList"
+    close-on-press-escape close-on-click-modal lock-scroll>
+      <div style="color:#475669">
+        微天使将为您同步 <i style="color:#8492A6">{{companyTitle}}</i>的相关信息，请先核实
+      </div>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="syncDialogDisplay = false">取 消</el-button>
+    <button class="btn1" @click="syncProjectDetailDisplay = true">确 定</button>
+  </span>
+    </el-dialog>
 
   </div>
 </template>
@@ -1174,6 +1191,8 @@
       return {
         addStateDisplay: false,
         setFileDisplay: false,
+        syncProjectDetailDisplay: false,//同步弹窗
+        syncDialogDisplay:false,//一键同步提示框
         uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
         uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
         project_id: "",//项目Id全局保存
@@ -1399,18 +1418,18 @@
         privateMust: false,//FA业务
 
 
-        syncProjectDetailDisplay: false,//同步弹窗
+
         close: false,
         restaurants: [],//数据存放
         loading: false,//加载
         add_pro: [],//添加个人标签暂存
         companyTitle: "",//尽调搜索的公司的名称
-        queryData: {},
+        companyid: "",//尽调搜索的公司的ID
+        queryData: {},//一键同步存放的数据
         timeout: null,
         showList: false,
         loadingcheck:false,
         statusLast:0,
-
 
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },//电话规则
         NumberRule: { validator: checkNumber, trigger: 'blur' },//可以为空,必须为数字
@@ -1421,8 +1440,6 @@
         Number40Rule:{ validator:checkNubmer40, trigger:'blur'},//可以为空,最长字段40个字符
         Number50Rule:{ validator:checkNubmer50, trigger:'blur'},//可以为空,最长字段50个字符
         Number1000Rule:{ validator:checkNubmer1000, trigger:'blur'},//可以为空,最长字段1000个字符
-
-
 
         one:false,//第一次进来的时候
         submitButton:false,//是否允许提交false允许/true不允许
@@ -1671,15 +1688,20 @@
               this.uploadShow2.lists=[];
               let data = res.data.data;
               //项目文件设置=============================================
-              if(data.file.pro_BP.length=="") {this.planList=[];this.uploadShow={};};//计划书清空
-              this.planList = [{name: data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext, url: data.file.pro_BP.file_url}];//设置计划书
-              this.uploadShow = {
-                file_title: data.file.pro_BP.file_title,
-                pro_intro: data.file.pro_BP.file_title,
-                pro_name: data.file.pro_BP.file_title,
-                project_id: this.project_id,
-                file_id: data.file.pro_BP.file_id
-              };//设置计划书上传列表
+              //计划书清空
+              if(data.file.pro_BP.length=="") {
+                  this.planList=[];this.uploadShow={};
+              }else{
+                this.planList = [{name: data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext, url: data.file.pro_BP.file_url}];//设置计划书
+                this.uploadShow = {
+                  file_title: data.file.pro_BP.file_title,
+                  pro_intro: data.file.pro_BP.file_title,
+                  pro_name: data.file.pro_BP.file_title,
+                  project_id: this.project_id,
+                  file_id: data.file.pro_BP.file_id
+                };//设置计划书上传列表
+              }
+
               if (this.planList.length != 0) this.planButton = false;
               else this.planButton = true;//判断计划书上传按钮显示被否
               this.setUploadShow2(data.file.pro_file);//设置项目文件上传列表
@@ -2043,8 +2065,9 @@
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].company_name;
+          obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
           obj.address = arr[i].com_id;
+          obj.company_name = arr[i].company_name;
           newArr.push(obj)
         }
         return newArr;
@@ -2079,21 +2102,9 @@
         };
       },
       handleSelect(item) {
-//        this.loading=true;
-        this.companyTitle = item.value;
-        /*this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
-          .then(res => {
-            let data = res.data.data;
-//            console.log(this.$tool.getToObject(data))
-            this.queryData = data;
-            this.dialogVisible = true;
-            this.loading=false;
-          })
-          .catch(err => {
-            this.$tool.error("获取失败");
-            this.$tool.console(err);
-          });*/
-
+        this.companyTitle = item.company_name;
+        this.companyid = item.address;
+        this.project.pro_company_name = item.company_name;
       },//选择了搜索出来的数据后
 
       //控制添加radio
@@ -2510,6 +2521,9 @@
           }
         }
       },
+
+
+
       getTeamSync(data=[]){
         let arr = [];
         for(let i=0; i<data.length; i++){
@@ -2555,48 +2569,72 @@
 
       //*一键同步按钮
       syncOne(){
+        this.companyTitle = this.project.pro_company_name;
         if(this.companyTitle===''){
             this.$tool.warning("请先填写公司名称");
         }else{
-/*          this.$confirm('微天使将为您同步'+this.companyTitle+'的相关信息，请先核实, 是否继续?', '一键同步', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.sync();
-          }).catch(() => {
+          this.loading=true;
+          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.companyTitle})
+           .then(res => {
+             let data = res.data.data;
+             if(data.length!=0){
+               this.companyid=data.company.com_id;
+                this.syncDialogDisplay = true;
+             }else{
+               this.$tool.warning("未查询到该公司信息，无法获取");
+             }
+             this.loading=false;
+           })
+           .catch(err => {
+             this.$tool.error("获取失败");
+             this.$tool.console(err);
+             this.loading=false;
+           });
 
-          });*/
-
-
-          const h = this.$createElement;
-          this.$msgbox({
-            title: '一键同步',
-            message: h('p', null, [
-              h('span', null, '微天使将为您同步 '),
-              h('i', { style: 'color:#99a9bf;' }, this.companyTitle),
-              h('span', null, '的相关信息，请先核实, 是否继续?')
-            ]),
-            confirmButtonText: '确定',
-            cancelButtonText: '取消'
-          }).then(action => {
-            this.sync();
-          });
         }
-
       },//点击同步按钮
-      sync(){
-        this.syncProjectDetailDisplay = true;
-      },//一键同步
       changeSyncProjectDetail(msg){
         this.syncProjectDetailDisplay=msg;
+        this.syncDialogDisplay=false;
       },//项目详情弹窗关闭函数
       getprojectId(){
         this.project_id = this.$route.query.project_id || '';
         this.project.project_id = this.$route.query.project_id || '';
-      },
+      },//获取id
+      syncCompanyData(msg){
+          this.syncDialogDisplay=false;
+          console.log(this.$store.state.syncData);
+          this.queryData=this.$store.state.syncData.data;
+          let queryData = this.$store.state.syncData.data;
+          let checkList = this.$store.state.syncData.checkList;
+          if(msg){
+            //覆盖
+            checkList.forEach((x)=>{
+              for(let index in queryData){
+                if(x==index){
+                  this[x]=queryData[index];
+                }
+              }
+            });
+          }else{
+              //不覆盖
+            checkList.forEach((x)=>{
+              for(let index in queryData){
+                if(x==index){
+                  if(x=='project' || x=='company'){
+                    this[x]=queryData[index];
+                  }else{
+                    for(let key in this[x]){
+                      this[x][key].push(queryData[index]);
+                    }
+                  }
+                }
+              }
+            });
+          }
+      },//开始同步信息
     },
-    //    当dom一创建时
+    //当dom一创建时
     created(){
       this.$tool.getTop();
       this.loading = true;

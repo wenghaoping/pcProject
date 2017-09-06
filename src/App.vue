@@ -483,4 +483,10 @@ background: red;
       margin-right: 6% !important;
     }
   }
+  .btn1{
+    background:#40587a;
+    border-radius:2px;
+    width:88px;
+    height:36px;color:#ffffff;cursor: pointer;margin-left: 16px;
+  }
 </style>

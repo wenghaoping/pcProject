@@ -1,5 +1,5 @@
 <template>
-  <div id="projectDetails" class="clearfix"  v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+  <div id="projectDetails" class="clearfix"  v-loading.fullscreen="loading" element-loading-text="拼命加载中">
 
     <div class="contain-grid contain-center1 fl" ref="left" id="wid">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
@@ -399,9 +399,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         </div>
       </div>
     </div>
-    <div class="contain-grid contain-right-1 fl" ref="right"
-         v-loading="loading"
-         element-loading-text="拼命加载中">
+    <div class="contain-grid contain-right-1 fl" ref="right">
       <div class="main-box header_none">
         <el-tabs v-model="activeName" @tab-click="handleClick2" style="position: relative">
           <el-tab-pane name="1">
@@ -493,7 +491,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
           <el-tab-pane name="2">
             <span slot="label">买家图谱
               <el-tooltip class="item" effect="dark" placement="top-start">
-                <div slot="content">根据微天使匹配算法从您的人脉库，全网人脉库算出<br/>该项目的意向投资人</div>
+                <div slot="content">根据微天使匹配算法从您的人脉库，全站人脉库算出<br/>该项目的意向投资人</div>
                 <div class="img"><img src="../../../assets/images/why.png"></div>
     </el-tooltip>
             </span>
@@ -501,7 +499,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
               <div v-show="!tabs">
                 <div class="main_right main_left">
                   <div class="item_top">
-                    <span class="top_inn fl">匹配推荐=我的+全网人脉</span>
+                    <span class="top_inn fl">匹配推荐=我的+全站人脉</span>
                     <div class="selectIn fr" style="height: 36px;">
                       <el-select v-model="isFollow" placeholder="请选择" @change="selectFollow">
                         <el-option
@@ -585,9 +583,12 @@ color:#4e4563;">{{brandd.brand_name}}</span>
 
     <!--尽调搜索弹窗-->
     <el-dialog title="一键尽调" :visible="companySearchDisplay" close-on-click-modal close-on-press-escape :before-close="dialogVisibleTo">
-      <el-form label-position="top" label-width="140px">
-        <el-form-item label="请输入你要尽调的公司">
-          <el-input v-model="searchName" icon="search" :on-icon-click="handleIconClick" @keyup.native.enter="handleIconClick" ></el-input><!--@change="searchChange"-->
+      <el-form label-position="top" label-width="140px" v-loading="loadingSmall"
+               element-loading-text="拼命加载中">
+        <el-form-item label="尽调项目：帮助FA成交的项目管理工具">
+          <el-input v-model="searchName" @keyup.native.enter="handleIconClick" >
+            <el-button slot="append" icon="search" @click="handleIconClick"></el-button>
+          </el-input><!--@change="searchChange"-->
         </el-form-item>
       </el-form>
       <ul class="onsearch">
@@ -666,7 +667,8 @@ color:#4e4563;">{{brandd.brand_name}}</span>
           name: '',
           region: ''
         },
-        loading: true,
+        loading: false,
+        loadingSmall: false,
         file:{
             pro_BP:{
               created_at: "2017-08-30 10:51:15",
@@ -779,191 +781,6 @@ color:#4e4563;">{{brandd.brand_name}}</span>
             stage_name: "天使轮"
           }
         },
-//        project: {
-//          follow_user:'',
-//          project_id: "",//项目id59W2a0GE
-//          pro_name: "",//项目名称HoopEASY商业计划PPT+for+pitch
-//          pro_company_name: "",//HoopEASY
-//          pro_company_scale: {
-//            comp_scale_id: 1,
-//            comp_scale_value: "1-20"
-//          },//公司规模
-//          pro_source: "",//项目来源微天使项目
-//          pro_intro: "",//项目简介一款最酷的篮球社交软件
-//          pro_total_score: "",//98.00
-//          pro_finance_value: "",//项目估值10.00
-//          is_exclusive: 0,//0其他 1独家 2非独家
-//          open_status: 1,//0私密  1公开
-//          pro_goodness: "",//项目介绍专注于篮球项目的移动端社交平台。在基于用户所处的地理位置基础上，将用户个人，球队，比赛，场馆等资源有机整合，形成一个以用户为核心的垂直网络社区，带给篮球爱好者全新的社交方式和运动体验。
-//          pro_website: "",//官方网址www.baidu.com
-//          contact: {
-//            /*user_name: "",//赵工佐
-//             user_mobile: ""//18551711000*/
-//          },//项目联系人
-//
-//          pro_schedule: {
-//            /*"schedule_id": 3,
-//             "schedule_name": "",//考察
-//             "created_at": null,
-//             "updated_at": "2017-06-06 11:00:21",
-//             "user_id": 0*/
-//          },//项目进度
-//
-//          pro_status: {
-//            /*"status_id": 3,
-//             "status_name": "",//上线
-//             "created_at": null,
-//             "updated_at": null*/
-//          },//运营状态
-//
-//          pro_area: {
-//            "area_id": 2,
-//            "area_title": "北京市",
-//            "pid": 1,
-//            "created_at": null,
-//            "updated_at": null,
-//            "pivot": {
-//              "item_id": 37,
-//              "area_id": 2,
-//              "created_at": "2017-06-01 16:27:35",
-//              "updated_at": "2017-06-01 16:27:35",
-//              "priority": 1
-//            }
-//          },//区域
-//          pro_stage: {
-//            "stage_id": 2,
-//            "stage_name": "天使轮",
-//            "sort": 2,
-//            "created_at": null,
-//            "updated_at": null,
-//            "pivot": {
-//              "item_id": 37,
-//              "stage_id": 2,
-//              "created_at": "2017-06-01 16:23:04",
-//              "updated_at": "2017-06-13 18:33:31",
-//              "priority": 1
-//            }
-//          },//轮次
-//
-//          pro_scale: {
-//            "scale_id": 1,
-//            "scale_money": "100W以下",
-//            "created_at": null,
-//            "updated_at": null,
-//            "pivot": {
-//              "item_id": 37,
-//              "scale_id": 1,
-//              "created_at": null,
-//              "updated_at": null,
-//              "priority": 1
-//            }
-//          },//规模
-//
-//          pro_industry: [
-//            {
-//              "industry_id": 12,
-//              "industry_name": "社交网络",
-//              "parent_id": 0,
-//              "created_at": null,
-//              "updated_at": null,
-//              "pivot": {
-//                "item_id": 37,
-//                "industry_id": 12,
-//                "created_at": "2017-06-01 16:21:46",
-//                "updated_at": "2017-06-01 16:21:46",
-//                "priority": 1
-//              }
-//            }
-//          ],//领域标签
-//
-//          /*核心团队人员*/
-//          core_users: [
-//            {
-//              project_ct_id: 30,
-//              ct_index: "9bd0c8d7d615832340340aab0c0625b7",
-//              project_id: 37,
-//              project_index: "275fa4f135eecf08e5660d23e294e6cd",
-//              ct_member_name: "",//赵工佐
-//              ct_member_career: "",
-//              ct_member_intro: "",
-//              created_at: null,
-//              updated_at: null,
-//              stock_scale: null
-//            }
-//          ],
-//          /*//历史融资信息*/
-//          pro_history_finance: [{
-//            project_id: 37,
-//            pro_finance_stage: 1,//轮次
-//            pro_finance_scale: "100.00",//金额
-//            pro_finance_investor: "周杰伦",//投资人
-//            created_time: null,
-//            updated_time: null,
-//            belongs_to_stage:{
-//
-//            }
-//          }],
-//          /*自定义标签*/
-//          tag: [
-//            {
-//              tag_id: 1,
-//              tag_name: "海贼王",
-//              user_id: 0,
-//              project_id: 37,
-//              created_time: null,
-//              updated_time: null,
-//              type: 0//项目标签
-//            }
-//          ],
-//          /*文件列表*/
-//          pro_file: [
-//            {
-//              file_id: 1,
-//              project_id: 37,
-//              file_title: "项目文件1",
-//              file_ext: "doc",
-//              file_url: "/data/url",
-//              created_at: null,
-//              updated_at: null,
-//              deleted_at: null
-//            }],
-//          /*里程碑*/
-//          pro_develop: [
-//            {
-//              project_dh_id: 6,
-//              dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
-//              project_id: 37,
-//              project_index: "275fa4f135eecf08e5660d23e294e6cd",
-//              dh_start_time: "1436112000",//时间
-//              dh_end_time: "1443542400",
-//              dh_event: "组建团队和设立办公室",//事件
-//              created_at: null,
-//              updated_at: null
-//            }],
-//          /*FA签约*/
-//          pro_FA: {
-//            project_id: 37,
-//            commission: "63.00",//签约佣金
-//            stock_right: "13.00",//股权赠与
-//            stock_follow: "12.00",//跟投权
-//            stock_other: "55.00",//其他权益
-//            created_at: null,
-//            updeted_at: null
-//          },
-//          /*BP文件*/
-//          pro_BP: {
-//            file_id: 34,
-//            project_id: 37,
-//            user_id: 181391,
-//            file_title: "",
-//            bp_ext: "pptx",
-//            bp_url: "20161201/e6b499c3e94ed4247147cdbfd50ca319.pptx",
-//            created_at: "2017-06-01 18:14:38",
-//            updated_at: "2017-06-01 18:14:38",
-//            deleted_at: null
-//          }
-//
-//        },
         seachCompanys:[],
         value: 1,
         status_name:'',//一键尽调边上那个按钮线里的字
@@ -1108,7 +925,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
       },//下载文件
       searchChange(queryString){
 //        this.$tool.console(queryString);
-        this.loading=true;
+        this.loadingSmall=true;
         this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
           .then(res=>{
             this.seachCompanys=[];
@@ -1117,7 +934,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
 //            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
             else this.seachCompanys=data;
 //            this.$tool.console(res);
-            this.loading=false;
+            this.loadingSmall=false;
           })
           .catch(err=>{
             this.$tool.console(err);

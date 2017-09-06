@@ -5,7 +5,14 @@
     </div>
       <div class="scan">
         <p class="title">微天使，FA的智能工作站</p>
-        <p class="samll">请用“微天使乐投平台”【小程序】扫一扫</p>
+        <p class="samll">请用“微天使乐投平台”【小程序】扫一扫
+          <span class="icon">
+            <img src="../../assets/images/why.png"/>
+          </span>
+          <span class="saoma">
+            <img src="../../assets/images/bigsaoma.png">
+          </span>
+        </p>
         <div class="img" v-html="qr" v-if="checkout" v-loading.body="loadIn">
           {{qr}}
         </div>
@@ -14,7 +21,7 @@
           <br>
           <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面</el-button>
         </div>
-        <p class="samll2">微信>发现>小程序>微天使乐投平台</p>
+        <!--<p class="samll2">微信>发现>小程序>微天使乐投平台</p>-->
       </div>
   </div>
 </template>
@@ -103,7 +110,32 @@ export default {
 <style scoped lang="less">
   svg{width: 200px;height: 200px;}
 #samllRoutine{
+  .saoma{
+    width: 252px;
+    height: 410px;
+    position: absolute;
+    top: 226px;
+    right: 183px;
+    display: none;
+    img{
+      width: 100%;
+    }
+  }
+  .icon:hover + .saoma {
+    display: block;
+  }
+  .icon{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 13px;
+    height: 13px;
+    margin-left: 8px;
+    img{
+      width: 100%;
+    }
 
+  }
   background: #f3f4f8;
   font-family:PingFangSC-Regular;
   padding-top: 156px;

@@ -340,7 +340,7 @@
       <div class="tagTitle">准确设置项目标签便于查找，并参与项目匹配度计算</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setTagDisplay = false">取 消</el-button>
-        <el-button type="primary" @click="addTag">确 定</el-button>
+        <button class="btn1" @click="addTag">确 定</button>
       </span>
     </el-dialog>
 

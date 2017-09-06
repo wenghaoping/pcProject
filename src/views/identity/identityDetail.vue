@@ -3,7 +3,7 @@
     <div class="title clearfix tc" v-show="!this.$route.query.user">
       创建您的投资名片?
       <div class="fr">
-        <el-button class="skip" type="text" @click="skip">跳过</el-button>
+        <button class="skip btn1" type="text" @click="skip">跳过</button>
       </div>
     </div>
     <div class="title clearfix tc" v-show="this.$route.query.user">
@@ -357,7 +357,7 @@
       },
       // 公司搜索相关函数
       handleSelect(item) {
-        this.companyTitle = item.value;
+        this.companyTitle = item.company_name;
         this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
         .then(res => {
           let data = res.data.data;
@@ -401,11 +401,12 @@
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].company_name;
+          obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
           obj.address = arr[i].com_id;
+          obj.company_name = arr[i].company_name;
           newArr.push(obj)
         }
-        return newArr
+        return newArr;
       },
       // 接收上传图片时返回的authenticate_id
       uploadSuccess(response){

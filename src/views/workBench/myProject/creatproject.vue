@@ -467,7 +467,7 @@
           this.$router.push({ name:'myProject'})
         });
       },
-      /*全部保存按钮*/
+      ///*全部保存按钮
       allSave(){
         if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){}
         else if(this.$tool.checkLength1(this.project.pro_name)){this.$tool.error("项目名称不超过40个字")}
@@ -494,18 +494,19 @@
 
         }
       },
-      /*获取数据*/
+      ///*获取数据
       loadData(arr){
-        let newArr=[];
-        for(let i=0; i<arr.length; i++){
-          let obj={};
-          obj.value=arr[i].company_name;
-          obj.address=arr[i].com_id;
+        let newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+          let obj = {};
+          obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
+          obj.address = arr[i].com_id;
+          obj.company_name = arr[i].company_name;
           newArr.push(obj)
         }
-        return newArr
+        return newArr;
       },
-      /*自动搜索,接口写这里面*/
+      ///*自动搜索,接口写这里面
       querySearchAsync(queryString, cb) {
         if(queryString.length>2){
           this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
@@ -535,8 +536,8 @@
         };
       },
       handleSelect(item) {
-          this.loading=true;
-        this.companyTitle=item.value;
+        this.loading=true;
+        this.companyTitle=item.company_name;
         this.$http.post(this.URL.getOneCompany,{user_id:localStorage.user_id,com_id:item.address})
           .then(res=>{
             let data=res.data.data;
