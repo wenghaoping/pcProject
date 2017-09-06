@@ -1,4 +1,5 @@
 <template>
+  <!--<span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>-->
   <div class="content">
     <div class="content1">
       <h1 style="margin-top:66px;font-size:40px;color:#1f2d3d;letter-spacing:0;">关于微天使</h1>
@@ -95,6 +96,11 @@
         weixin:weixin
       }
     },
+    methods:{
+      goBack(){
+        this.$router.go(-1);
+      },//返回上一层
+    }
 
   }
 </script>
