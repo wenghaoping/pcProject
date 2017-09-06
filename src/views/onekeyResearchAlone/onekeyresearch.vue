@@ -181,25 +181,35 @@
           <div class="item" v-if="chartDataCheck">
             <downloadechart :chart-data="chartData"></downloadechart>
           </div>
-          <div class="item" style="height: 61px;background: #ffffff;padding: 0">
-            <el-button type="text" @click="allSave" class="manager" style="margin-left: 40%;margin-top: 7px" >加入项目库</el-button>
-            <el-button type="text"  class="manager" style="margin-left: 5%;margin-top: 7px" @click="dialogVisible = true">联系项目方</el-button>
-            <el-dialog
-              :visible.sync="dialogVisible"
-              size="tiny"
-              :before-close="handleClose">
-              <span style="font-size:20px;color:#1f2d3d;display: inline-block;margin-top: 28px">微天使客服会联系您并安排与项目方的沟通</span>
-              <span style="font-size:14px;color:#5e6d82;display: inline-block;margin-top: 25px">联系客服：0571-85026758</span><br>
-              <span style="font-size:14px;color:#5e6d82;margin-top: 5px">或加微信：weitianshicn</span>
-              <img :src="img" alt="" style="width: 164px;height: 164px;margin-top: 24px">
-              <!--<span slot="footer" class="dialog-footer">-->
-              <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-              <!--<el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
-              <!--</span>-->
-            </el-dialog>
-          </div>
-        </div>
+          <!--加入项目库-->
 
+        </div>
+        <div class="item" style="height: 61px;background: #ffffff;padding: 0">
+          <div class="box">
+            <div class="top">
+              <el-tooltip class="item" effect="dark" content="将项目加入您的专属项目库，方便您日后查看并跟进项目进展" placement="top-start">
+                <el-button type="text"  @click="open2" class="manager" style="margin-left: 40%;margin-top: 7px" >加入项目库</el-button>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="微天使将联系到项目方，并为您安排约谈" placement="top-start">
+                <el-button type="text"  class="manager" style="margin-left: 5%;margin-top: 7px" @click="dialogVisible = true">联系项目方</el-button>
+              </el-tooltip>
+            </div>
+          </div>
+          <!--联系项目方弹框-->
+          <el-dialog
+            :visible.sync="dialogVisible"
+            size="tiny"
+            :before-close="handleClose">
+            <span style="font-size:20px;color:#1f2d3d;display: inline-block;margin-top: 28px">微天使客服会联系您并安排与项目方的沟通</span>
+            <span style="font-size:14px;color:#5e6d82;display: inline-block;margin-top: 25px">联系客服：0571-85026758</span><br>
+            <span style="font-size:14px;color:#5e6d82;margin-top: 5px">或加微信：weitianshicn</span>
+            <img :src="img" alt="" style="width: 164px;height: 164px;margin-top: 24px">
+            <!--<span slot="footer" class="dialog-footer">-->
+            <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
+            <!--<el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
+            <!--</span>-->
+          </el-dialog>
+        </div>
 
         <div class="empty fl" v-if="empty">
           <img src="../../assets/images/sorryKong.png">
@@ -548,6 +558,17 @@
       }
     },
     methods: {
+      open2() {
+        this.$confirm('已将xxx项目加入您的项目库', '温馨提示', {
+          confirmButtonText: '加入项目库',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push('/workBench')
+        }).catch(() => {
+
+        });
+      },//加入项目库弹框
       myrefresh(){
         window.location.reload();
       },
@@ -963,7 +984,7 @@
 </script>
 
 <style lang="less">
-  @import '../../assets/css/onekeyresearchAlone.less';
+  @import '../../assets/css/onesearch.less';
   .el-carousel__item img {
     width: 100%;
   }
@@ -985,5 +1006,11 @@
   }
   .el-dialog__headerbtn{
     display: none;
+  }
+  .el-message-box__status.el-icon-warning{
+    display:none
+  }
+  .el-message-box__message{
+    margin-left: 10px!important;
   }
 </style>
