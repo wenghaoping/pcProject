@@ -181,23 +181,26 @@
           <div class="item" v-if="chartDataCheck">
             <downloadechart :chart-data="chartData"></downloadechart>
           </div>
-
+          <div class="item" style="height: 61px;background: #ffffff;padding: 0">
+            <el-button type="text" @click="allSave" class="manager" style="margin-left: 40%;margin-top: 7px" >加入项目库</el-button>
+            <el-button type="text"  class="manager" style="margin-left: 5%;margin-top: 7px" @click="dialogVisible = true">联系项目方</el-button>
+            <el-dialog
+              :visible.sync="dialogVisible"
+              size="tiny"
+              :before-close="handleClose">
+              <span style="font-size:20px;color:#1f2d3d;display: inline-block;margin-top: 28px">微天使客服会联系您并安排与项目方的沟通</span>
+              <span style="font-size:14px;color:#5e6d82;display: inline-block;margin-top: 25px">联系客服：0571-85026758</span><br>
+              <span style="font-size:14px;color:#5e6d82;margin-top: 5px">或加微信：weitianshicn</span>
+              <img :src="img" alt="" style="width: 164px;height: 164px;margin-top: 24px">
+              <!--<span slot="footer" class="dialog-footer">-->
+              <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
+              <!--<el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
+              <!--</span>-->
+            </el-dialog>
+          </div>
         </div>
-         <div class="item" style="height: 61px;">
-           <el-button type="text" class="manager" style="margin-left: 40%;margin-top: 7px" >加入项目库</el-button>
-           <el-button type="text"  class="manager" style="margin-left: 5%;margin-top: 7px" @click="dialogVisible = true">联系项目方</el-button>
-           <el-dialog
-             title="提示"
-             :visible.sync="dialogVisible"
-             size="tiny"
-             :before-close="handleClose">
-             <span>微天使客服会联系您并安排与项目方的沟通，联系微天使客服：0571-85026758</span>
-             <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
-           </el-dialog>
-         </div>
+
+
         <div class="empty fl" v-if="empty">
           <img src="../../assets/images/sorryKong.png">
         </div>
@@ -275,12 +278,14 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import img from '../../../static/images/img-fageerweima.png'
   import companyMessage from '../workBench/myProject/onkeyresearch/companyMessage.vue'
   import business from '../workBench/myProject/onkeyresearch/business.vue'
   import downloadechart from '../workBench/myProject/onkeyresearch/downloadEchart.vue'
   export default {
     data () {
       return {
+        img:img,
         currentPathName:'',
         dialogVisible: false,
         empty:false,//是否查不到公司
@@ -288,7 +293,118 @@
         com_id: 0,//公司Id
         conmanyName: '3',
         productMessage: '产品信息',
+        //项目详情
+        project: {
+          goodness:{
+            pro_goodness: {goodness_id: 1, project_id: 7295, goodness_title: "我是亮点1", goodness_desc: "我是亮点1",},
+            pro_market_genera: {goodness_id: 2, project_id: 7295, goodness_title: "我是亮点2", goodness_desc: "我是亮点2"},
+            pro_business_model: [],
+            pro_service: [],
+          },//亮点
+          open_status: '1',//私密设置
+          pro_area: {
+            area_id: 2,
+            area_title: "北京市",//市级
+            pid: 1//省级
+          },//所属地区1省级单位
+          pro_company_name:"",
+          pro_finance_stock_after:"0.00",//投后股份
+          pro_finance_value:"0.00",//项目估值
+          pro_industry:[
+            /*              {
+             industry_id: 12,
+             industry_name: "",
+             parent_id: 0
+             }*/
+          ],
+          pro_intro:"",
+          pro_name:"",
+          pro_scale: {
+            scale_id: 1,
+            scale_money: "100W以下",
+          },//规模多少钱
+          pro_stage:{
+            sort: 4,
+            stage_id: 13,
+            stage_name: "A轮"
+          },
+          project_id:"",
+          tag:[],
+        },
+        //公司运营
+        company:{
+          pro_company_scale: {comp_scale_id: 1},
+          pro_status: {status_id: 3, status_name: "上线"},
+          pro_website:""
+        },
+        //品牌
+        brands:{
+          brand:[]
+        },
+        //核心团队
+        team: {
+          tag: [],//团队标签
+          core_users: [
+            /*{
+             project_ct_id: 30,
+             ct_index: "9bd0c8d7d615832340340aab0c0625b7",
+             project_id: 37,
+             project_index: "275fa4f135eecf08e5660d23e294e6cd",
+             ct_member_name: "赵工佐",
+             ct_member_career: "创始人兼首席执行官",
+             ct_member_intro: "前高中和大学校队主力球员，"
+             }*/],
+        },
+        //融资信息
+        financing: {
+          pro_finance_use: '',//资金用途
+          //历史融资信息
+          pro_history_finance: [
+            /*{
+             project_id: 37,
+             pro_finance_stage: 10,//轮次
+             pro_finance_scale: "",//金额
+             pro_finance_investor: "",//投资人
+             created_at: "2017-06-20",
+             updated_time: null
+             }*/
+          ],
+        },
+        //里程碑
+        milepost: {
+          pro_develop: [
+            /*{
+             project_dh_id: 6,
+             dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
+             project_id: 37,
+             project_index: "275fa4f135eecf08e5660d23e294e6cd",
+             dh_start_time: "2017-06-20 17:39:25",//时间
+             dh_end_time: "1443542400",
+             dh_event: "组建团队和设立办公室",//事件
+             created_at: null,
+             updated_at: null
+             }*/]
+        },
+        //FA签约协议
+        pro_FA: {
+          is_exclusive: 1,//0其他 1独家 2非独家
+        },
+        //仅自己可见信息
+        private:{
+          commission: "0.00",//签约佣金
+          contact_user_career: "",
+          pro_remark: "",
+          pro_source: [
+            /*{
 
+             }*/
+          ],
+          stock_follow: "0.00",
+          stock_other: "0.00",
+          stock_right: "0.00",//股权赠与
+          contact_user_mobile: "",
+          contact_user_name: ""
+        },
         //*项目信息
         project: [
           {
@@ -436,11 +552,7 @@
         window.location.reload();
       },
       handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
+        done();
       },
       getCrawlerTeam(){
         return new Promise((resolve, reject)=>{
@@ -751,6 +863,48 @@
           }
         });
       },//获取API请求的数据
+
+      //*加入项目库按钮
+      allSave(){
+        var submit = ()=>{
+          return new Promise((resolve, reject)=>{
+            //做一些异步操作
+
+            resolve(true);
+          });
+        }
+
+        var check = ()=>{
+          return new Promise((resolve, reject)=>{
+            //做一些异步操作
+            setTimeout(()=>{
+
+            },200)
+          });
+        };
+
+        submit()
+          .then((data)=>{
+            return check();
+          })
+          .then((data)=>{
+            if(data){
+              this.loading=true;
+              let allData = {};
+
+
+              this.$http.post(this.URL.editProject, allData)
+                .then(res => {
+                  this.loading=false;
+                })
+                .catch(err => {
+                  this.loading=false;
+                  this.$tool.error("编辑失败");
+                  this.$tool.console(err);
+                })
+            }
+          })
+      },
     },
     computed: {},
     components: {
@@ -819,4 +973,17 @@
 .manager:hover{
   color: #ffffff;
 }
+  .el-dialog--tiny{
+    width:410px;
+    height:410px;
+    position: absolute;
+    padding:0 80px;
+    text-align: center;
+  }
+  .el-dialog__body{
+    padding:0;
+  }
+  .el-dialog__headerbtn{
+    display: none;
+  }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row>
-      <el-col :span="24">
+
     <!--     头部导航 -->
     <header id="header">
       <ul class="select ulfl tc" style="position: relative">
@@ -67,7 +67,7 @@
     <div style="height: 60px;"></div>
 
     <!--下方主内容切换区-->
-    <main>
+    <main style="width: 100%;">
       <transition name="fade" mode="out-in">
         <router-view class="view">
         </router-view>
@@ -82,7 +82,7 @@
         <span style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</span>
       </div>
     </div>
-      </el-col>
+
     </el-row>
   </div>
 </template>
@@ -90,15 +90,18 @@
   export default {
     data () {
       return {
+        brand1:'',
         restaurants: [],
         state4: '',
         timeout:  null,
         cb:'',
-        options: [{
+        options: [
+//            {
+//          value: 0,
+//          label: '个人信息'
+//        },
+          {
           value: 0,
-          label: '个人信息'
-        },{
-          value: 1,
           label: '退出登录'
         }],
         value:'',
@@ -156,10 +159,12 @@
       },
       //*获取远程数据模拟
       loadData(arr){
-        let newArr = [];
+        var newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
           obj.value = arr[i].company_name;
+          obj.brand=arr[i].project_name;
+          this.brand1=arr[i].project_name;
           obj.address = arr[i].com_id;
           newArr.push(obj)
         }
@@ -252,12 +257,12 @@
       loginOut(e){
         console.log(e)
         if(e==0){
-//          this.$router.push('/identityDetail');
-          this.$router.push({name: 'identityDetail', query: {user:  111}})//路由传参
-          this.$route.query.user;
-        }else{
           localStorage.clear();
           window.location.reload()
+//          this.$router.push({name: 'identityDetail', query: {user_id:  localStorage.user_id}})//路由传参
+//          this.$route.query.user;
+        }else{
+
         }
 
       }
@@ -289,7 +294,7 @@
     /*right: 15%!important;*/
   /*}*/
   .width350{
-    width: 350px;
+    width:21%;
     display: inline-block;
     position: relative;
     top: 12px!important;
@@ -370,10 +375,10 @@ background: red;
     .el-tooltip__popper{
       padding: 0!important;
     }*/
-  #app {
+   #app {
     /*min-width: 1903px;*/
     background: #f3f4f8;
-
+     /*overflow-x: hidden;*/
     main {
       min-height: 791px;
     }
@@ -417,7 +422,14 @@ background: red;
       }
     }
   }
-
+  @media screen and(max-width: 1353px){
+    #app{
+    width: 100% !important;
+    el-row{
+      width:100%!important;
+    }
+  }
+  }
   #samllrou:hover + .weixin {
     display: block;
   }

@@ -90,7 +90,7 @@
         newTime:'',
         dialogFollow:false,//控制写跟进弹框
         pro_id: this.proid,
-        pro_name:"",//关联项目
+        pro_name:this.proName,//关联项目
         loading:false,//加载
         loading1:false,//加载动画
         content:{},//跟进记录数据
