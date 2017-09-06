@@ -43,7 +43,7 @@ export default {
 
 <style lang="less">
 #workBench{
-  width: 1336px;
+  width: 1263px;
   margin: 0 auto;
   background-color: #eff2f7;
   margin-top: 24px;

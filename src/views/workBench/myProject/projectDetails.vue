@@ -36,13 +36,13 @@
               <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
             <!--</div>-->
             <div class="item height" style="margin-top:45px;    display: inline-block;">
-            <span class="project" >
+            <span id="bottom_width1" class="project" >
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
               <span class="number" v-else>去完善</span>
               <span class="more">超过60%的项目更易被投资人关注</span>
             </span>
-              <span class="project" style="width: 292px;">
+              <span id="bottom_width2" class="project" style="width: 292px;">
               <div class="item progress height">
                 <div class="txt begin" :class="{ scheduleColor: project.pro_schedule.schedule_name=='项目线索'}">项目线索</div>
                 <div class="progress-bar">
@@ -54,7 +54,7 @@
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
                 <div class="txt end" :class="{ scheduleColor: project.pro_schedule.schedule_name=='佣金收讫'}">佣金收讫</div>
-                <div class="img"><img src="../../../assets/images/editTo.png"></div>
+                <div class="img img1"><img src="../../../assets/images/editTo.png"></div>
                  <div class="selectIn fr">
                     <el-select v-model="project.pro_schedule.schedule_id" placeholder="请选择" @change="selectChange2">
                       <el-option

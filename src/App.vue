@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row>
-      <el-col :span="24">
+
     <!--     头部导航 -->
     <header id="header">
       <ul class="select ulfl tc" style="position: relative">
@@ -67,7 +67,7 @@
     <div style="height: 60px;"></div>
 
     <!--下方主内容切换区-->
-    <main>
+    <main style="width: 100%;">
       <transition name="fade" mode="out-in">
         <router-view class="view">
         </router-view>
@@ -82,7 +82,7 @@
         <span style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</span>
       </div>
     </div>
-      </el-col>
+
     </el-row>
   </div>
 </template>
@@ -177,7 +177,7 @@
             .then(res => {
               this.restaurants = [];
               let data = res.data.data;
-                this.restaurants = this.loadData(data)+this.brand1;
+                this.restaurants = this.loadData(data);
 //                console.log(this.restaurants);
 //              if (queryString == "") this.restaurants = [];
               let restaurants = this.restaurants;
@@ -375,10 +375,10 @@ background: red;
     .el-tooltip__popper{
       padding: 0!important;
     }*/
-  #app {
+   #app {
     /*min-width: 1903px;*/
     background: #f3f4f8;
-
+     /*overflow-x: hidden;*/
     main {
       min-height: 791px;
     }
@@ -422,7 +422,14 @@ background: red;
       }
     }
   }
-
+  @media screen and(max-width: 1353px){
+    #app{
+    width: 100% !important;
+    el-row{
+      width:100%!important;
+    }
+  }
+  }
   #samllrou:hover + .weixin {
     display: block;
   }
