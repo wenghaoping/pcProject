@@ -24,7 +24,7 @@
             <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.user_mobile}}</div>
             <div class="item com" style="width: 780px;">
               <img src="../../../assets/images/email.png">{{contacts.user_email}}
-              <div class="fr" v-if="contacts.import_user_name!=''" style="color: #8492A6">
+              <div class="fr source" v-if="contacts.import_user_name!=''" style="color: #8492A6">
                 来源: {{contacts.import_user_name}}
               </div>
             </div>

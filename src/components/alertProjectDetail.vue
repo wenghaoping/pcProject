@@ -228,7 +228,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                     <div slot="content">
                       <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                     </div>
-                    <span class="pro-txt-4" style="width:323px;max-width:323px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
+                    <span class="pro-txt-4" style="width:230px;max-width:230px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
                   </el-tooltip>
                   <div class="line"></div>
                 </div>
@@ -377,114 +377,107 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         pro_id:"",
         file:{
           pro_BP:{
-            created_at: "2017-08-30 10:51:15",
+            created_at: "",//2017-08-30 10:51:15
             deleted_at: null,
-            file_ext: "docx",
-            file_id: 3530,
-            file_title: "微天使PC端开发文档1",
-            file_url: "/test_file/20170830/egKaSAxsZ7UNshhkCIuvbpjqNzDW59a628010b3d0.docx",
-            follow_id: 0,
-            project_id: 8215,
-            type: 1,
-            updated_at: "2017-08-30 10:51:15",
-            user_id: 182510,
+            file_ext: "",//docx
+            file_id: '',//3530
+            file_title: "",//微天使PC端开发文档1
+            file_url: "",///test_file/20170830/egKaSAxsZ7UNshhkCIuvbpjqNzDW59a628010b3d0.docx
+            follow_id: '',//0
+            project_id: '',//8215
+            type: '',//1
+            updated_at: "",//2017-08-30 10:51:15
+            user_id: '',//182510
           },
 
         },
         team:{
           core_users:{
-            ct_member_career:'技术',
-            ct_member_intro:'亮点亮点亮点亮点亮点亮点亮点亮点',
-            ct_member_name:'张三',
-            stock_scale:10,
+            ct_member_career:'',//技术
+            ct_member_intro:'',//亮点亮点亮点亮点亮点亮点亮点亮点
+            ct_member_name:'',//张三
+            stock_scale:'',//10
 
           },
           tag:{
-            tag_name:'大海',
+            tag_name:'',//大海
           }
         },
         financing:{
-          pro_finance_use:'',
+          pro_finance_use:'',//用途
           pro_history_finance:[
-              /*{
-            finance_time:1503331200,
-            pro_finance_investor:'aS财经asaS财经asaS财经asaS财saSasaSS财经asaS',
-            pro_finance_scale:10000,
-            belongs_to_stage:{
-              sort: 5,
-              stage_id: 18,
-              stage_name: "A+轮"
-            }
-          },
             {
-              finance_time:1503331200,
-              pro_finance_investor:'aS财经asaS财经asaS财经asaS财saSasaSS财经asaS',
-              pro_finance_scale:10000,
-              belongs_to_stage:{
-                sort: 5,
-                stage_id: 18,
-                stage_name: "A+轮"
-              }
-            }*/
+            finance_time:'',//1503331200
+            pro_finance_investor:'',//aS财经asaS财经asaS财经asaS财saSasaSS财经asaS
+            pro_finance_scale:'',//10000
+            belongs_to_stage:{
+              sort: '',//5
+              stage_id: '',//18
+              stage_name: "",//A+轮
+            }
+          }
           ]
         },
         company:{
           pro_status:{
-            status_name: "上线1"
+            status_name: ""//上线1
           },
           pro_company_scale:{
-            comp_scale_value:'1-20'
+            comp_scale_value:''//1-20
           },
-          pro_website:'baidu.com'
+          pro_website:''//baidu.com
         },
         pro:{
-          is_exclusive:1,
+          is_exclusive:'',//1
         },
         milepost:{
           pro_develop:{
-            dh_start_time:1503331200,
-            dh_event:'事件'
+            dh_start_time:'',//1503331200
+            dh_event:''//事件
           }
 
         },
         brands:{},
         private:{
-          commission:'10',
-          contact_user_career:'技术',
-          stock_follow:'12',
-          stock_other:'21',
-          stock_right:'12',
-          user_mobile:'18745852123',
-          user_name:'张三',
+          commission:'',//10
+          contact_user_career:'',//技术
+          stock_follow:'',//12
+          stock_other:'',//22
+          stock_right:'',//12
+          user_mobile:'',//18745852123
+          user_name:'',//张三
           pro_source:{
-            tag_name:'baidu'
+            tag_name:''//baidu
           }
         },
         project:{
-          follow_user:'张小五',
-          open_status:1,
-          pro_company_name:'aaa',
-          pro_intro: "微天使PC端开发文档",
-          pro_name: "微天使PC端开发文档",
-          pro_schedule:'10',
-          pro_total_score:'94',
+          pro_industry:{
+            industry_name:''//轮次
+          },
+          follow_user:'',//张小五
+          open_status:'',//1
+          pro_company_name:'',//aaa
+          pro_intro: "",//微天使PC端开发文档
+          pro_name: "",//微天使PC端开发文档
+          pro_schedule:'',//10
+          pro_total_score:'',//94
           pro_area:{
-            area_title:'北京市'
+            area_title:''//北京市
           },
           goodness:{
             pro_business_model:'',
             pro_goodness:{
-              goodness_desc: "凉凉凉凉",
-              goodness_title: "亮点亮点"
+              goodness_desc: "",//凉凉凉凉
+              goodness_title: ""//亮点亮点
             },
             pro_market_genera:{},
             pro_service:{},
           },
           pro_scale:{
-            scale_money:'1001W-200W',
+            scale_money:'',//1001W-200W
           },
           pro_stage:{
-            stage_name:'天使论'
+            stage_name:''//天使论
           }
         },
 //        project: {
@@ -1255,7 +1248,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
           .pro-txt-2{
             color:#1f2d3d;
             margin-left: 53px;
-            width: 150px;
+            width: 79px;
            white-space: normal;word-break: break-all;line-height: 20px
           }
           .pro-txt-3{
