@@ -1548,7 +1548,6 @@
 
 /*        if(this.project.goodness.pro_goodness.goodness_desc!="") number-1;
         if(this.project.goodness.pro_goodness.goodness_title!="") number-1;*/
-
         return parseInt(((sum - number) / sum) * 100);
 
       },
