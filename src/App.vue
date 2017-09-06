@@ -162,9 +162,8 @@
         var newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].company_name;
+          obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
           obj.brand=arr[i].project_name;
-          this.brand1=arr[i].project_name;
           obj.address = arr[i].com_id;
           newArr.push(obj)
         }
