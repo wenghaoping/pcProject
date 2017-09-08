@@ -58,7 +58,8 @@ export default
   getAllFileType:"api/category/getAllFileType",  //文件分组设置选项(全)
   createFileType:"api/category/createFileType",  //添加文件分组设置
   updateProjectCompany:'api/v/project/updateProjectCompany',//更新公司,一键尽调的时候,是否将此公司作为自己的公司
-
+  getProjectAllData:'api/dataTeam/getProjectAllData',//一键同步,获取同步信息
+  createDataCustomTag:'api/category/createDataCustomTag',//一键同步,项目标签的添加
 
   /*一键尽调*/
   getCrawlerCompany:"api/dataTeam/getCrawlerCompany",  //一键尽调-公司(模糊匹配)

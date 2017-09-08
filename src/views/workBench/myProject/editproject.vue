@@ -108,7 +108,12 @@
                         </el-autocomplete>
                       </el-form-item>
                     </el-col>
-                    <el-button class="tong" @click="syncOne">一键同步</el-button>
+
+
+                    <el-tooltip class="item" effect="dark" placement="top-end">
+                      <div slot="content">从微天使创投数据库自动获取公司行业，融资轮次<br/>历史融资，核心团队及里程碑等项目信息</div>
+                      <el-button class="tong" @click="syncOne">一键同步</el-button>
+                    </el-tooltip>
                     <span class="ques">
                         <el-tooltip placement="bottom-end">
                             <div slot="content">
@@ -249,8 +254,8 @@
                       <el-form-item
                         label="项目标签"
                         prop="tag">
-                        <el-select v-model="project.tag" multiple filterable placeholder="请输入项目的亮点标签，投资人可通过标签检索，如优秀团队，技术壁垒"
-                                   :multiple-limit="multiplelimit" filterable
+                        <el-select v-model="project.tag" multiple filterable
+                                   placeholder="请输入项目的亮点标签，投资人可通过标签检索，如优秀团队，技术壁垒"
                                    allow-create default-first-option
                                    @change="addChangepro"
                         style="width: 100%">
@@ -629,7 +634,7 @@
                         :prop="'pro_history_finance.' + index + '.pro_finance_scale'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
-                        :rules="[{required: true, message: '融资金额不能为空', trigger: 'change'},BigNumberRule]">
+                        :rules="[{required: true, message: '融资金额不能为空', trigger: 'change'},{max:20,message: '最大20个字符'}]">
                         <el-input v-model="history.pro_finance_scale" placeholder="请输入具体数值"></el-input>
                       </el-form-item>
                     </el-col>
@@ -639,7 +644,7 @@
                         :prop="'pro_history_finance.' + index + '.pro_finance_investor'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
-                        :rules="[{required: true, message: '历史投资方不能为空', trigger: 'blur'},{min: 1, max:40,message: '最大40个字符'}]" class="width360">
+                        :rules="[{required: true, message: '历史投资方不能为空', trigger: 'blur'},{max:40,message: '最大40个字符'}]" class="width360">
                         <el-input v-model="history.pro_finance_investor" placeholder="请输入历史投资方"></el-input>
                       </el-form-item>
                     </el-col>
@@ -1047,7 +1052,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import syncprojectdetail from '../../../components/syncProjectDetail.vue'
+  import syncprojectdetail from '../../../components/syncProjectDetail.vue';
+  import { mapState } from 'vuex'
   export default {
     data(){
       var checkPhoneNumber = (rule, value, callback) => {
@@ -1425,7 +1431,7 @@
         add_pro: [],//添加个人标签暂存
         companyTitle: "",//尽调搜索的公司的名称
         companyid: "",//尽调搜索的公司的ID
-        queryData: {},//一键同步存放的数据
+        syncData: {},//一键同步存放的数据
         timeout: null,
         showList: false,
         loadingcheck:false,
@@ -1452,6 +1458,10 @@
     },
     computed: {
       //*项目完整度判断
+
+/*      ...mapState({
+        syncData: state => state.syncData
+      }),*/
       proportion(){
         let number = 0;//所有的空值数
         let fileValue = this.planList;//项目文件
@@ -1487,7 +1497,7 @@
                   number++;
                   inner++
                 }
-                /*else {
+              /*else {
                   for (let key2 in value[key][0]) {
                     if (value[key][0][key2] == "") {
                       number++;
@@ -1546,7 +1556,7 @@
         if(this.project.goodness.pro_goodness.goodness_desc!="" && this.project.goodness.pro_goodness.goodness_title!="") this.projectPerfect = true;
         else this.projectPerfect = false;
 
-/*        if(this.project.goodness.pro_goodness.goodness_desc!="") number-1;
+      /*        if(this.project.goodness.pro_goodness.goodness_desc!="") number-1;
         if(this.project.goodness.pro_goodness.goodness_title!="") number-1;*/
         return parseInt(((sum - number) / sum) * 100);
 
@@ -1755,7 +1765,6 @@
               this.financing=data.financing;
 
               //里程碑设置=============================================
-
               this.$tool.setTimeToReallyTime(data.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
               this.milepost=data.milepost;
 
@@ -2043,7 +2052,7 @@
       },//发送文件分组设置请求
       toGroup(item){
         this.groups.type=item.type;
-        var index = this.uploadShow2.lists.indexOf(item)
+        var index = this.uploadShow2.lists.indexOf(item);
         this.groups.index = index;
         this.setFileDisplay = true;
 
@@ -2412,7 +2421,7 @@
 
               allData.company.pro_company_scale=allData.company.pro_company_scale.comp_scale_id;
               allData.company.pro_status=allData.company.pro_status.status_id;
-              console.log(allData);
+//              console.log(allData);
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
                   this.loading=false;
@@ -2522,50 +2531,6 @@
       },
 
 
-
-      getTeamSync(data=[]){
-        let arr = [];
-        for(let i=0; i<data.length; i++){
-          let obj=new Object;
-          obj.ct_member_name=data[i].team_member_name;
-          obj.ct_member_intro=data[i].team_member_introduce;
-          obj.ct_member_career=data[i].team_member_position;
-          obj.project_ct_id="";
-          obj.stock_scale="";
-          arr.push(obj);
-        }
-        return arr;
-      },//team同步数据修改
-      getFinancingMoney(data=[]){
-        let arr = [];
-//        this.setDateTime5(data);
-        this.$tool.setTimeToReallyTime(data,'history_financing_time');
-        for(let i=0; i<data.length; i++){
-          let obj=new Object;
-          obj.pro_finance_scale=data[i].history_financing_money;
-          obj.pro_finance_stage="";
-          obj.finance_time=data[i].history_financing_time;
-          obj.pro_finance_investor=data[i].history_financing_who;
-          obj.history_id="";
-          arr.push(obj);
-        }
-        return arr;
-      },//历史融资同步数据修改
-      getMilestone(data=[]){
-        let arr = [];
-//        this.setDateTime6(data);
-        this.$tool.setTimeToReallyTime(data,'milestone_time');
-        for(let i=0; i<data.length; i++){
-          let obj=new Object;
-          obj.dh_event=data[i].milestone_event;
-
-          obj.dh_start_time=data[i].milestone_time;
-          obj.project_dh_id="";
-          arr.push(obj);
-        }
-        return arr;
-      },//里程碑同步数据修改
-
       //*一键同步按钮
       syncOne(){
         this.companyTitle = this.project.pro_company_name;
@@ -2592,6 +2557,7 @@
 
         }
       },//点击同步按钮
+
       changeSyncProjectDetail(msg){
         this.syncProjectDetailDisplay=msg;
         this.syncDialogDisplay=false;
@@ -2602,36 +2568,79 @@
       },//获取id
       syncCompanyData(msg){
           this.syncDialogDisplay=false;
-          console.log(this.$store.state.syncData);
-          this.queryData=this.$store.state.syncData.data;
-          let queryData = this.$store.state.syncData.data;
-          let checkList = this.$store.state.syncData.checkList;
-          if(msg){
-            //覆盖
-            checkList.forEach((x)=>{
-              for(let index in queryData){
-                if(x==index){
-                  this[x]=queryData[index];
-                }
-              }
-            });
+          let syncDataCheck = this.$store.state.syncData;
+          let syncData = syncDataCheck.data;
+          let checkList = syncDataCheck.checkList;
+          console.log(syncData)
+          if(msg.updateCategory){               //看是否需要更新标签
+            this.$global.func.getWxProjectCategory()
+              .then((data)=>{
+                return this.getWxProjectCategory();
+              }).then((data)=>{
+                syncDataFunc();
+              })
           }else{
-              //不覆盖
-            checkList.forEach((x)=>{
-              for(let index in queryData){
-                if(x==index){
-                  if(x=='project' || x=='company'){
-                    this[x]=queryData[index];
-                  }else{
-                    for(let key in this[x]){
-                      this[x][key].push(queryData[index]);
+            syncDataFunc();
+          }
+
+          //数据同步函数
+           const syncDataFunc = () =>{
+            for(let index in syncData){
+              if(index=='project'){
+                syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry,'industry_id');//领域标签取出id
+              }else if(index=='milepost'){
+                this.$tool.setTimeToReallyTime(syncData.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
+              }else if(index=='financing'){
+                this.$tool.setTimeToReallyTime(syncData.financing.pro_history_finance,'finance_time');//里程碑时间格式设置
+              }
+            }//数据格式化
+            if(msg.cover){
+              //覆盖的时候
+              checkList.forEach((x)=>{
+                for(let index in syncData){//需要同步那些数据
+                  if(x==index){
+                    if(x=='project' || x=='company'){   //因为不是数组,单独处理
+                      for(let key in syncData[index]){
+                        if(key!='pro_area'){            //后端都没有,跳过处理
+                          this[x][key]=syncData[index][key];
+                        }
+                      }
+                    }else{
+                      this[x]=syncData[index];
                     }
                   }
                 }
-              }
-            });
+              });
+            }else{
+              //不覆盖
+              checkList.forEach((x)=>{
+                for(let index in syncData){
+                  if(x==index){
+                    if(x=='project' || x=='company'){
+                      for(let key in syncData[index]){
+                        if(this[x][key]==''){
+                          this[x][key]=syncData[index][key];
+                        }
+                      }
+                    }else{
+                      for(let Arrkey in syncData[index]){
+                        if(this.$tool.isArray(syncData[index][Arrkey])){
+                          if(x=='milepost'){
+                            this.$tool.setTimeToReallyTime(this[x][Arrkey],'dh_start_time');//里程碑时间格式设置
+                          }else if(x=='financing'){
+                            this.$tool.setTimeToReallyTime(this[x][Arrkey],'finance_time');//历史融资信息时间格式设置
+                          }
+                          this[x][Arrkey] = [...this[x][Arrkey], ...syncData[index][Arrkey]];//数组合并
+                        }
+                      }
+                    }
+                  }
+                }
+              });
+            }
           }
-      },//开始同步信息
+
+      },//开始同步信息(是否覆盖信息)
     },
     //当dom一创建时
     created(){

@@ -21,3 +21,7 @@ Vue.filter('timeToReallTime',(value)=> {
   second = second < 10 ? ('0' + second) : second;
   return y + '-' + m + '-' + d/*+' '+h+':'+minute+':'+second;*/
 })
+
+Vue.filter('nullTo_',(value)=> {
+  if(value=='') return '暂无数据';
+})

@@ -163,8 +163,8 @@
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
           obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
-          obj.brand=arr[i].project_name;
           obj.address = arr[i].com_id;
+          obj.company_name = arr[i].company_name;
           newArr.push(obj)
         }
         return newArr;
@@ -200,14 +200,14 @@
       },
       handleSelect(item) {
         this.loading=true;
-        this.companyTitle = item.value;
+        this.companyTitle = item.company_name;
         this.companyId = item.address ;
         this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
           .then(res => {
             let data = res.data.data;
 //            console.log(this.$tool.getToObject(data))
-            this.queryData = data;
-            this.dialogVisible = true;
+/*            this.queryData = data;
+            this.dialogVisible = true;*/
             this.loading=false;
           })
           .catch(err => {
@@ -217,10 +217,10 @@
       },//选择了搜索出来的数据后
       parameter(){
         if(!this.companyTitle){
-          console.log( this.companyTitle);
+//          console.log( this.companyTitle);
         }else{
           this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
-          this.$route.query.company;
+//          this.$route.query.company;
         }
       },
       // 检查localStorage.user_id
@@ -290,7 +290,7 @@
     /*right: 15%!important;*/
   /*}*/
   .width350{
-    width:28%;
+    width:26%;
     display: inline-block;
     position: relative;
     top: 12px!important;

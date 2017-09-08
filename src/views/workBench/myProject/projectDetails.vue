@@ -644,7 +644,6 @@ color:#4e4563;">{{brandd.brand_name}}</span>
   export default {
     data(){
       return {
-        brands:{},
         yunying:yunying,
         pinpai:pinpai,
         cirIcon:cirIcon,
@@ -881,7 +880,8 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         scrollTop:0,*/
       }
     },
-    computed:{
+    computed: {
+
     },
     components: {
       research,
@@ -1420,7 +1420,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
 
       },//筛选意向项目
 
-      /*买家图谱*/
+      //*买家图谱
       setProjectMatchInvestors(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -1564,7 +1564,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
             this.$tool.error("加载超时");
           })
       },//筛选买家图谱
-      /*编辑跟进记录*/
+      //*编辑跟进记录
       getFollowId(id){
         this.followDisplay=true;
         this.followid=id;
@@ -1607,7 +1607,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         this.littlePushShow=false;
       },//买家图谱推送取消
 
-      /*项目推送*/
+      //*项目推送
       openPreview(msg){
         this.previewDisplay=msg;
       },//打开项目预览

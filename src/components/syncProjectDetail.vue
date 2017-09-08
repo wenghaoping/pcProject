@@ -23,8 +23,8 @@
                 <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               </div>
               <div class="tag" style="padding-top: 20px;    display: inline-block;">
-                <span class="tag-bottom" style="margin-right: 11px;" v-if="project.project_label!=''"><img src="../assets/images/tag2.png"></span>
-                <span class="tag-bottom" v-if="project.project_label!=''">{{project.project_label}}</span>
+                <span class="tag-bottom" style="margin-right: 11px;" v-if="project.tag.length!=0"><img src="../assets/images/tag2.png"></span>
+                <span class="tag-bottom" v-if="project.tag.length!=0"><i v-for="tag in project.tag">{{tag}}　</i></span>
               </div>
               <div class="onlyone">
                 <img v-if="project.is_exclusive==1" src="../assets/images/onlyonedark.png"/>
@@ -38,45 +38,39 @@
         <div class="mid-floor" style="opacity:0.5;background:#000000;height: 16px;"></div>
         <!--弹窗下半部分-->
         <div class="down-floor">
-
           <!--核心团队-->
-          <el-checkbox label="team">
+          <el-checkbox label="team" v-if="team.core_users.length!=0">
             <div class="ul-lists" v-show="team.core_users!=''&&team.tag!=''">
             <div class="item">
               <span class="title"><img class="img" src="../assets/images/team.png">核心团队</span>
             </div>
-            <div class="item" style="margin-top:33px;" v-show="team.tag!=''">
-              <span class="person-tag" style="padding: 0 12px;" v-for="tag in team.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
-            </div>
             <div style="margin-top:32px;"></div>
-            <div class="item" v-for="teamm in team.core_users" style="margin-top:10px;" v-show="team.core_users!=''">
-              <span class="p-name">{{teamm.ct_member_name}}</span>
-              <span class="p-mg">{{teamm.ct_member_career}}</span>
-              <div class="p-gf">股权占比 : <span>{{teamm.stock_scale}}%</span></div>
-              <div class="p-doc">{{teamm.ct_member_intro}}</div>
+            <div class="item" v-for="core_user in team.core_users" style="margin-top:10px;" >
+              <span class="p-name">{{core_user.ct_member_name}}</span>
+              <span class="p-mg">{{core_user.ct_member_career}}</span>
+              <div class="p-doc">{{core_user.ct_member_intro}}</div>
               <div class="line"></div>
             </div>
-
           </div>
           </el-checkbox>
 
           <!--公司运营-->
-          <el-checkbox label="company">
-            <div class="ul-lists" v-show="company.pro_company_scale!=''&&company.pro_status&&company.pro_website!==''">
+          <el-checkbox label="company"  v-if="company.pro_company_scale!=''&&company.pro_status&&company.pro_website!==''">
+            <div class="ul-lists">
             <div class="item">
               <span class="title"><img class="img" :src="yunying" style="width: 37px;">公司运营</span>
               <div class="rz-details">
-                <div class="rz-detail"  v-show="company.pro_status.status_name!=''">
+                <div class="rz-detail">
                   <p class="det-title">运营状态</p>
-                  <p class="det-info" v-if="company.pro_status.status_name!==''">{{company.pro_status.status_name}}</p>
+                  <p class="det-info">暂无数据</p>
                 </div>
                 <div class="rz-detail" v-show="company.pro_website!=''">
                   <p class="det-title">公司官网</p>
-                  <p class="det-info">{{company.pro_website}}</p>
+                  <p class="det-info">{{company.pro_website  | nullTo_}}</p>
                 </div>
                 <div class="rz-detail"  v-show="company.pro_company_scale.comp_scale_value!=''" >
                   <p class="det-title">公司规模</p>
-                  <p class="det-info">{{company.pro_company_scale.comp_scale_value}} 人</p>
+                  <p class="det-info">{{company.pro_company_scale.comp_scale_value | nullTo_}} 人</p>
                 </div>
               </div>
             </div>
@@ -84,8 +78,8 @@
           </el-checkbox>
 
           <!--品牌-->
-          <el-checkbox label="brands">
-            <div class="ul-lists" v-show="brands.brand!=''">
+          <el-checkbox label="brands"  v-if="brands.brand!=''">
+            <div class="ul-lists">
             <div class="item">
               <span class="title"><img class="img" :src="pinpai" style="width: 37px;">品牌</span>
               <div class="brand">
@@ -109,9 +103,8 @@
           </div>
           </el-checkbox>
           <!--融资信息-->
-          <el-checkbox label="finance">
-            <div class="ul-lists"
-                 v-show="financing.pro_history_finance!=''">
+          <el-checkbox label="financing" v-if="financing.pro_history_finance!=''">
+            <div class="ul-lists">
               <div class="item">
                 <span class="title"><img class="img" src="../assets/images/money.png">融资信息</span>
                   <div class="v-progress-table" style="padding-left: 10px;padding-top: 20px;">
@@ -120,13 +113,7 @@
                       <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                       <span class="pro-txt-1">{{finance.finance_time | timeToReallTime}}</span>
                       <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
-                      <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
-                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 30 ? false:true">
-                        <div slot="content">
-                          <div class="tips-txt">{{finance.pro_finance_investor}}</div>
-                        </div>
-                        <span class="pro-txt-4" style="width:232px;max-width:232px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
-                      </el-tooltip>
+                      <span class="pro-txt-3">{{finance.history_financing_who}}</span>
                       <div class="line"></div>
                     </div>
                   </div>
@@ -134,8 +121,8 @@
             </div>
           </el-checkbox>
           <!--里程碑-->
-          <el-checkbox label="milepost">
-            <div class="ul-lists" style="margin-bottom: 0px;" v-show="milepost.pro_develop!=''">
+          <el-checkbox label="milepost" v-if="milepost.pro_develop!=''">
+            <div class="ul-lists" style="margin-bottom: 0px;" >
             <div class="item">
               <span class="title"><img class="img" src="../assets/images/Milepost.png">里程碑</span>
             </div>
@@ -184,19 +171,45 @@
     props: ["syncProjectDetailDisplay","companyid"],
     data () {
       return {
-        checkList:['project','team','company','brands','finance','milepost'],//勾选数组
+        checkList:[],//勾选数组
         cover:false,//是否允许覆盖
         yunying:yunying,
         pinpai:pinpai,
         cirIcon:cirIcon,
         loading:false,//加载动画
         companyId:"",//尽调搜索公司ID
+
+        //项目信息
+        project:{
+          follow_user:'张小五',
+          open_status:1,
+          pro_company_name:'公司',
+          pro_intro: "微天使PC端开发文档介绍介绍介绍介绍",
+          pro_name: "微天使PC端开发文档",
+          pro_schedule:'10',
+          pro_total_score:'94',
+          pro_area:{
+            area_title:'北京市'
+          },
+          pro_scale:{
+            scale_money:'1001W-200W',
+          },
+          pro_finance_stock_after:'-',
+          pro_finance_value:'-',
+          pro_stage:{
+            stage_name:'天使论'
+          },
+          pro_industry:[{
+            industry_id: 12,
+            industry_name: "社交网络"
+          }],
+          tag:[]
+        },
         team:{
           core_users:[{
             ct_member_career:'career',
             ct_member_intro:'intro',
             ct_member_name:'name',
-            stock_scale:1,
           }],
 
           tag:{
@@ -239,9 +252,6 @@
           ]
         },
         company:{
-          pro_status:{
-            status_name: "上线1"
-          },
           pro_company_scale:{
             comp_scale_value:'1-20'
           },
@@ -263,52 +273,10 @@
             }
           ]
         },//里程碑
-        brands:{},//品牌
-        private:{
-          commission:'10',
-          contact_user_career:'',
-          stock_follow:'',
-          stock_other:'',
-          stock_right:'',
-          user_mobile:'',
-          user_name:'',
-          pro_source:{
-            tag_name:'baidu'
-          }
-        },
-        project:{
-          follow_user:'张小五',
-          open_status:1,
-          pro_company_name:'公司',
-          pro_intro: "微天使PC端开发文档介绍介绍介绍介绍",
-          pro_name: "微天使PC端开发文档",
-          pro_schedule:'10',
-          pro_total_score:'94',
-          pro_area:{
-            area_title:'北京市'
-          },
-          goodness:{
-            pro_business_model:'',
-            pro_goodness:{
-              goodness_desc: "凉凉凉凉",
-              goodness_title: "亮点亮点"
-            },
-            pro_market_genera:{},
-            pro_service:{},
-          },
-          pro_scale:{
-            scale_money:'1001W-200W',
-          },
+        brands:{
+          brand:[]
+        },//品牌
 
-          pro_stage:{
-            stage_name:'天使论'
-          },
-          pro_industry:[{
-            industry_id: 12,
-            industry_name: "社交网络"
-          }],
-          project_label:"社交网络,社交网络,社交网络"
-        },
       }
     },
     methods: {
@@ -318,37 +286,32 @@
       },
       //获取一键尽调同步数据
       getProjectDetail () {
-        this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.pro_id})
+        this.loading=true;
+        this.$http.post(this.URL.getProjectAllData,{user_id:localStorage.user_id,com_id:this.companyId})
         .then(res=>{
+          if(res.data.status_code===2000000){
+            let data = res.data.data;
+//            console.log(data);
+            this.$store.state.syncData.data=data;
+            if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
+            if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title="-";}
+            if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name='-'}
+            if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after='-'}
+            if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro='-'}
+            if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'}
+            this.project=data.project;
+            //团队
+            this.team=data.team;
+            //公司运营
+             this.company=data.company;
+            //融资信息
+            this.financing=data.financing;
+            //里程碑
+            this.milepost=data.milepost;
+            //brand
+            this.brands=data.brands;
+          }
           this.loading=false;
-          this.$tool.console(res);
-          let data = res.data.data;
-          this.$store.state.syncData.data=data;
-          if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
-          if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title="-";}
-          if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name='-'}
-          if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after='-'}
-          if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro='-'}
-          if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'}
-          this.project=data.project;
-          //项目文件
-          this.file.pro_BP.file_title=data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext;
-          this.file=data.file;
-          //团队
-          this.team=data.team;
-          //公司运营
-          this.company=data.company;
-         //融资信息
-          this.financing=data.financing;
-          //里程碑
-          this.milepost=data.milepost;
-          //FA业务
-          this.private=data.private;
-          //is_exclusive
-          this.pro=data.pro_FA;
-          //brand
-          this.brands=data.brands;
-
         })
         .catch(err=>{
           this.loading=false;
@@ -357,19 +320,48 @@
       },
       //勾选时
       checkChange(e){
-        console.log(e);
+//        console.log(e);
       },
       //确定同步
       syncTrue(){
+          this.$store.state.syncData.checkList = this.checkList;
           if(this.checkList.length==0){
               this.$tool.warning("请勾选你要同步的模块")
           }else{
-            this.$emit('syncCompanyData', this.cover);
-            this.$emit('changeSyncProjectDetail', false);
-            this.$store.state.syncData.checkList=this.checkList;
-            console.log(this.checkList)
+            if(this.project.tag.length!=0){
+                this.syncTag(this.project.tag)
+                  .then(()=>{
+                    this.$emit('syncCompanyData', {cover:this.cover,updateCategory:true});
+                    this.$emit('changeSyncProjectDetail', false);
+                })
+            }else{
+              this.$emit('syncCompanyData', {cover:this.cover,updateCategory:false});
+              this.$emit('changeSyncProjectDetail', false);
+            }
+
           }
       },
+      syncTag(tag){
+        return new Promise((resolve, reject)=>{
+          this.loading=true;
+          this.$http.post(this.URL.createDataCustomTag,{user_id:localStorage.user_id,tag:tag})
+            .then(res=>{
+              if(res.data.status_code===2000000){
+                let data = res.data.data;
+//                console.log(res);
+                this.$store.state.syncData.data.project.tag=data;
+                resolve(1)
+              }
+              this.loading=false;
+            })
+            .catch(err=>{
+              this.loading=false;
+              this.$tool.console(err,2)
+            })
+        });
+
+
+      }
     },
     created(){
 
@@ -379,7 +371,7 @@
       syncProjectDetailDisplay : function (e) {
           if(e){
             this.companyId =this.companyid;
-//            this.getProjectDetail();
+            this.getProjectDetail();
           }
       }
     }
@@ -678,7 +670,7 @@
         }
         .del-info{
           font-size:14px;
-          color:#4756669;
+          color:#475669;
           line-height:16px;
           a{
             color:#009eff;
@@ -803,6 +795,7 @@
           margin-top: 5px;
           margin-bottom: 11px;
           line-height:28px;
+
         }
         .prod-doc{
           margin-top: 16px;

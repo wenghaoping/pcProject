@@ -11,14 +11,27 @@
     @media screen and(max-width: 1500px){
       height: 491px;
     }
+    .opactButton{
+      border:1px solid #ffffff;
+      border-radius:4px;
+      width:130px;
+      font-size:20px;
+      color:#ffffff;
+      line-height: 56px;
+      text-align: center;
+      cursor: pointer;
+      @media screen and (max-width: 1500px){
+        line-height: 40px;
+      }
+    }
     position: relative;
-    button{
+    .button{
       position: absolute;
       z-index: 999;
       top: 458px;
       width: 133px;
       height: 56px;
-      border-radius:2px;
+      border-radius:4px;
       font-size: 18px;
       @media screen and (max-width: 1500px){
         width: 94px;
@@ -27,20 +40,20 @@
         font-size: 14px;
       }
     }
-    button:first-child {
+    .button:first-child {
       left: 18.75%;
     }
-    button:nth-child(2) {
+    .button:nth-child(2) {
       left: 28.6%;
     }
     .qrShow{
-      width: 226px;
-      height: 226px;
       background: white;
+      width: 226px;
+      height: 241px;
       padding: 32px;
       position: absolute;
       left: 18.75%;
-      top: 212px;
+      top: 203px;
       transform: translateX(-25%);
       img{
         width: 100%;

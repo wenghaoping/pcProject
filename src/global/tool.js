@@ -282,7 +282,7 @@ const tool={
   formatDateTime(timeStamp) {
     if(timeStamp=='') return '';
     var date = new Date();
-    if(timeStamp.length>11) date.setTime(timeStamp)
+    if(timeStamp.length>11) date.setTime(timeStamp);
     else date.setTime(timeStamp * 1000);
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
@@ -345,7 +345,7 @@ const tool={
   setTimeToReallyTime(time,title){
     if(tool.isArray(time)){
       time.forEach((x)=>{
-        x[title] = new Date(x[title]*1000);
+        x[title] = new Date(x[title].length > 11 ? x[title] : x[title]*1000);
       });
     }else{
       return time;

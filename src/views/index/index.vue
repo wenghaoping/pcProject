@@ -1,8 +1,8 @@
 <template>
   <div id="index">
     <div class="banner">
-      <el-button style="z-index:99;display:inline-block;" class="showQr" @click="showS">体验小程序</el-button>
-      <el-button style="z-index:99;" type="primary" @click="createProject">创建项目</el-button>
+      <div style="z-index:99;display:inline-block;" class="showQr button opactButton" @click="showS">体验小程序</div>
+      <el-button style="z-index:99;" class="button" type="primary" @click="createProject">创建项目</el-button>
       <div class="qrShow" v-show="showQr">
         <img src="../../assets/images/weixin.jpg"/>
       </div>
