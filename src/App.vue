@@ -163,7 +163,7 @@
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
           obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
-          obj.brand=arr[i].project_name;
+          obj.brand=arr[i].company_name;
           obj.address = arr[i].com_id;
           newArr.push(obj)
         }
@@ -201,6 +201,7 @@
       handleSelect(item) {
         this.loading=true;
         this.companyTitle = item.value;
+        this.brand=item.brand;
         this.companyId = item.address ;
         this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
           .then(res => {
@@ -216,11 +217,32 @@
           });
       },//选择了搜索出来的数据后
       parameter(){
+        if(!this.brand){
+          this.$tool.warning("请先填写公司名称");
+        }else{
+          this.loading=true;
+          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.brand})
+            .then(res => {
+              let data = res.data.data;
+              if(data.length!=0){
+                this.$router.push({name: 'onekeyResearch', query: {company:  this.brand}})//路由传参
+                this.$route.query.company;
+              }else{
+                this.$tool.warning("未查询到该公司信息，无法获取");
+              }
+              this.loading=false;
+            })
+            .catch(err => {
+              this.$tool.error("获取失败");
+              this.$tool.console(err);
+              this.loading=false;
+            });
+
+        }
         if(!this.companyTitle){
           console.log( this.companyTitle);
         }else{
-          this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
-          this.$route.query.company;
+
         }
       },
       // 检查localStorage.user_id
@@ -290,7 +312,7 @@
     /*right: 15%!important;*/
   /*}*/
   .width350{
-    width:28%;
+    width:20%;
     display: inline-block;
     position: relative;
     top: 12px!important;
@@ -355,6 +377,7 @@ background: red;
   body {
     margin: 0;
     position: relative;
+    padding:0!important;
     /*overflow: auto!important;*/
   }
   .newColor{
