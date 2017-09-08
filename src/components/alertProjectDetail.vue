@@ -152,7 +152,12 @@
               </div>
               <div class="rz-detail" v-show="company.pro_website!=''">
                 <p class="det-title">公司官网</p>
-                <p class="det-info">{{company.pro_website}}</p>
+                <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 15 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{company.pro_website}}</div>
+                  </div>
+                  <p  class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{company.pro_website}}</p>
+                </el-tooltip>
               </div>
               <div class="rz-detail"  v-show="company.pro_company_scale.comp_scale_value!=''" >
                 <p class="det-title">公司规模</p>
@@ -167,8 +172,12 @@
             <span class="title"><img class="img" :src="pinpai" style="width: 37px;">品牌</span>
             <div class="brand">
               <div class="brand1" v-for="brandd in brands.brand">
-                      <span style="font-size:16px;
-color:#4e4563;">{{brandd.brand_name}}</span>
+                <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 30 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{brandd.brand_name}}</div>
+                  </div>
+                  <span style="font-size:16px;color:#4e4563;width: 200px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">{{brandd.brand_name}}</span>
+                </el-tooltip>
                 <span class="brand1_lei" v-if="brandd.brand_id==1" >网站</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==2" >app</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==3" >软件</span>
@@ -178,7 +187,12 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==7" >HTML5</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==8" >微信公众号</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==9" >其他</span>
-                <div class="brand1_introduce">{{brandd.brand_desc}}</div>
+                <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 50 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{brandd.brand_desc}}</div>
+                  </div>
+                  <div class="brand1_introduce" style="white-space: normal;word-break: break-all;">{{brandd.brand_desc}}</div>
+                </el-tooltip>
               </div>
               <div class="clear"></div>
             </div>
@@ -1288,6 +1302,8 @@ color:#4e4563;">{{brandd.brand_name}}</span>
             float: right;
           }
           .brand1_introduce{
+            height:53px;
+            overflow: hidden;
             font-size:14px;
             color:#8492a6;
             line-height:18px;
