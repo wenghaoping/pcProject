@@ -23,5 +23,9 @@ Vue.filter('timeToReallTime',(value)=> {
 })
 
 Vue.filter('nullTo_',(value)=> {
-  if(value=='') return '暂无数据';
+  if(value==''){
+    return '暂无数据'
+  } else{
+    return value;
+  }
 })

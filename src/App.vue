@@ -162,7 +162,7 @@
         var newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
+          obj.value = arr[i].project_name=="" ? arr[i].company_name : arr[i].company_name + '(' +arr[i].project_name + ')';
           obj.address = arr[i].com_id;
           obj.company_name = arr[i].company_name;
           newArr.push(obj)
@@ -216,15 +216,15 @@
           });
       },//选择了搜索出来的数据后
       parameter(){
-        if(!this.brand){
+        if(!this.companyTitle){
           this.$tool.warning("请先填写公司名称");
         }else{
           this.loading=true;
-          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.brand})
+          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.companyTitle})
             .then(res => {
               let data = res.data.data;
               if(data.length!=0){
-                this.$router.push({name: 'onekeyResearch', query: {company:  this.brand}})//路由传参
+                this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
                 this.$route.query.company;
               }else{
                 this.$tool.warning("未查询到该公司信息，无法获取");
@@ -237,11 +237,6 @@
               this.loading=false;
             });
 
-        }
-        if(!this.companyTitle){
-//          console.log( this.companyTitle);
-        }else{
-          this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
         }
       },
       //检查localStorage.user_id

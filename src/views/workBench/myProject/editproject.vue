@@ -282,6 +282,9 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="19">
+                        <div class="goodnessTag" :class="{goodnessTagBl:tagShow==1}" style="top: -86px;">
+                          <img src="../../../assets/images/xiangmuliangdian.png">
+                        </div>
                         <el-form-item label="介绍"
                                       prop="goodness.pro_goodness.goodness_desc"
                                       :rules="[{required: true, message: '不能为空', trigger: 'blur'},{min: 1, max:1000,message: '最大1000个字符'}]">
@@ -299,6 +302,9 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="19">
+                        <div class="goodnessTag" :class="{goodnessTagBl:tagShow==2}"  style="top: -86px;">
+                          <img src="../../../assets/images/shichanggaikuang.png">
+                        </div>
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
                                       prop="goodness.pro_goodness.goodness_desc">
@@ -316,6 +322,9 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="19">
+                        <div class="goodnessTag" :class="{goodnessTagBl:tagShow==3}"  style="top: -50px;">
+                          <img src="../../../assets/images/chanpiongaikuang.png">
+                        </div>
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
                                       prop="goodness.pro_goodness.goodness_desc">
@@ -333,6 +342,9 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="19">
+                        <div class="goodnessTag" :class="{goodnessTagBl:tagShow==4}"  style="top: -50px;">
+                          <img src="../../../assets/images/shangyemoshi.png">
+                        </div>
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
                                       prop="goodness.pro_goodness.goodness_desc">
@@ -449,7 +461,7 @@
                     <el-col :span="11">
                       <el-form-item
                         label="项目亮点"
-                        :rules="{max:40,message: '最大40个字符',trigger: 'blur'}"
+                        :rules="{max:500,message: '最大500个字符',trigger: 'blur'}"
                         :prop="'brand.' + index + '.brand_desc'"
                         v-for="(brand, index) in brands.brand"
                         :key="brand.index">
@@ -1454,6 +1466,7 @@
         timer:null,
         timer2:null,
         scrollTop:0,
+        tagShow:0,//控制标签显示隐藏
       };
     },
     computed: {
@@ -1585,10 +1598,12 @@
         //获得项目亮点焦点
       focus(e){
 //          console.log(e)
+        this.tagShow=e;
       },
       //取消项目亮点焦点
       blur(e){
 //        console.log(e)
+        this.tagShow=0;
       },
       //*获取列表各种数据
       getCompanyStatus(data){
@@ -2073,7 +2088,7 @@
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
+          obj.value = arr[i].project_name=="" ? arr[i].company_name : arr[i].company_name + '(' +arr[i].project_name + ')';
           obj.address = arr[i].com_id;
           obj.company_name = arr[i].company_name;
           newArr.push(obj)
@@ -2567,11 +2582,12 @@
         this.project.project_id = this.$route.query.project_id || '';
       },//获取id
       syncCompanyData(msg){
+          this.loading=true;
           this.syncDialogDisplay=false;
           let syncDataCheck = this.$store.state.syncData;
           let syncData = syncDataCheck.data;
           let checkList = syncDataCheck.checkList;
-          console.log(syncData)
+//          console.log(syncData);
           if(msg.updateCategory){               //看是否需要更新标签
             this.$global.func.getWxProjectCategory()
               .then((data)=>{
@@ -2580,20 +2596,32 @@
                 syncDataFunc();
               })
           }else{
-            syncDataFunc();
+            this.getWxProjectCategory()
+              .then((data)=>{
+                syncDataFunc();
+              })
           }
 
           //数据同步函数
            const syncDataFunc = () =>{
-            for(let index in syncData){
-              if(index=='project'){
+
                 syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry,'industry_id');//领域标签取出id
-              }else if(index=='milepost'){
+                syncData.project.open_status = syncData.project.open_status.toString();//字符串化
+                if(syncData.project.pro_stage.length==0){
+                    syncData.project.pro_stage = {};
+                    syncData.project.pro_stage={stage_id: ""};
+                }else{
+                    syncData.project.pro_stage;
+                }
+                syncData.project.pro_industry.length==0 ? syncData.project.pro_industry=[] : syncData.project.pro_industry;
+
                 this.$tool.setTimeToReallyTime(syncData.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
-              }else if(index=='financing'){
+
                 this.$tool.setTimeToReallyTime(syncData.financing.pro_history_finance,'finance_time');//里程碑时间格式设置
-              }
-            }//数据格式化
+
+                syncData.company.pro_company_scale=="" ? syncData.company.pro_company_scale={comp_scale_id: ''} : syncData.company.pro_company_scale;
+
+            //数据格式化
             if(msg.cover){
               //覆盖的时候
               checkList.forEach((x)=>{
@@ -2606,7 +2634,9 @@
                         }
                       }
                     }else{
-                      this[x]=syncData[index];
+                      for(let key in syncData[index]){
+                        this[x][key]=syncData[index][key];
+                      }
                     }
                   }
                 }
@@ -2625,12 +2655,9 @@
                     }else{
                       for(let Arrkey in syncData[index]){
                         if(this.$tool.isArray(syncData[index][Arrkey])){
-                          if(x=='milepost'){
-                            this.$tool.setTimeToReallyTime(this[x][Arrkey],'dh_start_time');//里程碑时间格式设置
-                          }else if(x=='financing'){
-                            this.$tool.setTimeToReallyTime(this[x][Arrkey],'finance_time');//历史融资信息时间格式设置
+                          if(Arrkey!='tag'){
+                            this[x][Arrkey] = [...this[x][Arrkey], ...syncData[index][Arrkey]];//数组合并
                           }
-                          this[x][Arrkey] = [...this[x][Arrkey], ...syncData[index][Arrkey]];//数组合并
                         }
                       }
                     }
@@ -2638,8 +2665,8 @@
                 }
               });
             }
+             this.loading=false;
           }
-
       },//开始同步信息(是否覆盖信息)
     },
     //当dom一创建时

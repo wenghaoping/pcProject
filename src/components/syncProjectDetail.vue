@@ -55,7 +55,7 @@
           </el-checkbox>
 
           <!--公司运营-->
-          <el-checkbox label="company"  v-if="company.pro_company_scale!=''&&company.pro_status&&company.pro_website!==''">
+          <el-checkbox label="company"  >
             <div class="ul-lists">
             <div class="item">
               <span class="title"><img class="img" :src="yunying" style="width: 37px;">公司运营</span>
@@ -64,11 +64,11 @@
                   <p class="det-title">运营状态</p>
                   <p class="det-info">暂无数据</p>
                 </div>
-                <div class="rz-detail" v-show="company.pro_website!=''">
+                <div class="rz-detail">
                   <p class="det-title">公司官网</p>
-                  <p class="det-info">{{company.pro_website  | nullTo_}}</p>
+                  <p class="det-info">{{company.pro_website | nullTo_}}</p>
                 </div>
-                <div class="rz-detail"  v-show="company.pro_company_scale.comp_scale_value!=''" >
+                <div class="rz-detail">
                   <p class="det-title">公司规模</p>
                   <p class="det-info">{{company.pro_company_scale.comp_scale_value | nullTo_}} 人</p>
                 </div>
@@ -78,7 +78,7 @@
           </el-checkbox>
 
           <!--品牌-->
-          <el-checkbox label="brands"  v-if="brands.brand!=''">
+          <el-checkbox label="brands"  v-if="brands.brand.length!=0">
             <div class="ul-lists">
             <div class="item">
               <span class="title"><img class="img" :src="pinpai" style="width: 37px;">品牌</span>
@@ -103,7 +103,7 @@
           </div>
           </el-checkbox>
           <!--融资信息-->
-          <el-checkbox label="financing" v-if="financing.pro_history_finance!=''">
+          <el-checkbox label="financing" v-if="financing.pro_history_finance.length!=0">
             <div class="ul-lists">
               <div class="item">
                 <span class="title"><img class="img" src="../assets/images/money.png">融资信息</span>
@@ -113,7 +113,7 @@
                       <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                       <span class="pro-txt-1">{{finance.finance_time | timeToReallTime}}</span>
                       <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
-                      <span class="pro-txt-3">{{finance.history_financing_who}}</span>
+                      <span class="pro-txt-3">{{finance.pro_finance_investor}}</span>
                       <div class="line"></div>
                     </div>
                   </div>
@@ -121,7 +121,7 @@
             </div>
           </el-checkbox>
           <!--里程碑-->
-          <el-checkbox label="milepost" v-if="milepost.pro_develop!=''">
+          <el-checkbox label="milepost" v-if="milepost.pro_develop.length!=0">
             <div class="ul-lists" style="margin-bottom: 0px;" >
             <div class="item">
               <span class="title"><img class="img" src="../assets/images/Milepost.png">里程碑</span>
@@ -219,7 +219,7 @@
         financing:{
           pro_finance_use:'用途',
           pro_history_finance:[
-            {
+            /*{
               finance_time:1503331200,
               pro_finance_investor:'10000',
               pro_finance_scale:"天使轮",
@@ -228,27 +228,7 @@
                 stage_id: 18,
                 stage_name: ""
               }
-            },
-            {
-              finance_time:1503331200,
-              pro_finance_investor:'10000',
-              pro_finance_scale:"天使轮",
-              belongs_to_stage:{
-                sort: 5,
-                stage_id: 18,
-                stage_name: ""
-              }
-            },
-            {
-              finance_time:1503331200,
-              pro_finance_investor:'10000',
-              pro_finance_scale:"天使轮",
-              belongs_to_stage:{
-                sort: 5,
-                stage_id: 18,
-                stage_name: ""
-              }
-            }
+            },*/
           ]
         },
         company:{
@@ -259,18 +239,10 @@
         },
         milepost:{
           pro_develop:[
-              {
+              /*{
             dh_start_time:1503331200,
             dh_event:'事件'
-          },
-            {
-              dh_start_time:1503331200,
-              dh_event:'事件'
-            },
-            {
-              dh_start_time:1503331200,
-              dh_event:'事件'
-            }
+          },*/
           ]
         },//里程碑
         brands:{
@@ -293,12 +265,12 @@
             let data = res.data.data;
 //            console.log(data);
             this.$store.state.syncData.data=data;
-            if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
+/*            if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
             if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title="-";}
             if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name='-'}
             if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after='-'}
             if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro='-'}
-            if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'}
+            if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'}*/
             this.project=data.project;
             //团队
             this.team=data.team;
@@ -341,6 +313,7 @@
 
           }
       },
+      //添加新增的项目标签
       syncTag(tag){
         return new Promise((resolve, reject)=>{
           this.loading=true;

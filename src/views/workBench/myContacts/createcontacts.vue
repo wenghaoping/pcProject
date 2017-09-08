@@ -403,7 +403,7 @@ export default {
     goBack(){//返回上一层
       this.$router.go(-1);
     },
-    /*商业计划书*/
+    //*商业计划书
     planChange(file, fileList){
       this.planList = fileList;
       if (file.status === "fail") this.planButton = true;
@@ -572,11 +572,12 @@ export default {
 /*公司搜索*/
     /*获取远程数据模拟*/
     loadData(arr){
-      let newArr = [];
+      var newArr = [];
       for (let i = 0; i < arr.length; i++) {
         let obj = {};
-        obj.value = arr[i].company_name;
+        obj.value = arr[i].project_name=="" ? arr[i].company_name : arr[i].company_name + '(' +arr[i].project_name + ')';
         obj.address = arr[i].com_id;
+        obj.company_name = arr[i].company_name;
         newArr.push(obj)
       }
       return newArr;
