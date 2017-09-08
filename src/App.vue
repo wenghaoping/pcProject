@@ -51,12 +51,10 @@
           登录
         </li>
         <el-autocomplete
-          v-model="state4"
-          icon="search"
+          v-model="companyTitle"
           :fetch-suggestions="querySearchAsync"
           placeholder="查竞品，查工商，请输入公司或品牌名称"
           @select="handleSelect"
-          :on-icon-click="parameter"
           class="width350"
         ></el-autocomplete>
         <!--<li @click="loginOut">-->
@@ -92,7 +90,7 @@
       return {
         brand1:'',
         restaurants: [],
-        state4: '',
+        companyTitle: '',
         timeout:  null,
         cb:'',
         options: [
@@ -165,6 +163,7 @@
           obj.value = arr[i].company_name + '(' +arr[i].project_name + ')';
           obj.address = arr[i].com_id;
           obj.company_name = arr[i].company_name;
+          obj.pro_id=arr[i].pro_id;
           newArr.push(obj)
         }
         return newArr;
@@ -188,7 +187,8 @@
                   }else{
                     cb(restaurants);
                   }
-              }, 300);
+              }, 500);
+
             })
             .catch(err => {
 //          this.alert("加载失败");
@@ -200,50 +200,48 @@
       },
       handleSelect(item) {
         this.loading=true;
-        this.companyTitle = item.company_name;
+        this.companyTitle=item.company_name;
         this.companyId = item.address ;
-        this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
+        this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name:this.companyTitle})
           .then(res => {
             let data = res.data.data;
-//            console.log(this.$tool.getToObject(data))
-/*            this.queryData = data;
-            this.dialogVisible = true;*/
+            if(data.length!=0){
+              this.$router.push({name: 'onekeyResearch', query: {company:  item.company_name,pro:item.pro_id}})//路由传参
+            }else{
+              this.$tool.warning("未查询到该公司信息，无法获取");
+            }
             this.loading=false;
           })
           .catch(err => {
             this.$tool.error("获取失败");
             this.$tool.console(err);
+            this.loading=false;
           });
       },//选择了搜索出来的数据后
-      parameter(){
-        if(!this.brand){
-          this.$tool.warning("请先填写公司名称");
-        }else{
-          this.loading=true;
-          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.brand})
-            .then(res => {
-              let data = res.data.data;
-              if(data.length!=0){
-                this.$router.push({name: 'onekeyResearch', query: {company:  this.brand}})//路由传参
-                this.$route.query.company;
-              }else{
-                this.$tool.warning("未查询到该公司信息，无法获取");
-              }
-              this.loading=false;
-            })
-            .catch(err => {
-              this.$tool.error("获取失败");
-              this.$tool.console(err);
-              this.loading=false;
-            });
-
-        }
-        if(!this.companyTitle){
-//          console.log( this.companyTitle);
-        }else{
-          this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
-        }
-      },
+//      parameter(){
+//        if(!this.companyId){
+//          this.$tool.warning("请先填写公司名称");
+//        }else{
+//          this.loading=true;
+//          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.companyTitle})
+//            .then(res => {
+//              let data = res.data.data;
+//              if(data.length!=0){
+//                this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
+//                this.$route.query.company;
+//              }else{
+//                this.$tool.warning("未查询到该公司信息，无法获取");
+//              }
+//              this.loading=false;
+//            })
+//            .catch(err => {
+//              this.$tool.error("获取失败");
+//              this.$tool.console(err);
+//              this.loading=false;
+//            });
+//
+//        }
+//      },
       //检查localStorage.user_id
       checkUser(){
         //this.$tool.console(this.$route.path)

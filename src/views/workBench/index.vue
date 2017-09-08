@@ -14,11 +14,11 @@
         </router-view>
       </transition>
     </div>
-
-    <img :src="guanggao" alt="" v-if="willShow" class="guanggao" @click="open">
-    <span class="close"  v-if="willShow"  @click="close()">
-      <i class="el-icon-close"></i>
-    </span>
+    <!--广告-->
+    <!--<img :src="guanggao" alt="" v-if="willShow" class="guanggao" @click="open">-->
+    <!--<span class="close"  v-if="willShow"  @click="close()">-->
+      <!--<i class="el-icon-close"></i>-->
+    <!--</span>-->
   </div>
 </template>
 
