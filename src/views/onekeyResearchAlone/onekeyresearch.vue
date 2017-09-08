@@ -4,12 +4,12 @@
     <!--    <div class="titleDi">
 
         </div>-->
+    <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
     <!--===========================================一键尽调单独页面=============================================-->
     <div class="contain-grid contain-center1 fl dialog" >
-      <div class="contain-inner">
-        <div class="item-lists1" v-if="!empty">
+      <div class="contain-inner"  v-if="!empty">
+        <div class="item-lists1">
           <!--项目信息-->
-
           <div style="height: 24px;"></div>
           <div class="item2">
             <div class="title">项目信息</div>
@@ -71,7 +71,6 @@
               </div>
             </div>
           </div>
-
           <!--历史融资-->
           <div class="item" v-if="history_finance.length!=0">
             <div class="title">历史融资</div>
@@ -182,7 +181,6 @@
             <downloadechart :chart-data="chartData"></downloadechart>
           </div>
           <!--加入项目库-->
-
         </div>
         <div class="item" style="height: 61px;background: #ffffff;padding: 0">
           <div class="box">
@@ -202,11 +200,11 @@
             size="tiny"
             :before-close="handleClose1">
             <span>已将
-              <span>{{project[0].project_name}}</span>
+              <span>{{data1}}</span>
               项目加入您的项目库</span>
             <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible1 = false">取 消</el-button>
-    <el-button type="primary" @click="open1">加入项目库</el-button>
+    <el-button type="primary" @click="open1">进入项目库</el-button>
   </span>
           </el-dialog>
           <!--联系项目方弹框-->
@@ -309,6 +307,7 @@
   export default {
     data () {
       return {
+        data1:'',
         img:img,
         currentPathName:'',
         dialogVisible: false,
@@ -435,12 +434,12 @@
           {
             project_id: 1,
             com_id: 4,
-            company_name: "暂无信息",
-            project_name: "暂无信息",
-            project_industry: "暂无信息",
-            project_introduce: "暂无信息",
+            company_name: "",
+            project_name: "",
+            project_industry: "",
+            project_introduce: "",
             project_label: [],
-            project_website: "暂无信息",
+            project_website: "",
             project_logo: "",
             project_score: ""
           }
@@ -573,12 +572,16 @@
       }
     },
     methods: {
+      goBack(){
+        this.$router.go(-1);
+      },//返回上一层
         open(){
+
           this.dialogVisible1 = true;
           this.$http.post(this.URL.getTransToProject, {user_id: localStorage.user_id, com_id:this.com_id})
             .then(res => {
               let data = res.data.data;
-              this.$tool.error("请求成功");
+//              this.$tool.success("请求成功");
               this.loading=false;
             })
             .catch(err => {
@@ -751,6 +754,11 @@
                 this.getProjectIndustry(res.data.data);
                 this.project = res.data.data;
                 this.chartData = res.data.data;
+                if(this.project==' '){
+                  this.data1=this.project.project_name;
+                }else{
+                  this.data1=this.project[0].project_name||'';
+                }
                 this.getCrawlerProjectChart(res.data.data);
               }else{
                 this.chartDataCheck=false;
@@ -874,9 +882,10 @@
           this.$tool.getTop();
           this.loading=true;
           const routerCompany=decodeURI(this.$route.query.company) || '';
-//          this.includeInvestorMap=decodeURI(this.$route.query.includeInvestorMap) || '';
+          this.includeInvestorMap=decodeURI(this.$route.query.includeInvestorMap) || '';
           this.compName=decodeURI(this.$route.query.company) || '';
-//          this.id=this.$route.query.id || '';
+          this.id=this.$route.query.id || '';
+          this.pro=decodeURI(this.$route.query.pro) || '';
 //          console.log(this.$route.query.company);
 //          console.log(this.$route.query.id);
 //          console.log(this.$route.query.includeInvestorMap);
@@ -909,48 +918,6 @@
           }
         });
       },//获取API请求的数据
-
-      //*加入项目库按钮
-      allSave(){
-        var submit = ()=>{
-          return new Promise((resolve, reject)=>{
-            //做一些异步操作
-
-            resolve(true);
-          });
-        }
-
-        var check = ()=>{
-          return new Promise((resolve, reject)=>{
-            //做一些异步操作
-            setTimeout(()=>{
-
-            },200)
-          });
-        };
-
-        submit()
-          .then((data)=>{
-            return check();
-          })
-          .then((data)=>{
-            if(data){
-              this.loading=true;
-              let allData = {};
-
-
-              this.$http.post(this.URL.editProject, allData)
-                .then(res => {
-                  this.loading=false;
-                })
-                .catch(err => {
-                  this.loading=false;
-                  this.$tool.error("编辑失败");
-                  this.$tool.console(err);
-                })
-            }
-          })
-      },
     },
     computed: {},
     components: {
@@ -1010,6 +977,9 @@
 
 <style lang="less">
   @import '../../assets/css/onesearch.less';
+  body{
+    overflow: auto!important;
+  }
   #researchAlone{
   .el-carousel__item img {
     width: 100%;
@@ -1040,6 +1010,16 @@
   .el-message-box__message{
     margin-left: 10px!important;
   }
+    }
+    .back-tag{
+      display: block;
+      font-size: 14px;
+      color: #20a0ff;
+      line-height: 14px;
+      cursor: pointer;
+      position: relative;
+      top: 20px;
+      left: 19px;
     }
   }
 </style>

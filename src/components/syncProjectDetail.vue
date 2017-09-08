@@ -48,7 +48,7 @@
             <div class="item" v-for="core_user in team.core_users" style="margin-top:10px;" >
               <span class="p-name">{{core_user.ct_member_name}}</span>
               <span class="p-mg">{{core_user.ct_member_career}}</span>
-              <div class="p-doc">{{core_user.ct_member_intro}}</div>
+              <div class="p-doc" style="white-space: normal;word-break: break-all;">{{core_user.ct_member_intro}}</div>
               <div class="line"></div>
             </div>
           </div>
@@ -84,8 +84,13 @@
               <span class="title"><img class="img" :src="pinpai" style="width: 37px;">品牌</span>
               <div class="brand">
                 <div class="brand1" v-for="brandd in brands.brand">
-                        <span style="font-size:16px;
-  color:#4e4563;">{{brandd.brand_name}}</span>
+                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 30 ? false:true">
+                    <div slot="content">
+                      <div class="tips-txt">{{brandd.brand_name}}</div>
+                    </div>
+                    <span style="font-size:16px;color:#4e4563;width: 200px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">{{brandd.brand_name}}</span>
+                  </el-tooltip>
+
                   <span class="brand1_lei" v-if="brandd.brand_id==1" >网站</span>
                   <span class="brand1_lei" v-if="brandd.brand_id==2" >app</span>
                   <span class="brand1_lei" v-if="brandd.brand_id==3" >软件</span>
@@ -95,7 +100,13 @@
                   <span class="brand1_lei" v-if="brandd.brand_id==7" >HTML5</span>
                   <span class="brand1_lei" v-if="brandd.brand_id==8" >微信公众号</span>
                   <span class="brand1_lei" v-if="brandd.brand_id==9" >其他</span>
-                  <div class="brand1_introduce">{{brandd.brand_desc}}</div>
+                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 50 ? false:true">
+                    <div slot="content">
+                      <div class="tips-txt">{{brandd.brand_desc}}</div>
+                    </div>
+                    <div class="brand1_introduce" style="white-space: normal;word-break: break-all;">{{brandd.brand_desc}}</div>
+                  </el-tooltip>
+
                 </div>
                 <div class="clear"></div>
               </div>
@@ -908,6 +919,8 @@
             float: right;
           }
           .brand1_introduce{
+            height:53px;
+            overflow: hidden;
             font-size:14px;
             color:#8492a6;
             line-height:18px;
