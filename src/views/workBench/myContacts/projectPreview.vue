@@ -4,18 +4,17 @@
     <!--===========================================项目推送预览弹框=============================================-->
     <el-dialog :visible="previewShow" :show-close="close"  custom-class="dialogCon" :before-close="closePreview" close-on-press-escape close-on-click-modal>
       <div class="top_pro">
-        <p v-if="email.title==''">邮件标题 :
+        <p style="line-height: 42px;">{{email.title}}</p><!--用户写的标题-->
+        <p style="line-height: 42px;">尊敬的:　{{user.user_real_name}}</p><!--尊敬的翁浩平/被推送的人-->
+
+        <p style="font-size:18px;color:#fc703e;font-weight: bolder;line-height: 28px;">
           <i v-if="user.user_brand!=''">{{user.user_brand}}－</i>
           <i v-else>{{user.firse_user_company_name}}－</i>
           <i v-if="user.firse_user_company_career!=''">{{user.firse_user_company_career}}－</i>
           <i v-if="user.firse_user_real_name!=''">{{user.firse_user_real_name}}</i>
-          推送给您一个项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行</p>
-        <p v-else>邮件标题 : {{email.title}}</p>
-        <p v-if="email.body==''">邮件正文 : 尊敬的{{user.user_real_name}}: <i>{{user.firse_user_company_name}}-{{user.firse_user_company_career}}-{{user.firse_user_real_name}}</i>
-          通过微天使乐投平台（www.weitianshi.cn）向您推荐了一个投资项目，
-          如果感兴趣请回复邮件，微天使帮您约见。您可以注册/登录微天使乐投平台，
-          找到更多FA精选优质项目</p>
-        <p v-else>邮件正文 : {{email.body}}</p>
+        </p>
+        <p style="line-height: 24px;">通过<i style="color:#1F2D3D;font-weight: bolder">微天使乐投平台(www.weitianshi.cn)</i>向您推荐了一个投资项目，您可以<i style="color:#009eff">注册/登录</i>微天使乐投平台，找到更多FA精选优质项目</p>
+        <p style="line-height: 20px;">{{email.body}}</p>
       </div>
       <div class="contain-grid contain-center2 fl">
         <div class="main-box clearfix">
