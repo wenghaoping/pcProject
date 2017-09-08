@@ -82,6 +82,10 @@
 color:#40587a;
 letter-spacing:0;">团中央·青年APP大赛</span></a>
     </div>
+    <div class="er-box">
+      <img :src="zhanshi" alt="">
+      <p>第三届"创青春"<br/>100强项目展示</p>
+    </div>
     <div class="qrCode">
       <img src='../../assets/images/indexQr.png'/>
     </div>
@@ -94,10 +98,12 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
 
 
 <script type="text/ecmascript-6">
+  import zhanshi from '../../../static/images/xiangmuzhanshi.png'
   export default {
     name: 'hello',
     data () {
       return {
+        zhanshi:zhanshi,
         msg: '',
         // 控制二维码显示
         showQr:false,
