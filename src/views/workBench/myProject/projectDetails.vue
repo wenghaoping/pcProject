@@ -17,7 +17,13 @@
               <span class="company">{{project.pro_company_name}}</span>
             </div>
             <div class="item height" style="margin-top: 14px;">
-              <div class="doc">{{project.pro_intro}}</div>
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_intro.length > 40 ? false:true">
+                <div slot="content">
+                  <div class="tips-txt">{{project.pro_intro}}</div>
+                </div>
+                <div class="doc" style="height: 21px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_intro}}</div>
+              </el-tooltip>
+
             </div>
             <div class="item height" style="margin-top:18px;">
               <span class="mid-tag" v-for="industry in project.pro_industry">{{industry.industry_name}}</span>
@@ -188,15 +194,21 @@
                 <div class="item">
                   <span class="title"><img class="img" :src="yunying" style="width: 37px;">公司运营</span>
                   <div class="rz-details">
-                    <div class="rz-detail" v-show="company.pro_status!=''">
+                    <div class="rz-detail">
                       <span class="det-title" style="width: 100%;line-height: 21px">运营状态</span>
                       <span class="del-info" style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{company.pro_status.status_name}}</span>
                     </div>
-                    <div class="rz-detail"  v-show="company.pro_website!=''">
+                    <div class="rz-detail">
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
-                      <span else class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer" @click="urlOpen(company.pro_website)">{{company.pro_website}}</span>
+
+                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 20 ? false:true">
+                        <div slot="content">
+                          <div class="tips-txt">{{company.pro_website}}</div>
+                        </div>
+                        <span else class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;" @click="urlOpen(company.pro_website)">{{company.pro_website}}</span>
+                      </el-tooltip>
                     </div>
-                    <div class="rz-detail" v-show="company.pro_company_scale!=''">
+                    <div class="rz-detail">
                       <span class="det-title"style="width: 100%;line-height: 21px">公司规模</span>
                       <span class="del-info"  style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{company.pro_company_scale.comp_scale_value}} 人</span>
                     </div>
@@ -271,11 +283,11 @@ color:#4e4563;">{{brandd.brand_name}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
                         <!--<span class="pro-txt-4" style=" width: 202px; white-space: normal;overflow: hidden; word-break: break-all;line-height:22px;">{{finance.pro_finance_investor}}</span>-->
-                        <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 35 ? false:true">
+                        <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 20 ? false:true">
                           <div slot="content">
                             <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                           </div>
-                          <span class="pro-txt-4" style="width:323px;max-width:323px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
+                          <span class="pro-txt-4" style="width:314px;max-width:314px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
                         </el-tooltip>
                         <!--<div class="line"></div>-->
                       </div>
@@ -1052,7 +1064,12 @@ color:#4e4563;">{{brandd.brand_name}}</span>
         return str
       },//项目来源编辑
       urlOpen(url){
-          let url1='http://'+url;
+          if(!url.indexOf('http://')){
+            var url1=url;
+          }else{
+            var url1="http://"+url;
+          }
+
           window.open(url1);
       },//链接跳转
       getProjectDetail () {
@@ -1060,17 +1077,18 @@ color:#4e4563;">{{brandd.brand_name}}</span>
           //做一些异步操作
           this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project.project_id})
             .then(res=>{
-
               let data = res.data.data;
-
                // 项目介绍
 //              if(data.project.pro_company_name==''){data.project.pro_company_name=='-'}
-              if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
-              if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title="-";}
-              if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name='-'}
-              if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after='-'}
-              if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro='-'}
-              if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'}
+               if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money=" ";}
+              if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title=" ";}
+              if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name=' '}
+              if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after=' '}
+              if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro=' '}
+              if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name=' '}
+              if(data.company.pro_status==''){data.company.pro_status={};data.company.pro_status.status_name='-'}
+              if(data.company.pro_website==''){data.company.pro_website={};data.company.pro_website='-'}
+              if(data.company.pro_company_scale==''){data.company.pro_company_scale={};data.company.pro_company_scale.comp_scale_value='-'}
               this.project=data.project;
               //公司运营
               this.company=data.company;

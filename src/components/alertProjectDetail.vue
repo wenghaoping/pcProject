@@ -1152,7 +1152,7 @@ color:#4e4563;">{{brandd.brand_name}}</span>
           color:#8492a6;
           margin-top: 5px;
           margin-bottom: 11px;
-          line-height:28px;
+          line-height:26px;
         }
         .prod-doc{
           margin-top: 16px;

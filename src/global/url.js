@@ -68,6 +68,9 @@ export default
   getCrawlerTeam:"api/dataTeam/getCrawlerTeam",  //一键尽调-核心成员
   getCrawlerHistoryFinance:"api/dataTeam/getCrawlerHistoryFinance",
 
+  /*一键尽调加入项目库*/
+  getTransToProject:"/api/dataTeam/transToProject",
+
   //一键尽调-历史融资
   getCrawlerMilestone:"api/dataTeam/getCrawlerMilestone",  //一键尽调-里程碑
   getCrawlerNews:"api/dataTeam/getCrawlerNews",  //一键尽调-新闻
