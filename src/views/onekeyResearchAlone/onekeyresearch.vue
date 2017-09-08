@@ -189,7 +189,7 @@
                 <el-button type="text"  @click="open" class="manager" style="margin-left: 40%;margin-top: 7px" >加入项目库</el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="dark" content="微天使将联系到项目方，并为您安排约谈" placement="top-start">
-                <el-button type="text"  class="manager" style="margin-left: 5%;margin-top: 7px" @click="dialogVisible = true">联系项目方</el-button>
+                <el-button type="text"  class="manager" style="margin-left: 5%;margin-top: 7px" @click="contact">联系项目方</el-button>
               </el-tooltip>
             </div>
           </div>
@@ -576,7 +576,6 @@
         this.$router.go(-1);
       },//返回上一层
         open(){
-
           this.dialogVisible1 = true;
           this.$http.post(this.URL.getTransToProject, {user_id: localStorage.user_id, com_id:this.com_id})
             .then(res => {
@@ -594,6 +593,17 @@
           this.dialogVisible1 = false;
           this.$router.push('/workBench');
         },//
+      contact(){
+        this.dialogVisible = true;
+        this.$http.post(this.URL.createServiceLog, {user_id: localStorage.user_id})
+          .then(res => {
+            this.$tool.error("请求成功");
+          })
+          .catch(err => {
+            this.$tool.error("请求失败");
+            this.$tool.console(err);
+          });
+      },
       handleClose1(done) {
             done();
       },
@@ -902,6 +912,15 @@
                 if(res.data.status_code==2000000){
                   this.com_id=data[0].com_id;
                   this.empty=false;
+                  this.getCrawlerProject();
+                  this.getCrawlerCompany();
+                  this.getCrawlerBrand();
+                  this.getCrawlerHistoryFinance();
+                  this.getCrawlerMilestone();
+                  this.getCrawlerNews();
+                  this.getCrawlerTeam();
+                  this.getCrawlerCompeting();
+                  this.getCrawlerCompeting()
                   resolve(1);
                 }else{
                   this.$tool.error(res.data.error_msg);
@@ -957,8 +976,11 @@
         })
     },
     watch:{
-        //监听路由改变
-      "$route": "getRouter"
+        //监听路由改变"
+        $route: "getRouter"
+//      "$route": function(to,form){
+//          this.getRouter=to.name;
+//      }
 //        '$route':function(to,form){
 //            this.compName=to.name;
 //             localStorage.setItem('compName',to.name);
