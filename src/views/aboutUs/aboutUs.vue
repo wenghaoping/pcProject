@@ -84,7 +84,7 @@
   import youxiang from '../../../static/images/icon-youxiang.png'
   import dizhi from '../../../static/images/icon-dizhi.png'
   import xiaochengxu from '../../../static/images/xiaochengxu.png'
-  import ios from '../../../static/images/ios.png'
+  import ios from '../../../static/images/img-iOS.png'
   export default {
     data () {
       return {

@@ -135,7 +135,7 @@
               <li class="table6" style="line-height: 40px;">最近融资时间</li>
             </ul>
             <div v-for="compet in competing">
-              <ul  class="ulfl m-table" @click="toNewOneKey(compet)">
+              <ul  class="ulfl m-table" @click="toNewOneKey(compet.company_name)">
                 <li class="table1">
                   <div class="img fl">
                     <img :src="compet.project_logo" v-if="compet.project_logo!=''">
@@ -576,6 +576,7 @@
         this.$router.go(-1);
       },//返回上一层
         open(){
+          if(localStorage.user_id){
           this.dialogVisible1 = true;
           this.$http.post(this.URL.getTransToProject, {user_id: localStorage.user_id, com_id:this.com_id})
             .then(res => {
@@ -584,25 +585,30 @@
               this.loading=false;
             })
             .catch(err => {
-              this.$tool.error("获取失败");
+//              this.$tool.error("获取失败");
               this.$tool.console(err);
               this.loading=false;
             });
+          }else{
+            this.$router.push({name:"telephoneLogin"});
+          }
         },//请求项目库
         open1(){
           this.dialogVisible1 = false;
           this.$router.push('/workBench');
         },//
       contact(){
+        if(localStorage.user_id){
         this.dialogVisible = true;
         this.$http.post(this.URL.createServiceLog, {user_id: localStorage.user_id})
           .then(res => {
-            this.$tool.error("请求成功");
           })
           .catch(err => {
-            this.$tool.error("请求失败");
             this.$tool.console(err);
           });
+      }else{
+        this.$router.push({name:"telephoneLogin"});
+  }
       },
       handleClose1(done) {
             done();
@@ -764,11 +770,13 @@
                 this.getProjectIndustry(res.data.data);
                 this.project = res.data.data;
                 this.chartData = res.data.data;
-                if(this.project==' '){
-                  this.data1=this.project.project_name;
-                }else{
-                  this.data1=this.project[0].project_name||'';
-                }
+//                if(this.project==' '){
+//
+//                }else{
+//                  this.data1=this.project[0].project_name||'';
+//                }
+                this.data1=this.project[0].project_name?this.project[0].project_name:' ';
+                console.log(this.data1);
                 this.getCrawlerProjectChart(res.data.data);
               }else{
                 this.chartDataCheck=false;
@@ -882,10 +890,21 @@
       },//获取商标信息
 
       toNewOneKey(data){
-        const companyName = data.company_name.toString();
-        const openUrl = this.URL.openUrl;
-        const url=encodeURI(openUrl+"?company="+companyName+"&id="+this.id+"&includeInvestorMap="+this.includeInvestorMap);
-        window.open(url);
+//        const companyName = data.company_name.toString();
+//        const openUrl = this.URL.openUrl;
+//        const url=encodeURI(openUrl+"?company="+companyName+"&id="+this.id+"&includeInvestorMap="+this.includeInvestorMap);
+//        window.open(url);
+        this.$http.post(this.URL.getCrawlerCompany, {company_name:data})
+          .then(res => {
+//            let data = res.data.data;
+              this.$router.push({name: 'onekeyResearch', query: {company: data}})//路由传参
+            this.loading=false;
+          })
+          .catch(err => {
+            this.$tool.error("获取失败");
+            this.$tool.console(err);
+            this.loading=false;
+          });
       },//跳转到新的一键尽调
       getRouter(){
         return new Promise((resolve, reject)=>{
@@ -947,33 +966,33 @@
     created(){
       this.$tool.getTop();
       this.getRouter()
-        .then((data)=>{
-          return this.getCrawlerProject();
-        })
-        .then((data)=>{
-          return this.getCrawlerCompany();
-        })
-        .then((data)=>{
-          return this.getCrawlerBrand();
-        })
-        .then((data)=>{
-          return this.getCrawlerHistoryFinance();
-        })
-        .then((data)=>{
-          return this.getCrawlerMilestone();
-        })
-        .then((data)=>{
-          return this.getCrawlerNews();
-        })
-        .then((data)=>{
-          return this.getCrawlerTeam();
-        })
-        .then((data)=>{
-          return this.getCrawlerCompeting();
-        })
-        .then((data)=>{
-          return this.getInvestorMatch();
-        })
+//        .then((data)=>{
+//          return this.getCrawlerProject();
+//        })
+//        .then((data)=>{
+//          return this.getCrawlerCompany();
+//        })
+//        .then((data)=>{
+//          return this.getCrawlerBrand();
+//        })
+//        .then((data)=>{
+//          return this.getCrawlerHistoryFinance();
+//        })
+//        .then((data)=>{
+//          return this.getCrawlerMilestone();
+//        })
+//        .then((data)=>{
+//          return this.getCrawlerNews();
+//        })
+//        .then((data)=>{
+//          return this.getCrawlerTeam();
+//        })
+//        .then((data)=>{
+//          return this.getCrawlerCompeting();
+//        })
+//        .then((data)=>{
+//          return this.getInvestorMatch();
+//        })
     },
     watch:{
         //监听路由改变"
