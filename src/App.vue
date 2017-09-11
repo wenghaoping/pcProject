@@ -171,7 +171,7 @@
       //*自动搜索,接口写这里面
       querySearchAsync(queryString, cb) {
         if(queryString.length>2) {
-          this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+          this.$http.post(this.URL.selectCompany, {company_name: queryString})
             .then(res => {
               this.restaurants = [];
               let data = res.data.data;
@@ -202,7 +202,7 @@
         this.loading=true;
         this.companyTitle=item.company_name;
         this.companyId = item.address ;
-        this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name:this.companyTitle})
+        this.$http.post(this.URL.getCrawlerCompany, {company_name:this.companyTitle})
           .then(res => {
             let data = res.data.data;
             if(data.length!=0){
@@ -258,7 +258,7 @@
           && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/'
           && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/'
           && this.$route.path!=='/workBench' && this.$route.path!=='/qr'
-          && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'){
+          && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'&& this.$route.path!=='/onekeyResearch'){
 //          this.$tool.error('请先登录');
           this.$router.push({name:'index'});
         }
