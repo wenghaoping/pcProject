@@ -1252,8 +1252,8 @@
         //项目详情
         project: {
           goodness:{
-            pro_goodness: {goodness_id: 1, project_id: 7295, goodness_title: "我是亮点1", goodness_desc: "我是亮点1",},
-            pro_market_genera: {goodness_id: 2, project_id: 7295, goodness_title: "我是亮点2", goodness_desc: "我是亮点2"},
+            pro_goodness: {goodness_title: "", goodness_desc: "",},
+            pro_market_genera: {goodness_title: "", goodness_desc: ""},
             pro_business_model: [],
             pro_service: [],
           },//亮点
@@ -1685,7 +1685,6 @@
             }else{
               this.project.pro_area.area_id="";
             }
-
           })
           .catch(err => {
             this.$tool.console(err)

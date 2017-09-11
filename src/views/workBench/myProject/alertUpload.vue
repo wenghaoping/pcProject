@@ -1,40 +1,5 @@
 <template>
   <div id="alertUpload" v-loading.body="loading" element-loading-text="提交中">
-   <!-- <el-dialog title="批量上传创建项目" :visible="uploadDisplay" :before-close="handleClose" :show-close="showList"
-               :close-on-click-modal="showList" :close-on-press-escape="showList">
-      <div style="height:250px;"></div>&lt;!&ndash;老子就是一个占位的&ndash;&gt;
-        <el-upload class="uploadProjec"
-                   :action="uploadAddress"
-                   :on-preview="handlePreview"
-                   :on-change="handleChange"
-                   :on-success="uploadsuccess"
-                   :on-error="uploaderror"
-                   :file-list="fileList"
-                   :before-upload="beforeUpload"
-                   :on-progress="handleProgress"
-                   :data="uploadDate"
-                   :show-file-list="showList"
-                   ref="upload"
-                   accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
-                   drag multiple>
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">&lt;!&ndash;将文件拖到此处，或&ndash;&gt;<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip" >BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式<br>单个文件最大50M</div>
-
-
-            &lt;!&ndash;<p class="bp fl">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</p>&ndash;&gt;
-
-            <i class="el-icon-upload"></i>
-            <button class="contentUpload2">上传</button>
-
-        </el-upload>
-
-      <div slot="footer" class="dialog-footer" style="padding-top: 40px;padding-right: 44px;padding-bottom: 15px;">
-        <el-button @click="handleClose">取 消</el-button>
-      </div>
-    </el-dialog>-->
-
-
     <el-dialog title="批量上传创建项目" :visible="uploadDisplay" :before-close="handleClose"
                :show-close="showList" :close-on-click-modal="showList" :close-on-press-escape="showList">
       <div class="loadmodel">
@@ -130,7 +95,7 @@ export default {
   props: ["uploadDisplay"],
   data () {
     return {
-      uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
+      uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload,//上传地址
       num:0,//控制一次最多选择个数
 //      dialogUploadVisible: false,//第一个弹窗的控制
       dialogUpload2Visible:false,//第二个弹窗的控制

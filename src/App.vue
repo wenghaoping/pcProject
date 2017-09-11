@@ -71,15 +71,8 @@
         </router-view>
       </transition>
     </main>
-    <div class="Infooter tc">
-      <p style="height: 20px;line-height: 20px;"><span style="cursor: pointer" @click="aboutUs">关于我们</span>
-        | 联系我们</p>
-      <div style="width:525px;margin:0 auto;vertical-align: middle;height: 20px;">
-        <img class="fl" src="../src/assets/images/beian.png">
-        <a class="fl" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602008444" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33010602008444号</p></a>
-        <span style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</span>
-      </div>
-    </div>
+
+
 
     </el-row>
   </div>
@@ -147,10 +140,7 @@
         this.$router.push('/login');
       },
       //
-      //关于我们
-      aboutUs(){
-        this.$router.push('/aboutUs');
-      },
+
       //显示退出登录
       opp(){
         this.flag=!this.flag;
@@ -293,10 +283,6 @@
       },
     },
     watch: {
-      user_name: function (e) {
-
-      },
-
       "$route": "checkUser"
     }
   }
@@ -349,18 +335,6 @@ background: red;
     max-height: 250px;
     overflow-y: auto;
     overflow-x: hidden;
-  }
-  .Infooter {
-    background:#444444;
-    font-size: 12px;
-    color:#a1a1a1;
-    line-height: 12px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    width: 100%;
-    p:first-child{
-      margin-bottom: 10px;
-    }
   }
 
   * {

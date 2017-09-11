@@ -22,9 +22,17 @@ Vue.filter('timeToReallTime',(value)=> {
   return y + '-' + m + '-' + d/*+' '+h+':'+minute+':'+second;*/
 })
 
-Vue.filter('nullTo_',(value)=> {
+Vue.filter('nullToZ',(value)=> {
   if(value==''){
     return '暂无数据'
+  } else{
+    return value;
+  }
+})
+
+Vue.filter('nullTo_',(value)=> {
+  if(value==''){
+    return '-'
   } else{
     return value;
   }

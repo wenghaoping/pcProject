@@ -29,13 +29,13 @@
               <span class="mid-tag" v-for="industry in project.pro_industry">{{industry.industry_name}}</span>
             </div>
             <div class="item height" style="margin-top:18px;">
-              <span class="big-tag" > {{project.pro_scale.scale_money}}</span>
+              <span class="big-tag" > {{project.pro_scale.scale_money | nullTo_}}</span>
               <span class="split">｜</span>
-              <span class="big-tag">{{project.pro_area.area_title}}</span>
+              <span class="big-tag">{{project.pro_area.area_title | nullTo_}}</span>
               <span class="split">｜</span>
-              <span class="big-tag">{{project.pro_finance_stock_after}}%</span>
+              <span class="big-tag">{{project.pro_finance_stock_after | nullTo_}}%</span>
               <span class="split">｜</span>
-              <span class="big-tag">{{project.pro_stage.stage_name}}</span>
+              <span class="big-tag">{{project.pro_stage.stage_name | nullTo_}}</span>
 
             </div>
             <!--<div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">-->

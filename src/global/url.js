@@ -30,6 +30,9 @@ export default
   getWxosProjectData:"api/v/project/getWxosProjectData",   //创建页面获取微信信息
 
 
+  /*项目批量上传*/
+  projectUpload:"api/v/project/projectUpload?token=" + localStorage.token,
+
   /*项目列表页*/
   getNodeCount:"api/v/project/getNodeCount", //项目节点数量
   deleteUpload:"api/v/project/deleteUpload",  //删除批量上传的文件
@@ -95,6 +98,8 @@ export default
   bindTelephone:'/api/user/bindUser',//绑定手机号码
 
   /*我的人脉*/
+  uploadConnectCard:"api/v/user/uploadConnectCard?token=" + localStorage.token,//人脉图片上传
+
   userTitleSift:"api/v/user/userTitleSift",//人脉列表表头
   getConnectUser:"api/v/user/getConnectUser",//获取人脉列表
   setConnectTag:"api/v/user/setConnectTag",//给人脉设置标签
@@ -117,7 +122,7 @@ export default
   deleteAtUpload:"api/v/project/deleteAtUpload",  //bp文件软删除
   deleteAtFile:"api/v/project/deleteAtFile",  //项目文件软删除
   download:"api/v/project/download",  //文件下载
-  uploadFile:"api/v/project/uploadFile",  //文件上传
+  uploadFile:"api/v/project/uploadFile?token=" + localStorage.token,  //文件上传
   setFileType:"api/v/project/setFileType",  //文件分组设置
   deleteFileType:"api/v/project/deleteFileType", //删除文件分组
   renameFileType:"api/category/renameFileType",//重命名文件分组

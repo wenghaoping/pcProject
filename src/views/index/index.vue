@@ -93,6 +93,16 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
       <img src="../../assets/images/index-qr.png">
       <div class="add2">添加FA哥微信了解更多</div>
     </div>
+    <!--底部-->
+    <div class="Infooter tc">
+      <p style="height: 20px;line-height: 20px;"><span style="cursor: pointer" @click="aboutUs">关于我们</span>
+        | <i @click="aboutUs" style="cursor: pointer">联系我们</i></p>
+      <div style="width:525px;margin:0 auto;vertical-align: middle;height: 20px;">
+        <img class="fl" src="../../../src/assets/images/beian.png">
+        <a class="fl" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602008444" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33010602008444号</p></a>
+        <span style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"> © 杭州投着乐网络科技有限公司   浙ICP备16041047号-1</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -142,26 +152,21 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
     methods: {
       // 创建项目
       createProject(){
-        localStorage.entrance='creatproject'
-        console.log(localStorage.user_id)
+        localStorage.entrance='creatproject';
         if(localStorage.user_id){
           this.$router.push({name:'creatproject'})
         }else{
           this.$router.push({name:'telephoneLogin'})
         }
       },
-      // 清除浏览器内存
-      clearSomething(){
-        console.log('清除localStorage部分key值完毕')
-        localStorage.removeItem('user_id');
-        localStorage.removeItem('id');
-        localStorage.removeItem('user_real_name');
-        localStorage.removeItem('entrance');
-      },
       // 鼠标到体验小程序上悬浮触发二维码显示
       showS(){
         this.showQr = !this.showQr
-      }
+      },
+      //关于我们
+      aboutUs(){
+        this.$router.push('/aboutUs');
+      },
     }
   }
 </script>

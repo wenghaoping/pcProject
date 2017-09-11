@@ -66,11 +66,11 @@
                 </div>
                 <div class="rz-detail">
                   <p class="det-title">公司官网</p>
-                  <p class="det-info">{{company.pro_website | nullTo_}}</p>
+                  <p class="det-info">{{company.pro_website | nullToZ}}</p>
                 </div>
                 <div class="rz-detail">
                   <p class="det-title">公司规模</p>
-                  <p class="det-info">{{company.pro_company_scale.comp_scale_value | nullTo_}} 人</p>
+                  <p class="det-info">{{company.pro_company_scale.comp_scale_value | nullToZ}} 人</p>
                 </div>
               </div>
             </div>
