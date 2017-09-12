@@ -649,15 +649,6 @@
           }
         })
 
-
-        /*//删除checkbox勾选
-         if(this.myCheckList[e.value]){
-         this.myCheckList[e.value]=!this.myCheckList[e.value];
-         }
-         if(this.netCheckList[e.value]){
-         this.netCheckList[e.value]=!this.netCheckList[e.value];
-         }*/
-
         //删除pushData
         this.pushData.forEach((x, index) => {
           if (x.card.user_email === email) {
@@ -666,7 +657,6 @@
             }
           }
         })
-        console.log(this.pushData)
         //强置刷新checkBox状态
         this.reBorn = false;
         setTimeout(() => {
@@ -701,7 +691,6 @@
                 }
               }
           })
-          //console.log(1,this.pushData)
         } else {
           let thisName = e.currentTarget.name;
           let thisId = e.target.value;
@@ -711,13 +700,10 @@
           this.pushData.splice(this.pushData.indexOf(thisId), 1)
         }
         this.initReborn();
-        /*console.log(this.myContactsShow)
-        console.log(this.pushData)*/
       },
       netCheck(e){
         let thisId = e.target.value;
         let thisName = e.currentTarget.name;
-        console.log(thisId)
         if (this.netCheckList[thisId] === false) {
           this.netContactsShow.push(thisName);
           this.netCheckList[thisId] = true;
@@ -726,17 +712,16 @@
           this.netContacts.forEach(x => {
             if(x.type==='card'){
               if (x.card.card_id === thisId) {
-                this.pushData.push(x)
+                this.pushData.push(x);
                 return
               }
             }else{
               if (x.card.user_id === thisId) {
-                this.pushData.push(x)
+                this.pushData.push(x);
                 return
               }
             }
           })
-//        console.log(this.pushData)
         } else {
           let thisName = e.currentTarget.name;
           let thisId = e.target.value;
@@ -746,8 +731,6 @@
           this.pushData.splice(this.pushData.indexOf(thisId), 1)
         }
         this.initReborn();
-        /*console.log(this.allShow)
-        console.log(this.pushData)*/
       },
       //预览
       preview(){
@@ -760,7 +743,8 @@
         }else if(this.pushData.length>this.pushCount){
           this.$tool.error('推送人数不能超过今日剩余推送次数')
         }else{
-          let targetUser = this.pushData[0].card
+            console.log(this.pushData)
+          let targetUser = this.pushData[0].card;
           let user = {
             user_real_name: targetUser.user_real_name,
             user_company_career: targetUser.user_company_career,
@@ -794,12 +778,14 @@
         this.loading=true;
         let dealData = [];
         this.pushData.forEach(x => {
+
           if (x.type === 'card') {
             dealData.push([x.card.card_id, x.type, x.card.user_email])
           } else {
             dealData.push([x.card.user_id, x.type, x.card.user_email])
           }
         })
+        console.log(dealData);
         if (this.pushData.length>0 && dealData.length === 0) {
           this.$tool.error('请选择推送人脉')
         } else if (dealData.length > this.pushCount) {

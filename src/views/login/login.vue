@@ -52,11 +52,18 @@
           href: 'https://www.weitianshi.cn/static/css/qrCode.css',
           state:time
         });
+      },
+      checkReload(){
+        let reload = this.$route.query.reload || false;
+//        if(reload){window.location.reload();}
       }
     },
     mounted(){
       this.creatObj();
       zhuge.track('购买商品');
+    },
+    created(){
+      this.checkReload();
     },
   }
 </script>

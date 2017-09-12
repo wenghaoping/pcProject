@@ -92,7 +92,7 @@ export default [
     path: '/qr', name: 'SmallRoutine', component: SmallRoutine
   },
   {
-    path: '/login', component:login,
+    path: '/login', component:login,name:'login',
     children:[
       { path:'',name:'telephoneLogin',component:telephoneLogin},
       { path:'codeLogin',name:'codeLogin',component:codeLogin},

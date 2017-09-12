@@ -208,30 +208,6 @@
             this.loading=false;
           });
       },//选择了搜索出来的数据后
-//      parameter(){
-//        if(!this.companyId){
-//          this.$tool.warning("请先填写公司名称");
-//        }else{
-//          this.loading=true;
-//          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.companyTitle})
-//            .then(res => {
-//              let data = res.data.data;
-//              if(data.length!=0){
-//                this.$router.push({name: 'onekeyResearch', query: {company:  this.companyTitle}})//路由传参
-//                this.$route.query.company;
-//              }else{
-//                this.$tool.warning("未查询到该公司信息，无法获取");
-//              }
-//              this.loading=false;
-//            })
-//            .catch(err => {
-//              this.$tool.error("获取失败");
-//              this.$tool.console(err);
-//              this.loading=false;
-//            });
-//
-//        }
-//      },
       //检查localStorage.user_id
       checkUser(){
         //this.$tool.console(this.$route.path)
@@ -265,17 +241,14 @@
       loginOut(e){
         if(e==0){
           localStorage.clear();
-          this.$router.push('/login');
-//          setTimeout(()=>{ window.location.reload();})
-        }else{
-
+          this.$router.push({name: 'login'});//路由传参
+          setTimeout(()=>{ window.location.reload();},50)
         }
-
       }
     },
     //当dom一创建时
     created(){
-      this.user_name= localStorage.user_real_name;
+      this.user_name = localStorage.user_real_name;
     },
     computed:{
       userRealName(){

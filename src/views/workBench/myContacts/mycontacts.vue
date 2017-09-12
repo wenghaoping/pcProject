@@ -123,15 +123,10 @@
                              :filters="user_invest_industryFilters"
                              filter-placement="bottom-end">
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.user_invest_industry.length > 10 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_invest_industry}}</div>
-                  </div>
                   <div>
                     {{scope.row.user_invest_industry}}
                   </div>
-                </el-tooltip>
-                <div v-if="scope.row.user_invest_industry.length === 0">
+                <div v-if="scope.row.user_invest_industry == ''">
                   -
                 </div>
               </template>
@@ -143,16 +138,11 @@
                              :filters="user_invest_stageFilters"
                              filter-placement="bottom-end">
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.user_invest_stage.length > 10 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_invest_stage}}</div>
-                  </div>
                   <div>
                     {{scope.row.user_invest_stage}}
                   </div>
-                </el-tooltip>
-                <div v-if="scope.row.user_invest_stage.length === 0">
-                  -
+                <div v-if="scope.row.user_invest_stage == ''">
+                   -
                 </div>
               </template>
             </el-table-column>

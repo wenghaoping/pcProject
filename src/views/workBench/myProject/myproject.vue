@@ -458,7 +458,12 @@
         this.getPra=this.$store.state.pageANDSelect.getPra;
         this.currentPage=this.$store.state.pageANDSelect.pracurrentPage || 1;
         this.getPra.page=this.$store.state.pageANDSelect.pracurrentPage || 1;
+        let node = this.$store.state.pageANDSelect.node | 0;
+        this.searchinput = this.$store.state.pageANDSelect.searchinput;
+        this.setNode(node)
       },//从vuex中取数据
+
+
       handleEdit(index, row){
         this.$router.push({ name: 'editproject', query: { project_id:row.project_id}});
         this.setRouterData();
@@ -467,10 +472,14 @@
         this.$router.push({ name: 'creatproject'});
         this.setRouterData();
       },//跳转到创建项目页面
+
       uploadDisplayChange(msg){
         this.uploadDisplay=msg;
       },//控制上传弹窗
-      //*跟进
+
+
+
+      //跟进
       addFollow(index, row){
         this.followDisplay=true;
         this.projecmessage.project_id=row.project_id;
@@ -503,6 +512,7 @@
         this.loading=true;
         this.getPra.user_id=localStorage.user_id;
         this.getPra.search=this.searchinput;
+        this.$store.state.pageANDSelect.searchinput = this.searchinput;
         this.currentPage=1;
         this.getPra.page=1;
         this.$http.post(this.getProjectListURL,this.getPra)
@@ -585,6 +595,7 @@
             this.$tool.console(err,2)
           })
       },//控制页码
+
       setNode(v){
         this.currentPage=1;
         this.loading=true  ;
@@ -599,6 +610,7 @@
         this.node8 = false ;
         this.node9 = false ;
         this['node' + v] = true ;
+        this.$store.state.pageANDSelect.node = v;
         this.$http.post(this.getProjectListURL,{user_id: localStorage.user_id,pro_schedule:parseInt(v)})
           .then(res=>{
             this.loading=false;
@@ -612,6 +624,7 @@
           })
 
       },//控制顶部样式并且筛选
+
       headerClick(column, event){
         if(column.label==="重置"){
           window.location.reload();
@@ -716,7 +729,7 @@
         return arr
       },//总设置列表的数据处理
 
-      //*更多按钮
+      //更多按钮
       moreChange(index,row){
         this.setRouterData();
         this.moreShow=!this.moreShow;

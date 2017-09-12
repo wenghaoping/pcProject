@@ -1,7 +1,7 @@
 <template>
   <!--一键同步弹框-->
   <div id="syncProjectDetail" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
-    <el-dialog :visible="syncProjectDetailDisplay"  :before-close="handleClose"
+    <el-dialog :visible="syncCreatProjectDetailDisplay"  :before-close="handleClose"
                close-on-press-escape close-on-click-modal lock-scroll>
       <!--弹窗上半部分-->
       <el-checkbox-group v-model="checkedSync" @change="checkChange" class="checkbox">
@@ -34,137 +34,6 @@
             </div>
             </el-checkbox>
           </div>
-        <!--弹窗中间部分-->
-        <div class="mid-floor" style="opacity:0.5;background:#000000;height: 16px;"></div>
-        <!--弹窗下半部分-->
-        <div class="down-floor">
-          <!--核心团队-->
-          <el-checkbox label="team" v-if="team.core_users.length!=0">
-            <div class="ul-lists" v-show="team.core_users!=''&&team.tag!=''">
-            <div class="item">
-              <span class="title"><img class="img" src="../assets/images/team.png">核心团队</span>
-            </div>
-            <div style="margin-top:32px;"></div>
-            <div class="item" v-for="core_user in team.core_users" style="margin-top:10px;" >
-              <span class="p-name">{{core_user.ct_member_name}}</span>
-              <span class="p-mg">{{core_user.ct_member_career}}</span>
-              <div class="p-doc" style="white-space: normal;word-break: break-all;">{{core_user.ct_member_intro}}</div>
-              <div class="line"></div>
-            </div>
-          </div>
-          </el-checkbox>
-
-          <!--公司运营-->
-          <el-checkbox label="company"  >
-            <div class="ul-lists">
-            <div class="item">
-              <span class="title"><img class="img" :src="yunying" style="width: 37px;">公司运营</span>
-              <div class="rz-details">
-                <div class="rz-detail">
-                  <p class="det-title">运营状态</p>
-                  <p class="det-info">暂无数据</p>
-                </div>
-                <div class="rz-detail">
-                  <p class="det-title">公司官网</p>
-                  <p class="det-info">{{company.pro_website | nullTo_}}</p>
-                </div>
-                <div class="rz-detail">
-                  <p class="det-title">公司规模</p>
-                  <p class="det-info">{{company.pro_company_scale.comp_scale_value | nullTo_}} 人</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          </el-checkbox>
-
-          <!--产品-->
-          <el-checkbox label="brands"  v-if="brands.brand.length!=0">
-            <div class="ul-lists">
-            <div class="item">
-              <span class="title"><img class="img" :src="pinpai" style="width: 37px;">产品</span>
-              <div class="brand">
-                <div class="brand1" v-for="brandd in brands.brand">
-                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 30 ? false:true">
-                    <div slot="content">
-                      <div class="tips-txt">{{brandd.brand_name}}</div>
-                    </div>
-                    <span style="font-size:16px;color:#4e4563;width: 200px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">{{brandd.brand_name}}</span>
-                  </el-tooltip>
-
-                  <span class="brand1_lei" v-if="brandd.brand_id==1" >网站</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==2" >app</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==3" >软件</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==4" >游戏</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==5" >小程序</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==6" >硬件</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==7" >HTML5</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==8" >微信公众号</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==9" >其他</span>
-                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 50 ? false:true">
-                    <div slot="content">
-                      <div class="tips-txt">{{brandd.brand_desc}}</div>
-                    </div>
-                    <div class="brand1_introduce" style="white-space: normal;word-break: break-all;">{{brandd.brand_desc}}</div>
-                  </el-tooltip>
-
-                </div>
-                <div class="clear"></div>
-              </div>
-            </div>
-          </div>
-          </el-checkbox>
-          <!--融资信息-->
-          <el-checkbox label="financing" v-if="financing.pro_history_finance.length!=0">
-            <div class="ul-lists">
-              <div class="item">
-                <span class="title"><img class="img" src="../assets/images/money.png">融资信息</span>
-                  <div class="v-progress-table" style="padding-left: 10px;padding-top: 20px;">
-                    <div class="v-progress-txt" v-for="finance in financing.pro_history_finance">
-                      <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
-                      <span class="pro-txt-1">{{finance.finance_time | timeToReallTime}}</span>
-                      <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
-                      <span class="pro-txt-3">{{finance.pro_finance_stage_name}}</span>
-                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 20 ? false:true">
-                        <div slot="content">
-                          <div class="tips-txt">{{finance.pro_finance_investor}}</div>
-                        </div>
-                        <span class="pro-txt-4" style="width:314px;max-width:314px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
-                      </el-tooltip>
-                      <div class="line"></div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </el-checkbox>
-          <!--里程碑-->
-          <el-checkbox label="milepost" v-if="milepost.pro_develop.length!=0">
-            <div class="ul-lists" style="margin-bottom: 0px;" >
-            <div class="item">
-              <span class="title"><img class="img" src="../assets/images/Milepost.png">里程碑</span>
-            </div>
-            <div class="item" style="margin-top:6px;">
-              <div>
-                <div class="v-progress-table" style="padding-top: 5px;">
-                  <div class="v-progress-txt" v-for="develop in milepost.pro_develop">
-                      <!--<span class="radio_line">-->
-                        <!--<span class="radio"></span>-->
-                        <!--&lt;!&ndash;<span class="l-line"></span>&ndash;&gt;-->
-                      <!--</span>-->
-                    <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
-                    <span class="pro-txt-1">
-                        {{develop.dh_start_time  | timeToReallTime}}
-                      </span>
-                    <span class="pro-txt-2"  style="color:#5e6d82;white-space: normal;word-break: break-all;width: 546px;line-height: 20px">
-                        {{develop.dh_event}}
-                      </span>
-                    <div class="line"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          </el-checkbox>
-        </div>
       </el-checkbox-group>
       <!--按钮-->
       <div class="list tc">
@@ -181,13 +50,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-  const checkAllOption = ['project', 'team', 'company', 'brands', 'financing', 'milepost'];
+  const checkAllOption = ['project'];
 
   import cirIcon from '../../static/images/circle.png'
   import pinpai from '../../static/images/icon-pinpa.png'
   import yunying from '../../static/images/icon-yunying.png'
   export default {
-    props: ["syncProjectDetailDisplay","companyid"],
+    props: ["syncCreatProjectDetailDisplay","companyid"],
     data () {
       return {
         checkAll: false,
@@ -294,7 +163,7 @@
             if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro='-'}
             if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'}*/
             this.project=data.project;
-            //团队
+/*            //团队
             this.team=data.team;
             //公司运营
              this.company=data.company;
@@ -303,7 +172,7 @@
             //里程碑
             this.milepost=data.milepost;
             //brand
-            this.brands=data.brands;
+            this.brands=data.brands;*/
           }
           this.loading=false;
         })
@@ -325,44 +194,14 @@
       },
       //确定同步
       syncTrue(){
-          this.$store.state.syncData.checkedSync = this.checkedSync;
-          if(this.checkedSync.length==0){
-              this.$tool.warning("请勾选你要同步的模块")
-          }else{
-            if(this.project.tag.length!=0){
-                this.syncTag(this.project.tag)
-                  .then(()=>{
-                    this.$emit('syncCompanyData', {cover:this.cover,updateCategory:true});
-                    this.$emit('changeSyncProjectDetail', false);
-                })
-            }else{
-              this.$emit('syncCompanyData', {cover:this.cover,updateCategory:false});
-              this.$emit('changeSyncProjectDetail', false);
-            }
+        this.$store.state.syncData.checkedSync = this.checkedSync;
+        if (this.checkedSync.length == 0) {
+          this.$tool.warning("请勾选你要同步的模块")
+        } else {
 
-          }
-      },
-      //添加新增的项目标签
-      syncTag(tag){
-        return new Promise((resolve, reject)=>{
-          this.loading=true;
-          this.$http.post(this.URL.createDataCustomTag,{user_id:localStorage.user_id,tag:tag})
-            .then(res=>{
-              if(res.data.status_code===2000000){
-                let data = res.data.data;
-//                console.log(res);
-                this.$store.state.syncData.data.project.tag=data;
-                resolve(1)
-              }
-              this.loading=false;
-            })
-            .catch(err=>{
-              this.loading=false;
-              this.$tool.console(err,2)
-            })
-        });
-
-
+          this.$emit('syncCompanyData', {cover: this.cover});
+          this.$emit('changeSyncProjectDetail', false);
+        }
       }
     },
     created(){
@@ -370,7 +209,7 @@
 
     },
     watch : {
-      syncProjectDetailDisplay : function (e) {
+      syncCreatProjectDetailDisplay : function (e) {
           if(e){
             this.companyId =this.companyid;
             this.getProjectDetail();

@@ -297,7 +297,7 @@
                       <el-col :span="5">
                         <el-form-item label="　"
                                       :rules="[{max:8,message: '最大8个字符'}]"
-                                      prop="goodness.pro_goodness.goodness_title">
+                                      prop="goodness.pro_market_genera.goodness_title">
                           <el-input  v-model="project.goodness.pro_market_genera.goodness_title" placeholder="市场概况" ></el-input>
                         </el-form-item>
                       </el-col>
@@ -307,7 +307,7 @@
                         </div>
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
-                                      prop="goodness.pro_goodness.goodness_desc">
+                                      prop="goodness.pro_market_genera.goodness_desc">
                           <el-input  v-model="project.goodness.pro_market_genera.goodness_desc" placeholder="市场规模和增速、竞争格局、政策等，以不超过3点为宜"
                                      @focus="focus(2)" @blur="blur(2)"></el-input>
                         </el-form-item>
@@ -317,7 +317,7 @@
                       <el-col :span="5">
                         <el-form-item label="　"
                                       :rules="[{max:8,message: '最大8个字符'}]"
-                                      prop="goodness.pro_goodness.goodness_title">
+                                      prop="goodness.pro_business_model.goodness_title">
                           <el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="产品概况"></el-input>
                         </el-form-item>
                       </el-col>
@@ -327,7 +327,7 @@
                         </div>
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
-                                      prop="goodness.pro_goodness.goodness_desc">
+                                      prop="goodness.pro_business_model.goodness_desc">
                           <el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
                                      @focus="focus(3)" @blur="blur(3)"></el-input>
                         </el-form-item>
@@ -337,7 +337,7 @@
                       <el-col :span="5">
                         <el-form-item label="　"
                                       :rules="[{max:8,message: '最大8个字符'}]"
-                                      prop="goodness.pro_goodness.goodness_title">
+                                      prop="goodness.pro_service.goodness_title">
                           <el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="商业模式"></el-input>
                         </el-form-item>
                       </el-col>
@@ -347,7 +347,7 @@
                         </div>
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
-                                      prop="goodness.pro_goodness.goodness_desc">
+                                      prop="goodness.pro_service.goodness_desc">
                           <el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="用来说明通过什么方式盈利"
                                      @focus="focus(4)" @blur="blur(4)"></el-input>
                         </el-form-item>
@@ -419,11 +419,11 @@
             </el-collapse-transition>
           </div>
 
-          <!--=================================品牌=================================-->
+          <!--=================================产品=================================-->
           <div class="d_jump"></div>
           <div class="item-block">
             <div class="block-tt-line">
-              <span class="b-title">品牌</span>
+              <span class="b-title">产品</span>
               <span class="b-line"></span>
               <span class="b-hander" @click="closeDiv('brandShow')" v-show="brandShow">收起</span>
               <span class="b-hander" @click="openDiv('brandShow')" v-show="!brandShow">展开</span>
@@ -465,7 +465,7 @@
                         :prop="'brand.' + index + '.brand_desc'"
                         v-for="(brand, index) in brands.brand"
                         :key="brand.index">
-                        <el-input v-model.number="brand.brand_desc" placeholder="一句话描述产品亮点" class="width360"> </el-input>
+                        <el-input v-model="brand.brand_desc" placeholder="一句话描述产品亮点" class="width360"> </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
@@ -479,7 +479,7 @@
                   </el-row>
                 </el-form>
                 <div class="marginAuto">
-                  <el-button type="text" @click="addBrand" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加品牌</el-button>
+                  <el-button type="text" @click="addBrand" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加产品</el-button>
                   <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
                 </div>
               </div>
@@ -563,7 +563,7 @@
                         :prop="'core_users.' + index + '.ct_member_intro'"
                         v-for="(member, index) in team.core_users"
                         :key="member.index">
-                        <el-input v-model.number="member.ct_member_intro" placeholder="请输入" class="width360"> </el-input>
+                        <el-input v-model="member.ct_member_intro" placeholder="请输入" class="width360"> </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
@@ -931,8 +931,8 @@
               <span class="block-icon">
                 <img src="../../../assets/images/pinpai.png" alt="">
               </span>
-              <span class="block-tlt">品牌
-              <span class="tlt-tips" v-show="brandtMust">品牌填写有误</span>
+              <span class="block-tlt">产品
+              <span class="tlt-tips" v-show="brandtMust">产品填写有误</span>
             </span>
               <span class="check-flag">
                 <img v-if="brandsPerfect" src="../../../assets/images/gou.png" alt="">
@@ -1122,8 +1122,8 @@
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
             if(this.$tool.checkNumber(value)){
-              if (parseFloat(value)>999999999999){
-                callback(new Error('请输入小于999999999999的值'));
+              if (parseFloat(value)>99999999){
+                callback(new Error('请输入小于99999999的值'));
               } else {
                 callback();
               }
@@ -1293,7 +1293,7 @@
           pro_status: {status_id: 3, status_name: "上线"},
           pro_website:""
         },
-        //品牌
+        //产品
         brands:{
           brand:[]
         },
@@ -1381,7 +1381,7 @@
         tags_pro: [],
         //项目来源
         tags_source:[],
-        //品牌选择
+        //产品选择
         brand_type:[],
 
         formLabelWidth: '120px',
@@ -1403,7 +1403,7 @@
         milepostShow: true,
         SignShow: true,
         operateShow:true,//运营
-        brandShow:true,//品牌
+        brandShow:true,//产品
 
         //控制锚点跳转
         node0: true,
@@ -1418,7 +1418,7 @@
         filePerfect: false,//项目文件
         projectPerfect: false,//项目详情
         companyPerfect: false,//公司运营
-        brandsPerfect:false,//品牌
+        brandsPerfect:false,//产品
         teamPerfect: false,//核心团队
         financingPerfect: false,//融资信息
         milepostPerfect: false,//里程碑
@@ -1429,7 +1429,7 @@
         fileMust: false,//项目文件
         projectMust: false,//项目详情
         companyMust: false,//公司运营
-        brandtMust:false,//品牌必填
+        brandtMust:false,//产品必填
         teamMust: false,//核心团队
         financingMust: false,//融资信息
         milepostMust: false,//里程碑
@@ -1472,15 +1472,12 @@
     computed: {
       //*项目完整度判断
 
-/*      ...mapState({
-        syncData: state => state.syncData
-      }),*/
       proportion(){
         let number = 0;//所有的空值数
         let fileValue = this.planList;//项目文件
         let projectValue = this.project;//项目详情
         let companyValue = this.company;//公司运营
-        let brandsValue = this.brands;//品牌
+        let brandsValue = this.brands;//产品
         let teamValue = this.team;//核心团队
         let financingValue = this.financing;//融资信息
         let milepostValue = this.milepost;//里程碑
@@ -1656,7 +1653,7 @@
             this.tags_team = this.$global.data.tags_team;//设置团队标签
             this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
             this.tags_source = this.$global.data.pro_source;//设置项目来源
-            this.brand_type = this.$global.data.brand_type;//设置品牌来源
+            this.brand_type = this.$global.data.brand_type;//设置产品来源
             this.tags.changesource = this.$global.data.pro_source;//设置项目来源
             resolve(2);
           },500)
@@ -1676,20 +1673,21 @@
       },//设置二级城市下拉列表
       area1Change2(data){
         let newData = data;
-        let pid=localStorage.pid;
-        this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})//pid省
-          .then(res => {
-            let data = res.data.data;
-            this.area2 = this.$tool.getCity(data);
-            if(parseInt(newData)===parseInt(pid)){
-            }else{
-              this.project.pro_area.area_id="";
-            }
-          })
-          .catch(err => {
-            this.$tool.console(err)
-          })
-
+        if(data!=""){
+          let pid=localStorage.pid;
+          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})//pid省
+            .then(res => {
+              let data = res.data.data;
+              this.area2 = this.$tool.getCity(data);
+              if(parseInt(newData)===parseInt(pid)){
+              }else{
+                this.project.pro_area.area_id="";
+              }
+            })
+            .catch(err => {
+              this.$tool.console(err)
+            })
+        }
       },//设置二级城市下拉列表2
 
       //*获取项目详情
@@ -1711,6 +1709,7 @@
               this.uploadShow2.lists=[];
               let data = res.data.data;
               //项目文件设置=============================================
+
               //计划书清空
               if(data.file.pro_BP.length=="") {
                   this.planList=[];this.uploadShow={};
@@ -1725,15 +1724,22 @@
                 };//设置计划书上传列表
               }
 
+              delete data.project.pro_schedule;
+
               if (this.planList.length != 0) this.planButton = false;
               else this.planButton = true;//判断计划书上传按钮显示被否
               this.setUploadShow2(data.file.pro_file);//设置项目文件上传列表
 
               //项目介绍设置=============================================
-              this.area1Change(data.project.pro_area.pid);//取到省级设置市级
-              if (data.project.pro_area == "") {
-                this.project.pro_area = {area_id: "", pid: "", area_title: ""}
+              if (data.project.pro_area.length==0) {
+                data.project.pro_area = {area_id:"",pid:""};
               }
+
+              if(data.project.pro_scale==""){
+                  data.project.pro_scale = {scale_id: ''}
+              }
+
+              this.area1Change(data.project.pro_area.pid);//取到省级设置市级
               if (data.project.pro_stage == "") {
                 data.project.pro_stage = {stage_id: ""}
               }//轮次设置
@@ -1762,7 +1768,7 @@
 
               this.company=data.company;
 
-              //品牌设置=============================================
+              //产品设置=============================================
               this.brands=data.brands;
 
               //核心团队设置=============================================
@@ -1883,6 +1889,7 @@
         this.uploadLoading=true;
         this.submitButton=true;
       },//上传前的验证
+
       //取消上传
       cancelUpload(file){
         this.$refs.upload.abort(file);
@@ -2006,7 +2013,6 @@
           }
         }
       },//当文件没有全部上传完时,不能提交
-
 
       groupchange(label){
         let index = this.groups.index;
@@ -2220,7 +2226,7 @@
       },//添加项目来源
 
 
-      //添加品牌
+      //添加产品
       addBrand(){
         this.brands.brand.push({
           brand_desc: '',
@@ -2394,6 +2400,7 @@
               else if (this.teamMust) {}
               else if (this.financingMust) {}
               else if (this.milepostMust) {}
+              else if (this.privateMust) {}
               else{
                 resolve(true);
               }
@@ -2431,6 +2438,7 @@
               this.$tool.setNullToZero(allData.financing.pro_history_finance,'pro_finance_scale');//期望融资,融资金额如果没填,就给0
 
               allData.project.pro_finance_value=allData.project.pro_finance_value+'';//数字转字符串
+              allData.project.pro_schedule='';//项目进度
 
               if(allData.private.stock_right=="" || allData.private.stock_right==undefined) allData.private.stock_right=0;//股权赠与
               if(allData.private.commission=="" || allData.private.commission==undefined) allData.private.commission=0;//签约佣金
@@ -2438,7 +2446,7 @@
               allData.company.pro_company_scale=allData.company.pro_company_scale.comp_scale_id;
 
               allData.company.pro_status=allData.company.pro_status.status_id;
-//              console.log(allData);
+              console.log(allData);
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
                   this.loading=false;
@@ -2603,7 +2611,6 @@
                 syncDataFunc();
               })
           }
-
           //数据同步函数
            const syncDataFunc = () =>{
 
@@ -2622,8 +2629,8 @@
                 this.$tool.setTimeToReallyTime(syncData.financing.pro_history_finance,'finance_time');//里程碑时间格式设置
 
                 syncData.company.pro_company_scale=="" ? syncData.company.pro_company_scale={comp_scale_id: ''} : syncData.company.pro_company_scale;
-
             //数据格式化
+
             if(msg.cover){
               //覆盖的时候
               checkList.forEach((x)=>{

@@ -166,10 +166,10 @@
             </div>
           </div>
         </div>
-        <!--品牌-->
+        <!--产品-->
         <div class="ul-lists" style="margin-top: 16px;background: rgb(249, 250, 252); padding: 20px;" v-show="brands.brand!=''">
           <div class="item">
-            <span class="title"><img class="img" :src="pinpai" style="width: 37px;">品牌</span>
+            <span class="title"><img class="img" :src="pinpai" style="width: 37px;">产品</span>
             <div class="brand">
               <div class="brand1" v-for="brandd in brands.brand">
                 <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 30 ? false:true">

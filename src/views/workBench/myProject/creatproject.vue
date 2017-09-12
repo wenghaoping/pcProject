@@ -1,5 +1,5 @@
-<template v-loading.fullscreen="loading" element-loading-text="拼命加载中">
-  <div class="creatproject">
+<template >
+  <div class="creatproject" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box">
@@ -39,33 +39,37 @@
                   <span class="justIlook">(仅自己可见)</span>
                   <el-form-item
                     label="项目名称"
-                    :rules="[{min: 1, max:40,message: '长度不能大于40个字符', trigger: 'blur'}]"
-                    prop="pro_name">
-                    <el-input v-model="project.pro_name" placeholder="请输入"></el-input>
+                    prop="pro_name"
+                    :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]">
+                    <el-input v-model="project.pro_name" placeholder="项目代号，快速识别"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="9">
                   <span class="justIlook2">(仅自己可见)</span>
                   <el-form-item
                     label="公司名称"
-                    :rules="[{min: 1, max:40,message: '长度不能大于40个字符', trigger: 'blur'}]"
+                    :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]"
                     prop="pro_company_name">
                     <el-autocomplete v-model="project.pro_company_name"
                                      :fetch-suggestions="querySearchAsync"
-                                     placeholder="请输入内容"
-                                     @select="handleSelect" class="width360">
+                                     placeholder="公司全网检索，一键同步公司信息"
+                                     @select="handleSelect" style="width:260px;">
                     </el-autocomplete>
                   </el-form-item>
                 </el-col>
+                <el-tooltip class="item" effect="dark" placement="top-end">
+                  <div slot="content">从微天使创投数据库自动获取公司行业，融资轮次<br/>历史融资，核心团队及里程碑等项目信息</div>
+                  <el-button class="tong" @click="syncOne">一键同步</el-button>
+                </el-tooltip>
                 <span class="ques">
-                  <el-tooltip placement="bottom-end">
-                      <div slot="content">
-                        <div class="tips-txt">1、一键同步公司信息，快速创建项目</div>
-                        <div class="tips-txt" style="margin-top:5px;">2、可在项目详情查看尽调报告</div>
-                      </div>
-                      <img src="../../../assets/images/question.png" alt="" />
-                  </el-tooltip>
-              </span>
+                        <el-tooltip placement="bottom-end">
+                            <div slot="content">
+                              <div class="tips-txt">1、一键同步公司信息，快速创建项目</div>
+                              <div class="tips-txt" style="margin-top:5px;">2、可在项目详情查看尽调报告</div>
+                            </div>
+                            <img src="../../../assets/images/question.png" alt=""/>
+                        </el-tooltip>
+                      </span>
               </el-row>
             </el-form>
           </div>
@@ -225,7 +229,7 @@
                   <el-col :span="5">
                     <el-form-item label="　"
                                   :rules="[{max:8,message: '最大8个字符'}]"
-                                  prop="goodness.pro_goodness.goodness_title">
+                                  prop="goodness.pro_market_genera.goodness_title">
                       <el-input  v-model="project.goodness.pro_market_genera.goodness_title" placeholder="市场概况" ></el-input>
                     </el-form-item>
                   </el-col>
@@ -235,7 +239,7 @@
                     </div>
                     <el-form-item label="　"
                                   :rules="[{max:1000,message: '最大1000个字符'}]"
-                                  prop="goodness.pro_goodness.goodness_desc">
+                                  prop="goodness.pro_market_genera.goodness_desc">
                       <el-input  v-model="project.goodness.pro_market_genera.goodness_desc" placeholder="市场规模和增速、竞争格局、政策等，以不超过3点为宜"
                                  @focus="focus(2)" @blur="blur(2)"></el-input>
                     </el-form-item>
@@ -245,7 +249,7 @@
                   <el-col :span="5">
                     <el-form-item label="　"
                                   :rules="[{max:8,message: '最大8个字符'}]"
-                                  prop="goodness.pro_goodness.goodness_title">
+                                  prop="goodness.pro_business_model.goodness_title">
                       <el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="产品概况"></el-input>
                     </el-form-item>
                   </el-col>
@@ -255,7 +259,7 @@
                     </div>
                     <el-form-item label="　"
                                   :rules="[{max:1000,message: '最大1000个字符'}]"
-                                  prop="goodness.pro_goodness.goodness_desc">
+                                  prop="goodness.pro_business_model.goodness_desc">
                       <el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
                                  @focus="focus(3)" @blur="blur(3)"></el-input>
                     </el-form-item>
@@ -265,7 +269,7 @@
                   <el-col :span="5">
                     <el-form-item label="　"
                                   :rules="[{max:8,message: '最大8个字符'}]"
-                                  prop="goodness.pro_goodness.goodness_title">
+                                  prop="goodness.pro_service.goodness_title">
                       <el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="商业模式"></el-input>
                     </el-form-item>
                   </el-col>
@@ -275,7 +279,7 @@
                     </div>
                     <el-form-item label="　"
                                   :rules="[{max:1000,message: '最大1000个字符'}]"
-                                  prop="goodness.pro_goodness.goodness_desc">
+                                  prop="goodness.pro_service.goodness_desc">
                       <el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="用来说明通过什么方式盈利"
                                  @focus="focus(4)" @blur="blur(4)"></el-input>
                     </el-form-item>
@@ -286,24 +290,36 @@
           </div>
           <el-button type="primary" size="large" style="float: right;margin-top: 32px;" @click="allSave">提交</el-button>
           <div style="height: 50px;"></div>
-          <el-dialog
-            :title="companyTitle"
-            :visible.sync="dialogVisible"
-            size="tiny"
-            :show-close="close">
-            <span>微天使为您找到相似公司，是否一键同步</span>
-            <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="sync">一键同步</el-button>
-          </span>
-          </el-dialog>
+
         </div>
       </div>
     </div>
+
+
+    <!--一键同步提示框-->
+    <el-dialog
+      :title="companyTitle"
+      :visible.sync="dialogVisible"
+      size="tiny"
+      :show-close="close">
+      <span>微天使为您找到相似公司，是否一键同步</span>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="sync">一键同步</el-button>
+          </span>
+    </el-dialog>
+
+    <!--一键同步选择框-->
+    <synccreatprojectdetail :sync-creat-project-detail-display="syncCreatProjectDetailDisplay" :companyid="this.companyid"
+                       @changeSyncProjectDetail="changeSyncProjectDetail"
+                       @syncCompanyData="syncCompanyData">
+
+    </synccreatprojectdetail>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import synccreatprojectdetail from '../../../components/syncCreatProjectDetail.vue';
   export default {
     data () {
       var checkNumber = (rule, value, callback) => {
@@ -375,9 +391,12 @@
         scale:[],
         /*项目轮次选项*/
         stage: [],
-        companyTitle:"微天使",
+        companyTitle: "",//尽调搜索的公司的名称
+        companyid: "",//尽调搜索的公司的ID
         queryData:{},
         NumberRule: { validator: checkNumber, trigger: 'blur' },
+        mustGo:false,
+        syncCreatProjectDetailDisplay:false,
       }
     },
     methods: {
@@ -516,29 +535,100 @@
         }
       },//上传前的验证
 
-      success(text) {
-        this.$notify({
-          message: text,
-          type: 'success',
-          offset: 300,
-          duration:1000
+
+      changeSyncProjectDetail(msg){
+        this.syncCreatProjectDetailDisplay=msg;
+        this.dialogVisible=false;
+      },//项目详情弹窗关闭函数
+      syncCompanyData(msg){
+        this.loading=true;
+        this.dialogVisible=false;
+        let syncDataCheck = this.$store.state.syncData;
+        let syncData = syncDataCheck.data;
+        let checkList = syncDataCheck.checkedSync;
+        this.getWxProjectCategory()
+        .then((data)=>{
+          syncDataFunc();
+
         })
-      },
+        //数据同步函数
+        const syncDataFunc = () =>{
+
+          syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry,'industry_id');//领域标签取出id
+          syncData.project.open_status = syncData.project.open_status.toString();//字符串化
+          if(syncData.project.pro_stage.length==0){
+            syncData.project.pro_stage = {};
+            syncData.project.pro_stage={stage_id: ""};
+          }else{
+            syncData.project.pro_stage;
+          }
+          syncData.project.pro_industry.length==0 ? syncData.project.pro_industry=[] : syncData.project.pro_industry;
+
+//
+//          this.$tool.setTimeToReallyTime(syncData.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
+//
+//          this.$tool.setTimeToReallyTime(syncData.financing.pro_history_finance,'finance_time');//里程碑时间格式设置
+
+          syncData.company.pro_company_scale=="" ? syncData.company.pro_company_scale={comp_scale_id: ''} : syncData.company.pro_company_scale;
+          //数据格式化
+
+          if(msg.cover){
+            //覆盖的时候
+            checkList.forEach((x)=>{
+              for(let index in syncData){//需要同步那些数据
+                if(x==index){
+                  if(x=='project' || x=='company'){   //因为不是数组,单独处理
+                    for(let key in syncData[index]){
+                      if(key!='pro_area'){            //后端都没有,跳过处理
+                        this[x][key]=syncData[index][key];
+                      }
+                    }
+                  }else{
+                    for(let key in syncData[index]){
+                      this[x][key]=syncData[index][key];
+                    }
+                  }
+                }
+              }
+            });
+          }else{
+            //不覆盖
+            checkList.forEach((x)=>{
+              for(let index in syncData){
+                if(x==index){
+                  if(x=='project' || x=='company'){
+                    for(let key in syncData[index]){
+                      if(this[x][key]==''){
+                        this[x][key]=syncData[index][key];
+                      }
+                    }
+                  }else{
+                    for(let Arrkey in syncData[index]){
+                      if(this.$tool.isArray(syncData[index][Arrkey])){
+                        if(Arrkey!='tag'){
+                          this[x][Arrkey] = [...this[x][Arrkey], ...syncData[index][Arrkey]];//数组合并
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          }
+
+        }
+        this.loading=false;
+      },//开始同步信息(是否覆盖信息)
+
       goBack(){//返回上一层
         this.$router.go(-1);
       },
+
       //*检查所有必填项目以及获取所有数据
-      submitForm(formName) {
-        let check=true
+      submitForm(formName,checkName) {
         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            return
-          } else {
-            this.$tool.error('必填项不能为空')
-            check=false;
-          }
+          this[checkName]=valid;
         });
-        return check;
       },
       ///*创建成功弹
       open2(title,main,confirm,cancel) {
@@ -558,12 +648,13 @@
       },
       ///*全部保存按钮
       allSave(){
+        this.submitForm('project','mustGo');
         if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){}
         else if(this.$tool.checkLength1(this.project.pro_name)){this.$tool.error("项目名称不超过40个字")}
         else if(this.$tool.checkLength1(this.project.pro_company_name)){this.$tool.error("公司名称不超过40个字")}
         else if(this.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
-        else if(this.submitForm('project')) {
+        else if(this.mustGo) {
           this.loading=true;
           this.project.project_id=this.uploadShow.project_id;
           let allData = {};
@@ -627,36 +718,46 @@
         };
       },
       handleSelect(item) {
-        this.loading=true;
-        this.companyTitle=item.company_name;
-        this.$http.post(this.URL.getOneCompany,{user_id:localStorage.user_id,com_id:item.address})
-          .then(res=>{
-            let data=res.data.data;
-            if(data.project_info==null) {
-                data.project_info={};
-                data.project_info.project_introduce='';
-            }
-            this.queryData=data;
-            this.dialogVisible=true;
-            this.loading=false;
-          })
-          .catch(err=>{
-            this.$tool.error("获取失败");
-            this.$tool.console(err);
-          });
-
+        this.companyTitle = item.company_name;
+        this.companyid = item.address;
+        this.project.pro_company_name = item.company_name;
       },
+
+      //*一键同步按钮
+      syncOne(){
+        this.companyTitle = this.project.pro_company_name;
+        if(this.companyTitle===''){
+          this.$tool.warning("请先填写公司名称");
+        }else{
+          this.loading=true;
+          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.companyTitle})
+            .then(res => {
+              let data = res.data.data;
+              if(data.length!=0){
+                this.companyid=data.company.com_id;
+                this.dialogVisible=true;
+              }else{
+                this.$tool.warning("未查询到该公司信息，无法获取");
+              }
+              this.loading=false;
+            })
+            .catch(err => {
+              this.$tool.error("获取失败");
+              this.$tool.console(err);
+              this.loading=false;
+            });
+        }
+      },
+
       //*一键同步按钮
       sync(){
         this.dialogVisible = false;
-//        console.log(this.queryData);
-        if(this.project.pro_intro=="") {this.project.pro_intro=this.queryData.project_info.project_introduce || ''};
-        this.project.pro_company_name=this.queryData.company_name || '';
-        this.project.pro_industr=[]//项目领域
+        this.syncCreatProjectDetailDisplay = true;
       },
       getprojectId(){
         this.project.project_id = this.$route.query.project_id || '';
       },
+      //获取微信传过来的数据
       getWxosProjectData(){
         var getOneUserInfo = new Promise((resolve, reject) => {
           //做一些异步操作
@@ -702,6 +803,9 @@
         })
         if(this.planList.length!=0) this.planButton=false;
         else this.planButton=true;
+    },
+    components:{
+      synccreatprojectdetail
     },
   }
 </script>

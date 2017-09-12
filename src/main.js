@@ -49,6 +49,9 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes: router_config
 });
+
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -11,7 +11,7 @@ axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
 // axios.defaults.baseURL = 'https://pc.debug.weitianshi.cn';
 // axios.defaults.baseURL = 'https://wts.weitianshi.cn';
 
-//POST传参序列化
+//POST传参序列化 http request 拦截器
 axios.interceptors.request.use((config) => {
   axios.defaults.headers.common['Authorization'] = "Bearer "+ localStorage.token;
   if(config.method  === 'post'){
@@ -23,9 +23,16 @@ axios.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-//code状态码200判断
+//code状态码200判断http response 拦截器
 axios.interceptors.response.use((res) =>{
-  if(res.status!=200){
+/*  console.log(res.data.status_code);
+  if(res.data.status_code==401){//具体的判断token失效的参数
+    alert("您已超时,请重新登陆");
+    localStorage.clear();
+    window.location.href='/#/login/codeLogin';//需求方要求一旦出错立即跳转登录，所以采取这种侵入式的手段。
+    setTimeout(()=>{ window.location.reload();},50)
+  }else */
+    if(res.status!=200){
     return Promise.reject(res);
   }
   return res;
@@ -33,6 +40,5 @@ axios.interceptors.response.use((res) =>{
   console.log("网络异常");
   return Promise.reject(error);
 });
-
 
 export default axios;

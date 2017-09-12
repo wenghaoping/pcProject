@@ -215,10 +215,10 @@
                   </div>
                 </div>
               </div>
-              <!--品牌-->
+              <!--产品-->
               <div class="ul-lists" style="margin-top:16px;" v-show="brands.brand!=''">
                 <div class="item">
-                  <span class="title"><img class="img" :src="pinpai" style="width: 37px;">品牌</span>
+                  <span class="title"><img class="img" :src="pinpai" style="width: 37px;">产品</span>
                   <div class="brand">
                     <div class="brand1" v-for="brandd in brands.brand">
                       <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 15 ? false:true">
@@ -227,15 +227,15 @@
                         </div>
                         <span style="font-size:16px;color:#4e4563;width: 200px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">{{brandd.brand_name}}</span>
                       </el-tooltip>
-                      <span class="brand1_lei" v-if="brandd.brand_id==1" >网站</span>
-                      <span class="brand1_lei" v-if="brandd.brand_id==2" >app</span>
-                      <span class="brand1_lei" v-if="brandd.brand_id==3" >软件</span>
-                      <span class="brand1_lei" v-if="brandd.brand_id==4" >游戏</span>
-                      <span class="brand1_lei" v-if="brandd.brand_id==5" >小程序</span>
-                      <span class="brand1_lei" v-if="brandd.brand_id==6" >硬件</span>
-                      <span class="brand1_lei" v-if="brandd.brand_id==7" >HTML5</span>
-                      <span class="brand1_lei" v-if="brandd.brand_id==8" >微信公众号</span>
-                      <span class="brand1_lei" v-if="brandd.brand_id==9" >其他</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==1" >网站</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==2" >app</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==3" >软件</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==4" >游戏</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==5" >小程序</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==6" >硬件</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==7" >HTML5</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==8" >微信公众号</span>
+                      <span class="brand1_lei" v-if="brandd.type_id==9" >其他</span>
                       <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 50 ? false:true">
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_desc}}</div>
@@ -281,7 +281,6 @@
                         <span class="pro-txt-1">{{finance.finance_time}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3" style="width: 68px;">{{finance.belongs_to_stage.stage_name}}</span>
-
                         <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 20 ? false:true">
                           <div slot="content">
                             <div class="tips-txt">{{finance.pro_finance_investor}}</div>
@@ -1073,6 +1072,7 @@
               if(data.company.pro_status==''){data.company.pro_status={};data.company.pro_status.status_name='-'}
               if(data.company.pro_website==''){data.company.pro_website={};data.company.pro_website='-'}
               if(data.company.pro_company_scale==''){data.company.pro_company_scale={};data.company.pro_company_scale.comp_scale_value='-'}
+              if(data.project.pro_schedule=="") {data.project.pro_schedule={};data.project.pro_schedule.schedule_name="";data.project.pro_schedule.schedule_id="";}
               this.project=data.project;
               //公司运营
               this.company=data.company;
@@ -1096,10 +1096,9 @@
               this.brands=data.brands;
 //              if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
 //              if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-//              if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
+              if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
 //              if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-//              this.$tool.setTime(data.pro_develop,'dh_start_time');
-//              this.$tool.setTime(data.pro_history_finance,'finance_time');
+
 //              this.project=data;
 //              this.project.follow_user=data.follow_user;
 //              this.project.pro_source=this.getProjectTag(data.tag);
