@@ -307,7 +307,7 @@
   export default {
     data () {
       return {
-        data1:'',
+        data1:'该',
         img:img,
         currentPathName:'',
         dialogVisible: false,
@@ -770,13 +770,14 @@
                 this.getProjectIndustry(res.data.data);
                 this.project = res.data.data;
                 this.chartData = res.data.data;
-//                if(this.project==' '){
-//
-//                }else{
-//                  this.data1=this.project[0].project_name||'';
-//                }
-                this.data1=this.project[0].project_name?this.project[0].project_name:' ';
-                console.log(this.data1);
+                if(res.data.data){
+                  this.data1=res.data.data[0].project_name;
+                  console.log(this.data1);
+                }else{
+                  this.data1='';
+                }
+//                this.data1=this.project[0].project_name?this.project[0].project_name:' ';
+
                 this.getCrawlerProjectChart(res.data.data);
               }else{
                 this.chartDataCheck=false;

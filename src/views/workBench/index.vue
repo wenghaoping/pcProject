@@ -13,12 +13,13 @@
 
         </router-view>
       </transition>
+      <!--广告-->
+      <img :src="guanggao" alt="" v-if="willShow" class="guanggao" @click="open">
+      <span class="close"  v-if="willShow"  @click="close()">
+      <i class="el-icon-close"></i>
+    </span>
     </div>
-    <!--广告-->
-    <!--<img :src="guanggao" alt="" v-if="willShow" class="guanggao" @click="open">-->
-    <!--<span class="close"  v-if="willShow"  @click="close()">-->
-      <!--<i class="el-icon-close"></i>-->
-    <!--</span>-->
+
   </div>
 </template>
 
@@ -29,7 +30,7 @@ export default {
   data(){
     return {
       guanggao:guanggao,
-      willShow:true,
+      willShow:'false',
     }
   },
   computed:{
@@ -48,11 +49,23 @@ export default {
     close(){
       if(this.willShow==true){
         this.willShow=false;
-      }else{
-        this.willShow=true
+      }else {
+        this.willShow=true;
       }
-    }
+    },
+
+  },
+  watch:{
+   // 路由判断显示广告
+    "$route" (to,from){
+      if(to.path==='/workBench/myContacts'|| to.path==='/workBench/followup'||to.path==='/workBench/'){
+        this.willShow=true;
+//        console.log(to.path);
+      }else{
+        this.willShow=false;
+      }
   }
+  },
 }
 </script>
 

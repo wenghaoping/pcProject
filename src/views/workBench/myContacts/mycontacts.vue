@@ -295,6 +295,7 @@
     <projectpreview :preview-show="previewDisplay" :comeFrom="'contacts'"
                     @closePreviewANDProjectPush="closePreviewANDProjectPush"
                     @closePreview="closePreview"></projectpreview>
+    <!--<div style="width: 200px;height: 200px;background: red; position: fixed;bottom: 0;right:0;"></div>-->
   </div>
 </template>
 
