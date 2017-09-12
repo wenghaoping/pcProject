@@ -187,7 +187,7 @@
                 <span class="brand1_lei" v-if="brandd.brand_id==7" >HTML5</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==8" >微信公众号</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==9" >其他</span>
-                <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 50 ? false:true">
+                <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 30 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{brandd.brand_desc}}</div>
                   </div>
@@ -1306,7 +1306,7 @@
             overflow: hidden;
             font-size:14px;
             color:#8492a6;
-            line-height:18px;
+            line-height:27px;
             margin-top: 20px;
           }
         }

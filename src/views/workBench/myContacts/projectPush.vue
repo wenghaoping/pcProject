@@ -103,7 +103,7 @@
 
             <el-form label-position="top" label-width="80px" ref="email" :model="email">
               <el-form-item label="标题" prop="title"
-              :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
+              :rules="[{max: 100, message: '长度不能大于100个字符', trigger: 'blur' }]">
                 <el-input v-model="email.title" placeholder="浙江安琪创投-投资VP-杜兴国推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行"></el-input>
               </el-form-item>
               <el-form-item label="正文"
