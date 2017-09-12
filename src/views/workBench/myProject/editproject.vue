@@ -647,7 +647,7 @@
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"
                         :rules="[{required: true, message: '融资金额不能为空', trigger: 'change'},{max:20,message: '最大20个字符'}]">
-                        <el-input v-model="history.pro_finance_scale" placeholder="请输入具体数值"></el-input>
+                        <el-input v-model="history.pro_finance_scale" placeholder="请输入数值"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="11">

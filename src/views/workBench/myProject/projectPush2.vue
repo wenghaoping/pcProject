@@ -754,8 +754,8 @@
       },
       //预览
       preview(){
-        if(this.pushTitle.length>40){
-          this.$tool.error('标题不能大于40个字')
+        if(this.pushTitle.length>100){
+          this.$tool.error('标题不能大于100个字')
         }else if(this.pushBody.length>500){
           this.$tool.error('正文不能大于500个字')
         }else if(this.pushData.length<0){
@@ -810,8 +810,8 @@
           this.$tool.error('请选择推送人脉')
         } else if (dealData.length > this.pushCount) {
           this.$tool.error('推送人数不能超过今日剩余推送次数')
-        } else if(this.pushTitle.length>40){
-            this.$tool.error('标题不能大于40个字')
+        } else if(this.pushTitle.length>100){
+            this.$tool.error('标题不能大于100个字')
         }else if(this.pushBody.length>500){
             this.$tool.error('正文不能大于500个字')
         }else {

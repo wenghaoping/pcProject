@@ -25,10 +25,11 @@
               </el-tooltip>
 
             </div>
-            <div class="item height" style="margin-top:5px;">
+
+            <div class="item height" style="margin-top:6px;">
               <span class="mid-tag" v-for="industry in project.pro_industry">{{industry.industry_name}}</span>
             </div>
-            <div class="item height" style="margin-top:13px;">
+            <div class="item height" style="margin-top:14px;">
               <span class="big-tag" > {{project.pro_scale.scale_money | nullTo_}}</span>
               <span class="split">｜</span>
               <span class="big-tag">{{project.pro_area.area_title | nullTo_}}</span>
@@ -41,7 +42,7 @@
             <!--<div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">-->
               <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
             <!--</div>-->
-            <div class="item height" style="margin-top:59px;    display: inline-block;">
+            <div class="item height" style="margin-top:58px;    display: inline-block;">
             <span id="bottom_width1" class="project" >
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
@@ -140,28 +141,28 @@
                 <div class="ul-lists" style="margin-top:16px;padding: 0">
                   <div class="item" v-show="project.goodness.pro_goodness!=''||project.goodness.pro_market_genera!=''||project.goodness.pro_business_model!=''||project.goodness.pro_service!=''">
                     <span class="title" style="font-size: 16px;">项目亮点</span>
-                    <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_goodness.goodness_desc!=''&&project.goodness.pro_goodness.goodness_title!=''">
+                    <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_goodness.goodness_desc!=''&&project.goodness.pro_goodness.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_goodness.goodness_title}}&nbsp;:&nbsp;</span>
                       {{project.goodness.pro_goodness.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
-                    <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_market_genera.goodness_desc!=''&&project.goodness.pro_market_genera.goodness_title!=''">
+                    <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_market_genera.goodness_desc!=''&&project.goodness.pro_market_genera.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_market_genera.goodness_title}}&nbsp;:&nbsp;</span>
                       {{project.goodness.pro_market_genera.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
-                    <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_business_model.goodness_desc!=''&&project.goodness.pro_business_model.goodness_title!=''">
+                    <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_business_model.goodness_desc!=''&&project.goodness.pro_business_model.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_business_model.goodness_title}}</span>&nbsp;:&nbsp;
                       {{project.goodness.pro_business_model.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
-                    <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_service.goodness_desc!=''&&project.goodness.pro_service.goodness_title!=''">
+                    <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_service.goodness_desc!=''&&project.goodness.pro_service.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_service.goodness_title}}&nbsp;:&nbsp;</span>
                       {{project.goodness.pro_service.goodness_desc}}
@@ -205,7 +206,7 @@
                         <div slot="content">
                           <div class="tips-txt">{{company.pro_website}}</div>
                         </div>
-                        <span  class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;" @click="urlOpen(company.pro_website)">{{company.pro_website | nullTo_}}</span>
+                        <span  class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;text-decoration: underline!important" @click="urlOpen(company.pro_website)">{{company.pro_website | nullTo_}}</span>
                       </el-tooltip>
                     </div>
                     <div class="rz-detail">
@@ -236,7 +237,7 @@
                       <span class="brand1_lei" v-if="brandd.type_id==7" >HTML5</span>
                       <span class="brand1_lei" v-if="brandd.type_id==8" >微信公众号</span>
                       <span class="brand1_lei" v-if="brandd.type_id==9" >其他</span>
-                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 50 ? false:true">
+                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 30 ? false:true">
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_desc}}</div>
                         </div>
