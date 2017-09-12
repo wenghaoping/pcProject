@@ -151,8 +151,8 @@
           </el-table>
         </el-tab-pane>
 
-        <!--全网人脉-->
-        <el-tab-pane label="全网人脉" name="netContacts">
+        <!--平台推荐投资人-->
+        <el-tab-pane label="平台推荐投资人" name="netContacts">
           <el-table
             ref="netContacts"
             :data="netContacts"
@@ -554,7 +554,6 @@
               user_company_career: form.career,
               user_brand: form.brand
             }).then(res => {
-              console.log(res)
               if (res.data.status_code === 2000000) {
                 this.newAddContacts.name = this.customerAddForm.name;
                 this.newAddContacts.email = this.customerAddForm.email;
@@ -575,7 +574,6 @@
             user_company_career: form.career,
             user_brand: form.brand
           }).then(res => {
-            console.log(res)
             if (res.data.status_code === 2000000) {
               this.newAddContacts.name = this.customerAddForm.name;
               this.newAddContacts.email = this.customerAddForm.email;
@@ -602,8 +600,7 @@
         let pattern = new RegExp("\\((.| )+?\\)", "igm")
         let name = checktag.substring(0, checktag.indexOf('('));
         let email = checktag.match(pattern).toString();
-        email = email.substring(2, email.length - 2)
-        console.log(email)
+        email = email.substring(2, email.length - 2);
 
         //取消Input显示
         this.myContactsShow.forEach((x, index) => {

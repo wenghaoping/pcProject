@@ -151,7 +151,7 @@
     props: ["followDisplay","followid","projectid","projectname","cardid","cardname","type","userid"],
     data () {
       return {
-        uploadAddress:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
+        uploadAddress:this.URL.weitianshiLine+this.URL.uploadFile,//上传地址
         loading:false,
         loading2:false,//加载框加载
         showList: false,//上传列表隐藏
@@ -448,9 +448,8 @@
         let index = this.uploadShow.lists.indexOf(item);
         if (index !== -1) {
           let file_id = this.uploadShow.lists[index].file_id;
-          const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+file_id;
+          const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+file_id+"&token=" + localStorage.token;
           window.location.href=url;
-          this.$tool.console(url);
         }
 
       },//点击下载

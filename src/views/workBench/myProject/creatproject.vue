@@ -1,4 +1,4 @@
-<template v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+<template v-loading.fullscreen="loading" element-loading-text="拼命加载中">
   <div class="creatproject">
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
@@ -110,9 +110,9 @@
                 <el-col :span="12">
                   <el-form-item
                     label="项目轮次"
-                    prop="pro_finance_stage"
+                    prop="pro_stage.stage_id"
                     :rules="[{type:'number',required: true, message: '项目轮次不能为空', trigger: 'change'}]">
-                    <el-select v-model="project.pro_finance_stage" placeholder="请选择" class="width360">
+                    <el-select v-model="project.pro_stage.stage_id" placeholder="请选择" class="width360">
                       <el-option
                         v-for="item in stage"
                         :key="item.value"
@@ -122,13 +122,12 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="6" style="padding-right: 5px;">
+                <el-col :span="6" >
                   <el-form-item
                     label="所属省级"
-                    prop="pro_area_province"
-
+                    prop="pro_area.pid"
                     :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
-                    <el-select v-model="project.pro_area_province" placeholder="请选择" @change="area1Change">
+                    <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change">
                       <el-option
                         v-for="item in area"
                         :key="item.value"
@@ -141,9 +140,9 @@
                 </el-col>
                 <el-col :span="6" style="padding-left: 5px;">
                   <el-form-item label="所属市级"
-                                prop="pro_area_city"
+                                prop="pro_area.area_id"
                                 :rules="[{required: true, message: '所属市级不能为空', trigger: 'change',type: 'number'}]">
-                    <el-select v-model="project.pro_area_city" placeholder="请选择">
+                    <el-select v-model="project.pro_area.area_id" placeholder="请选择">
                       <el-option
                         v-for="item in area2"
                         :key="item.value"
@@ -158,9 +157,9 @@
                 <el-col :span="12">
                   <el-form-item
                     label="期望融资"
-                    prop="pro_finance_scale"
+                    prop="pro_scale.scale_id"
                     :rules="[{required: true, message: '期望融资不能为空', trigger: 'change',type: 'number'}]">
-                    <el-select v-model="project.pro_finance_scale" placeholder="请选择" class="width360">
+                    <el-select v-model="project.pro_scale.scale_id" placeholder="请选择" class="width360">
                       <el-option
                         v-for="item in scale"
                         :key="item.value"
@@ -283,7 +282,6 @@
                   </el-col>
                 </el-row>
               </div>
-
             </el-form>
           </div>
           <el-button type="primary" size="large" style="float: right;margin-top: 32px;" @click="allSave">提交</el-button>
@@ -338,26 +336,29 @@
           pro_company_name : '',//公司名称
           pro_intro : '',//项目介绍
           pro_industry:[],//项目领域
-          pro_finance_stage: {
-            "stage_id": 2,
-            "stage_name": "天使轮",
-            "sort": 2,
-            "created_at": null,
-            "updated_at": null
+          pro_stage:{
+            sort: 4,
+            stage_id: '',
+            stage_name: "A轮"
           },//轮次
-          pro_area_province:"",//所属地区1省级单位
-          pro_area_city:"",//所属地区2市级单位
-          pro_finance_scale:'',//期望融资
+          pro_area: {
+            area_id: '',
+            area_title: "",//市级
+            pid: ''//省级
+          },//所属地区1省级单位
+          pro_scale: {
+            scale_id: '',
+            scale_money: "",
+          },//规模多少钱
           pro_finance_stock_after:'',//投后股分
           open_status:'1',//私密设置
-          is_exclusive: 0,//0其他 1独家 2非独家
           goodness:{
             pro_goodness: {goodness_title: "", goodness_desc: "",},
             pro_market_genera: {goodness_title: "", goodness_desc: ""},
-            pro_business_model: [],
-            pro_service: [],
+            pro_business_model: {goodness_title: "", goodness_desc: ""},
+            pro_service: {goodness_title: "", goodness_desc: ""},
           },//亮点
-
+          is_exclusive:1//0其他 1独家 2非独家
         },//项目介绍
         multiplelimit:5,
         /*公司远程搜索*/
@@ -489,7 +490,7 @@
         this.uploadShow=object;
       },//添加上传文件时,保存返回的数据
       planPreview(file){
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+this.uploadShow.file_id
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+this.uploadShow.file_id;
         window.location.href=url;
       },//点击下载
       beforeUpload(file){
@@ -526,7 +527,7 @@
       goBack(){//返回上一层
         this.$router.go(-1);
       },
-      /*检查所有必填项目以及获取所有数据*/
+      //*检查所有必填项目以及获取所有数据
       submitForm(formName) {
         let check=true
         this.$refs[formName].validate((valid) => {
@@ -539,7 +540,7 @@
         });
         return check;
       },
-      /*创建成功弹窗*/
+      ///*创建成功弹
       open2(title,main,confirm,cancel) {
         this.$confirm(main,title , {
           confirmButtonText: confirm,
@@ -563,18 +564,23 @@
         else if(this.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
         else if(this.submitForm('project')) {
-          this.project.user_id=localStorage.user_id;
+          this.loading=true;
           this.project.project_id=this.uploadShow.project_id;
-          this.$http.post(this.URL.editProject,this.project)
+          let allData = {};
+          allData.project = this.$tool.simpleClone(this.project);
+          allData.pro_FA = {is_exclusive:this.project.is_exclusive};
+          allData.user_id = localStorage.user_id;//用户id
+          this.$http.post(this.URL.editProject,allData)
             .then(res=>{
-              this.$tool.console(res);
               let data=res.data;
               this.project.project_id=data.project_id;
-              this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过')
+              this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过');
+              this.loading=false;
             })
             .catch(err=>{
               this.$tool.error("创建失败");
               this.$tool.console(err);
+              this.loading=false;
             })
 
         }
@@ -650,8 +656,6 @@
       },
       getprojectId(){
         this.project.project_id = this.$route.query.project_id || '';
-//        this.$tool.console(this.$route.query.project_id);
-        console.log(this.project.project_id);
       },
       getWxosProjectData(){
         var getOneUserInfo = new Promise((resolve, reject) => {
@@ -662,16 +666,14 @@
             this.$http.post(this.URL.getWxosProjectData, {credential: localStorage.credential})
               .then(res => {
                 let data = res.data.project;
-//              this.$tool.console(this.$tool.getToObject(data));
-//                console.log(this.$tool.getToObject(data));
                 this.project.pro_industry = data.industry;
                 if (data.is_exclusive == 4) data.is_exclusive = 0;
                 this.project.is_exclusive = data.is_exclusive;
-                if (data.pro_finance_scale == 0) data.pro_finance_scale = "";
-                this.project.pro_finance_scale = data.pro_finance_scale;
-                if (data.pro_finance_stage == 0) data.pro_finance_stage = {stage_id: ""};
-                this.project.pro_finance_stage = data.pro_finance_stage;
-                this.project.pro_goodness = data.pro_goodness;
+                if (data.pro_scale == 0) data.pro_scale = "";
+                this.project.pro_scale = data.pro_scale;
+                if (data.pro_stage == 0) data.pro_stage = {stage_id: ""};
+                this.project.pro_stage = data.pro_stage;
+                this.project.goodness = data.goodness;
                 this.project.pro_intro = data.pro_intro;
                 localStorage.credential = "";
                 resolve(1);
@@ -685,9 +687,6 @@
         })
         //微信进入的时候获取
       }
-    },
-    mounted() {
-
     },
     created(){
       this.$tool.getTop();

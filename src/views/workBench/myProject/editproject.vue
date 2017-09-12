@@ -19,7 +19,7 @@
                   <span class="f-title fl">商业计划书</span>
                   <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-if="uploadLoading"><img src="../../../assets/images/loading.gif"></span>
                   <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-else></span>
-                  <span style="margin-left: 8px;" class="fl">
+                  <span style="    margin-left: -13px;" class="fl">
                     <el-upload class="planUpload"
                                :action="uploadAddress"
                                :on-preview="planPreview"
@@ -1211,8 +1211,8 @@
         setFileDisplay: false,
         syncProjectDetailDisplay: false,//同步弹窗
         syncDialogDisplay:false,//一键同步提示框
-        uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
-        uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
+        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload,//上传地址
+        uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile,//上传地址
         project_id: "",//项目Id全局保存
         planList: [],//商业计划书上传列表
         fileList: [],//批量上传文件列表
@@ -1853,7 +1853,7 @@
         this.uploadShow = object;
       },//添加上传文件时,保存返回的数据
       planPreview(file){
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+this.uploadShow.file_id
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+this.uploadShow.file_id;
         window.location.href=url;
       },//点击下载
       beforeUpload(file){
@@ -2430,10 +2430,13 @@
               this.$tool.setNullToZero(allData.team.core_users,'stock_scale');//核心成员股权比例如果没填,就给0
               this.$tool.setNullToZero(allData.financing.pro_history_finance,'pro_finance_scale');//期望融资,融资金额如果没填,就给0
 
+              allData.project.pro_finance_value=allData.project.pro_finance_value+'';//数字转字符串
+
               if(allData.private.stock_right=="" || allData.private.stock_right==undefined) allData.private.stock_right=0;//股权赠与
               if(allData.private.commission=="" || allData.private.commission==undefined) allData.private.commission=0;//签约佣金
 
               allData.company.pro_company_scale=allData.company.pro_company_scale.comp_scale_id;
+
               allData.company.pro_status=allData.company.pro_status.status_id;
 //              console.log(allData);
               this.$http.post(this.URL.editProject, allData)
@@ -2585,7 +2588,7 @@
           this.syncDialogDisplay=false;
           let syncDataCheck = this.$store.state.syncData;
           let syncData = syncDataCheck.data;
-          let checkList = syncDataCheck.checkList;
+          let checkList = syncDataCheck.checkedSync;
 //          console.log(syncData);
           if(msg.updateCategory){               //看是否需要更新标签
             this.$global.func.getWxProjectCategory()

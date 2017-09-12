@@ -149,8 +149,8 @@
         renameIcon:renameIcon,
         uploadIcon:uploadIcon,
         deleteIcon:deleteIcon,
-        uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
-        uploadAddressFile:this.URL.weitianshiLine+"api/v/project/uploadFile",//上传地址
+        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload,//上传地址
+        uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile,//上传地址
         project_id: this.proid,
         //加载
         loading: false,

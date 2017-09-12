@@ -4,7 +4,7 @@
     <el-dialog :visible="syncProjectDetailDisplay"  :before-close="handleClose"
                close-on-press-escape close-on-click-modal lock-scroll>
       <!--弹窗上半部分-->
-      <el-checkbox-group v-model="checkList" @change="checkChange" class="checkbox">
+      <el-checkbox-group v-model="checkedSync" @change="checkChange" class="checkbox">
           <div class="up-floor item-lists item-lists-top clearfix" style="background: white;">
             <el-checkbox label="project">
               <div class="item-lists-inner-left">
@@ -66,11 +66,11 @@
                 </div>
                 <div class="rz-detail">
                   <p class="det-title">公司官网</p>
-                  <p class="det-info">{{company.pro_website | nullToZ}}</p>
+                  <p class="det-info">{{company.pro_website | nullTo_}}</p>
                 </div>
                 <div class="rz-detail">
                   <p class="det-title">公司规模</p>
-                  <p class="det-info">{{company.pro_company_scale.comp_scale_value | nullToZ}} 人</p>
+                  <p class="det-info">{{company.pro_company_scale.comp_scale_value | nullTo_}} 人</p>
                 </div>
               </div>
             </div>
@@ -120,10 +120,10 @@
                 <span class="title"><img class="img" src="../assets/images/money.png">融资信息</span>
                   <div class="v-progress-table" style="padding-left: 10px;padding-top: 20px;">
                     <div class="v-progress-txt" v-for="finance in financing.pro_history_finance">
-                      <!--<span class="radio_line"><span class="radio"></span></span>-->
                       <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                       <span class="pro-txt-1">{{finance.finance_time | timeToReallTime}}</span>
-                      <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
+                      <span class="pro-txt-4">{{finance.pro_finance_scale}}</span>
+                      <span class="pro-txt-2">{{finance.pro_finance_stage_name}}</span>
                       <span class="pro-txt-3">{{finance.pro_finance_investor}}</span>
                       <div class="line"></div>
                     </div>
@@ -167,6 +167,7 @@
           <button  @click="handleClose" class="btn1">取消</button>
           <button  @click="syncTrue" class="btn1">同步</button>
           <el-checkbox v-model="cover" style="margin-left: 14px;">允许覆盖</el-checkbox>
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         </div>
       </div>
 
@@ -175,6 +176,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  const checkAllOption = ['project', 'team', 'company', 'brands', 'financing', 'milepost'];
+
   import cirIcon from '../../static/images/circle.png'
   import pinpai from '../../static/images/icon-pinpa.png'
   import yunying from '../../static/images/icon-yunying.png'
@@ -182,7 +185,10 @@
     props: ["syncProjectDetailDisplay","companyid"],
     data () {
       return {
-        checkList:[],//勾选数组
+        checkAll: false,
+        isIndeterminate: false,
+        checkedSync:[],//已勾选数组
+        checkedSyncS:checkAllOption,//勾选数组所有的
         cover:false,//是否允许覆盖
         yunying:yunying,
         pinpai:pinpai,
@@ -301,14 +307,22 @@
           this.$tool.console(err,2)
         })
       },
+      //全选时
+      handleCheckAllChange(event) {
+        this.checkedSync = event.target.checked ? checkAllOption : [];
+        this.isIndeterminate = false;
+      },
       //勾选时
-      checkChange(e){
-//        console.log(e);
+      checkChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.checkedSyncS.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.checkedSyncS.length;
       },
       //确定同步
       syncTrue(){
-          this.$store.state.syncData.checkList = this.checkList;
-          if(this.checkList.length==0){
+//          console.log(this.checkedSync)
+          this.$store.state.syncData.checkedSync = this.checkedSync;
+          if(this.checkedSync.length==0){
               this.$tool.warning("请勾选你要同步的模块")
           }else{
             if(this.project.tag.length!=0){
@@ -875,7 +889,7 @@
           .pro-txt-2{
             color:#1f2d3d;
             margin-left: 53px;
-            width: 150px;
+            width: 63px;
            white-space: normal;word-break: break-all;line-height: 20px
           }
           .pro-txt-3{
@@ -883,6 +897,7 @@
             margin-left: 24px;
           }
           .pro-txt-4{
+            width: 100px;
             color:#5e6d82;
             margin-left: 140px;
           }

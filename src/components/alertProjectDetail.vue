@@ -703,7 +703,7 @@
     },
     methods: {
       download(e){
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e;
         window.location.href=url;
       },//下载文件
       //关闭弹窗

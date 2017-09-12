@@ -205,12 +205,12 @@
                         <div slot="content">
                           <div class="tips-txt">{{company.pro_website}}</div>
                         </div>
-                        <span  class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;" @click="urlOpen(company.pro_website)">{{company.pro_website}}</span>
+                        <span  class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;" @click="urlOpen(company.pro_website)">{{company.pro_website | nullTo_}}</span>
                       </el-tooltip>
                     </div>
                     <div class="rz-detail">
                       <span class="det-title"style="width: 100%;line-height: 21px">公司规模</span>
-                      <span class="del-info"  style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{company.pro_company_scale.comp_scale_value}} 人</span>
+                      <span class="del-info"  style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{company.pro_company_scale.comp_scale_value | nullTo_}} 人</span>
                     </div>
                   </div>
                 </div>
@@ -252,17 +252,17 @@
                 <div class="item">
                   <span class="title"><img class="img" src="../../../assets/images/money.png">融资信息</span>
                   <div class="rz-details">
-                    <div class="rz-detail" v-show="project.pro_scale.scale_money!=''">
+                    <div class="rz-detail">
                       <p class="det-title">期望融资</p>
-                      <p class="det-info">{{project.pro_scale.scale_money}}</p>
+                      <p class="det-info">{{project.pro_scale.scale_money | nullTo_}}</p>
                     </div>
-                    <div class="rz-detail" v-show="project.pro_finance_stock_after!=''">
+                    <div class="rz-detail">
                       <p class="det-title">投后股份</p>
-                      <p class="det-info">{{project.pro_finance_stock_after}}%</p>
+                      <p class="det-info">{{project.pro_finance_stock_after | nullTo_}}%</p>
                     </div>
-                    <div class="rz-detail" v-show="project.pro_finance_value!=''">
+                    <div class="rz-detail">
                       <p class="det-title">估值</p>
-                      <p class="det-info">{{project.pro_finance_value}}万</p>
+                      <p class="det-info">{{project.pro_finance_value | nullTo_}}万</p>
                     </div>
                   </div>
                 </div>
@@ -275,30 +275,18 @@
                 <div class="item" style="margin-top:18px;" v-show="financing.pro_history_finance.length!=0">
                   <div>
                     <span class="sec-title">历史融资</span>
-
-                    <!--                <div class="v-progress" style="height: 121px;">
-                                      <span class="circle circle-s">&nbsp;</span>
-                                      <span class="v-line v-line-1">&nbsp;</span>
-                                      <span class="circle circle-e">&nbsp;</span>
-                                    </div>-->
                     <div class="v-progress-table">
                       <div class="v-progress-txt" style="height: 45px;" v-for="finance in financing.pro_history_finance">
-                      <!--<span class="radio_line">-->
-                      <!--<span class="radio"></span>-->
-                        <!--&lt;!&ndash;<span class="l-line"></span>&ndash;&gt;-->
-                      <!--</span>-->
                         <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                         <span class="pro-txt-1">{{finance.finance_time}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
-                        <!--<span class="pro-txt-4" style=" width: 202px; white-space: normal;overflow: hidden; word-break: break-all;line-height:22px;">{{finance.pro_finance_investor}}</span>-->
                         <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 20 ? false:true">
                           <div slot="content">
                             <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                           </div>
                           <span class="pro-txt-4" style="width:314px;max-width:314px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
                         </el-tooltip>
-                        <!--<div class="line"></div>-->
                       </div>
                     </div>
                   </div>
@@ -311,21 +299,8 @@
                 </div>
                 <div class="item" style="margin-top:6px;">
                   <div>
-                    <!--                <div class="v-progress" style="height: 182px;">
-                                      <span class="circle circle-s">&nbsp;</span>
-
-                                      <span class="v-line v-line-1">&nbsp;</span>
-                                      <span class="circle circle-c">&nbsp;</span>
-                                      <span class="v-line v-line-2">&nbsp;</span>
-
-                                      <span class="circle circle-e">&nbsp;</span>
-                                    </div>-->
                     <div class="v-progress-table">
                       <div class="v-progress-txt" style="height: 45px;" v-for="develop in milepost.pro_develop">
-                    <!--<span class="radio_line">-->
-                      <!--<span class="radio"></span>-->
-                      <!--&lt;!&ndash;<span class="l-line"></span>&ndash;&gt;-->
-                    <!--</span>-->
                         <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                         <span class="pro-txt-1">
                       {{develop.dh_start_time}}
@@ -333,7 +308,6 @@
                         <span class="pro-txt-2"  style="color:#5e6d82;white-space: normal;word-break: break-all;width: 546px;line-height: 20px">
                           {{develop.dh_event}}
                     </span>
-                        <!--<div class="line"></div>-->
                       </div>
                     </div>
                   </div>
@@ -613,7 +587,7 @@
         </el-form-item>
       </el-form>
       <ul class="onsearch">
-        <li v-for="seachCompany in seachCompanys" @click="search(seachCompany)" v-html="seachCompany.company_name">{{seachCompany.company_name}}</li>
+        <li v-for="seachCompany in seachCompanys" @click="search(seachCompany)" v-html="seachCompany.company_name"></li>
       </ul>
     </el-dialog>
 
@@ -936,9 +910,9 @@
         this.getAllData();
       },//关闭添加跟进重置
       download(e){
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e
+        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+e;
         window.location.href=url;
-        console.log(url);
+
       },//下载文件
       searchChange(queryString){
 //        this.$tool.console(queryString);

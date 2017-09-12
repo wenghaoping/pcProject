@@ -265,7 +265,8 @@
       loginOut(e){
         if(e==0){
           localStorage.clear();
-          window.location.reload();
+          this.$router.push('/login');
+//          setTimeout(()=>{ window.location.reload();})
         }else{
 
         }
