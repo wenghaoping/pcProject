@@ -53,7 +53,13 @@ export default {
         this.willShow=true;
       }
     },
+    GetQueryString(){
+//      console.log(this.$route);
+    },
 
+  },
+  created(){
+    this.GetQueryString();
   },
   watch:{
    // 路由判断显示广告
