@@ -280,7 +280,8 @@
                         <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                         <span class="pro-txt-1">{{finance.finance_time}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
-                        <span class="pro-txt-3">{{finance.belongs_to_stage.stage_name}}</span>
+                        <span class="pro-txt-3" style="width: 68px;">{{finance.belongs_to_stage.stage_name}}</span>
+
                         <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 20 ? false:true">
                           <div slot="content">
                             <div class="tips-txt">{{finance.pro_finance_investor}}</div>
