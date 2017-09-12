@@ -114,8 +114,8 @@ export default {
     width: 252px;
     height: 410px;
     position: absolute;
-    top: 226px;
-    right: 183px;
+    top: -129px;
+    right: -297px;
     display: none;
     img{
       width: 100%;
@@ -125,7 +125,7 @@ export default {
     display: block;
   }
   .icon{
-    position: relative;
+
     display: inline-block;
     cursor: pointer;
     width: 13px;
@@ -156,6 +156,7 @@ export default {
       padding-top: 40px;
     }
     .samll{
+      position: relative;
       font-size:14px;
       color:#5e6d82;
       line-height:13px;

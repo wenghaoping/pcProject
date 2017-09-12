@@ -25,10 +25,10 @@
               </el-tooltip>
 
             </div>
-            <div class="item height" style="margin-top:18px;">
+            <div class="item height" style="margin-top:5px;">
               <span class="mid-tag" v-for="industry in project.pro_industry">{{industry.industry_name}}</span>
             </div>
-            <div class="item height" style="margin-top:18px;">
+            <div class="item height" style="margin-top:13px;">
               <span class="big-tag" > {{project.pro_scale.scale_money | nullTo_}}</span>
               <span class="split">｜</span>
               <span class="big-tag">{{project.pro_area.area_title | nullTo_}}</span>
@@ -41,7 +41,7 @@
             <!--<div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">-->
               <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
             <!--</div>-->
-            <div class="item height" style="margin-top:45px;    display: inline-block;">
+            <div class="item height" style="margin-top:59px;    display: inline-block;">
             <span id="bottom_width1" class="project" >
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
@@ -81,7 +81,7 @@
           </div>
           <div class="item-lists-inner-right fl">
             <div class="text">
-              <span>扫描二维码，转发推送</span>
+              <span>扫描二维码转发推送</span>
               <!--<img :src="qrImg">-->
               <img :src="xiaochengxu" alt="">
             </div>
@@ -386,9 +386,9 @@
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
             <div class="toButton" style="padding-left: 0;z-index: 111">
-              <button  @click="toEdit" class="btn1">编辑</button>
-              <button  @click="addFollow" class="btn1">写跟进</button>
-              <button  @click="projectPush2" class="btn1">项目推送</button>
+              <el-button  type="primary" @click="toEdit" class="btn1">编辑</el-button>
+              <el-button  type="primary" @click="addFollow" class="btn1">写跟进</el-button>
+              <el-button  type="primary" @click="projectPush2" class="btn1">项目推送</el-button>
             </div>
           </div>
         </div>

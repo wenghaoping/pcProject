@@ -52,7 +52,7 @@
             <el-table-column width="64" v-if="reBorn">
               <template scope="scope">
                 <el-checkbox :checked="myCheckList[scope.row.card.card_id] || myCheckList[scope.row.card.user_id]"
-                             :label="scope.row.card.card_id || scope.row.card.user_id"
+                             :label="scope.row.type=='user'? scope.row.card.user_id : scope.row.card.card_id"
                              @change="myCheck"
                              :name="scope.row.card.user_real_name+'( '+scope.row.card.user_email+' )'"></el-checkbox>
               </template>
@@ -163,7 +163,7 @@
             <el-table-column width="64" v-if="reBorn">
               <template scope="scope">
                 <el-checkbox :checked="netCheckList[scope.row.card.user_id] || netCheckList[scope.row.card.card_id]"
-                             :label="scope.row.card.user_id ||scope.row.card.card_id"
+                             :label="scope.row.type=='user'? scope.row.card.user_id : scope.row.card.card_id"
                              @change="netCheck"
                              :name="scope.row.card.user_real_name+'( '+scope.row.card.user_email+' )'"></el-checkbox>
               </template>

@@ -297,8 +297,8 @@
             </el-collapse-transition>
           </div>
 
-          <button class="button save" style="margin-top:15px;float: right;display: block;" @click="allSave">保存
-          </button>
+          <el-button type="primary" style="margin-top:15px;float: right;display: block;" @click="allSave">保存
+          </el-button>
         </div>
       </div>
     </div>
