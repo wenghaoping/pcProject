@@ -26,7 +26,7 @@
         <!--<li>-->
           <!--<a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>-->
         <!--</li>-->
-        <li v-if="user_name" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
+        <li v-show="user_name" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
           {{user_name}}
           <span style="display:inline-block;margin-left: 5px"><i class="el-icon-caret-bottom" style="font-size: 10px"></i></span>
           <div class="login-show" v-show="user_id" style="position: absolute;top: -10px;">
@@ -47,7 +47,7 @@
           </div>
 
         </li>
-        <li v-if="!user_name" class="login" @click="login">
+        <li v-show="!user_name" class="login" @click="login">
           登录
         </li>
         <el-autocomplete
@@ -268,6 +268,9 @@
     /*top: 12px!important;*/
     /*right: 15%!important;*/
   /*}*/
+  .el-autocomplete .el-input{
+    font-size: 12px!important;
+  }
   .width350{
     width:26%;
     display: inline-block;

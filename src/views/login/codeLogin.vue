@@ -41,8 +41,14 @@
               //将user_id存入sessionStorge并跳转
               localStorage.user_id=res.data.user_id;
               localStorage.user_real_name=res.data.user_real_name;
+              localStorage.user_brand=res.data.user_brand;
+              localStorage.user_company_career=res.data.user_company_career;
+              localStorage.user_company_name=res.data.user_company_name;
               this.$store.state.logining.user_id=res.data.user_id;
               this.$store.state.logining.user_real_name=res.data.user_real_name;
+              this.$store.state.logining.user_brand=res.data.user_brand;
+              this.$store.state.logining.user_company_career=res.data.user_company_career;
+              this.$store.state.logining.user_company_name=res.data.user_company_name;
               localStorage.token=res.data.token;
               //重新获取个人标签(因为获取个人标签必须要有user_id)
               this.$global.func.getWxProjectCategory();

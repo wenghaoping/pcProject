@@ -603,7 +603,7 @@
                @closeFollow="closeFollow"></addfollow>
 
     <!--项目推送弹窗,项目入口弹窗-->
-    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="project.project_id" :pro-intro="project.pro_intro" :emitPush="emitPush"
+    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="project.project_id" :pro-name="project.pro_name" :pro-intro="project.pro_intro"   :emitPush="emitPush"
                   @openPreview="openPreview"
                   @closeProjectPush2="closeProjectPush2"
                   @previewPush="previewPush"></projectpush2>

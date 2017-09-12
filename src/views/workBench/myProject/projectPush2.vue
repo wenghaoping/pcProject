@@ -265,7 +265,7 @@
         <el-form-item label="标题"
                       prop="title"
                       style="margin-top: 30px">
-          <el-input v-model="pushTitle" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
+          <el-input v-model="pushTitle" placeholder="浙江安琪创投-投资VP-杜兴国推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行"></el-input>
         </el-form-item>
         <el-form-item label="正文" prop="main">
           <el-input type="textarea"
@@ -326,9 +326,12 @@
   import customerAddContacts from '../../../components/customerAddContacts.vue'
   import {mapState} from 'vuex'
   export default {
-    props: ["projectPushShow2", 'proid', 'proIntro','emitPush'],
+    props: ["projectPushShow2", 'proid', 'proIntro','proName','emitPush'],
     data () {
       return {
+        pushbrand:'',
+        pushTitle1:'',
+        pro_name:this.proName,
         project_name: this.proIntro,
         project_id: this.proid,
         close: false,//默认关闭
@@ -362,7 +365,7 @@
         //可用推送次数
         pushCount: 5,
         //推送邮箱标题和正文
-        pushTitle: '',
+        pushTitle: this.pushTitle1,
         pushBody: '',
         //当前激活的tab页
         activeTab: 'myContacts',
@@ -388,10 +391,27 @@
           user_company_career: '',
           user_company_name: '',
         },
+        user_company_name:'',
+        user_brand:'',
+        user_company_career:'',
+        user_real_name:'',
       }
     },
     components: {customerAddContacts},
     methods: {
+        title(){
+            this.user_company_name=localStorage.user_company_name;
+            this.user_brand=localStorage.user_brand;
+            this.user_company_career=localStorage.user_company_career;
+            this.user_real_name=localStorage.user_real_name;
+            if(!this.user_brand){
+              this.pushbrand=this.user_company_name;
+            }else{
+              this.pushbrand=this.user_brand;
+            }
+
+          this.pushTitle1=this.pushbrand+'-'+this.user_company_career+'-'+this.user_real_name+'推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+        },
       //获取当前用户部分信息
       getFirstUser(user){
         this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id})
@@ -495,7 +515,7 @@
         this.netContactsShow = [];
         this.myContacts=[];
         this.netContacts=[];
-        this.pushTitle = '';
+        this.pushTitle = this.pushTitle1;
         this.pushBody = '';
         this.myCheckList = {};
         this.netCheckList = {};
@@ -854,7 +874,7 @@
 
     },
     created(){
-
+      this.title();
     },
     watch: {
       //打开该弹框时
@@ -870,13 +890,12 @@
             this.reBorn = false
           }
           //重置推送项目接口参数
-
           this.pushData = [];
           this.myContactsShow = [];
           this.netContactsShow = [];
           this.myContacts=[];
           this.netContacts=[];
-          this.pushTitle = '';
+          this.pushTitle = this.pushTitle1;
           this.pushBody = '';
           this.myCheckList = {};
           this.netCheckList = {};
@@ -932,7 +951,7 @@
           if(e){
             this.push();
           }
-      }
+      },
     }
   }
 </script>

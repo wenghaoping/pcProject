@@ -104,7 +104,7 @@
             <el-form label-position="top" label-width="80px" ref="email" :model="email">
               <el-form-item label="标题" prop="title"
               :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-                <el-input v-model="email.title" placeholder="便于投资人识别您的身份以及项目概况，例如：来自千月资本的项目推荐-国内首家基因靶向肿瘤治疗项目"></el-input>
+                <el-input v-model="email.title" placeholder="浙江安琪创投-投资VP-杜兴国推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行"></el-input>
               </el-form-item>
               <el-form-item label="正文"
                             prop="body"
@@ -157,11 +157,12 @@ export default {
       titleRule: {validator: checkTitle, trigger: 'blur'},
       close: false,//默认关闭
       loading: false,//加载动画
+      pushTitle1:'',
       activeName: 'first',
 //      dialogPush:false,//控制显不显示
 
       email: {
-        title: '',//邮件标题
+        title: this.pushTitle1,//邮件标题
         body: '',//邮件正文
       },
       email2: {
@@ -201,6 +202,19 @@ export default {
     }
   },
   methods: {
+    title(){
+      this.user_company_name=localStorage.user_company_name;
+      this.user_brand=localStorage.user_brand;
+      this.user_company_career=localStorage.user_company_career;
+      this.user_real_name=localStorage.user_real_name;
+      if(!this.user_brand){
+        this.pushbrand=this.user_company_name;
+      }else{
+        this.pushbrand=this.user_brand;
+      }
+
+      this.pushTitle1=this.pushbrand+'-'+this.user_company_career+'-'+this.user_real_name+'推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+    },
     preview(){
       if(this.pushCount!=0) {
         if (this.projectRadio == '' || this.projectRadio==undefined) this.$tool.error("请选择要推送的项目")
@@ -450,8 +464,8 @@ export default {
           this.firstInData.user =this.userMessage;
           this.firstInData.email2.nameEmail = this.userEmail;
           this.firstInData.project = this.$store.state.pushProject.projectMessgae || {};
-          /*      this.email.title=this.$store.state.pushProject.email.title || '';
-           this.email.body=this.$store.state.pushProject.email.body || '';
+            this.email.title=this.pushTitle1;
+          /*    this.email.body=this.$store.state.pushProject.email.body || '';
            this.projectRadio=this.$store.state.pushProject.project_id || '';*/
           if(this.firstInData.project.pro_id!=""){
             this.remoteMethod(this.firstInData.project.pro_intro)
@@ -467,7 +481,7 @@ export default {
     },
   },
   created(){
-
+    this.title();
   }
 }
 </script>
