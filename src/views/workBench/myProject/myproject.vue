@@ -327,7 +327,7 @@
                @closeFollow="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush"
+    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="pushId" :pro-name="pushName" :pro-intro="pushIntro" :emitPush="emitPush"
                   @openPreview="openPreview"
                   @closeProjectPush2="closeProjectPush2"
                   @previewPush="previewPush"
@@ -439,6 +439,7 @@
         }],//更多的选项表单
         pushId:'',//推送项目传值-项目ID
         pushIntro:'',//推送项目传值-项目名称
+        pushName:'',//推送项目介绍
         previewDisplay:false,//控制项目推送预览显隐
         emitPush:false,//控制项目推送-项目入口的推送函数触发
       }
@@ -485,6 +486,7 @@
       addprojectPush(index, row){
         this.pushId=row.project_id;
         this.pushIntro=row.pro_intro;
+        this.pushName=row.pro_name;
         this.projectPushDisplay2=true;
       },//点击项目推送
       closeProjectPush2(msg){
