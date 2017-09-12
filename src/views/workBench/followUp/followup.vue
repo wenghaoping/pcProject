@@ -208,6 +208,7 @@
 
   <!--写跟进弹框-->
   <addfollow :follow-display="followDisplay" :followid="followid" @closeFollow="closeFollow"></addfollow>
+    <!--<div style="width: 200px;height: 200px;background: red; position: fixed;bottom: 0;right:0;"></div>-->
   </div>
 </template>
 
