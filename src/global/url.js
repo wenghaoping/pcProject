@@ -150,13 +150,16 @@ export default
   pushProject:'/api/v/project/pushProject',//我的项目-推送(发送邮件)
   pushCount:'/api/v/project/pushCount',//推送剩余次数
   getConnectUserSortByMatch:'api/v/project/getConnectUserSortByMatch',//推送项目时获取我的人脉
-  getAllConnectUserSortByMatch:'api/v/project/getAllConnectUserSortByMatch',//推送项目时获取全网人脉
+  getAllConnectUserSortByMatch:'api/v/project/getAllConnectUserSortByMatch',//推送项目时获取全站人脉
 
 
   /*使用微信二维码*/
   getProjectQr:'https://wx.weitianshi.cn/api/wx/getProjectQr',//
 
   /*上传进度*/
-  uploadProgress:"api/project/uploadProgress"
+  uploadProgress:"api/project/uploadProgress",
+
+  /*邮箱加入项目库*/
+  importProject:"api/message/importProject"
 
 }
