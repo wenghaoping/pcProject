@@ -135,7 +135,7 @@
               <li class="table6" style="line-height: 40px;">最近融资时间</li>
             </ul>
             <div v-for="compet in competing">
-              <ul  class="ulfl m-table" style="cursor: pointer" @click="toNewOneKey(compet.company_name)">
+                <ul  class="ulfl m-table" style="cursor: pointer"  @click="toNewOneKey(compet.company_name)">
                 <li class="table1">
                   <div class="img fl">
                     <img :src="compet.project_logo" v-if="compet.project_logo!=''">
@@ -895,17 +895,10 @@
 //        const openUrl = this.URL.openUrl;
 //        const url=encodeURI(openUrl+"?company="+companyName+"&id="+this.id+"&includeInvestorMap="+this.includeInvestorMap);
 //        window.open(url);
-        this.$http.post(this.URL.getCrawlerCompany, {company_name:data})
-          .then(res => {
-//            let data = res.data.data;
-              this.$router.push({name: 'onekeyResearch', query: {company: data}})//路由传参
-            this.loading=false;
-          })
-          .catch(err => {
-            this.$tool.error("获取失败");
-            this.$tool.console(err);
-            this.loading=false;
-          });
+            const Url=this.URL.weitianshi;
+            const data11=encodeURI(data);
+        const url=encodeURI(Url+"onekeyResearch?company="+data11);
+        window.open(url);
       },//跳转到新的一键尽调
       getRouter(){
         return new Promise((resolve, reject)=>{
