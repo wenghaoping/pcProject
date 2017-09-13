@@ -317,6 +317,7 @@
           <el-button type="primary" @click="certainAdd">确 定</el-button>
         </div>
       </el-dialog>
+
     </el-dialog>
     <!--项目预览弹窗-->
   </div>
@@ -754,16 +755,15 @@
       },
       //预览
       preview(){
-        if(this.pushTitle.length>100){
+        if(this.pushTitle.length > 100){
           this.$tool.error('标题不能大于100个字')
-        }else if(this.pushBody.length>500){
+        }else if(this.pushBody.length > 500){
           this.$tool.error('正文不能大于500个字')
-        }else if(this.pushData.length<0){
+        }else if(this.pushData.length === 0){
           this.$tool.error('请先选择推送人脉 ')
-        }else if(this.pushData.length>this.pushCount){
+        }else if(this.pushData.length > this.pushCount){
           this.$tool.error('推送人数不能超过今日剩余推送次数')
         }else{
-            console.log(this.pushData)
           let targetUser = this.pushData[0].card;
           let user = {
             user_real_name: targetUser.user_real_name,
@@ -805,7 +805,6 @@
             dealData.push([x.card.user_id, x.type, x.card.user_email])
           }
         })
-        console.log(dealData);
         if (this.pushData.length>0 && dealData.length === 0) {
           this.$tool.error('请选择推送人脉')
         } else if (dealData.length > this.pushCount) {

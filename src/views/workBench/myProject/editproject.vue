@@ -1414,6 +1414,7 @@
         node5: false,
         node6: false,
         node7: false,
+
         //*判断项目完整度(是否全部填写完整)
         filePerfect: false,//项目文件
         projectPerfect: false,//项目详情
@@ -1542,8 +1543,12 @@
         if (forFor(fileValue) == 0) this.filePerfect = true;
         else this.filePerfect = false;
 
-        if (forFor(projectValue) == 0) this.projectPerfect = true;
-        else this.projectPerfect = false;
+
+
+        if (forFor(projectValue) != 0) this.projectPerfect = false;
+        else if(this.project.goodness.pro_goodness.goodness_desc=="" || this.project.goodness.pro_goodness.goodness_title=="") {this.projectPerfect = false;}
+        else this.projectPerfect = true;
+
 
         if (forFor(companyValue) == 0) this.companyPerfect = true;
         else this.companyPerfect = false;
@@ -1563,8 +1568,7 @@
         if (forFor(privateValue) == 0) this.privatePerfect = true;
         else this.privatePerfect = false;
 
-        if(this.project.goodness.pro_goodness.goodness_desc!="" && this.project.goodness.pro_goodness.goodness_title!="") this.projectPerfect = true;
-        else this.projectPerfect = false;
+
 
       /*        if(this.project.goodness.pro_goodness.goodness_desc!="") number-1;
         if(this.project.goodness.pro_goodness.goodness_title!="") number-1;*/
@@ -1762,7 +1766,7 @@
               data.company.pro_company_scale = {comp_scale_id: 1}
             }//规模为空的时候
               if (data.company.pro_status == "") {
-                data.company.pro_status = {status_id: ""}
+                data.company.pro_status = {status_id: 3}
               }//规模为空的时候
               this.statusLast = data.company.pro_status.status_id;//运营状态多余的
 

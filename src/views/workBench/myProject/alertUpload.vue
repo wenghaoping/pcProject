@@ -84,7 +84,7 @@
           <div class="fr">
             <el-button @click="cancel(2)" :disabled="submitButton" v-show="!isCheck">取 消</el-button>
             <el-button @click="cancel(1)" v-show="isCheck">取 消</el-button>
-            <el-button type="primary" @click="submitUpload('dateForm',dateForm)" :disabled="submitButton" v-show="!isCheck">确 定</el-button>
+            <el-button type="primary" @click="submitUpload('dateForm',dateForm)" :disabled="submitButton" v-show="!isCheck" v-if="uploadLength">确 定</el-button>
           </div>
         </div>
       </div>
@@ -278,7 +278,6 @@ export default {
           this.$confirm('确认关闭？关闭后所有数据清空?')
             .then(_ => {
               let arr=this.dateForm.domains;
-//          this.$tool.console(this.dateForm.domains);
               for(let i=0; i<arr.length; i++){
                 this.$http.post(this.URL.deleteUpload,{user_id: localStorage.user_id,project_id:arr[i].project_id})
                   .then(res=>{
@@ -310,6 +309,17 @@ export default {
   },
   created(){
 
+  },
+  computed: {
+    //*有上传中的文件吗
+    uploadLength(){
+      let length = this.dateForm.domains.length;
+      if(length==0){
+          return false;
+      }else{
+        return true;
+      }
+    },
   },
   watch: {
     // 如果路由有变化，会再次执行该方法

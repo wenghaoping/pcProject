@@ -17,7 +17,7 @@
         <el-form-item label="推送人脉"
                       prop="nameEmail"
                       :rules="emailRule">
-          <el-input v-model="email2.nameEmail" placeholder="项目及BP将以邮箱的方式推送，请输入邮箱"></el-input>
+          <el-input v-model="email2.nameEmail" placeholder="该用户未填写邮箱，请完善对方邮箱"></el-input>
         </el-form-item>
       </el-form>
       <div class="message">
