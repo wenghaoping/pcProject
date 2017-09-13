@@ -13,7 +13,13 @@
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
                 <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
-              <span class="title">{{project.pro_name}}</span>
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 10 ? false:true">
+                <div slot="content">
+                  <div class="tips-txt">{{project.pro_name}}</div>
+                </div>
+                <span class="title" style="width: 120px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
+              </el-tooltip>
+
               <span class="company">{{project.pro_company_name}}</span>
             </div>
             <div class="item height" style="margin-top: 14px;">
@@ -42,7 +48,7 @@
             <!--<div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">-->
               <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
             <!--</div>-->
-            <div class="item height" style="margin-top:58px;    display: inline-block;">
+            <div class="item height" style="margin-top:40px;    display: inline-block;">
             <span id="bottom_width1" class="project" >
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
@@ -349,11 +355,21 @@
                       <!--<span>{{project.contact.user_name}}</span>-->
                       <!--<span>{{project.contact.user_mobile}}</span>-->
                       <span class="det-title">项目联系人:</span>
-                      <span class="del-info">{{private.contact_user_name}}</span>
+                      <el-tooltip class="item" effect="dark"  placement="top" >
+                        <div slot="content">
+                          <div class="tips-txt">{{private.contact_user_name}}</div>
+                        </div>
+                        <span class="del-info" style="width: 92px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{private.contact_user_name}}</span>
+                      </el-tooltip>
                     </div>
-                    <div class="bot-det" style="margin-left:170px;" v-show="private.contact_user_career!=''">
+                    <div class="bot-det" style="margin-left:128px;" v-show="private.contact_user_career!=''">
                       <span class="det-title">职位:</span>
-                      <span class="del-info">{{private.contact_user_career}}</span>
+                      <el-tooltip class="item" effect="dark"  placement="top" >
+                        <div slot="content">
+                          <div class="tips-txt">{{private.contact_user_career}}</div>
+                        </div>
+                        <span class="del-info" style="width: 122px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{private.contact_user_career}}</span>
+                      </el-tooltip>
                     </div>
                     <div class="bot-det" style="float:right;" v-show="private.contact_user_mobile!=''">
                       <span class="det-title">手机号:</span>
@@ -514,7 +530,7 @@
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{projectMatchInvestor.match}}%</span>
                         <span class="pro fr" v-if="projectMatchInvestor.is_follow==1">我的人脉</span>
-                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==0">全网人脉</span>
+                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==0">全站人脉</span>
                       </div>
                       <div class="list_main">
                         <div @click="toDetail(projectMatchInvestor)" class="click">
@@ -856,7 +872,7 @@
           label: '全部'
         }, {
           value: 0,
-          label: '全网人脉'
+          label: '全站人脉'
         }, {
           value: 1,
           label: '我的人脉'

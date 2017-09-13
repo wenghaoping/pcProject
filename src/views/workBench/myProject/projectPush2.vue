@@ -35,7 +35,7 @@
         </el-form-item>
       </el-form>
 
-      <!--我的人脉和全网人脉tab页切换-->
+      <!--我的人脉和全站人脉tab页切换-->
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <!--我的人脉-->
         <el-tab-pane label="我的人脉" name="myContacts">
@@ -340,9 +340,9 @@
         activeName: 'myContacts',
         //我的人脉数据
         myContacts: [],
-        //全网人脉数据
+        //全站人脉数据
         netContacts: [],
-        //我的人脉显示数组和全网人脉显示数据(show:是name;id是id.服务于computed)
+        //我的人脉显示数组和全站人脉显示数据(show:是name;id是id.服务于computed)
         myContactsShow: [],
         netContactsShow: [],
         //发送推送项目时参数
@@ -466,7 +466,7 @@
           }
         })
       },
-      //获取全网人脉数据
+      //获取全站人脉数据
       getNetContacts(remote){
         this.$http.post(this.URL.getAllConnectUserSortByMatch, {
           user_id: localStorage.user_id,
@@ -474,7 +474,7 @@
           search: this.filterString,
         }).then(res => {
           if (res.data.status_code === 2000000) {
-//          console.log('全网人脉',res.data.data)
+//          console.log('全站人脉',res.data.data)
             this.netContacts = res.data.data;
             //项目搜索时调用此接口
             if (remote) {
@@ -485,7 +485,7 @@
           }
         })
       },
-      //匹配我的人脉和全网人脉是否有同个用户
+      //匹配我的人脉和全站人脉是否有同个用户
       matchUser(){
         this.myContacts.forEach(x=>{
           this.netContacts.forEach((y,index)=>{
@@ -508,7 +508,7 @@
           }
         })
       },
-      //重置我的人脉,全网人脉,选中的我的人脉,选中的全网人脉,可用推送次数数据
+      //重置我的人脉,全站人脉,选中的我的人脉,选中的全站人脉,可用推送次数数据
       initData(){
         this.pushData = [];
         this.myContactsShow = [];
@@ -689,7 +689,7 @@
           return x
         }
       },
-      //我的人脉表单和全网人脉表单勾选触发
+      //我的人脉表单和全站人脉表单勾选触发
       myCheck(e){
         let thisId = e.target.value;
         let thisName = e.currentTarget.name;
@@ -900,7 +900,7 @@
           this.myCheckList = {};
           this.netCheckList = {};
           this.getPushCount();
-          //获取我的人脉和全网人脉的姓名作为勾选框标记
+          //获取我的人脉和全站人脉的姓名作为勾选框标记
           if (this.project_id) {
             this.$http.post(this.URL.getConnectUserSortByMatch, {
               user_id: localStorage.user_id,
@@ -917,7 +917,7 @@
                   }
                 })
                 this.myContacts = res.data.data;
-                //如果我的人脉为空,则默认显示全网人脉页面
+                //如果我的人脉为空,则默认显示全站人脉页面
                 if (res.data.data.length === 0) {
                   this.activeName = 'netContacts'
                 }

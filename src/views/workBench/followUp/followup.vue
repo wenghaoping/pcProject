@@ -25,8 +25,8 @@
                     @filter-change="filterChange"
                     v-loading="loading"
                     element-loading-text="拼命加载中"
-                    stripe>
-            <el-table-column prop="pro_intro" label="项目名称" show-overflow-tooltip width="150">
+                    stripe >
+            <el-table-column prop="pro_intro" label="项目名称" show-overflow-tooltip width="167">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 8 ? false:true">
                   <div slot="content">
@@ -42,7 +42,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_name" label="关联项目" show-overflow-tooltip width="150">
+            <el-table-column prop="pro_name" label="关联项目" show-overflow-tooltip width="175">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 8 ? false:true">
                   <div slot="content">
@@ -59,7 +59,7 @@
             </el-table-column>
 
             <el-table-column prop="card_name" label="意向投资人"
-                             show-overflow-tooltip width="140"
+                             show-overflow-tooltip width="157"
                              :filters="card_nameFilters"
                              column-key="card_name"
                              filter-placement="bottom-end">
@@ -78,8 +78,8 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="schedule_name" label="跟进状态"
-                             show-overflow-tooltip width="144"
+            <el-table-column prop="schedule_name" label="项目进度"
+                             show-overflow-tooltip width="161"
                              :filters="schedule_nameFilters"
                              :filter-multiple="stateCheck"
                              filter-placement="bottom-end"
@@ -96,7 +96,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="follow_desc" label="跟进描述" show-overflow-tooltip width="139">
+            <el-table-column prop="follow_desc" label="跟进描述" show-overflow-tooltip width="156">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.follow_desc.length > 15 ? false:true">
                   <div slot="content">
@@ -112,7 +112,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="follow_file_name" label="项目文件" show-overflow-tooltip width="168">
+            <el-table-column prop="follow_file_name" label="项目文件" show-overflow-tooltip width="185">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.follow_file_name.length > 17 ? false:true">
                   <div slot="content">
@@ -128,25 +128,25 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="user_real_name" label="跟进人" show-overflow-tooltip width="143">
-              <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.user_real_name.length > 3 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_real_name}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.user_real_name}}
-                  </div>
-                </el-tooltip>
-                <div v-if="scope.row.user_real_name.length === 0">
-                  --
-                </div>
-              </template>
-            </el-table-column>
+            <!--<el-table-column prop="user_real_name" label="跟进人" show-overflow-tooltip width="143">-->
+              <!--<template scope="scope">-->
+                <!--<el-tooltip placement="top" :disabled="scope.row.user_real_name.length > 3 ? false:true">-->
+                  <!--<div slot="content">-->
+                    <!--<div class="tips-txt">{{scope.row.user_real_name}}</div>-->
+                  <!--</div>-->
+                  <!--<div>-->
+                    <!--{{scope.row.user_real_name}}-->
+                  <!--</div>-->
+                <!--</el-tooltip>-->
+                <!--<div v-if="scope.row.user_real_name.length === 0">-->
+                  <!--&#45;&#45;-->
+                <!--</div>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
 
             <el-table-column prop="created_at" label="跟进时间"
                              show-overflow-tooltip
-                             width="172"
+                             width="189"
                              :filters="created_atFilters"
                              :filter-multiple="stateCheck"
                              column-key="create_at"
@@ -164,7 +164,7 @@
             <el-table-column
               prop="reset"
               label="重置"
-              width="130" class="flow-btn btn-cur">
+              width="158" class="flow-btn btn-cur">
               <template scope="scope">
                 <el-button
                   type="text"
