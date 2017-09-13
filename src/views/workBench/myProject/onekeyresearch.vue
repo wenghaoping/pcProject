@@ -137,7 +137,7 @@
                 <li class="table6"  style="line-height: 40px;">最近融资时间</li>
               </ul>
               <div v-for="compet in competing">
-                <ul  class="ulfl m-table">
+                <ul  class="ulfl m-table" style="cursor: pointer" @click="toNewOneKey(compet.company_name)">
                   <li class="table1">
                     <div class="img fl">
                       <img :src="compet.project_logo" v-if="compet.project_logo!=''">
@@ -295,6 +295,12 @@
       }
     },
     methods: {
+      toNewOneKey(data){
+        const Url=this.URL.weitianshi;
+        const data11=encodeURI(data);
+        const url=encodeURI(Url+"onekeyResearch?company="+data11);
+        window.open(url);
+      },//跳转到新的一键尽调
       goToEdit(){
         this.$emit('closeSearchDisplay', false);
         this.$emit('closeCompanySearchDisplay', true);

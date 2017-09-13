@@ -159,9 +159,12 @@
                   <p  class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{company.pro_website}}</p>
                 </el-tooltip>
               </div>
-              <div class="rz-detail"  v-show="company.pro_company_scale.comp_scale_value!=''" >
+              <div class="rz-detail"  v-show="company.pro_company_scale!=''" >
                 <p class="det-title">公司规模</p>
-                <p class="det-info">{{company.pro_company_scale.comp_scale_value}} 人</p>
+                <p class="det-info">
+                  <span>{{company.pro_company_scale.comp_scale_value}}</span>
+                 <span v-show="company.pro_company_scale!=''">人</span>
+                </p>
               </div>
             </div>
           </div>
