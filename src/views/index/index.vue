@@ -82,9 +82,12 @@
 color:#40587a;
 letter-spacing:0;">团中央·青年APP大赛</span></a>
     </div>
+    <div class="megagame megagame11" style="top: 43%;">
+      <span style="font-size:14px;color:#475669; line-height:14px;display: inline-block;margin-top: 8px;">第三届“创青春”</span><br>
+      <span style="font-size:14px;color:#40587a;letter-spacing:3px;">100强项目展示</span>
+    </div>
     <div class="er-box">
       <img :src="zhanshi" alt="">
-      <p>第三届"创青春"<br/>100强项目展示</p>
     </div>
     <div class="qrCode">
       <img src='../../assets/images/indexQr.png'/>

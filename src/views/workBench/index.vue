@@ -31,6 +31,7 @@ export default {
     return {
       guanggao:guanggao,
       willShow:'false',
+      show:'false'
     }
   },
   computed:{
@@ -47,25 +48,22 @@ export default {
         window.open("http://q.eqxiu.com/s/GPR1lynA");
     },
     close(){
-      if(this.willShow==true){
+      if((this.willShow==true)&&(this.show=true)){
         this.willShow=false;
       }else {
         this.willShow=true;
       }
     },
-    GetQueryString(){
-//      console.log(this.$route);
-    },
 
   },
   created(){
-    this.GetQueryString();
   },
   watch:{
    // 路由判断显示广告
     "$route" (to,from){
-      if(to.path==='/workBench/myContacts'|| to.path==='/workBench/followup'||to.path==='/workBench/'){
+      if((to.path==='/workBench/myContacts'|| to.path==='/workBench/followup'||to.path==='/workBench/')){
         this.willShow=true;
+        this.show=true;
 //        console.log(to.path);
       }else{
         this.willShow=false;
@@ -94,12 +92,15 @@ export default {
     z-index: 111111;
   }
   .close{
+    width: 60px;
+    height: 50px;
     position: fixed;
-    right:0;
-    bottom:139px;
+    right: -33px;
+    bottom: 109px;
     font-size: 13px;
     color: #cccccc;
     z-index: 1111111;
+    cursor: pointer;
   }
 }
 /* 路由切换动效 */

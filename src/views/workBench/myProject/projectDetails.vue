@@ -211,7 +211,8 @@
                     </div>
                     <div class="rz-detail">
                       <span class="det-title"style="width: 100%;line-height: 21px">公司规模</span>
-                      <span class="del-info"  style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{company.pro_company_scale.comp_scale_value | nullTo_}} 人</span>
+                      <span class="del-info"  style="font-size:22px;color:#1f2d3d;text-align:center;line-height: 44px">{{company.pro_company_scale.comp_scale_value | nullTo_}} </span>
+                      <span v-show="company.pro_company_scale.comp_scale_value!='-'">人</span>
                     </div>
                   </div>
                 </div>
