@@ -3,7 +3,7 @@
   <div class="content">
     <div class="content1">
       <h1 style="margin-top:66px;font-size:40px;color:#1f2d3d;letter-spacing:0;">关于微天使</h1>
-      <h3 style="margin-top: 26px;font-size:24px;color:#333333;letter-spacing:0;">FA的智能工作站</h3>
+      <div style="margin-top: 26px;font-size:24px;color:#333333;letter-spacing:0;">FA的智能工作站</div>
       <div class="abstract">
         <div class="line"></div>
         <h3 class="abstract1">简介</h3>
@@ -23,8 +23,8 @@
          <div class="recommend11">小程序：微天使乐投平台
           &nbsp; <span style="color:#e6e0ed ">|</span>&nbsp;
            绿茶妹</div>
-         <div class="recommend11">微信公众号：微天使乐投平台  &nbsp; <span style="color:#e6e0ed ">|</span>&nbsp;FA社群</div>
-         <div class="recommend11">APP：IOS  &nbsp; <span style="color:#e6e0ed ">|</span>&nbsp;Android（开发中）</div>
+         <div class="recommend11">微信公众号：微天使乐投平台  &nbsp; <span style="color:#e6e0ed ">|</span>&nbsp;&nbsp;&nbsp;FA社群</div>
+         <div class="recommend11">APP：IOS  &nbsp; <span style="color:#e6e0ed ">|</span>&nbsp;&nbsp;&nbsp;Android（开发中）</div>
        </div>
         <div class="recommend2">
           <div class="recommend22">
@@ -61,11 +61,11 @@
       <!--</div>-->
       <div class="recommend_left" style="height: 200px;margin-bottom: 150px">
         <div class="recommend1">
-          <div class="recommend11"><img  :src="dianhua" class="contact_img"><span>0571-85026758</span></div>
+          <div class="recommend11"><img  :src="dianhua" class="contact_img"><span>&nbsp;&nbsp;0571-85026758</span></div>
           <div class="recommend11"> <img :src="youxiang" class="contact_img">
-          <span>fa@weitian.cn</span></div>
+          <span>&nbsp;&nbsp;fa@weitian.cn</span></div>
           <div class="recommend11"> <img :src="dizhi" class="contact_img">
-            <span>杭州市文三路90号东部软件园8号楼1楼智云社</span></div>
+            <span>&nbsp;&nbsp;杭州市文三路90号东部软件园8号楼1楼智云社</span></div>
         </div>
         <div class="recommend2" style="height: 100px;margin-top: 0">
           <div class="recommend22">

@@ -115,7 +115,7 @@ export default {
     height: 50px;
     position: fixed;
     left: 267px;
-    padding-left: 20px;
+    padding-left: 30px;
     bottom: 109px;
     font-size: 13px;
     color: #cccccc;

@@ -5,7 +5,7 @@
 
         </div>-->
     <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
-    <!--===========================================一键尽调单独页面=============================================-->
+    <!--===========================================首页搜索一键尽调进入页面=============================================-->
     <div class="contain-grid contain-center1 fl dialog" >
       <div class="contain-inner"  v-if="!empty">
         <div class="item-lists1">
@@ -135,7 +135,7 @@
               <li class="table6" style="line-height: 40px;">最近融资时间</li>
             </ul>
             <div v-for="compet in competing">
-              <ul  class="ulfl m-table" @click="toNewOneKey(compet.company_name)">
+              <ul  class="ulfl m-table" style="cursor: pointer" @click="toNewOneKey(compet.company_name)">
                 <li class="table1">
                   <div class="img fl">
                     <img :src="compet.project_logo" v-if="compet.project_logo!=''">
@@ -189,7 +189,7 @@
                 <el-button type="text"  @click="open" class="manager" style="margin-left: 40%;margin-top: 7px" >加入项目库</el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="dark" content="微天使将联系到项目方，并为您安排约谈" placement="top-start">
-                <el-button type="text"  class="manager" style="margin-left: 5%;margin-top: 7px" @click="contact">联系项目方</el-button>
+                <el-button type="text"  class="manager" style="margin-left: 2%;margin-top: 7px" @click="contact">联系项目方</el-button>
               </el-tooltip>
             </div>
           </div>
@@ -307,7 +307,7 @@
   export default {
     data () {
       return {
-        data1:'该',
+        data1:' ',
         img:img,
         currentPathName:'',
         dialogVisible: false,
@@ -774,7 +774,7 @@
                   this.data1=res.data.data[0].project_name;
                   console.log(this.data1);
                 }else{
-                  this.data1='';
+                  this.data1=' ';
                 }
 //                this.data1=this.project[0].project_name?this.project[0].project_name:' ';
 
@@ -941,7 +941,6 @@
                   this.getCrawlerTeam();
                   this.getCrawlerCompeting();
                   this.getCrawlerCompeting();
-
                   resolve(1);
                 }else{
                   this.$tool.error(res.data.error_msg);
