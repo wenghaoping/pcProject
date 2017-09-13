@@ -1064,7 +1064,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import syncprojectdetail from '../../../components/syncProjectDetail.vue';
+  import syncprojectdetail from '@/components/syncProjectDetail.vue';
   import { mapState } from 'vuex'
   export default {
     data(){
@@ -1472,7 +1472,6 @@
     },
     computed: {
       //*项目完整度判断
-
       proportion(){
         let number = 0;//所有的空值数
         let fileValue = this.planList;//项目文件

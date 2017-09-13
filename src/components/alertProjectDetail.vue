@@ -274,7 +274,7 @@
                     <!--</span>-->
                   <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                   <span class="pro-txt-1">
-                      {{develop.dh_start_time}}
+                      {{develop.dh_start_time | timeToReallTime}}
                     </span>
                   <span class="pro-txt-2"  style="color:#5e6d82;white-space: normal;word-break: break-all;width: 546px;line-height: 20px">
                       {{develop.dh_event}}
@@ -360,33 +360,6 @@
         yunying:yunying,
         pinpai:pinpai,
         cirIcon:cirIcon,
-        brand: [
-          {
-            brand1:'标题一',
-            brand2:'APP',
-            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
-          },
-          {
-            brand1:'标题二',
-            brand2:'APP',
-            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
-          },
-          {
-            brand1:'标题三',
-            brand2:'APP',
-            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
-          },
-          {
-            brand1:'标题三',
-            brand2:'APP',
-            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
-          },
-          {
-            brand1:'标题五',
-            brand2:'APP',
-            brand3:'介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍'
-          }
-        ],
         loading:false,//加载动画
         pro_id:"",
         file:{
@@ -479,13 +452,22 @@
             area_title:''//北京市
           },
           goodness:{
-            pro_business_model:'',
+            pro_business_model:{
+              goodness_desc: "",//凉凉凉凉
+              goodness_title: ""//亮点亮点
+            },
             pro_goodness:{
               goodness_desc: "",//凉凉凉凉
               goodness_title: ""//亮点亮点
             },
-            pro_market_genera:{},
-            pro_service:{},
+            pro_market_genera:{
+              goodness_desc: "",//凉凉凉凉
+              goodness_title: ""//亮点亮点
+            },
+            pro_service:{
+              goodness_desc: "",//凉凉凉凉
+              goodness_title: ""//亮点亮点
+            },
           },
           pro_scale:{
             scale_money:'',//1001W-200W
@@ -494,210 +476,6 @@
             stage_name:''//天使论
           }
         },
-//        project: {
-//          project_id: "",//项目id59W2a0GE
-//          pro_name: "",//项目名称HoopEASY商业计划PPT+for+pitch
-//          pro_company_name: "",//HoopEASY
-//          pro_company_scale: {
-//            comp_scale_id: 1,
-//            comp_scale_value: "1-20"
-//          },//公司规模
-//          pro_source: "",//项目来源微天使项目
-//          pro_intro: "",//项目简介一款最酷的篮球社交软件
-//          pro_total_score: "",//98.00
-//          pro_finance_value: "",//项目估值10.00
-//          is_exclusive: 0,//0其他 1独家 2非独家
-//          open_status: 1,//0私密  1公开
-//          pro_goodness: "",//项目介绍专注于篮球项目的移动端社交平台。在基于用户所处的地理位置基础上，将用户个人，球队，比赛，场馆等资源有机整合，形成一个以用户为核心的垂直网络社区，带给篮球爱好者全新的社交方式和运动体验。
-//          pro_website: "www.baidu.com",//官方网址www.baidu.com
-//          contact: {
-//            user_name: "",//赵工佐
-//            user_mobile: ""//18551711000
-//          },//项目联系人
-//
-//          pro_schedule: {
-//            "schedule_id": 3,
-//            "schedule_name": "",//考察
-//            "created_at": null,
-//            "updated_at": "2017-06-06 11:00:21",
-//            "user_id": 0
-//          },//项目进度
-//
-//          pro_status: {
-//            "status_id": 3,
-//            "status_name": "",//上线
-//            "created_at": null,
-//            "updated_at": null
-//          },//运营状态
-//
-//          pro_area: {
-//            "area_id": 2,
-//            "area_title": "北京市",
-//            "pid": 1,
-//            "created_at": null,
-//            "updated_at": null,
-//            "pivot": {
-//              "item_id": 37,
-//              "area_id": 2,
-//              "created_at": "2017-06-01 16:27:35",
-//              "updated_at": "2017-06-01 16:27:35",
-//              "priority": 1
-//            }
-//          },//区域
-//          pro_stage: {
-//            "stage_id": 2,
-//            "stage_name": "天使轮",
-//            "sort": 2,
-//            "created_at": null,
-//            "updated_at": null,
-//            "pivot": {
-//              "item_id": 37,
-//              "stage_id": 2,
-//              "created_at": "2017-06-01 16:23:04",
-//              "updated_at": "2017-06-13 18:33:31",
-//              "priority": 1
-//            }
-//          },//轮次
-//
-//          pro_scale: {
-//            "scale_id": 1,
-//            "scale_money": "100W以下",
-//            "created_at": null,
-//            "updated_at": null,
-//            "pivot": {
-//              "item_id": 37,
-//              "scale_id": 1,
-//              "created_at": null,
-//              "updated_at": null,
-//              "priority": 1
-//            }
-//          },//规模
-//
-//          pro_industry: [
-//            {
-//              "industry_id": 12,
-//              "industry_name": "",
-//              "parent_id": 0,
-//              "created_at": null,
-//              "updated_at": null,
-//              "pivot": {
-//                "item_id": 37,
-//                "industry_id": 12,
-//                "created_at": "2017-06-01 16:21:46",
-//                "updated_at": "2017-06-01 16:21:46",
-//                "priority": 1
-//              }
-//            }
-//          ],//领域标签
-//
-//          /*核心团队人员*/
-//          core_users: [
-//            {
-//              project_ct_id: 30,
-//              ct_index: "9bd0c8d7d615832340340aab0c0625b7",
-//              project_id: 37,
-//              project_index: "275fa4f135eecf08e5660d23e294e6cd",
-//              ct_member_name: "赵工佐1",//赵工佐
-//              ct_member_career: "",
-//              ct_member_intro: "",
-//              created_at: null,
-//              updated_at: null,
-//              stock_scale: null
-//            }
-//          ],
-//          /*//历史融资信息*/
-//          pro_history_finance: [
-//              {
-//            project_id: 37,
-//            pro_finance_stage: 1,//轮次
-//            pro_finance_scale: "100.00",//金额
-//            pro_finance_investor: "周杰伦周杰伦周杰伦周杰伦周杰伦周杰伦周杰伦周杰伦周杰伦周杰伦",//投资人
-//            created_time:null,
-//            updated_time:null,
-//            belongs_to_stage: {}
-//          },
-//            {
-//            project_id: 37,
-//            pro_finance_stage: 1,//轮次
-//            pro_finance_scale: "100.00",//金额
-//            pro_finance_investor: "周杰伦",//投资人
-//            created_time: null,
-//            updated_time:null,
-//            belongs_to_stage: {}
-//          },
-//          ],
-//          /*自定义标签*/
-//          tag: [
-//            {
-//              tag_id: 1,
-//              tag_name: "",
-//              user_id: 0,
-//              project_id: 37,
-//              created_time: null,
-//              updated_time: null,
-//              type: 0//项目标签
-//            }
-//          ],
-//          /*文件列表*/
-//          pro_file: [
-//           /* {
-//              file_id: 1,
-//              project_id: 37,
-//              file_title: "项目文件1",
-//              file_ext: "doc",
-//              file_url: "/data/url",
-//              created_at: null,
-//              updated_at: null,
-//              deleted_at: null
-//            }*/],
-//          /*里程碑*/
-//          pro_develop: [
-//            {
-//              project_dh_id: 6,
-//              dh_index: "",
-//              project_id: 37,
-//              project_index: "",
-//              dh_start_time: "",//时间
-//              dh_end_time: "",
-//              dh_event: "事件",//事件
-//              created_at: null,
-//              updated_at: null
-//            },
-//            {
-//              project_dh_id: 6,
-//              dh_index: "",
-//              project_id: 37,
-//              project_index: "",
-//              dh_start_time: "",//时间
-//              dh_end_time: "",
-//              dh_event: "事件",//事件
-//              created_at: null,
-//              updated_at: null
-//            }
-//          ],
-//          /*FA签约*/
-//          pro_FA: {
-//            project_id: 37,
-//            commission: "63.00",//签约佣金
-//            stock_right: "13.00",//股权赠与
-//            stock_follow: "12.00",//跟投权
-//            stock_other: "55.00",//其他权益
-//            created_at: null,
-//            updeted_at: null
-//          },
-//          /*BP文件*/
-//          pro_BP: {
-//            file_id: 34,
-//            project_id: 37,
-//            user_id: 181391,
-//            file_title: "",
-//            bp_ext: "pptx",
-//            bp_url: "20161201/e6b499c3e94ed4247147cdbfd50ca319.pptx",
-//            created_at: "2017-06-01 18:14:38",
-//            updated_at: "2017-06-01 18:14:38",
-//            deleted_at: null
-//          }
-//        },
         status_name:'',//一键尽调边上那个按钮线里的字
       }
     },
@@ -715,7 +493,7 @@
         this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.pro_id})
         .then(res=>{
           this.loading=false;
-          this.$tool.console(res);
+          console.log(res);
           let data = res.data.data;
           if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
           if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title="-";}

@@ -1,6 +1,5 @@
 <template>
   <div id="projectDetails" class="clearfix"  v-loading.fullscreen="loading" element-loading-text="拼命加载中">
-
     <div class="contain-grid contain-center1 fl" ref="left" id="wid">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box clearfix">
@@ -598,8 +597,8 @@
     <el-dialog title="一键尽调" :visible="companySearchDisplay" close-on-click-modal close-on-press-escape :before-close="dialogVisibleTo">
       <el-form label-position="top" label-width="140px" v-loading="loadingSmall"
                element-loading-text="拼命加载中">
-        <el-form-item label="尽调项目：帮助FA成交的项目管理工具">
-          <el-input v-model="searchName" @keyup.native.enter="handleIconClick" >
+        <el-form-item :label="jindiaoTitle">
+          <el-input v-model="searchName" @keyup.native.enter="handleIconClick" placeholder="帮助FA成交的项目管理工具">
             <el-button slot="append" icon="search" @click="handleIconClick"></el-button>
           </el-input><!--@change="searchChange"-->
         </el-form-item>
@@ -894,7 +893,9 @@
       }
     },
     computed: {
-
+      jindiaoTitle(){
+          return '尽调项目：'+this.companyname
+      }
     },
     components: {
       research,

@@ -338,6 +338,8 @@ background: red;
       padding: 0!important;
     }*/
    #app {
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
     /*min-width: 1903px;*/
     background: #f3f4f8;
      /*overflow-x: hidden;*/
