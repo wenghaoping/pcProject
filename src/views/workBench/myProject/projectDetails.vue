@@ -192,7 +192,7 @@
                   <span class="p-mg">{{bili.ct_member_career}}</span>
                   <div class="p-gf">股权占比 : <span>{{bili.stock_scale}}%</span></div>
                   <div class="p-doc">{{bili.ct_member_intro}}</div>
-                  <div class="line"></div>
+                  <!--<div class="line"></div>-->
                 </div>
 
               </div>
@@ -560,7 +560,7 @@
                           </button>
                           <span class="lineLine fl"></span>
                           <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none">
-                            <div class="img1"><img src="../../../assets/images/yichu.png" ></div>移除</button>
+                            <div class="img1"><img :src="yichu" ></div>移除</button>
                         </div>
                         <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
                         <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
@@ -642,6 +642,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import yichu from "../../../assets/images/icon-yichu.png"
   import xiaochengxu from '../../../../static/images/xiaochengxu1.png'
   import pinpai from '../../../../static/images/icon-pinpa.png'
   import yunying from '../../../../static/images/icon-yunying.png'
@@ -657,6 +658,7 @@
   export default {
     data(){
       return {
+          yichu:yichu,
         yunying:yunying,
         pinpai:pinpai,
         cirIcon:cirIcon,

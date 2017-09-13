@@ -197,7 +197,7 @@
           <el-tab-pane name="1">
             <span slot="label">买家图谱
               <el-tooltip class="item" effect="dark" placement="top-start">
-                <div slot="content">根据微天使匹配算法从您的人脉库，全站人脉库算出<br/>该项目的意向投资人</div>
+                <div slot="content">根据微天使匹配算法从您的人脉库，全网人脉库算出<br/>该项目的意向投资人</div>
                 <div class="img"><img src="../../assets/images/why.png"></div>
     </el-tooltip>
             </span>
@@ -211,7 +211,7 @@
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{projectMatchInvestor.match}}%</span>
                         <span class="pro fr" v-if="projectMatchInvestor.is_follow==1">我的人脉</span>
-                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==0">全站人脉</span>
+                        <span class="pro fr" v-if="projectMatchInvestor.is_follow==0">全网人脉</span>
                       </div>
                       <div class="list_main">
                         <div class="click">
@@ -378,7 +378,7 @@
           label: '全部'
         }, {
           value: 0,
-          label: '全站人脉'
+          label: '全网人脉'
         }, {
           value: 1,
           label: '我的人脉'
