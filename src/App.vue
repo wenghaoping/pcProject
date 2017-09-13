@@ -268,7 +268,7 @@
     /*top: 12px!important;*/
     /*right: 15%!important;*/
   /*}*/
-  .el-autocomplete .el-input{
+  .width350 .el-input{
     font-size: 12px!important;
   }
   .width350{

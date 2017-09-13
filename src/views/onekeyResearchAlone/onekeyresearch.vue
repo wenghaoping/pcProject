@@ -940,7 +940,8 @@
                   this.getCrawlerNews();
                   this.getCrawlerTeam();
                   this.getCrawlerCompeting();
-                  this.getCrawlerCompeting()
+                  this.getCrawlerCompeting();
+
                   resolve(1);
                 }else{
                   this.$tool.error(res.data.error_msg);

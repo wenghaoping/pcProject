@@ -164,7 +164,7 @@
             <el-table-column
               prop="reset"
               label="重置"
-              width="158" class="flow-btn btn-cur">
+              width="146" class="flow-btn btn-cur">
               <template scope="scope">
                 <el-button
                   type="text"
