@@ -100,8 +100,18 @@
               </div>
               <div style="margin-top:32px;"></div>
               <div class="item" v-show="team.core_users!=''" v-for="bili in team.core_users" style="margin-top:10px;">
-                <span class="p-name">{{bili.ct_member_name}}</span>
-                <span class="p-mg">{{bili.ct_member_career}}</span>
+                <el-tooltip class="item" effect="dark"  placement="top" >
+                  <div slot="content">
+                    <div class="tips-txt">{{bili.ct_member_name}}</div>
+                  </div>
+                  <span class="p-name" style="text-align:center;line-height: 44px;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
+                </el-tooltip>
+                <el-tooltip class="item" effect="dark"  placement="top">
+                  <div slot="content">
+                    <div class="tips-txt">{{bili.ct_member_career}}</div>
+                  </div>
+                  <span class="p-mg" style="text-align:center;line-height: 44px;width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_career}}</span>
+                </el-tooltip>
                 <div class="p-gf">股权占比 : <span>{{bili.stock_scale}}%</span></div>
                 <div class="p-doc">{{bili.ct_member_intro}}</div>
                 <!--<div class="line"></div>-->
@@ -120,7 +130,7 @@
                   <div class="rz-detail">
                     <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
 
-                    <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 15 ? false:true">
+                    <el-tooltip class="item" effect="dark"  placement="top" >
                       <div slot="content">
                         <div class="tips-txt">{{company.pro_website}}</div>
                       </div>
@@ -141,7 +151,7 @@
                 <span class="title"><img class="img" :src="pinpai" style="width: 37px;">产品</span>
                 <div class="brand">
                   <div class="brand1" v-for="brandd in brands.brand">
-                    <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 15 ? false:true">
+                    <el-tooltip class="item" effect="dark"  placement="top" >
                       <div slot="content">
                         <div class="tips-txt">{{brandd.brand_name}}</div>
                       </div>
@@ -156,11 +166,11 @@
                     <span class="brand1_lei" v-if="brandd.type_id==7" >HTML5</span>
                     <span class="brand1_lei" v-if="brandd.type_id==8" >微信公众号</span>
                     <span class="brand1_lei" v-if="brandd.type_id==9" >其他</span>
-                    <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 30 ? false:true">
+                    <el-tooltip class="item" effect="dark"  placement="top">
                       <div slot="content">
                         <div class="tips-txt">{{brandd.brand_desc}}</div>
                       </div>
-                      <div class="brand1_introduce" style="white-space: normal;word-break: break-all;">{{brandd.brand_desc}}</div>
+                      <div class="brand1_introduce" style="white-space: normal;word-break: break-all;margin-top: 15px;">{{brandd.brand_desc}}</div>
                     </el-tooltip>
                   </div>
                   <div class="clear"></div>
@@ -201,11 +211,11 @@
                       <span class="pro-txt-1">{{finance.finance_time}}</span>
                       <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                       <span class="pro-txt-3" style="width: 68px;">{{finance.belongs_to_stage.stage_name}}</span>
-                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 20 ? false:true">
+                      <el-tooltip class="item" effect="dark"  placement="top" >
                         <div slot="content">
                           <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                         </div>
-                        <span class="pro-txt-4" style="width:314px;max-width:314px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
+                        <span class="pro-txt-4" style="width:244px;max-width:244px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;margin-left: 73px">{{finance.pro_finance_investor}}</span>
                       </el-tooltip>
                     </div>
                   </div>
@@ -213,7 +223,7 @@
               </div>
             </div>
             <!--里程碑-->
-            <div class="ul-lists" style="margin-top:16px;" v-show="milepost.pro_develop!=''" >
+            <div class="ul-lists" style="margin-top:16px;margin-bottom: 30px" v-show="milepost.pro_develop!=''" >
               <div class="item">
                 <span class="title"><img class="img" src="../../../assets/images/Milepost.png">里程碑</span>
               </div>
@@ -394,6 +404,15 @@ export default {
     }
   },
   methods: {
+    getteam_tag(arr){
+      let str=[];
+      for(let i=0;i<arr.length;i++){
+        if(arr[i].type==1){
+          str.push(arr[i].tag_name)
+        }
+      }
+      return str
+    },//项目来源编辑
     closePreview(){
       this.$emit('closePreview', false);
     },//关闭当前弹窗
@@ -429,7 +448,6 @@ export default {
           .then(res=>{
             let data = res.data.data;
             // 项目介绍
-//              if(data.project.pro_company_name==''){data.project.pro_company_name=='-'}
             if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money=" ";}
             if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title=" ";}
             if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name=' '}
@@ -457,6 +475,7 @@ export default {
             //团队
             this.team.tag=this.getteam_tag(data.team.tag);
             this.team=data.team;
+
             //is_exclusive
             this.pro=data.pro_FA;
             //brand
@@ -530,6 +549,9 @@ export default {
         this.$emit('previewPush',true);
       }
     },//推送项目
+  },
+  create(){
+    this.getProjectDetail()
   },
   watch:{
     previewShow:function(e){
