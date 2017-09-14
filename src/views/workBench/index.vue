@@ -56,7 +56,6 @@ export default {
       localStorage.projectId=this.$route.query.project_id;
       localStorage.flog=this.$route.query.flog;
       console.log(this.$route);
-      console.log(localStorage.flog);
         if(this.$route.query.flog==='mail'){
           if((this.$route.query.user_id===localStorage.user_id)&&(this.$route.query.flog==='mail')&&(this.$route.query.type==='user')){
             this.$http.post(this.URL.importProject,{user_id: this.$route.query.user_id, project_id:this.$route.query.project_id})

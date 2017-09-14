@@ -89,7 +89,7 @@
                 }
               }
               // 邮件加入项目库登陆判断
-              if(localStorage.projectId && (localStorage.flog=='mail')){
+              if((localStorage.projectId!==undefined) && (localStorage.flog!==undefined)&&(localStorage.userId!==undefined)){
                 this.$http.post(this.URL.importProject,{user_id: localStorage.userId, project_id:localStorage.projectId})
                   .then(res=>{
                     if(res.data.status_code==2000000) {
