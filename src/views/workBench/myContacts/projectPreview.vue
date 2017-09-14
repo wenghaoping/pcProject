@@ -104,13 +104,13 @@
                   <div slot="content">
                     <div class="tips-txt">{{bili.ct_member_name}}</div>
                   </div>
-                  <span class="p-name" style="text-align:center;line-height: 44px;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
+                  <span class="p-name" style="text-align:center;line-height: 44px;width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark"  placement="top">
                   <div slot="content">
                     <div class="tips-txt">{{bili.ct_member_career}}</div>
                   </div>
-                  <span class="p-mg" style="text-align:center;line-height: 44px;width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_career}}</span>
+                  <span class="p-mg" style="text-align:center;line-height: 44px;width: 120px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_career}}</span>
                 </el-tooltip>
                 <div class="p-gf">股权占比 : <span>{{bili.stock_scale}}%</span></div>
                 <div class="p-doc">{{bili.ct_member_intro}}</div>

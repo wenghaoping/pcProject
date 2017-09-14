@@ -296,7 +296,7 @@
     },
     methods: {
       toNewOneKey(data){
-        const Url='https://dev.weitianshi.cn';
+        const Url='https://dev.weitianshi.cn/workbench#/';
         const data11=encodeURI(data);
         const url=encodeURI(Url+"onekeyResearch?company="+data11);
         window.open(url);
