@@ -1048,6 +1048,7 @@
 <!--一键同步提示框-->
     <el-dialog
       title="一键同步"
+
       :visible="syncDialogDisplay"
       size="tiny" :show-close="showList"
     close-on-press-escape close-on-click-modal lock-scroll>
@@ -1055,9 +1056,9 @@
         微天使将为您同步 <i style="color:#8492A6">{{companyTitle}}</i>的相关信息，请先核实
       </div>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="syncDialogDisplay = false">取 消</el-button>
-    <button class="btn1" @click="syncProjectDetailDisplay = true">确 定</button>
-  </span>
+        <el-button @click="syncDialogDisplay = false">取 消</el-button>
+        <el-button type="primary" @click="syncProjectDetailDisplay = true">确 定</el-button>
+      </span>
     </el-dialog>
 
   </div>
