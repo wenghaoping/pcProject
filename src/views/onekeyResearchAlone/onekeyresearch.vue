@@ -895,9 +895,9 @@
 //        const openUrl = this.URL.openUrl;
 //        const url=encodeURI(openUrl+"?company="+companyName+"&id="+this.id+"&includeInvestorMap="+this.includeInvestorMap);
 //        window.open(url);
-            const Url=this.URL.weitianshi;
+            const Url='https://dev.weitianshi.cn';
             const data11=encodeURI(data);
-        const url=encodeURI(Url+"onekeyResearch?company="+data11);
+        const url=encodeURI(Url+"/onekeyResearch?company="+data11);
         window.open(url);
       },//跳转到新的一键尽调
       getRouter(){
