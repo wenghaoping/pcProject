@@ -68,6 +68,7 @@ export default {
               })
           }else{
             this.$router.push({name: 'login'});//路由传参
+
           }
         }else{
            //正常登录的状态

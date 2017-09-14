@@ -224,7 +224,7 @@
           && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/'
           && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/'
           && this.$route.path!=='/workBench' && this.$route.path!=='/qr'
-          && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'&& this.$route.path!=='/onekeyResearch'){
+          && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'&& this.$route.path!=='/onekeyResearch'&&this.$route.path!='/emailContact'){
 //          this.$tool.error('请先登录');
           this.$router.push({name:'index'});
         }

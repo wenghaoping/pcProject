@@ -12,13 +12,13 @@
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
                 <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" >
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 10 ? false:true">
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
                 <span class="title" style="width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" >
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_company_name.length > 10 ? false:true">
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_company_name}}</div>
                 </div>
@@ -27,7 +27,7 @@
 
             </div>
             <div class="item height" style="margin-top: 14px;">
-              <el-tooltip class="item" effect="dark"  placement="top" >
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_intro.length > 40 ? false:true">
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_intro}}</div>
                 </div>
@@ -129,8 +129,7 @@
                   <span class="person-tag" style="margin-bottom: 10px" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
                 </div>
                 <div class="item" style="margin-top:24px;">
-                  <div class="paper"
-                  >
+                  <div class="paper" v-if="file.pro_BP.length!=0">
                     <img class="img" style="padding-left: 16px;" src="../../../assets/images/paper.png">
                     <span class="pt">{{file.pro_BP.file_title}}</span>
                     <!--<el-button type="text" size="mini">查看</el-button>-->
@@ -193,17 +192,17 @@
                 </div>
                 <div style="margin-top:32px;"></div>
                 <div class="item" v-show="team.core_users!=''" v-for="bili in team.core_users" style="margin-top:10px;">
-                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="bili.ct_member_name.length > 8 ? false:true" >
+                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="bili.ct_member_name.length > 5 ? false:true">
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_name}}</div>
                     </div>
-                    <span class="p-name" style="text-align:left;line-height: 44px;width: 100px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
+                    <span class="p-name" style="text-align:left;line-height: 44px;width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
                   </el-tooltip>
-                  <el-tooltip class="item" effect="dark"  placement="top">
+                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="bili.ct_member_name.length > 15 ? false:true">
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_career}}</div>
                     </div>
-                    <span class="p-mg" style="line-height: 44px;width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;text-align: left">{{bili.ct_member_career}}</span>
+                    <span class="p-mg" style="text-align:left;line-height: 44px;width: 120px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_career}}</span>
                   </el-tooltip>
                   <div class="p-gf" style="margin-top: 11px">股权占比 : <span>{{bili.stock_scale}}%</span></div>
                   <div class="p-doc">{{bili.ct_member_intro}}</div>
@@ -223,7 +222,7 @@
                     <div class="rz-detail">
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
 
-                      <el-tooltip class="item" effect="dark"  placement="top" >
+                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 15 ? false:true">
                         <div slot="content">
                           <div class="tips-txt">{{company.pro_website}}</div>
                         </div>
@@ -244,7 +243,7 @@
                   <span class="title"><img class="img" :src="pinpai" style="width: 37px;">产品</span>
                   <div class="brand">
                     <div class="brand1" v-for="brandd in brands.brand">
-                      <el-tooltip class="item" effect="dark"  placement="top" >
+                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 15 ? false:true">
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_name}}</div>
                         </div>
@@ -259,8 +258,7 @@
                       <span class="brand1_lei" v-if="brandd.type_id==7" >HTML5</span>
                       <span class="brand1_lei" v-if="brandd.type_id==8" >微信公众号</span>
                       <span class="brand1_lei" v-if="brandd.type_id==9" >其他</span>
-                      <el-tooltip class="item" effect="dark"  placement="top"
-                      >
+                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 30 ? false:true">
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_desc}}</div>
                         </div>
@@ -272,7 +270,7 @@
                 </div>
               </div>
               <!--融资信息-->
-              <div class="ul-lists"  style="margin-top:16px;">
+              <div class="ul-lists" v-show="financing.pro_finance_use!=''||financing.pro_history_finance.length!=0" style="margin-top:16px;">
                 <div class="item">
                   <span class="title"><img class="img" src="../../../assets/images/money.png">融资信息</span>
                   <div class="rz-details">
@@ -296,7 +294,7 @@
                     {{financing.pro_finance_use}}
                   </div>
                 </div>
-                <div class="item" style="margin-top:18px;" >
+                <div class="item" style="margin-top:18px;" v-show="financing.pro_history_finance.length!=0">
                   <div>
                     <span class="sec-title">历史融资</span>
                     <div class="v-progress-table">
@@ -305,8 +303,7 @@
                         <span class="pro-txt-1">{{finance.finance_time}}</span>
                         <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                         <span class="pro-txt-3" style="width: 68px;">{{finance.belongs_to_stage.stage_name}}</span>
-                        <el-tooltip class="item" effect="dark"  placement="top"
-                        >
+                        <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 20 ? false:true">
                           <div slot="content">
                             <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                           </div>
@@ -906,11 +903,15 @@
         userEmail:'',
         scrolled: false,
         qrImg:'',//二维码地址
+/*        screenWidth: document.body.clientWidth,
+        timer:null,
+        timer2:null,
+        scrollTop:0,*/
       }
     },
     computed: {
       jindiaoTitle(){
-          return '尽调项目：'+this.project.pro_name
+          return '尽调项目：'+this.companyname
       }
     },
     components: {
@@ -949,18 +950,6 @@
         window.location.href=url;
 
       },//下载文件
-      //模拟远程数据
-      loadData(arr){
-        let newArr = [];
-        for (let i = 0; i < arr.length; i++) {
-          let obj = {};
-          obj.company_name = arr[i].project_name=="" ? arr[i].company_name : arr[i].company_name + '(' +arr[i].project_name + ')';
-          obj.com_id = arr[i].com_id;
-          obj.newName = arr[i].company_name;
-          newArr.push(obj)
-        }
-        return newArr;
-      },
       searchChange(queryString){
 //        this.$tool.console(queryString);
         this.loadingSmall=true;
@@ -968,11 +957,10 @@
           .then(res=>{
             this.seachCompanys=[];
             let data =res.data.data;
-
             if(data.length==0) this.seachCompanys=[{company_name:"未查询到结果，<i style='color: #009eff;'>保存公司名称</i>",com_id:-1,newName:queryString}];
-
-            else this.seachCompanys=this.loadData(data);
-
+//            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
+            else this.seachCompanys=data;
+//            this.$tool.console(res);
             this.loadingSmall=false;
           })
           .catch(err=>{
@@ -1031,17 +1019,6 @@
           this.$tool.error("匹配不到你要搜索的公司,请重新继续输入")
         }
         else {
-          this.$http.post(this.URL.updateProjectCompany,{user_id:localStorage.user_id,pro_company_name:data.newName,project_id:this.project.project_id})
-            .then(res=>{
-              console.log(res);
-              if(res.data.status_code===2000000){
-                this.$tool.success("修改成功");
-                this.companySearchDisplay = false;
-              }
-            })
-            .catch(err=>{
-              this.$tool.console(err);
-            })
           this.companyid=data.com_id;
           this.companyname=data.company_name;
           this.searchDisplay = true;
@@ -1053,7 +1030,6 @@
       handleIconClick(){
         this.searchChange(this.searchName);
       },//输入搜索
-
       handleClick:function(tab, event){
         this.show = tab.name ;
       },

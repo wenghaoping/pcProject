@@ -49,6 +49,9 @@ const onekeyResearch = r => require.ensure([], () => r(require('@/views/onekeyRe
 
 /*===============================关于我们路由配置=======================================*/
 const aboutUs = r => require.ensure([], () => r(require('@/views/aboutUs/aboutUs.vue')), 'aboutUs');
+
+/*===============================邮箱联系项目方路由配置=======================================*/
+const emailContact = r => require.ensure([], () => r(require('@/views/emailContact/emailContact.vue')), 'emailContact');
 //测试路由
 // import createForm from '@/test/createForm.vue'
 // import watch from '@/test/watch.vue'
@@ -121,6 +124,9 @@ export default [
   },
   {
     path: '/aboutUs',name: 'aboutUs', component: aboutUs
+  },
+  {
+    path:'/emailContact',name:'emailContact', component:emailContact
   },
 /*  {
     path: '/test', name: 'test', component: checkone
