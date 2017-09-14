@@ -16,10 +16,15 @@
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
-                <span class="title" style="width: 120px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
+                <span class="title" style="width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_company_name.length > 10 ? false:true">
+                <div slot="content">
+                  <div class="tips-txt">{{project.pro_company_name}}</div>
+                </div>
+                <span class="company"  style="width: 220px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_company_name}}</span>
               </el-tooltip>
 
-              <span class="company">{{project.pro_company_name}}</span>
             </div>
             <div class="item height" style="margin-top: 14px;">
               <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_intro.length > 40 ? false:true">
@@ -121,7 +126,7 @@
                   <!--</div>-->
                 </div>
                 <div class="item" style="margin-top:33px;">
-                  <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
+                  <span class="person-tag" style="margin-bottom: 10px" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
                 </div>
                 <div class="item" style="margin-top:24px;">
                   <div class="paper" v-if="file.pro_BP.length!=0">
