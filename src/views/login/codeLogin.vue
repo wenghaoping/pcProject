@@ -55,7 +55,7 @@
               this.loading=false;
               // 邮件加入项目库登陆判断
               if(this.$route.query.flog==='mail'){
-                this.$http.post(this.URL.importProject,{user_id: this.$route.query.userId, project_id:this.$route.query.projectId})
+                this.$http.post(this.URL.importProject,{user_id:localStorage.userId, project_id:  localStorage.projectId})
                   .then(res=>{
                     if(res.data.status_code==2000000) {
                       this.$tool.success("项目导入成功");
@@ -78,7 +78,10 @@
           })
         }
       }
-    }
+    },
+    watch:{
+
+    },
   }
 </script>
 
