@@ -12,13 +12,15 @@
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
                 <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 3 ? false:true">
+              <el-tooltip class="item" effect="dark"  placement="top" >
+                <!--:disabled="project.pro_name.length > 3 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
                 <span class="title" style="width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_company_name.length > 10 ? false:true">
+              <el-tooltip class="item" effect="dark"  placement="top" >
+                <!--:disabled="project.pro_company_name.length > 10 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_company_name}}</div>
                 </div>
@@ -27,7 +29,8 @@
 
             </div>
             <div class="item height" style="margin-top: 14px;">
-              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_intro.length > 40 ? false:true">
+              <el-tooltip class="item" effect="dark"  placement="top" >
+                <!--:disabled="project.pro_intro.length > 40 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_intro}}</div>
                 </div>
@@ -192,13 +195,15 @@
                 </div>
                 <div style="margin-top:32px;"></div>
                 <div class="item" v-show="team.core_users!=''" v-for="bili in team.core_users" style="margin-top:10px;">
-                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="bili.ct_member_name.length > 5 ? false:true">
+                  <el-tooltip class="item" effect="dark"  placement="top" >
+                    <!--:disabled="bili.ct_member_name.length > 5 ? false:true"-->
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_name}}</div>
                     </div>
                     <span class="p-name" style="text-align:left;line-height: 44px;width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
                   </el-tooltip>
-                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="bili.ct_member_name.length > 15 ? false:true">
+                  <el-tooltip class="item" effect="dark"  placement="top" >
+                    <!--:disabled="bili.ct_member_name.length > 15 ? false:true"-->
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_career}}</div>
                     </div>
@@ -222,7 +227,8 @@
                     <div class="rz-detail">
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
 
-                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 15 ? false:true">
+                      <el-tooltip class="item" effect="dark"  placement="top" >
+                        <!--:disabled="company.pro_website.length > 15 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{company.pro_website}}</div>
                         </div>
@@ -243,7 +249,8 @@
                   <span class="title"><img class="img" :src="pinpai" style="width: 37px;">产品</span>
                   <div class="brand">
                     <div class="brand1" v-for="brandd in brands.brand">
-                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 15 ? false:true">
+                      <el-tooltip class="item" effect="dark"  placement="top" >
+                        <!--:disabled="brandd.brand_name.length > 15 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_name}}</div>
                         </div>
@@ -258,7 +265,8 @@
                       <span class="brand1_lei" v-if="brandd.type_id==7" >HTML5</span>
                       <span class="brand1_lei" v-if="brandd.type_id==8" >微信公众号</span>
                       <span class="brand1_lei" v-if="brandd.type_id==9" >其他</span>
-                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 30 ? false:true">
+                      <el-tooltip class="item" effect="dark"  placement="top" >
+                        <!--:disabled="brandd.brand_desc.length > 30 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_desc}}</div>
                         </div>
