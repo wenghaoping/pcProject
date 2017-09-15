@@ -12,7 +12,7 @@
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
                 <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 10 ? false:true">
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 3 ? false:true">
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
@@ -93,8 +93,8 @@
           <div class="item-lists-inner-right fl">
             <div class="text">
               <span>扫描二维码转发推送</span>
-              <!--<img :src="qrImg">-->
-              <img :src="xiaochengxu" alt="">
+              <img :src="xiaochengxu" v-if="qrImg==''" alt="">
+              <img :src="qrImg" v-if="qrImg!==''">
             </div>
             <el-tooltip class="item" effect="dark" placement="top-start">
               <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商、核心团队、产品数据、历史融资、新闻谬论等全方面信息</div>
