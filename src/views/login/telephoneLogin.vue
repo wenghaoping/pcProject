@@ -57,6 +57,7 @@
       },
 //    注册或者登录
       login(){
+          console.log(this.$route);
         if (this.telephone && this.captcha) {
           this.loading=true;
           this.$http.post(this.URL.loginForCaptcha, {
@@ -82,28 +83,24 @@
               if (res.data.is_exist === 0) {
                 this.$router.push({name:'identityChoose'})
               }else if (res.data.is_exist === 1) {
-                if(localStorage.entrance==undefined){
-                  this.$router.push({name:'myProject'});
-                }else{
+                // 邮件加入项目库登陆判断
+                if(this.$route.query.flog==='mail'){
+                  this.$http.post(this.URL.importProject,{user_id: this.$route.query.userId, project_id:this.$route.query.projectId})
+                    .then(res=>{
+                      if(res.data.status_code==2000000) {
+                        this.$tool.success("项目导入成功");
+                        setTimeout(()=>{ this.$router.push('/workBench/'); window.location.reload();},50)
+                      }
+                    })
+                    .catch(err=>{
+                      this.$tool.error("项目导入失败");
+                      setTimeout(()=>{  this.$router.push('/workBench/');window.location.reload();},50)
+                    })
                   this.$router.push({name:localStorage.entrance})
-                }
-              }
-              // 邮件加入项目库登陆判断
-              if((localStorage.projectId!==undefined) && (localStorage.flog!==undefined)&&(localStorage.userId!==undefined)){
-                this.$http.post(this.URL.importProject,{user_id: localStorage.userId, project_id:localStorage.projectId})
-                  .then(res=>{
-                    if(res.data.status_code==2000000) {
-                      this.$tool.success("项目导入成功");
-                      setTimeout(()=>{ this.$router.push('/workBench/'); window.location.reload();},50)
-                    }
-                  })
-                  .catch(err=>{
-                    this.$tool.error("项目导入失败");
-                    setTimeout(()=>{  this.$router.push('/workBench/');window.location.reload();},50)
 
-                  })
-              }else{
-                this.$router.push({name:'myProject'});
+                }else if(localStorage.entrance==undefined){
+                  this.$router.push({name:'myProject'});
+                }
               }
             }else{
               this.$tool.error(res.data.error_msg);
