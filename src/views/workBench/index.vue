@@ -54,6 +54,7 @@ export default {
     route1(){
         if(this.$route.query.flog==='mail'){
           localStorage.projectId=this.$route.query.project_id;
+          localStorage.userId=this.$route.query.user_id;
           localStorage.flog=this.$route.query.flog;
           console.log(this.$route);
           if((this.$route.query.user_id===localStorage.user_id)&&(this.$route.query.flog==='mail')&&(this.$route.query.type==='user')){
@@ -70,7 +71,7 @@ export default {
 
               })
           }else{
-              localStorage.clear();
+              
               setTimeout(()=>{ window.location.reload();},50)
                this.$router.push({name: 'login'});//路由传参
           }
