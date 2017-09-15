@@ -55,8 +55,26 @@
               this.loading=false;
               if(localStorage.entrance==undefined){
                 this.$router.push({name:'myProject'});
+
               }else{
                 this.$router.push({name:localStorage.entrance})
+              }
+              // 邮件加入项目库登陆判断
+              if((localStorage.projectId!==undefined) && (localStorage.flog!==undefined)&&(localStorage.userId!==undefined)){
+                this.$http.post(this.URL.importProject,{user_id: localStorage.userId, project_id:localStorage.projectId})
+                  .then(res=>{
+                    if(res.data.status_code==2000000) {
+                      this.$tool.success("项目导入成功");
+                      setTimeout(()=>{ this.$router.push('/workBench/'); window.location.reload();},50)
+                    }
+                  })
+                  .catch(err=>{
+                    this.$tool.error("项目导入失败");
+                    setTimeout(()=>{  this.$router.push('/workBench/');window.location.reload();},50)
+
+                  })
+              }else{
+                this.$router.push({name:'myProject'});
               }
             }else{
                 this.$tool.error(res.data.error_msg);
