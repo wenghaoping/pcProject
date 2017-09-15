@@ -169,8 +169,8 @@
       <!--按钮-->
       <div class="list tc">
         <div class="toButton" style="padding-left: 0">
-          <button  @click="handleClose" class="btn1">取消</button>
-          <button  @click="syncTrue" class="btn1">同步</button>
+          <el-button  @click="handleClose" type="primary">取消</el-button>
+          <el-button  @click="syncTrue" type="primary">同步</el-button>
           <el-checkbox v-model="cover" style="margin-left: 14px;">允许覆盖</el-checkbox>
           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         </div>
@@ -190,9 +190,9 @@
     props: ["syncProjectDetailDisplay","companyid"],
     data () {
       return {
-        checkAll: false,
+        checkAll: true,
         isIndeterminate: false,
-        checkedSync:[],//已勾选数组
+        checkedSync:['project', 'team', 'company', 'brands', 'financing', 'milepost'],//已勾选数组
         checkedSyncS:checkAllOption,//勾选数组所有的
         cover:false,//是否允许覆盖
         yunying:yunying,

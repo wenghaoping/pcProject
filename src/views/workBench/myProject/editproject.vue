@@ -2764,6 +2764,10 @@
   }
 
   #editproject {
+    .el-dialog--tiny{
+      width: 400px;
+      top:35%!important;
+    }
     .uploadImg{
       width: 15px;
       height: 15px;
