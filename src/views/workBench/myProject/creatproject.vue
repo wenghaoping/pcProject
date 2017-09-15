@@ -767,15 +767,23 @@
             this.$http.post(this.URL.getWxosProjectData, {credential: localStorage.credential})
               .then(res => {
                 let data = res.data.project;
+                console.log(data);
                 this.project.pro_industry = data.industry;
                 if (data.is_exclusive == 4) data.is_exclusive = 0;
                 this.project.is_exclusive = data.is_exclusive;
-                if (data.pro_scale == 0) data.pro_scale = "";
-                this.project.pro_scale = data.pro_scale;
-                if (data.pro_stage == 0) data.pro_stage = {stage_id: ""};
-                this.project.pro_stage = data.pro_stage;
-                this.project.goodness = data.goodness;
+                if (data.pro_scale == 0) data.pro_finance_scale = "";
+                this.project.pro_scale.scale_id = data.pro_finance_scale;
+                if (data.pro_stage == 0) data.pro_finance_stage = {stage_id: ""};
+                this.project.pro_stage.stage_id = data.pro_finance_stage;
+                this.project.goodness={
+                  pro_goodness: {goodness_title: "项目亮点", goodness_desc: data.pro_goodness,},
+                  pro_market_genera: {goodness_title: "", goodness_desc: ""},
+                  pro_business_model: {goodness_title: "", goodness_desc: ""},
+                  pro_service: {goodness_title: "", goodness_desc: ""},
+                };
+
                 this.project.pro_intro = data.pro_intro;
+                console.log(this.project);
                 localStorage.credential = "";
                 resolve(1);
               })

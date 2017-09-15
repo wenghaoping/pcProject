@@ -71,7 +71,7 @@ export default {
               })
           }else{
               localStorage.clear();
-              setTimeout(()=>{ window.location.reload();},50)
+              setTimeout(()=>{ window.location.reload();},50);
                this.$router.push({name: 'login'});//路由传参
           }
         }else{

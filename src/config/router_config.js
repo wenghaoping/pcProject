@@ -52,6 +52,11 @@ const aboutUs = r => require.ensure([], () => r(require('@/views/aboutUs/aboutUs
 
 /*===============================邮箱联系项目方路由配置=======================================*/
 const emailContact = r => require.ensure([], () => r(require('@/views/emailContact/emailContact.vue')), 'emailContact');
+
+/*===============================加入项目库=======================================*/
+
+const addProject = r => require.ensure([], () => r(require('@/views/addProject/addProject.vue')), 'addProject');
+
 //测试路由
 // import createForm from '@/test/createForm.vue'
 // import watch from '@/test/watch.vue'
@@ -59,13 +64,12 @@ const emailContact = r => require.ensure([], () => r(require('@/views/emailConta
 // import selectbox from '@/test/dialog.vue'
 // import dialog2 from '@/test/dialog2.vue'
 // import alertUpload from '@/test/alertUpload.vue'
-import upload from '@/test/upload.vue'
+// import upload from '@/test/upload.vue'
 // import upload from '@/test/upload.vue'
 // import open from '@/test/open.vue'
-//
 // const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
 // const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vue')), 'checkArray')
-const test = r => require.ensure([], () => r(require('@/test/swiper.vue')), 'test');
+// const test = r => require.ensure([], () => r(require('@/test/swiper.vue')), 'test');
 
 /*配置路由*/
 export default [
@@ -128,16 +132,19 @@ export default [
   {
     path:'/emailContact',name:'emailContact', component:emailContact
   },
+  {
+    path:'/addProject',name:'addProject', component:addProject
+  },
 /*  {
     path: '/test', name: 'test', component: checkone
   },*/
-  {
+/*  {
 
     path: '/test3', name: 'test3', component: test
   },
     {
 
     path: '/test2', name: 'test2', component: upload
-}
+}*/
   ]
 
