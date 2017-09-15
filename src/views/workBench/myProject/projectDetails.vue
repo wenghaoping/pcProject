@@ -964,7 +964,6 @@
       },
 
       searchChange(queryString){
-//        this.$tool.console(queryString);
         this.loadingSmall=true;
         this.$http.post(this.URL.selectCompany,{user_id:localStorage.user_id,company_name:queryString})
           .then(res=>{

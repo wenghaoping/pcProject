@@ -250,7 +250,7 @@ export default {
         let check2 = this.submitForm('email2');
         if(this.projectRadio=='' || this.projectRadio==undefined) this.$tool.error("请选择要推送的项目")
         else if(!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
-        else if(this.email.title.length>40) this.$tool.error("标题不能大于40个字")
+        else if(this.email.title.length>100) this.$tool.error("标题不能大于100个字")
         else if(this.email.body.length>500) this.$tool.error("正文不能大于500个字")
         else if(type ==1){ //关闭
           if(check1 && check2) {
