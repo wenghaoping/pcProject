@@ -212,6 +212,10 @@
         if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
           this.active=1
         }
+
+        //看是否需要加入项目库
+        this.addProject();
+
         //未登录状态下拦截
         if(!localStorage.user_id && this.$route.path!=='/'
           && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin'
@@ -233,6 +237,7 @@
           this.$router.push({name:'index'})
         }*/
 
+
       },
       //登出
       loginOut(e){
@@ -241,7 +246,70 @@
           this.$router.push({name: 'login'});//路由传参
           setTimeout(()=>{ window.location.reload();},50)
         }
-      }
+      },
+      //加入项目库
+      addProject(){
+        console.log(this.$route);
+        //第一次取出数据,防止登录后,又去取值,被覆盖
+        if(this.$route.query.flog==='mail') {
+          localStorage.projectId = this.$route.query.project_id || '';//加入项目库的项目id
+          localStorage.flog = this.$route.query.flog || '';//是否是邮箱加入项目库
+          localStorage.type = this.$route.query.type || '';
+          localStorage.userId = this.$route.query.user_id || '';//邮箱推送者id
+        }
+
+        //如果是加入项目库操作的
+        if(localStorage.flog === 'mail'){
+
+          if(!localStorage.user_id) {
+            //没有登录的人去登录
+            this.$router.push({name:'telephoneLogin'});
+          }else if(this.$route.query.user_id===localStorage.user_id){
+            //推送者和接受者是同一人时
+            this.$tool.warning("您的项目库中已存在此项目");
+            localStorage.flog = "";//把默认值清空;
+            setTimeout(()=>{ this.$router.push('/workBench/'); window.location.reload();},50);
+          }else if((localStorage.userId!==localStorage.user_id)&&(localStorage.flog==='mail')&&(localStorage.type==='user')) {
+            //当不是同一人时,且是加入项目的时候
+            this.$http.post(this.URL.importProject,{user_id: localStorage.userId, project_id:localStorage.projectId})
+              .then(res=>{
+                if(res.data.status_code==2000000) {
+                  this.$tool.success("项目导入成功");
+                  localStorage.flog = "";//把默认值清空;
+                  setTimeout(()=>{ this.$router.push('/workBench/'); window.location.reload();},50);
+                }
+              })
+              .catch(err=>{
+                this.$tool.error("项目导入失败");
+                localStorage.flog = "";//把默认值清空;
+                setTimeout(()=>{  this.$router.push('/workBench/');window.location.reload();},50);
+              })
+          }
+        }
+
+
+
+
+
+          /*if((this.$route.query.user_id===localStorage.user_id)&&(this.$route.query.flog==='mail')&&(this.$route.query.type==='user')){
+            this.$http.post(this.URL.importProject,{user_id: this.$route.query.user_id, project_id:this.$route.query.project_id})
+              .then(res=>{
+                if(res.data.status_code==2000000) {
+                  this.$tool.success("项目导入成功");
+                  setTimeout(()=>{ this.$router.push('/workBench/'); window.location.reload();},50)
+                }
+              })
+              .catch(err=>{
+                this.$tool.error("项目导入失败");
+                setTimeout(()=>{  this.$router.push('/workBench/');window.location.reload();},50)
+              })
+          }else{
+            localStorage.clear();
+            setTimeout(()=>{ window.location.reload();},50)
+            this.$router.push({name: 'login'});//路由传参
+          }*/
+
+      }//邮箱加入项目库
     },
     //当dom一创建时
     created(){
