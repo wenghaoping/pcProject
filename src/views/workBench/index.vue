@@ -52,11 +52,7 @@ export default {
         this.show=false;
     },
     route1(){
-      localStorage.userId=this.$route.query.user_id;
-      localStorage.projectId=this.$route.query.project_id;
-      localStorage.flog=this.$route.query.flog;
       console.log(this.$route);
-      console.log(localStorage.userId);
         if(this.$route.query.flog==='mail'){
           if((this.$route.query.user_id===localStorage.user_id)&&(this.$route.query.flog==='mail')&&(this.$route.query.type==='user')){
             this.$http.post(this.URL.importProject,{user_id: this.$route.query.user_id, project_id:this.$route.query.project_id})
@@ -74,8 +70,8 @@ export default {
           }else{
             localStorage.clear();
             if(this.$route.query.flog==='mail'){
-              this.$router.push({name: 'telephoneLogin', query: {projectId:localStorage.projectId,userId: localStorage.userId,flog:this.$route.query.flog}})//路由传参
-              this.$router.push({name: 'codeLogin', query: {projectId:localStorage.projectId,userId: localStorage.userId,flog:this.$route.query.flog}})//路由传参
+              this.$router.push({name: 'telephoneLogin', query: {projectId:this.$route.query.project_id,userId: this.$route.query.user_id,flog:this.$route.query.flog,}})//路由传参
+              this.$router.push({name: 'codeLogin', query: {projectId:this.$route.query.project_id,userId: this.$route.query.user_id,flog:this.$route.query.flog,}})//路由传参
               setTimeout(()=>{ window.location.reload();},50)
             }else{
                this.$router.push({name: 'login'});//路由传参
