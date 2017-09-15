@@ -35,9 +35,7 @@
       }
     },
     created(){
-      /*if(!localStorage.user_id){
-        this.$router.push({name:'telephoneLogin'})
-      }*/
+
     }
   };
 </script>
