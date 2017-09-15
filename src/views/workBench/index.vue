@@ -55,9 +55,10 @@ export default {
     route1(){
         if(this.$route.query.flog==='mail'){
           localStorage.projectId=this.$route.query.project_id;
+          localStorage.userId=this.$route.query.user_id;
           localStorage.flog=this.$route.query.flog;
           console.log(this.$route);
-          if((this.$route.query.user_id===localStorage.user_id)&&(this.$route.query.flog==='mail')&&(this.$route.query.type==='user')){
+          if((this.$route.query.user_id!==localStorage.user_id)&&(this.$route.query.flog==='mail')&&(this.$route.query.type==='user')){
             this.$http.post(this.URL.importProject,{user_id: this.$route.query.user_id, project_id:this.$route.query.project_id})
               .then(res=>{
                 if(res.data.status_code==2000000) {
@@ -70,8 +71,6 @@ export default {
                 setTimeout(()=>{  this.$router.push('/workBench/');window.location.reload();},50)
               })
           }else{
-              localStorage.clear();
-              setTimeout(()=>{ window.location.reload();},50);
                this.$router.push({name: 'login'});//路由传参
           }
         }else{
@@ -88,14 +87,28 @@ export default {
   },
   watch:{
    // 路由判断显示广告
-    "$route" (to,from){
+    "$route" (to,form){
+        console.log(to.path);
+        console.log(form.path);
       if((to.path==='/workBench/myContacts'|| to.path==='/workBench/followup'||to.path==='/workBench/')&&this.willShow){
         this.show=true;
+        this.willShow=true;
 //        console.log(to.path);
       }else{
         this.show=false;
+        this.willShow=false;
+      }
+      if((form.path==='/workBench/myContacts'|| form.path==='/workBench/followup'||form.path==='/workBench/')&&this.willShow){
+        this.show=true;
+        this.willShow=true;
+//        console.log(to.path);
+      }else{
+        this.show=false;
+        this.willShow=false;
       }
   }
+
+
   },
 }
 </script>

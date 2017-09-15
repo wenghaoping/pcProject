@@ -1054,7 +1054,7 @@
       cursor: pointer;
       position: relative;
       top: 20px;
-      left: 19px;
+      left: -2px;
     }
   }
 </style>

@@ -17,9 +17,9 @@
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
-                <span class="title" style="width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
+                <span class="title" style="width: 53px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" >
+              <el-tooltip class="item" effect="dark"  placement="top-start" >
                 <!--:disabled="project.pro_company_name.length > 10 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_company_name}}</div>
@@ -29,7 +29,7 @@
 
             </div>
             <div class="item height" style="margin-top: 14px;">
-              <el-tooltip class="item" effect="dark"  placement="top" >
+              <el-tooltip class="item" effect="dark"  placement="top-start" >
                 <!--:disabled="project.pro_intro.length > 40 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_intro}}</div>
@@ -63,7 +63,7 @@
               <span class="more">超过60%的项目更易被投资人关注</span>
             </span>
               <span id="bottom_width2" class="project" style="width: 292px;">
-              <div class="item progress height">
+              <div class="item progress height" style="padding-left: 5px">
                 <div class="txt begin" :class="{ scheduleColor: project.pro_schedule.schedule_name=='项目线索'}">项目线索</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
@@ -195,7 +195,7 @@
                 </div>
                 <div style="margin-top:32px;"></div>
                 <div class="item" v-show="team.core_users!=''" v-for="bili in team.core_users" style="margin-top:10px;">
-                  <el-tooltip class="item" effect="dark"  placement="top" >
+                  <el-tooltip class="item" effect="dark"  placement="top">
                     <!--:disabled="bili.ct_member_name.length > 5 ? false:true"-->
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_name}}</div>
@@ -207,7 +207,7 @@
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_career}}</div>
                     </div>
-                    <span class="p-mg" style="text-align:left;line-height: 44px;width: 120px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_career}}</span>
+                    <span class="p-mg" style="text-align:left;line-height: 44px;width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_career}}</span>
                   </el-tooltip>
                   <div class="p-gf" style="margin-top: 11px">股权占比 : <span>{{bili.stock_scale}}%</span></div>
                   <div class="p-doc">{{bili.ct_member_intro}}</div>
@@ -371,13 +371,13 @@
                       <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
                     <!--</div>-->
                   </div>
-                  <div class="item"   style="margin-top:24px;height: 49px;" v-show="private.contact_user_name!=''||private.contact_user_career!=''||private.contact_user_mobile!=''">
+                  <div class="item"   style="margin-top:24px;height: 34px;" v-show="private.contact_user_name!=''||private.contact_user_career!=''||private.contact_user_mobile!=''">
                     <div class="bot-det" v-show="private.contact_user_name!=''">
                       <!--<span>项目联系人 : </span>-->
                       <!--<span>{{project.contact.user_name}}</span>-->
                       <!--<span>{{project.contact.user_mobile}}</span>-->
                       <span class="det-title">项目联系人:</span>
-                      <el-tooltip class="item" effect="dark"  placement="top" >
+                      <el-tooltip class="item" effect="dark"  placement="top-start" >
                         <div slot="content">
                           <div class="tips-txt">{{private.contact_user_name}}</div>
                         </div>
@@ -386,7 +386,7 @@
                     </div>
                     <div class="bot-det" style="margin-left:128px;" v-show="private.contact_user_career!=''">
                       <span class="det-title">职位:</span>
-                      <el-tooltip class="item" effect="dark"  placement="top" >
+                      <el-tooltip class="item" effect="dark"  placement="top-start" >
                         <div slot="content">
                           <div class="tips-txt">{{private.contact_user_career}}</div>
                         </div>
@@ -574,14 +574,14 @@
                         </div>
 
                         <div class="li clearfix" style="margin-top: 12px;border-top: 1px solid #eff2f7">
-                          <button class="button fl" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==1">
+                          <button class="button fl" style="padding-right: 2px" @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==1">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>已推送
                           </button>
-                          <button  class="button fl" @click="industryPush(projectMatchInvestor)" v-if="projectMatchInvestor.push_statues==0">
+                          <button  class="button fl" style="padding-right: 2px" @click="industryPush(projectMatchInvestor)" v-if="projectMatchInvestor.push_statues==0">
                             <div class="img1"><img src="../../../assets/images/tuisong.png"></div>推送
                           </button>
                           <span class="lineLine fl"></span>
-                          <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none">
+                          <button class="button fl" @click="industryDelete(projectMatchInvestor)" style="border-right: none;padding-left: 2px">
                             <div class="img1"><img :src="yichu" ></div>移除</button>
                         </div>
                         <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
