@@ -29,14 +29,13 @@
         <li v-show="user_name" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
           {{user_name}}
           <span style="display:inline-block;margin-left: 5px"><i class="el-icon-caret-bottom" style="font-size: 10px"></i></span>
-          <div class="login-show" v-show="user_id" style="position: absolute;top: -10px;">
+          <div class="login-show" style="position: absolute;top: -10px;">
             <el-select v-model="value" style="opacity: 0;height: 33px;color: #000000" placeholder="请选择" @change="loginOut">
               <el-option
                 v-for="item in options"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value"
-              >
+                :value="item.value">
               </el-option>
             </el-select>
             <!--<div class="sss" @click="opp" style="position: absolute;top: 36px;z-index: 111111">-->
@@ -57,9 +56,6 @@
           @select="handleSelect"
           class="width350"
         ></el-autocomplete>
-        <!--<li @click="loginOut">-->
-          <!--退出登录-->
-        <!--</li>-->
       </ul>
     </header>
     <div style="height: 60px;"></div>
@@ -212,6 +208,10 @@
         if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
           this.active=1
         }
+
+        //看是否需要加入项目库
+        this.addProject();
+
         //未登录状态下拦截
         if(!localStorage.user_id && this.$route.path!=='/'
           && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin'
@@ -220,28 +220,60 @@
           && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/'
           && this.$route.path!=='/workBench' && this.$route.path!=='/qr'
           && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'
-          && this.$route.path!=='/onekeyResearch' && this.$route.path!='/emailContact'){
+          && this.$route.path!=='/onekeyResearch' && this.$route.path!='/emailContact' && this.$route.path!='/addProject'){
 //          this.$tool.error('请先登录');
           this.$router.push({name:'index'});
         }
         //十二小时不动后退出登录
         setTimeout(function(){
-          localStorage.clear()
+          localStorage.clear();
+          sessionStorage.clear();
         },43200000)
         //登录状态下拦截
         /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
           this.$router.push({name:'index'})
         }*/
 
+
       },
       //登出
       loginOut(e){
         if(e==0){
           localStorage.clear();
+          sessionStorage.clear();
           this.$router.push({name: 'login'});//路由传参
           setTimeout(()=>{ window.location.reload();},50)
         }
-      }
+      },
+      //加入项目库
+      addProject(){
+        //如果是加入项目库操作的
+        if(sessionStorage.flog === 'mail'){
+          if(!localStorage.user_id) {
+            //没有登录的人去登录
+
+          }else if(sessionStorage.userId !== localStorage.user_id){
+            //推送者和接受者是不是一人时
+            this.$tool.warning("此链接不是分享给您的,请进入正确的链接");
+            sessionStorage.clear();//把默认值清空;
+            setTimeout(()=>{ this.$router.push({name: 'myProject',query: {activeTo: 0}}); },1000);
+          }else if((sessionStorage.userId === localStorage.user_id) && (sessionStorage.flog==='mail') && (sessionStorage.type==='user')) {
+            //当是同一人时,且是加入项目的时候
+            this.$http.post(this.URL.importProject,{user_id: sessionStorage.userId, project_id:sessionStorage.projectId})
+              .then(res=>{
+                if(res.data.status_code==2000000) {
+                  this.$tool.success("项目导入成功");
+                  sessionStorage.clear();//把默认值清空;
+                  setTimeout(()=>{this.$router.push({name: 'myProject',query: {activeTo: 0}}); },1000);}
+              })
+              .catch(err=>{
+                this.$tool.error("项目导入失败");
+                sessionStorage.clear();//把默认值清空;
+                setTimeout(()=>{this.$router.push({name: 'myProject',query: {activeTo: 0}});},1000);
+              })
+          }
+        }
+      }//邮箱加入项目库
     },
     //当dom一创建时
     created(){

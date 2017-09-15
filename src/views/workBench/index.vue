@@ -51,6 +51,7 @@ export default {
         this.willShow=false;
         this.show=false;
     },
+
     route1(){
         if(this.$route.query.flog==='mail'){
           localStorage.projectId=this.$route.query.project_id;
@@ -68,10 +69,8 @@ export default {
               .catch(err=>{
                 this.$tool.error("项目导入失败");
                 setTimeout(()=>{  this.$router.push('/workBench/');window.location.reload();},50)
-
               })
           }else{
-              setTimeout(()=>{ window.location.reload();},50)
                this.$router.push({name: 'login'});//路由传参
           }
         }else{
@@ -84,7 +83,7 @@ export default {
 
   },
   created(){
-      this.route1();
+//      this.route1();
   },
   watch:{
    // 路由判断显示广告

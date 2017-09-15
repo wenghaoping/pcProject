@@ -85,7 +85,7 @@
               }else if (res.data.is_exist === 1) {
                 if(localStorage.entrance==undefined){
                   this.$router.push({name:'myProject'});
-                }else if(localStorage.entrance==undefined){
+                }else {
                   this.$router.push({name:localStorage.entrance})
                 }
               }

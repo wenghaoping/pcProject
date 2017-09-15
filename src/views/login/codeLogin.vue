@@ -55,7 +55,7 @@
               this.loading=false;
               if(localStorage.entrance==undefined){
                 this.$router.push({name:'myProject'});
-              }else if(localStorage.entrance==undefined){
+              }else {
                 this.$router.push({name:localStorage.entrance})
               }
             }else{
