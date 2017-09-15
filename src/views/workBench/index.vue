@@ -80,6 +80,9 @@ export default {
           }
         }else{
            //正常登录的状态
+          if(!localStorage.user_id){
+            this.$router.push({name:'telephoneLogin'})
+          }
         }
     }//邮箱加入项目库
 

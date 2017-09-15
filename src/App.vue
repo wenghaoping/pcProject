@@ -166,10 +166,7 @@
               this.restaurants = [];
               let data = res.data.data;
                 this.restaurants = this.loadData(data);
-//                console.log(this.restaurants);
-//              if (queryString == "") this.restaurants = [];
               let restaurants = this.restaurants;
-              /*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
               clearTimeout(this.timeout);
               this.timeout = setTimeout(() => {
                   if(data.length==0){
@@ -178,10 +175,8 @@
                     cb(restaurants);
                   }
               }, 500);
-
             })
             .catch(err => {
-//          this.alert("加载失败");
               this.$tool.console(this.restaurants);
             })
         }else{
@@ -224,7 +219,8 @@
           && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/'
           && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/'
           && this.$route.path!=='/workBench' && this.$route.path!=='/qr'
-          && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'&& this.$route.path!=='/onekeyResearch'&&this.$route.path!='/emailContact'){
+          && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'
+          && this.$route.path!=='/onekeyResearch' && this.$route.path!='/emailContact'){
 //          this.$tool.error('请先登录');
           this.$router.push({name:'index'});
         }
@@ -238,6 +234,7 @@
         }*/
 
       },
+      //登出
       loginOut(e){
         if(e==0){
           localStorage.clear();

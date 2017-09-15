@@ -35,9 +35,9 @@
       }
     },
     created(){
-      if(!localStorage.user_id){
+      /*if(!localStorage.user_id){
         this.$router.push({name:'telephoneLogin'})
-      }
+      }*/
     }
   };
 </script>
@@ -46,7 +46,6 @@
 #myProjct .search{width: 190px;position: absolute;left:300px;top:0px;}
 #myProjct{
   position: relative;
-
 }
   /* 路由切换动效 */
 .fade-enter-active, .fade-leave-active {
