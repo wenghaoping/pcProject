@@ -950,6 +950,19 @@
         window.location.href=url;
 
       },//下载文件
+      //远程数据模拟
+      loadData(arr){
+        let newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+          let obj = {};
+          obj.company_name = arr[i].project_name=="" ? arr[i].company_name : arr[i].company_name + ' ( ' +arr[i].project_name + ' )';
+          obj.com_id = arr[i].com_id;
+          obj.newName = arr[i].company_name;
+          newArr.push(obj)
+        }
+        return newArr;
+      },
+
       searchChange(queryString){
 //        this.$tool.console(queryString);
         this.loadingSmall=true;
@@ -958,9 +971,7 @@
             this.seachCompanys=[];
             let data =res.data.data;
             if(data.length==0) this.seachCompanys=[{company_name:"未查询到结果，<i style='color: #009eff;'>保存公司名称</i>",com_id:-1,newName:queryString}];
-//            if(data.length==0) this.seachCompanys=[{company_name:"匹配不到你要搜索的公司,请重新继续输入",com_id:-1}];
-            else this.seachCompanys=data;
-//            this.$tool.console(res);
+            else this.seachCompanys = this.loadData(data);
             this.loadingSmall=false;
           })
           .catch(err=>{
@@ -1020,7 +1031,7 @@
         }
         else {
           this.companyid=data.com_id;
-          this.companyname=data.company_name;
+          this.companyname=data.newName;
           this.searchDisplay = true;
         }
       },//点击下拉选择公司后

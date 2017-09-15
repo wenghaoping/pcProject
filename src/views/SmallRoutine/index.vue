@@ -53,12 +53,12 @@
 //          clearInterval(this.timeout);
             let data=res.data;
 //          this.$tool.console(res);
-            console.log(res);
+//            console.log(res);
             if(data.status_msg=="success"){
               clearInterval(this.timeout);
               localStorage.token=res.data.token;
-              if(data.type=="create") this.$router.push({ name: 'creatproject'});
-              if(data.type=="update") this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});
+              if(data.type=="create") setTimeout(()=>{this.$router.push({ name: 'creatproject'});},50);
+              if(data.type=="update") setTimeout(()=>{this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});},50);
               localStorage.user_id=data.user_info.user_id;
               localStorage.user_real_name=data.user_info.user_real_name;
               this.$store.state.logining.user_id=data.user_info.user_id;
@@ -67,7 +67,7 @@
               clearInterval(this.timeout);
               this.checkout=false;
             }else if(data.status_msg=="continue") {
-              this.$tool.console("等待登陆");
+              console.log("等待登陆");
             }
           })
           .catch(err=>{

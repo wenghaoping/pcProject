@@ -795,10 +795,10 @@
       this.getprojectId();
       this.$global.func.getWxProjectCategory()
         .then((data)=>{
+          this.loading=false;
           return this.getWxProjectCategory();
         })
         .then((data)=>{
-          this.loading=false;
           return this.getWxosProjectData();
         })
         if(this.planList.length!=0) this.planButton=false;
