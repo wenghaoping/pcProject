@@ -54,9 +54,10 @@ const aboutUs = r => require.ensure([], () => r(require('@/views/aboutUs/aboutUs
 const emailContact = r => require.ensure([], () => r(require('@/views/emailContact/emailContact.vue')), 'emailContact');
 
 /*===============================加入项目库=======================================*/
-
 const addProject = r => require.ensure([], () => r(require('@/views/addProject/addProject.vue')), 'addProject');
 
+/*===============================iosbanner图=======================================*/
+const iosBanner = r => require.ensure([], () => r(require('@/views/iosBanner/iosBanner.vue')), 'iosBanner');
 //测试路由
 // import createForm from '@/test/createForm.vue'
 // import watch from '@/test/watch.vue'
@@ -134,6 +135,9 @@ export default [
   },
   {
     path:'/addProject',name:'addProject', component:addProject
+  },
+  {
+    path:'/iosBanner',name:'iosBanner', component:iosBanner
   },
 /*  {
     path: '/test', name: 'test', component: checkone
