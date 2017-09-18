@@ -88,8 +88,9 @@ export default {
   watch:{
    // 路由判断显示广告
     "$route" (to,form){
-        console.log(to.path);
-        console.log(form.path);
+//        console.log(this.$route);
+//        console.log(to.path);
+//        console.log(form.path);
       if((to.path==='/workBench/myContacts'|| to.path==='/workBench/followup'||to.path==='/workBench/')&&this.willShow){
         this.show=true;
         this.willShow=true;

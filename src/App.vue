@@ -217,12 +217,12 @@
           && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin'
           && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword'
           && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/'
-          && this.$route.path!=='/bindTelephone' && this.$route.path!=='/workBench/'
-          && this.$route.path!=='/workBench' && this.$route.path!=='/qr'
+          && this.$route.path!=='/bindTelephone'&& this.$route.path!=='/qr'
           && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'
           && this.$route.path!=='/onekeyResearch' && this.$route.path!='/emailContact'
           && this.$route.path!='/addProject' && this.$route.path!='/iosBanner'){
 //          this.$tool.error('请先登录');
+//          && this.$route.path!=='/workBench/'&& this.$route.path!=='/workBench'
           this.$router.push({name:'index'});
         }
         //十二小时不动后退出登录

@@ -12,14 +12,14 @@
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
                 <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" >
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 6 ? false:true">
                 <!--:disabled="project.pro_name.length > 3 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
-                <span class="title" style="width: 53px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
+                <span class="title" style="width: 70px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top-start" >
+              <el-tooltip class="item" effect="dark"  placement="top-start" :disabled="project.pro_company_name.length > 13? false:true">
                 <!--:disabled="project.pro_company_name.length > 10 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_company_name}}</div>
@@ -29,7 +29,7 @@
 
             </div>
             <div class="item height" style="margin-top: 14px;">
-              <el-tooltip class="item" effect="dark"  placement="top-start" >
+              <el-tooltip class="item" effect="dark"  placement="top-start" :disabled="project.pro_intro.length > 40 ? false:true">
                 <!--:disabled="project.pro_intro.length > 40 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_intro}}</div>
@@ -227,7 +227,7 @@
                     <div class="rz-detail">
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
 
-                      <el-tooltip class="item" effect="dark"  placement="top" >
+                      <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 15 ? false:true">
                         <!--:disabled="company.pro_website.length > 15 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{company.pro_website}}</div>
@@ -288,7 +288,9 @@
                     </div>
                     <div class="rz-detail">
                       <p class="det-title">投后股份</p>
-                      <p class="det-info">{{project.pro_finance_stock_after | nullTo_}}%</p>
+                      <p class="det-info">{{project.pro_finance_stock_after | nullTo_}}
+                        <span v-show="project.pro_finance_stock_after!=' '"> %</span>
+                      </p>
                     </div>
                     <div class="rz-detail">
                       <p class="det-title">估值</p>
