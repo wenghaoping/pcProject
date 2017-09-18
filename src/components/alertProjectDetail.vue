@@ -7,7 +7,7 @@
           <div class="item height" style="vertical-align: middle;">
             <el-tag type="success" v-if="project.open_status==1">公开</el-tag>
             <el-tag type="primary" v-else>私密</el-tag>
-            <span class="projectIntro">{{project.pro_intro}}</span>
+            <span class="projectIntro" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_intro}}</span>
           </div>
           <div class="item height" style="margin-top:18px;">
             <span class="mid-tag" v-for="industry in project.pro_industry">{{industry.industry_name}}</span>
@@ -132,8 +132,8 @@
           </div>
           <div style="margin-top:32px;"></div>
           <div class="item" v-for="teamm in team.core_users" style="margin-top:10px;" v-show="team.core_users!=''">
-            <span class="p-name">{{teamm.ct_member_name}}</span>
-            <span class="p-mg">{{teamm.ct_member_career}}</span>
+            <span class="p-name" style="text-align:left;line-height: 44px;width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{teamm.ct_member_name}}</span>
+            <span class="p-mg" style="text-align:left;line-height: 44px;width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{teamm.ct_member_career}}</span>
             <div class="p-gf">股权占比 : <span>{{teamm.stock_scale}}%</span></div>
             <div class="p-doc">{{teamm.ct_member_intro}}</div>
             <div class="line"></div>
@@ -152,12 +152,7 @@
               </div>
               <div class="rz-detail" v-show="company.pro_website!=''">
                 <p class="det-title">公司官网</p>
-                <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 15 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{company.pro_website}}</div>
-                  </div>
                   <p  class="del-info"  style="font-size:22px;color:#20a0ff;text-align:center;line-height: 44px;cursor: pointer;width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{company.pro_website}}</p>
-                </el-tooltip>
               </div>
               <div class="rz-detail"  v-show="company.pro_company_scale!=''" >
                 <p class="det-title">公司规模</p>
@@ -175,12 +170,7 @@
             <span class="title"><img class="img" :src="pinpai" style="width: 37px;">产品</span>
             <div class="brand">
               <div class="brand1" v-for="brandd in brands.brand">
-                <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_name.length > 30 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{brandd.brand_name}}</div>
-                  </div>
                   <span style="font-size:16px;color:#4e4563;width: 200px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">{{brandd.brand_name}}</span>
-                </el-tooltip>
                 <span class="brand1_lei" v-if="brandd.brand_id==1" >网站</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==2" >app</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==3" >软件</span>
@@ -190,12 +180,7 @@
                 <span class="brand1_lei" v-if="brandd.brand_id==7" >HTML5</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==8" >微信公众号</span>
                 <span class="brand1_lei" v-if="brandd.brand_id==9" >其他</span>
-                <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 30 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{brandd.brand_desc}}</div>
-                  </div>
                   <div class="brand1_introduce" style="white-space: normal;word-break: break-all;">{{brandd.brand_desc}}</div>
-                </el-tooltip>
               </div>
               <div class="clear"></div>
             </div>
@@ -241,7 +226,7 @@
                   <span class="pro-txt-1">{{finance.finance_time}}</span>
                   <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                   <span class="pro-txt-3" style="width: 68px;">{{finance.belongs_to_stage.stage_name}}</span>
-                  <el-tooltip class="item" effect="dark"  placement="top" :disabled="finance.pro_finance_investor.length > 35 ? false:true">
+                  <el-tooltip class="item" effect="dark"  placement="top" >
                     <div slot="content">
                       <div class="tips-txt">{{finance.pro_finance_investor}}</div>
                     </div>
