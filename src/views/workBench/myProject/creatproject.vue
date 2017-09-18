@@ -771,9 +771,9 @@
                 this.project.pro_industry = data.industry;
                 if (data.is_exclusive == 4) data.is_exclusive = 0;
                 this.project.is_exclusive = data.is_exclusive;
-                if (data.pro_scale == 0) data.pro_finance_scale = "";
+                if (data.pro_finance_scale == 0) data.pro_finance_scale = "";
                 this.project.pro_scale.scale_id = data.pro_finance_scale;
-                if (data.pro_stage == 0) data.pro_finance_stage = {stage_id: ""};
+                if (data.pro_finance_stage == 0) data.pro_finance_stage = {stage_id: ""};
                 this.project.pro_stage.stage_id = data.pro_finance_stage;
                 this.project.goodness={
                   pro_goodness: {goodness_title: "项目亮点", goodness_desc: data.pro_goodness,},
