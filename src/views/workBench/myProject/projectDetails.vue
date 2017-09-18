@@ -12,12 +12,12 @@
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
                 <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 6 ? false:true">
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 4 ? false:true">
                 <!--:disabled="project.pro_name.length > 3 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
-                <span class="title" style="width: 70px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
+                <span class="title" style="width: 86px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
               </el-tooltip>
               <el-tooltip class="item" effect="dark"  placement="top-start" :disabled="project.pro_company_name.length > 13? false:true">
                 <!--:disabled="project.pro_company_name.length > 10 ? false:true"-->
@@ -202,7 +202,7 @@
                     </div>
                     <span class="p-name" style="text-align:left;line-height: 44px;width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
                   </el-tooltip>
-                  <el-tooltip class="item" effect="dark"  placement="top" >
+                  <el-tooltip class="item" effect="dark"  placement="top-start" >
                     <!--:disabled="bili.ct_member_name.length > 15 ? false:true"-->
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_career}}</div>
@@ -1103,12 +1103,12 @@
         return str
       },//项目来源编辑
       urlOpen(url){
-        if(!url.indexOf('http://')){
-          var url1=url;
-        }else{
-          var url1="http://"+url;
-        }
-        window.open(url1);
+          if((!url.indexOf('https://'))||(!url.indexOf('http://'))){
+            var url1=url;
+          }else{
+            var url1="http://"+url;
+          }
+          window.open(url1);
       },//链接跳转
       getProjectDetail () {
         return new Promise((resolve, reject)=>{
