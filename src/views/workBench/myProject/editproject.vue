@@ -479,8 +479,13 @@
                   </el-row>
                 </el-form>
                 <div class="marginAuto">
-                  <el-button type="text" @click="addBrand" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加产品</el-button>
-                  <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                  <div class="addhover">
+                  <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+                  <el-button type="text" @click="addBrand" class="addMember fl"> 添加产品</el-button></div>
+                  <div class="addhover addMember2">
+                    <i  class="addmemberimg"><img src="../../../assets/images/reload.png"></i>
+                    <el-button type="text" @click="syncOne" class="addMember fl ">自动获取</el-button>
+                  </div>
                 </div>
               </div>
             </el-collapse-transition>
@@ -574,8 +579,14 @@
                   </el-row>
                 </el-form>
                 <div class="marginAuto">
-                  <el-button type="text" @click="addMember" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加成员</el-button>
-                  <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                    <div class="addhover">
+                      <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+                      <el-button type="text" @click="addMember" class="addMember fl">添加成员</el-button>
+                    </div>
+                    <div class="addhover addMember2">
+                      <i  class="addmemberimg"><img src="../../../assets/images/reload.png"></i>
+                      <el-button type="text" @click="syncOne" class="addMember fl ">自动获取</el-button>
+                    </div>
                 </div>
               </div>
             </el-collapse-transition>
@@ -669,8 +680,14 @@
                   </el-row>
                 </el-form>
                 <div class="marginAuto">
-                  <el-button type="text" @click="addHistory" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加历史融资</el-button>
-                  <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                  <div class="addhover">
+                    <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+                    <el-button type="text" @click="addHistory" class="addMember fl">添加历史融资</el-button>
+                  </div>
+                  <div class="addhover addMember2">
+                    <i  class="addmemberimg"><img src="../../../assets/images/reload.png"></i>
+                    <el-button type="text" @click="syncOne" class="addMember fl ">自动获取</el-button>
+                  </div>
                 </div>
               </div>
             </el-collapse-transition>
@@ -725,8 +742,14 @@
                   </el-row>
                 </el-form>
                 <div class="marginAuto">
-                  <el-button type="text" @click="addmilePost" class="addMember fl"><i><img src="../../../assets/images/tianjia.png"></i> 添加里程碑</el-button>
-                  <el-button type="text" @click="syncOne" class="addMember fl addMember2"><i><img src="../../../assets/images/reload.png"></i> 自动获取</el-button>
+                  <div class="addhover">
+                    <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+                    <el-button type="text" @click="addmilePost" class="addMember fl">添加里程碑</el-button>
+                  </div>
+                  <div class="addhover addMember2">
+                    <i  class="addmemberimg"><img src="../../../assets/images/reload.png"></i>
+                    <el-button type="text" @click="syncOne" class="addMember fl ">自动获取</el-button>
+                  </div>
                 </div>
               </div>
             </el-collapse-transition>
@@ -2794,30 +2817,47 @@
       width: 246px;
       height: 32px;
       margin-bottom: 20px;
-      .addMember {
-        transition: all .5s;
-        font-size:16px;
-        color:#009eff;
-        i{
-          width: 17px;
-          height: 17px;
-          display: inline-block;
-          margin-right: 7px;
-          transition: all .5s;
-          img{
-            width: 100%;
-          }
-        }
+      .addhover{
+        display: inline-block;
+        position:relative;
       }
-      .addMember:hover i{
+      .addhover:hover .addmemberimg{
         transform: rotate(360deg);
         -webkit-transform: rotate(360deg);
         -moz-transform: rotate(360deg);
         -o-transform: rotate(360deg);
         -ms-transform: rotate(360deg);
       }
+      .addMember {
+        transition: all .5s;
+        font-size:16px;
+        color:#009eff;
+      }
+      /*.addmemberimg:hover i{*/
+        /*transform: rotate(360deg);*/
+        /*-webkit-transform: rotate(360deg);*/
+        /*-moz-transform: rotate(360deg);*/
+        /*-o-transform: rotate(360deg);*/
+        /*-ms-transform: rotate(360deg);*/
+      /*}*/
       .addMember2{
         margin-left: 22px;
+      }
+      .addmemberimg{
+        transform:  rotate(0) ;
+          display: inline-block;
+          float: left;
+          margin-top: 11px;
+          width: 17px;
+          height: 17px;
+          margin-right: 7px;
+          transition: all .5s;
+          img{
+            width:100%;
+          }
+      }
+      .addmemberimg :hover{
+          transform: rotate(360deg);
       }
     }
 
