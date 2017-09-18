@@ -32,8 +32,6 @@
             </div>
             </el-checkbox>
           </div>
-        <!--弹窗中间部分-->
-        <div class="mid-floor" style="opacity:0.5;background:#000000;height: 16px;"></div>
         <!--弹窗下半部分-->
         <div class="down-floor">
           <!--核心团队-->
@@ -170,7 +168,7 @@
           <el-button  @click="handleClose" type="primary">取消</el-button>
           <el-button  @click="syncTrue" type="primary">同步</el-button>
           <el-checkbox v-model="cover" style="margin-left: 14px;">允许覆盖</el-checkbox>
-          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" style="display: none">全选</el-checkbox>
         </div>
       </div>
 
@@ -959,7 +957,7 @@
         right: 0px;left: 0px;margin:auto;
         background:#ffffff;
         box-shadow:0 -2px 4px 0 rgba(64,88,122,0.10);
-        width:830px;
+        width:881px;
         height: 68px;
         display: inline-block;
         padding-top: 15px;

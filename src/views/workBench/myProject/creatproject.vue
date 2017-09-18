@@ -28,7 +28,7 @@
                            accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                            :data="uploadDate">
                   <el-button slot="trigger" type="primary" v-show="planButton" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
-                  <div slot="tip" class="el-upload__tip fr" v-show="planButton">BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式</div>
+                  <div slot="tip" class="el-upload__tip fr" v-show="planButton"><i style="display: block">BP私密保护，投资人可通过申请查看来了解项目价值</i><i style="display: block">支持pdf、ppt、pptx、doc、docx、zip、rar文件格式，单个文件最大50M</i></div>
                 </el-upload>
               </span>
 
@@ -59,7 +59,7 @@
                 </el-col>
                 <el-tooltip class="item" effect="dark" placement="top-end">
                   <div slot="content">从微天使创投数据库自动获取公司行业，融资轮次<br/>历史融资，核心团队及里程碑等项目信息</div>
-                  <el-button class="tong" @click="syncOne">一键同步</el-button>
+                  <button class="tong" @click="syncOne">一键同步</button>
                 </el-tooltip>
                 <span class="ques">
                         <el-tooltip placement="bottom-end">
@@ -67,7 +67,7 @@
                               <div class="tips-txt">1、一键同步公司信息，快速创建项目</div>
                               <div class="tips-txt" style="margin-top:5px;">2、可在项目详情查看尽调报告</div>
                             </div>
-                            <img src="../../../assets/images/question.png" alt=""/>
+                            <img src="../../../assets/images/why.png" alt=""/>
                         </el-tooltip>
                       </span>
               </el-row>
@@ -395,7 +395,7 @@
         companyid: "",//尽调搜索的公司的ID
         queryData:{},
         NumberRule: { validator: checkNumber, trigger: 'blur' },
-        mustGo:false,
+        mustGo:true,
         syncCreatProjectDetailDisplay:false,
       }
     },
@@ -563,11 +563,6 @@
             syncData.project.pro_stage;
           }
           syncData.project.pro_industry.length==0 ? syncData.project.pro_industry=[] : syncData.project.pro_industry;
-
-//
-//          this.$tool.setTimeToReallyTime(syncData.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
-//
-//          this.$tool.setTimeToReallyTime(syncData.financing.pro_history_finance,'finance_time');//里程碑时间格式设置
 
           syncData.company.pro_company_scale=="" ? syncData.company.pro_company_scale={comp_scale_id: ''} : syncData.company.pro_company_scale;
           //数据格式化
@@ -780,32 +775,35 @@
             this.$http.post(this.URL.getWxosProjectData, {credential: localStorage.credential})
               .then(res => {
                 let data = res.data.project;
-                for(let i=0; i<data.industry.length; i++){
-                  data.industry[i] = Number.parseInt(data.industry[i]);
-                }
-                this.project.pro_industry = data.industry;
-                if (data.is_exclusive == 4) data.is_exclusive = 0;
-                this.project.is_exclusive = Number.parseInt(data.is_exclusive);
-                if (data.pro_finance_scale == 0) this.project.pro_finance_scale = "";
-                else this.project.pro_scale.scale_id = Number.parseInt(data.pro_finance_scale);
+                if(data.length != 0){
+                  for(let i=0; i<data.industry.length; i++){
+                    data.industry[i] = Number.parseInt(data.industry[i]);
+                  }
+                  this.project.pro_industry = data.industry;
+                  if (data.is_exclusive == 4) data.is_exclusive = 0;
+                  this.project.is_exclusive = Number.parseInt(data.is_exclusive);
+                  if (data.pro_finance_scale == 0) this.project.pro_finance_scale = "";
+                  else this.project.pro_scale.scale_id = Number.parseInt(data.pro_finance_scale);
 
-                if (data.pro_finance_stage == 0) this.project.pro_stage = {stage_id: ""};
-                else this.project.pro_stage.stage_id = Number.parseInt(data.pro_finance_stage);
-                this.project.goodness={
-                  pro_goodness: {goodness_title: "项目亮点", goodness_desc: data.pro_goodness,},
-                  pro_market_genera: {goodness_title: "", goodness_desc: ""},
-                  pro_business_model: {goodness_title: "", goodness_desc: ""},
-                  pro_service: {goodness_title: "", goodness_desc: ""},
-                };
-                this.project.pro_intro = data.pro_intro || '';
-                this.project.pro_name = data.pro_name || '';
-                this.project.pro_company_name = data.pro_company_name || '';
-                this.project.pro_finance_stock_after = data.pro_finance_stock_after || '';
-                localStorage.credential = "";
+                  if (data.pro_finance_stage == 0) this.project.pro_stage = {stage_id: ""};
+                  else this.project.pro_stage.stage_id = Number.parseInt(data.pro_finance_stage);
+                  this.project.goodness={
+                    pro_goodness: {goodness_title: "项目亮点", goodness_desc: data.pro_goodness,},
+                    pro_market_genera: {goodness_title: "", goodness_desc: ""},
+                    pro_business_model: {goodness_title: "", goodness_desc: ""},
+                    pro_service: {goodness_title: "", goodness_desc: ""},
+                  };
+                  this.project.pro_intro = data.pro_intro || '';
+                  this.project.pro_name = data.pro_name || '';
+                  this.project.pro_company_name = data.pro_company_name || '';
+                  this.project.pro_finance_stock_after = data.pro_finance_stock_after || '';
+                  localStorage.credential = "";
+                }
+
                 resolve(1);
               })
               .catch(err => {
-                this.alert("获取失败");
+
                 this.$tool.console(err);
               });
             return getOneUserInfo;

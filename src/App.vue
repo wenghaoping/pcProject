@@ -424,6 +424,12 @@ background: red;
     }
   }
   }
+  @media screen and(max-width: 500px){
+    #header{
+      display: none!important;
+    }
+
+  }
   #samllrou:hover + .weixin {
     display: block;
   }

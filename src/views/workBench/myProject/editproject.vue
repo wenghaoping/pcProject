@@ -36,7 +36,7 @@
                     </el-upload>
 
                   </span>
-                  <span class="f-tips fl" style="margin-left: 8px;" v-show="planButton"><i>BP私密保护，投资人可通过申请查看来了解项目价值</i><i>支持pdf、ppt、doc、png，jpg，jpeg文件格式，单个文件最大50M</i></span>
+                  <span class="f-tips fl" style="margin-left: 8px;" v-show="planButton"><i>BP私密保护，投资人可通过申请查看来了解项目价值</i><i>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式，单个文件最大50M</i></span>
                 </div>
                 <div class="block-info block-cc-pro" style="margin-top:15px;">
                   <span class="f-title fl">项目文件</span>
@@ -112,7 +112,7 @@
 
                     <el-tooltip class="item" effect="dark" placement="top-end">
                       <div slot="content">从微天使创投数据库自动获取公司行业，融资轮次<br/>历史融资，核心团队及里程碑等项目信息</div>
-                      <el-button class="tong" @click="syncOne">一键同步</el-button>
+                      <button class="tong" @click="syncOne">一键同步</button>
                     </el-tooltip>
                     <span class="ques">
                         <el-tooltip placement="bottom-end">
@@ -120,7 +120,7 @@
                               <div class="tips-txt">1、一键同步公司信息，快速创建项目</div>
                               <div class="tips-txt" style="margin-top:5px;">2、可在项目详情查看尽调报告</div>
                             </div>
-                            <img src="../../../assets/images/question.png" alt=""/>
+                            <img src="../../../assets/images/why.png" alt=""/>
                         </el-tooltip>
                       </span>
                   </el-row>
@@ -1781,6 +1781,7 @@
 
               if(data.project.pro_finance_value==0) data.project.pro_finance_value="";//项目估值
 
+
               this.project=data.project;
 
               //公司运营设置=============================================
@@ -2638,6 +2639,7 @@
                 syncDataFunc();
               })
           }
+
           //数据同步函数
            const syncDataFunc = () =>{
                 syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry,'industry_id');//领域标签取出id
@@ -2688,14 +2690,16 @@
                   if(x==index){
                     if(x=='project' || x=='company'){
                       for(let key in syncData[index]){
-                        if(key=='pro_area'){            //后端都没有,跳过处理
+                        if(key=='pro_area'){            //地区需要单独处理
                           if(this.project.pro_area.pid == ''){
                             this.project.pro_area.pid = syncData[index][key].pid;
                             this.area1Change(syncData[index][key].pid);
                             localStorage.pid = syncData[index][key].pid;
-                            setTimeout(()=>{this.project.pro_area.area_id = syncData[index][key].area_id},100)
+                            setTimeout(()=>{this.project.pro_area.area_id = syncData[index][key].area_id},100);
                           }
-                        }else if(this[x][key]==''){
+                        }else if(this.$tool.isArray(this[x][key])){//标签需要数组合并
+                          this[x][key] = [...this[x][key], ...syncData[index][key]];//数组合并
+                        }else if(this[x][key]==''){//其他为空是不覆盖
                           this[x][key]=syncData[index][key];
                         }
                       }
