@@ -56,7 +56,7 @@
               <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
             <!--</div>-->
             <div class="item height" style="margin-top:40px;    display: inline-block;">
-            <span id="bottom_width1" class="project" >
+            <span id="bottom_width1" class="project"  style="padding-left: 6px;padding-right: 5px;">
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
               <span class="number" v-else>去完善</span>
