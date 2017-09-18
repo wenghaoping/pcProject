@@ -659,6 +659,7 @@
           this.project.project_id=this.uploadShow.project_id;
           let allData = {};
           allData.project = this.$tool.simpleClone(this.project);
+          delete allData.project.tag;
           allData.pro_FA = {is_exclusive:this.project.is_exclusive};
           allData.user_id = localStorage.user_id;//用户id
           this.$http.post(this.URL.editProject,allData)
@@ -757,7 +758,7 @@
       getprojectId(){
         this.project.project_id = this.$route.query.project_id || '';
       },
-      //获取微信传过来的数据
+      //获取微信或者ios传过来的数据
       getWxosProjectData(){
         var getOneUserInfo = new Promise((resolve, reject) => {
           //做一些异步操作
@@ -767,23 +768,27 @@
             this.$http.post(this.URL.getWxosProjectData, {credential: localStorage.credential})
               .then(res => {
                 let data = res.data.project;
-                console.log(data);
+                for(let i=0; i<data.industry.length; i++){
+                  data.industry[i] = Number.parseInt(data.industry[i]);
+                }
                 this.project.pro_industry = data.industry;
                 if (data.is_exclusive == 4) data.is_exclusive = 0;
-                this.project.is_exclusive = data.is_exclusive;
-                if (data.pro_scale == 0) data.pro_finance_scale = "";
-                this.project.pro_scale.scale_id = data.pro_finance_scale;
-                if (data.pro_stage == 0) data.pro_finance_stage = {stage_id: ""};
-                this.project.pro_stage.stage_id = data.pro_finance_stage;
+                this.project.is_exclusive = Number.parseInt(data.is_exclusive);
+                if (data.pro_finance_scale == 0) this.project.pro_finance_scale = "";
+                else this.project.pro_scale.scale_id = Number.parseInt(data.pro_finance_scale);
+
+                if (data.pro_finance_stage == 0) this.project.pro_stage = {stage_id: ""};
+                else this.project.pro_stage.stage_id = Number.parseInt(data.pro_finance_stage);
                 this.project.goodness={
                   pro_goodness: {goodness_title: "项目亮点", goodness_desc: data.pro_goodness,},
                   pro_market_genera: {goodness_title: "", goodness_desc: ""},
                   pro_business_model: {goodness_title: "", goodness_desc: ""},
                   pro_service: {goodness_title: "", goodness_desc: ""},
                 };
-
-                this.project.pro_intro = data.pro_intro;
-                console.log(this.project);
+                this.project.pro_intro = data.pro_intro || '';
+                this.project.pro_name = data.pro_name || '';
+                this.project.pro_company_name = data.pro_company_name || '';
+                this.project.pro_finance_stock_after = data.pro_finance_stock_after || '';
                 localStorage.credential = "";
                 resolve(1);
               })

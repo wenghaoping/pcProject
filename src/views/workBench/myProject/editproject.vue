@@ -2644,6 +2644,11 @@
                       for(let key in syncData[index]){
                         if(key!='pro_area'){            //后端都没有,跳过处理
                           this[x][key]=syncData[index][key];
+                        }else{
+                          this.project.pro_area.pid = syncData[index][key].pid;
+                          this.area1Change(syncData[index][key].pid);
+                          localStorage.pid = syncData[index][key].pid;
+                          setTimeout(()=>{this.project.pro_area.area_id = syncData[index][key].area_id},100)
                         }
                       }
                     }else{
@@ -2661,7 +2666,14 @@
                   if(x==index){
                     if(x=='project' || x=='company'){
                       for(let key in syncData[index]){
-                        if(this[x][key]==''){
+                        if(key=='pro_area'){            //后端都没有,跳过处理
+                          if(this.project.pro_area.pid == ''){
+                            this.project.pro_area.pid = syncData[index][key].pid;
+                            this.area1Change(syncData[index][key].pid);
+                            localStorage.pid = syncData[index][key].pid;
+                            setTimeout(()=>{this.project.pro_area.area_id = syncData[index][key].area_id},100)
+                          }
+                        }else if(this[x][key]==''){
                           this[x][key]=syncData[index][key];
                         }
                       }
