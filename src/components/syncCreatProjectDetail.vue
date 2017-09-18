@@ -9,8 +9,6 @@
             <el-checkbox label="project">
               <div class="item-lists-inner-left">
               <div class="item height" style="vertical-align: middle;">
-                <el-tag type="success" v-if="project.open_status==1">公开</el-tag>
-                <el-tag type="primary" v-else>私密</el-tag>
                 <span class="projecname">{{project.pro_name}}</span>
                 <span class="projectcompanyname">{{project.pro_company_name}}</span>
                 <span class="projectIntro">{{project.pro_intro}}</span>

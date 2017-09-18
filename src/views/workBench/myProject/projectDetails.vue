@@ -1103,13 +1103,12 @@
         return str
       },//项目来源编辑
       urlOpen(url){
-          if(!url.indexOf('http://')){
-            var url1=url;
-          }else{
-            var url1="http://"+url;
-          }
-
-          window.open(url1);
+        if(!url.indexOf('http://')){
+          var url1=url;
+        }else{
+          var url1="http://"+url;
+        }
+        window.open(url1);
       },//链接跳转
       getProjectDetail () {
         return new Promise((resolve, reject)=>{
@@ -1722,6 +1721,7 @@
     created () {
       this.$tool.getTop();
       this.getprojectId();
+      this.getWX();
       this.getAllData();
     },
     watch:{

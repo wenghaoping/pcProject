@@ -2617,7 +2617,6 @@
           }
           //数据同步函数
            const syncDataFunc = () =>{
-
                 syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry,'industry_id');//领域标签取出id
                 syncData.project.open_status = syncData.project.open_status.toString();//字符串化
                 if(syncData.project.pro_stage.length==0){
@@ -2704,26 +2703,19 @@
           return this.getWxProjectCategory();
         })
          .then((data)=>{
-
           return this.setFileType();
         })
         .then((data)=>{
           return this.getProjectDetail();
         })
-     /* this.ProjectShow=false;
+      this.ProjectShow=true;
       this.teamShow=false;
       this.financingShow=false;
       this.milepostShow=false;
       this.SignShow=false;
       this.operateShow=false;
-      this.brandShow=false;*/
-      this.ProjectShow=true;
-      this.teamShow=true;
-      this.financingShow=true;
-      this.milepostShow=true;
-      this.SignShow=true;
-      this.operateShow=true;
-      this.brandShow=true;
+      this.brandShow=false;
+
     },
     watch: {
       screenWidth (val) {

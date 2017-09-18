@@ -9,8 +9,6 @@
             <el-checkbox label="project">
               <div class="item-lists-inner-left">
               <div class="item height" style="vertical-align: middle;">
-                <el-tag type="success" v-if="project.open_status==1">公开</el-tag>
-                <el-tag type="primary" v-else>私密</el-tag>
                 <span class="projecname">{{project.pro_name}}</span>
                 <span class="projectcompanyname">{{project.pro_company_name}}</span>
                 <span class="projectIntro">{{project.pro_intro}}</span>
@@ -91,15 +89,15 @@
                     <span style="font-size:16px;color:#4e4563;width: 200px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">{{brandd.brand_name}}</span>
                   </el-tooltip>
 
-                  <span class="brand1_lei" v-if="brandd.brand_id==1" >网站</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==2" >app</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==3" >软件</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==4" >游戏</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==5" >小程序</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==6" >硬件</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==7" >HTML5</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==8" >微信公众号</span>
-                  <span class="brand1_lei" v-if="brandd.brand_id==9" >其他</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==1" >网站</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==2" >app</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==3" >软件</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==4" >游戏</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==5" >小程序</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==6" >硬件</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==7" >HTML5</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==8" >微信公众号</span>
+                  <span class="brand1_lei" v-if="brandd.type_id==9" >其他</span>
                   <el-tooltip class="item" effect="dark"  placement="top" :disabled="brandd.brand_desc.length > 50 ? false:true">
                     <div slot="content">
                       <div class="tips-txt">{{brandd.brand_desc}}</div>
@@ -487,7 +485,7 @@
       vertical-align: middle;
     }
     .up-floor{
-      padding: 20px 30px;
+      padding: 20px 25px;
       background: white;
       .projectIntro{
         font-size:14px;

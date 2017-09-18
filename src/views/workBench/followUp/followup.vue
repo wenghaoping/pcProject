@@ -257,6 +257,7 @@ export default {
       this.loading=true;
       this.getFollow.user_id=localStorage.user_id;
       this.getFollow.pro_name=this.searchinput;
+      this.$store.state.pageANDSelect.followSearchinput = this.searchinput;
       this.currentPage=1;
       this.getFollow.page=1;
       this.$http.post(this.URL.get_follow_records,this.getFollow)
@@ -280,7 +281,9 @@ export default {
       this.getFollow=this.$store.state.pageANDSelect.getFollow;
       this.currentPage=this.$store.state.pageANDSelect.folcurrentPage || 1;
       this.getFollow.page=this.$store.state.pageANDSelect.folcurrentPage || 1;
+      this.searchinput = this.$store.state.pageANDSelect.followSearchinput;
     },//从vuex中取数据
+
     addFollow(){
       this.followDisplay=true;
     },//点击写跟近按钮

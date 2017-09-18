@@ -604,7 +604,6 @@
             if(this.follow.type=='user'){ this.follow.card_id = this.userid; }
           }
           this.loading=true;
-          console.log(this.follow)
           this.$http.post(this.URL.add_follow_record, this.follow)
             .then(res => {
              this.$tool.console(res);

@@ -57,36 +57,14 @@
           <div class="item">
             <span class="title"><img class="img" src="../assets/images/projectIntroduce.png">项目资料</span>
             <span class="flower" v-show="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
-            <!--<div class="person-info" v-if="project.contact.user_name!=''">-->
-              <!--<span>联系人 : </span>-->
-              <!--<span>{{project.contact.user_name}}</span>-->
-              <!--<span>{{project.contact.user_mobile}}</span>-->
-            <!--</div>-->
           </div>
           <div class="item" style="margin-top:33px;">
             <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
           </div>
           <div class="item" v-if="file.pro_BP.length!=0" style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;" >
-            <!--<div class="paper" v-if="project.pro_BP.length!=0">-->
               <img class="img" style="padding-left: 16px;" src="../assets/images/paper.png">
               <span class="pt"  v-if="file.pro_BP.file_title!==''">{{file.pro_BP.file_title}}</span>
           </div>
-          <!--<div class="item" style="margin-top:24px;height: 49px;">-->
-            <!--<div class="bot-det" v-show="project.pro_status!=''">-->
-              <!--<span class="det-title">运营状态：</span>-->
-              <!--<span class="del-info" v-if="project.pro_status.status_name!==''">{{project.pro_status.status_name}}</span>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;<div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">&ndash;&gt;-->
-            <!--<div class="bot-det" style="margin-left:150px;">-->
-              <!--<span class="det-title">产品链接：</span>-->
-              <!--<span class="del-info"><a :href="project.pro_website"  target=_blank>{{project.pro_website}}</a></span>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;<div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">&ndash;&gt;-->
-            <!--<div class="bot-det" v-show="project.pro_company_scale.comp_scale_value!=''" style="float:right;">-->
-              <!--<span class="det-title">公司规模：</span>-->
-              <!--<span class="del-info">{{project.pro_company_scale.comp_scale_value}} 人</span>-->
-            <!--</div>-->
-          <!--</div>-->
           <div class="line"></div>
           <div class="ul-lists" style="margin-top:16px;padding: 0">
             <div class="item" v-show="project.goodness.pro_goodness!=''||project.goodness.pro_market_genera!=''||project.goodness.pro_business_model!=''||project.goodness.pro_service!=''">
@@ -96,34 +74,30 @@
                          <span style="color:#475669">{{project.goodness.pro_goodness.goodness_title}}&nbsp;:&nbsp;</span>
                       {{project.goodness.pro_goodness.goodness_desc}}
                        </span>
-                <!--<span>{{highlights.goodness_desc}}</span>-->
               </div>
               <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_market_genera.goodness_desc!=''&&project.goodness.pro_market_genera.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_market_genera.goodness_title}}&nbsp;:&nbsp;</span>
                       {{project.goodness.pro_market_genera.goodness_desc}}
                        </span>
-                <!--<span>{{highlights.goodness_desc}}</span>-->
               </div>
               <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_business_model.goodness_desc!=''&&project.goodness.pro_business_model.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_business_model.goodness_title}}</span>&nbsp;:&nbsp;
                       {{project.goodness.pro_business_model.goodness_desc}}
                        </span>
-                <!--<span>{{highlights.goodness_desc}}</span>-->
               </div>
               <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_service.goodness_desc!=''&&project.goodness.pro_service.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_service.goodness_title}}&nbsp;:&nbsp;</span>
                       {{project.goodness.pro_service.goodness_desc}}
                        </span>
-                <!--<span>{{highlights.goodness_desc}}</span>-->
               </div>
             </div>
           </div>
         </div>
         <!--核心团队-->
-        <div class="ul-lists" style="margin-top: 16px;background: rgb(249, 250, 252); padding: 20px;" v-show="team.core_users!=''||team.tag!=''">
+        <div class="ul-lists" style="margin-top: 16px;background: rgb(249, 250, 252); padding: 20px;" v-show="team.core_users!='' || team.tag!=''">
           <div class="item">
             <span class="title"><img class="img" src="../assets/images/team.png">核心团队</span>
           </div>

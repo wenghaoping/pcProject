@@ -462,7 +462,7 @@
         let node = this.$store.state.pageANDSelect.node | 0;
         for(let i=0; i<9;i++){this['node'+i] = false};
         this['node' + node] = true;
-        this.searchinput = this.$store.state.pageANDSelect.searchinput;
+        this.searchinput = this.$store.state.pageANDSelect.proSearchinput;
         this.pro_schedule = node;
       },//从vuex中取数据
 
@@ -515,7 +515,7 @@
         this.loading=true;
         this.getPra.user_id=localStorage.user_id;
         this.getPra.search=this.searchinput;
-        this.$store.state.pageANDSelect.searchinput = this.searchinput;
+        this.$store.state.pageANDSelect.proSearchinput = this.searchinput;
         this.currentPage=1;
         this.getPra.page=1;
         this.$http.post(this.getProjectListURL,this.getPra)

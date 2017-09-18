@@ -377,6 +377,7 @@ export default {
       this.$router.push({ name: 'createContacts', query: { card_id:row.card_id}})
       this.setRouterData();
     },//点击编辑按钮,跳转
+
     setRouterData(){
       this.$store.state.pageANDSelect.getPra = this.getCon;
       this.$store.state.pageANDSelect.concurrentPage = this.currentPage;
@@ -385,7 +386,9 @@ export default {
       this.getCon=this.$store.state.pageANDSelect.getCon;
       this.getCon.page=this.$store.state.pageANDSelect.concurrentPage || 1;
       this.currentPage=this.$store.state.pageANDSelect.concurrentPage || 1;
+      this.searchinput = this.$store.state.pageANDSelect.conSearchinput;
     },//从vuex中取数据
+
     getTagId(data){
       let arr = [];
       for(let i=0; i<data.length; i++){
@@ -471,6 +474,7 @@ export default {
         this.loading=true;
         this.getCon.user_id=localStorage.user_id;
         this.getCon.search=this.searchinput;
+        this.$store.state.pageANDSelect.conSearchinput = this.searchinput;
         this.currentPage=1;
         this.getCon.page=1;
         this.$http.post(this.URL.getConnectUser,this.getCon)
