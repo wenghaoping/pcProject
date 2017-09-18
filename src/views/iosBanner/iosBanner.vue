@@ -49,8 +49,10 @@
     z-index: 9999;
   }
     .iosBanner {
-      width: 750px;
-    margin: 0 auto;
+      width: 100%;
+        img{
+          width: 100%;
+        }
     }
   }
 </style>
