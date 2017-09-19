@@ -61,7 +61,8 @@
           <div class="item" style="margin-top:33px;">
             <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
           </div>
-          <div class="item" v-if="file.pro_BP.length!=0" style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;" >
+          <div class="item"  style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;" >
+            <!--v-if="file.pro_BP.length!=0"-->
               <img class="img" style="padding-left: 16px;" src="../assets/images/paper.png">
               <span class="pt"  v-if="file.pro_BP.file_title!==''">{{file.pro_BP.file_title}}</span>
           </div>
@@ -185,7 +186,8 @@
               {{financing.pro_finance_use}}
             </div>
           </div>
-          <div class="item" style="margin-top:6px;" v-show="financing.pro_history_finance.length!=0">
+          <div class="item" style="margin-top:6px;">
+            <!-- v-show="financing.pro_history_finance.length!=0"-->
             <div>
               <span class="sec-title" style="margin-top: 20px">历史融资</span>
               <div class="v-progress-table" style="padding-left: 10px">
