@@ -50,6 +50,11 @@
                 setTimeout(()=>{this.$router.push({name: 'myProject',query: {activeTo: 0}});},50);
               })
             this.loading=false;
+          }else if(sessionStorage.userId !== localStorage.user_id){
+            //推送者和接受者是不是一人时
+            this.$tool.warning("此链接不是分享给您的,请进入正确的链接");
+            sessionStorage.clear();//把默认值清空;
+            setTimeout(()=>{ this.$router.push({name: 'myProject',query: {activeTo: 0}}); },1000);
           }
         },
         watch: {

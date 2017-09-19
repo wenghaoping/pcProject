@@ -39,7 +39,7 @@
           <el-button  @click="handleClose" type="primary">取消</el-button>
           <el-button  @click="syncTrue"  type="primary">同步</el-button>
           <el-checkbox v-model="cover" style="margin-left: 14px;">允许覆盖</el-checkbox>
-          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" style="display: none">全选</el-checkbox>
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         </div>
       </div>
 

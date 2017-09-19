@@ -795,25 +795,25 @@
       },
       //推送
       push(){
-        this.loading=true;
+
         let dealData = [];
         this.pushData.forEach(x => {
-
           if (x.type === 'card') {
             dealData.push([x.card.card_id, x.type, x.card.user_email])
           } else {
             dealData.push([x.card.user_id, x.type, x.card.user_email])
           }
         })
-        if (this.pushData.length>0 && dealData.length === 0) {
+        if (this.pushData.length == 0 && dealData.length === 0) {
           this.$tool.error('请选择推送人脉')
         } else if (dealData.length > this.pushCount) {
           this.$tool.error('推送人数不能超过今日剩余推送次数')
-        } else if(this.pushTitle.length>100){
+        } else if(this.pushTitle.length > 100){
             this.$tool.error('标题不能大于100个字')
-        }else if(this.pushBody.length>500){
+        }else if(this.pushBody.length > 500){
             this.$tool.error('正文不能大于500个字')
         }else {
+          this.loading=true;
           this.$http.post(this.URL.pushProject, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
@@ -827,9 +827,15 @@
               this.$emit('openPreview', false);
               this.$emit('previewPush',false);
               this.loading=false;
-             this.handleClose();
+              this.handleClose();
+            }else{
+              this.loading=false;
             }
           })
+            .catch(err =>{
+              this.$tool.console(err,2);
+              this.loading=false;
+            })
         }
       },
       //关闭弹窗前回调

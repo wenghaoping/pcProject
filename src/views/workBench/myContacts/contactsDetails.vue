@@ -50,7 +50,7 @@
                   <div class="li title">{{projectList.pro_intro}}</div>
                   <div class="img" v-show="projectList.is_exclusive==1"><img src="../../../assets/images/dujia.png"></div>
                   <div class="img" v-show="projectList.is_exclusive==2"><img src="../../../assets/images/feidujia.png"></div>
-                  <div class="li">
+                  <div>
                     <span class="tags" v-for="industry in projectList.pro_industry">{{industry}}</span>
                   </div>
                   <div class="li" style="margin-top: 16px;">

@@ -444,7 +444,7 @@ const tool={
     Notification.warning({
       message: text,
       offset: 300,
-      duration:1500
+      duration:3000
     })
   },//警告弹窗,(黄色叹号)
 

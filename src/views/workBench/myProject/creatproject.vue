@@ -250,7 +250,7 @@
                     <el-form-item label="　"
                                   :rules="[{max:8,message: '最大8个字符'}]"
                                   prop="goodness.pro_business_model.goodness_title">
-                      <el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="产品概况"></el-input>
+                      <el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="产品概况"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="19">
@@ -260,7 +260,7 @@
                     <el-form-item label="　"
                                   :rules="[{max:1000,message: '最大1000个字符'}]"
                                   prop="goodness.pro_business_model.goodness_desc">
-                      <el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
+                      <el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
                                  @focus="focus(3)" @blur="blur(3)"></el-input>
                     </el-form-item>
                   </el-col>
@@ -270,7 +270,7 @@
                     <el-form-item label="　"
                                   :rules="[{max:8,message: '最大8个字符'}]"
                                   prop="goodness.pro_service.goodness_title">
-                      <el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="商业模式"></el-input>
+                      <el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="商业模式"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="19">
@@ -280,7 +280,7 @@
                     <el-form-item label="　"
                                   :rules="[{max:1000,message: '最大1000个字符'}]"
                                   prop="goodness.pro_service.goodness_desc">
-                      <el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="用来说明通过什么方式盈利"
+                      <el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="用来说明通过什么方式盈利"
                                  @focus="focus(4)" @blur="blur(4)"></el-input>
                     </el-form-item>
                   </el-col>
@@ -535,7 +535,7 @@
         }
       },//上传前的验证
 
-
+      ////项目同步
       changeSyncProjectDetail(msg){
         this.syncCreatProjectDetailDisplay=msg;
         this.dialogVisible=false;
@@ -560,7 +560,7 @@
             syncData.project.pro_stage = {};
             syncData.project.pro_stage={stage_id: ""};
           }else{
-            syncData.project.pro_stage;
+//            syncData.project.pro_stage = syncData.project.pro_stage.stage_id;
           }
           syncData.project.pro_industry.length==0 ? syncData.project.pro_industry=[] : syncData.project.pro_industry;
 
@@ -598,12 +598,16 @@
                 if(x==index){
                   if(x=='project' || x=='company'){
                     for(let key in syncData[index]){
-                      if(key=='pro_area'){            //后端都没有,跳过处理
+                      if(key=='pro_area'){
                         if(this.project.pro_area.pid == ''){
                           this.project.pro_area.pid = syncData[index][key].pid;
                           this.area1Change(syncData[index][key].pid);
                           localStorage.pid = syncData[index][key].pid;
                           setTimeout(()=>{this.project.pro_area.area_id = syncData[index][key].area_id},100)
+                        }
+                      }else if(key=='pro_stage'){
+                        if(this.project.pro_stage.stage_id == ''){
+                          this[x][key]=syncData[index][key];
                         }
                       }else if(this[x][key]==''){
                         this[x][key]=syncData[index][key];

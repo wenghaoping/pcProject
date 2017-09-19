@@ -57,7 +57,7 @@
                         <el-button slot="trigger" type="primary">批量上传</el-button>
                       </el-upload>
                   </span>
-                  <span class="f-tips fl" style="margin-left: 8px;"><i>项目文件仅自己可见</i><i>支持pdf、ppt、doc、png，jpg，jpeg文件格式，单个文件最大50M</i></span>
+                  <span class="f-tips fl" style="margin-left: 8px;"><i>项目文件仅自己可见</i><i>支持pdf、ppt、pptx、doc、docx、rar、zip、png、jpg、jpeg文件格式，单个文件最大50M</i></span>
                 </div>
                 <div class="block-info block-cc-other" style="margin-bottom: 15px;"
                      v-for="(list, index) in uploadShow2.lists"
@@ -318,7 +318,7 @@
                         <el-form-item label="　"
                                       :rules="[{max:8,message: '最大8个字符'}]"
                                       prop="goodness.pro_business_model.goodness_title">
-                          <el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="产品概况"></el-input>
+                          <el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="产品概况"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="19">
@@ -328,7 +328,7 @@
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
                                       prop="goodness.pro_business_model.goodness_desc">
-                          <el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
+                          <el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
                                      @focus="focus(3)" @blur="blur(3)"></el-input>
                         </el-form-item>
                       </el-col>
@@ -338,7 +338,7 @@
                         <el-form-item label="　"
                                       :rules="[{max:8,message: '最大8个字符'}]"
                                       prop="goodness.pro_service.goodness_title">
-                          <el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="商业模式"></el-input>
+                          <el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="商业模式"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="19">
@@ -348,7 +348,7 @@
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
                                       prop="goodness.pro_service.goodness_desc">
-                          <el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="用来说明通过什么方式盈利"
+                          <el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="用来说明通过什么方式盈利"
                                      @focus="focus(4)" @blur="blur(4)"></el-input>
                         </el-form-item>
                       </el-col>
@@ -2696,6 +2696,10 @@
                             this.area1Change(syncData[index][key].pid);
                             localStorage.pid = syncData[index][key].pid;
                             setTimeout(()=>{this.project.pro_area.area_id = syncData[index][key].area_id},100);
+                          }
+                        }else if(key=='pro_stage'){       //项目轮次单独处理
+                          if(this.project.pro_stage.stage_id == ''){
+                            this[x][key]=syncData[index][key];
                           }
                         }else if(this.$tool.isArray(this[x][key])){//标签需要数组合并
                           this[x][key] = [...this[x][key], ...syncData[index][key]];//数组合并

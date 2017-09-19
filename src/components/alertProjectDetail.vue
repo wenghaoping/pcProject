@@ -188,16 +188,10 @@
           <div class="item" style="margin-top:6px;" v-show="financing.pro_history_finance.length!=0">
             <div>
               <span class="sec-title" style="margin-top: 20px">历史融资</span>
-              <!--                <div class="v-progress" style="height: 121px;">
-                                <span class="circle circle-s">&nbsp;</span>
-                                <span class="v-line v-line-1">&nbsp;</span>
-                                <span class="circle circle-e">&nbsp;</span>
-                              </div>-->
               <div class="v-progress-table" style="padding-left: 10px">
                 <div class="v-progress-txt" v-for="finance in financing.pro_history_finance">
-                  <!--<span class="radio_line"><span class="radio"></span></span>-->
                   <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
-                  <span class="pro-txt-1">{{finance.finance_time}}</span>
+                  <span class="pro-txt-1">{{finance.finance_time  | timeToReallTime}}</span>
                   <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                   <span class="pro-txt-3" style="width: 68px;">{{finance.belongs_to_stage.stage_name}}</span>
                   <el-tooltip class="item" effect="dark"  placement="top" >
@@ -219,21 +213,8 @@
           </div>
           <div class="item" style="margin-top:6px;">
             <div>
-              <!--                <div class="v-progress" style="height: 182px;">
-                                <span class="circle circle-s">&nbsp;</span>
-
-                                <span class="v-line v-line-1">&nbsp;</span>
-                                <span class="circle circle-c">&nbsp;</span>
-                                <span class="v-line v-line-2">&nbsp;</span>
-
-                                <span class="circle circle-e">&nbsp;</span>
-                              </div>-->
               <div class="v-progress-table">
                 <div class="v-progress-txt" v-for="develop in milepost.pro_develop">
-                    <!--<span class="radio_line">-->
-                      <!--<span class="radio"></span>-->
-                      <!--&lt;!&ndash;<span class="l-line"></span>&ndash;&gt;-->
-                    <!--</span>-->
                   <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                   <span class="pro-txt-1">
                       {{develop.dh_start_time | timeToReallTime}}
@@ -472,10 +453,10 @@
           //公司运营
           this.company=data.company;
          //融资信息
-          this.$tool.setTime(data.financing.pro_history_finance,'finance_time');
+//          this.$tool.setTime(data.financing.pro_history_finance,'finance_time');
           this.financing=data.financing;
           //里程碑
-          this.$tool.setTime(data.milepost.pro_develop,'dh_start_time');
+//          this.$tool.setTime(data.milepost.pro_develop,'dh_start_time');
           this.milepost=data.milepost;
           //FA业务
           this.private=data.private;

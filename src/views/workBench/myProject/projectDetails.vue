@@ -139,18 +139,6 @@
                     <el-button type="text" size="mini" @click="download(file.pro_BP.file_id)">下载</el-button>
                   </div>
                 </div>
-                <!--<div class="item" style="margin-top:24px;height: 49px;">-->
-                  <!--<div class="bot-det" v-if="project.pro_status!=''">-->
-                   <!---->
-                  <!--</div>-->
-                  <!--<div class="bot-det" style="margin-left:170px;" v-if="project.pro_website!=''">-->
-                   <!---->
-                  <!--</div>-->
-                  <!--<div class="bot-det" style="float:right;" v-if="project.pro_company_scale!=''">-->
-                  <!---->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--<div class="line"></div>-->
                 <div class="ul-lists" style="margin-top:16px;padding: 0">
                   <div class="item" v-show="project.goodness.pro_goodness!=''||project.goodness.pro_market_genera!=''||project.goodness.pro_business_model!=''||project.goodness.pro_service!=''">
                     <span class="title" style="font-size: 16px;">项目亮点</span>
@@ -921,7 +909,7 @@
     },
     computed: {
       jindiaoTitle(){
-          return '尽调项目：'+this.companyname
+        return '尽调项目：'+this.project.pro_intro;
       }
     },
     components: {
@@ -1015,8 +1003,8 @@
         }
       },//一键尽调按钮
       search(data){
-        if(data.com_id==-1) {
-          this.$confirm('把'+data.newName+'添加为您的公司?, 是否继续?', '提示', {
+        /*if(data.com_id==-1) {
+          this.$confirm('把'+data.newName+'设置为您的公司?, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -1037,11 +1025,37 @@
           });
         }else if(data.com_id==-2){
           this.$tool.error("匹配不到你要搜索的公司,请重新继续输入")
-        }
-        else {
+        } else {
           this.companyid=data.com_id;
           this.companyname=data.newName;
           this.searchDisplay = true;
+        }*/
+
+        if(data.com_id==-2){
+          this.$tool.error("匹配不到你要搜索的公司,请重新继续输入")
+        } else {
+          this.$confirm('把'+data.newName+'设置为您的公司?, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$http.post(this.URL.updateProjectCompany,{user_id:localStorage.user_id,pro_company_name:data.newName,project_id:this.project.project_id})
+              .then(res=>{
+                console.log(res);
+                if(res.data.status_code===2000000){
+                  this.$tool.success("修改成功");
+                  this.companySearchDisplay = false;
+                  this.companyid=data.com_id;
+                  this.companyname=data.newName;
+                  this.searchDisplay = true;
+                }
+              })
+              .catch(err=>{
+                this.$tool.console(err);
+              })
+          }).catch(() => {
+            this.companySearchDisplay = false;
+          });
         }
       },//点击下拉选择公司后
       dialogVisibleTo(){
@@ -1059,6 +1073,9 @@
       },//返回上一层
       closeSearchDisplay(msg){
         this.searchDisplay=msg;
+        if(!msg){
+            this.getProjectDetail();
+        }
       },//传递给一键尽调窗口
       openPreview(msg){
         this.previewDisplay=true;
@@ -1118,7 +1135,7 @@
               let data = res.data.data;
                // 项目介绍
 //              if(data.project.pro_company_name==''){data.project.pro_company_name=='-'}
-               if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money=" ";}
+              if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money=" ";}
               if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title=" ";}
               if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name=' '}
               if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after=' '}
@@ -1149,16 +1166,9 @@
               this.pro=data.pro_FA;
               //brand
               this.brands=data.brands;
-//              if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
-//              if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-              if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
-//              if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
 
-//              this.project=data;
-//              this.project.follow_user=data.follow_user;
-//              this.project.pro_source=this.getProjectTag(data.tag);
-//              this.project.team_tag=this.getteam_tag(data.tag);
-//              this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
+              if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
+
               resolve(3);
               this.loading=false;
             })

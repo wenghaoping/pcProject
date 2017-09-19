@@ -280,35 +280,7 @@ export default {
               })
           }
         }
-/*        else if(type==2){ //继续
-          let pushData=new Object;
-          pushData.user_id= localStorage.user_id;
-          pushData.card_id=this.user.card_id;
-          pushData.email=this.email2.nameEmail;
-          pushData.title=this.email.title;
-          pushData.body=this.email.body;
-          pushData.project_ids=new Array;
-          pushData.project_ids.push(this.projectRadio);
-          this.$http.post(this.URL.pushUser, pushData)
-            .then(res => {
-              let data=res.data.data;
-//            this.$tool.console(res);
-              this.user={};
-              this.email2.nameEmai="";
-              this.projectList=[];
-              this.tableData3 =[];
-              this.email=this.firstInData.email;
-              this.user=this.firstInData.user;
-              this.email2=this.firstInData.email2;
-              this.$tool.success("推送成功");
-              this.remoteMethod("");
-              this.getpushCount();
-            })
-            .catch(err => {
-              this.$tool.console(err);
-              this.$tool.success("推送失败");
-            })
-        }*/
+
       }else{
           this.$tool.warning("您今日的推送次数已用完")
       }
