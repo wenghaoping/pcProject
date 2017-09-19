@@ -41,7 +41,8 @@
               </div>
             </div>
             <!--项目库-->
-            <div class="item" v-if="projectLists.length!=0">
+            <div class="item" >
+              <!--v-show="projectLists.length!=0"-->
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/projectColl.png">项目库</span>
               </div>
@@ -75,7 +76,8 @@
               <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow" v-if="projectLists.length>2">展开</span>
             </div>
             <!--投资案例-->
-            <div class="item" v-if="contacts.project_case.length!=0">
+            <div class="item" >
+              <!--v-show="contacts.project_case.length!=0"-->
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/anli.png">投资案例</span>
               </div>
@@ -90,7 +92,7 @@
               </div>
             </div>
             <!--个人描述-->
-            <div class="item" v-if="contacts.user_intro!=''">
+            <div class="item" v-show="contacts.user_intro!=''">
               <div class="block clearfix" style="margin-bottom: 33px;">
                 <span class="title fl"><img class="img1" src="../../../assets/images/miaoshu.png">个人描述</span>
               </div>
@@ -185,7 +187,8 @@
                     </el-select>
                   </div>
                   <div class="item_lists">
-                    <div class="item_list" v-for="(enjoyProject,index) in enjoyProjects" v-if="enjoyProjects.length!=0">
+                    <div class="item_list" v-for="(enjoyProject,index) in enjoyProjects">
+                      <!-- v-show="enjoyProjects.length!=0"-->
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{enjoyProject.match}}%</span>
@@ -226,7 +229,8 @@
                         <div class="img"><img src="../../../assets/images/feidujia.png" v-if="enjoyProject.is_exclusive==2"></div>
                       </div>
                     </div>
-                    <div class="emptyImg" v-if="enjoyProjects.length==0">
+                    <div class="emptyImg" >
+                      <!--v-show="enjoyProjects.length==0"-->
                       <img src="../../../assets/images/zanwushuju.png">
                     </div>
                   </div>
@@ -255,7 +259,8 @@
               <div v-show="!tabs">
                 <div class="main_right main_left">
                   <div class="item_lists">
-                    <div class="item_list" v-for="(matchProject,index) in matchProjects" v-if="matchProjects.length!=0">
+                    <div class="item_list" v-for="(matchProject,index) in matchProjects" >
+                      <!--v-if="matchProjects.length!=0"-->
                       <div class="list_header">
                         <span class="pipei">匹配度 : </span>
                         <span class="bili">{{matchProject.match}}%</span>
