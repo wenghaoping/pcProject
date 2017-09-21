@@ -112,7 +112,7 @@
 
                     <el-tooltip class="item" effect="dark" placement="top-end">
                       <div slot="content">从微天使创投数据库自动获取公司行业，融资轮次<br/>历史融资，核心团队及里程碑等项目信息</div>
-                      <button class="tong" @click="syncOne">一键同步</button>
+                      <el-button class="tong" @click="syncOne" type="text">一键同步</el-button>
                     </el-tooltip>
                     <span class="ques">
                         <el-tooltip placement="bottom-end">
@@ -755,11 +755,11 @@
             </el-collapse-transition>
           </div>
 
-          <!--=================================FA签约协议===============================-->
+          <!--=================================FA业务===============================-->
           <div class="d_jump"></div>
           <div class="item-block">
             <div class="block-tt-line">
-              <span class="b-title">FA签约协议</span>
+              <span class="b-title">FA业务</span>
               <span class="b-line"></span>
               <span class="b-hander" @click="closeDiv('SignShow')" v-show="SignShow">收起</span>
               <span class="b-hander" @click="openDiv('SignShow')" v-show="!SignShow">展开</span>
@@ -1235,8 +1235,8 @@
         setFileDisplay: false,
         syncProjectDetailDisplay: false,//同步弹窗
         syncDialogDisplay:false,//一键同步提示框
-        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload,//上传地址
-        uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile,//上传地址
+        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
+        uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
         project_id: "",//项目Id全局保存
         planList: [],//商业计划书上传列表
         fileList: [],//批量上传文件列表
@@ -2474,7 +2474,7 @@
               allData.company.pro_company_scale=allData.company.pro_company_scale.comp_scale_id;
 
               allData.company.pro_status=allData.company.pro_status.status_id;
-              console.log(allData);
+//              console.log(allData);
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
                   this.loading=false;
@@ -2876,6 +2876,9 @@
     .radios{
       width: 470px;
       /*display: inline-block;*/
+    }
+    .tong:hover {
+      color:white;
     }
   }
   .edit-page .item-block .block-tt-line{

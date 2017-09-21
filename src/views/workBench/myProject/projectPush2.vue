@@ -60,10 +60,10 @@
             <!--姓名-->
             <el-table-column
               label="姓名"
-              prop="name"
+              prop="card.user_real_name"
               min-width="100">
               <template scope="scope">
-                <el-tooltip placement="top">
+                <el-tooltip placement="top" :disabled="scope.row.card.user_real_name.length > 5 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.card.user_real_name}}</div>
                   </div>
@@ -76,9 +76,10 @@
             <!--职位-->
             <el-table-column
               label="职位"
+              prop="card.user_company_career"
               min-width="100">
               <template scope="scope">
-                <el-tooltip placement="top">
+                <el-tooltip placement="top" :disabled="scope.row.card.user_company_career.length > 5 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.card.user_company_career}}</div>
                   </div>
@@ -92,8 +93,8 @@
             <el-table-column
               label="公司"
               min-width="100">
-              <template scope="scope">
-                <el-tooltip placement="top">
+              <template scope="scope" >
+                <el-tooltip placement="top" :disabled="scope.row.card.user_company_name.length > 5 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.card.user_company_name}}</div>
                   </div>
@@ -107,8 +108,8 @@
             <el-table-column
               label="邮箱"
               min-width="100">
-              <template scope="scope">
-                <el-tooltip placement="top">
+              <template scope="scope" >
+                <el-tooltip placement="top" :disabled="scope.row.card.user_email.length > 9 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.card.user_email}}</div>
                   </div>
@@ -123,7 +124,7 @@
               label="领域"
               min-width="100">
               <template scope="scope">
-                <el-tooltip placement="top">
+                <el-tooltip placement="top" :disabled="scope.row.card.user_email.length > 9 ? false:true">
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.card.user_invest_industry_str}}</div>
                   </div>
@@ -138,14 +139,7 @@
               label="匹配度"
               min-width="100">
               <template scope="scope">
-                <el-tooltip placement="top">
-                  <div slot="content">
-                    <div class="tips-txt" style="color:#FC703E">{{scope.row.match}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.match}}%
-                  </div>
-                </el-tooltip>
+                {{scope.row.match}}%
               </template>
             </el-table-column>
           </el-table>
@@ -606,6 +600,7 @@
           })
         }
       },
+
       //项目搜索
       remoteMethod(query) {
         this.filterString = query;

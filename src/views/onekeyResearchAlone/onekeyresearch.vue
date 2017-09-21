@@ -772,7 +772,7 @@
                 this.chartData = res.data.data;
                 if(res.data.data){
                   this.data1=res.data.data[0].project_name;
-                  console.log(this.data1);
+//                  console.log(this.data1);
                 }else{
                   this.data1=' ';
                 }
@@ -895,9 +895,10 @@
 //        const openUrl = this.URL.openUrl;
 //        const url=encodeURI(openUrl+"?company="+companyName+"&id="+this.id+"&includeInvestorMap="+this.includeInvestorMap);
 //        window.open(url);
-            const Url='https://dev.weitianshi.cn/workbench#/';
+//            const Url='https://dev.weitianshi.cn/workbench#/';
+        const oneUrl = this.URL.oneUrl;
             const data11=encodeURI(data);
-        const url=encodeURI(Url+"onekeyResearch?company="+data11);
+        const url=encodeURI(oneUrl+"onekeyResearch?company="+data11);
         window.open(url);
       },//跳转到新的一键尽调
       getRouter(){

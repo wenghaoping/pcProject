@@ -57,7 +57,7 @@ export default {
           localStorage.projectId=this.$route.query.project_id;
           localStorage.userId=this.$route.query.user_id;
           localStorage.flog=this.$route.query.flog;
-          console.log(this.$route);
+//          console.log(this.$route);
           if((this.$route.query.user_id!==localStorage.user_id)&&(this.$route.query.flog==='mail')&&(this.$route.query.type==='user')){
             this.$http.post(this.URL.importProject,{user_id: this.$route.query.user_id, project_id:this.$route.query.project_id})
               .then(res=>{
@@ -88,13 +88,10 @@ export default {
   watch:{
    // 路由判断显示广告
     "$route" (to,form){
-//        console.log(this.$route);
-//        console.log(to.path);
-//        console.log(form.path);
+
       if((to.path==='/workBench/myContacts'|| to.path==='/workBench/followup'||to.path==='/workBench/')&&this.willShow){
         this.show=true;
         this.willShow=true;
-//        console.log(to.path);
       }else{
         this.show=false;
         this.willShow=false;
@@ -102,7 +99,6 @@ export default {
       if((form.path==='/workBench/myContacts'|| form.path==='/workBench/followup'||form.path==='/workBench/')&&this.willShow){
         this.show=true;
         this.willShow=true;
-//        console.log(to.path);
       }else{
         this.show=false;
         this.willShow=false;

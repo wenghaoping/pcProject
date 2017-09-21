@@ -56,7 +56,7 @@
               <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
             <!--</div>-->
             <div class="item height" style="margin-top:40px;    display: inline-block;">
-            <span id="bottom_width1" class="project"  style="padding-left: 6px;padding-right: 5px;">
+            <span id="bottom_width1" class="project"  style="padding-left: 6px;">
               <span class="title">项目完整度:</span>
               <span class="number" v-if="project.pro_total_score!=''">{{project.pro_total_score}}%</span>
               <span class="number" v-else>去完善</span>
@@ -158,15 +158,15 @@
                     </div>
                     <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_business_model.goodness_desc!=''&&project.goodness.pro_business_model.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{project.goodness.pro_business_model.goodness_title}}</span>&nbsp;:&nbsp;
-                      {{project.goodness.pro_business_model.goodness_desc}}
+                         <span style="color:#475669">{{project.goodness.pro_service.goodness_title}}</span>&nbsp;:&nbsp;
+                      {{project.goodness.pro_service.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
                     <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_service.goodness_desc!=''&&project.goodness.pro_service.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{project.goodness.pro_service.goodness_title}}&nbsp;:&nbsp;</span>
-                      {{project.goodness.pro_service.goodness_desc}}
+                         <span style="color:#475669">{{project.goodness.pro_business_model.goodness_title}}&nbsp;:&nbsp;</span>
+                      {{project.goodness.pro_business_model.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
@@ -403,7 +403,6 @@
                 </div>
               </div>
             </el-tab-pane>
-
             <el-tab-pane label="跟进记录" name="flow">
               <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData"
                        @getfollowid="getFollowId" @changefollowdata="changefollowdata"></folowup>
@@ -597,7 +596,7 @@
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-
+        <div style="height: 50px;"></div>
       </div>
     </div>
     <!--一键尽调弹窗-->
@@ -633,10 +632,11 @@
                @closeFollow="closeFollow"></addfollow>
 
     <!--项目推送弹窗,项目入口弹窗-->
-    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="project.project_id" :pro-name="project.pro_name" :pro-intro="project.pro_intro"   :emitPush="emitPush"
+    <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="project.project_id"
+                  :pro-name="project.pro_name" :pro-intro="project.pro_intro"   :emitPush="emitPush"
                   @openPreview="openPreview"
                   @closeProjectPush2="closeProjectPush2"
-                  @previewPush="previewPush"></projectpush2>
+                  @previewPush="previewPush"></projectpushtopro>
 
     <!--项目推送弹窗,人脉入口弹窗============================-->
     <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage"
@@ -664,7 +664,7 @@
   import filemanagement from './fileManagement.vue'
   import alertcontactsdetail from './alertContactsDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
-  import projectpush2 from './projectPush2.vue'
+  import projectpushtopro from './projectPushToPro.vue';
   import projectpreview from '../myContacts/projectPreview.vue'
   import projectpush from '../myContacts/projectPush.vue'
   export default {
@@ -918,7 +918,7 @@
       filemanagement,
       alertcontactsdetail,
       addfollow,
-      projectpush2,
+      projectpushtopro,
       projectpreview,
       projectpush
     },
@@ -1003,34 +1003,6 @@
         }
       },//一键尽调按钮
       search(data){
-        /*if(data.com_id==-1) {
-          this.$confirm('把'+data.newName+'设置为您的公司?, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.$http.post(this.URL.updateProjectCompany,{user_id:localStorage.user_id,pro_company_name:data.newName,project_id:this.project.project_id})
-              .then(res=>{
-                console.log(res);
-                if(res.data.status_code===2000000){
-                  this.$tool.success("修改成功");
-                  this.companySearchDisplay = false;
-                }
-              })
-              .catch(err=>{
-                this.$tool.console(err);
-              })
-          }).catch(() => {
-
-          });
-        }else if(data.com_id==-2){
-          this.$tool.error("匹配不到你要搜索的公司,请重新继续输入")
-        } else {
-          this.companyid=data.com_id;
-          this.companyname=data.newName;
-          this.searchDisplay = true;
-        }*/
-
         if(data.com_id==-2){
           this.$tool.error("匹配不到你要搜索的公司,请重新继续输入")
         } else {
@@ -1041,13 +1013,17 @@
           }).then(() => {
             this.$http.post(this.URL.updateProjectCompany,{user_id:localStorage.user_id,pro_company_name:data.newName,project_id:this.project.project_id})
               .then(res=>{
-                console.log(res);
+//                console.log(res);
                 if(res.data.status_code===2000000){
                   this.$tool.success("修改成功");
-                  this.companySearchDisplay = false;
-                  this.companyid=data.com_id;
-                  this.companyname=data.newName;
-                  this.searchDisplay = true;
+                  if(data.com_id!=-1){
+                    this.companySearchDisplay = false;
+                    this.companyid=data.com_id;
+                    this.companyname=data.newName;
+                    this.searchDisplay = true;
+                  }else{
+                    this.companySearchDisplay = false;
+                  }
                 }
               })
               .catch(err=>{
@@ -1709,7 +1685,7 @@
 
       getWX(){
         new Promise((resolve, reject)=>{
-        this.$http.post(this.URL.getProjectQr, {
+        this.$http.post(this.URL.getProjectQrOur, {
           user_id: localStorage.user_id,
           width:1000,
           path:"pages/oneKeyResearch/oneKeyResearch?id="+this.project.project_id,

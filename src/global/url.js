@@ -15,7 +15,8 @@ export default
   // weitianshiLine:"https://pc.debug.weitianshi.cn/",//接口上传
   //  weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
   // weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
-  openUrl:"https://www.weitianshi.cn/workbench/#/API/DD",
+  openUrl:"https://www.weitianshi.cn/workbench/#/API/DD",//一键尽调对外接口
+  oneUrl:"https://www.weitianshi.cn/workbench/#/",//一键尽调对内接口
   //一键尽调跳转用接口
   // openUrl:"http://192.168.9.19:8090/#/API/DD",
   // openUrl:"https://dev.weitianshi.cn/workbench/#/API/DD",
@@ -31,7 +32,7 @@ export default
 
 
   /*项目批量上传*/
-  projectUpload:"api/v/project/projectUpload?token=" + localStorage.token,
+  projectUpload:"api/v/project/projectUpload?token=",
 
   /*项目列表页*/
   getNodeCount:"api/v/project/getNodeCount", //项目节点数量
@@ -98,7 +99,7 @@ export default
   bindTelephone:'/api/user/bindUser',//绑定手机号码
 
   /*我的人脉*/
-  uploadConnectCard:"api/v/user/uploadConnectCard?token=" + localStorage.token,//人脉图片上传
+  uploadConnectCard:"api/v/user/uploadConnectCard?token=",//人脉图片上传
 
   userTitleSift:"api/v/user/userTitleSift",//人脉列表表头
   getConnectUser:"api/v/user/getConnectUser",//获取人脉列表
@@ -122,7 +123,7 @@ export default
   deleteAtUpload:"api/v/project/deleteAtUpload",  //bp文件软删除
   deleteAtFile:"api/v/project/deleteAtFile",  //项目文件软删除
   download:"api/v/project/download",  //文件下载
-  uploadFile:"api/v/project/uploadFile?token=" + localStorage.token,  //文件上传
+  uploadFile:"api/v/project/uploadFile?token=",  //文件上传
   setFileType:"api/v/project/setFileType",  //文件分组设置
   deleteFileType:"api/v/project/deleteFileType", //删除文件分组
   renameFileType:"api/category/renameFileType",//重命名文件分组
@@ -154,7 +155,9 @@ export default
 
 
   /*使用微信二维码*/
-  getProjectQr:'https://wx.weitianshi.cn/api/wx/getProjectQr',//
+  getProjectQr: 'https://wx.weitianshi.cn/api/wx/getProjectQr',//
+  getProjectQrOur: 'api/auth/getProjectQr',
+
 
   /*上传进度*/
   uploadProgress:"api/project/uploadProgress",

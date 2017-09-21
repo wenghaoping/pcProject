@@ -97,7 +97,7 @@ export default {
   props: ["uploadDisplay"],
   data () {
     return {
-      uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload,//上传地址
+      uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
       num:0,//控制一次最多选择个数
 //      dialogUploadVisible: false,//第一个弹窗的控制
       dialogUpload2Visible:false,//第二个弹窗的控制

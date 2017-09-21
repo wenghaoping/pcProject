@@ -296,9 +296,9 @@
     },
     methods: {
       toNewOneKey(data){
-        const Url='https://dev.weitianshi.cn/workbench#/';
+        const oneUrl = this.URL.oneUrl;
         const data11=encodeURI(data);
-        const url=encodeURI(Url+"onekeyResearch?company="+data11);
+        const url=encodeURI(oneUrl+"onekeyResearch?company="+data11);
         window.open(url);
       },//跳转到新的一键尽调
       goToEdit(){

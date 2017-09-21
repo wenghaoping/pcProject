@@ -149,8 +149,8 @@
         renameIcon:renameIcon,
         uploadIcon:uploadIcon,
         deleteIcon:deleteIcon,
-        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload,//上传地址
-        uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile,//上传地址
+        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
+        uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
         project_id: this.proid,
         //加载
         loading: false,
@@ -277,7 +277,6 @@
             }).then(res=>{
               if(res.data.status_code===2000000){
                 this.$tool.success('新建文件分组成功')
-                console.log(this.$refs)
                 this.$refs['newGroupName'].resetFields();
                 this.dialogFileVisible=false;
                 this.initData();
@@ -343,7 +342,7 @@
             type_id:this.typeId,
             type_name:this.exGroupName
           }).then(res => {
-            console.log(res)
+//            console.log(res)
             if (res.data.status_code === 2000000) {
               this.loading = false;
               this.$refs['renameFrame'].resetFields();
@@ -480,7 +479,7 @@
         this.$tool.success("上传成功");
         this.loadingcheck = true;
 //        console.log('3',response,file)
-        console.log(file)
+//        console.log(file)
         this.initData(file)
         //将还未上传成功的文件重新放回newFile中
 //        console.log('重点',this.groupList)
@@ -544,9 +543,9 @@
       },
       //移动文件接口调用
       fileMove(){
-        console.log(this.radio)
+//        console.log(this.radio)
         this.$http.post(this.URL.setFileType,{user_id:localStorage.user_id,file_id:this.fileId,type:this.radio}).then(res=>{
-          console.log(res)
+//          console.log(res)
           if(res.data.status_code===2000000){
             this.fileMoveFrame=false;
             this.$tool.success('移动文件成功')

@@ -160,7 +160,6 @@
          element-loading-text="拼命加载中">
       <div class="main-box">
         <el-tabs v-model="activeName" @tab-click="handleClick" style="position: relative">
-
           <el-tab-pane name="1">
             <button class="btn" @click="addFollow">添加意向项目</button>
             <span slot="label">意向项目
@@ -311,6 +310,7 @@
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
+        <div style="height: 50px;"></div>
       </div>
     </div>
 

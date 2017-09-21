@@ -91,7 +91,7 @@
         },
         created:function(){
           this.open_session=this.$route.query.open_session;
-          console.log(this.$route.query)
+//          console.log(this.$route.query)
         }
     }
 </script>

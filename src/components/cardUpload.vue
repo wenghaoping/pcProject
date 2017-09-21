@@ -45,7 +45,7 @@
           handlePreview(file) {},
           // 上传文件之前触发
           beforeUpload(file){
-            console.log(file)
+//            console.log(file)
             let filetypes=[".png",".jpg",".jpeg"];
             let name=file.name;
             let fileend=name.substring(name.lastIndexOf("."));

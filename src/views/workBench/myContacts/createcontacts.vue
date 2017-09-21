@@ -338,7 +338,7 @@ export default {
       }
     };//电话号码正则判断
     return {
-      uploadAddress:this.URL.weitianshiLine+this.URL.uploadConnectCard,//上传地址
+      uploadAddress:this.URL.weitianshiLine+this.URL.uploadConnectCard + localStorage.token,//上传地址
       card_id:'',//名片ID
       nullRule: { validator: checkNull, trigger: 'blur' },
       PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },

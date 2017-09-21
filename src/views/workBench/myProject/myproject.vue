@@ -24,14 +24,6 @@
                 <span class="getClick"></span>
             </span>
           </el-tooltip>
-          <!--<el-tooltip placement="top" :class="{'pp-cur':node3}" >
-            <div slot="content">
-              <div style="width:50px;text-align: center;">考察 : {{nodeCount.investigate}} </div>
-            </div>
-            <span class="circle circle-5" @click="setNode('3')">
-              <span class="getClick"></span>
-            </span>
-          </el-tooltip>-->
         </div>
         <div class="pp-item pp-node" :class="{'pp-cur':node4}" @click="setNode('4')">
           <p class="pp-num pp-txt">{{nodeCount.sign}}</p>
@@ -142,7 +134,7 @@
             <el-table-column prop="pro_source" label="项目来源" width="96" :filters="pro_sourceFilters"
                              filter-placement="bottom-end"
                              column-key="pro_source"
-                             show-overflow-tooltip	>
+                             show-overflow-tooltip>
               <template scope="scope">
                 <div v-if="scope.row.pro_source.length === 0">
                   -
@@ -327,11 +319,11 @@
                @closeFollow="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpush2 :project-push-show2="projectPushDisplay2" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush"
+    <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush"
                   @openPreview="openPreview"
                   @closeProjectPush2="closeProjectPush2"
                   @previewPush="previewPush"
-    ></projectpush2>
+    ></projectpushtopro>
 
     <!--项目预览弹窗-->
     <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
@@ -354,17 +346,17 @@
 
 <script type="text/ecmascript-6">
   import ElButton from "../../../../node_modules/element-ui/packages/button/src/button";
-  import alertUpload from './alertUpload.vue'
-  import addfollow from './../followUp/addFollow.vue'
-  import projectpush2 from './projectPush2.vue'
-  import projectpreview from '../myContacts/projectPreview.vue'
+  import alertUpload from './alertUpload.vue';
+  import addfollow from './../followUp/addFollow.vue';
+  import projectpushtopro from './projectPushToPro.vue';
+  import projectpreview from '../myContacts/projectPreview.vue';
   export default {
     components: {
       ElButton,
       alertUpload,
       addfollow,
-      projectpush2,
-      projectpreview
+      projectpreview,
+      projectpushtopro
     },
     data() {
       return {
@@ -462,7 +454,8 @@
         let node = this.$store.state.pageANDSelect.node | 0;
         for(let i=0; i<9;i++){this['node'+i] = false};
         this['node' + node] = true;
-        this.searchinput = this.$store.state.pageANDSelect.proSearchinput;
+        this.searchinput = this.$store.state.pageANDSelect.proSearchinput || "";
+        console.log(this.searchinput)
         this.pro_schedule = node;
       },//从vuex中取数据
 
@@ -565,8 +558,7 @@
             delete this.getPra[key];
           }
         }//删除空的查询项
-//        this.$tool.console(this.getPra);
-        console.log(this.getPra);
+//        console.log(this.getPra);
         this.$http.post(this.getProjectListURL,this.getPra)
           .then(res=>{
             this.loading=false;

@@ -1,4 +1,4 @@
-<template>
+_<template>
   <div id="addFollow" >
     <!--===========================================添加或编辑跟进记录弹窗=============================================-->
     <el-dialog :visible="followDisplay" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll
@@ -151,7 +151,7 @@
     props: ["followDisplay","followid","projectid","projectname","cardid","cardname","type","userid"],
     data () {
       return {
-        uploadAddress:this.URL.weitianshiLine+this.URL.uploadFile,//上传地址
+        uploadAddress:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
         loading:false,
         loading2:false,//加载框加载
         showList: false,//上传列表隐藏
@@ -436,7 +436,7 @@
       },
       uploadsuccess(response, file, fileList){
         let data = response.data;
-        this.$tool.success("上传成功");
+//        this.$tool.success("上传成功");
         this.deleteLoad(file.uid);
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type,false,file.uid);
         this.subButtonCheck(this.uploadShow.lists);

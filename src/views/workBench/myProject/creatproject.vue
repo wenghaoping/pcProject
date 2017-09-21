@@ -336,7 +336,7 @@
         }
       };//数字正则判断
       return {
-        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload,//上传地址
+        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
         planList:[],//商业计划书上传列表
         planButton:false,//控制上传按钮的显示
         dialogVisible:false,//是否同步弹窗

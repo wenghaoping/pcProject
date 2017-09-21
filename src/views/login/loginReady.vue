@@ -1,5 +1,5 @@
 <template>
-    <div id="loginReady" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
+    <div id="loginReady" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     </div>
 </template>
 
@@ -23,7 +23,7 @@
       }else{
         a='myProject'
       }
-      console.log(this.$route.query);
+//      console.log(this.$route.query);
       localStorage.user_id=this.$route.query.id;
       localStorage.user_real_name=this.$route.query.name;
       this.$store.state.logining.user_id=this.$route.query.id;

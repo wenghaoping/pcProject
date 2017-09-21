@@ -115,7 +115,8 @@
         if(this.active===1){
           localStorage.entrance='myProject';
           if(localStorage.user_id){
-            this.$router.push({name:'myProject'});
+            this.$router.push({name: 'myProject',query: {activeTo: 0}});
+//            setTimeout(()=>{ window.location.reload()},1000);
           }else{
             this.$router.push({name:"telephoneLogin"});
           }

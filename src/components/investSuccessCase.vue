@@ -142,7 +142,7 @@
           }
           this.area2List=arr;
           this.caseForm.investSuccessCase[index].case_city='';
-          console.log(this.area2List)
+//          console.log(this.area2List)
         })
       },
 //    继续添加

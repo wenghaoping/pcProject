@@ -57,7 +57,7 @@
       },
 //    注册或者登录
       login(){
-          console.log(this.$route);
+//          console.log(this.$route);
         if (this.telephone && this.captcha) {
           this.loading=true;
           this.$http.post(this.URL.loginForCaptcha, {
