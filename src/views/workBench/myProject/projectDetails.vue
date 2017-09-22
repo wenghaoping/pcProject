@@ -1704,7 +1704,6 @@
     created () {
       this.$tool.getTop();
       this.getprojectId();
-      this.getWX();
       this.getAllData();
     },
     watch:{
