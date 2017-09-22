@@ -67,8 +67,6 @@
             style="width: 100%;font-size: 12px!important;"
             max-height="430"
             @select="myConSelect"
-            @select-all="myConSelectAll"
-            @selection-change="myConSelectChange"
             :row-class-name="tableRowClassName">
             <el-table-column
               type="selection"
@@ -184,8 +182,6 @@
             style="width: 100%;font-size: 12px;"
             max-height="430"
             @select="netConSelect"
-            @select-all="netConSelectAll"
-            @selection-change="netConSelectChange"
             :row-class-name="tableRowClassName">
             <el-table-column
 
@@ -413,8 +409,6 @@
         pushCount: 0,
 //        myContactsTab:[],//我的人脉ref存值
 //        netContactsTab:[],//全站人脉ref存值
-        myContactsSelection:[],
-        netContactsSelection:[],
         pushTagMyCon:[],//处理后的我的人脉存放
         pushTagNetCon:[],//处理后的全站人脉存放
         pushTagMyConCheckAll:[],//我的人脉存放用于勾选,(所有)特殊标识存放,每次获取新数据时重置
@@ -579,12 +573,6 @@
           this.pushTagNetConCheck.splice(indexNetCon, 1);
         }
       },
-      myConSelectChange(val) {
-        this.myContactsSelection = val;
-      },
-      netConSelectChange(val) {
-        this.netContactsSelection = val;
-      },
 
       //添加标签
       addTag(data){
@@ -633,19 +621,10 @@
       myConSelect(selection, row){
         this.addTag(row);
       },
-      //我的人脉全选
-      myConSelectAll(selection){
-//        this.addTag(selection);
-      },
       //平台推荐投资人选择
       netConSelect(selection, row){
         this.addTag(row);
       },
-      //平台推荐投资人全选
-      netConSelectAll(selection){
-//        this.addTag(selection);
-      },
-
       //自定义添加人脉(跳出弹窗)
       customerAdd(){
         this.customerAddFormDisplay = true;
