@@ -2,7 +2,7 @@
   <!--项目推送项目入口-->
   <div id="projectPush">
     <el-dialog :visible="projectPushShow2" :before-close="handleClose"
-               :close-on-click-modal="close" :close-on-press-escape="close">
+               :close-on-press-escape="close">
       <!--弹窗头部-->
       <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
@@ -54,9 +54,10 @@
       </div>
 
       <!--我的人脉和全站人脉tab页切换-->
-      <el-tabs v-model="activeName">
+      <el-tabs v-model="activeName" class="el_tab" style="position: relative;transition: all 0.5s">
         <!--我的人脉-->
         <el-tab-pane label="我的人脉" name="myContacts">
+          <div class="hiddenCheckAll"></div>
           <el-table
             v-loading="loadingMyCon"
             element-loading-text="拼命加载中"
@@ -173,6 +174,7 @@
 
         <!--平台推荐投资人-->
         <el-tab-pane label="平台推荐投资人" name="netContacts">
+          <div class="hiddenCheckAll"></div>
           <el-table
             ref="netContactsTab"
             :data="netContacts"
@@ -293,15 +295,15 @@
       </el-tabs>
 
 
-
       <!--标题和正文-->
       <el-form label-position="top" label-width="80px" ref="email" :model="email">
         <el-form-item label="标题"
                       prop="title"
+                      :rules="[{max:100,message: '最大100个字符',trigger: 'blur'}]"
                       style="margin-top: 30px">
           <el-input v-model="pushTitle" placeholder="浙江安琪创投-投资VP-杜兴国推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行"></el-input>
         </el-form-item>
-        <el-form-item label="正文" prop="main">
+        <el-form-item label="正文" prop="main" :rules="[{max:500,message: '最大500个字符',trigger: 'blur'}]">
           <el-input type="textarea"
                     v-model="pushBody"
                     placeholder="请输入简要项目介绍，作为邮件正文，便于投资人快速了解项目"
@@ -320,31 +322,37 @@
 
 
     <!--自定义添加弹框-->
-    <el-dialog class="customerAddForm" title="自定义添加" :visible.sync="customerAddFormDisplay" :modal='false' size="full"
-               :close-on-click-modal="false">
+    <el-dialog class="customerAddForm" title="自定义添加" :visible="customerAddFormDisplay" :modal='false' size="full"
+               :close-on-click-modal="false" :show-close="false">
       <el-form :model="customerAddForm" ref="customerAddForm">
-        <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email" :rules="[{ required: true, message: '邮箱不能为空'}]">
+        <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email"
+                      :rules="[{ required: true, message: '请输入邮箱地址', trigger: 'blur' },
+                              { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }]">
           <el-input v-model="customerAddForm.email" auto-complete="off" placeholder="请输入邮箱"
                     :rules="[{ required: false}]"></el-input>
         </el-form-item>
-        <el-form-item label="姓名" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, max:20, message: '姓名不得超过20个字符长度'}]">
-          <el-input v-model="customerAddForm.name" auto-complete="off" placeholder="请输入姓名"
-                    :rules="[{ required: false}]"></el-input>
+        <el-form-item label="姓名" :label-width="formLabelWidth" prop="name"
+                      :rules="[{required: true, message: '姓名不能为空', trigger: 'blur'},{min: 1, max:20,message: '最大20个字符'}]">
+          <el-input v-model="customerAddForm.name" auto-complete="off"
+                    placeholder="请输入姓名"></el-input>
         </el-form-item>
-        <el-form-item label="手机" :label-width="formLabelWidth" prop="mobile">
+        <el-form-item label="手机" :label-width="formLabelWidth" prop="mobile" :rules="PhoneRule">
           <el-input v-model="customerAddForm.mobile" auto-complete="off" placeholder="请输入手机"
-                    :rules="[{ required: false}]" type="number"></el-input>
+                    type="number"></el-input>
         </el-form-item>
-        <el-form-item label="公司" :label-width="formLabelWidth" prop="company" :rules="[{ required: false, max:40, message:'公司不得超过40个字符长度'}]">
+        <el-form-item label="公司" :label-width="formLabelWidth" prop="company"
+                      :rules="[{max:40,message: '最大40个字符',trigger: 'blur'}]">
           <el-input v-model="customerAddForm.company" auto-complete="off" placeholder="请输入公司"></el-input>
         </el-form-item>
-        <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand" :rules="[{ required: false, max:40, message:'品牌不得超过40个字符长度'}]">
-          <el-input v-model="customerAddForm.brand" auto-complete="off" placeholder="请输入品牌"
-                    :rules="[{ required: false}]"></el-input>
+        <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand"
+                      :rules="[{max:40,message: '最大40个字符',trigger: 'blur'}]">
+          <el-input v-model="customerAddForm.brand" auto-complete="off"
+                    placeholder="请输入品牌"></el-input>
         </el-form-item>
-        <el-form-item label="职位" :label-width="formLabelWidth" prop="career" :rules="[{ required: false, max:40, message:'职位不得超过40个字符长度'}]">
-          <el-input v-model="customerAddForm.career" auto-complete="off" placeholder="请输入职位"
-                    :rules="[{ required: false}]"></el-input>
+        <el-form-item label="职位" :label-width="formLabelWidth" prop="career"
+                      :rules="[{max:40,message: '最大40个字符',trigger: 'blur'}]">
+          <el-input v-model="customerAddForm.career" auto-complete="off"
+                    placeholder="请输入职位"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -356,10 +364,28 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import customerAddContacts from '../../../components/customerAddContacts.vue'
   export default {
     props: ["projectPushShow2", 'proid', 'proIntro','proName','emitPush'],
     data () {
+      var checkPhoneNumber = (rule, value, callback) => {
+        if (!this.$tool.getNull(value)) {
+          setTimeout(() => {
+            if (!this.$tool.checkNumber(value)) {
+              callback(new Error('请输入数字值'));
+            } else {
+              if (!this.$tool.checkPhoneNumber(value)) {
+                callback(new Error('请输入正确的手机号'));
+              }else{
+                callback();
+              }
+            }
+          }, 100);
+        }else{
+          callback();
+        }
+      };//电话号码正则判断
+
+
       return {
         searchInput:"",//输入框搜索
         close:false,//默认关闭
@@ -395,6 +421,8 @@
         pushTagNetConCheckAll:[],//全站人脉存放用于勾选,(所有)特殊标识存放,每次获取新数据时重置
         pushTagMyConCheck:[],//我的人脉存放用于勾选,(选中)特殊标识存放,永远存在
         pushTagNetConCheck:[],//全站人脉存放用于勾选,(选中)特殊标识存放,永远存在
+
+
         //我的人脉数据原始数据
         myContacts: [
           /*{
@@ -434,6 +462,11 @@
         ],
         netContotalData:0,//全站人脉总数
         netConcurrentPage:1,//全站人脉当前第几页
+
+        pushData:[],//推送的人脉需要的数据保存
+
+
+
         email: {
           title: '有人给您推荐一个项目,赶紧看看吧',//邮件标题
           main: '',//邮件正文
@@ -456,13 +489,17 @@
         user_brand:'',
         user_company_career:'',
         user_real_name:'',
+
+
+        PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },//电话规则
+        customerAddFormCheck:false,//验证自定义添加人脉规则
+
       }
     },
-    components: {customerAddContacts},
     methods: {
       //搜索人脉
       handleIconClick(){
-
+        this.activeName == 'myContacts' ? this.getMyContacts() : this.getNetContacts();
       },
 
       //获取可用推送次数
@@ -533,9 +570,9 @@
         let indexMyCon = this.pushTagMyCon.indexOf(tag);//是不是我的人脉选中里的
         let indexNetCon = this.pushTagNetCon.indexOf(tag);//是不是全网人脉选中里的
         if (indexMyCon !== -1) {
-          this.$refs.myContactsTab.toggleRowSelection(this.myContacts[this.pushTagMyConCheckAll.indexOf(tag.card_index)]);
-          this.pushTagMyCon.splice(indexMyCon, 1);
-          this.pushTagMyConCheck.splice(indexMyCon, 1);
+          this.$refs.myContactsTab.toggleRowSelection(this.myContacts[this.pushTagMyConCheckAll.indexOf(tag.card_index)]);//取消勾选
+          this.pushTagMyCon.splice(indexMyCon, 1);//删除标签
+          this.pushTagMyConCheck.splice(indexMyCon, 1);//删除对应的唯一标识
         }else if(indexNetCon !== -1){
           this.$refs.netContactsTab.toggleRowSelection(this.netContacts[this.pushTagNetConCheckAll.indexOf(tag.card_index)]);
           this.pushTagNetCon.splice(indexNetCon, 1);
@@ -548,6 +585,7 @@
       netConSelectChange(val) {
         this.netContactsSelection = val;
       },
+
       //添加标签
       addTag(data){
         let activeNameSelect = "pushTagMyCon";
@@ -559,16 +597,18 @@
             //处理成我想要的数据
             let tag = {};
             tag.name = data.card.user_real_name + " ( " + data.card.user_email + " ) ";
+            tag.user_real_name = data.card.user_real_name;
+            tag.user_company_career = data.card.user_company_career;
+            tag.user_company_name = data.card.user_company_name;
             tag.type = 'primary';
             tag.id = (data.type == "user" ? data.card.user_id : data.card.card_id);
             tag.conType = data.type;
             tag.user_email = data.card.user_email;
             tag.card_index = data.card_index;
             let checkIndex = this[activeNameSelectCheck].indexOf(data.card_index);
-            checkIndex === -1 ? this[activeNameSelectCheck].push(data.card_index) : this[activeNameSelectCheck].splice(checkIndex, 1);
+            checkIndex === -1 ? this[activeNameSelectCheck].push(data.card_index) : this[activeNameSelectCheck].splice(checkIndex, 1);//如果存在就删除,如果不存在就放进去
             checkIndex === -1 ? this[activeNameSelect].push(tag) : this[activeNameSelect].splice(checkIndex, 1);
       },
-
       //我的人脉切换时勾选
       getMyConCheck(){
         let pushOnly = this.pushOnly;//选中唯一标识合集
@@ -579,7 +619,7 @@
           }
         })
       },
-
+      //全网人脉切换时勾选
       getNetConCheck(){
         let pushOnly = this.pushOnly;//选中唯一标识合集
         pushOnly.forEach(x=>{
@@ -606,8 +646,6 @@
 //        this.addTag(selection);
       },
 
-
-
       //自定义添加人脉(跳出弹窗)
       customerAdd(){
         this.customerAddFormDisplay = true;
@@ -619,10 +657,7 @@
         }
         return '';
       },
-      //自定义添加人脉(跳出弹窗)
-      customerAdd(){
-        this.customerAddFormDisplay = true;
-      },
+
       //取消添加自定义人脉
       cancelAdd(){
         this.$refs['customerAddForm'].resetFields();
@@ -631,45 +666,42 @@
       //确认添加自定义人脉
       certainAdd(){
         let form = this.customerAddForm;
-        if (!form.email) {
-          this.$tool.error('请输入邮箱')
-        } else if (!this.$tool.checkEmail(form.email)) {
-          this.$tool.error('请正确输入邮箱')
-        }else if(!form.name){
-          this.$tool.error('请输入姓名')
-        }else if(form.name.length>20){
-          this.$tool.error('姓名不得超过20个字符长度')
-        }else if(form.company.length>40){
-          this.$tool.error('公司不得超过40个字符长度')
-        }else if(form.brand.length>40){
-          this.$tool.error('品牌不得超过40个字符长度')
-        }else if(form.career.length>40){
-          this.$tool.error('职位不得超过40个字符长度')
-        } else if (form.mobile) {
-          if (!this.$tool.checkPhoneNumber(form.mobile)) {
-            this.$tool.error('请正确填写手机号码')
-          } else {
-            this.$http.post(this.URL.createUserCard, {
-              user_id: localStorage.user_id,
-              user_email: form.email,
-              user_real_name: form.name,
-              user_mobile: form.mobile,
-              user_company_name: form.company,
-              user_company_career: form.career,
-              user_brand: form.brand
-            }).then(res => {
-              if (res.data.status_code === 2000000) {
-                this.newAddContacts.name = this.customerAddForm.name;
-                this.newAddContacts.email = this.customerAddForm.email;
-                this.$refs['customerAddForm'].resetFields();
+        this.submitForm('customerAddForm','customerAddFormCheck');
+        if(!this.customerAddFormCheck){
+          this.$http.post(this.URL.createUserCard, {
+            user_id: localStorage.user_id,
+            user_email: form.email,
+            user_real_name: form.name,
+            user_mobile: form.mobile,
+            user_company_name: form.company,
+            user_company_career: form.career,
+            user_brand: form.brand
+          }).then(res => {
+            console.log(res.data.card_id)
+            if (res.data.status_code === 2000000) {
+              //处理成我想要的数据
+              let tag = {};
+              tag.name = form.name + " ( " + form.email + " ) ";
+              tag.type = 'primary';
+              tag.id = res.data.card_id
+              tag.conType = 'card';
+              tag.user_email = form.email;
+              tag.card_index = res.data.card_id + "-" + res.data.investor_id;
+              this.pushTagMyConCheck.push(tag.card_index);
+              this.pushTagMyCon.push(tag);
+              this.$tool.success("人脉添加成功");
+              this.$refs['customerAddForm'].resetFields();
+              this.customerAddFormDisplay = false;
+              this.getMyContacts(1);
+            }else{
+                this.$tool.error("添加失败");
                 this.customerAddFormDisplay = false;
                 this.getMyContacts(1);
-                this.getNetContacts(1);
-              }
-            })
-          }
+            }
+          })
         }
       },
+
       //*检查所有必填项目以及获取所有数据/true过.false不过
       submitForm(formName,checkName) {
         this.$refs[formName].validate((valid) => {
@@ -678,14 +710,13 @@
       },
       //推送
       push(){
-        let dealData = [];//总数
+        this.pushData = [];//推送人脉总数
         this.pushTags.forEach(x=>{
-          dealData.push([x.id,x.conType,x.user_email]);//单个参数
+          this.pushData.push([x.id,x.conType,x.user_email]);//推送人脉单个参数
         });
-        console.log(dealData)
-        if (this.pushData.length == 0 && dealData.length === 0) {
+        if (this.pushData.length === 0) {
           this.$tool.error('请选择推送人脉')
-        } else if (dealData.length > this.pushCount) {
+        } else if (this.pushData.length > this.pushCount) {
           this.$tool.error('推送人数不能超过今日剩余推送次数')
         } else if(this.pushTitle.length > 100){
           this.$tool.error('标题不能大于100个字')
@@ -698,7 +729,7 @@
             project_id: this.project_id,
             title: this.pushTitle,
             body: this.pushBody,
-            receives: dealData
+            receives: this.pushData
           }).then(res => {
             if (res.data.status_code === 2000000) {
               this.$tool.success('推送成功');
@@ -719,6 +750,10 @@
       },
       //预览
       preview(){
+        this.pushData = [];//推送人脉总数
+        this.pushTags.forEach(x=>{
+          this.pushData.push([x.id,x.conType,x.user_email]);//推送人脉单个参数
+        });
         if(this.pushTitle.length > 100){
           this.$tool.error('标题不能大于100个字')
         }else if(this.pushBody.length > 500){
@@ -728,16 +763,12 @@
         }else if(this.pushData.length > this.pushCount){
           this.$tool.error('推送人数不能超过今日剩余推送次数')
         }else{
-          let targetUser = this.pushData[0].card;
+          let targetUser = this.pushTags[0];
           let user = {
             user_real_name: targetUser.user_real_name,
             user_company_career: targetUser.user_company_career,
-            user_company_name: targetUser.user_company_name,
-            firse_user_real_name: '',//当前用户
-            firse_user_company_career: '',
-            firse_user_company_name: '',
+            user_company_name: targetUser.user_company_name
           };
-          this.getFirstUser(user);
           if (this.pushCount != 0) {
             this.$store.state.pushProject.project_id = this.project_id;
             this.$store.state.pushProject.user = user;
@@ -747,8 +778,6 @@
             this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
             this.$store.state.pushProject.pushMessage.title = this.pushTitle;
             this.$store.state.pushProject.pushMessage.body = this.pushBody;
-            this.$store.state.pushProject.pushMessage.project_ids = new Array;
-            this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
             this.$store.state.pushProject.email.title = this.pushTitle;
             this.$store.state.pushProject.email.body = this.pushBody;
             this.$emit('openPreview', true);
@@ -767,7 +796,7 @@
         this.user_real_name=localStorage.user_real_name;
         if(!this.user_brand){
           this.pushbrand=this.user_company_name;
-        }else{
+        }else {
           this.pushbrand=this.user_brand;
         }
         return this.pushbrand+'-'+this.user_company_career+'-'+this.user_real_name+'推荐项目 | 微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
@@ -796,9 +825,21 @@
           this.getPushCount();
           this.getMyContacts(1);
           setTimeout(()=>{ this.getNetContacts(1);},1000);
+        }else{
+          this.$refs.myContactsTab.clearSelection();
+          this.$refs.netContactsTab.clearSelection();
+
+          this.myContacts = [];
+          this.netContacts = [];
+          this.pushTagMyCon = [];
+          this.pushTagNetCon = [];
+          this.pushTagMyConCheckAll = [];
+          this.pushTagNetConCheckAll = [];
+          this.pushTagMyConCheck = [];
+          this.pushTagNetConCheck = [];
         }
       },
-      //项目预览提交推送时
+      //项目预览提交推送时,因为数据格式不同,所以回到本页面处理推送
       emitPush: function (e) {
           if(e){
             this.push();

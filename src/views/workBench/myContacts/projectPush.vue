@@ -243,6 +243,7 @@ export default {
         this.$tool.warning("您今日的推送次数已用完,请明天再试")
       }
     },//推送预览
+
     push(type){
       if(this.pushCount!=0){
         this.firstInData.email=this.email;
@@ -284,7 +285,8 @@ export default {
       }else{
           this.$tool.warning("您今日的推送次数已用完")
       }
-    },//推送按钮1推送1次,2继续推送
+    },//推送按钮
+
     remoteMethod(query) {
       return new Promise((resolve, reject)=>{
         if(query=="") this.projectRadio="";

@@ -22,8 +22,6 @@
           <div class="item-lists item-lists-top clearfix">
             <div class="item-lists-inner-left fl">
               <div class="item height">
-                <!--<el-tag type="success" v-if="project.open_status==1">公开</el-tag>
-                <el-tag type="primary" v-else>私密</el-tag>-->
                 <span class="title">{{project.pro_intro}}</span>
               </div>
               <div class="item height" style="margin-top:18px;">
@@ -39,7 +37,6 @@
               </div>
             </div>
           </div>
-          <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
           <div class="item-lists clearfix" style="">
             <div class="ul-lists">
               <div class="item">
@@ -71,21 +68,18 @@
                      <span style="color:#475669">{{project.goodness.pro_market_genera.goodness_title}}&nbsp;:&nbsp;</span>
                   {{project.goodness.pro_market_genera.goodness_desc}}
                    </span>
-                    <!--<span>{{highlights.goodness_desc}}</span>-->
                   </div>
                   <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_business_model.goodness_desc!=''&&project.goodness.pro_business_model.goodness_title!=''">
                    <span style="line-height: 23px; color:#8492a6">
                      <span style="color:#475669">{{project.goodness.pro_business_model.goodness_title}}</span>&nbsp;:&nbsp;
                   {{project.goodness.pro_business_model.goodness_desc}}
                    </span>
-                    <!--<span>{{highlights.goodness_desc}}</span>-->
                   </div>
                   <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_service.goodness_desc!=''&&project.goodness.pro_service.goodness_title!=''">
                    <span style="line-height: 23px; color:#8492a6">
                      <span style="color:#475669">{{project.goodness.pro_service.goodness_title}}&nbsp;:&nbsp;</span>
                   {{project.goodness.pro_service.goodness_desc}}
                    </span>
-                    <!--<span>{{highlights.goodness_desc}}</span>-->
                   </div>
                 </div>
               </div>
@@ -114,7 +108,6 @@
                 </el-tooltip>
                 <div class="p-gf">股权占比 : <span>{{bili.stock_scale}}%</span></div>
                 <div class="p-doc">{{bili.ct_member_intro}}</div>
-                <!--<div class="line"></div>-->
               </div>
 
             </div>
@@ -233,17 +226,15 @@
                     <div class="v-progress-txt" style="height: 45px;" v-for="develop in milepost.pro_develop">
                       <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                       <span class="pro-txt-1">
-                  {{develop.dh_start_time}}
-                </span>
+                        {{develop.dh_start_time}}
+                      </span>
                       <span class="pro-txt-2"  style="color:#5e6d82;white-space: normal;word-break: break-all;width: 546px;line-height: 20px">
-                      {{develop.dh_event}}
-                </span>
+                        {{develop.dh_event}}
+                      </span>
                     </div>
                   </div>
                 </div>
-
               </div>
-
             </div>
             <div class="ul-lists list tc" >
               <div class="toButton" style="padding-left: 0">
@@ -387,7 +378,7 @@ export default {
 
 
       user:{
-        user_real_name:'顾家',
+        user_real_name:'顾家',//被推送的人
         user_company_career:'投资尽力',
         user_company_name:'杭州投着乐网络科技有限公司',
         firse_user_real_name:'顾家',//当前用户
@@ -416,7 +407,7 @@ export default {
     closePreview(){
       this.$emit('closePreview', false);
     },//关闭当前弹窗
-    getFirstUser(){
+    getFirstUser() {
       this.$http.post(this.URL.getOneUserInfo,{user_id: localStorage.user_id})
         .then(res=>{
           if(res.data.status_code==2000000) {
@@ -499,37 +490,6 @@ export default {
 
       });
     },//获取项目详情数据
-
-/*    getProjectDetail () {
-      this.loading=true;
-      this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project_id})
-        .then(res=>{
-          let data = res.data.data;
-          /!*            for(let key in data){
-           if(data[key]=="") data[key]="-"
-           }
-           for(let i=0; i<data.core_users.length; i++){
-           if(data.core_users[i].stock_scale==null){
-           data.core_users[i].stock_scale="－"
-           }
-           }*!/
-          if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
-          if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-          if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="-";this.styleObject={color:"#20a0ff"}}
-          if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-          this.$tool.setTime(data.pro_develop,'dh_start_time');
-          this.$tool.setTime(data.pro_history_finance,'finance_time');
-          this.project=data;
-          this.project.follow_up=data.follow_up.follow_desc;
-          this.project.pro_source=this.getProjectTag(data.tag);
-          this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
-          this.loading=false;
-        })
-        .catch(err=>{
-          this.loading=false;
-          this.$tool.console(err,2)
-        })
-    },//获取项目详情数据*/
     pushProject(){
       if(this.comeFrom==='contacts'){
         this.$http.post(this.URL.pushUser, this.pushMessage)
@@ -551,7 +511,7 @@ export default {
     },//推送项目
   },
   create(){
-    this.getProjectDetail()
+//    this.getProjectDetail();
   },
   watch:{
     previewShow:function(e){

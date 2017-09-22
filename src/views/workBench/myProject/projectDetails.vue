@@ -1053,9 +1053,6 @@
             this.getProjectDetail();
         }
       },//传递给一键尽调窗口
-      openPreview(msg){
-        this.previewDisplay=true;
-      },//打开预览弹框
       closeCompanySearchDisplay(msg){
         this.companySearchDisplay=msg;
       },//传递给一键尽调搜索窗口

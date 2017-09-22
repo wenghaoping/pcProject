@@ -394,7 +394,7 @@
     },
     components: {customerAddContacts},
     methods: {
-        title(){
+      title(){
             this.user_company_name=localStorage.user_company_name;
             this.user_brand=localStorage.user_brand;
             this.user_company_career=localStorage.user_company_career;
