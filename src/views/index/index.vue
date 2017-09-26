@@ -155,6 +155,7 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
     methods: {
       // 创建项目
       createProject(){
+        this.zgClick("创建项目");
         localStorage.entrance='creatproject';
         if(localStorage.user_id){
           this.$router.push({name:'creatproject'})
@@ -165,7 +166,7 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
       // 鼠标到体验小程序上悬浮触发二维码显示
       showS(){
         this.showQr = !this.showQr;
-
+        this.zgClick("体验小程序");
       },
       //关于我们
       aboutUs(){

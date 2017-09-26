@@ -70,6 +70,7 @@
                     localStorage.user_company=res.data.user_company;
                     localStorage.user_email=res.data.user_email;
                     localStorage.user_id=res.data.user_id;
+                    this.zgIdentify(res.data.user_id);
                     localStorage.user_real_name=res.data.user_real_name;
                     localStorage.token=res.data.token;
                     this.$store.state.logining.user_id=res.data.user_id;

@@ -103,6 +103,7 @@
         ],
         user_name:'',
         user_id:'',
+        routerName:""
       }
     },
     mounted(){
@@ -133,6 +134,7 @@
       },
       // 登录
       login(){
+        this.zgClick("登陆");
         localStorage.entrance='myProject';
         this.$router.push('/login');
       },
@@ -280,6 +282,7 @@
     //当dom一创建时
     created(){
       this.user_name = localStorage.user_real_name;
+      this.zgIdentify(localStorage.user_id);
     },
     computed:{
       userRealName(){
@@ -288,7 +291,18 @@
       },
     },
     watch: {
-      "$route": "checkUser"
+      "$route" (to, from){
+        this.checkUser();
+        console.log(this.routerName);
+        console.log(from.name);
+        if(from.name === this.routerName){
+          this.zgTimeOut(from.name);
+          console.log("计时结束");
+        }
+        this.routerName = to.name;
+        this.zgTimeIn();
+        console.log("计时开始");
+      }
     }
   }
 </script>

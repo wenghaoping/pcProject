@@ -14,7 +14,7 @@ Vue.mixin({
     # event 参数  例:{'手机' : '小米4','价格' : 1799,'运营商' : '移动'}  Object
     //属性名称不能超过255个字符，属性值不能超过200个字符
     */
-    zgClick(name,event) {
+    zgClick(name,event = {}) {
       zhuge.track(name, event);
     },
 
@@ -26,19 +26,21 @@ Vue.mixin({
      //预定义属性
      '行业': '互联⽹网' //⾃自定义属性  Object
     */
-    zgIdentify(userId,event) {
+    zgIdentify(userId,event = {}) {
       zhuge.identify(userId, event);
     },
-    //进入计时
-    zgTimeIn(){
-      int=setInterval(()=>{time = this.$tool.getIntervalTime();console.log(time);},50);
+
+    //路由进入计时
+    zgTimeIn() {
+      int = setInterval(() => {time = this.$tool.getIntervalTime();/*console.log(time)*/;},2000);
     },
 
-    //出去停止计时
-    zgTimeOut(name){
-      window.clearInterval(int);
-      console.log(time)
-      zgClick(name,{time:time});
+    //路由出去时停止计时
+    zgTimeOut(name) {
+      clearInterval(int);
+      this.zgClick(name,{time:time});
+      time = "";
+      this.$tool.srtIntervalClearTime();
     }
   }
 })

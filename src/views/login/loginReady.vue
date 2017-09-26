@@ -25,6 +25,7 @@
       }
 //      console.log(this.$route.query);
       localStorage.user_id=this.$route.query.id;
+      this.zgIdentify(localStorage.user_id);
       localStorage.user_real_name=this.$route.query.name;
       this.$store.state.logining.user_id=this.$route.query.id;
       this.$store.state.logining.user_real_name=this.$route.query.name;

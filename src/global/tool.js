@@ -5,6 +5,9 @@
  * 总的工具类
  */
 import { Notification } from 'element-ui';
+ let hour,minute,second;//时 分 秒
+ hour=minute=second=0;//初始化
+
 const tool={
 /*数据封装类*/
   getToObject (data) {
@@ -426,17 +429,7 @@ const tool={
 
   //计时器返回时分秒毫秒
   getIntervalTime(){
-    let hour,minute,second;//时 分 秒
-    hour=minute=second=0;//初始化
-    let millisecond=0;//毫秒
-
-    millisecond=millisecond+50;
-
-    if(millisecond>=1000)
-    {
-      millisecond=0;
-      second=second+1;
-    }
+    second=second+2;
     if(second>=60)
     {
       second=0;
@@ -448,7 +441,13 @@ const tool={
       minute=0;
       hour=hour+1;
     }
-    return hour+'时'+minute+'分'+second+'秒'+millisecond+'毫秒';
+    return hour+'时'+minute+'分'+second+'秒';
+  },
+  //计时器初始化
+  srtIntervalClearTime(){
+    hour=0;
+    minute=0;
+    second=0;
   },
 
 

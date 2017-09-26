@@ -83,11 +83,12 @@ export default {
 
   },
   created(){
-//      this.route1();
+
   },
   watch:{
    // 路由判断显示广告
-    "$route" (to,form){
+    "$route" (to,from){
+
 
       if((to.path==='/workBench/myContacts'|| to.path==='/workBench/followup'||to.path==='/workBench/')&&this.willShow){
         this.show=true;
@@ -96,7 +97,7 @@ export default {
         this.show=false;
         this.willShow=false;
       }
-      if((form.path==='/workBench/myContacts'|| form.path==='/workBench/followup'||form.path==='/workBench/')&&this.willShow){
+      if((from.path==='/workBench/myContacts'|| from.path==='/workBench/followup'||from.path==='/workBench/')&&this.willShow){
         this.show=true;
         this.willShow=true;
       }else{

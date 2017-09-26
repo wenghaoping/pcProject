@@ -85,7 +85,7 @@
           </el-input>
         </div>
         <div class="btns-box">
-          <el-button type="primary" @click="uploadDisplay = true">批量上传项目</el-button>
+          <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
 
 
@@ -437,8 +437,13 @@
       }
     },
     methods:{
+      uploadAll(){
+        this.uploadDisplay = true;
+        this.zgClick("批量上传项目");
+      },//批量上传项目
       handleSelect(row, event, column) {
         if(column.label!="重置"){
+          this.zgClick("查看项目详情");
           this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'detail'}});
           this.setRouterData();
         }
@@ -461,10 +466,12 @@
 
 
       handleEdit(index, row){
+        this.zgClick("编辑项目");
         this.$router.push({ name: 'editproject', query: { project_id:row.project_id}});
         this.setRouterData();
       },//跳转到编辑页
       createProject(){
+        this.zgClick("创建项目");
         this.$router.push({ name: 'creatproject'});
         this.setRouterData();
       },//跳转到创建项目页面
@@ -477,6 +484,7 @@
 
       //跟进
       addFollow(index, row){
+        this.zgClick("添加跟进");
         this.followDisplay=true;
         this.projecmessage.project_id=row.project_id;
         this.projecmessage.project_name=row.pro_intro;
@@ -488,6 +496,7 @@
         this.followDisplay=msg;
       },//关闭添加跟进
       addprojectPush(index, row){
+        this.zgClick("项目推送");
         this.pushId=row.project_id;
         this.pushIntro=row.pro_intro;
         this.projectPushDisplay2=true;
@@ -735,6 +744,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
+            this.zgClick("删除项目");
             this.loading=true;
             this.$http.post(this.URL.deleteProject, {user_id:localStorage.user_id,project_id: row.project_id})
               .then(res => {
@@ -782,8 +792,12 @@
 
     },
     watch: {
-      // 如果路由有变化，会再次执行该方法
-//      "$route": "handleIconClick"
+      /*// 如果路由有变化，会再次执行该方法
+      '$route' (to, from) {
+        console.log(to);
+        console.log(from);
+
+      }*/
     }
 
   }

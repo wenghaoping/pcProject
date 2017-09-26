@@ -374,6 +374,7 @@ export default {
       }
     },//跳转到人脉详情页面传参数
     handleEdit(index, row){
+      this.zgClick("编辑人脉");
       this.$router.push({ name: 'createContacts', query: { card_id:row.card_id}})
       this.setRouterData();
     },//点击编辑按钮,跳转
@@ -437,6 +438,7 @@ export default {
       }
     },//点击重置按钮时
     handlePush(index,row){
+      this.zgClick("推送项目");
       this.userMessage.user_real_name=row.user_real_name;
       this.userMessage.user_company_career=row.user_company_career;
       this.userMessage.user_company_name=row.user_company_name;
@@ -448,6 +450,7 @@ export default {
       this.projectPushDisplay=true;
     },//点击推送,并且传送数据给推送弹框
     addContacts(){
+      this.zgClick("添加人脉");
       this.$router.push({name: 'createContacts',query: {card_id: 'creat'}})//路由传参
     },//添加人脉
 

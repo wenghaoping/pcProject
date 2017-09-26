@@ -40,6 +40,7 @@
             if(res.data.status_code===2000000){
               //将user_id存入sessionStorge并跳转
               localStorage.user_id=res.data.user_id;
+              this.zgIdentify(res.data.user_id);
               localStorage.user_real_name=res.data.user_real_name;
               localStorage.user_brand=res.data.user_brand;
               localStorage.user_company_career=res.data.user_company_career;
