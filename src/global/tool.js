@@ -424,6 +424,34 @@ const tool={
     return name.split("&");//返回对象
   },
 
+  //计时器返回时分秒毫秒
+  getIntervalTime(){
+    let hour,minute,second;//时 分 秒
+    hour=minute=second=0;//初始化
+    let millisecond=0;//毫秒
+
+    millisecond=millisecond+50;
+
+    if(millisecond>=1000)
+    {
+      millisecond=0;
+      second=second+1;
+    }
+    if(second>=60)
+    {
+      second=0;
+      minute=minute+1;
+    }
+
+    if(minute>=60)
+    {
+      minute=0;
+      hour=hour+1;
+    }
+    return hour+'时'+minute+'分'+second+'秒'+millisecond+'毫秒';
+  },
+
+
 
 //*弹框类
   error(text) {

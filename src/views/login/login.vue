@@ -60,7 +60,6 @@
     },
     mounted(){
       this.creatObj();
-      zhuge.track('购买商品');
     },
     created(){
       this.checkReload();

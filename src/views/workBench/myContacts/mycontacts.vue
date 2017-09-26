@@ -687,7 +687,6 @@ export default {
       })
     this.titleSift();
 
-//    zhuge.track('购买商品');
   }
 }
 </script>

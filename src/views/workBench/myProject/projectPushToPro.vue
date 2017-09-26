@@ -778,7 +778,7 @@
         }else {
           this.pushbrand=this.user_brand;
         }
-        return this.pushbrand+'-'+this.user_company_career+'-'+this.user_real_name+'推荐项目 | 微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+        return this.pushbrand+'-'+this.user_company_career+'-'+this.user_real_name+'推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
       },
     },
     computed: {

@@ -173,12 +173,7 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
       },
     },
     mounted() {
-      window.zhuge.load('d79a28abc0424fb499109b8a7d2a2e07', {
-        autoTrack: true,
-        isClickAble: function(targetElement) { //targetElement为点击的dom元素
-          return true;
-        }
-      })
+
     },
   }
 </script>

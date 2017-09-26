@@ -3,7 +3,8 @@
  */
 import Vue from 'vue';
 
-// import { zhuge } from './zhuge.js';
+let int = null;//时间设置
+let time = "";
 
 // 为自定义的选项 'myOption' 注入一个处理器。
 Vue.mixin({
@@ -28,7 +29,17 @@ Vue.mixin({
     zgIdentify(userId,event) {
       zhuge.identify(userId, event);
     },
+    //进入计时
+    zgTimeIn(){
+      int=setInterval(()=>{time = this.$tool.getIntervalTime();console.log(time);},50);
+    },
 
+    //出去停止计时
+    zgTimeOut(name){
+      window.clearInterval(int);
+      console.log(time)
+      zgClick(name,{time:time});
+    }
   }
 })
 

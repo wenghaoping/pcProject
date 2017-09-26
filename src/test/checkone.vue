@@ -7,8 +7,7 @@
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
         <el-button @click="resetForm('ruleForm2')">重置</el-button>
-        <el-button @click="zgClick()">重置</el-button>
-        <el-button @click="isClickAble">重置</el-button>
+        <el-button @click="zgClick('重置')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -69,6 +68,20 @@
     mounted() {
 
     },
+    watch: {
+      '$route' (to, from) {
+          console.log(to);
+          console.log(from);
+        if(to){
+            this.zgTimeIn();
+          console.log("计时开始")
+        }
+        if(from){
+            this.zgTimeOut("开始计时");
+            console.log("计时结束")
+        }
+      }
+    }
   }
 </script>
 
