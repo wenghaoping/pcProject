@@ -67,7 +67,7 @@ const addProject = r => require.ensure([], () => r(require('@/views/addProject/a
 // import upload from '@/test/upload.vue'
 // import upload from '@/test/upload.vue'
 // import open from '@/test/open.vue'
-// const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
+const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone')
 // const checkArray = r => require.ensure([], () => r(require('@/test/checkArray.vue')), 'checkArray')
 // const test = r => require.ensure([], () => r(require('@/test/swiper.vue')), 'test');
 
@@ -135,9 +135,9 @@ export default [
   {
     path:'/addProject',name:'addProject', component:addProject
   },
-/*  {
+  {
     path: '/test', name: 'test', component: checkone
-  },*/
+  },
 /*  {
 
     path: '/test3', name: 'test3', component: test

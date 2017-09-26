@@ -164,13 +164,22 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
       },
       // 鼠标到体验小程序上悬浮触发二维码显示
       showS(){
-        this.showQr = !this.showQr
+        this.showQr = !this.showQr;
+
       },
       //关于我们
       aboutUs(){
         this.$router.push('/aboutUs');
       },
-    }
+    },
+    mounted() {
+      window.zhuge.load('d79a28abc0424fb499109b8a7d2a2e07', {
+        autoTrack: true,
+        isClickAble: function(targetElement) { //targetElement为点击的dom元素
+          return true;
+        }
+      })
+    },
   }
 </script>
 

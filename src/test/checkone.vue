@@ -7,6 +7,8 @@
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
         <el-button @click="resetForm('ruleForm2')">重置</el-button>
+        <el-button @click="zgClick()">重置</el-button>
+        <el-button @click="isClickAble">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -55,8 +57,18 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+      isClickAble(){
+//        zhuge.track('点击测试2', {
+//          '商品分类' : '手机',
+//          '商品名称' : 'iPhone7 64g',
+//          '数量' : 2
+//        });   //属性名称不能超过255个字符，属性值不能超过200个字符
       }
-    }
+    },
+    mounted() {
+
+    },
   }
 </script>
 

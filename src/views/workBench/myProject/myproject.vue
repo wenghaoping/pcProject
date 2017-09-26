@@ -455,7 +455,7 @@
         for(let i=0; i<9;i++){this['node'+i] = false};
         this['node' + node] = true;
         this.searchinput = this.$store.state.pageANDSelect.proSearchinput || "";
-        console.log(this.searchinput)
+//        console.log(this.searchinput);
         this.pro_schedule = node;
       },//从vuex中取数据
 

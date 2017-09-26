@@ -54,7 +54,7 @@
       </div>
 
       <!--我的人脉和全站人脉tab页切换-->
-      <el-tabs v-model="activeName" class="el_tab" style="position: relative;transition: all 0.5s">
+      <el-tabs v-model="activeName" class="el_tab" @tab-click="tabClick" style="position: relative;transition: all 0.5s">
         <!--我的人脉-->
         <el-tab-pane label="我的人脉" name="myContacts">
           <div class="hiddenCheckAll"></div>
@@ -297,11 +297,11 @@
                       prop="title"
                       :rules="[{max:100,message: '最大100个字符',trigger: 'blur'}]"
                       style="margin-top: 30px">
-          <el-input v-model="pushTitle" placeholder="浙江安琪创投-投资VP-杜兴国推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行"></el-input>
+          <el-input v-model="email.title" placeholder="浙江安琪创投-投资VP-杜兴国推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行"></el-input>
         </el-form-item>
         <el-form-item label="正文" prop="main" :rules="[{max:500,message: '最大500个字符',trigger: 'blur'}]">
           <el-input type="textarea"
-                    v-model="pushBody"
+                    v-model="email.main"
                     placeholder="请输入简要项目介绍，作为邮件正文，便于投资人快速了解项目"
                     :autosize="{ minRows: 4, maxRows: 7}"></el-input>
         </el-form-item>
@@ -318,7 +318,7 @@
 
 
     <!--自定义添加弹框-->
-    <el-dialog class="customerAddForm" title="自定义添加" :visible="customerAddFormDisplay" :modal='false' size="full"
+    <el-dialog class="customerAddForm" title="自定义添加" :visible="customerAddFormDisplay" size="small"
                :close-on-click-modal="false" :show-close="false">
       <el-form :model="customerAddForm" ref="customerAddForm">
         <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email"
@@ -380,8 +380,6 @@
           callback();
         }
       };//电话号码正则判断
-
-
       return {
         searchInput:"",//输入框搜索
         close:false,//默认关闭
@@ -462,14 +460,12 @@
 
 
         email: {
-          title: '有人给您推荐一个项目,赶紧看看吧',//邮件标题
+          title: '',//邮件标题
           main: '',//邮件正文
         },
         email2: {
           nameEmail: '',//人脉的邮箱(一个)
         },
-        pushBody: '',
-
 
         pushbrand:'',
 
@@ -491,6 +487,10 @@
       }
     },
     methods: {
+        //标签切换
+      tabClick(e){
+
+      },
       //搜索人脉
       handleIconClick(){
         this.activeName == 'myContacts' ? this.getMyContacts() : this.getNetContacts();
@@ -580,6 +580,7 @@
         let activeNameSelectCheck = "pushTagMyConCheck";
 
         this.activeName == 'myContacts' ? activeNameSelect = 'pushTagMyCon' : activeNameSelect = 'pushTagNetCon';
+
         this.activeName == 'myContacts' ? activeNameSelectCheck = 'pushTagMyConCheck' : activeNameSelectCheck = 'pushTagNetConCheck';
 
             //处理成我想要的数据
@@ -593,9 +594,11 @@
             tag.conType = data.type;
             tag.user_email = data.card.user_email;
             tag.card_index = data.card_index;
-            let checkIndex = this[activeNameSelectCheck].indexOf(data.card_index);
+            let checkIndex = this[activeNameSelectCheck].indexOf(data.card_index);//在各自的范围中查找
             checkIndex === -1 ? this[activeNameSelectCheck].push(data.card_index) : this[activeNameSelectCheck].splice(checkIndex, 1);//如果存在就删除,如果不存在就放进去
             checkIndex === -1 ? this[activeNameSelect].push(tag) : this[activeNameSelect].splice(checkIndex, 1);
+
+
       },
       //我的人脉切换时勾选
       getMyConCheck(){
@@ -697,17 +700,17 @@
           this.$tool.error('请选择推送人脉')
         } else if (this.pushData.length > this.pushCount) {
           this.$tool.error('推送人数不能超过今日剩余推送次数')
-        } else if(this.pushTitle.length > 100){
+        } else if(this.email.title.length > 100){
           this.$tool.error('标题不能大于100个字')
-        }else if(this.pushBody.length > 500){
+        }else if(this.email.main.length > 500){
           this.$tool.error('正文不能大于500个字')
         }else {
           this.loading=true;
           this.$http.post(this.URL.pushProject, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
-            title: this.pushTitle,
-            body: this.pushBody,
+            title: this.email.title,
+            body: this.email.main,
             receives: this.pushData
           }).then(res => {
             if (res.data.status_code === 2000000) {
@@ -733,9 +736,9 @@
         this.pushTags.forEach(x=>{
           this.pushData.push([x.id,x.conType,x.user_email]);//推送人脉单个参数
         });
-        if(this.pushTitle.length > 100){
+        if(this.email.title.length > 100){
           this.$tool.error('标题不能大于100个字')
-        }else if(this.pushBody.length > 500){
+        }else if(this.email.main.length > 500){
           this.$tool.error('正文不能大于500个字')
         }else if(this.pushData.length === 0){
           this.$tool.error('请先选择推送人脉 ')
@@ -755,19 +758,16 @@
             this.$store.state.pushProject.pushMessage.card_id = user.card_id;
             this.$store.state.pushProject.pushMessage.investor_id = user.investor_id;
             this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
-            this.$store.state.pushProject.pushMessage.title = this.pushTitle;
-            this.$store.state.pushProject.pushMessage.body = this.pushBody;
-            this.$store.state.pushProject.email.title = this.pushTitle;
-            this.$store.state.pushProject.email.body = this.pushBody;
+            this.$store.state.pushProject.pushMessage.title = this.email.title;
+            this.$store.state.pushProject.pushMessage.body = this.email.main;
+            this.$store.state.pushProject.email.title = this.email.title;
+            this.$store.state.pushProject.email.body = this.email.main;
             this.$emit('openPreview', true);
           } else {
             this.$tool.warning("您今日的推送次数已用完")
           }
         }
       },
-    },
-    computed: {
-        //标题
       pushTitle(){
         this.user_company_name=localStorage.user_company_name;
         this.user_brand=localStorage.user_brand;
@@ -780,6 +780,10 @@
         }
         return this.pushbrand+'-'+this.user_company_career+'-'+this.user_real_name+'推荐项目 | 微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
       },
+    },
+    computed: {
+        //标题
+
       //推送总数合并完整数据
       pushTags(){
           return [...this.pushTagMyCon,...this.pushTagNetCon];
@@ -801,6 +805,7 @@
         if(e){
           this.project_name = this.proIntro;
           this.project_id = this.proid;
+          this.email.title = this.pushTitle();
           this.getPushCount();
           this.getMyContacts(1);
           setTimeout(()=>{ this.getNetContacts(1);},1000);
@@ -824,6 +829,7 @@
             this.push();
           }
       },
+
     }
   }
 </script>

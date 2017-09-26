@@ -42,7 +42,8 @@
       '应用名称': '诸葛io'
     },
     autoTrack: true, //启用全埋点采集（选填，默认false）
-    visualizer: true, //启用可视化埋点（选填，默认false）
-    singlePage: true //是否是单页面应用（SPA），启用autoTrack后生效（选填，默认false）
+    visualizer: false, //启用可视化埋点（选填，默认false）
+    singlePage: true, //是否是单页面应用（SPA），启用autoTrack后生效（选填，默认false）
+    debug:true,  //是否是实时
   });
 })();
