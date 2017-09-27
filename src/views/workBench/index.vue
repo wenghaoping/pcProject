@@ -52,35 +52,6 @@ export default {
         this.show=false;
     },
 
-    route1(){
-        if(this.$route.query.flog==='mail'){
-          localStorage.projectId=this.$route.query.project_id;
-          localStorage.userId=this.$route.query.user_id;
-          localStorage.flog=this.$route.query.flog;
-//          console.log(this.$route);
-          if((this.$route.query.user_id!==localStorage.user_id)&&(this.$route.query.flog==='mail')&&(this.$route.query.type==='user')){
-            this.$http.post(this.URL.importProject,{user_id: this.$route.query.user_id, project_id:this.$route.query.project_id})
-              .then(res=>{
-                if(res.data.status_code==2000000) {
-                  this.$tool.success("项目导入成功");
-                  setTimeout(()=>{ this.$router.push('/workBench/'); window.location.reload();},50)
-                }
-              })
-              .catch(err=>{
-                this.$tool.error("项目导入失败");
-                setTimeout(()=>{  this.$router.push('/workBench/');window.location.reload();},50)
-              })
-          }else{
-               this.$router.push({name: 'login'});//路由传参
-          }
-        }else{
-           //正常登录的状态
-          if(!localStorage.user_id){
-            this.$router.push({name:'telephoneLogin'})
-          }
-        }
-    }//邮箱加入项目库
-
   },
   created(){
 

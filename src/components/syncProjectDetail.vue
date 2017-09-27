@@ -51,7 +51,7 @@
           </el-checkbox>
 
           <!--公司运营-->
-          <el-checkbox label="company"  >
+          <el-checkbox label="company"  v-if="company.pro_website!=='' || company.pro_company_scale!==''">
             <div class="ul-lists">
             <div class="item">
               <span class="title"><img class="img" :src="yunying" style="width: 37px;">公司运营</span>

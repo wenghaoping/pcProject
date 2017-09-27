@@ -9,7 +9,7 @@ import { Notification } from 'element-ui';
  hour=minute=second=0;//初始化
 
 const tool={
-/*数据封装类*/
+///*数据封装类
   getToObject (data) {
     let object={};
     for(let key in data){
@@ -106,7 +106,8 @@ const tool={
     }
 
   },//标签取数据arr//放值的地方,pro总值/标签最后保存的时候,把文字标签替换成id
-/*验证类*/
+
+///*验证类
   trim(string){
     return string.replace(/(^\s*)|(\s*$)/g,"");
   },//去除参数前后空格
@@ -449,6 +450,8 @@ const tool={
     minute=0;
     second=0;
   },
+
+
 
 
 

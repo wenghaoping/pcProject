@@ -297,8 +297,6 @@
     watch: {
       "$route" (to, from){
         this.checkUser();
-        console.log(this.routerName);
-        console.log(from.name);
         if(from.name === this.routerName){
           this.zgTimeOut(from.name);
 //          console.log("计时结束");

@@ -5,6 +5,28 @@ import Vue from 'vue';
 
 let int = null;//时间设置
 let time = "";
+//时间控制数据
+let Json = {
+  "index" : "官网",
+  "myProject" : "项目库",
+  "myContacts" : "我的人脉",
+  "followUp" : "跟进记录",
+  "creatproject" : "创建项目",
+  "editproject" : "编辑项目",
+  "projectDetails" : "项目详情",
+  "createContacts" : "添加人脉",
+  "contactsDetails" : "人脉详情",
+  "login" : "登陆",
+  "bindTelephone" : "登陆",
+  "telephoneLogin" : "登陆",
+  "codeLogin" : "登陆",
+  "SmallRoutine" : "小程序登陆",
+  "identityChoose" : "身份认证",
+  "addProject" : "加入项目库",
+  "onekeyResearch" : "一键尽调",
+  "emailContact" : "联系项目方",
+  "aboutUs" : "关于我们",
+}
 
 // 为自定义的选项 'myOption' 注入一个处理器。
 Vue.mixin({
@@ -38,9 +60,21 @@ Vue.mixin({
     //路由出去时停止计时
     zgTimeOut(name) {
       clearInterval(int);
-      this.zgClick(name,{time:time});
+      let ReallyName = this.zgChangeString(name);
+      if(ReallyName){
+        this.zgClick(ReallyName,{time:time});
+      }
       time = "";
       this.$tool.srtIntervalClearTime();
+    },
+
+    zgChangeString(name){
+      for(let key in Json){
+        if(name === key){
+          return Json[key];
+        }
+      }
+
     }
   }
 })
