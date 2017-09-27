@@ -307,6 +307,7 @@
   export default {
     data () {
       return {
+        CompName:'',
         data1:' ',
         img:img,
         currentPathName:'',
@@ -575,7 +576,7 @@
       goBack(){
         this.$router.go(-1);
       },//返回上一层
-        open(){
+      open(){
           if(localStorage.user_id){
           this.dialogVisible1 = true;
           this.$http.post(this.URL.getTransToProject, {user_id: localStorage.user_id, com_id:this.com_id})
@@ -593,14 +594,14 @@
             this.$router.push({name:"telephoneLogin"});
           }
         },//请求项目库
-        open1(){
+      open1(){
           this.dialogVisible1 = false;
           this.$router.push('/workBench');
         },//
       contact(){
         if(localStorage.user_id){
         this.dialogVisible = true;
-        this.$http.post(this.URL.createServiceLog, {user_id: localStorage.user_id})
+        this.$http.post(this.URL.createServiceLog, {user_id: localStorage.user_id,project_name:this.data1,company_name:this.CompName})
           .then(res => {
           })
           .catch(err => {
@@ -609,16 +610,15 @@
       }else{
         this.$router.push({name:"telephoneLogin"});
   }
-      },
+      },//联系项目方点击事件
       handleClose1(done) {
             done();
-      },
-      myrefresh(){
-        window.location.reload();
       },
       handleClose(done) {
         done();
       },
+
+      //获取信息
       getCrawlerTeam(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
@@ -712,7 +712,6 @@
             })
         });
       },//获取竞品
-
       getCrawlerCompany(){
         let compName=this.compName;
         return new Promise((resolve, reject)=>{
@@ -721,6 +720,7 @@
             company_name: compName})
             .then(res => {
               let data = res.data.data;
+              this.CompName=data.company.company_name;//联系项目方公司名称
               if(data.length==0) {//搜索不到信息
                 this.$tool.error("匹配不到当前公司");
               }else{//搜索到了
@@ -736,7 +736,6 @@
 
         });
       },//查询公司信息
-
       setCrawlerCompeting(arr){
         let newArr = new Array;
         arr.forEach((x)=> {
@@ -775,9 +774,8 @@
 //                  console.log(this.data1);
                 }else{
                   this.data1=' ';
-                }
+                }//联系项目方项目名称
 //                this.data1=this.project[0].project_name?this.project[0].project_name:' ';
-
                 this.getCrawlerProjectChart(res.data.data);
               }else{
                 this.chartDataCheck=false;
@@ -891,11 +889,6 @@
       },//获取商标信息
 
       toNewOneKey(data){
-//        const companyName = data.company_name.toString();
-//        const openUrl = this.URL.openUrl;
-//        const url=encodeURI(openUrl+"?company="+companyName+"&id="+this.id+"&includeInvestorMap="+this.includeInvestorMap);
-//        window.open(url);
-//            const Url='https://dev.weitianshi.cn/workbench#/';
         const oneUrl = this.URL.oneUrl;
             const data11=encodeURI(data);
         const url=encodeURI(oneUrl+"onekeyResearch?company="+data11);
