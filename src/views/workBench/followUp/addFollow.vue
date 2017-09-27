@@ -545,6 +545,7 @@ _<template>
         });
       },//添加分组设置的分组选项
       saveGroupChange(){//file_id type_id user_id
+        this.zgClick("提交跟进");
         let type = this.groups.type;
         let index = this.groups.index;
         let type_name = this.groups.name;
@@ -556,7 +557,7 @@ _<template>
           .then(res => {
             if (index !== -1) {
               this.uploadShow.lists[index].bp_type = type_name;
-              this.dialogFileVisible = false
+              this.dialogFileVisible = false;
             }
           })
           .catch(err => {

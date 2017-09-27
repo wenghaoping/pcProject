@@ -24,9 +24,12 @@
         a='myProject'
       }
 //      console.log(this.$route.query);
-      localStorage.user_id=this.$route.query.id;
-      this.zgIdentify(localStorage.user_id);
+      localStorage.user_id = this.$route.query.id;
+
       localStorage.user_real_name=this.$route.query.name;
+
+      this.zgIdentify(localStorage.user_id,{name:localStorage.user_real_name});
+
       this.$store.state.logining.user_id=this.$route.query.id;
       this.$store.state.logining.user_real_name=this.$route.query.name;
       localStorage.token=this.$route.query.token || '';

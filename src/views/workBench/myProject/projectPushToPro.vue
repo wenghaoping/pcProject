@@ -630,6 +630,7 @@
       },
       //自定义添加人脉(跳出弹窗)
       customerAdd(){
+        this.zgClick("自定义添加");
         this.customerAddFormDisplay = true;
       },
       //控制列表颜色
@@ -705,6 +706,7 @@
         }else if(this.email.main.length > 500){
           this.$tool.error('正文不能大于500个字')
         }else {
+          this.zgClick("推送");
           this.loading=true;
           this.$http.post(this.URL.pushProject, {
             user_id: localStorage.user_id,
@@ -745,6 +747,7 @@
         }else if(this.pushData.length > this.pushCount){
           this.$tool.error('推送人数不能超过今日剩余推送次数')
         }else{
+          this.zgClick("预览");
           let targetUser = this.pushTags[0];
           let user = {
             user_real_name: targetUser.user_real_name,

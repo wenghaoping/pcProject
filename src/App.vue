@@ -112,11 +112,15 @@
       // 切换选项卡
       toggle(i){
         this.active = i;
+        if(this.active===0){this.zgClick("首页");}
+        if(this.active===1){this.zgClick("工作站");}
+        if(this.active===2){this.zgClick("小程序");}
         // 控制点击工作台跳转情况
         if(this.active===1){
           localStorage.entrance='myProject';
           if(localStorage.user_id){
             this.$router.push({name: 'myProject',query: {activeTo: 0}});
+
 //            setTimeout(()=>{ window.location.reload()},1000);
           }else{
             this.$router.push({name:"telephoneLogin"});
@@ -282,7 +286,7 @@
     //当dom一创建时
     created(){
       this.user_name = localStorage.user_real_name;
-      this.zgIdentify(localStorage.user_id);
+      this.zgIdentify(localStorage.user_id,{name:localStorage.user_real_name});
     },
     computed:{
       userRealName(){
@@ -297,11 +301,11 @@
         console.log(from.name);
         if(from.name === this.routerName){
           this.zgTimeOut(from.name);
-          console.log("计时结束");
+//          console.log("计时结束");
         }
         this.routerName = to.name;
         this.zgTimeIn();
-        console.log("计时开始");
+//        console.log("计时开始");
       }
     }
   }

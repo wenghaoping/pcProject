@@ -31,7 +31,7 @@
                                :file-list="planList"
                                accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                                :data="uploadDate">
-                      <el-button slot="trigger" type="primary" v-show="planButton">计划书上传</el-button>
+                      <el-button slot="trigger" type="primary" v-show="planButton" @click="zgClick('上传BP')">计划书上传</el-button>
 
                     </el-upload>
 
@@ -54,7 +54,7 @@
                         :show-file-list="showList"
                         accept=".doc, .ppt, .pdf, .zip, .rar, .png, .docx, .jpg, .pptx, .jpeg"
                         multiple>
-                        <el-button slot="trigger" type="primary">批量上传</el-button>
+                        <el-button slot="trigger" type="primary" @click="zgClick('上传文件')">批量上传</el-button>
                       </el-upload>
                   </span>
                   <span class="f-tips fl" style="margin-left: 8px;"><i>项目文件仅自己可见</i><i>支持pdf、ppt、pptx、doc、docx、rar、zip、png、jpg、jpeg文件格式，单个文件最大50M</i></span>
@@ -2113,6 +2113,7 @@
         this[v] = false;
       },
       goBack(){
+        this.zgClick("退出编辑项目");
         this.$router.go(-1);
       },//返回上一层
 
@@ -2442,6 +2443,7 @@
         })
           .then((data)=>{
             if(data){
+              this.zgClick("提交编辑项目");
               this.loading=true;
               let allData = {};
               this.$tool.setTag(this.project.tag,this.tags.changepro);//标签设置,去处ID存入数组

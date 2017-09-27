@@ -302,6 +302,7 @@
     methods: {
       // 跳过
       skip(){
+        this.zgClick("跳过");
         this.$router.push({name: localStorage.entrance})
       },
       // 完成
@@ -316,6 +317,7 @@
         }else if (this.ruleForm1.email && !this.$tool.checkEmail(this.ruleForm1.email)) {
           this.$tool.error('请正确填写邮箱')
         }else {
+          this.zgClick("提交投资名片");
 //          console.log(this.ruleForm1, this.ruleForm2);
           this.$http.post(this.URL.saveUserIdentity, {
             authenticate_id: localStorage.authenticate_id,

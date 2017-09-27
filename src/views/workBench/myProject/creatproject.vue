@@ -27,7 +27,7 @@
                            :before-upload="beforeUpload"
                            accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                            :data="uploadDate">
-                  <el-button slot="trigger" type="primary" v-show="planButton" class="fl"><i class="el-icon-plus"></i>上传附件</el-button>
+                  <el-button slot="trigger" type="primary" v-show="planButton" class="fl" @click="zgClick('上传BP')"><i class="el-icon-plus"></i>上传附件</el-button>
                   <div slot="tip" class="el-upload__tip fr" v-show="planButton"><i style="display: block">BP私密保护，投资人可通过申请查看来了解项目价值</i><i style="display: block">支持pdf、ppt、pptx、doc、docx、zip、rar文件格式，单个文件最大50M</i></div>
                 </el-upload>
               </span>
@@ -632,6 +632,7 @@
       },//开始同步信息(是否覆盖信息)
 
       goBack(){//返回上一层
+        this.zgClick("退出创建项目");
         this.$router.go(-1);
       },
 
@@ -666,6 +667,7 @@
         else if(this.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
         else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
         else if(this.mustGo) {
+          this.zgClick("提交项目");
           this.loading=true;
           this.project.project_id=this.uploadShow.project_id;
           let allData = {};

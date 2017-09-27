@@ -26,8 +26,8 @@ Vue.mixin({
      //预定义属性
      '行业': '互联⽹网' //⾃自定义属性  Object
     */
-    zgIdentify(userId,event = {}) {
-      zhuge.identify(userId, event);
+    zgIdentify(userName,event = {}) {
+      zhuge.identify(userName, event);
     },
 
     //路由进入计时

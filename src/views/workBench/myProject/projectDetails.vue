@@ -929,6 +929,7 @@
 
     methods:{
       addFollow(){
+        this.zgClick("添加跟进");
         this.followid='';
         this.followDisplay=true;
         this.projecmessage.project_id=this.project.project_id;
@@ -1040,8 +1041,11 @@
       handleIconClick(){
         this.searchChange(this.searchName);
       },//输入搜索
-      handleClick:function(tab, event){
+      handleClick(tab, event){
         this.show = tab.name ;
+        if(tab.name === 'detail'){this.zgClick("查看项目详情");}
+        if(tab.name === 'flow'){this.zgClick("查看跟进详情");}
+        if(tab.name === 'files'){this.zgClick("查看文件管理");}
       },
       goBack(){
         if(this.activeFrom==0) this.$router.push({name: 'myProject',query: {activeTo: 0}})
@@ -1166,6 +1170,7 @@
       },
       projectPush2(){
         this.projectPushDisplay2=true;
+        this.zgClick("推送项目");
       },//项目推送入口,项目入口
       getprojectId(){
         this.project.project_id=this.$route.query.project_id;
@@ -1173,6 +1178,7 @@
         this.show=this.$route.query.show || "detail";
       },//获取id
       toEdit(){
+        this.zgClick("编辑项目");
         this.$router.push({ name: 'editproject',query: { project_id:this.project.project_id}},)
       },//编辑项目
       toDetail(data){
@@ -1188,6 +1194,7 @@
             schedule_id: e
           };
           this.loading = true;
+          this.zgClick("设置项目进度");
           this.$http.post(this.URL.setProjectSchedule, getData)
             .then(res => {
               let data = res.data.data;
@@ -1207,6 +1214,9 @@
       },//hold切换后
 
       handleClick2(tab, event) {
+
+        if(tab.name=="1") this.zgClick("意向投资人");
+        if(tab.name=="2") this.zgClick("买家图谱");
 
         if(tab.name=="1") this.tabs=true;
         else this.tabs=false
@@ -1536,8 +1546,9 @@
         if(data==0){
           this.$tool.warning("已推送过");
         }else{
+          this.zgClick("推送项目");
           this.userMessage.user_real_name=data.user_real_name;
-          this.userMessage.user_company_career=data.user_company_career;
+           this.userMessage.user_company_career=data.user_company_career;
           this.userMessage.user_company_name=data.user_company_name;
           this.userMessage.card_id=data.card_id;
           if(data.type=='user'){
@@ -1562,6 +1573,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          this.zgClick("买家图谱移除");
           this.loading = true;
           this.$http.post(this.URL.exceptMatchAction, delData)
             .then(res => {

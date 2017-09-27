@@ -411,6 +411,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.zgClick("删除人脉");
         this.loading=true;
         this.$http.post(this.URL.deleteConnectUser, {user_id:localStorage.user_id,card_id: row.card_id})
           .then(res => {

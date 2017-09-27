@@ -51,7 +51,8 @@
     methods: {
       //选择身份
       toggle(i){
-        this.active = i
+        this.active = i;
+
       },
       //下一步
       next(){
@@ -60,6 +61,7 @@
             user_id: localStorage.user_id,
             group_id: this.identitys[this.active].group_id,
           }).then(res => {
+            this.zgClick("选择角色");
             if (res.data.status_code === 2000000) {
               console.log(res.data)
               localStorage.group_id=this.identitys[this.active].group_id;

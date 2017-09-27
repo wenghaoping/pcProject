@@ -36,7 +36,7 @@
           this.$http.post(this.URL.authCaptcha, {
             user_mobile: this.telephone
           }).then(res => {
-
+            this.zgClick("获取验证码");
             if (res.data.status_code === 2000000) {
               this.is_getCode = 1;
               var timer = setInterval(() => {
@@ -64,13 +64,14 @@
             user_mobile: this.telephone,
             captcha: this.captcha
           }).then(res => {
+            this.zgClick("登陆");
             if(res.data.status_code===2000000){
               localStorage.user_id=res.data.user_id;
               localStorage.user_real_name=res.data.user_real_name;
               localStorage.user_brand=res.data.user_brand;
               localStorage.user_company_career=res.data.user_company_career;
               localStorage.user_company_name=res.data.user_company_name;
-              this.zgIdentify(res.data.user_id);
+              this.zgIdentify(res.data.user_id,{name:res.data.user_real_name});
               this.$store.state.logining.user_id=res.data.user_id;
               this.$store.state.logining.user_real_name=res.data.user_real_name;
               this.$store.state.logining.user_brand=res.data.user_brand;

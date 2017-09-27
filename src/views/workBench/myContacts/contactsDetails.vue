@@ -520,6 +520,7 @@
         this.$router.push({name: 'myContacts',query: {activeTo: 1}})//路由传参
       },//返回上一层
       goEdit(){
+        this.zgClick("编辑人脉");
         this.$router.push({name: 'createContacts', query: {card_id: this.contacts.card_id}})//路由传参
       },//跳转到编辑页
       openDiv(v){
@@ -540,6 +541,7 @@
         if(data==0){
             this.$tool.warning("已推送过");
         }else{
+          this.zgClick("推送项目");
           this.userMessage.user_real_name=this.contacts.user_real_name;
           this.userMessage.user_company_career=this.contacts.user_company_career;
           this.userMessage.user_company_name=this.contacts.user_company_name;

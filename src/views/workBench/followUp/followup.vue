@@ -285,15 +285,18 @@ export default {
     },//从vuex中取数据
 
     addFollow(){
+      this.zgClick("添加跟进");
       this.followDisplay=true;
     },//点击写跟近按钮
     handleSelect(row, event, column) {
       if(column.label!="重置"){
+        this.zgClick("查看项目详情");
         this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'flow',activeTo: 2}})
         this.setRouterData();
       }
     },//跳转到更近详情页
     handleEdit(index, row){
+      this.zgClick("编辑跟进");
         this.followDisplay=true;
         this.followid=row.follow_id;
         this.setRouterData();
@@ -310,6 +313,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.zgClick("删除跟进");
         this.loading=true;
         this.$http.post(this.URL.delete_follow_record, {user_id:localStorage.user_id,follow_id: row.follow_id})
           .then(res => {

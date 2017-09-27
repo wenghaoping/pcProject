@@ -547,6 +547,7 @@ export default {
         else if(!contacts1) {this.$tool.error("投资需求不超过500字")}
         else if(!contacts2) {this.$tool.error("资源需求不超过500字")}
       else{
+          this.zgClick("提交人脉");
           this.$tool.setTag(this.contacts.user_invest_tag,this.tags.changecont);
           let allData={};
           allData=this.contacts;
