@@ -9,7 +9,7 @@
 
         <p style="font-size:18px;color:#fc703e;font-weight: bolder;line-height: 28px;">
           <i v-if="user.user_brand!=''">{{user.user_brand}}－</i>
-          <i v-else>{{user.firse_user_company_name}}－</i>
+          <i v-else>{{user.firse_user_company_name}}<i v-if="user.firse_user_company_name==''">－</i></i>
           <i v-if="user.firse_user_company_career!=''">{{user.firse_user_company_career}}－</i>
           <i v-if="user.firse_user_real_name!=''">{{user.firse_user_real_name}}</i>
         </p>

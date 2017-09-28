@@ -36,6 +36,7 @@
       localStorage.token=this.$route.query.token || '';
       //重新获取个人标签(因为获取个人标签必须要有user_id)
       this.$global.func.getWxProjectCategory();
+      this.getCheckUserInfo(localStorage.user_id);
       setTimeout(()=>{
         this.$router.push({name:a});
         this.loading=false;

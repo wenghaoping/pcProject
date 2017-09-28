@@ -13,7 +13,7 @@
           </el-input>
         </div>
         <div class="btns-box fr">
-          <el-button type="primary" @click="addFollow">写更进</el-button>
+          <el-button type="primary" @click="addFollow">写跟进</el-button>
         </div>
       </div>
       <div class="top-lists" style="cursor: pointer">

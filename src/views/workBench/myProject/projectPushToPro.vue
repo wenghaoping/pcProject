@@ -774,14 +774,14 @@
       pushTitle(){
         this.user_company_name=localStorage.user_company_name;
         this.user_brand=localStorage.user_brand;
-        this.user_company_career=localStorage.user_company_career || "";
+        this.user_company_career=localStorage.user_company_career === "" ? "" : localStorage.user_company_career+'-';
         this.user_real_name=localStorage.user_real_name;
         if(!this.user_brand){
-          this.pushbrand=this.user_company_name || "";
+          this.pushbrand=this.user_company_name ==="" ? "" : this.user_company_name+'-';
         }else {
-          this.pushbrand=this.user_brand || "";
+          this.pushbrand=this.user_brand === "" ? "" :this.user_brand+'-';
         }
-        return this.pushbrand+'-'+this.user_company_career+'-'+this.user_real_name+'推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+        return this.pushbrand+this.user_company_career+this.user_real_name+'推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
       },
     },
     computed: {
@@ -803,10 +803,12 @@
     watch: {
       //打开该弹框时
       projectPushShow2: function (e) {
+
         if(e){
+          this.getCheckUserInfo(localStorage.user_id);
           this.project_name = this.proIntro;
           this.project_id = this.proid;
-          this.email.title = this.pushTitle();
+          setTimeout(()=>{ this.email.title = this.pushTitle();},1000);
           this.getPushCount();
           this.getMyContacts(1);
           setTimeout(()=>{ this.getNetContacts(1);},1000);

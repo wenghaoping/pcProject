@@ -205,15 +205,15 @@ export default {
     title(){
       this.user_company_name=localStorage.user_company_name;
       this.user_brand=localStorage.user_brand;
-      this.user_company_career=localStorage.user_company_career;
+      this.user_company_career=localStorage.user_company_career+'-' || "";
       this.user_real_name=localStorage.user_real_name;
       if(!this.user_brand){
-        this.pushbrand=this.user_company_name;
+        this.pushbrand=this.user_company_name+'-' || "";
       }else{
-        this.pushbrand=this.user_brand;
+        this.pushbrand=this.user_brand+'-' || "";
       }
 
-      this.pushTitle1=this.pushbrand+'-'+this.user_company_career+'-'+this.user_real_name+'推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+      this.pushTitle1=this.pushbrand+this.user_company_career+this.user_real_name+'推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
     },
     preview(){
       if(this.pushCount!=0) {
@@ -429,6 +429,9 @@ export default {
     },
     projectPushShow : function (e) {
         if(e){
+          this.getCheckUserInfo(localStorage.user_id);
+
+          setTimeout(()=>{this.title();this.email.title = this.pushTitle1;},1000);
           this.user={};
           this.email2.nameEmai="";
           this.projectList=[];
@@ -440,14 +443,13 @@ export default {
           this.firstInData.user =this.userMessage;
           this.firstInData.email2.nameEmail = this.userEmail;
           this.firstInData.project = this.$store.state.pushProject.projectMessgae || {};
-            this.email.title=this.pushTitle1;
+
           /*    this.email.body=this.$store.state.pushProject.email.body || '';
            this.projectRadio=this.$store.state.pushProject.project_id || '';*/
           if(this.firstInData.project.pro_id!=""){
             this.remoteMethod(this.firstInData.project.pro_intro)
               .then((data)=>{
                 this.projectRadio=this.firstInData.project.pro_id;
-
               })
           }else{
             this.remoteMethod("");
@@ -457,7 +459,7 @@ export default {
     },
   },
   created(){
-    this.title();
+
   }
 }
 </script>

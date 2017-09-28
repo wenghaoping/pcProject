@@ -97,6 +97,7 @@ export default
   resetPasswordCaptcha:'api/auth/resetPasswordCaptcha',//重置密码获取验证码接口
   resetPassword:'api/auth/resetPassword',//重置密码接口
   bindTelephone:'/api/user/bindUser',//绑定手机号码
+  checkUserInfo : 'api/user/checkUserInfo',//获取用户信息
 
   /*我的人脉*/
   uploadConnectCard:"api/v/user/uploadConnectCard?token=",//人脉图片上传
