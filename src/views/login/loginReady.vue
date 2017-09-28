@@ -24,6 +24,7 @@
         a='myProject'
       }
 //      console.log(this.$route.query);
+      //从URL中获取数据
       localStorage.user_id = this.$route.query.id;
 
       localStorage.user_real_name=this.$route.query.name;
