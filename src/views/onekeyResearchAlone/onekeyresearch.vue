@@ -766,14 +766,16 @@
           })
             .then(res => {
               if(res.data.status_code==2000000){
+                  console.log(res.data.data);
                 this.getProjectIndustry(res.data.data);
                 this.project = res.data.data;
                 this.chartData = res.data.data;
-                if(res.data.data){
-                  this.data1=res.data.data[0].project_name;
-//                  console.log(this.data1);
-                }else{
+                if(res.data.data.length==0){
                   this.data1=' ';
+                 // console.log(this.data1);
+                }else if(res.data.data[0].project_name){
+                  this.data1=res.data.data[0].project_name;
+                 // console.log(this.data1);
                 }//联系项目方项目名称
 //                this.data1=this.project[0].project_name?this.project[0].project_name:' ';
                 this.getCrawlerProjectChart(res.data.data);
