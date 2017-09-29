@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="tc">
-      <button class="next" @click="next">下一步</button>
+      <button class="next" @click="next" style="cursor: pointer;">下一步</button>
     </div>
   </div>
 </template>
@@ -63,10 +63,10 @@
           }).then(res => {
             this.zgClick("选择角色");
             if (res.data.status_code === 2000000) {
-              console.log(res.data)
+//              console.log(res.data)
               localStorage.group_id=this.identitys[this.active].group_id;
               localStorage.authenticate_id = res.data.authenticate_id;
-              this.$router.push('/identityDetail')
+              this.$router.push('/identityDetail');
             } else {
               this.$tool.error(res.data.error_msg)
             }

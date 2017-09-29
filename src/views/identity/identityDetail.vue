@@ -3,7 +3,7 @@
     <div class="title clearfix tc" v-show="!this.$route.query.user">
       创建您的投资名片?
       <div class="fr">
-        <button class="skip btn1" type="text" @click="skip">跳过</button>
+        <button class="skip btn1" type="text" @click="skip" style="color: rgb(0, 158, 255);cursor: pointer">跳过</button>
       </div>
     </div>
     <div class="title clearfix tc" v-show="this.$route.query.user">
@@ -303,7 +303,11 @@
       // 跳过
       skip(){
         this.zgClick("跳过");
-        this.$router.push({name: localStorage.entrance})
+        if(localStorage.entrance==undefined){
+          this.$router.push({name:'myProject'});
+        }else {
+          this.$router.push({name:localStorage.entrance})
+        }
       },
       // 完成
       next(){
@@ -342,7 +346,15 @@
             project_case:this.investCaseData
           }).then(res => {
             if (res.data.status_code === 2000000) {
-              this.$router.push({name: localStorage.entrance})
+              this.getCheckUserInfo(localStorage.user_id);
+              setTimeout(()=>{
+                if(localStorage.entrance==undefined){
+                  this.$router.push({name:'myProject'});
+                }else {
+                  this.$router.push({name:localStorage.entrance})
+                }
+              },1000)
+
             } else {
               this.$tool.error(res.data.error_msg)
             }
@@ -368,7 +380,7 @@
         })
         .catch(err => {
           this.alert("获取失败");
-          console.log(err);
+//          console.log(err);
         });
         this.dialogVisible = true;
       },
@@ -440,7 +452,8 @@
           this.$tool.error('核对身份接口调用失败')
         }
       })
-      this.group_id=localStorage.group_id;
+      this.group_id = localStorage.group_id;
+
 //      console.log(this.group_id)
     }
   }

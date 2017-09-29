@@ -210,7 +210,7 @@
       checkUser(){
         //this.$tool.console(this.$route.path)
         this.user_id=localStorage.user_id;
-        this.user_name=this.userRealName;
+        this.user_name = this.userRealName;
         //头部导航下标不对应问题解决
         if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
           this.active=1
@@ -287,10 +287,11 @@
     created(){
       this.user_name = localStorage.user_real_name;
       this.zgIdentify(localStorage.user_id,{name:localStorage.user_real_name});
+      this.getCheckUserInfo(localStorage.user_id);
     },
     computed:{
       userRealName(){
-        let user_real_name=this.$store.state.logining.user_real_name || localStorage.user_real_name;
+        let user_real_name = this.$store.state.logining.user_real_name || localStorage.user_real_name;
         return user_real_name;
       },
     },
@@ -299,11 +300,9 @@
         this.checkUser();
         if(from.name === this.routerName){
           this.zgTimeOut(from.name);
-//          console.log("计时结束");
         }
         this.routerName = to.name;
         this.zgTimeIn();
-//        console.log("计时开始");
       }
     }
   }
