@@ -766,7 +766,6 @@
           })
             .then(res => {
               if(res.data.status_code==2000000){
-                  console.log(res.data.data);
                 this.getProjectIndustry(res.data.data);
                 this.project = res.data.data;
                 this.chartData = res.data.data;
