@@ -317,7 +317,7 @@
                       <el-col :span="5">
                         <el-form-item label="　"
                                       :rules="[{max:8,message: '最大8个字符'}]"
-                                      prop="goodness.pro_business_model.goodness_title">
+                                      prop="goodness.pro_service.goodness_title">
                           <el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="产品概况"></el-input>
                         </el-form-item>
                       </el-col>
@@ -327,7 +327,7 @@
                         </div>
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
-                                      prop="goodness.pro_business_model.goodness_desc">
+                                      prop="goodness.pro_service.goodness_desc">
                           <el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
                                      @focus="focus(3)" @blur="blur(3)"></el-input>
                         </el-form-item>
@@ -337,7 +337,7 @@
                       <el-col :span="5">
                         <el-form-item label="　"
                                       :rules="[{max:8,message: '最大8个字符'}]"
-                                      prop="goodness.pro_service.goodness_title">
+                                      prop="goodness.pro_business_model.goodness_title">
                           <el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="商业模式"></el-input>
                         </el-form-item>
                       </el-col>
@@ -347,7 +347,7 @@
                         </div>
                         <el-form-item label="　"
                                       :rules="[{max:1000,message: '最大1000个字符'}]"
-                                      prop="goodness.pro_service.goodness_desc">
+                                      prop="goodness.pro_business_model.goodness_desc">
                           <el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="用来说明通过什么方式盈利"
                                      @focus="focus(4)" @blur="blur(4)"></el-input>
                         </el-form-item>
