@@ -32,7 +32,6 @@ Vue.prototype.$echart = echarts;
 
 import './global/filters';//过滤器
 
-// import '../theme/index.css'
 import Vuex from 'vuex';
 import global from './global/global.js';
 
@@ -43,8 +42,6 @@ Vue.use(tool);//自己的库
 Vue.use(Vuex);
 // Vue.use($);
 Vue.use(zhuge);//诸葛io
-
-// Vue.use(zhugeMiXins);//诸葛io全局函数,用来封装
 
 Vue.prototype.$store=store;
 
