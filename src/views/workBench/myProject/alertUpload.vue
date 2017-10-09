@@ -43,7 +43,7 @@
                   :key="domain.index"
                   :rules="[{required: true, message: '项目名称不能为空', trigger: 'blur'},
                             {max: 40, message: '不能大于40个汉字', trigger: 'blur' }]">
-                  <el-input v-model="domain.pro_name"></el-input>
+                  <el-input v-model="domain.pro_name" :disabled="domain.load"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
@@ -54,7 +54,7 @@
                   :key="domain.index"
                   :rules="[{required: true, message: '项目介绍不能为空', trigger: 'blur'},
                         {max: 40, message: '不能大于40个汉字', trigger: 'blur' }]">
-                  <el-input v-model="domain.pro_intro"></el-input>
+                  <el-input v-model="domain.pro_intro" :disabled="domain.load"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
