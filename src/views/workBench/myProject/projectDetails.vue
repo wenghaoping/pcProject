@@ -412,6 +412,12 @@
 
               </filemanagement>
             </el-tab-pane>
+            <el-tab-pane label="上线后数据" name="onlinedata">
+              <onlinedata :proid="project.project_id">
+
+              </onlinedata>
+
+            </el-tab-pane>
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
             <div class="toButton" style="padding-left: 0;z-index: 111">
@@ -664,9 +670,10 @@
   import filemanagement from './fileManagement.vue'
   import alertcontactsdetail from './alertContactsDetail.vue'
   import addfollow from './../followUp/addFollow.vue'
-  import projectpushtopro from './projectPushToPro.vue';
+  import projectpushtopro from './projectPushToPro.vue'
   import projectpreview from '../myContacts/projectPreview.vue'
   import projectpush from '../myContacts/projectPush.vue'
+  import onlinedata from './onlineData.vue'
   export default {
     data(){
       return {
@@ -689,7 +696,7 @@
           pro_intro:''
         },//项目名称,ID
         followDisplay:false,//添加意向投资人
-        show: "detail",
+        show: "onlinedata",
         searchName:"",
         form: {
           name: '',
@@ -920,7 +927,8 @@
       addfollow,
       projectpushtopro,
       projectpreview,
-      projectpush
+      projectpush,
+      onlinedata,
     },
     //Echart组件
     mounted(){

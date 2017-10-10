@@ -42,7 +42,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_name" label="关联项目" show-overflow-tooltip width="175">
+            <el-table-column prop="pro_name" label="项目介绍" show-overflow-tooltip width="175">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 8 ? false:true">
                   <div slot="content">
@@ -58,11 +58,8 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="card_name" label="意向投资人"
-                             show-overflow-tooltip width="157"
-                             :filters="card_nameFilters"
-                             column-key="card_name"
-                             filter-placement="bottom-end">
+            <el-table-column prop="card_name" label="投资人"
+                             show-overflow-tooltip width="77">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.card_name.length > 3 ? false:true">
                   <div slot="content">
@@ -78,8 +75,25 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="schedule_name" label="项目进度"
-                             show-overflow-tooltip width="161"
+            <el-table-column prop="user_orginization" label="机构"
+                             show-overflow-tooltip width="157">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.user_orginization.length > 10 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_orginization}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.user_orginization}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.user_orginization.length === 0">
+                  --
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="schedule_name" label="跟进进度"
+                             show-overflow-tooltip width="120"
                              :filters="schedule_nameFilters"
                              :filter-multiple="stateCheck"
                              filter-placement="bottom-end"
@@ -96,59 +110,73 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="follow_desc" label="跟进描述" show-overflow-tooltip width="156">
+            <el-table-column prop="meet_type" label="约谈方式" show-overflow-tooltip width="80"
+                             :filters="meet_typeFilters"
+                             :filter-multiple="stateCheck"
+                             filter-placement="bottom-end">
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.follow_desc.length > 15 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.meet_type.length > 15 ? false:true">
                   <div slot="content">
-                    <div class="tips-txt">{{scope.row.follow_desc}}</div>
+                    <div class="tips-txt">{{scope.row.meet_type}}</div>
                   </div>
                   <div>
-                    {{scope.row.follow_desc}}
+                    {{scope.row.meet_type}}
                   </div>
                 </el-tooltip>
-                <div v-if="scope.row.follow_desc.length === 0">
+                <div v-if="scope.row.meet_type.length === 0">
                   --
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="follow_file_name" label="项目文件" show-overflow-tooltip width="185">
+            <el-table-column prop="meet_time" label="约谈时间"
+                             show-overflow-tooltip
+                             width="136"
+                             column-key="meet_time"
+                             sortable="custom">
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.follow_file_name.length > 17 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.follow_file_name}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.follow_file_name}}
-                  </div>
-                </el-tooltip>
-                <div v-if="scope.row.follow_file_name.length === 0">
+                <div v-if="scope.row.meet_time==''">
                   --
+                </div>
+                <div else>
+                  {{scope.row.meet_time}}
                 </div>
               </template>
             </el-table-column>
 
-            <!--<el-table-column prop="user_real_name" label="跟进人" show-overflow-tooltip width="143">-->
-              <!--<template scope="scope">-->
-                <!--<el-tooltip placement="top" :disabled="scope.row.user_real_name.length > 3 ? false:true">-->
-                  <!--<div slot="content">-->
-                    <!--<div class="tips-txt">{{scope.row.user_real_name}}</div>-->
-                  <!--</div>-->
-                  <!--<div>-->
-                    <!--{{scope.row.user_real_name}}-->
-                  <!--</div>-->
-                <!--</el-tooltip>-->
-                <!--<div v-if="scope.row.user_real_name.length === 0">-->
-                  <!--&#45;&#45;-->
-                <!--</div>-->
-              <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column prop="meet_status" label="约谈状态" width="80"
+                             :filters="meet_statusFilters"
+                             :filter-multiple="stateCheck"
+                             filter-placement="bottom-end"
+                             show-overflow-tooltip>
+              <template scope="scope">
+                <div v-if="scope.row.meet_status.length === 0">
+                  -
+                </div>
+                <div v-if="scope.row.meet_status.length > 0">
+                  {{scope.row.meet_status}}
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="meet_back" label="约谈反馈" width="82"
+                             :filters="meet_backFilters"
+                             :filter-multiple="stateCheck"
+                             filter-placement="bottom-end"
+                             show-overflow-tooltip>
+              <template scope="scope">
+                <div v-if="scope.row.meet_back.length === 0">
+                  -
+                </div>
+                <div v-if="scope.row.meet_back.length > 0">
+                  {{scope.row.meet_back}}
+                </div>
+              </template>
+            </el-table-column>
 
             <el-table-column prop="created_at" label="跟进时间"
                              show-overflow-tooltip
-                             width="189"
-                             :filters="created_atFilters"
-                             :filter-multiple="stateCheck"
+                             width="137"
                              column-key="create_at"
                              sortable="custom">
               <template scope="scope">
@@ -164,7 +192,7 @@
             <el-table-column
               prop="reset"
               label="重置"
-              width="146" class="flow-btn btn-cur">
+              width="125" class="flow-btn btn-cur">
               <template scope="scope">
                 <el-button
                   type="text"
@@ -181,17 +209,6 @@
               </template>
             </el-table-column>
           </el-table>
-
-          <div class="timeCheck">
-            <el-date-picker
-              v-model="timeSelect"
-              type="date"
-              placeholder="选择日期"
-              :editable="false"
-              @change="timeChange"
-              :picker-options="pickerOptions">
-            </el-date-picker>
-          </div>
           <div class="pagenav" v-if="totalData>10">
             <el-pagination
               small
@@ -229,27 +246,30 @@ export default {
       currentPage:1,//当前页数
       getFollow:{},//筛选的请求参数
       tableData:[
-/*        {
-         follow_id: 15,
-         pro_name: "这里是关联的项目名称这里是关联的项目名称",
-         user_real_name: "阮千军阮千军阮千军阮千军阮千军阮千军阮千军阮千军阮千军",
-         schedule_name: "签署投资协议",
-         follow_file_name: "这个是项目文件的啊项目文件的啊项目文件的啊",
-         card_name: "欧阳复欧阳复欧阳复",
-         follow_desc: "这里是，跟进的具体描述，不用全部显示，默认默认默认默认默认默认默认默认",
-         created_at: "2017-07-13 18:47:20"
-         }*/
+        {
+          follow_id: 15,
+          pro_name: "是项目的名称如这里是关联的项目名称这里是关联的项目名称这里",
+          pro_intro: "这里是关联的项目名称这里是关联的项目名称这里",
+          card_name: "投资人投资人投资人",
+          user_orginization: "杭州投着乐了网络科技科技科技科技",  //机构
+          schedule_name: "签署投资协议",//进度
+          meet_type: "电话",//约谈方式
+          meet_time: "2017-05-06 12:21",//约谈时间
+          meet_status: "完成",//约谈状态
+          meet_back: "不跟进",//约谈反馈
+          created_at: "2017-07-13 18:47:20",//跟进时间
+
+
+//          follow_file_name: "这个是项目文件的啊项目文件的啊项目文件的啊",
+//          follow_desc: "这里是，跟进的具体描述，不用全部显示，默认默认默认默认默认默认默认默认",
+
+          }
       ],//列表数据
       schedule_nameFilters:[],//跟进状态筛选
-      card_nameFilters:[],//意向投资人
-      created_atFilters:[],//更近时间选择
+      meet_typeFilters:[],//约谈方式筛选
+      meet_statusFilters:[],//约谈状态筛选
+      meet_backFilters:[],//约谈反馈筛选
       stateCheck:false,//跟进状 态单选
-      timeSelect:'',//时间选择器
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now() - 8.64e7+3600 * 1000 * 24;
-        }
-      },//计算时间
     }
   },
   methods: {
@@ -358,11 +378,11 @@ export default {
         if(this.getFollow[key]=='' || this.getFollow[key]=='NaN'){
           delete this.getFollow[key];
         }
-        if(key == "card_name"){
+/*        if(key == "card_name"){
           this.getFollow.card_name=this.filterInvestors(this.getFollow.card_name);
-        }
+        }*/
       }//删除空的查询项
-//      this.$tool.console(this.getFollow);
+      console.log(this.getFollow);
 
       this.$http.post(this.URL.get_follow_records,this.getFollow)
         .then(res=>{
@@ -412,22 +432,6 @@ export default {
         return arr;
       }
     },//意向投资人筛选控制
-    timeChange(time){
-      this.loading=true;
-      this.currentPage=1;
-      this.getFollow.created_at_time=time;
-      this.$http.post(this.URL.get_follow_records,this.getFollow)
-        .then(res=>{
-          let data = res.data.data;
-          this.tableData=data.follow_record;
-          this.totalData=data.count;
-          this.loading=false;
-        })
-        .catch(err=>{
-          this.loading=false
-          this.$tool.console(err,2)
-        })
-    },//筛选时间
     closeFollow(msg){
       this.followDisplay=msg;
       this.followid="";
@@ -449,7 +453,9 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.schedule_nameFilters=this.$tool.getTitleSift(data.schedule_name);
-          this.card_nameFilters=this.getInvestors(data.investors);
+          this.meet_typeFilters=this.getInvestors(data.investors);
+          this.meet_statusFilters=this.getInvestors(data.investors);
+          this.meet_backFilters=this.getInvestors(data.investors);
         })
         .catch(err=>{
           this.$tool.console(err,2)
@@ -460,12 +466,12 @@ export default {
     this.getRouterData();
     this.$tool.getTop();
     this.titleSift();
-    this.filterChangeCurrent(this.currentPage || 1);
+//    this.filterChangeCurrent(this.currentPage || 1);
   },
   watch :{
     followDisplay : function (e) {
       if (!e) {
-        this.handleIconClick();
+//        this.handleIconClick();
       }
     }
   }
