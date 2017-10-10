@@ -37,7 +37,7 @@
       window.zhuge._init(b, x)
     }
   };
-  window.zhuge.load('d79a28abc0424fb499109b8a7d2a2e07', {
+  window.zhuge.load('ef940ea52b1545fdaa673e481532fa3b', {
     superProperty: {//全局的事件属性(选填)
       '应用名称': '诸葛io'
     },

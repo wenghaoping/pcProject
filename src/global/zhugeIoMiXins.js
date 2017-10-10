@@ -82,18 +82,21 @@ Vue.mixin({
 
 
     //公用函数
-    getCheckUserInfo(user_id){
-      this.$http.post(this.URL.checkUserInfo,{
-        user_id : user_id,
-      }).then(res=> {
-        if (res.data.status_code === 2000000) {
-          //将user_id存入sessionStorge并跳转
-          localStorage.user_real_name = res.data.user_real_name;
-          localStorage.user_brand = res.data.user_brand;
-          localStorage.user_company_career = res.data.user_company_career;
-          localStorage.user_company_name = res.data.user_company_name;
-        }
-      })
+    getCheckUserInfo(user_id = 0){
+      if(user_id !== 0){
+        this.$http.post(this.URL.checkUserInfo,{
+          user_id : user_id,
+        }).then(res=> {
+          if (res.data.status_code === 2000000) {
+            //将user_id存入sessionStorge并跳转
+            localStorage.user_real_name = res.data.user_real_name;
+            localStorage.user_brand = res.data.user_brand;
+            localStorage.user_company_career = res.data.user_company_career;
+            localStorage.user_company_name = res.data.user_company_name;
+            this.$store.state.logining.user_real_name = res.data.user_real_name;
+          }
+        })
+      }
     }
 
   }
