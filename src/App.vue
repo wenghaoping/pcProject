@@ -163,6 +163,7 @@
       },
       //*自动搜索,接口写这里面
       querySearchAsync(queryString, cb) {
+
         if(queryString.length>2) {
           this.$http.post(this.URL.selectCompany, {company_name: queryString})
             .then(res => {

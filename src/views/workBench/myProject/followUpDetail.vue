@@ -8,8 +8,11 @@
             <!--<div class="item-cicle1"></div>-->
             <img :src="cirIcon">
           </div>
-          <div class="item-time">{{item.follow_time}}</div>
-          <div class="item-name">{{item.follow_user_name}}</div>
+           <div class="item-time">{{item.investor_name}}</div>
+          <div class="item-name" v-if="item.user_organization">({{item.user_organization}})</div>
+          <span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: -5px;margin-left: 16px" :class="{ followColor: item.schedule.schedule_name=='Reject',followColor1:item.schedule.schedule_name=='Hold'}" >{{item.schedule.schedule_name}}</span>
+
+          <!--<div class="item-name">{{item.follow_user_name}}</div>-->
           <div class="item-edit">
             <el-button
               type="text"
@@ -23,21 +26,69 @@
         <!--信息内容介绍-->
         <div class="followContent">
           <div class="followProject">
-            <span style="display: inline-block;float: left;position: relative;">关联项目&nbsp;:&nbsp;</span>
-            <el-tooltip class="item" effect="dark"  placement="top" :disabled="pro_name.length > 10 ? false:true">
-              <div slot="content">
-                <div class="tips-txt">{{pro_name}}</div>
-              </div>
-              <span style="width:180px;max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>
-            </el-tooltip>
-            <span style="display: inline-block;margin-left: 90px;float: left;position: relative;" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>
-            <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.investor_name.length > 3 ? false:true">
-              <div slot="content">
-                <div class="tips-txt">{{item.investor_name}}</div>
-              </div>
-              <span style="width:58px;max-width:58px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left;text-align: center">{{item.investor_name}}</span>
-            </el-tooltip>
-            <span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>
+            <!--<span style="display: inline-block;float: left;position: relative;">关联项目&nbsp;:&nbsp;</span>-->
+            <!--<el-tooltip class="item" effect="dark"  placement="top" :disabled="pro_name.length > 10 ? false:true">-->
+              <!--<div slot="content">-->
+                <!--<div class="tips-txt">{{pro_name}}</div>-->
+              <!--</div>-->
+              <!--<span style="width:180px;max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>-->
+            <!--</el-tooltip>-->
+            <!--<span style="display: inline-block;margin-left: 90px;float: left;position: relative;" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>-->
+            <!--<el-tooltip class="item" effect="dark"  placement="top" :disabled="item.investor_name.length > 3 ? false:true">-->
+              <!--<div slot="content">-->
+                <!--<div class="tips-txt">{{item.investor_name}}</div>-->
+              <!--</div>-->
+              <!--<span style="width:58px;max-width:58px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left;text-align: center">{{item.investor_name}}</span>-->
+            <!--</el-tooltip>-->
+            <!--<span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>-->
+            <!--约谈-->
+            <div class="meet" style="margin-bottom: 15px">
+            <el-row :span="24" >
+              <el-col :span="12">
+                <span style="font-size:14px;color:#8492a6;">约谈反馈:</span>
+                <span style="font-size:14px;color:#475669;">{{item.meet_back| nullTo_}}</span>
+              </el-col>
+              <el-col :span="12">
+                <span style="font-size:14px;color:#8492a6;">约谈状态:</span>
+                <span style="font-size:14px;color:#475669;">{{item.meet_status| nullTo_}}</span>
+              </el-col>
+            </el-row>
+            <el-row :span="24">
+              <el-col :span="12">
+                <span style="font-size:14px;color:#8492a6;">约谈方式:</span>
+                <span style="font-size:14px;color:#475669;">{{item.meet_type| nullTo_}}</span>
+              </el-col>
+              <el-col :span="12">
+                <span style="font-size:14px;color:#8492a6;">约谈时间:</span>
+                <span style="font-size:14px;color:#475669;">{{item.meet_time| nullTo_}}</span>
+              </el-col>
+            </el-row>
+            <el-row :span="24" >
+              <el-col :span="24">
+                <span style="font-size:14px;color:#8492a6;">约谈地点:</span>
+                <span style="font-size:14px;color:#475669;">{{item.meet_address| nullTo_}}</span>
+              </el-col>
+            </el-row>
+            </div>
+            <!--联系-->
+            <div class="contact" style="margin-bottom: 10px">
+            <el-row :span="24" >
+              <el-col :span="12">
+                <span style="font-size:14px;color:#8492a6;">手机:</span>
+                <span style="font-size:14px;color:#475669;">{{item.user_mobile | nullTo_}}</span>
+              </el-col>
+              <el-col :span="12">
+                <span style="font-size:14px;color:#8492a6;">微信:</span>
+                <span style="font-size:14px;color:#475669;">{{item.user_wechar| nullTo_}}</span>
+              </el-col>
+            </el-row>
+            <el-row :span="24">
+              <el-col :span="24">
+                <span style="font-size:14px;color:#8492a6;">其他:</span>
+                <span style="font-size:14px;color:#475669;">{{item.user_other| nullTo_}}</span>
+              </el-col>
+            </el-row>
+            </div>
           </div>
           <div v-show=" item.follow_desc!=''|| item.follow_file.length!=''"  class="followLine"></div>
           <div class="followContent1" :class="{ padbottom: item.follow_desc!=''|| item.follow_file.length!=''}" >{{item.follow_desc}}</div>
@@ -46,6 +97,53 @@
             <span @click.prevent="upload(item1,index)" style="cursor: pointer">{{file.file_title}}.{{file.file_ext}}</span>
           </div>
         </div>
+        <div class="followFooter" style="font-size:12px;color:#8492a6;text-align: right;margin-top: 5px">
+          <span>{{item.follow_user_name}}</span>
+          <span>{{item.follow_time}}</span>
+        </div>
+        <!--跟进约谈-->
+        <!--<div class="followTouch">-->
+          <!--<div class="followTouch1">-->
+           <!--<div class="touch1">-->
+             <!--<span class="touchTitle">约谈电话&nbsp;:</span>-->
+             <!--<span class="touchTitle1">电话</span>-->
+           <!--</div>-->
+            <!--<div class="touch1">-->
+              <!--<span class="touchTitle">约谈时间&nbsp;:</span>-->
+              <!--<span class="touchTitle1">2017-05-04 09:21</span>-->
+            <!--</div>-->
+            <!--<div class="touch1">-->
+              <!--<span class="touchTitle">约谈地点&nbsp;:</span>-->
+              <!--<span class="touchTitle1">浙江省杭州市西湖区文三路90-->
+<!--号东部软件园一楼智云社</span>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="followTouch1 followLeft">-->
+            <!--<div class="touch1">-->
+              <!--<span class="touchTitle">手机号&nbsp;:</span>-->
+              <!--<span class="touchTitle1">18221330799</span>-->
+            <!--</div>-->
+            <!--<div class="touch1">-->
+              <!--<span class="touchTitle">微信号&nbsp;:</span>-->
+              <!--<span class="touchTitle1">xug0771</span>-->
+            <!--</div>-->
+            <!--<div class="touch1">-->
+              <!--<span class="touchTitle">其他&nbsp;:</span>-->
+              <!--<span class="touchTitle1">xug@weitianshi.cn</span>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="followTouch1 followLeft">-->
+            <!--<div class="touch1">-->
+              <!--<span class="touchTitle">约谈反馈&nbsp;:</span>-->
+              <!--<span class="touchTitle1">继续跟进</span>-->
+            <!--</div>-->
+            <!--<div class="touch1">-->
+              <!--<span class="touchTitle">约谈状态&nbsp;:</span>-->
+              <!--<span class="touchTitle1">完成</span>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="clear"></div>-->
+        <!--</div>-->
         <!--确认删除弹框-->
         <el-dialog
           title="删除"
