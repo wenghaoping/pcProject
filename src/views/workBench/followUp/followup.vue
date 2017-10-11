@@ -75,18 +75,18 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="user_orginization" label="机构"
+            <el-table-column prop="user_organization" label="机构"
                              show-overflow-tooltip width="157">
               <template scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.user_orginization.length > 10 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.user_organization.length > 10 ? false:true">
                   <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_orginization}}</div>
+                    <div class="tips-txt">{{scope.row.user_organization}}</div>
                   </div>
                   <div>
-                    {{scope.row.user_orginization}}
+                    {{scope.row.user_organization}}
                   </div>
                 </el-tooltip>
-                <div v-if="scope.row.user_orginization.length === 0">
+                <div v-if="scope.row.user_organization.length === 0">
                   --
                 </div>
               </template>
@@ -113,6 +113,7 @@
             <el-table-column prop="meet_type" label="约谈方式" show-overflow-tooltip width="80"
                              :filters="meet_typeFilters"
                              :filter-multiple="stateCheck"
+                             column-key="meet_type"
                              filter-placement="bottom-end">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.meet_type.length > 15 ? false:true">
@@ -148,6 +149,7 @@
                              :filters="meet_statusFilters"
                              :filter-multiple="stateCheck"
                              filter-placement="bottom-end"
+                             column-key="meet_status"
                              show-overflow-tooltip>
               <template scope="scope">
                 <div v-if="scope.row.meet_status.length === 0">
@@ -163,6 +165,7 @@
                              :filters="meet_backFilters"
                              :filter-multiple="stateCheck"
                              filter-placement="bottom-end"
+                             column-key="meet_back"
                              show-overflow-tooltip>
               <template scope="scope">
                 <div v-if="scope.row.meet_back.length === 0">
@@ -246,29 +249,29 @@ export default {
       currentPage:1,//当前页数
       getFollow:{},//筛选的请求参数
       tableData:[
-        {
+/*        {
           follow_id: 15,
           pro_name: "是项目的名称如这里是关联的项目名称这里是关联的项目名称这里",
           pro_intro: "这里是关联的项目名称这里是关联的项目名称这里",
           card_name: "投资人投资人投资人",
-          user_orginization: "杭州投着乐了网络科技科技科技科技",  //机构
+          user_organization: "杭州投着乐了网络科技科技科技科技",  //机构
           schedule_name: "签署投资协议",//进度
           meet_type: "电话",//约谈方式
           meet_time: "2017-05-06 12:21",//约谈时间
           meet_status: "完成",//约谈状态
           meet_back: "不跟进",//约谈反馈
           created_at: "2017-07-13 18:47:20",//跟进时间
-
-
 //          follow_file_name: "这个是项目文件的啊项目文件的啊项目文件的啊",
 //          follow_desc: "这里是，跟进的具体描述，不用全部显示，默认默认默认默认默认默认默认默认",
 
-          }
+          }*/
       ],//列表数据
       schedule_nameFilters:[],//跟进状态筛选
-      meet_typeFilters:[],//约谈方式筛选
-      meet_statusFilters:[],//约谈状态筛选
-      meet_backFilters:[],//约谈反馈筛选
+      meet_typeFilters:[{text : "电话",value:1},{text : "面谈",value:2}],//约谈方式筛选
+      meet_statusFilters:[{text : "待确认",value:1},{text : "已确认",value:2}
+        ,{text : "完成",value:3},{text : "取消",value:4}],//约谈状态筛选
+      meet_backFilters:[{text : "待确认",value:1},{text : "继续跟进",value:2},
+        {text : "不跟进",value:3}],//约谈反馈筛选
       stateCheck:false,//跟进状 态单选
     }
   },
@@ -356,9 +359,7 @@ export default {
       });
     },//点击删除按钮
     filterChange(filters){
-/*      if(filters.card_name.length==0){
-        delete filters.card_name;
-      }*/
+//      console.log(filters)
       this.loading=true;
       this.currentPage=1;
       this.getFollow.page=1;//控制当前页码
@@ -366,23 +367,18 @@ export default {
       if(filters.order){
         if(filters.order=="ascending") filters.order="asc"//升降序
         else filters.order="desc";
-//        this.getFollow.order=filters.prop;
-        this.getFollow[filters.prop]=filters.order;
+        this.getFollow[filters.prop] = filters.order;
       }else{
         for(let key in filters){
-          this.getFollow[key]=filters[key];
-          if(key === 'schedule_id') this.getFollow[key]=filters[key][0];
+          this.getFollow[key] = filters[key][0];
         }
       } //筛选
       for(let key in this.getFollow){
         if(this.getFollow[key]=='' || this.getFollow[key]=='NaN'){
           delete this.getFollow[key];
         }
-/*        if(key == "card_name"){
-          this.getFollow.card_name=this.filterInvestors(this.getFollow.card_name);
-        }*/
       }//删除空的查询项
-      console.log(this.getFollow);
+//      console.log(this.getFollow);
 
       this.$http.post(this.URL.get_follow_records,this.getFollow)
         .then(res=>{
@@ -406,7 +402,7 @@ export default {
       this.$http.post(this.URL.get_follow_records,this.getFollow)
         .then(res=>{
           let data = res.data.data;
-          this.tableData=data.follow_record;
+          this.tableData = this.getList(data.follow_record);
           this.totalData=data.count;
           this.loading=false;
         })
@@ -437,6 +433,26 @@ export default {
       this.followid="";
     },//关闭添加跟进
 
+    getList(list){
+      let arr = new Array;
+      for(let i=0; i<list.length; i++){
+        let obj = new Object;
+        obj.follow_id = list[i].follow_id;
+        obj.pro_name = list[i].pro_name;
+        obj.pro_intro = list[i].pro_intro;
+        obj.card_name = list[i].card_name;
+        obj.user_organization = list[i].user_organization;
+        obj.schedule_name = list[i].schedule_name;
+        obj.meet_type = list[i].meet_type;
+        obj.meet_time = list[i].meet_time;
+        obj.meet_status = list[i].meet_status;
+        obj.meet_back = list[i].meet_back;
+        obj.created_at = list[i].created_at;
+        arr.push(obj);
+      }
+      return arr
+    },//总设置列表的数据处理
+
     getInvestors(data){
       let arr = new Array;
       for(let i=0; i<data.length; i++){
@@ -453,9 +469,6 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.schedule_nameFilters=this.$tool.getTitleSift(data.schedule_name);
-          this.meet_typeFilters=this.getInvestors(data.investors);
-          this.meet_statusFilters=this.getInvestors(data.investors);
-          this.meet_backFilters=this.getInvestors(data.investors);
         })
         .catch(err=>{
           this.$tool.console(err,2)
@@ -466,7 +479,7 @@ export default {
     this.getRouterData();
     this.$tool.getTop();
     this.titleSift();
-//    this.filterChangeCurrent(this.currentPage || 1);
+    this.filterChangeCurrent(this.currentPage || 1);
   },
   watch :{
     followDisplay : function (e) {

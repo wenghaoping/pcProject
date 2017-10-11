@@ -532,9 +532,7 @@ export default {
           delete this.getCon[key];
         }
       }//删除空的查询项
-      if(this.getCon.login_time){
-        this.getCon.login_time=this.getCon.login_time[0];
-      }
+
       this.$tool.console(this.getCon);
       this.$http.post(this.URL.getConnectUser,this.getCon)
         .then(res=>{

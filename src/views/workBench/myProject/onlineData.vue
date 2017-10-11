@@ -201,12 +201,12 @@
           getList(list){
             let arr = new Array;
             for(let i=0; i<list.length; i++){
-              let obj=new Object;
-              obj.user_name=list[i].user_name;
-              obj.user_organization=list[i].user_organization;
-              obj.group_title=list[i].group_title;
-              obj.created_at=this.$tool.formatDateTime(list[i].created_at);
-              obj.service_desc=list[i].service_desc;
+              let obj = new Object;
+              obj.user_name = list[i].user_name;
+              obj.user_organization = list[i].user_organization;
+              obj.group_title = list[i].group_title;
+              obj.created_at = this.$tool.formatDateTime(list[i].created_at);
+              obj.service_desc = list[i].service_desc;
               arr.push(obj);
             }
             return arr
