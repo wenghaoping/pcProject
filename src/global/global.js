@@ -131,6 +131,16 @@ var func = {
     });
     return arr;
   },//获取项目状态和项目进度
+  getMeet(data){
+    let arr = [];
+    data.forEach((x)=>{
+      let obj = {};
+      obj.label = x.meet_name;
+      obj.value = x.meet_id;
+      arr.push(obj);
+    });
+    return arr;
+  },//获取约谈方式
   getWxProjectCategory() {
     return new Promise((resolve, reject)=>{
       //做一些异步操作

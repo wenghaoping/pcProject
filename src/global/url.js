@@ -9,12 +9,12 @@
 export default
 {
   /*总地址,下载用的*/
-  // weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
-  // weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传
+  weitianshi:"https://pc.dev.weitianshi.cn/",//下载用
+  weitianshiLine:"https://pc.dev.weitianshi.cn/",//上传
   // weitianshi:"https://pc.debug.weitianshi.cn/",//接口下载用
   // weitianshiLine:"https://pc.debug.weitianshi.cn/",//接口上传
-  weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
-  weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
+  // weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
+  // weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
   openUrl:"https://www.weitianshi.cn/workbench/#/API/DD",//一键尽调对外接口
   oneUrl:"https://www.weitianshi.cn/workbench/#/",//一键尽调对内接口
   //一键尽调跳转用接口
@@ -118,6 +118,7 @@ export default
   match_my_relation:'/api/user/match_my_relation',//模糊匹配我的人脉,添加跟进里是用
   add_follow_record:'/api/project/add_follow_record',//添加跟进记录
   getProjectFollowList:'api/v/project/getProjectFollowList',//项目跟进记录列表
+  getEnjoyedInvestorBasicInfo:'api/user/getEnjoyedInvestorBasicInfo',//获取联系方式机构
 
   //文件管理
   getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据
