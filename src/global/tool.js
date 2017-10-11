@@ -355,12 +355,28 @@ const tool={
       return time;
     }
   },
+  //时间转化接受从时间戳转化为中国标准时间(单个数据)
+  setTimeToReallyTime1(time,title){
+    if(time){
+        time[title] = new Date(time[title].length > 11 ? time[title] : time[title]*1000);
+    }else{
+      return time;
+    }
+  },
 //时间转化接受从中国标准时间转化为时间戳title为要转化的字段title2为新赋值的字段
   setReallyTimeToTime(time,title,title2){
     if(tool.isArray(time)){
       time.forEach((x)=>{
         x[title2] = Date.parse(x[title]);
       });
+    }else{
+      return time;
+    }
+  },
+  //单个数据从标准时间转换为时间戳
+  setReallyTimeToTime1(time,title,title2){
+    if(time){
+      time[title2] = Date.parse(time[title])?Date.parse(time[title]):' ';
     }else{
       return time;
     }

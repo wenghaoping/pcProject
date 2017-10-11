@@ -118,6 +118,7 @@ export default
   match_my_relation:'/api/user/match_my_relation',//模糊匹配我的人脉,添加跟进里是用
   add_follow_record:'/api/project/add_follow_record',//添加跟进记录
   getProjectFollowList:'api/v/project/getProjectFollowList',//项目跟进记录列表
+  getEnjoyedInvestorBasicInfo:'api/user/getEnjoyedInvestorBasicInfo',//获取联系方式机构
 
   //文件管理
   getProjectFiles:'api/v/project/getProjectFiles',//文件管理列表数据

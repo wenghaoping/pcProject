@@ -1,15 +1,15 @@
-_<template>
+<template>
   <div id="addFollow" >
     <!--===========================================添加或编辑跟进记录弹窗=============================================-->
     <el-dialog :visible="followDisplay" custom-class="dialogFollow" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll
-               :close-on-click-modal="showList" :close-on-press-escape="showList">
+               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large">
       <div class="addTitle">
         <span> | </span>添加跟进
       </div>
       <div class="main" v-loading.body="loading" element-loading-text="拼命加载中">
         <el-form :model="follow" ref="follow" label-width="100px" class="padding" label-position="top">
-          <el-row :span="24">
-            <el-col :span="24">
+          <el-row :span="24" :gutter="25">
+            <el-col :span="12">
               <el-form-item
                 label="* 关联项目"
                 prop="project_name">
@@ -17,34 +17,149 @@ _<template>
                                  :fetch-suggestions="querySearchProject"
                                  placeholder="一句话介绍，如帮助FA成交的项目管理工具"
                                  :maxlength="20"
-                                 style="width:360px;"
+                                 style="width:343.5px;"
                                  @select="handleSelectProject">
                 </el-autocomplete>
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row :span="24" :gutter="20">
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item
-                label="意向投资人"
+                label="*意向投资人"
                 prop="card_name">
                 <el-autocomplete v-model="follow.card_name"
                                  :fetch-suggestions="querySearchAsync"
-                                 placeholder="请选择或添加投资人"
+                                 placeholder="投资人"
                                  :maxlength="20"
                                  @select="handleSelect">
                 </el-autocomplete>
               </el-form-item>
             </el-col>
+            <el-col :span="6">
+              <el-form-item
+                label="机构"
+                prop="user_organization" class="formColor">
+                <el-input v-model="follow.user_organization"
+                                 placeholder="机构"
+                                 :maxlength="20">
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :span="24" :gutter="25">
+            <el-col :span="6">
+              <el-form-item
+                label="联系方式"
+                prop="user_mobile"
+                :rules="PhoneRule">
+                <el-input v-model="follow.user_mobile"
+                                 placeholder="手机号"
+                                 :maxlength="20">
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item
+                label="微信"
+                prop="user_wechar" class="formColor">
+                <el-input v-model="follow.user_wechar"
+                                 placeholder="微信"
+                                 :maxlength="20">
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item
+                label="其他联系方式"
+                prop="user_other" class="formColor">
+                <el-input v-model="follow.user_other"
+                                 placeholder="其他联系方式"
+                                 :maxlength="20">
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :span="24" :gutter="25">
             <el-col :span="12">
               <el-form-item
                 label="跟进进度"
                 prop="schedule_id">
                 <el-select v-model="follow.schedule_id"
                            placeholder="请选择"
-                           style="width: 165px;">
+                           style="width:343.5px;">
                   <el-option
                     v-for="item in schedule_name"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item
+                label="约谈方式"
+                prop="meet_type">
+                <el-select v-model="follow.meet_type"
+                           placeholder="请选择"
+                           style="width: 343.5px;">
+                  <el-option
+                    v-for="item in meet_choose"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :span="24" :gutter="25">
+            <el-col :span="12">
+              <el-form-item
+                label="约谈时间"
+                prop="meet_time">
+                <el-date-picker
+                  v-model="follow.meet_time"
+                  type="datetime"
+                  placeholder="选择日期时间" style="width: 343.5px;">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item
+                label="约谈地点"
+                prop="meet_address">
+                <el-input v-model="follow.meet_address"
+                          placeholder="请输入">
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :span="24" :gutter="25">
+            <el-col :span="12">
+              <el-form-item
+                label="约谈状态"
+                prop="meet_status">
+                <el-select v-model="follow.meet_status"
+                           placeholder="请选择"
+                           style="width:343.5px;">
+                  <el-option
+                    v-for="item in meet_choose1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item
+                label="约谈反馈"
+                prop="meet_back">
+                <el-select v-model="follow.meet_back"
+                           placeholder="请选择"
+                           style="width: 343.5px;">
+                  <el-option
+                    v-for="item in meet_choose2"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -59,7 +174,7 @@ _<template>
                             prop="follow_desc"
                             :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                 <el-input type="textarea"
-                          style="width: 360px;"
+
                           v-model="follow.follow_desc"
                           :autosize="{ minRows: 4, maxRows: 30}" placeholder="请输入"></el-input>
               </el-form-item>
@@ -150,7 +265,27 @@ _<template>
   export default {
     props: ["followDisplay","followid","projectid","projectname","cardid","cardname","type","userid"],
     data () {
+      var checkPhoneNumber = (rule, value, callback) => {
+        if (!this.$tool.getNull(value)) {
+          setTimeout(() => {
+            if (!this.$tool.checkNumber(value)) {
+              callback(new Error('请输入数字值'));
+            } else {
+              if (!this.$tool.checkPhoneNumber(value)) {
+                callback(new Error('请输入正确的手机号'));
+              }else{
+                callback();
+              }
+            }
+          }, 100);
+        }else{
+          callback();
+        }
+      };//电话号码正则判断
       return {
+        value1:'',
+        value11:'',
+        value22:'',
         uploadAddress:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
         loading:false,
         loading2:false,//加载框加载
@@ -187,6 +322,7 @@ _<template>
         follow_id:'',
         investor_id:'',
         value:'',
+        followName:"",
         follow:{
           project_id:'',//关联项目id
           project_name:'',//关联项目名称
@@ -197,19 +333,68 @@ _<template>
           file_id:[],//文件id
           follow_id:'',//id
           type:'',//名片类型card,user
+          user_organization:'',//机构
+          user_mobile:'',//手机号
+          user_wechar:'',//微信
+          user_other:'',//其他联系方式
+          meet_type:'',//约谈方式
+          meet_time:'',//约谈时间
+          meet_address:'',//约谈地点
+          meet_status:'',//约谈状态
+          meet_back:''//约谈反馈
         },//跟进记录
+        meet_choose: [
+            {
+            value: 1,
+            label: '电话'
+            }, {
+            value: 2,
+            label: '面谈'
+            }
+        ],//约谈方式
+        meet_choose1: [
+            {
+          value: 1,
+          label: '待确认'
+            }, {
+              value: 2,
+              label: '已确认'
+            }, {
+              value: 3,
+              label: '完成'
+            }, {
+              value:4,
+              label: '取消'
+           }
+        ],//约谈状态
+        meet_choose2: [
+            {
+            value: 1,
+            label: '待确认'
+            }, {
+            value: 2,
+            label: '继续跟进'
+           }, {
+            value: 3,
+            label: '不跟进'
+           }
+        ],//约谈反馈
         schedule_name: [
 /*            {
           value: '选项1',
           label: '黄金糕'
         }*/
         ],//跟进进度下拉框
+        meet_name:[
+
+        ],//约谈方式下拉框
         project_name:[],//项目搜索下拉框
         saveJumpData:{
 
         },
         submitButton:false,//是否允许提交false允许/true不允许
-        typein:''
+        typein:'',
+        PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },//电话规则
       }
     },
     methods: {
@@ -251,10 +436,10 @@ _<template>
       },//项目搜索
 
       handleSelect(item) {
-          console.log(item)
         this.follow.card_id = item.label;
         this.follow.type = item.type;
         this.typein = item.type;
+        this.follow.card_name=item.name;
         let name=item.value;
         let na = item.na || '';
         if(item.label==0) {
@@ -297,6 +482,20 @@ _<template>
               this.follow.card_id = '';
             });*/
           }
+        }else{
+          this.loading = true;
+          this.$http.post(this.URL.getEnjoyedInvestorBasicInfo, {card_id:this.follow.card_id, type:this.follow.type})
+            .then(res => {
+              this.loading = false;
+              this.follow.user_organization=res.data.data.user_organization;
+              this.follow.user_mobile=res.data.data.user_mobile;
+              this.follow.user_other=res.data.data.user_other;
+              this.follow.user_wechar=res.data.data.user_wechar;
+
+            })
+            .catch(err => {
+              this.loading = false;
+            })
         }
       },//选择意向投资人后
       querySearchAsync(queryString, cb) {
@@ -335,6 +534,7 @@ _<template>
           let obj = {};
           obj.value = arr[i].user_real_name+'('+arr[i].user_company_name+')';
           if(arr[i].user_company_name=='') obj.value = arr[i].user_real_name;
+          obj.name=arr[i].user_real_name;
           obj.label = arr[i].card_id;
           obj.type = arr[i].type;
           newArr.push(obj);
@@ -388,6 +588,7 @@ _<template>
                 this.follow=data;
                 this.typein=data.type;
                 this.setUploadShow(data.files);
+                this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
                 resolve(1);
                 this.loading=false;
 //                console.log(this.follow)
@@ -587,14 +788,16 @@ _<template>
       },//提交用
       allSave(){
         let follow=this.submitForm('follow');
+        console.log(this.follow);
         if(this.follow.card_name=="") this.follow.card_id='';
-        if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
+        if(this.$tool.getNull(this.follow.card_id) && this.$tool.getNull(this.follow.card_name)) {
             this.$tool.error("请选择或添加正确的投资人")
         }
         else if(this.$tool.getNull(this.follow.project_id)) this.$tool.error("请选择正确的项目")
         else if(this.$tool.getNull(this.follow.project_name)) this.$tool.error("请选择正确的项目")
         else if(!follow) this.$tool.error("跟进描述不超过500字")
         else {
+          this.$tool.setReallyTimeToTime1(this.follow,'meet_time','meet_time_stamp');//标准时间转化为时间戳（单个数据）
           this.follow.follow_id=this.follow_id;
           if(this.follow.follow_id=="") delete this.follow.follow_id;
           delete this.follow.files;
@@ -671,10 +874,12 @@ _<template>
           this.$global.func.getWxProjectCategory()
             .then((data)=>{
               return this.getScheduleName();
-            })
-            .then((data)=>{
-              return this.getFollowUp();
-            })
+            });
+//            .then((data)=>{
+//              return this.getFollowUp();
+//            }
+//            );
+          this.getFollowUp();
           this.setFileType();
         }else{
           this.follow_id="";
