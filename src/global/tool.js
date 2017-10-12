@@ -140,7 +140,7 @@ const tool={
     // let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
     // let reg= /^[_a-z0-9]+@([_a-z0-9]+\.)+[a-z0-9]{2,3}$/;
     let reg=/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-    if (reg.test(data)) {
+    if (reg.test(data1)) {
       return true;
     }else{
       return false;
