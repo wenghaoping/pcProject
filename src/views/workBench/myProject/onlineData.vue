@@ -1,5 +1,5 @@
 <template>
-    <div id="onlineData" >
+    <div id="onlineData">
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <el-tab-pane label="浏览" name="browse"></el-tab-pane>
         <el-tab-pane label="申请" name="apply"></el-tab-pane>
@@ -63,7 +63,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="created_at" label="更新时间" width="134"
+        <el-table-column prop="created_at" label="更新时间" width="140"
                          column-key="created_at"
                          sortable="custom">
           <template scope="scope">
@@ -76,7 +76,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="service_desc" label="备注" width="288"
+        <el-table-column prop="service_desc" label="备注" width="291"
                          show-overflow-tooltip>
           <template scope="scope">
             <el-tooltip placement="top" :disabled="scope.row.service_desc.length > 25 ? false:true">
@@ -103,7 +103,8 @@
           :total="totalData">
         </el-pagination>
       </div>
-
+      <br>
+      <br>
     </div>
 </template>
 
@@ -116,31 +117,18 @@
               activeName : "browse",
               totalData : 0,//总页数
               getPra:{},//筛选的请求参数
-              currentPage : 0,//当前页数
+              currentPage : 1,//当前页数
               project_id: this.proid,
               tableData: [
-                {
+                /*{
                   user_name : "张三疯子",//姓名
                   user_organization : "杭州投着乐了网络科技有限公司",//机构
                   group_title : "投资方",//角色
                   created_at : "2017-08-08 13:00", //更新时间
                   service_desc : "这是备注，这里是备注最大宽度是300，最大宽度是300",  //备注
-                },
-                {
-                  user_name : "张三疯子",//姓名
-                  user_organization : "杭州投着乐了网络科技有限公司",//机构
-                  group_title : "投资方",//角色
-                  created_at : "2017-08-08 13:00", //更新时间
-                  service_desc : "这是备注，这里是备注最大宽度是300，最大宽度是300",  //备注
-                },
-                {
-                  user_name : "张三疯子疯疯疯",//姓名
-                  user_organization : "杭州投着乐了网络科技有限公司限公司限公司限公司",//机构
-                  group_title : "投资方资方资方",//角色
-                  created_at : "2017-08-08 13:00", //更新时间
-                  service_desc : "这是备注，这里是备注最大宽度是300，最大宽度是300",  //备注
-                }
+                }*/
               ],
+              URLChange : this.URL.getProjectViewData,//URL地址修改
             };
         },
         computed: {},
@@ -153,8 +141,28 @@
         },
         methods: {
           tabClick(tab, event) {
-            console.log(tab.name);
+            switch (tab.name){
+              case "browse":
+                this.URLChange = this.URL.getProjectViewData;
+                break;
+              case "apply":
+                this.URLChange = this.URL.getProjectApplyData;
+                break;
+              case "details":
+                this.URLChange = this.URL.getProjectDetailsData;
+                break;
+              case "bp":
+                this.URLChange = this.URL.getProjectBPData;
+                break;
+              case "contact":
+                this.URLChange = this.URL.getProjectServiceData;
+                break;
+              default:
+                alert("错误");
+                break;
+            }
 
+            this.filterChangeCurrent(1);
           },
           filterChange(filters){
             this.loading=true;
@@ -163,10 +171,10 @@
             this.getPra.project_id = this.project_id;
             if(filters.order=="ascending") filters.order="asc"//升降序
             else filters.order="desc";
-            this.getPra.order=filters.prop;
-            this.getPra.sort=filters.order;
+            this.getPra.order=filters.order;
+            this.getPra.sort=filters.prop;
 
-            this.$http.post(this.URL.getProjectList,this.getPra)
+            this.$http.post(this.URLChange,this.getPra)
               .then(res=>{
                 this.loading=false;
                 let data = res.data.data;
@@ -184,7 +192,7 @@
             this.getPra.user_id = localStorage.user_id;
             this.getPra.project_id = this.project_id;
             this.getPra.page = page;//控制当前页码
-            this.$http.post(this.URL.getProjectList,this.getPra)
+            this.$http.post(this.URLChange,this.getPra)
               .then(res=>{
                 this.loading=false;
                 let data = res.data.data;
@@ -205,7 +213,7 @@
               obj.user_name = list[i].user_name;
               obj.user_organization = list[i].user_organization;
               obj.group_title = list[i].group_title;
-              obj.created_at = this.$tool.formatDateTime(list[i].created_at);
+              obj.created_at = list[i].created_at;
               obj.service_desc = list[i].service_desc;
               arr.push(obj);
             }
@@ -214,7 +222,7 @@
         },
         //当dom一创建时
         created(){
-
+          this.filterChangeCurrent(1);
         },
         watch: {
 
@@ -224,6 +232,9 @@
 
 <style lang="less">
   #onlineData{
+    .is-active{
+      /*background: #ffffff;*/
+    }
     .el-tabs__header{
       background: #ffffff!important;
     }

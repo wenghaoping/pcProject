@@ -123,17 +123,14 @@ const tool={
 
   },//判断是不是空(空字符串也算是空)
   checkNumber(data) {
-    var reg = /^[0-9]+.?[0-9]*$/;
-    var reg2 = /^(?:(?!.*(%)).*)/;//不含%
-    if (reg.test(data)) {
-     if(reg2.test(data)){
-       return true;
-     }else{
-       return false;
-     }
-    }else{
-      return false;
-    }
+      let oldlength  = data.length;
+      let newLength  = parseFloat(data).toFixed(2).toString().length;
+      if(oldlength === newLength){
+        return true;
+      }else{
+        return false;
+      }
+
   },//判断是不是数字
   checkEmail(data){
     let data1=this.trim(data);
@@ -329,7 +326,8 @@ const tool={
   setZeroToNull(data,title){
   if(tool.isArray(data)){
     data.forEach((x)=>{
-      if(x[title]==0)  x[title]="";
+      if(x[title]==0)  x[title]=""
+      else x[title] = parseFloat(x[title]);
     });
   }else{
     return data;
@@ -339,7 +337,8 @@ const tool={
   setNullToZero(data,title){
     if(tool.isArray(data)){
       data.forEach((x)=>{
-        if(x[title]=="" || x[title]==undefined)  x[title]=0;
+        if(x[title]=="" || x[title]==undefined)  x[title]=0
+        else x[title] = parseFloat(x[title]);
       });
     }else{
       return data;

@@ -165,6 +165,18 @@ export default
   uploadProgress:"api/project/uploadProgress",
 
   /*邮箱加入项目库*/
-  importProject:"api/message/importProject"
+  importProject:"api/message/importProject",
+
+
+  //上线后数据
+  getProjectViewData : 'api/project/getProjectViewData', //上线后数据-浏览
+  getProjectApplyData : 'api/project/getProjectApplyData',//上线后数据-申请
+  getProjectDetailsData : 'api/project/getProjectDetailsData',//上线后数据-详情
+  getProjectBPData : 'api/project/getProjectBPData',//上线后数据-查看BP
+
+  getProjectServiceData : 'api/project/getProjectServiceData',//上线后数据-请求联系
+
+
+
 
 }
