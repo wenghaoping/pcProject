@@ -322,19 +322,24 @@
   import synccreatprojectdetail from '../../../components/syncCreatProjectDetail.vue';
   export default {
     data () {
-      var checkNumber = (rule, value, callback) => {
+      var checkHundred = (rule, value, callback) => {
+//          alert((typeof(value)==="number")&&(value!==Infinity)&&!isNaN(value))
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
-            if (!this.$tool.checkNumber(value)) {
-              callback(new Error('请输入数字值'));
-            } else {
-              callback();
+            if(this.$tool.checkNumber(value)){
+              if (value > 100){
+                callback(new Error('请输入小于100的值'));
+              } else {
+                callback();
+              }
+            }else{
+              callback(new Error('请输入数字'));
             }
           }, 100);
         }else{
           callback();
         }
-      };//数字正则判断
+      };//可以为空,必须为数字,比例数值1-100判断
       return {
         uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
         planList:[],//商业计划书上传列表
@@ -394,7 +399,7 @@
         companyTitle: "",//尽调搜索的公司的名称
         companyid: "",//尽调搜索的公司的ID
         queryData:{},
-        NumberRule: { validator: checkNumber, trigger: 'blur' },
+        NumberRule: { validator: checkHundred, trigger: 'blur' },
         mustGo:true,
         syncCreatProjectDetailDisplay:false,
       }
