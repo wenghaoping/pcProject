@@ -37,7 +37,7 @@
             <el-col :span="6">
               <el-form-item
                 label="机构"
-                prop="user_organization" class="formColor">
+                prop="user_organization" class="formColor" :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]">
                 <el-input v-model="follow.user_organization"
                                  placeholder="机构"
                                  :maxlength="20">
@@ -70,10 +70,10 @@
             <el-col :span="12">
               <el-form-item
                 label="其他联系方式"
-                prop="user_other" class="formColor">
+                prop="user_other" class="formColor" >
                 <el-input v-model="follow.user_other"
                                  placeholder="其他联系方式"
-                                 :maxlength="20">
+                                 :maxlength="200">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -99,7 +99,7 @@
               <el-form-item
                 label="约谈方式"
                 prop="meet_type">
-                <el-select v-model="follow.meet_type"
+                <el-select v-model="follow.meet_type" clearable
                            placeholder="请选择"
                            style="width: 343.5px;">
                   <el-option
@@ -127,9 +127,9 @@
             <el-col :span="12">
               <el-form-item
                 label="约谈地点"
-                prop="meet_address">
+                prop="meet_address" :rules="[{min: 1, max:200,message: '最大200个字符',trigger: 'blur'}]">
                 <el-input v-model="follow.meet_address"
-                          placeholder="请输入">
+                          placeholder="请输入" >
                 </el-input>
               </el-form-item>
             </el-col>
@@ -139,7 +139,7 @@
               <el-form-item
                 label="约谈状态"
                 prop="meet_status">
-                <el-select v-model="follow.meet_status"
+                <el-select v-model="follow.meet_status" clearable
                            placeholder="请选择"
                            style="width:343.5px;">
                   <el-option
@@ -155,7 +155,7 @@
               <el-form-item
                 label="约谈反馈"
                 prop="meet_back">
-                <el-select v-model="follow.meet_back"
+                <el-select v-model="follow.meet_back" clearable
                            placeholder="请选择"
                            style="width: 343.5px;">
                   <el-option
@@ -282,7 +282,15 @@
           callback();
         }
       };//电话号码正则判断
+//      var checkEmail = (rule, value, callback) => {
+//          if (!this.$tool.checkEmail(value)||this.$tool.getNull(value)) {
+//            callback(new Error('请输入正确的邮箱1'));
+//          } else {
+//            callback();
+//          }
+//      };//邮箱判断
       return {
+//        emailRule: {validator: checkEmail, trigger: 'blur'},
         value1:'',
         value11:'',
         value22:'',
@@ -788,14 +796,17 @@
       },//提交用
       allSave(){
         let follow=this.submitForm('follow');
-        console.log(this.follow);
         if(this.follow.card_name=="") this.follow.card_id='';
         if(this.$tool.getNull(this.follow.card_id) && this.$tool.getNull(this.follow.card_name)) {
             this.$tool.error("请选择或添加正确的投资人")
         }
+        else if(this.$tool.checkLength3(this.follow.meet_address))this.$tool.error("约谈地点不超过200字")
+        else if(this.$tool.checkLength1(this.follow.user_organization))this.$tool.error("投资机构不超过40字")
+        else if(this.$tool.checkLength2(this.follow.follow_desc))this.$tool.error("跟进描述不超过500字")
         else if(this.$tool.getNull(this.follow.project_id)) this.$tool.error("请选择正确的项目")
         else if(this.$tool.getNull(this.follow.project_name)) this.$tool.error("请选择正确的项目")
-        else if(!follow) this.$tool.error("跟进描述不超过500字")
+        else if (!this.$tool.checkEmail1(this.follow.user_other)) this.$tool.error("请输入正确的邮箱")
+        else if(!follow) this.$tool.error("请按要求填写")
         else {
           this.$tool.setReallyTimeToTime1(this.follow,'meet_time','meet_time_stamp');//标准时间转化为时间戳（单个数据）
           this.follow.follow_id=this.follow_id;
@@ -810,7 +821,6 @@
           this.loading=true;
           this.$http.post(this.URL.add_follow_record, this.follow)
             .then(res => {
-             this.$tool.console(res);
              if(res.data.status_code==2000000){
                this.follow_id=res.data.data;
                this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');

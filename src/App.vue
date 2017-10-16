@@ -88,7 +88,7 @@
 //          label: '个人信息'
 //        },
           {
-          value: 0,
+          value: 1,
           label: '退出登录'
         }],
         value:'',
@@ -247,12 +247,16 @@
       },
       //登出
       loginOut(e){
-        if(e==0){
+        if(e==1){
           localStorage.clear();
           sessionStorage.clear();
           this.$router.push({name: 'login'});//路由传参
           setTimeout(()=>{ window.location.reload();},50)
         }
+//        if(e==0){
+//          this.$router.push({name: 'identityDetail', query: {user: localStorage.user_id}})//路由传参
+//        }
+
       },
       //加入项目库
       addProject(){
@@ -314,6 +318,10 @@
     /*position: relative;*/
     /*top: 12px!important;*/
     /*right: 15%!important;*/
+  /*}*/
+  /*.el-select-dropdown__item.selected{*/
+    /*background: #ffffff!important;*/
+    /*color: #48576a!important;*/
   /*}*/
   .width350 .el-input{
     font-size: 12px!important;

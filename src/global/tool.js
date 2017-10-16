@@ -145,6 +145,17 @@ const tool={
       return false;
     }
   },//邮箱验证
+  checkEmail1(data){
+    let data1=this.trim(data);
+    // let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    // let reg= /^[_a-z0-9]+@([_a-z0-9]+\.)+[a-z0-9]{2,3}$/;
+    let reg=/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+    if (reg.test(data1)||!data1) {
+      return true;
+    }else{
+      return false;
+    }
+  },//邮箱验证(可以为空  为空情况不提示)
   checkURL(data) {
   if (data.match(/(http[s]?|ftp):\/\/[^\/\.]+?\..+\w$/i) == null) {
     return false
@@ -203,6 +214,13 @@ const tool={
       return false;
     }
   },//长度认证(1-500)
+  checkLength3(data){
+    if (data.length>200){
+      return true
+    }else{
+      return false;
+    }
+  },//长度认证(1-200)
   checkPassword(data){
     if (data.length>20 || data.length<6){
       return true
@@ -358,7 +376,7 @@ const tool={
   //时间转化接受从时间戳转化为中国标准时间(单个数据)
   setTimeToReallyTime1(time,title){
     if(time){
-        time[title] = new Date(time[title].length > 11 ? time[title] : time[title]*1000);
+        time[title] = new Date(time[title]?time[title]*1000:'');
     }else{
       return time;
     }

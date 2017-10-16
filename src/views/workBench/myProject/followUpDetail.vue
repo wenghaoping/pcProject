@@ -42,7 +42,7 @@
             <!--</el-tooltip>-->
             <!--<span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>-->
             <!--约谈-->
-            <div class="meet" style="margin-bottom: 15px">
+            <div class="meet" style="margin-bottom: 15px;padding-top: 15px" v-show="item.meet_back!=''||item.meet_status!=''||item.meet_type!=''||item.meet_time!=''||item.meet_address!=''">
             <el-row :span="24" >
               <el-col :span="12">
                 <span style="font-size:14px;color:#8492a6;">约谈反馈:</span>
@@ -66,12 +66,18 @@
             <el-row :span="24" >
               <el-col :span="24">
                 <span style="font-size:14px;color:#8492a6;">约谈地点:</span>
-                <span style="font-size:14px;color:#475669;">{{item.meet_address| nullTo_}}</span>
+
+                <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.meet_address.length > 50 ? false:true">
+                  <div slot="content">
+                    <span class="tips-txt">{{item.meet_address}}</span>
+                  </div>
+                  <span style=" width: 621px;white-space: nowrap;text-overflow: ellipsis;font-size: 14px;color: rgb(71, 86, 105);overflow: hidden;display: inline-block; line-height: 14px;">{{item.meet_address| nullTo_}}</span>
+                </el-tooltip>
               </el-col>
             </el-row>
             </div>
             <!--联系-->
-            <div class="contact" style="margin-bottom: 10px">
+            <div class="contact" style="margin-bottom: 10px" v-show="item.user_mobile!=''||item.user_wechar!=''||item.user_other!=''">
             <el-row :span="24" >
               <el-col :span="12">
                 <span style="font-size:14px;color:#8492a6;">手机:</span>
@@ -90,7 +96,7 @@
             </el-row>
             </div>
           </div>
-          <div v-show=" item.follow_desc!=''|| item.follow_file.length!=''"  class="followLine"></div>
+          <div v-show=" (item.follow_desc!=''|| item.follow_file.length!='')&&(item.user_mobile!=''||item.user_wechar!=''||item.user_other!=''||item.meet_back!=''||item.meet_status!=''||item.meet_type!=''||item.meet_time!=''||item.meet_address!='')"  class="followLine"></div>
           <div class="followContent1" :class="{ padbottom: item.follow_desc!=''|| item.follow_file.length!=''}" >{{item.follow_desc}}</div>
           <!--信息文件名-->
           <div class="followFile" v-for="(file,item1) in item.follow_file" :key="file.id">
@@ -314,5 +320,6 @@
   }
   .padbottom{
     padding-bottom: 10px;
+    padding-top: 5px;
   }
 </style>
