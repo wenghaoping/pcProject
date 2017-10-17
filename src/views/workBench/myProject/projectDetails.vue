@@ -156,14 +156,14 @@
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
-                    <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_business_model.goodness_desc!=''&&project.goodness.pro_business_model.goodness_title!=''">
+                    <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_service.goodness_desc!=''&&project.goodness.pro_service.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_service.goodness_title}}</span>&nbsp;:&nbsp;
                       {{project.goodness.pro_service.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
-                    <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_service.goodness_desc!=''&&project.goodness.pro_service.goodness_title!=''">
+                    <div class="prod-doc" style="font-size: 13px;" v-show="project.goodness.pro_business_model.goodness_desc!=''&&project.goodness.pro_business_model.goodness_title!=''">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669">{{project.goodness.pro_business_model.goodness_title}}&nbsp;:&nbsp;</span>
                       {{project.goodness.pro_business_model.goodness_desc}}
@@ -1237,7 +1237,9 @@
           //做一些异步操作
           this.$http.post(this.URL.getEnjoyedInvestorsGroup,{user_id:localStorage.user_id,project_id:this.project.project_id})
             .then(res=>{
+
               if(res.data.status_code==2000000) {
+
                 let data = res.data.data;
                 this.chartData=data;
                 this.eChart(data.going,data.hold,data.reject);

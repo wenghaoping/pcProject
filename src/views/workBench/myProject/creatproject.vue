@@ -323,7 +323,6 @@
   export default {
     data () {
       var checkHundred = (rule, value, callback) => {
-//          alert((typeof(value)==="number")&&(value!==Infinity)&&!isNaN(value))
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
             if(this.$tool.checkNumber(value)){
