@@ -2676,16 +2676,16 @@
 
       //投资亮点循环一条必填
       oneCheck(item){
-        var check = true;
-        for(let i=0;i<item.length;i++){
-          if(item[i].goodness_title !== "" && item[i].goodness_desc !== "" ){
-            check = false;
-            return check;
-          }else{
-            check = true;
+          var check = true;
+          for(let i=0;i<item.length;i++){
+              if(item[i].goodness_title !== "" && item[i].goodness_desc !== "" ){
+                check = false;
+                return check;
+              }else{
+                check = true;
+              }
           }
-        }
-        return check;
+          return check;
       },
       //*检查所有必填项目以及获取所有数据/true过.false不过
       submitForm(formName,checkName) {
