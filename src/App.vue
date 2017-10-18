@@ -251,7 +251,9 @@
           localStorage.clear();
           sessionStorage.clear();
           this.$router.push({name: 'login'});//路由传参
-          setTimeout(()=>{ window.location.reload();},50)
+          this.$store.state.logining.user_real_name = "";
+          this.$store.state.logining.user_id = "";
+          setTimeout(()=>{ window.location.reload();},100)
         }
 //        if(e==0){
 //          this.$router.push({name: 'identityDetail', query: {user: localStorage.user_id}})//路由传参
