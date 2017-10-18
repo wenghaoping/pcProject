@@ -141,41 +141,41 @@
                 </div>
                 <div class="ul-lists" style="margin-top:16px;padding: 0">
                   <div class="item" >
-                    <div  v-show="project.goodness.pro_goodness.length!=0" >
+                    <div  v-show="project.goodness.pro_goodness.length!=0"  style="margin-bottom: 20px">
                     <div class="title" style="font-size:16px;color:#475669;">投资亮点</div>
                     <div class="prod-doc" style="font-size: 13px;"v-for=" (goodness1,index) in project.goodness.pro_goodness">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{goodness1.goodness_title}}&nbsp;:&nbsp;</span>
+                         <span style="color:#475669;margin-top: -4px">{{goodness1.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness1.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
                     </div>
-                    <div  v-show="project.goodness.pro_market_genera.length!=0">
+                    <div  v-show="project.goodness.pro_market_genera.length!=0" style="margin-bottom: 20px">
                     <div class="title" style="font-size:16px;color:#475669;">市场概况</div>
                     <div class="prod-doc" style="font-size: 13px;"   v-for="goodness2 in project.goodness.pro_market_genera">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{goodness2.goodness_title}}&nbsp;:&nbsp;</span>
+                         <span style="color:#475669;margin-top: -4px">{{goodness2.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness2.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
                     </div>
-                    <div v-show="project.goodness.pro_business_model.length!=0">
+                    <div v-show="project.goodness.pro_business_model.length!=0" style="margin-bottom: 20px">
                     <div class="title" style="font-size:16px;color:#475669;">商业模式</div>
                     <div class="prod-doc" style="font-size: 13px;"  v-for="goodness3 in project.goodness.pro_business_model">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{goodness3.goodness_title}}</span>&nbsp;:&nbsp;
+                         <span style="color:#475669;margin-top: -4px">{{goodness3.goodness_title}}</span>&nbsp;:&nbsp;
                       {{goodness3.goodness_desc}}
                        </span>
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
                     </div>
-                    <div v-if="project.goodness.pro_service.length!=0" >
+                    <div v-if="project.goodness.pro_service.length!=0"  style="margin-bottom: 20px">
                     <div class="title" style="font-size:16px;color:#475669;">产品概况</div>
                     <div class="prod-doc" style="font-size: 13px;" v-for="goodness4 in project.goodness.pro_service">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{goodness4.goodness_title}}&nbsp;:&nbsp;</span>
+                         <span style="color:#475669;margin-top: -4px">{{goodness4.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness4.goodness_desc}}
                        </span>
                     </div>
