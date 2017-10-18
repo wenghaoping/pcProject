@@ -71,7 +71,7 @@
                   <div slot="content">
                     <span class="tips-txt">{{item.meet_address}}</span>
                   </div>
-                  <span style=" width: 621px;white-space: nowrap;text-overflow: ellipsis;font-size: 14px;color: rgb(71, 86, 105);overflow: hidden;display: inline-block; line-height: 14px;">{{item.meet_address| nullTo_}}</span>
+                  <span style=" width: 618px;white-space: nowrap;text-overflow: ellipsis;font-size: 14px;color: rgb(71, 86, 105);overflow: hidden;display: inline-block; line-height: 14px;">{{item.meet_address| nullTo_}}</span>
                 </el-tooltip>
               </el-col>
             </el-row>

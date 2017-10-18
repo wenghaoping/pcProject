@@ -287,6 +287,7 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
+          console.log(this.tableData.project_id);
           this.totalData=data.count;
           this.loading=false;
         })
@@ -443,6 +444,7 @@ export default {
         obj.card_name = list[i].card_name;
         obj.user_organization = list[i].user_organization;
         obj.schedule_name = list[i].schedule_name;
+        obj.project_id = list[i].project_id;
         obj.meet_type = list[i].meet_type;
         obj.meet_time = list[i].meet_time;
         obj.meet_status = list[i].meet_status;
