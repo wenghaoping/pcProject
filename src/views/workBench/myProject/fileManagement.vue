@@ -151,7 +151,7 @@
         deleteIcon:deleteIcon,
         uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
         uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
-        project_id: this.proid,
+        project_id: "",
         //加载
         loading: false,
         //分组列表
@@ -594,6 +594,7 @@
       },
     },
     created(){
+      this.project_id = this.proid;
       this.$tool.getTop();
       this.initData();
     },

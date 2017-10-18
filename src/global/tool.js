@@ -123,15 +123,16 @@ const tool={
 
   },//判断是不是空(空字符串也算是空)
   checkNumber(data) {
-      let oldlength  = data.length;
-      let newLength  = parseFloat(data).toFixed(2).toString().length;
-      if(oldlength === newLength){
+      // let reg = new RegExp("^[0-9]*$");
+      let reg = new RegExp("^\\d+(\\.\\d+)?$");
+/*      let oldlength  = data.length;
+      let newLength  = parseFloat(data).toFixed(2).toString().length;*/
+      if(reg.test(data)){
         return true;
       }else{
         return false;
       }
-
-  },//判断是不是数字
+  },//判断是不是非浮点数
   checkEmail(data){
     let data1=this.trim(data);
     // let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;

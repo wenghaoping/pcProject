@@ -56,6 +56,9 @@ const emailContact = r => require.ensure([], () => r(require('@/views/emailConta
 /*===============================加入项目库=======================================*/
 const addProject = r => require.ensure([], () => r(require('@/views/addProject/addProject.vue')), 'addProject');
 
+/*===============================跳转到PC=======================================*/
+const skipToPc = r => require.ensure([], () => r(require('@/views/skipToPc/skipToPc.vue')), 'skipToPc');
+
 
 //测试路由
 // import createForm from '@/test/createForm.vue'
@@ -135,6 +138,14 @@ export default [
   {
     path:'/addProject',name:'addProject', component:addProject
   },
+  {
+    path:'/skipToPc',name:'skipToPc', component:skipToPc
+  },
+
+
+
+
+
   {
     path: '/test', name: 'test', component: checkone
   },

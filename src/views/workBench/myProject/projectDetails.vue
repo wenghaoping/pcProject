@@ -1220,7 +1220,8 @@
         this.zgClick("推送项目");
       },//项目推送入口,项目入口
       getprojectId(){
-        this.project.project_id=this.$route.query.project_id;
+        this.project.project_id = this.$route.query.project_id;
+
         this.activeFrom=this.$route.query.activeTo || 0;
         this.show=this.$route.query.show || "detail";
       },//获取id
@@ -1275,7 +1276,9 @@
           //做一些异步操作
           this.$http.post(this.URL.getEnjoyedInvestorsGroup,{user_id:localStorage.user_id,project_id:this.project.project_id})
             .then(res=>{
+
               if(res.data.status_code==2000000) {
+
                 let data = res.data.data;
                 this.chartData=data;
                 this.eChart(data.going,data.hold,data.reject);

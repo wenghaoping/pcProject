@@ -439,6 +439,7 @@ export default {
       for(let i=0; i<list.length; i++){
         let obj = new Object;
         obj.follow_id = list[i].follow_id;
+        obj.project_id = list[i].project_id;
         obj.pro_name = list[i].pro_name;
         obj.pro_intro = list[i].pro_intro;
         obj.card_name = list[i].card_name;

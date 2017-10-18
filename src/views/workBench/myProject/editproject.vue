@@ -222,7 +222,7 @@
                         label="投后股份"
                         prop="pro_finance_stock_after"
                         :rules="ScaleRule">
-                        <el-input v-model="project.pro_finance_stock_after" placeholder="请输入具体数值，如：10" type="number">
+                        <el-input v-model="project.pro_finance_stock_after" placeholder="请输入具体数值，如：10" >
                           <el-button slot="append" >%</el-button>
                         </el-input>
                       </el-form-item>
@@ -641,7 +641,7 @@
                         v-for="(member, index) in team.core_users"
                         :key="member.index"
                         :rules="ScaleRule">
-                        <el-input v-model="member.stock_scale" placeholder="请输入数值" type="number">
+                        <el-input v-model="member.stock_scale" placeholder="请输入数值">
                           <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
@@ -935,7 +935,7 @@
                         label="签约佣金"
                         prop="commission"
                         :rules="ScaleRule">
-                        <el-input v-model="private.commission" placeholder="请输入具体数值，如：10" type="number">
+                        <el-input v-model="private.commission" placeholder="请输入具体数值，如：10">
                           <el-button slot="append">%</el-button>
                         </el-input>
                       </el-form-item>
@@ -945,7 +945,7 @@
                         label="股权赠与"
                         prop="stock_right"
                         :rules="ScaleRule">
-                        <el-input v-model="private.stock_right" placeholder="请输入具体数值，如：10" type="number">
+                        <el-input v-model="private.stock_right" placeholder="请输入具体数值，如：10">
                           <el-button slot="append">%</el-button>
                         </el-input>
                       </el-form-item>
@@ -1225,11 +1225,11 @@
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
             if(this.$tool.checkNumber(value)){
-                if (value>100){
-                  callback(new Error('请输入小于100的值'));
-                } else {
-                  callback();
-                }
+              if (value > 100){
+                callback(new Error('请输入小于100的值'));
+              } else {
+                callback();
+              }
             }else{
               callback(new Error('请输入数字'));
             }
@@ -1939,10 +1939,6 @@
               if(data.project.pro_finance_stock_after==0) data.project.pro_finance_stock_after="";//投后股份
 
               if(data.project.pro_finance_value==0) data.project.pro_finance_value="";//项目估值
-
-
-              data.project.pro_finance_stock_after = parseFloat(data.project.pro_finance_stock_after || 0);//项目id
-
               this.project=data.project;
               //亮点设置=============================================addgoodNess1pro_servicepro_business_model
               if(data.project.goodness.pro_goodness.length==0){
@@ -2038,9 +2034,6 @@
               if(data.private.stock_right==0) data.private.stock_right="";
               if(data.private.stock_follow==0) data.private.stock_follow="";
               if(data.private.stock_other==0) data.private.stock_other="";
-
-              data.private.stock_right = parseFloat(data.private.stock_right || 0);//项目id
-              data.private.commission = parseFloat(data.private.commission || 0);//项目id
 
               this.private=data.private;
 
