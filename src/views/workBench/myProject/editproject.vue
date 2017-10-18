@@ -272,89 +272,174 @@
                   </el-row>
 
                   <div class="goodness">
-                    <el-row :span="24" :gutter="10">
+                    <!--投资亮点-->
+                    <div style="margin-bottom: 15px">
+                           <span style="font-size:16px;color:#5e6d82;">投资亮点</span>
+                           <span style="font-size:14px;color:#99a9bf;">（是决定投资人是否查看项目详情的重要因素，以不超过3点为宜）</span></div>
+                    <el-row :span="24" :gutter="25">
                       <el-col :span="5">
-                        <el-form-item label="项目亮点"
-                                      prop="goodness.pro_goodness.goodness_title"
-                                      :rules="[{required: true, message: '不能为空', trigger: 'blur'},{min: 1, max:8,message: '最大8个字符'}]">
-                          <el-input  v-model="project.goodness.pro_goodness.goodness_title"
-                                     placeholder="项目亮点" ></el-input>
+                        <el-form-item
+                                      v-for="(domain, index) in project.goodness.pro_goodness"
+                                      :key="index.key"
+                                      :prop="'goodness.pro_goodness.' + index + '.goodness_title'"
+                                      :rules="[{min: 1, max:8,message: '最大8个字符'}]">
+                          <el-input  v-model="domain.goodness_title" placeholder="投资亮点"  @focus="focus(1)" @blur="blur(1)" ></el-input>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="19">
-                        <div class="goodnessTag" :class="{goodnessTagBl:tagShow==1}" style="top: -86px;">
+                      <el-col :span="18">
+                        <div class="goodnessTag" :class="{goodnessTagBl:tagShow==1}" >
+                          <!--:style="{top:-86* + 'px' }"-->
                           <img src="../../../assets/images/xiangmuliangdian.png">
                         </div>
-                        <el-form-item label="介绍"
-                                      prop="goodness.pro_goodness.goodness_desc"
-                                      :rules="[{required: true, message: '不能为空', trigger: 'blur'},{min: 1, max:1000,message: '最大1000个字符'}]">
-                          <el-input  v-model="project.goodness.pro_goodness.goodness_desc"
+                        <el-form-item
+                                      v-for="(domain, index) in project.goodness.pro_goodness"
+                                      :key="index.key"
+                                      :prop="'goodness.pro_goodness.' + index + '.goodness_desc'"
+                                      :rules="[{min: 1, max:1000,message: '最大1000个字符'}]">
+                          <el-input  v-model="domain.goodness_desc"
                                      placeholder="是决定投资人是否查看项目详情的重要因素，以不超过3点为宜" @focus="focus(1)" @blur="blur(1)"></el-input>
                         </el-form-item>
                       </el-col>
-                    </el-row>
-                    <el-row :span="24" :gutter="10">
-                      <el-col :span="5">
-                        <el-form-item label="　"
-                                      :rules="[{max:8,message: '最大8个字符'}]"
-                                      prop="goodness.pro_market_genera.goodness_title">
-                          <el-input  v-model="project.goodness.pro_market_genera.goodness_title" placeholder="市场概况" ></el-input>
+                      <el-col :span="1" >
+                        <el-form-item label="　　"
+                                      v-for="(domain, index) in project.goodness.pro_goodness"
+                                      :key="index.key"
+                                      style="margin-left: 40px;margin-top: -6px" class="clearfix " >
+                          <span class="imgdele fr lin" @click.prevent="removegoodNess(domain)" >删除</span>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="19">
+                    </el-row>
+                    <div class="marginAuto" style="width:156px;">
+                      <div class="addhover">
+                        <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+                        <el-button type="text" @click="addgoodNess" class="addMember fl"> 添加条目</el-button></div>
+                    </div>
+
+                    <!--市场概况-->
+                    <div style="margin-bottom: 15px">
+                      <span style="font-size:16px;color:#5e6d82;">市场概况</span>
+                      <span style="font-size:14px;color:#99a9bf;">（市场规模和增速、竞争格局、政策等，以不超过3点为宜）</span></div>
+                    <el-row :span="24" :gutter="25">
+                      <el-col :span="5">
+                        <el-form-item
+                          v-for="(domain, index) in project.goodness.pro_market_genera"
+                          :key="index.key"
+                          :prop="'goodness.pro_market_genera.' + index + '.goodness_title'"
+                          :rules="[{min: 1, max:8,message: '最大8个字符'}]">
+                          <el-input  v-model="domain.goodness_title" placeholder="市场概况"  @focus="focus(2)" @blur="blur(2)" ></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="18">
                         <div class="goodnessTag" :class="{goodnessTagBl:tagShow==2}"  style="top: -86px;">
                           <img src="../../../assets/images/shichanggaikuang.png">
                         </div>
-                        <el-form-item label="　"
-                                      :rules="[{max:1000,message: '最大1000个字符'}]"
-                                      prop="goodness.pro_market_genera.goodness_desc">
-                          <el-input  v-model="project.goodness.pro_market_genera.goodness_desc" placeholder="市场规模和增速、竞争格局、政策等，以不超过3点为宜"
-                                     @focus="focus(2)" @blur="blur(2)"></el-input>
+                        <el-form-item
+                          v-for="(domain, index) in project.goodness.pro_market_genera"
+                          :key="index.key"
+                          :prop="'goodness.pro_market_genera.' + index + '.goodness_desc'"
+                          :rules="[{min: 1, max:1000,message: '最大1000个字符'}]">
+                          <el-input  v-model="domain.goodness_desc"
+                                     placeholder="市场规模和增速、竞争格局、政策等，以不超过3点为宜" @focus="focus(2)" @blur="blur(2)"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="1" >
+                        <el-form-item label="　　"
+                                      v-for="(domain, index) in project.goodness.pro_market_genera"
+                                      :key="index.key"
+                                      style="margin-left: 40px;margin-top: -6px" class="clearfix " >
+                          <span class="imgdele fr lin" @click.prevent="removegoodNess1(domain)" >删除</span>
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <el-row :span="24" :gutter="10">
+                    <div class="marginAuto" style="width:156px;">
+                      <div class="addhover">
+                        <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+                        <el-button type="text" @click="addgoodNess1" class="addMember fl"> 添加条目</el-button></div>
+                    </div>
+                    <!--产品概况-->
+                    <div style="margin-bottom: 15px">
+                      <span style="font-size:16px;color:#5e6d82;">产品概况</span>
+                      <span style="font-size:14px;color:#99a9bf;">（选择项目产品或模式一种重点介绍即可，以不超过3点为宜）</span></div>
+                    <el-row :span="24" :gutter="25">
                       <el-col :span="5">
-                        <el-form-item label="　"
-                                      :rules="[{max:8,message: '最大8个字符'}]"
-                                      prop="goodness.pro_service.goodness_title">
-                          <el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="产品概况"></el-input>
+                        <el-form-item
+                          v-for="(domain, index) in project.goodness.pro_service"
+                          :key="index.key"
+                          :prop="'goodness.pro_service.' + index + '.goodness_title'"
+                          :rules="[{min: 1, max:8,message: '最大8个字符'}]">
+                          <el-input  v-model="domain.goodness_title" placeholder="产品概况"  @focus="focus(3)" @blur="blur(3)" ></el-input>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="19">
+                      <el-col :span="18">
                         <div class="goodnessTag" :class="{goodnessTagBl:tagShow==3}"  style="top: -50px;">
                           <img src="../../../assets/images/chanpiongaikuang.png">
                         </div>
-                        <el-form-item label="　"
-                                      :rules="[{max:1000,message: '最大1000个字符'}]"
-                                      prop="goodness.pro_service.goodness_desc">
-                          <el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"
-                                     @focus="focus(3)" @blur="blur(3)"></el-input>
+                        <el-form-item
+                          v-for="(domain, index) in project.goodness.pro_service"
+                          :key="index.key"
+                          :prop="'goodness.pro_service.' + index + '.goodness_desc'"
+                          :rules="[{min: 1, max:1000,message: '最大1000个字符'}]">
+                          <el-input  v-model="domain.goodness_desc"
+                                     placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜" @focus="focus(3)" @blur="blur(3)"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="1" >
+                        <el-form-item label="　　"
+                                      v-for="(domain, index) in project.goodness.pro_service"
+                                      :key="index.key"
+                                      style="margin-left: 40px;margin-top: -6px" class="clearfix " >
+                          <span class="imgdele fr lin" @click.prevent="removegoodNess2(domain)" >删除</span>
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <el-row :span="24" :gutter="10" style="margin-bottom: 32px;">
+                    <div class="marginAuto" style="width:156px;">
+                      <div class="addhover">
+                        <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+                        <el-button type="text" @click="addgoodNess2" class="addMember fl"> 添加条目</el-button></div>
+                    </div>
+                    <!--商业模式-->
+                    <div style="margin-bottom: 15px">
+                      <span style="font-size:16px;color:#5e6d82;">商业模式</span>
+                      <span style="font-size:14px;color:#99a9bf;">（用来说明通过什么方式盈利）</span></div>
+                    <el-row :span="24" :gutter="25">
                       <el-col :span="5">
-                        <el-form-item label="　"
-                                      :rules="[{max:8,message: '最大8个字符'}]"
-                                      prop="goodness.pro_business_model.goodness_title">
-                          <el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="商业模式"></el-input>
+                        <el-form-item
+                          v-for="(domain, index) in project.goodness.pro_business_model"
+                          :key="index.key"
+                          :prop="'goodness.pro_business_model.' + index + '.goodness_title'"
+                          :rules="[{min: 1, max:8,message: '最大8个字符'}]">
+                          <el-input  v-model="domain.goodness_title" placeholder="商业模式"  @focus="focus(4)" @blur="blur(4)" ></el-input>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="19">
+                      <el-col :span="18">
                         <div class="goodnessTag" :class="{goodnessTagBl:tagShow==4}"  style="top: -50px;">
                           <img src="../../../assets/images/shangyemoshi.png">
                         </div>
-                        <el-form-item label="　"
-                                      :rules="[{max:1000,message: '最大1000个字符'}]"
-                                      prop="goodness.pro_business_model.goodness_desc">
-                          <el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="用来说明通过什么方式盈利"
-                                     @focus="focus(4)" @blur="blur(4)"></el-input>
+                        <el-form-item
+                          v-for="(domain, index) in project.goodness.pro_business_model"
+                          :key="index.key"
+                          :prop="'goodness.pro_business_model.' + index + '.goodness_desc'"
+                          :rules="[{min: 1, max:1000,message: '最大1000个字符'}]">
+                          <el-input  v-model="domain.goodness_desc"
+                                     placeholder="用来说明通过什么方式盈利" @focus="focus(4)" @blur="blur(4)"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="1" >
+                        <el-form-item label="　　"
+                                      v-for="(domain, index) in project.goodness.pro_business_model"
+                                      :key="index.key"
+                                      style="margin-left: 40px;margin-top: -6px" class="clearfix " >
+                          <span class="imgdele fr lin" @click.prevent="removegoodNess3(domain)" >删除</span>
                         </el-form-item>
                       </el-col>
                     </el-row>
-                  </div>
+                    <div class="marginAuto" style="width:156px;">
+                      <div class="addhover">
+                        <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+                        <el-button type="text" @click="addgoodNess3" class="addMember fl"> 添加条目</el-button></div>
+                    </div>
 
+                  </div>
                 </el-form>
               </div>
             </el-collapse-transition>
@@ -437,7 +522,7 @@
                         label="名称"
                         :prop="'brand.' + index + '.brand_name'"
                         v-for="(brand, index) in brands.brand"
-                        :key="brand.index"
+                        :key="brand.key"
                         :rules="[{required: true, message: '名称不能为空', trigger: 'blur'},{max:40,message: '最大40个字符'}]">
                         <el-input v-model="brand.brand_name" placeholder="请输入"></el-input>
                       </el-form-item>
@@ -447,7 +532,7 @@
                         label="类型"
                         :prop="'brand.' + index + '.type_id'"
                         v-for="(brand, index) in brands.brand"
-                        :key="brand.index">
+                        :key="brand.key">
                         <el-select v-model="brand.type_id" placeholder="请选择">
                           <el-option
                             v-for="item in brand_type"
@@ -464,14 +549,14 @@
                         :rules="{max:500,message: '最大500个字符',trigger: 'blur'}"
                         :prop="'brand.' + index + '.brand_desc'"
                         v-for="(brand, index) in brands.brand"
-                        :key="brand.index">
+                        :key="brand.key">
                         <el-input v-model="brand.brand_desc" placeholder="一句话描述产品亮点" class="width360"> </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="1">
                       <el-form-item label="　　"
                                     v-for="(brand, index) in brands.brand"
-                                    :key="brand.index"
+                                    :key="brand.key"
                                     style="margin-left: 50px;" class="clearfix">
                         <span class="imgdele fr" @click.prevent="removeBrand(brand)">删除</span>
                       </el-form-item>
@@ -1092,6 +1177,17 @@
   import { mapState } from 'vuex'
   export default {
     data(){
+      var oneNumber = (rule, value, callback) => {
+          console.log(value);
+        if (!this.$tool.getNull(value)) {
+          setTimeout(() => {
+
+          }, 100);
+        }else{
+          callback();
+        }
+      };//投资亮点判断
+
       var checkPhoneNumber = (rule, value, callback) => {
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
@@ -1232,6 +1328,18 @@
       };//可以为空,最长字段1000个字符
 
       return {
+        dynamicValidateForm: {
+          pro_goodness: [{
+            goodness_title: '标题1',
+            goodness_desc:'内容1',
+          },{
+            goodness_title: '标题1',
+            goodness_desc:'标题1',
+          },{
+            goodness_title: '标题1',
+            goodness_desc:'标题1',
+          }],
+        },
         addStateDisplay: false,
         setFileDisplay: false,
         syncProjectDetailDisplay: false,//同步弹窗
@@ -1277,10 +1385,42 @@
         //项目详情
         project: {
           goodness:{
-            pro_goodness: {goodness_title: "", goodness_desc: "",},
-            pro_market_genera: {goodness_title: "", goodness_desc: ""},
-            pro_business_model: [],
-            pro_service: [],
+            pro_business_model:[{
+              goodness_desc: "",//凉凉凉凉
+              goodness_title: ""//亮点亮点
+              },
+              {
+                goodness_desc: "",//凉凉凉凉
+                goodness_title: ""//亮点亮点
+              }
+            ],
+            pro_goodness:[{
+              goodness_desc: "亮点1",//凉凉凉凉
+              goodness_title: "亮点1"//亮点亮点
+            },
+              {
+                goodness_desc: "亮点1",//凉凉凉凉
+                goodness_title: "亮点1"//亮点亮点
+              }
+            ],
+            pro_market_genera:[{
+              goodness_desc: "",//凉凉凉凉
+              goodness_title: ""//亮点亮点
+            },
+              {
+                goodness_desc: "",//凉凉凉凉
+                goodness_title: ""//亮点亮点
+              }
+            ],
+            pro_service:[{
+              goodness_desc: "",//凉凉凉凉
+              goodness_title: ""//亮点亮点
+            },
+              {
+                goodness_desc: "",//凉凉凉凉
+                goodness_title: ""//亮点亮点
+              }
+            ],
           },//亮点
           open_status: '1',//私密设置
           pro_area: {
@@ -1320,7 +1460,23 @@
         },
         //产品
         brands:{
-          brand:[]
+          brand:[
+            {
+              brand_name:'',
+              type_id:'',
+            brand_desc:''
+            },
+            {
+              brand_name:'',
+            type_id:'',
+            brand_desc:''
+            },
+            {
+              brand_name:'',
+            type_id:'',
+            brand_desc:''
+            }
+            ]
         },
         //核心团队
         team: {
@@ -1475,6 +1631,7 @@
         loadingcheck:false,
         statusLast:0,
 
+        oneRule: { validator: oneNumber, trigger: 'blur' },//投资亮点规则
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },//电话规则
         NumberRule: { validator: checkNumber, trigger: 'blur' },//可以为空,必须为数字
         ScaleRule:{ validator:checkHundred, trigger:'blur'},//可以为空,必须为数字,比例数值1-100
@@ -1624,6 +1781,7 @@
       focus(e){
 //          console.log(e)
         this.tagShow=e;
+//        console.log(this.tagShow);
       },
       //取消项目亮点焦点
       blur(e){
@@ -1781,11 +1939,61 @@
               if(data.project.pro_finance_stock_after==0) data.project.pro_finance_stock_after="";//投后股份
 
               if(data.project.pro_finance_value==0) data.project.pro_finance_value="";//项目估值
-
-
-
               this.project=data.project;
+              //亮点设置=============================================addgoodNess1pro_servicepro_business_model
+              if(data.project.goodness.pro_goodness.length==0){
+                for(let i=0;i<5-data.project.goodness.pro_goodness.length;i++){
+                  this.addgoodNess();
+                }
+              }else if(data.project.goodness.pro_goodness.length<3){
+                  this.project.goodness.pro_goodness=data.project.goodness.pro_goodness;
+                for(let i=0;i<4-data.project.goodness.pro_goodness.length;i++){
+                  this.addgoodNess();
+                }
+              }else if(data.project.goodness.pro_goodness.length>=3){
+                this.project.goodness.pro_goodness=data.project.goodness.pro_goodness;
+              }
 
+              if(data.project.goodness.pro_market_genera.length==0){
+                for(let i=0;i<5-data.project.goodness.pro_market_genera.length;i++){
+                  this.addgoodNess1();
+                }
+              } else  if(data.project.goodness.pro_market_genera.length<3){
+                this.project.goodness.pro_market_genera=data.project.goodness.pro_market_genera;
+                for(let i=0;i<4-data.project.goodness.pro_market_genera.length;i++){
+                  this.addgoodNess1();
+                }
+              }
+              else if(data.project.goodness.pro_market_genera.length>=3){
+                this.project.goodness.pro_market_genera=data.project.goodness.pro_market_genera;
+              }
+
+              if(data.project.goodness.pro_service.length==0){
+                for(let i=0;i<5-data.project.goodness.pro_service.length;i++){
+                  this.addgoodNess2();
+                }
+              }  else if(data.project.goodness.pro_service.length<3){
+                this.project.goodness.pro_service=data.project.goodness.pro_service;
+                for(let i=0;i<4-data.project.goodness.pro_service.length;i++){
+                  this.addgoodNess2();
+                }
+              }else if(data.project.goodness.pro_service.length>=3){
+                this.project.goodness.pro_service=data.project.goodness.pro_service;
+              }
+
+
+              if(data.project.goodness.pro_business_model.length==0){
+                for(let i=0;i<5-data.project.goodness.pro_business_model.length;i++){
+                  this.addgoodNess3();
+                }
+              }else if(data.project.goodness.pro_business_model.length<3){
+                this.project.goodness.pro_business_model=data.project.goodness.pro_business_model;
+                for(let i=0;i<4-data.project.goodness.pro_business_model.length;i++){
+                  this.addgoodNess3();
+                }
+              }else if(data.project.goodness.pro_business_model.length>=3){
+                this.project.goodness.pro_business_model=data.project.goodness.pro_business_model;
+              }
               //公司运营设置=============================================
 
               if (data.company.pro_company_scale == "") {
@@ -1799,8 +2007,7 @@
               this.company=data.company;
 
               //产品设置=============================================
-              this.brands=data.brands;
-
+                this.brands=data.brands;
               //核心团队设置=============================================
               data.team.tag = this.$tool.setIdToArr(data.team.tag,'tag_id');//团队标签
               this.$tool.setZeroToNull(data.team.core_users,'stock_scale');//项目成员
@@ -2256,7 +2463,73 @@
         }*/
       },//添加项目来源
 
+//      添加投资亮点
+      addgoodNess(){
+        this.project.goodness.pro_goodness.push({
+          goodness_desc: '',
+          goodness_title: '',
+          goodness_id: '',
+          type:'pro_goodness',
+        });
+      },
+//      删除投资亮点
+      removegoodNess(item){
+        var index = this.project.goodness.pro_goodness.indexOf(item)
+      if (index !== -1) {
+        this.project.goodness.pro_goodness.splice(index, 1)
+      }
+      },
 
+      // 添加市场概况
+      addgoodNess1(){
+        this.project.goodness.pro_market_genera.push({
+          goodness_desc: '',
+          goodness_title: '',
+          goodness_id: '',
+          type:'pro_goodness',
+        });
+      },
+//      删除市场概况
+      removegoodNess1(item){
+        var index = this.project.goodness.pro_market_genera.indexOf(item)
+        if (index !== -1) {
+          this.project.goodness.pro_market_genera.splice(index, 1)
+        }
+      },
+
+      // 添加产品概况pro_servicepro_business_model
+      addgoodNess2(){
+        this.project.goodness.pro_service.push({
+          goodness_desc: '',
+          goodness_title: '',
+          goodness_id: '',
+          type:'pro_goodness',
+        });
+      },
+//      删除产品概况
+      removegoodNess2(item){
+        var index = this.project.goodness.pro_service.indexOf(item)
+        if (index !== -1) {
+          this.project.goodness.pro_service.splice(index, 1)
+        }
+      },
+
+      // 添加商业模式pro_business_model
+      addgoodNess3(){
+        this.project.goodness.pro_business_model.push({
+          goodness_desc: '',
+          goodness_title: '',
+          goodness_id: '',
+          type:'pro_goodness',
+        });
+      },
+//      删除商业模式
+      removegoodNess3(item){
+        var index = this.project.goodness.pro_business_model.indexOf(item)
+        if (index !== -1) {
+          this.project.goodness.pro_business_model.splice(index, 1)
+        }
+      },
       //添加产品
       addBrand(){
         this.brands.brand.push({
@@ -2400,6 +2673,19 @@
         }
       },
 
+      //投资亮点循环一条必填
+      oneCheck(item){
+          var arr=[];
+          for(let i=0;i<item.length;i++){
+              if(item[i].goodness_title&&item[i].goodness_desc){
+                  return true;
+                this.$tool.error("投资亮点一条不能为空")
+              }else{
+                  return false;
+
+              }
+          }
+      },
       //*检查所有必填项目以及获取所有数据/true过.false不过
       submitForm(formName,checkName) {
         this.$refs[formName].validate((valid) => {
@@ -2432,6 +2718,8 @@
               else if (this.financingMust) {}
               else if (this.milepostMust) {}
               else if (this.privateMust) {}
+              else if(this.oneCheck(this.project.goodness.pro_goodness) ){this.$tool.error("投资亮点不能为空")}
+//              else if(this.$tool.getNull(this.project.goodness.pro_goodness[1].goodness_desc)) {this.$tool.error("投资亮点内容不能为空")}
               else{
                 resolve(true);
               }
@@ -2785,7 +3073,10 @@
 
 <style lang="less">
   @import '../../../assets/css/edit.less';
-
+.goodness .el-input__inner{
+   margin-top: 10px;
+  margin-bottom: 10px;
+}
 
   .planUpload {
     .el-upload {
@@ -2888,5 +3179,10 @@
   .edit-page .item-block .block-tt-line{
     margin-bottom:17px !important;
   }
-
+  .lin{
+    line-height: 16px!important;
+  }
+.goodness .el-form-item__error{
+  top:83%!important;
+}
 </style>
