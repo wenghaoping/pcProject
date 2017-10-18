@@ -68,31 +68,45 @@
           </div>
           <div class="line"></div>
           <div class="ul-lists" style="margin-top:16px;padding: 0">
-            <div class="item" v-show="project.goodness.pro_goodness!=''||project.goodness.pro_market_genera!=''||project.goodness.pro_business_model!=''||project.goodness.pro_service!=''">
-              <span class="title" style="font-size: 16px;">项目亮点</span>
-              <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_goodness.goodness_desc!=''&&project.goodness.pro_goodness.goodness_title!=''">
+            <div class="item" >
+              <div  v-show="project.goodness.pro_goodness.length!=0"  style="margin-bottom: 20px">
+                <div class="title" style="font-size:16px;color:#475669;">投资亮点</div>
+                <div class="prod-doc" style="font-size: 13px;"v-for=" (goodness1,index) in project.goodness.pro_goodness">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{project.goodness.pro_goodness.goodness_title}}&nbsp;:&nbsp;</span>
-                      {{project.goodness.pro_goodness.goodness_desc}}
+                         <span style="color:#475669;margin-top: -4px">{{goodness1.goodness_title}}&nbsp;:&nbsp;</span>
+                      {{goodness1.goodness_desc}}
                        </span>
+                  <!--<span>{{highlights.goodness_desc}}</span>-->
+                </div>
               </div>
-              <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_market_genera.goodness_desc!=''&&project.goodness.pro_market_genera.goodness_title!=''">
+              <div  v-show="project.goodness.pro_market_genera.length!=0" style="margin-bottom: 20px">
+                <div class="title" style="font-size:16px;color:#475669;">市场概况</div>
+                <div class="prod-doc" style="font-size: 13px;"   v-for="goodness2 in project.goodness.pro_market_genera">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{project.goodness.pro_market_genera.goodness_title}}&nbsp;:&nbsp;</span>
-                      {{project.goodness.pro_market_genera.goodness_desc}}
+                         <span style="color:#475669;margin-top: -4px">{{goodness2.goodness_title}}&nbsp;:&nbsp;</span>
+                      {{goodness2.goodness_desc}}
                        </span>
+                  <!--<span>{{highlights.goodness_desc}}</span>-->
+                </div>
               </div>
-              <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_business_model.goodness_desc!=''&&project.goodness.pro_business_model.goodness_title!=''">
+              <div v-show="project.goodness.pro_business_model.length!=0" style="margin-bottom: 20px">
+                <div class="title" style="font-size:16px;color:#475669;">商业模式</div>
+                <div class="prod-doc" style="font-size: 13px;"  v-for="goodness3 in project.goodness.pro_business_model">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{project.goodness.pro_business_model.goodness_title}}</span>&nbsp;:&nbsp;
-                      {{project.goodness.pro_business_model.goodness_desc}}
+                         <span style="color:#475669;margin-top: -4px">{{goodness3.goodness_title}}</span>&nbsp;:&nbsp;
+                      {{goodness3.goodness_desc}}
                        </span>
+                  <!--<span>{{highlights.goodness_desc}}</span>-->
+                </div>
               </div>
-              <div class="prod-doc" style="font-size: 13px;margin-top: 11px" v-show="project.goodness.pro_service.goodness_desc!=''&&project.goodness.pro_service.goodness_title!=''">
+              <div v-if="project.goodness.pro_service.length!=0"  style="margin-bottom: 20px">
+                <div class="title" style="font-size:16px;color:#475669;">产品概况</div>
+                <div class="prod-doc" style="font-size: 13px;" v-for="goodness4 in project.goodness.pro_service">
                        <span style="line-height: 23px; color:#8492a6">
-                         <span style="color:#475669">{{project.goodness.pro_service.goodness_title}}&nbsp;:&nbsp;</span>
-                      {{project.goodness.pro_service.goodness_desc}}
+                         <span style="color:#475669;margin-top: -4px">{{goodness4.goodness_title}}&nbsp;:&nbsp;</span>
+                      {{goodness4.goodness_desc}}
                        </span>
+                </div>
               </div>
             </div>
           </div>
@@ -397,22 +411,42 @@
             area_title:''//北京市
           },
           goodness:{
-            pro_business_model:{
+            pro_business_model:[{
               goodness_desc: "",//凉凉凉凉
               goodness_title: ""//亮点亮点
             },
-            pro_goodness:{
+              {
+                goodness_desc: "",//凉凉凉凉
+                goodness_title: ""//亮点亮点
+              }
+            ],
+            pro_goodness:[{
               goodness_desc: "",//凉凉凉凉
               goodness_title: ""//亮点亮点
             },
-            pro_market_genera:{
+              {
+                goodness_desc: "",//凉凉凉凉
+                goodness_title: ""//亮点亮点
+              }
+            ],
+            pro_market_genera:[{
               goodness_desc: "",//凉凉凉凉
               goodness_title: ""//亮点亮点
             },
-            pro_service:{
+              {
+                goodness_desc: "",//凉凉凉凉
+                goodness_title: ""//亮点亮点
+              }
+            ],
+            pro_service:[{
               goodness_desc: "",//凉凉凉凉
               goodness_title: ""//亮点亮点
             },
+              {
+                goodness_desc: "",//凉凉凉凉
+                goodness_title: ""//亮点亮点
+              }
+            ],
           },
           pro_scale:{
             scale_money:'',//1001W-200W

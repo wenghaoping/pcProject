@@ -495,7 +495,15 @@
           this.$http.post(this.URL.getEnjoyedInvestorBasicInfo, {card_id:this.follow.card_id, type:this.follow.type})
             .then(res => {
               this.loading = false;
-              this.follow.user_organization=res.data.data.user_organization;
+              //机构选择（品牌，公司）
+              // if(!res.data.data.user_organization.indexOf(')')){ str.match(/aaa(\S*)/)[1]; .match(/((\S*))/)[1]
+              if(res.data.data.user_organization.charAt(res.data.data.user_organization.length-1)==')'){
+                this.follow.user_organization=  res.data.data.user_organization.substring(res.data.data.user_organization.indexOf("(") + 1,res.data.data.user_organization.indexOf(")"));
+//                截取两个字符之间的字符串
+              }else{
+                this.follow.user_organization=res.data.data.user_organization;
+              }
+
               this.follow.user_mobile=res.data.data.user_mobile;
               this.follow.user_other=res.data.data.user_other;
               this.follow.user_wechar=res.data.data.user_wechar;
