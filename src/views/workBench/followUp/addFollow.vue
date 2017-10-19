@@ -24,12 +24,11 @@
             </el-col>
             <el-col :span="6">
               <el-form-item
-                label="*意向投资人"
-                prop="card_name">
+                label="意向投资人"
+                prop="card_name" :rules="[{required:true,trigger: 'blur',message: '意向投资人不能为空',}]">
                 <el-autocomplete v-model="follow.card_name"
                                  :fetch-suggestions="querySearchAsync"
                                  placeholder="投资人"
-                                 :maxlength="20"
                                  @select="handleSelect">
                 </el-autocomplete>
               </el-form-item>
@@ -40,7 +39,7 @@
                 prop="user_organization" class="formColor" :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]">
                 <el-input v-model="follow.user_organization"
                                  placeholder="机构"
-                                 :maxlength="20">
+                                >
                 </el-input>
               </el-form-item>
             </el-col>
@@ -53,27 +52,27 @@
                 :rules="PhoneRule">
                 <el-input v-model="follow.user_mobile"
                                  placeholder="手机号"
-                                 :maxlength="20">
+                                 >
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item
                 label="微信"
-                prop="user_wechar" class="formColor">
+                prop="user_wechar" class="formColor"  :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
                 <el-input v-model="follow.user_wechar"
                                  placeholder="微信"
-                                 :maxlength="20">
+                                 >
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item
                 label="其他联系方式"
-                prop="user_other" class="formColor" >
+                prop="user_other" class="formColor"    :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
                 <el-input v-model="follow.user_other"
                                  placeholder="其他联系方式"
-                                 :maxlength="200">
+                                 >
                 </el-input>
               </el-form-item>
             </el-col>
@@ -99,7 +98,7 @@
               <el-form-item
                 label="约谈方式"
                 prop="meet_type">
-                <el-select v-model="follow.meet_type" clearable
+                <el-select v-model="follow.meet_type"
                            placeholder="请选择"
                            style="width: 343.5px;">
                   <el-option
@@ -116,7 +115,7 @@
             <el-col :span="12">
               <el-form-item
                 label="约谈时间"
-                prop="meet_time">
+                prop="meet_time" >
                 <el-date-picker
                   v-model="follow.meet_time"
                   type="datetime"
@@ -129,7 +128,7 @@
                 label="约谈地点"
                 prop="meet_address" :rules="[{min: 1, max:200,message: '最大200个字符',trigger: 'blur'}]">
                 <el-input v-model="follow.meet_address"
-                          placeholder="请输入" >
+                          placeholder="请输入具体地址" >
                 </el-input>
               </el-form-item>
             </el-col>
@@ -139,7 +138,7 @@
               <el-form-item
                 label="约谈状态"
                 prop="meet_status">
-                <el-select v-model="follow.meet_status" clearable
+                <el-select v-model="follow.meet_status"
                            placeholder="请选择"
                            style="width:343.5px;">
                   <el-option
@@ -155,7 +154,7 @@
               <el-form-item
                 label="约谈反馈"
                 prop="meet_back">
-                <el-select v-model="follow.meet_back" clearable
+                <el-select v-model="follow.meet_back"
                            placeholder="请选择"
                            style="width: 343.5px;">
                   <el-option
@@ -282,15 +281,7 @@
           callback();
         }
       };//电话号码正则判断
-//      var checkEmail = (rule, value, callback) => {
-//          if (!this.$tool.checkEmail(value)||this.$tool.getNull(value)) {
-//            callback(new Error('请输入正确的邮箱1'));
-//          } else {
-//            callback();
-//          }
-//      };//邮箱判断
       return {
-//        emailRule: {validator: checkEmail, trigger: 'blur'},
         value1:'',
         value11:'',
         value22:'',
@@ -346,7 +337,7 @@
           user_wechar:'',//微信
           user_other:'',//其他联系方式
           meet_type:'',//约谈方式
-          meet_time:'',//约谈时间
+          meet_time:'2017-10-20 11:53:57 ',//约谈时间
           meet_address:'',//约谈地点
           meet_status:'',//约谈状态
           meet_back:''//约谈反馈
@@ -403,6 +394,8 @@
         submitButton:false,//是否允许提交false允许/true不允许
         typein:'',
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },//电话规则
+
+        followMust:false,
       }
     },
     methods: {
@@ -599,16 +592,15 @@
             this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id,follow_id:this.follow_id})
               .then(res => {
                 let data = res.data.data;
+                this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
 //            data.schedule_id=data.schedule_id;
                 data.file_id=[];
-
                 this.setUploadShow(data.files);
                 this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
                 this.follow=data;
                 this.typein=data.type;
                 resolve(1);
                 this.loading=false;
-//                console.log(this.follow)
               })
               .catch(err => {
                 this.$tool.console(err);
@@ -790,60 +782,71 @@
         this.groups.name = item.bp_type;
         this.dialogFileVisible = true;
       },//获取分组的位置
-      submitForm(formName) {
-        let check = true;
-        this.$refs[formName].validate((valid) => {
-          check=valid;
-          /*if (valid) {
-           check = true;
-           } else {
-           check = false;
 
-           }*/
+      //*检查所有必填项目以及获取所有数据/true过.false不过
+      submitForm(formName,checkName) {
+        this.$refs[formName].validate((valid) => {
+          this[checkName]=!valid;
         });
-        return check;
-      },//提交用
+      },
+      //*全部保存按钮
       allSave(){
-        let follow=this.submitForm('follow');
-        if(this.follow.card_name=="") this.follow.card_id='';
-        if(this.$tool.getNull(this.follow.card_id) && this.$tool.getNull(this.follow.card_name)) {
-            this.$tool.error("请选择或添加正确的投资人")
+        var submit = ()=>{
+          return new Promise((resolve, reject)=>{
+            //做一些异步操作
+            this.submitForm('follow','followMust');
+            resolve(true);
+          });
         }
-        else if(this.$tool.checkLength3(this.follow.meet_address))this.$tool.error("约谈地点不超过200字")
-        else if(this.$tool.checkLength1(this.follow.user_organization))this.$tool.error("投资机构不超过40字")
-        else if(this.$tool.checkLength2(this.follow.follow_desc))this.$tool.error("跟进描述不超过500字")
-        else if(this.$tool.getNull(this.follow.project_id)) this.$tool.error("请选择正确的项目")
-        else if(this.$tool.getNull(this.follow.project_name)) this.$tool.error("请选择正确的项目")
-        else if (!this.$tool.checkEmail1(this.follow.user_other)) this.$tool.error("请输入正确的邮箱")
-        else if(!follow) this.$tool.error("请按要求填写")
-        else {
-          this.$tool.setReallyTimeToTime1(this.follow,'meet_time','meet_time_stamp');//标准时间转化为时间戳（单个数据）
-          this.follow.follow_id=this.follow_id;
-          if(this.follow.follow_id=="") delete this.follow.follow_id;
-          delete this.follow.files;
-          this.follow.user_id=localStorage.user_id;
-          this.follow.type=this.typein;
+
+        var check = ()=>{
+          return new Promise((resolve, reject)=>{
+            //做一些异步操作
+            setTimeout(()=>{
+              if (this.followMust) {}
+              else{
+                resolve(true);
+              }
+            },200)
+          });
+        };
+
+        submit()
+          .then((data)=>{
+            return check();
+          })
+          .then((data)=> {
+            if (data) {
+              this.$tool.setReallyTimeToTime1(this.follow, 'meet_time', 'meet_time_stamp');//标准时间转化为时间戳（单个数据）
+              this.follow.follow_id = this.follow_id;
+              if (this.follow.follow_id == "") delete this.follow.follow_id;
+              delete this.follow.files;
+              this.follow.user_id = localStorage.user_id;
+              this.follow.type = this.typein;
 //          this.follow.card_id=this.card_id;
-          if(this.userid!=undefined){
-            if(this.follow.type=='user'){ this.follow.card_id = this.userid; }
-          }
-          this.loading=true;
-          this.$http.post(this.URL.add_follow_record, this.follow)
-            .then(res => {
-             if(res.data.status_code==2000000){
-               this.follow_id=res.data.data;
-               this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
-             }else{
-               this.$tool.error(res.data.error_msg);
-             }
-             this.loading=false;
+              if (this.userid != undefined) {
+                if (this.follow.type == 'user') {
+                  this.follow.card_id = this.userid;
+                }
+              }
+              this.loading = true;
+              this.$http.post(this.URL.add_follow_record, this.follow)
+                .then(res => {
+                  if (res.data.status_code == 2000000) {
+                    this.follow_id = res.data.data;
+                    this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
+                  } else {
+                    this.$tool.error(res.data.error_msg);
+                  }
+                  this.loading = false;
 //              this.getFollow.user_id=localStorage.user_id;
 //              this.getFollow.project_id=this.follow.project_id;
-            })
-            .catch(err => {
-              this.loading=false;
-            })
-         }
+                })
+                .catch(err => {
+                  this.loading = false;
+                })
+            }
+          })
 
       },//发送请求
       /*编辑成功弹窗*/

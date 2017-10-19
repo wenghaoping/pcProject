@@ -287,7 +287,7 @@ export default {
         .then(res=>{
           let data = res.data.data;
           this.tableData=data.follow_record;
-          console.log(this.tableData.project_id);
+//          console.log(this.tableData.project_id);
           this.totalData=data.count;
           this.loading=false;
         })
