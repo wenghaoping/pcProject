@@ -377,7 +377,7 @@ const tool={
   //时间转化接受从时间戳转化为中国标准时间(单个数据)
   setTimeToReallyTime1(time,title){
     if(time){
-        time[title] = new Date(time[title]?time[title]*1000:'');
+        time[title] = new Date(time[title] ? time[title]*1000:'');
     }else{
       return time;
     }

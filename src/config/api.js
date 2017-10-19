@@ -25,6 +25,7 @@ axios.interceptors.request.use((config) => {
 
 //code状态码200判断http response 拦截器
 axios.interceptors.response.use((res) =>{
+
 /*  console.log(res.data.status_code);
   if(res.data.status_code==401){//具体的判断token失效的参数
     alert("您已超时,请重新登陆");
@@ -38,6 +39,7 @@ axios.interceptors.response.use((res) =>{
   return res;
 }, (error) => {
   console.log("网络异常");
+  console.log(error)
   return Promise.reject(error);
 });
 

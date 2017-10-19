@@ -432,6 +432,7 @@ export default {
     closeFollow(msg){
       this.followDisplay=msg;
       this.followid="";
+      this.filterChangeCurrent(this.currentPage || 1);
     },//关闭添加跟进
 
     getList(list){

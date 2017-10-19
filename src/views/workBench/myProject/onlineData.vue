@@ -76,7 +76,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="service_desc" label="备注" width="291"
+        <el-table-column prop="service_desc" label="备注" width="280"
                          show-overflow-tooltip>
           <template scope="scope">
             <el-tooltip placement="top" :disabled="scope.row.service_desc.length > 25 ? false:true">

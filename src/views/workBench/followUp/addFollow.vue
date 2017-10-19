@@ -601,10 +601,11 @@
                 let data = res.data.data;
 //            data.schedule_id=data.schedule_id;
                 data.file_id=[];
-                this.follow=data;
-                this.typein=data.type;
+
                 this.setUploadShow(data.files);
                 this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
+                this.follow=data;
+                this.typein=data.type;
                 resolve(1);
                 this.loading=false;
 //                console.log(this.follow)
@@ -840,8 +841,7 @@
 //              this.getFollow.project_id=this.follow.project_id;
             })
             .catch(err => {
-             this.loading=false;
-             this.$tool.console(err);
+              this.loading=false;
             })
          }
 
@@ -877,7 +877,7 @@
       },//清除所有数据
     },
     created(){
-//      alert("吊接口啦")
+
     },
     watch : {
       followid : function(e){
@@ -888,7 +888,7 @@
         if(e) {
           this.clearData();
           this.follow_id=this.followid || '';
-          this.typein=this.type
+          this.typein=this.type;
           this.$global.func.getWxProjectCategory()
             .then((data)=>{
               return this.getScheduleName();
