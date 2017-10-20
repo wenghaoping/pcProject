@@ -592,7 +592,6 @@
             this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id,follow_id:this.follow_id})
               .then(res => {
                 let data = res.data.data;
-                this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
 //            data.schedule_id=data.schedule_id;
                 data.file_id=[];
                 this.setUploadShow(data.files);
