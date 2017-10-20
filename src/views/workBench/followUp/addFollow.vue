@@ -11,8 +11,8 @@
           <el-row :span="24" :gutter="25">
             <el-col :span="12">
               <el-form-item
-                label="* 关联项目"
-                prop="project_name">
+                label=" 关联项目"
+                prop="project_name" :rules="[{required:true,trigger: 'blur',message: '关联项目不能为空',}]">
                 <el-autocomplete v-model="follow.project_name"
                                  :fetch-suggestions="querySearchProject"
                                  placeholder="一句话介绍，如帮助FA成交的项目管理工具"
@@ -593,6 +593,7 @@
               .then(res => {
                 let data = res.data.data;
 //            data.schedule_id=data.schedule_id;
+                this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
                 data.file_id=[];
                 this.setUploadShow(data.files);
                 this.follow=data;

@@ -456,7 +456,10 @@
               </div>
             </el-form>
           </div>
-          <el-button type="primary" size="large" style="float: right;margin-top: 32px;" @click="allSave">提交</el-button>
+          <div class="toButton" style="padding-left: 0;z-index: 111">
+            <el-button type="primary" size="large" style="margin-left:45%" @click="allSave">提交</el-button>
+          </div>
+
           <div style="height: 50px;"></div>
 
         </div>
@@ -508,6 +511,9 @@
         }
       };//可以为空,必须为数字,比例数值1-100判断
       return {
+
+        projectMust:false,
+
         uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
         planList:[],//商业计划书上传列表
         planButton:false,//控制上传按钮的显示
@@ -859,7 +865,7 @@
       //*检查所有必填项目以及获取所有数据
       submitForm(formName,checkName) {
         this.$refs[formName].validate((valid) => {
-          this[checkName]=valid;
+          this[checkName]=!valid;
         });
       },
       ///*创建成功弹
@@ -892,37 +898,58 @@
       },
       ///*全部保存按钮
       allSave(){
-        this.submitForm('project','mustGo');
-        if(!this.getNumberFull(this.project.pro_finance_stock_after,"投后股份必须小于100","投后股份必须为数字")){}
-        else if(this.oneCheck(this.project.goodness.pro_goodness) ){this.$tool.error("投资亮点不能为空")}
-        else if(this.$tool.checkLength1(this.project.pro_name)){this.$tool.error("项目名称不超过40个字")}
-        else if(this.$tool.checkLength1(this.project.pro_company_name)){this.$tool.error("公司名称不超过40个字")}
-        else if(this.getNull(this.project.pro_intro)){this.$tool.error("项目介绍不能为空")}
-        else if(this.$tool.checkLength1(this.project.pro_intro)){this.$tool.error("项目介绍不超过40个字")}
-        else if(this.mustGo) {
-          this.zgClick("提交项目");
-          this.loading=true;
-          this.project.project_id=this.uploadShow.project_id;
-          let allData = {};
-          allData.project = this.$tool.simpleClone(this.project);
-          delete allData.project.tag;
-          allData.pro_FA = {is_exclusive:this.project.is_exclusive};
-          allData.user_id = localStorage.user_id;//用户id
-          this.$http.post(this.URL.editProject,allData)
-            .then(res=>{
-              let data=res.data;
-              this.project.project_id=data.project_id;
-              this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过');
-              this.loading=false;
-            })
-            .catch(err=>{
-              this.$tool.error("创建失败");
-              this.$tool.console(err);
-              this.loading=false;
-            })
-
+        var submit = ()=>{
+          return new Promise((resolve, reject)=>{
+            //做一些异步操作
+            this.submitForm('project','projectMust');
+            resolve(true);
+          });
         }
+
+        var check = ()=>{
+          return new Promise((resolve, reject)=>{
+            //做一些异步操作
+            setTimeout(()=>{
+              if (this.projectMust) {this.$tool.error("项目介绍填写有误")}
+              else if(this.oneCheck(this.project.goodness.pro_goodness) ){this.$tool.error("投资亮点最少填写一条")}
+              else{
+                resolve(true);
+              }
+            },200)
+          });
+        };
+
+        submit()
+          .then((data)=>{
+            return check();
+          })
+          .then((data)=>{
+            if(data){
+              this.zgClick("提交项目");
+              this.loading=true;
+              this.project.project_id=this.uploadShow.project_id;
+              let allData = {};
+              allData.project = this.$tool.simpleClone(this.project);
+              delete allData.project.tag;
+              allData.pro_FA = {is_exclusive:this.project.is_exclusive};
+              allData.user_id = localStorage.user_id;//用户id
+              this.$http.post(this.URL.editProject,allData)
+                .then(res=>{
+                  let data=res.data;
+                  this.project.project_id=data.project_id;
+                  this.open2('创建成功','完善项目资料，让投资人更全面得了解项目价值','去完善','跳过');
+                  this.loading=false;
+                })
+                .catch(err=>{
+                  this.$tool.error("创建失败");
+                  this.$tool.console(err);
+                  this.loading=false;
+                })
+            }
+          })
       },
+
+
       ///*获取数据
       loadData(arr){
         let newArr = [];
@@ -1142,6 +1169,16 @@
 
 <style lang="less">
   @import '../../../assets/css/edit.less';
+  .toButton{
+    position: fixed;bottom:0px;left: 0px;
+    background-color:rgba(255,255,255,0.2);
+    box-shadow:0 -2px 4px 0 rgba(64,88,122,0.10);
+    width:100%;
+    height: 68px;
+    display: inline-block;
+    padding-top: 15px;
+    padding-left: 270px;
+  }
   .Upload{
     .el-upload{
 
