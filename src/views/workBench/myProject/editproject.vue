@@ -2719,7 +2719,7 @@
               else if (this.financingMust) {}
               else if (this.milepostMust) {}
               else if (this.privateMust) {}
-              else if(this.oneCheck(this.project.goodness.pro_goodness) ){this.$tool.error("投资亮点不能为空")}
+              else if(this.oneCheck(this.project.goodness.pro_goodness) ){this.$tool.error("投资亮点最少填写一条")}
 //              else if(this.$tool.getNull(this.project.goodness.pro_goodness[1].goodness_desc)) {this.$tool.error("投资亮点内容不能为空")}
               else{
                 resolve(true);

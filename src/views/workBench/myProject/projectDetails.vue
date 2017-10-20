@@ -1615,6 +1615,7 @@
       },//买家图谱推送
       industryDelete(data){
         let delData = new Object;
+        console.log(data.investor_id);
         delData.user_id = localStorage.user_id;
         delData.investor_id = data.investor_id;
         delData.project_id = this.project.project_id;
