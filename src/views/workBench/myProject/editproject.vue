@@ -96,7 +96,7 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="9">
-                      <span class="justIlook2">(仅自己可见)</span>
+                      <span class="justIlook2">(仅自己可见,IE浏览器暂不支持输入)</span>
                       <el-form-item
                         label="公司名称"
                         :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]"
@@ -2358,7 +2358,7 @@
 //          this.alert("加载失败");
               this.$tool.console(this.restaurants);
             })
-        }else{
+        } else{
           cb([]);
         }
       },

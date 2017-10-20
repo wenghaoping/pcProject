@@ -593,6 +593,7 @@
               .then(res => {
                 let data = res.data.data;
 //            data.schedule_id=data.schedule_id;
+                this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
                 data.file_id=[];
                 this.setUploadShow(data.files);
                 this.follow=data;

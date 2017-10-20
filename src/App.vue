@@ -288,7 +288,17 @@
               })
           }
         }
-      }//邮箱加入项目库
+      },//邮箱加入项目库
+      isIE() { //ie?
+        if (!!window.ActiveXObject || "ActiveXObject" in window){
+          alert("是IE")
+          return true;
+        }else{
+          alert("不是IE")
+          return false;
+        }
+      },
+
     },
     //当dom一创建时
     created(){
