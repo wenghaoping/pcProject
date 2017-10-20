@@ -1156,45 +1156,51 @@
           //做一些异步操作
           this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project.project_id})
             .then(res=>{
-              let data = res.data.data;
-               // 项目介绍
+              if(res.data.status_code === 430004){
+                this.$tool.warning("找不到项目");
+                this.loading=false;
+                this.$router.push({name: 'index'})//路由传参
+              }else{
+                let data = res.data.data;
+                // 项目介绍
 //              if(data.project.pro_company_name==''){data.project.pro_company_name=='-'}
-              if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money=" ";}
-              if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title=" ";}
-              if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name=' '}
-              if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after=' '}
-              if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro=' '}
-              if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name=' '}
-              if(data.company.pro_status==''){data.company.pro_status={};data.company.pro_status.status_name='-'}
-              if(data.company.pro_website==''){data.company.pro_website={};data.company.pro_website='-'}
-              if(data.company.pro_company_scale==''){data.company.pro_company_scale={};data.company.pro_company_scale.comp_scale_value='-'}
-              if(data.project.pro_schedule=="") {data.project.pro_schedule={};data.project.pro_schedule.schedule_name="";data.project.pro_schedule.schedule_id="";}
-              this.project=data.project;
-              //公司运营
-              this.company=data.company;
-             //项目文件
-              this.file.pro_BP.file_title=data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext;
-              this.file=data.file;
-              //融资信息
-              this.$tool.setTime(data.financing.pro_history_finance,'finance_time');
-              this.financing=data.financing;
-              //里程碑
-               this.$tool.setTime(data.milepost.pro_develop,'dh_start_time');
-               this.milepost=data.milepost;
-              //FA业务
-               this.private=data.private;
-              //团队
-              this.team.tag=this.getteam_tag(data.team.tag);
-              this.team=data.team;
-              //is_exclusive
-              this.pro=data.pro_FA;
-              //brand
-              this.brands=data.brands;
+                if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money=" ";}
+                if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title=" ";}
+                if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name=' '}
+                if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after=' '}
+                if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro=' '}
+                if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name=' '}
+                if(data.company.pro_status==''){data.company.pro_status={};data.company.pro_status.status_name='-'}
+                if(data.company.pro_website==''){data.company.pro_website={};data.company.pro_website='-'}
+                if(data.company.pro_company_scale==''){data.company.pro_company_scale={};data.company.pro_company_scale.comp_scale_value='-'}
+                if(data.project.pro_schedule=="") {data.project.pro_schedule={};data.project.pro_schedule.schedule_name="";data.project.pro_schedule.schedule_id="";}
+                this.project=data.project;
+                //公司运营
+                this.company=data.company;
+                //项目文件
+                this.file.pro_BP.file_title=data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext;
+                this.file=data.file;
+                //融资信息
+                this.$tool.setTime(data.financing.pro_history_finance,'finance_time');
+                this.financing=data.financing;
+                //里程碑
+                this.$tool.setTime(data.milepost.pro_develop,'dh_start_time');
+                this.milepost=data.milepost;
+                //FA业务
+                this.private=data.private;
+                //团队
+                this.team.tag=this.getteam_tag(data.team.tag);
+                this.team=data.team;
+                //is_exclusive
+                this.pro=data.pro_FA;
+                //brand
+                this.brands=data.brands;
 
-              if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
+                if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
 
-              resolve(3);
-              this.loading=false;
+                resolve(3);
+                this.loading=false;
+              }
             })
             .catch(err=>{
               this.$tool.console(err,2)

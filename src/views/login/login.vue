@@ -54,15 +54,14 @@
         });
       },
       checkReload(){
-        let reload = this.$route.query.reload || false;
-//        if(reload){window.location.reload();}
+
       }
     },
     mounted(){
       this.creatObj();
     },
     created(){
-      this.checkReload();
+
     },
   }
 </script>

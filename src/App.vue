@@ -232,6 +232,8 @@
 //          this.$tool.error('请先登录');
 //          && this.$route.path!=='/workBench/'&& this.$route.path!=='/workBench'
           this.$router.push({name:'index'});
+          this.$store.state.logining.user_id = "";
+          this.$store.state.logining.user_real_name = "";
         }
         //十二小时不动后退出登录
         setTimeout(function(){

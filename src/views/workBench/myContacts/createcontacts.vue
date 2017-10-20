@@ -712,23 +712,29 @@ export default {
           this.loading=true;
           this.$http.post(this.URL.getOneUserInfo,{user_id:localStorage.user_id,card_id: this.card_id})
             .then(res => {
-              let data = res.data.data;
-              data.user_invest_industry=this.set_industry(data.user_invest_industry);
-              data.user_invest_stage=this.set_stage(data.user_invest_stage);
-              data.user_invest_scale=this.set_scale(data.user_invest_scale);
-              data.user_resource_find=this.set_GiveFind(data.user_resource_find);
-              data.user_resource_give=this.set_GiveFind(data.user_resource_give);
-              data.user_invest_area=this.set_area(data.user_invest_area);
-              data.user_invest_tag=this.setTag(data.user_invest_tag);
-              this.setImage(data.user_image);
-              if(data.user_image.length==0) {this.uploadShow = {};this.planList = [];}
-              this.contacts=data;
-              this.tags_con=this.tags.changecont.slice(0);
-              this.loading=false;
+              if(res.data.status_code === 420008){
+                this.$tool.warning("这不是您的人脉,您无权查看");
+                this.loading=false;
+                this.$router.push({name: 'index'})//路由传参
+              }else{
+                let data = res.data.data;
+                data.user_invest_industry=this.set_industry(data.user_invest_industry);
+                data.user_invest_stage=this.set_stage(data.user_invest_stage);
+                data.user_invest_scale=this.set_scale(data.user_invest_scale);
+                data.user_resource_find=this.set_GiveFind(data.user_resource_find);
+                data.user_resource_give=this.set_GiveFind(data.user_resource_give);
+                data.user_invest_area=this.set_area(data.user_invest_area);
+                data.user_invest_tag=this.setTag(data.user_invest_tag);
+                this.setImage(data.user_image);
+                if(data.user_image.length==0) {this.uploadShow = {};this.planList = [];}
+                this.contacts=data;
+                this.tags_con=this.tags.changecont.slice(0);
+                this.loading=false;
 //          this.$tool.console(this.$tool.getToObject(data));
 //            console.log(this.$tool.getToObject(data));
-              if (this.planList.length != 0) this.planButton = false;
-              else this.planButton = true;
+                if (this.planList.length != 0) this.planButton = false;
+                else this.planButton = true;
+              }
             })
             .catch(err=>{
               this.$tool.console(err,2);

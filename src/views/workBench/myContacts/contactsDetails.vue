@@ -740,37 +740,44 @@
       getOneUserInfo(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
-          this.$http.post(this.URL.getOneUserInfo,{card_id: this.contacts.card_id})
+          this.$http.post(this.URL.getOneUserInfo,{user_id: localStorage.user_id,card_id: this.contacts.card_id})
             .then(res => {
-              let data = res.data.data;
+                if(res.data.status_code === 420008){
+                  this.$tool.warning("这不是您的人脉,您无权查看");
+                  this.loading=false;
+                  this.$router.push({name: 'index'})//路由传参
+                }else{
+                  let data = res.data.data;
 //          this.$tool.console(this.$tool.getToObject(data));
-              data.user_invest_industry = this.$tool.setTagToString(data.user_invest_industry,'industry_name');
-              data.user_invest_stage = this.$tool.setTagToString(data.user_invest_stage,'stage_name');
-              data.user_invest_scale = this.$tool.setTagToString(data.user_invest_scale,'scale_money');
-              data.user_resource_find = this.$tool.setTagToString(data.user_resource_find,'resource_name');
-              data.user_resource_give = this.$tool.setTagToString(data.user_resource_give,'resource_name');
-              data.project_case = this.setProjectCase(data.project_case);
-              data.user_email=data.user_email;
-              data.user_company_name=data.user_company_name || '暂无填写';
-              data.user_brand=data.user_brand || '暂无填写';
-              data.user_company_career=data.user_company_career || '暂无填写';
-              data.user_mobile=data.user_mobile || '暂无填写';
-              data.user_intro=data.user_intro || '';
-              data.user_avatar_txt=this.$tool.setUrlChange(data.user_avatar_url,data.user_real_name);
-              if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
-                this.user_invest=false;//投资需求
-              }else{
-                this.user_invest=true;//投资需求
-              }
-              if(data.user_resource_give=='' && data.user_resource_find=='' && data.user_resource_desc==''){
-                this.user_resource=false;//资源需求
-              }else{
-                this.user_resource=true;//投资需求
-              }
-              this.tagsValue = this.setTag(data.user_invest_tag);
-              this.tags.changecont = this.setTag(data.user_invest_tag);
-              this.contacts = data;
-              resolve(3);
+                  data.user_invest_industry = this.$tool.setTagToString(data.user_invest_industry,'industry_name');
+                  data.user_invest_stage = this.$tool.setTagToString(data.user_invest_stage,'stage_name');
+                  data.user_invest_scale = this.$tool.setTagToString(data.user_invest_scale,'scale_money');
+                  data.user_resource_find = this.$tool.setTagToString(data.user_resource_find,'resource_name');
+                  data.user_resource_give = this.$tool.setTagToString(data.user_resource_give,'resource_name');
+                  data.project_case = this.setProjectCase(data.project_case);
+                  data.user_email=data.user_email;
+                  data.user_company_name=data.user_company_name || '暂无填写';
+                  data.user_brand=data.user_brand || '暂无填写';
+                  data.user_company_career=data.user_company_career || '暂无填写';
+                  data.user_mobile=data.user_mobile || '暂无填写';
+                  data.user_intro=data.user_intro || '';
+                  data.user_avatar_txt=this.$tool.setUrlChange(data.user_avatar_url,data.user_real_name);
+                  if(data.user_invest_industry=='' && data.user_invest_stage=='' && data.user_invest_scale=='' && data.user_invest_desc==''){
+                    this.user_invest=false;//投资需求
+                  }else{
+                    this.user_invest=true;//投资需求
+                  }
+                  if(data.user_resource_give=='' && data.user_resource_find=='' && data.user_resource_desc==''){
+                    this.user_resource=false;//资源需求
+                  }else{
+                    this.user_resource=true;//投资需求
+                  }
+                  this.tagsValue = this.setTag(data.user_invest_tag);
+                  this.tags.changecont = this.setTag(data.user_invest_tag);
+                  this.contacts = data;
+                  resolve(3);
+                }
+
             })
             .catch(err=>{
               this.$tool.console(err,2);

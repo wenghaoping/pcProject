@@ -1891,157 +1891,162 @@
           //做一些异步操作
           this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
             .then(res => {
-//              console.log(res.data.data);
-              this.uploadShow2.lists=[];
-              let data = res.data.data;
-              //项目文件设置=============================================
-
-              //计划书清空
-              if(data.file.pro_BP.length=="") {
-                  this.planList=[];this.uploadShow={};
+              if(res.data.status_code === 430004){
+                this.$tool.warning("找不到项目");
+                this.loading=false;
+                this.$router.push({name: 'index'})//路由传参
               }else{
-                this.planList = [{name: data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext, url: data.file.pro_BP.file_url}];//设置计划书
-                this.uploadShow = {
-                  file_title: data.file.pro_BP.file_title,
-                  pro_intro: data.file.pro_BP.file_title,
-                  pro_name: data.file.pro_BP.file_title,
-                  project_id: this.project_id,
-                  file_id: data.file.pro_BP.file_id
-                };//设置计划书上传列表
-              }
+                this.uploadShow2.lists=[];
+                let data = res.data.data;
+                //项目文件设置=============================================
 
-              delete data.project.pro_schedule;
+                //计划书清空
+                if(data.file.pro_BP.length=="") {
+                  this.planList=[];this.uploadShow={};
+                }else{
+                  this.planList = [{name: data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext, url: data.file.pro_BP.file_url}];//设置计划书
+                  this.uploadShow = {
+                    file_title: data.file.pro_BP.file_title,
+                    pro_intro: data.file.pro_BP.file_title,
+                    pro_name: data.file.pro_BP.file_title,
+                    project_id: this.project_id,
+                    file_id: data.file.pro_BP.file_id
+                  };//设置计划书上传列表
+                }
 
-              if (this.planList.length != 0) this.planButton = false;
-              else this.planButton = true;//判断计划书上传按钮显示被否
-              this.setUploadShow2(data.file.pro_file);//设置项目文件上传列表
+                delete data.project.pro_schedule;
 
-              //项目介绍设置=============================================
-              if (data.project.pro_area.length==0) {
-                data.project.pro_area = {area_id:"",pid:""};
-              }
+                if (this.planList.length != 0) this.planButton = false;
+                else this.planButton = true;//判断计划书上传按钮显示被否
+                this.setUploadShow2(data.file.pro_file);//设置项目文件上传列表
 
-              if(data.project.pro_scale==""){
+                //项目介绍设置=============================================
+                if (data.project.pro_area.length==0) {
+                  data.project.pro_area = {area_id:"",pid:""};
+                }
+
+                if(data.project.pro_scale==""){
                   data.project.pro_scale = {scale_id: ''}
-              }
-
-              this.area1Change(data.project.pro_area.pid);//取到省级设置市级
-              if (data.project.pro_stage == "") {
-                data.project.pro_stage = {stage_id: ""}
-              }//轮次设置
-              data.project.pro_industry = this.$tool.setIdToArr(data.project.pro_industry,'industry_id');//领域标签取出id
-              this.companyTitle=data.project.pro_company_name;
-              localStorage.pid=data.project.pro_area.pid;
-
-
-              data.project.tag = this.$tool.setIdToArr(data.project.tag,'tag_id');//设置项目标签
-              data.project.open_status = data.project.open_status.toString();//私密设置
-              if(data.project.pro_finance_stock_after==0) data.project.pro_finance_stock_after="";//投后股份
-
-              if(data.project.pro_finance_value==0) data.project.pro_finance_value="";//项目估值
-              this.project=data.project;
-              //亮点设置=============================================addgoodNess1pro_servicepro_business_model
-              if(data.project.goodness.pro_goodness.length==0){
-                for(let i=0;i<5-data.project.goodness.pro_goodness.length;i++){
-                  this.addgoodNess();
                 }
-              }else if(data.project.goodness.pro_goodness.length<3){
+
+                this.area1Change(data.project.pro_area.pid);//取到省级设置市级
+                if (data.project.pro_stage == "") {
+                  data.project.pro_stage = {stage_id: ""}
+                }//轮次设置
+                data.project.pro_industry = this.$tool.setIdToArr(data.project.pro_industry,'industry_id');//领域标签取出id
+                this.companyTitle=data.project.pro_company_name;
+                localStorage.pid=data.project.pro_area.pid;
+
+
+                data.project.tag = this.$tool.setIdToArr(data.project.tag,'tag_id');//设置项目标签
+                data.project.open_status = data.project.open_status.toString();//私密设置
+                if(data.project.pro_finance_stock_after==0) data.project.pro_finance_stock_after="";//投后股份
+
+                if(data.project.pro_finance_value==0) data.project.pro_finance_value="";//项目估值
+                this.project=data.project;
+                //亮点设置=============================================addgoodNess1pro_servicepro_business_model
+                if(data.project.goodness.pro_goodness.length==0){
+                  for(let i=0;i<5-data.project.goodness.pro_goodness.length;i++){
+                    this.addgoodNess();
+                  }
+                }else if(data.project.goodness.pro_goodness.length<3){
                   this.project.goodness.pro_goodness=data.project.goodness.pro_goodness;
-                for(let i=0;i<4-data.project.goodness.pro_goodness.length;i++){
-                  this.addgoodNess();
+                  for(let i=0;i<4-data.project.goodness.pro_goodness.length;i++){
+                    this.addgoodNess();
+                  }
+                }else if(data.project.goodness.pro_goodness.length>=3){
+                  this.project.goodness.pro_goodness=data.project.goodness.pro_goodness;
                 }
-              }else if(data.project.goodness.pro_goodness.length>=3){
-                this.project.goodness.pro_goodness=data.project.goodness.pro_goodness;
-              }
 
-              if(data.project.goodness.pro_market_genera.length==0){
-                for(let i=0;i<5-data.project.goodness.pro_market_genera.length;i++){
-                  this.addgoodNess1();
+                if(data.project.goodness.pro_market_genera.length==0){
+                  for(let i=0;i<5-data.project.goodness.pro_market_genera.length;i++){
+                    this.addgoodNess1();
+                  }
+                } else  if(data.project.goodness.pro_market_genera.length<3){
+                  this.project.goodness.pro_market_genera=data.project.goodness.pro_market_genera;
+                  for(let i=0;i<4-data.project.goodness.pro_market_genera.length;i++){
+                    this.addgoodNess1();
+                  }
                 }
-              } else  if(data.project.goodness.pro_market_genera.length<3){
-                this.project.goodness.pro_market_genera=data.project.goodness.pro_market_genera;
-                for(let i=0;i<4-data.project.goodness.pro_market_genera.length;i++){
-                  this.addgoodNess1();
+                else if(data.project.goodness.pro_market_genera.length>=3){
+                  this.project.goodness.pro_market_genera=data.project.goodness.pro_market_genera;
                 }
-              }
-              else if(data.project.goodness.pro_market_genera.length>=3){
-                this.project.goodness.pro_market_genera=data.project.goodness.pro_market_genera;
-              }
 
-              if(data.project.goodness.pro_service.length==0){
-                for(let i=0;i<5-data.project.goodness.pro_service.length;i++){
-                  this.addgoodNess2();
+                if(data.project.goodness.pro_service.length==0){
+                  for(let i=0;i<5-data.project.goodness.pro_service.length;i++){
+                    this.addgoodNess2();
+                  }
+                }  else if(data.project.goodness.pro_service.length<3){
+                  this.project.goodness.pro_service=data.project.goodness.pro_service;
+                  for(let i=0;i<4-data.project.goodness.pro_service.length;i++){
+                    this.addgoodNess2();
+                  }
+                }else if(data.project.goodness.pro_service.length>=3){
+                  this.project.goodness.pro_service=data.project.goodness.pro_service;
                 }
-              }  else if(data.project.goodness.pro_service.length<3){
-                this.project.goodness.pro_service=data.project.goodness.pro_service;
-                for(let i=0;i<4-data.project.goodness.pro_service.length;i++){
-                  this.addgoodNess2();
+
+
+                if(data.project.goodness.pro_business_model.length==0){
+                  for(let i=0;i<5-data.project.goodness.pro_business_model.length;i++){
+                    this.addgoodNess3();
+                  }
+                }else if(data.project.goodness.pro_business_model.length<3){
+                  this.project.goodness.pro_business_model=data.project.goodness.pro_business_model;
+                  for(let i=0;i<4-data.project.goodness.pro_business_model.length;i++){
+                    this.addgoodNess3();
+                  }
+                }else if(data.project.goodness.pro_business_model.length>=3){
+                  this.project.goodness.pro_business_model=data.project.goodness.pro_business_model;
                 }
-              }else if(data.project.goodness.pro_service.length>=3){
-                this.project.goodness.pro_service=data.project.goodness.pro_service;
-              }
+                //公司运营设置=============================================
 
+                if (data.company.pro_company_scale == "") {
+                  data.company.pro_company_scale = {comp_scale_id: 1}
+                }//规模为空的时候
+                if (data.company.pro_status == "") {
+                  data.company.pro_status = {status_id: 3}
+                }//规模为空的时候
+                this.statusLast = data.company.pro_status.status_id;//运营状态多余的
 
-              if(data.project.goodness.pro_business_model.length==0){
-                for(let i=0;i<5-data.project.goodness.pro_business_model.length;i++){
-                  this.addgoodNess3();
-                }
-              }else if(data.project.goodness.pro_business_model.length<3){
-                this.project.goodness.pro_business_model=data.project.goodness.pro_business_model;
-                for(let i=0;i<4-data.project.goodness.pro_business_model.length;i++){
-                  this.addgoodNess3();
-                }
-              }else if(data.project.goodness.pro_business_model.length>=3){
-                this.project.goodness.pro_business_model=data.project.goodness.pro_business_model;
-              }
-              //公司运营设置=============================================
+                this.company=data.company;
 
-              if (data.company.pro_company_scale == "") {
-              data.company.pro_company_scale = {comp_scale_id: 1}
-            }//规模为空的时候
-              if (data.company.pro_status == "") {
-                data.company.pro_status = {status_id: 3}
-              }//规模为空的时候
-              this.statusLast = data.company.pro_status.status_id;//运营状态多余的
-
-              this.company=data.company;
-
-              //产品设置=============================================
+                //产品设置=============================================
                 this.brands=data.brands;
-              //核心团队设置=============================================
-              data.team.tag = this.$tool.setIdToArr(data.team.tag,'tag_id');//团队标签
-              this.$tool.setZeroToNull(data.team.core_users,'stock_scale');//项目成员
-              if (data.team.core_users == "") data.team.core_users = [];//项目成员为空判断
-              this.team=data.team;
+                //核心团队设置=============================================
+                data.team.tag = this.$tool.setIdToArr(data.team.tag,'tag_id');//团队标签
+                this.$tool.setZeroToNull(data.team.core_users,'stock_scale');//项目成员
+                if (data.team.core_users == "") data.team.core_users = [];//项目成员为空判断
+                this.team=data.team;
 
 
-              //融资信息设置=============================================
-              this.$tool.setZeroToNull(data.financing.pro_history_finances,'pro_finance_scale');//设置历史融资信息
-              this.$tool.setTimeToReallyTime(data.financing.pro_history_finance,'finance_time');//历史融资信息时间格式设置
-              if (data.financing.pro_history_finance == "") data.financing.pro_history_finance = [];
-              this.financing=data.financing;
+                //融资信息设置=============================================
+                this.$tool.setZeroToNull(data.financing.pro_history_finances,'pro_finance_scale');//设置历史融资信息
+                this.$tool.setTimeToReallyTime(data.financing.pro_history_finance,'finance_time');//历史融资信息时间格式设置
+                if (data.financing.pro_history_finance == "") data.financing.pro_history_finance = [];
+                this.financing=data.financing;
 
-              //里程碑设置=============================================
-              this.$tool.setTimeToReallyTime(data.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
-              this.milepost=data.milepost;
+                //里程碑设置=============================================
+                this.$tool.setTimeToReallyTime(data.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
+                this.milepost=data.milepost;
 
-              //FA业务=============================================
-              this.pro_FA=data.pro_FA;
+                //FA业务=============================================
+                this.pro_FA=data.pro_FA;
 
-              //FA业务仅自己可见=============================================
-              data.private.pro_source = this.$tool.setIdToArr(data.private.pro_source,'tag_id');//项目来源标签
-              if(data.private.commission==0) data.private.commission="";
-              if(data.private.stock_right==0) data.private.stock_right="";
-              if(data.private.stock_follow==0) data.private.stock_follow="";
-              if(data.private.stock_other==0) data.private.stock_other="";
+                //FA业务仅自己可见=============================================
+                data.private.pro_source = this.$tool.setIdToArr(data.private.pro_source,'tag_id');//项目来源标签
+                if(data.private.commission==0) data.private.commission="";
+                if(data.private.stock_right==0) data.private.stock_right="";
+                if(data.private.stock_follow==0) data.private.stock_follow="";
+                if(data.private.stock_other==0) data.private.stock_other="";
 
-              this.private=data.private;
+                this.private=data.private;
 
-              this.loading = false;
-              this.tags_pro=this.tags.changepro.slice(0);
-              this.tags_team=this.tags.changeTeam.slice(0);
-              this.tags_source=this.tags.changesource.slice(0);
-              resolve(3);
+                this.loading = false;
+                this.tags_pro=this.tags.changepro.slice(0);
+                this.tags_team=this.tags.changeTeam.slice(0);
+                this.tags_source=this.tags.changesource.slice(0);
+                resolve(3);
+              }
             })
             .catch(err => {
               this.loading = false;
