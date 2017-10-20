@@ -9,13 +9,18 @@
             <img :src="cirIcon">
           </div>
            <div class="item-time">{{item.investor_name}}</div>
-          <div class="item-name" v-if="item.user_organization">({{item.user_organization}})</div>
-          <!--<el-tooltip class="item" effect="dark"  placement="top" :disabled="item.user_organization.length > 50 ? false:true">-->
-            <!--<div slot="content">-->
-              <!--<span class="tips-txt">{{item.meet_address}}</span>-->
-            <!--</div>-->
-            <!--<span style=" width: 618px;white-space: nowrap;text-overflow: ellipsis;font-size: 14px;color: rgb(71, 86, 105);overflow: hidden;display: inline-block; line-height: 14px;">{{item.meet_address| nullTo_}}</span>-->
-          <!--</el-tooltip>-->
+          <div class="item-name" v-if="item.user_organization">
+            <div style="display: inline-block;">(</div>
+            <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.user_organization.length > 20 ? false:true">
+              <div slot="content">
+                <span class="tips-txt">{{item.user_organization}}</span>
+              </div>
+              <span  style="max-width: 200px; white-space: nowrap;text-overflow: ellipsis;overflow: hidden;display: inline-block;line-height: 17.5px  ">{{item.user_organization}}</span>
+            </el-tooltip>
+            <div style="display: inline-block">)</div>
+          </div>
+
+
           <span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: -5px;margin-left: 16px" :class="{ followColor: item.schedule.schedule_name=='Reject',followColor1:item.schedule.schedule_name=='Hold'}" >{{item.schedule.schedule_name}}</span>
 
           <!--<div class="item-name">{{item.follow_user_name}}</div>-->

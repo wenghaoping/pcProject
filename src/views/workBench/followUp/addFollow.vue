@@ -596,8 +596,8 @@
 //            data.schedule_id=data.schedule_id;
                 data.file_id=[];
                 this.setUploadShow(data.files);
-                this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
                 this.follow=data;
+
                 this.typein=data.type;
                 resolve(1);
                 this.loading=false;
