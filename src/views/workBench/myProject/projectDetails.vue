@@ -114,7 +114,7 @@
           </div>
         </div>
         <div style="background-color: #eff2f7;height: 17px;width: 850px;"></div>
-        <div class="item-lists clearfix" style="">
+        <div class="item-lists clearfix" >
           <!--===============================================================================================================================tab页面-->
           <el-tabs v-model="show" type="card" @tab-click="handleClick" style="position: relative">
             <el-tab-pane label="项目详情" name="detail">
@@ -346,7 +346,7 @@
 
               </div>
               <!--FA签约协议-->
-              <div class="ul-lists" style="margin-top:16px;margin-bottom: 100px;" >
+              <div class="ul-lists" style="margin-top:16px;" >
                 <div class="item">
                   <span class="title"><img class="img" src="../../../assets/images/money.png">FA业务</span>
                   <div class="item" style="margin-top:33px;" v-show="private.pro_source!=''">
@@ -437,6 +437,7 @@
             </div>
           </div>
         </div>
+        <div style="height: 100px;background: rgb(243, 244, 248);"></div>
       </div>
     </div>
     <div class="contain-grid contain-right-1 fl" ref="right">
@@ -615,6 +616,8 @@
         <div style="height: 50px;"></div>
       </div>
     </div>
+
+
     <!--一键尽调弹窗-->
     <research :search-display="searchDisplay" :company-id="companyid" :comp-name="companyname"
               @closeSearchDisplay="closeSearchDisplay"
