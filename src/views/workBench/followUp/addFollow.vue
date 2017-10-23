@@ -817,34 +817,44 @@
           })
           .then((data)=> {
             if (data) {
-              this.$tool.setReallyTimeToTime1(this.follow, 'meet_time', 'meet_time_stamp');//标准时间转化为时间戳（单个数据）
-              this.follow.follow_id = this.follow_id;
-              if (this.follow.follow_id == "") delete this.follow.follow_id;
-              delete this.follow.files;
-              this.follow.user_id = localStorage.user_id;
-              this.follow.type = this.typein;
-//          this.follow.card_id=this.card_id;
-              if (this.userid != undefined) {
-                if (this.follow.type == 'user') {
-                  this.follow.card_id = this.userid;
-                }
+              if(this.follow.card_name === "") this.follow.card_id='';
+              if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
+                this.$tool.error("请选择或添加正确的投资人")
               }
-              this.loading = true;
-              this.$http.post(this.URL.add_follow_record, this.follow)
-                .then(res => {
-                  if (res.data.status_code == 2000000) {
-                    this.follow_id = res.data.data;
-                    this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
-                  } else {
-                    this.$tool.error(res.data.error_msg);
+              else if(this.$tool.getNull(this.follow.project_id)) this.$tool.error("请选择正确的项目")
+              else if(this.$tool.getNull(this.follow.project_name)) this.$tool.error("请选择正确的项目")
+              else {
+                this.$tool.setReallyTimeToTime1(this.follow, 'meet_time', 'meet_time_stamp');//标准时间转化为时间戳（单个数据）
+                this.follow.follow_id = this.follow_id;
+                if (this.follow.follow_id == "") delete this.follow.follow_id;
+                delete this.follow.files;
+                this.follow.user_id = localStorage.user_id;
+                this.follow.type = this.typein;
+//          this.follow.card_id=this.card_id;
+                if (this.userid != undefined) {
+                  if (this.follow.type == 'user') {
+                    this.follow.card_id = this.userid;
                   }
-                  this.loading = false;
-//              this.getFollow.user_id=localStorage.user_id;
-//              this.getFollow.project_id=this.follow.project_id;
-                })
-                .catch(err => {
-                  this.loading = false;
-                })
+                }
+                console.log(this.follow)
+                this.loading = true;
+//                this.$http.post(this.URL.add_follow_record, this.follow)
+//                  .then(res => {
+//                    if (res.data.status_code == 2000000) {
+//                      this.follow_id = res.data.data;
+//                      this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
+//                    } else {
+//                      this.$tool.error(res.data.error_msg);
+//                    }
+//                    this.loading = false;
+////              this.getFollow.user_id=localStorage.user_id;
+////              this.getFollow.project_id=this.follow.project_id;
+//                  })
+//                  .catch(err => {
+//                    this.loading = false;
+//                  })
+              }
+
             }
           })
 
