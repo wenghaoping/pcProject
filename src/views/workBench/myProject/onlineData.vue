@@ -141,6 +141,7 @@
         },
         methods: {
           tabClick(tab, event) {
+
             switch (tab.name){
               case "browse":
                 this.URLChange = this.URL.getProjectViewData;
@@ -161,7 +162,7 @@
                 alert("错误");
                 break;
             }
-
+            this.currentPage = 1;
             this.filterChangeCurrent(1);
           },
           filterChange(filters){

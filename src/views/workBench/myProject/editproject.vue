@@ -287,7 +287,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="18">
-                        <div class="goodnessTag" :class="{goodnessTagBl:tagShow==1}" style="top: -100px;" >
+                        <div class="goodnessTag" :class="{goodnessTagBl:tagShow==1}" style="top: -100px;right:10px;" >
                           <!--:style="{top:-86* + 'px' }"-->
                           <img src="../../../assets/images/xiangmuliangdian.png">
                         </div>

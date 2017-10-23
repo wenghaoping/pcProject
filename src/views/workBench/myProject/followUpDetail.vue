@@ -10,14 +10,12 @@
           </div>
            <div class="item-time">{{item.investor_name}}</div>
           <div class="item-name" v-if="item.user_organization">
-            <div style="display: inline-block;">(</div>
             <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.user_organization.length > 20 ? false:true">
               <div slot="content">
                 <span class="tips-txt">{{item.user_organization}}</span>
               </div>
-              <span  style="max-width: 200px; white-space: nowrap;text-overflow: ellipsis;overflow: hidden;display: inline-block;line-height: 17.5px  ">{{item.user_organization}}</span>
+              <span  style="max-width: 200px; white-space: nowrap;text-overflow: ellipsis;overflow: hidden;display: inline-block;line-height: 17.5px  ">( {{item.user_organization}} )</span>
             </el-tooltip>
-            <div style="display: inline-block">)</div>
           </div>
 
 
@@ -53,7 +51,7 @@
             <!--</el-tooltip>-->
             <!--<span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>-->
             <!--约谈-->
-            <div class="meet" style="margin-bottom: 15px;padding-top: 15px" v-show="item.meet_back!=''||item.meet_status!=''||item.meet_type!=''||item.meet_time!=''||item.meet_address!=''">
+            <div class="meet" style="padding-top: 15px;padding-bottom: 10px;" v-show="item.meet_back!=''||item.meet_status!=''||item.meet_type!=''||item.meet_time!=''||item.meet_address!=''">
             <el-row :span="24" >
               <el-col :span="12">
                 <span style="font-size:14px;color:#8492a6;">约谈反馈:</span>
@@ -88,7 +86,7 @@
             </el-row>
             </div>
             <!--联系-->
-            <div class="contact" style="margin-bottom: 10px" v-show="item.user_mobile!=''||item.user_wechar!=''||item.user_other!=''">
+            <div class="contact" style="padding-bottom: 10px;padding-top: 15px;" v-show="item.user_mobile!=='' || item.user_wechat!=='' || item.user_other!==''">
             <el-row :span="24" >
               <el-col :span="12">
                 <span style="font-size:14px;color:#8492a6;">手机:</span>
@@ -96,18 +94,18 @@
               </el-col>
               <el-col :span="12">
                 <span style="font-size:14px;color:#8492a6;">微信:</span>
-                <span style="font-size:14px;color:#475669;">{{item.user_wechar| nullTo_}}</span>
+                <span style="font-size:14px;color:#475669;">{{item.user_wechat | nullTo_}}</span>
               </el-col>
             </el-row>
             <el-row :span="24">
               <el-col :span="24">
                 <span style="font-size:14px;color:#8492a6;">其他:</span>
-                <span style="font-size:14px;color:#475669;">{{item.user_other| nullTo_}}</span>
+                <span style="font-size:14px;color:#475669;">{{item.user_other | nullTo_}}</span>
               </el-col>
             </el-row>
             </div>
           </div>
-          <div v-show=" (item.follow_desc!=''|| item.follow_file.length!='')&&(item.user_mobile!=''||item.user_wechar!=''||item.user_other!=''||item.meet_back!=''||item.meet_status!=''||item.meet_type!=''||item.meet_time!=''||item.meet_address!='')"  class="followLine"></div>
+          <div v-show=" (item.follow_desc!=''|| item.follow_file.length!='')&&(item.user_mobile!=''||item.user_wechat!=''||item.user_other!=''||item.meet_back!=''||item.meet_status!=''||item.meet_type!=''||item.meet_time!=''||item.meet_address!='')"  class="followLine"></div>
           <div class="followContent1" :class="{ padbottom: item.follow_desc!=''|| item.follow_file.length!=''}" >{{item.follow_desc}}</div>
           <!--信息文件名-->
           <div class="followFile" v-for="(file,item1) in item.follow_file" :key="file.id">

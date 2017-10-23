@@ -12,7 +12,7 @@
             <el-col :span="12">
               <el-form-item
                 label=" 关联项目"
-                prop="project_name" :rules="[{required:true,trigger: 'blur',message: '关联项目不能为空',}]">
+                prop="project_name" :rules="[{required:true,trigger: 'change',message: '关联项目不能为空'}]">
                 <el-autocomplete v-model="follow.project_name"
                                  :fetch-suggestions="querySearchProject"
                                  placeholder="一句话介绍，如帮助FA成交的项目管理工具"
@@ -25,7 +25,7 @@
             <el-col :span="6">
               <el-form-item
                 label="意向投资人"
-                prop="card_name" :rules="[{required:true,trigger: 'blur',message: '意向投资人不能为空',}]">
+                prop="card_name" :rules="[{required:true,trigger: 'change',message: '意向投资人不能为空'}]">
                 <el-autocomplete v-model="follow.card_name"
                                  :fetch-suggestions="querySearchAsync"
                                  placeholder="投资人"
@@ -37,9 +37,7 @@
               <el-form-item
                 label="机构"
                 prop="user_organization" class="formColor" :rules="[{min: 1, max:40,message: '最大40个字符',trigger: 'blur'}]">
-                <el-input v-model="follow.user_organization"
-                                 placeholder="机构"
-                                >
+                <el-input v-model="follow.user_organization" placeholder="机构">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -50,19 +48,15 @@
                 label="联系方式"
                 prop="user_mobile"
                 :rules="PhoneRule">
-                <el-input v-model="follow.user_mobile"
-                                 placeholder="手机号"
-                                 >
+                <el-input v-model="follow.user_mobile" placeholder="手机号">
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item
                 label="微信"
-                prop="user_wechar" class="formColor"  :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-                <el-input v-model="follow.user_wechar"
-                                 placeholder="微信"
-                                 >
+                prop="user_wechat" class="formColor"  :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
+                <el-input v-model="follow.user_wechat" placeholder="微信">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -70,9 +64,8 @@
               <el-form-item
                 label="其他联系方式"
                 prop="user_other" class="formColor"    :rules="[{max: 40, message: '长度不能大于40个字符', trigger: 'blur' }]">
-                <el-input v-model="follow.user_other"
-                                 placeholder="其他联系方式"
-                                 >
+                <el-input v-model="follow.user_other" placeholder="其他联系方式">
+
                 </el-input>
               </el-form-item>
             </el-col>
@@ -282,9 +275,6 @@
         }
       };//电话号码正则判断
       return {
-        value1:'',
-        value11:'',
-        value22:'',
         uploadAddress:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
         loading:false,
         loading2:false,//加载框加载
@@ -334,10 +324,10 @@
           type:'',//名片类型card,user
           user_organization:'',//机构
           user_mobile:'',//手机号
-          user_wechar:'',//微信
+          user_wechat:'',//微信
           user_other:'',//其他联系方式
           meet_type:'',//约谈方式
-          meet_time:'2017-10-20 11:53:57 ',//约谈时间
+          meet_time:'',//约谈时间
           meet_address:'',//约谈地点
           meet_status:'',//约谈状态
           meet_back:''//约谈反馈
@@ -415,7 +405,7 @@
         this.follow.project_id = item.label;
       },//选择项目后
       querySearchProject(queryString, cb){
-        let obj = new Object;
+        let obj = {};
         obj.user_id=localStorage.user_id;
         obj.search=queryString;
         obj.page=0;
@@ -424,12 +414,13 @@
           .then(res => {
             this.restaurants=[];
             let data=res.data.data;
-            this.restaurants=this.loadData(data);
-             let restaurants = this.restaurants;
-             clearTimeout(this.timeout);
-             this.timeout = setTimeout(() => {
+            if(data.length === 0) {this.follow.project_id = "";}
+              this.restaurants=this.loadData(data);
+              let restaurants = this.restaurants;
+              clearTimeout(this.timeout);
+              this.timeout = setTimeout(() => {
                 cb(restaurants);
-             }, 300);
+              }, 300);
           })
           .catch(err => {
 
@@ -440,67 +431,44 @@
         this.follow.card_id = item.label;
         this.follow.type = item.type;
         this.typein = item.type;
-        this.follow.card_name=item.name;
         let name=item.value;
         let na = item.na || '';
-        if(item.label==0) {
+        if(item.label == 0) {
           if(this.$tool.getNull(na)) {
             this.$tool.error("名字不能为空");
             this.follow.card_name="";
             return false
           }
-          if (name.length > 30) {
+          if (name.length > 20) {
             this.$tool.error("名字不能超过20个字");
             this.follow.card_name="";
           } else {
-/*            this.$confirm('是否添加该人脉, 是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {*/
-              this.loading = true;
-              this.$http.post(this.URL.createUserCard, {user_id: localStorage.user_id, user_real_name: item.na})
-                .then(res => {
-                  this.loading = false;
-                  this.$tool.success("添加成功");
-                  this.follow.card_id = res.data.card_id;
-                  this.follow.card_name = item.na;
-                  this.follow.type = 'card';
-                  this.typein = 'card';
-                })
-                .catch(err => {
-                  this.loading = false;
-                  this.$tool.error("添加失败");
-                  this.$tool.console(err);
-                  this.follow.card_name = item.na;
-                })
-/*            }).catch(() => {
-              this.$message({
-                type: 'info',
-                message: '已取消添加'
-              });
-              this.follow.card_name = na;
-              this.follow.card_id = '';
-            });*/
+            this.loading = true;
+            this.$http.post(this.URL.createUserCard, {user_id: localStorage.user_id, user_real_name: item.na})
+              .then(res => {
+                this.loading = false;
+                this.$tool.success("添加成功");
+                this.follow.card_id = res.data.card_id;
+                this.follow.card_name = item.na;
+                this.follow.type = 'card';
+                this.typein = 'card';
+              })
+              .catch(err => {
+                this.loading = false;
+                this.$tool.error("添加失败");
+                this.$tool.console(err);
+                this.follow.card_name = item.na;
+              })
           }
         }else{
           this.loading = true;
           this.$http.post(this.URL.getEnjoyedInvestorBasicInfo, {card_id:this.follow.card_id, type:this.follow.type})
             .then(res => {
               this.loading = false;
-              //机构选择（品牌，公司）
-              // if(!res.data.data.user_organization.indexOf(')')){ str.match(/aaa(\S*)/)[1]; .match(/((\S*))/)[1]
-              if(res.data.data.user_organization.charAt(res.data.data.user_organization.length-1)==')'){
-                this.follow.user_organization=  res.data.data.user_organization.substring(res.data.data.user_organization.indexOf("(") + 1,res.data.data.user_organization.indexOf(")"));
-//                截取两个字符之间的字符串
-              }else{
-                this.follow.user_organization=res.data.data.user_organization;
-              }
-
+              this.follow.user_organization=res.data.data.user_organization;
               this.follow.user_mobile=res.data.data.user_mobile;
               this.follow.user_other=res.data.data.user_other;
-              this.follow.user_wechar=res.data.data.user_wechar;
-
+              this.follow.user_wechat=res.data.data.user_wechat;
             })
             .catch(err => {
               this.loading = false;
@@ -508,11 +476,11 @@
         }
       },//选择意向投资人后
       querySearchAsync(queryString, cb) {
-//
         this.$http.post(this.URL.match_my_relation, {user_id: localStorage.user_id, user_name: queryString})
           .then(res => {
             this.userArr=[];
             let data=res.data.data;
+            if(data.length === 0) {this.follow.card_id = "";}
             this.userArr=this.loadDataUser(data,queryString);
             let userArr = this.userArr;
             clearTimeout(this.timeout);
@@ -554,6 +522,7 @@
         return new Promise((resolve, reject)=>{
           //做一些异步操作
           this.schedule_name=this.$global.data.follow_schedule;//设置项目跟进状态
+
           resolve(1);
         });
       },// 获取跟进进度
@@ -585,7 +554,7 @@
       getFollowUp(){
         return new Promise((resolve, reject)=>{
           //做一些异步操作
-          if(this.follow_id!=''){
+          if(this.follow_id!==''){
             this.loading=true;
             this.uploadShow.lists=[];
             this.fileList=[];
@@ -595,16 +564,17 @@
 //            data.schedule_id=data.schedule_id;
                 this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
                 data.file_id=[];
-                this.setUploadShow(data.files);
-                this.follow=data;
-
                 this.typein=data.type;
+                this.follow=data;
+                this.setUploadShow(data.files);
                 resolve(1);
                 this.loading=false;
               })
               .catch(err => {
                 this.$tool.console(err);
               })
+          }else{
+            this.loading = false;
           }
         });
       },//获取跟进记录
@@ -696,10 +666,12 @@
         this.follow.file_id.push(file_id);
       },//添加上传文件时,加入显示列表
       deleteLoad(uid){
-        let lists=this.uploadShow.lists;//所有的文件的数组
+        let lists = this.uploadShow.lists;//所有的文件的数组
+        let file_id_lists = this.follow.file_id;
         for(let i=0; i<lists.length; i++){
           if(lists[i].uid==uid){
             lists.splice(i,1)
+            file_id_lists.splice(i,1)
           }
         }
       },//剔除Load
@@ -789,6 +761,12 @@
           this[checkName]=!valid;
         });
       },
+      //重置
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+
+
       //*全部保存按钮
       allSave(){
         var submit = ()=>{
@@ -836,23 +814,22 @@
                     this.follow.card_id = this.userid;
                   }
                 }
-                console.log(this.follow)
                 this.loading = true;
-//                this.$http.post(this.URL.add_follow_record, this.follow)
-//                  .then(res => {
-//                    if (res.data.status_code == 2000000) {
-//                      this.follow_id = res.data.data;
-//                      this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
-//                    } else {
-//                      this.$tool.error(res.data.error_msg);
-//                    }
-//                    this.loading = false;
-////              this.getFollow.user_id=localStorage.user_id;
-////              this.getFollow.project_id=this.follow.project_id;
-//                  })
-//                  .catch(err => {
-//                    this.loading = false;
-//                  })
+                this.$http.post(this.URL.add_follow_record, this.follow)
+                  .then(res => {
+                    if (res.data.status_code == 2000000) {
+                      this.follow_id = res.data.data;
+                      this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
+                    } else {
+                      this.$tool.error(res.data.error_msg);
+                    }
+                    this.loading = false;
+//              this.getFollow.user_id=localStorage.user_id;
+//              this.getFollow.project_id=this.follow.project_id;
+                  })
+                  .catch(err => {
+                    this.loading = false;
+                  })
               }
 
             }
@@ -875,9 +852,9 @@
         });
       },
       clearData(){
-        for(let key in this.follow){
-          this.follow[key]='';
-        }
+//        for(let key in this.follow){
+//          this.follow[key]='';
+//        }
         this.follow.file_id=[];
         this.uploadShow.lists=[];
         this.fileList=[];
@@ -902,18 +879,19 @@
           this.clearData();
           this.follow_id=this.followid || '';
           this.typein=this.type;
+          this.loading = true;
           this.$global.func.getWxProjectCategory()
             .then((data)=>{
               return this.getScheduleName();
+            })
+            .then((data)=>{
+              return this.getFollowUp();
             });
-//            .then((data)=>{
-//              return this.getFollowUp();
-//            }
-//            );
-          this.getFollowUp();
           this.setFileType();
-        }else{
-          this.follow_id="";
+        }else {
+          this.follow_id = "";
+          this.resetForm('follow')
+
         }
       },//清空数据
     },

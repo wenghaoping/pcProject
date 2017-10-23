@@ -171,7 +171,7 @@
                       <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
                     </div>
-                    <div v-if="project.goodness.pro_service.length!=0"  style="margin-bottom: 20px">
+                    <div v-if="project.goodness.pro_service.length!=0"  style="">
                     <div class="title" style="font-size:16px;color:#475669;">产品概况</div>
                     <div class="prod-doc" style="font-size: 13px;" v-for="goodness4 in project.goodness.pro_service">
                        <span style="line-height: 23px; color:#8492a6">
