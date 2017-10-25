@@ -83,10 +83,10 @@
         timeout:  null,
         cb:'',
         options: [
-//            {
-//          value: 0,
-//          label: '个人信息'
-//        },
+          {
+            value: 0,
+            label: '个人信息'
+          },
           {
           value: 1,
           label: '退出登录'
