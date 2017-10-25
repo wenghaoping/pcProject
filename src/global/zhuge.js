@@ -26,7 +26,7 @@
       a.type = 'text/javascript';
       a.id = 'zhuge-js';
       a.async = !0;
-      a.src = (location.protocol === 'http:' ? 'http://sdk.zhugeio.com/zhuge.min.js?v=' : 'https://zgsdk.zhugeio.com/zhuge.min.js?v=') + verStr;
+      a.src = (location.protocol == 'http:' ? 'http://sdk.zhugeio.com/zhuge.min.js?v=' : 'https://zgsdk.zhugeio.com/zhuge.min.js?v=') + verStr;
       a.onerror = function () {
         window.zhuge.identify = window.zhuge.track = function (ename, props, callback) {
           if (callback && Object.prototype.toString.call(callback) === '[object Function]')callback();

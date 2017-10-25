@@ -319,15 +319,6 @@
 </script>
 
 <style lang="less">
-  /*.el-autocomplete, .el-dropdown{*/
-    /*position: relative;*/
-    /*top: 12px!important;*/
-    /*right: 15%!important;*/
-  /*}*/
-  /*.el-select-dropdown__item.selected{*/
-    /*background: #ffffff!important;*/
-    /*color: #48576a!important;*/
-  /*}*/
   .width350 .el-input{
     font-size: 12px!important;
   }
