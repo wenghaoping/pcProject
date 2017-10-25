@@ -19,7 +19,7 @@
           </div>
 
 
-          <span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: -5px;margin-left: 16px" :class="{ followColor: item.schedule.schedule_name=='Reject',followColor1:item.schedule.schedule_name=='Hold'}" >{{item.schedule.schedule_name}}</span>
+          <span class="followProject1" style="display: inline-block;line-height: 27px;float: left;margin-top: -5px;margin-left: 16px" :class="{ followColor: item.schedule.schedule_name=='Reject',followColor1:item.schedule.schedule_name=='Hold'}" >{{item.schedule.schedule_name}}</span>
 
           <!--<div class="item-name">{{item.follow_user_name}}</div>-->
           <div class="item-edit">

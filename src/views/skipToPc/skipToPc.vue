@@ -32,17 +32,11 @@
             this.show = this.$route.query.show || '';
             localStorage.user_id = this.$route.query.user_id || '';
             localStorage.token = this.$route.query.token || '';
-            this.getCheckUserInfo(localStorage.user_id);
+            this.getCheckUserInfo(this.$route.query.user_id)
+              .then((data)=>{
+                return this.$router.push({ name: 'projectDetails', query: { project_id:this.project_id,show:this.show}});
+              })
           }
-
-          if(!localStorage.user_id) {
-            //没有登录的人去登录
-            this.$router.push({name:'login'});
-            this.loading=false;
-          }else{
-            setTimeout(()=>{this.$router.push({ name: 'projectDetails', query: { project_id:this.project_id,show:this.show}});},50);
-          }
-
         },
         watch: {
 

@@ -26,8 +26,8 @@
         <!--<li>-->
           <!--<a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>-->
         <!--</li>-->
-        <li v-show="user_name" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
-          {{user_name}}
+        <li v-show="userRealName" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
+          {{userRealName}}
           <span style="display:inline-block;margin-left: 5px"><i class="el-icon-caret-bottom" style="font-size: 10px"></i></span>
           <div class="login-show" style="position: absolute;top: -10px;">
             <el-select v-model="value" style="opacity: 0;height: 33px;color: #000000" placeholder="请选择" @change="loginOut">
@@ -46,7 +46,7 @@
           </div>
 
         </li>
-        <li v-show="!user_name" class="login" @click="login">
+        <li v-show="!userRealName" class="login" @click="login">
           登录
         </li>
         <el-autocomplete
@@ -211,7 +211,7 @@
       checkUser(){
         //this.$tool.console(this.$route.path)
         this.user_id=localStorage.user_id;
-        this.user_name = this.userRealName;
+//        this.user_name = this.userRealName;
         //头部导航下标不对应问题解决
         if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
           this.active=1
@@ -228,7 +228,8 @@
           && this.$route.path!=='/bindTelephone'&& this.$route.path!=='/qr'
           && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'
           && this.$route.path!=='/onekeyResearch' && this.$route.path!='/emailContact'
-          && this.$route.path!='/addProject' && this.$route.path!='/iosBanner'){
+          && this.$route.path!='/addProject' && this.$route.path!='/iosBanner'
+          && this.$route.path!='/skipToPc'){
 //          this.$tool.error('请先登录');
 //          && this.$route.path!=='/workBench/'&& this.$route.path!=='/workBench'
           this.$router.push({name:'index'});
@@ -291,16 +292,6 @@
           }
         }
       },//邮箱加入项目库
-      isIE() { //ie?
-        if (!!window.ActiveXObject || "ActiveXObject" in window){
-          alert("是IE")
-          return true;
-        }else{
-          alert("不是IE")
-          return false;
-        }
-      },
-
     },
     //当dom一创建时
     created(){
