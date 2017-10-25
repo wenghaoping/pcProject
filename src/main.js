@@ -1,60 +1,50 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-
+/* eslint-disable */
 import Vue from 'vue';
 import App from './App';
 import VueRouter from 'vue-router';
-import router_config from './config/router_config.js';
+import routerConfig from './config/router_config.js';
 import store from './store/';
 import Element from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import zhuge from './global/zhuge.js';
 import zhugeMiXins from './global/zhugeIoMiXins.js';
 
-
-//引入自己的CSS,格式化样式
-
+// 引入自己的CSS,格式化样式
 import './assets/css/base.css';
 import './assets/css/animate.css';
 import $ from 'jquery';
 import './global/jquery.fullPage';
 import tool from './global/tool.js';
-
-
-import axios from './config/api.js';//axios请求配置
-Vue.prototype.$http = axios;
-
-import URL_ from './global/url.js';//URL请求地址汇总
-Vue.prototype.URL = URL_;
-
-import echarts from 'echarts';//echart封装
-Vue.prototype.$echart = echarts;
-
-import './global/filters';//过滤器
-
+import axios from './config/api.js';// axios请求配置
+import URL_ from './global/url.js';// URL请求地址汇总
+import echarts from 'echarts';// echart封装
+import './global/filters';// 过滤器
 import Vuex from 'vuex';
 import global from './global/global.js';
 
-Vue.prototype.$global= global;
+Vue.prototype.$http = axios;
+Vue.prototype.URL = URL_;
+Vue.prototype.$echart = echarts;
+Vue.prototype.$global = global;
 
-Vue.use(Element);//UI库
-Vue.use(tool);//自己的库
+Vue.use(Element);// UI库
+Vue.use(tool);// 自己的库
 Vue.use(Vuex);
-// Vue.use($);
-Vue.use(zhuge);//诸葛io
+Vue.use($);
+Vue.use(zhuge);// 诸葛io
+// Vue.use(zhugeMiXins);// 诸葛io
 
-Vue.prototype.$store=store;
-
+Vue.prototype.$store = store;
 
 Vue.config.productionTip = false;
-//设置路由
+// 设置路由
 Vue.use(VueRouter);
-//定义路由
+// 定义路由
 const router = new VueRouter({
-  routes: router_config
+  routes: routerConfig
 });
-
-
 
 /* eslint-disable no-new */
 new Vue({

@@ -345,7 +345,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import ElButton from "../../../../node_modules/element-ui/packages/button/src/button";
+  import ElButton from '../../../../node_modules/element-ui/packages/button/src/button';
   import alertUpload from './alertUpload.vue';
   import addfollow from './../followUp/addFollow.vue';
   import projectpushtopro from './projectPushToPro.vue';
@@ -358,407 +358,400 @@
       projectpreview,
       projectpushtopro
     },
-    data() {
+    data () {
       return {
-        followDisplay:false,//控制写跟进弹框
-        projectPushDisplay2:false,//项目推送弹窗
-        projecmessage:{
-          project_id:'',
-          project_name:''
-        },//项目名称,ID,跟进弹窗用
+        followDisplay: false, // 控制写跟进弹框
+        projectPushDisplay2: false, // 项目推送弹窗
+        projecmessage: {
+          project_id: '',
+          project_name: ''
+        }, // 项目名称,ID,跟进弹窗用
         tableData: [
-/*            {
-          pro_name: '公司名称公司名称公司名称公司名称',
-          pro_intro:'我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
-          pro_company_name: '',
-          pro_source: '我是项目来源1',
-          pro_follow_up_user: '迪丽热巴',
-          pro_schedule:'跟进状态1',
-          pro_industry:'大数据、社交通讯，电商平台，教育培训',
-          is_exclusive:'独家',
-          pro_stage:'IPO上市后',
-          pro_area:'北京',
-          pro_scale:'3000万',
-          project_id:''
-        }*/
+          /*            {
+           pro_name: '公司名称公司名称公司名称公司名称',
+           pro_intro:'我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
+           pro_company_name: '',
+           pro_source: '我是项目来源1',
+           pro_follow_up_user: '迪丽热巴',
+           pro_schedule:'跟进状态1',
+           pro_industry:'大数据、社交通讯，电商平台，教育培训',
+           is_exclusive:'独家',
+           pro_stage:'IPO上市后',
+           pro_area:'北京',
+           pro_scale:'3000万',
+           project_id:''
+           } */
         ],
-        pro_sourceFilters:[
-/*            { text: '约谈', value: '约谈' }*/
-            ],
-        pro_scheduleFilters:[
- /*{ text: '项目线索', value: '项目线索' }*/
-            ],
-        pro_industryFilters:[/*{ text: '大数据服务', value: '大数据服务' }*/],
-        soleFilters:[{ text: '独家', value:1},{ text: '非独', value:2},{ text: '其他', value:0}],
-        pro_stageFilters:[/*{ text: 'IPO上市后', value: 'IPO上市后' }*/],
-        pro_areaFilters:[],
-        pro_scaleFilters:[/*{ text: '3000万', value: '3000万' }*/],
-        stateCheck:false,//状态单选
-        searchinput:'',//搜索输入框
-        uploadDisplay: false,//上传弹框控制
-        node0:true,
-        node1:false,
-        node2:false,
-        node3:false,
-        node4:false,
-        node5:false,
-        node6:false,
-        node7:false,
-        node8:false,
-        node9:false,
-        currentPage:1,//当前第几页
-        totalData:0,//总数据条数
-        nodeCount:{
-          whole:0,//全部项目
-          clue:0,//项目线索
-          interview:0,//约谈
-          investigate:0,//考察
-          sign:0,//签署FA协议
-          recommended:0,//引荐投资方
-          agreement:0,//投资协议
-          delivery:0,//交割
-          collect:0,//待收佣金
-          revenue:0//佣金收益
+        pro_sourceFilters: [
+          /*            { text: '约谈', value: '约谈' } */
+        ],
+        pro_scheduleFilters: [
+          /* { text: '项目线索', value: '项目线索' } */
+        ],
+        pro_industryFilters: [/* { text: '大数据服务', value: '大数据服务' } */],
+        soleFilters: [{text: '独家', value: 1}, {text: '非独', value: 2}, {text: '其他', value: 0}],
+        pro_stageFilters: [/* { text: 'IPO上市后', value: 'IPO上市后' } */],
+        pro_areaFilters: [],
+        pro_scaleFilters: [/* { text: '3000万', value: '3000万' } */],
+        stateCheck: false, // 状态单选
+        searchinput: '', // 搜索输入框
+        uploadDisplay: false, // 上传弹框控制
+        node0: true,
+        node1: false,
+        node2: false,
+        node3: false,
+        node4: false,
+        node5: false,
+        node6: false,
+        node7: false,
+        node8: false,
+        node9: false,
+        currentPage: 1, // 当前第几页
+        totalData: 0, // 总数据条数
+        nodeCount: {
+          whole: 0, // 全部项目
+          clue: 0, // 项目线索
+          interview: 0, // 约谈
+          investigate: 0, // 考察
+          sign: 0, // 签署FA协议
+          recommended: 0, // 引荐投资方
+          agreement: 0, // 投资协议
+          delivery: 0, // 交割
+          collect: 0, // 待收佣金
+          revenue: 0// 佣金收益
         },
-        loading:false,
-        filter:true,
-        getPra:{},//筛选的请求参数
-        getProjectListURL:'',//首页获取列表的URL
-        moreShow:false,//更多的选项绑定
-        moreList:[{
+        loading: false,
+        filter: true,
+        getPra: {}, // 筛选的请求参数
+        getProjectListURL: '', // 首页获取列表的URL
+        moreShow: false, // 更多的选项绑定
+        moreList: [{
           value: '0',
           label: '删除'
-        }],//更多的选项表单
-        pushId:'',//推送项目传值-项目ID
-        pushIntro:'',//推送项目传值-项目名称
-        previewDisplay:false,//控制项目推送预览显隐
-        emitPush:false,//控制项目推送-项目入口的推送函数触发
-        pro_schedule:"",//筛选选项
-      }
+        }], // 更多的选项表单
+        pushId: '', // 推送项目传值-项目ID
+        pushIntro: '', // 推送项目传值-项目名称
+        previewDisplay: false, // 控制项目推送预览显隐
+        emitPush: false, // 控制项目推送-项目入口的推送函数触发
+        pro_schedule: ''// 筛选选项
+      };
     },
-    methods:{
-      uploadAll(){
+    methods: {
+      uploadAll () {
         this.uploadDisplay = true;
-        this.zgClick("批量上传项目");
-      },//批量上传项目
-      handleSelect(row, event, column) {
-        if(column.label!="重置"){
-          this.zgClick("查看项目详情");
-          this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'detail'}});
+        this.zgClick('批量上传项目');
+      }, // 批量上传项目
+      handleSelect (row, event, column) {
+        if (column.label !== '重置') {
+          this.zgClick('查看项目详情');
+          this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'detail'}});
           this.setRouterData();
         }
-      },//跳转到项目详情页面传参数
-      setRouterData(){
+      }, // 跳转到项目详情页面传参数
+      setRouterData () {
         this.$store.state.pageANDSelect.getPra = this.getPra;
         this.$store.state.pageANDSelect.pracurrentPage = this.currentPage;
-      },//跳转之后设置参数
-      getRouterData(){
-        this.getPra=this.$store.state.pageANDSelect.getPra;
-        this.currentPage=this.$store.state.pageANDSelect.pracurrentPage || 1;
-        this.getPra.page=this.$store.state.pageANDSelect.pracurrentPage || 1;
+      }, // 跳转之后设置参数
+      getRouterData () {
+        this.getPra = this.$store.state.pageANDSelect.getPra;
+        this.currentPage = this.$store.state.pageANDSelect.pracurrentPage || 1;
+        this.getPra.page = this.$store.state.pageANDSelect.pracurrentPage || 1;
         let node = this.$store.state.pageANDSelect.node | 0;
-        for(let i=0; i<9;i++){this['node'+i] = false};
+        for (let i = 0; i < 9; i++) { this['node' + i] = false; };
         this['node' + node] = true;
-        this.searchinput = this.$store.state.pageANDSelect.proSearchinput || "";
+        this.searchinput = this.$store.state.pageANDSelect.proSearchinput || '';
 //        console.log(this.searchinput);
         this.pro_schedule = node;
-      },//从vuex中取数据
+      }, // 从vuex中取数据
 
-
-      handleEdit(index, row){
-        this.zgClick("编辑项目");
-        this.$router.push({ name: 'editproject', query: { project_id:row.project_id}});
+      handleEdit (index, row) {
+        this.zgClick('编辑项目');
+        this.$router.push({name: 'editproject', query: {project_id: row.project_id}});
         this.setRouterData();
-      },//跳转到编辑页
-      createProject(){
-        this.zgClick("创建项目");
-        this.$router.push({ name: 'creatproject'});
+      }, // 跳转到编辑页
+      createProject () {
+        this.zgClick('创建项目');
+        this.$router.push({name: 'creatproject'});
         this.setRouterData();
-      },//跳转到创建项目页面
+      }, // 跳转到创建项目页面
 
-      uploadDisplayChange(msg){
-        this.uploadDisplay=msg;
-      },//控制上传弹窗
+      uploadDisplayChange (msg) {
+        this.uploadDisplay = msg;
+      }, // 控制上传弹窗
 
-
-
-      //跟进
-      addFollow(index, row){
-        this.zgClick("添加跟进");
-        this.followDisplay=true;
-        this.projecmessage.project_id=row.project_id;
-        this.projecmessage.project_name=row.pro_intro;
-      },//点击写跟近按钮
-      openPreview(msg){
-        this.previewDisplay=msg;
-      },//打开预览弹框
-      closeFollow(msg){
-        this.followDisplay=msg;
-      },//关闭添加跟进
-      addprojectPush(index, row){
-        this.zgClick("项目推送");
-        this.pushId=row.project_id;
-        this.pushIntro=row.pro_intro;
-        this.projectPushDisplay2=true;
-      },//点击项目推送
-      closeProjectPush2(msg){
-        this.projectPushDisplay2=msg;
+      // 跟进
+      addFollow (index, row) {
+        this.zgClick('添加跟进');
+        this.followDisplay = true;
+        this.projecmessage.project_id = row.project_id;
+        this.projecmessage.project_name = row.pro_intro;
+      }, // 点击写跟近按钮
+      openPreview (msg) {
+        this.previewDisplay = msg;
+      }, // 打开预览弹框
+      closeFollow (msg) {
+        this.followDisplay = msg;
+      }, // 关闭添加跟进
+      addprojectPush (index, row) {
+        this.zgClick('项目推送');
+        this.pushId = row.project_id;
+        this.pushIntro = row.pro_intro;
+        this.projectPushDisplay2 = true;
+      }, // 点击项目推送
+      closeProjectPush2 (msg) {
+        this.projectPushDisplay2 = msg;
 //        this.handleIconClick();
-      },//关闭项目推送弹窗
-      closePreviewANDProjectPush(msg){
-        this.projectPushDisplay2=false;
-        this.previewDisplay=false;
+      }, // 关闭项目推送弹窗
+      closePreviewANDProjectPush (msg) {
+        this.projectPushDisplay2 = false;
+        this.previewDisplay = false;
 //        this.handleIconClick();
-      },//关闭预览AND关闭项目推送1,关闭项目推送2
+      }, // 关闭预览AND关闭项目推送1,关闭项目推送2
 
-      //*请求函数
-      handleIconClick(){
+      //* 请求函数
+      handleIconClick () {
         this.$tool.getTop();
-        this.loading=true;
-        this.getPra.user_id=localStorage.user_id;
-        this.getPra.search=this.searchinput;
+        this.loading = true;
+        this.getPra.user_id = localStorage.user_id;
+        this.getPra.search = this.searchinput;
         this.$store.state.pageANDSelect.proSearchinput = this.searchinput;
-        this.currentPage=1;
-        this.getPra.page=1;
-        this.$http.post(this.getProjectListURL,this.getPra)
-          .then(res=>{
-            let data = res.data.data
-            this.tableData=this.getProjectList(data);
-            this.loading=false;
-            this.totalData=res.data.count;
+        this.currentPage = 1;
+        this.getPra.page = 1;
+        this.$http.post(this.getProjectListURL, this.getPra)
+          .then(res => {
+            let data = res.data.data;
+            this.tableData = this.getProjectList(data);
+            this.loading = false;
+            this.totalData = res.data.count;
           })
-          .catch(err=>{
-            this.loading=false;
-            this.$tool.console(err,2)
-          })
-      },//搜索===首次进入页面加载的数据
+          .catch(err => {
+            this.loading = false;
+            this.$tool.console(err, 2);
+          });
+      }, // 搜索===首次进入页面加载的数据
 
-      filterChange(filters){
-        this.loading=true;
-        this.currentPage=1;
-        this.getPra.user_id=localStorage.user_id;
-        if(filters.pro_schedule) {
-            if(parseInt(filters.pro_schedule)){
-              this.setNode(parseInt(filters.pro_schedule))
-            } else if(filters.pro_schedule.length=== 0) {
-              this.setNode(0)
-            }
-        }//设置顶部样式
-        if(filters.order){
-          if(filters.order=="ascending") filters.order="asc"//升降序
-          else filters.order="desc";
-          this.getPra.order=filters.prop;
-          this.getPra.sort=filters.order;
-        }else{
+      filterChange (filters) {
+        this.loading = true;
+        this.currentPage = 1;
+        this.getPra.user_id = localStorage.user_id;
+        if (filters.pro_schedule) {
+          if (parseInt(filters.pro_schedule)) {
+            this.setNode(parseInt(filters.pro_schedule));
+          } else if (filters.pro_schedule.length === 0) {
+            this.setNode(0);
+          }
+        }// 设置顶部样式
+        if (filters.order) {
+          if (filters.order === 'ascending') filters.order = 'asc';// 升降序
+          else filters.order = 'desc';
+          this.getPra.order = filters.prop;
+          this.getPra.sort = filters.order;
+        } else {
 //          let para="";
-          for(let key in filters){
+          for (let key in filters) {
             /*             for(let i=0;i<filters[key].length; i++){
              if(key=="pro_source") para+=filters[key][i]+',';
-              else*/
-                /*para+=parseInt(filters[key][i])+',';
-            }*/
+             else */
+            /* para+=parseInt(filters[key][i])+',';
+             } */
 //            this.getPra[key]=parseInt(para.substr(0, para.length - 1));
-            this.getPra[key]=filters[key];
-
+            this.getPra[key] = filters[key];
           }
-        } //筛选
-        for(let key in this.getPra){
-          if(this.getPra[key]=='' || this.getPra[key]=='NaN'){
+        } // 筛选
+        for (let key in this.getPra) {
+          if (this.getPra[key] === '' || this.getPra[key] === 'NaN') {
             delete this.getPra[key];
           }
-        }//删除空的查询项
+        }// 删除空的查询项
 //        console.log(this.getPra);
-        this.$http.post(this.getProjectListURL,this.getPra)
-          .then(res=>{
-            this.loading=false;
+        this.$http.post(this.getProjectListURL, this.getPra)
+          .then(res => {
+            this.loading = false;
             let data = res.data.data;
-            this.tableData=this.getProjectList(data);
-            this.totalData=res.data.count;
+            this.tableData = this.getProjectList(data);
+            this.totalData = res.data.count;
           })
-          .catch(err=>{
-            this.loading=false
-            this.$tool.console(err,2)
-          })
-      },//筛选 ascending升/descending降/
-      filterChangeCurrent(page){
+          .catch(err => {
+            this.loading = false;
+            this.$tool.console(err, 2);
+          });
+      }, // 筛选 ascending升/descending降/
+      filterChangeCurrent (page) {
         delete this.getPra.page;
-        this.loading=true;
-        this.getPra.user_id=localStorage.user_id;
-        this.getPra.page=page;//控制当前页码
+        this.loading = true;
+        this.getPra.user_id = localStorage.user_id;
+        this.getPra.page = page;// 控制当前页码
         this.getPra.pro_schedule = this.pro_schedule;
-        this.$http.post(this.getProjectListURL,this.getPra)
-          .then(res=>{
-            this.loading=false;
+        this.$http.post(this.getProjectListURL, this.getPra)
+          .then(res => {
+            this.loading = false;
             let data = res.data.data;
             this.$tool.console(res);
-            this.tableData=this.getProjectList(data);
-            this.totalData=res.data.count;
+            this.tableData = this.getProjectList(data);
+            this.totalData = res.data.count;
             this.$tool.getTop();
           })
-          .catch(err=>{
-            this.loading=false
-            this.$tool.console(err,2)
-          })
-      },//控制页码
+          .catch(err => {
+            this.loading = false;
+            this.$tool.console(err, 2);
+          });
+      }, // 控制页码
 
-      setNode(v){
-        this.currentPage=1;
-        this.loading=true  ;
-        this.node0 = false ;
-        this.node1 = false ;
-        this.node2 = false ;
-        this.node3 = false ;
-        this.node4 = false ;
-        this.node5 = false ;
-        this.node6 = false ;
-        this.node7 = false ;
-        this.node8 = false ;
-        this.node9 = false ;
-        this['node' + v] = true ;
+      setNode (v) {
+        this.currentPage = 1;
+        this.loading = true;
+        this.node0 = false;
+        this.node1 = false;
+        this.node2 = false;
+        this.node3 = false;
+        this.node4 = false;
+        this.node5 = false;
+        this.node6 = false;
+        this.node7 = false;
+        this.node8 = false;
+        this.node9 = false;
+        this['node' + v] = true;
         this.$store.state.pageANDSelect.node = v;
-        this.$http.post(this.getProjectListURL,{user_id: localStorage.user_id,pro_schedule:parseInt(v)})
-          .then(res=>{
-            this.loading=false;
+        this.$http.post(this.getProjectListURL, {user_id: localStorage.user_id, pro_schedule: parseInt(v)})
+          .then(res => {
+            this.loading = false;
             let data = res.data.data;
-            this.tableData=this.getProjectList(data);
-            this.totalData=res.data.count//页码
+            this.tableData = this.getProjectList(data);
+            this.totalData = res.data.count;// 页码
           })
-          .catch(err=>{
-            this.loading=false
-            this.$tool.console(err,2)
-          })
+          .catch(err => {
+            this.loading = false;
+            this.$tool.console(err, 2);
+          });
+      }, // 控制顶部样式并且筛选
 
-      },//控制顶部样式并且筛选
-
-      headerClick(column, event){
-        if(column.label==="重置"){
+      headerClick (column, event) {
+        if (column.label === '重置') {
           window.location.reload();
         }
-      },//点击重置按钮时
+      }, // 点击重置按钮时
 
-      getNodeCount(){
-        const getNodeCountURL=this.URL.getNodeCount
-        this.$http.post(getNodeCountURL,{user_id: localStorage.user_id})
-          .then(res=>{
-              let data = res.data.data
+      getNodeCount () {
+        const getNodeCountURL = this.URL.getNodeCount;
+        this.$http.post(getNodeCountURL, {user_id: localStorage.user_id})
+          .then(res => {
+            let data = res.data.data;
 
-              this.nodeCount.whole=data.total.schedule_count//全部项目
-              this.totalData=data.total.schedule_count//页码
-              let nodeList=data.node_list;
-              for(let key in nodeList){//数据导入顶部标签
-                switch (nodeList[key].schedule_id){
-                  case 1:
-                    this.nodeCount.clue=nodeList[key].schedule_count
-                    break;
-                  case 2:
-                    this.nodeCount.interview=nodeList[key].schedule_count
-                    break;
-                  case 3:
-                    this.nodeCount.investigate=nodeList[key].schedule_count
-                    break;
-                  case 4:
-                    this.nodeCount.sign=nodeList[key].schedule_count
-                    break;
-                  case 5:
-                    this.nodeCount.recommended=nodeList[key].schedule_count
-                    break;
-                  case 6:
-                    this.nodeCount.agreement=nodeList[key].schedule_count
-                    break;
-                  case 7:
-                    this.nodeCount.delivery=nodeList[key].schedule_count
-                    break;
-                  case 8:
-                    this.nodeCount.collect=nodeList[key].schedule_count
-                    break;
-                  case 9:
-                    this.nodeCount.revenue=nodeList[key].schedule_count
-                    break;
-                  default:
-                    alert("错误")
-                    break;
-                };
-              }
+            this.nodeCount.whole = data.total.schedule_count;// 全部项目
+            this.totalData = data.total.schedule_count;// 页码
+            let nodeList = data.node_list;
+            for (let key in nodeList) { // 数据导入顶部标签
+              switch (nodeList[key].schedule_id) {
+                case 1:
+                  this.nodeCount.clue = nodeList[key].schedule_count;
+                  break;
+                case 2:
+                  this.nodeCount.interview = nodeList[key].schedule_count;
+                  break;
+                case 3:
+                  this.nodeCount.investigate = nodeList[key].schedule_count;
+                  break;
+                case 4:
+                  this.nodeCount.sign = nodeList[key].schedule_count;
+                  break;
+                case 5:
+                  this.nodeCount.recommended = nodeList[key].schedule_count;
+                  break;
+                case 6:
+                  this.nodeCount.agreement = nodeList[key].schedule_count;
+                  break;
+                case 7:
+                  this.nodeCount.delivery = nodeList[key].schedule_count;
+                  break;
+                case 8:
+                  this.nodeCount.collect = nodeList[key].schedule_count;
+                  break;
+                case 9:
+                  this.nodeCount.revenue = nodeList[key].schedule_count;
+                  break;
+                default:
+                  alert('错误');
+                  break;
+              };
+            }
 //              this.loading=false;
-
           })
-          .catch(err=>{
-
+          .catch(err => {
+            console.log(err);
 //            this.loading=false;
-          })
-      },// 获取项目节点数量
-      titleSift(){
-        const titleSiftURL=this.URL.titleSift
-        this.$http.post(titleSiftURL,{user_id: localStorage.user_id})
-          .then(res=>{
-            let data = res.data.data
+          });
+      }, // 获取项目节点数量
+      titleSift () {
+        const titleSiftURL = this.URL.titleSift;
+        this.$http.post(titleSiftURL, {user_id: localStorage.user_id})
+          .then(res => {
+            let data = res.data.data;
 //            this.$tool.console(data)
-            let pro_area=data.pro_area;//地区
-            let pro_industry=data.pro_industry;//领域
-            let pro_scale=data.pro_scale;//期望融资
-            let pro_schedule=data.pro_schedule;//跟进状态
-            let pro_source=data.pro_source;//项目来源
-            let pro_stage=data.pro_stage;//轮次
-            this.pro_areaFilters=this.$tool.getTitleSift(pro_area);
-            this.pro_industryFilters=this.$tool.getTitleSift(pro_industry);
-            this.pro_scaleFilters=this.$tool.getTitleSift(pro_scale);
-            this.pro_scheduleFilters=this.$tool.getTitleSift(pro_schedule);
-            this.pro_sourceFilters=this.$tool.getTitleSift(pro_source);
-            this.pro_stageFilters=this.$tool.getTitleSift(pro_stage);
+            let proArea = data.pro_area;// 地区
+            let proIndustry = data.pro_industry;// 领域
+            let proScale = data.pro_scale;// 期望融资
+            let proSchedule = data.pro_schedule;// 跟进状态
+            let proSsource = data.pro_source;// 项目来源
+            let proStage = data.pro_stage;// 轮次
+            this.pro_areaFilters = this.$tool.getTitleSift(proArea);
+            this.pro_industryFilters = this.$tool.getTitleSift(proIndustry);
+            this.pro_scaleFilters = this.$tool.getTitleSift(proScale);
+            this.pro_scheduleFilters = this.$tool.getTitleSift(proSchedule);
+            this.pro_sourceFilters = this.$tool.getTitleSift(proSsource);
+            this.pro_stageFilters = this.$tool.getTitleSift(proStage);
           })
-          .catch(err=>{
-            this.$tool.console(err,2)
-          })
-      },// 获取表头
+          .catch(err => {
+            this.$tool.console(err, 2);
+          });
+      }, // 获取表头
 
-      getProjectList(list){
-        let arr = new Array;
-        for(let i=0; i<list.length; i++){
-          let obj=new Object;
-          obj.pro_name=list[i].pro_name;
-          obj.pro_intro=list[i].pro_intro;
-          obj.pro_company_name=list[i].pro_company_name;
-          obj.pro_source=this.$tool.setTagToString(list[i].pro_source,'tag_name');
-          obj.pro_follow_up_user=list[i].pro_follow_up_user;
-          obj.pro_schedule=list[i].pro_schedule;
-          obj.pro_industry=this.$tool.setTagToString(list[i].pro_industry,'industry_name');
-          obj.is_exclusive=list[i].is_exclusive;
-          obj.pro_stage=this.$tool.setTagToString(list[i].pro_stage,'stage_name');
-          obj.pro_area=this.$tool.setTagToString(list[i].pro_area,'area_title');
-          obj.pro_scale=this.$tool.setTagToString(list[i].pro_scale,'scale_money');
-          obj.project_id=list[i].project_id;
-          obj.created_at=list[i].created_at;
-          obj.moreShow="";
+      getProjectList (list) {
+        let arr = [];
+        for (let i = 0; i < list.length; i++) {
+          let obj = {};
+          obj.pro_name = list[i].pro_name;
+          obj.pro_intro = list[i].pro_intro;
+          obj.pro_company_name = list[i].pro_company_name;
+          obj.pro_source = this.$tool.setTagToString(list[i].pro_source, 'tag_name');
+          obj.pro_follow_up_user = list[i].pro_follow_up_user;
+          obj.pro_schedule = list[i].pro_schedule;
+          obj.pro_industry = this.$tool.setTagToString(list[i].pro_industry, 'industry_name');
+          obj.is_exclusive = list[i].is_exclusive;
+          obj.pro_stage = this.$tool.setTagToString(list[i].pro_stage, 'stage_name');
+          obj.pro_area = this.$tool.setTagToString(list[i].pro_area, 'area_title');
+          obj.pro_scale = this.$tool.setTagToString(list[i].pro_scale, 'scale_money');
+          obj.project_id = list[i].project_id;
+          obj.created_at = list[i].created_at;
+          obj.moreShow = '';
           arr.push(obj);
         }
-        return arr
-      },//总设置列表的数据处理
+        return arr;
+      }, // 总设置列表的数据处理
 
-      //更多按钮
-      moreChange(index,row){
+      // 更多按钮
+      moreChange (index, row) {
         this.setRouterData();
-        this.moreShow=!this.moreShow;
-        if(this.moreShow){
+        this.moreShow = !this.moreShow;
+        if (this.moreShow) {
           this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.zgClick("删除项目");
-            this.loading=true;
-            this.$http.post(this.URL.deleteProject, {user_id:localStorage.user_id,project_id: row.project_id})
+            this.zgClick('删除项目');
+            this.loading = true;
+            this.$http.post(this.URL.deleteProject, {user_id: localStorage.user_id, project_id: row.project_id})
               .then(res => {
-                this.loading=false;
-                this.$tool.success("删除成功");
+                this.loading = false;
+                this.$tool.success('删除成功');
                 this.getRouterData();
                 this.filterChangeCurrent(this.currentPage || 1);
               })
               .catch(err => {
-                this.loading=false;
-                this.$tool.error("删除失败");
+                this.loading = false;
+                this.$tool.error('删除失败');
                 this.$tool.console(err);
-              })
-
+              });
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -766,41 +759,38 @@
             });
           });
         }
+      }, // 删除项目
 
-
-      },//删除项目
-
-      previewPush(x){
-        this.emitPush=x;
-      },//项目推送预览隐藏
-      closePreview(msg){
-        this.previewDisplay=msg;
-      },//关闭项目预览
+      previewPush (x) {
+        this.emitPush = x;
+      }, // 项目推送预览隐藏
+      closePreview (msg) {
+        this.previewDisplay = msg;
+      }// 关闭项目预览
     },
     computed: {
 
     },
     created () {
       // 组件创建完后获取数据，
-      this.getProjectListURL=this.URL.getProjectList;
+      this.getProjectListURL = this.URL.getProjectList;
       this.getRouterData();
 
-      this.loading=true;
+      this.loading = true;
       this.getNodeCount();
       this.titleSift();
       this.filterChangeCurrent(this.currentPage || 1);
-
     },
     watch: {
-      /*// 如果路由有变化，会再次执行该方法
-      '$route' (to, from) {
-        console.log(to);
-        console.log(from);
+      /* // 如果路由有变化，会再次执行该方法
+       '$route' (to, from) {
+       console.log(to);
+       console.log(from);
 
-      }*/
+       } */
     }
 
-  }
+  };
 </script>
 
 <style type="text/css" lang="less">

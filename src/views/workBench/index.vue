@@ -24,62 +24,58 @@
 </template>
 
 <script type="text/ecmascript-6">
-import ElCol from "element-ui/packages/col/src/col";
-import guanggao from "../../../static/images/guanggao.jpg";
-export default {
-  data(){
-    return {
-      guanggao:guanggao,
-      willShow:'false',
-      show:'false',
+  import guanggao from '../../../static/images/guanggao.jpg';
+  export default {
+    data () {
+      return {
+        guanggao: guanggao,
+        willShow: 'false',
+        show: 'false'
+      };
+    },
+    computed: {
+
+    },
+    methods: {
+      handleOpen (key, keyPath) {
+        this.$tool.console(key, keyPath);
+      },
+      handleClose (key, keyPath) {
+        this.$tool.console(key, keyPath);
+      },
+      open () {
+        window.open('http://q.eqxiu.com/s/GPR1lynA');
+      },
+      close () {
+        this.willShow = false;
+        this.show = false;
+      }
+
+    },
+    created () {
+
+    },
+    watch: {
+      // 路由判断显示广告
+      '$route' (to, from) {
+        if ((to.path === '/workBench/myContacts' || to.path === '/workBench/followup' || to.path === '/workBench/') && this.willShow) {
+          this.show = true;
+          this.willShow = true;
+        } else {
+          this.show = false;
+          this.willShow = false;
+        }
+        if ((from.path === '/workBench/myContacts' || from.path === '/workBench/followup' || from.path === '/workBench/') && this.willShow) {
+          this.show = true;
+          this.willShow = true;
+        } else {
+          this.show = false;
+          this.willShow = false;
+        }
+      }
+
     }
-  },
-  computed:{
-
-  },
-  methods:{
-    handleOpen(key, keyPath) {
-      this.$tool.console(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      this.$tool.console(key, keyPath);
-    },
-    open(){
-        window.open("http://q.eqxiu.com/s/GPR1lynA");
-    },
-    close(){
-        this.willShow=false;
-        this.show=false;
-    },
-
-  },
-  created(){
-
-  },
-  watch:{
-   // 路由判断显示广告
-    "$route" (to,from){
-
-
-      if((to.path==='/workBench/myContacts'|| to.path==='/workBench/followup'||to.path==='/workBench/')&&this.willShow){
-        this.show=true;
-        this.willShow=true;
-      }else{
-        this.show=false;
-        this.willShow=false;
-      }
-      if((from.path==='/workBench/myContacts'|| from.path==='/workBench/followup'||from.path==='/workBench/')&&this.willShow){
-        this.show=true;
-        this.willShow=true;
-      }else{
-        this.show=false;
-        this.willShow=false;
-      }
-  }
-
-
-  },
-}
+  };
 </script>
 
 <style lang="less">

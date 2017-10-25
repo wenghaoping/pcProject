@@ -192,63 +192,62 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import cirIcon from '../../../../static/images/circle.png'
+  import cirIcon from '../../../../static/images/circle.png';
   export default {
     components: {
     },
-    props: ["proid","proName","getDataTrue"],
+    props: ['proid', 'proName', 'getDataTrue'],
     data () {
       return {
-        cirIcon:cirIcon,
-        newTime:'',
-        dialogFollow:false,//控制写跟进弹框
+        cirIcon: cirIcon,
+        newTime: '',
+        dialogFollow: false, // 控制写跟进弹框
         pro_id: this.proid,
-        pro_name:this.proName,//关联项目
-        loading:false,//加载
-        loading1:false,//加载动画
-        content:{},//跟进记录数据
+        pro_name: this.proName, // 关联项目
+        loading: false, // 加载
+        loading1: false, // 加载动画
+        content: {}, // 跟进记录数据
         dialogVisible: false,
-        followid:'',//跟进记录id
-        currentPage:1,//跟进列表当前第几页
-        totalData:0,//跟进列表总数
-        getData1:{},//获取跟进的请求参数
-      }
+        followid: '', // 跟进记录id
+        currentPage: 1, // 跟进列表当前第几页
+        totalData: 0, // 跟进列表总数
+        getData1: {}// 获取跟进的请求参数
+      };
     },
     methods: {
-      upload(item1,index){
-        let fileId=this.content[index].follow_file[item1].file_id;
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
-        window.location.href=url;
-      },//下载
-      filterChangeCurrent(page){
+      upload (item1, index) {
+        let fileId = this.content[index].follow_file[item1].file_id;
+        const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId;
+        window.location.href = url;
+      }, // 下载
+      filterChangeCurrent (page) {
         this.getProjectFollowList(page);
-      },//控制项目页码1
-      getProjectFollowList(page){
-
-        this.getData1.user_id=localStorage.user_id;
-        this.getData1.project_id=this.pro_id;
-        this.currentPage=page;
-        this.getData1.page=page;
-        this.$http.post(this.URL.getProjectFollowList,this.getData1)
-          .then(res=>{
-            if(res.data.status_code==2000000) {
+      }, // 控制项目页码1
+      getProjectFollowList (page) {
+        this.getData1.user_id = localStorage.user_id;
+        this.getData1.project_id = this.pro_id;
+        this.currentPage = page;
+        this.getData1.page = page;
+        this.$http.post(this.URL.getProjectFollowList, this.getData1)
+          .then(res => {
+            if (res.data.status_code === 2000000) {
               let data = res.data.data;
 
-              this.setDateTime(data);//时间格式设置
-              this.content=data;
+              this.setDateTime(data);// 时间格式设置
+              this.content = data;
 //              console.log(data);
               this.totalData = res.data.count;
             }
           })
-          .catch(err=>{
-//            this.$tool.console(err,2);
+          .catch(err => {
+            this.$tool.console(err);
 //            this.loading1=false;
-            this.$tool.error("加载超时");
-          })
-      },//获取跟进记录.toLocaleString('chinese',{hour12:false}).substr(0, 15).replace(/\//g,'.').replace(/:$/,"")
-      //*时间戳的处理
-      formatDateTime1(timeStamp) {
-        if(timeStamp=='') return '';
+            this.$tool.error('加载超时');
+          });
+      }, // 获取跟进记录.toLocaleString('chinese',{hour12:false}).substr(0, 15).replace(/\//g,'.').replace(/:$/,"")
+      //* 时间戳的处理
+      formatDateTime1 (timeStamp) {
+        if (timeStamp === '') return '';
         var date = new Date();
         date.setTime(timeStamp * 1000);
         var y = date.getFullYear();
@@ -259,66 +258,65 @@
         var h = date.getHours();
         h = h < 10 ? ('0' + h) : h;
         var minute = date.getMinutes();
-        var second = date.getSeconds();
+        // var second = date.getSeconds();
         minute = minute < 10 ? ('0' + minute) : minute;
-        second = second < 10 ? ('0' + second) : second;
-        return y + '-' + m + '-' + d+' '+h+':'+minute/*+':'+second*/;
-      },//时间戳转化为正常时间yyyy-mm-dd-hh-m===========单个时间的处理
-      setDateTime(data){
+        // second = second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d + ' ' + h + ':' + minute/* +':'+second */;
+      }, // 时间戳转化为正常时间yyyy-mm-dd-hh-m===========单个时间的处理
+      setDateTime (data) {
         for (let i = 0; i < data.length; i++) {
-          data[i].follow_time=this.formatDateTime1(data[i].follow_time);
+          data[i].follow_time = this.formatDateTime1(data[i].follow_time);
         }
       },
-      handleClose(done) {
+      handleClose (done) {
         this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-      },//弹框消息提示
-      deleteFollow(){
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      }, // 弹框消息提示
+      deleteFollow () {
         this.dialogVisible = false;
-        this.$http.post(this.URL.delete_follow_record,{
-          user_id:localStorage.user_id,
-          follow_id:this.followid
-        }).then(res=>{
+        this.$http.post(this.URL.delete_follow_record, {
+          user_id: localStorage.user_id,
+          follow_id: this.followid
+        }).then(res => {
           this.$tool.success('删除成功');
           this.getProjectFollowList();
-          this.$emit('changefollowdata',true)
-        })
-      },//删除跟进记录
-      deleteFollowId(index){
-        this.dialogVisible  = true;
-        this.followid=this.content[index].follow_id;
-
-      },//获取删除记录id
-      addFollow(index){
-        this.dialogFollow=true;
-        this.followid=this.content[index].follow_id;
+          this.$emit('changefollowdata', true);
+        });
+      }, // 删除跟进记录
+      deleteFollowId (index) {
+        this.dialogVisible = true;
+        this.followid = this.content[index].follow_id;
+      }, // 获取删除记录id
+      addFollow (index) {
+        this.dialogFollow = true;
+        this.followid = this.content[index].follow_id;
         this.getProjectFollowList();
-        this.$emit("getfollowid",this.content[index].follow_id);
-      },//点击写跟近按钮
+        this.$emit('getfollowid', this.content[index].follow_id);
+      }// 点击写跟近按钮
     },
-    created(){
+    created () {
       this.$tool.getTop();
       this.getProjectFollowList(1);
     },
-    watch : {
-      proid : function(e){
-        this.pro_id=e;
-      },//获取项目id
-      proName : function(e){
-        this.pro_name=e;
-      },//获取关联项目
-      getDataTrue : function (e) {
-        if(e){
+    watch: {
+      proid: function (e) {
+        this.pro_id = e;
+      }, // 获取项目id
+      proName: function (e) {
+        this.pro_name = e;
+      }, // 获取关联项目
+      getDataTrue: function (e) {
+        if (e) {
           this.getProjectFollowList();
-          this.followid="";
-          this.$emit('changefollowdata',true)
+          this.followid = '';
+          this.$emit('changefollowdata', true);
         }
-      },//是否重新获取数据
+      }// 是否重新获取数据
     }
-  }
+  };
 </script>
 
 <style lang="less">

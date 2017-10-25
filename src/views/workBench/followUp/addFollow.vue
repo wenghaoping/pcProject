@@ -255,7 +255,7 @@
 <script type="text/ecmascript-6">
 
   export default {
-    props: ["followDisplay","followid","projectid","projectname","cardid","cardname","type","userid"],
+    props: ['followDisplay', 'followid', 'projectid', 'projectname', 'cardid', 'cardname', 'type', 'userid'],
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
         if (!this.$tool.getNull(value)) {
@@ -265,189 +265,189 @@
             } else {
               if (!this.$tool.checkPhoneNumber(value)) {
                 callback(new Error('请输入正确的手机号'));
-              }else{
+              } else {
                 callback();
               }
             }
           }, 100);
-        }else{
+        } else {
           callback();
         }
-      };//电话号码正则判断
+      };// 电话号码正则判断
       return {
-        uploadAddress:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
-        loading:false,
-        loading2:false,//加载框加载
-        showList: false,//上传列表隐藏
-        dialogFileVisible:false,//文件分组设置
-        getFollow:{},
-        fileuploadDate: {user_id: localStorage.user_id, flag:1 },//项目文件上传带的参数
-        restaurants: [],//项目模糊匹配存放
-        userArr: [],//意向投资人模糊匹配存放
+        uploadAddress: this.URL.weitianshiLine + this.URL.uploadFile + localStorage.token, // 上传地址
+        loading: false,
+        loading2: false, // 加载框加载
+        showList: false, // 上传列表隐藏
+        dialogFileVisible: false, // 文件分组设置
+        getFollow: {},
+        fileuploadDate: { user_id: localStorage.user_id, flag: 1 }, // 项目文件上传带的参数
+        restaurants: [], // 项目模糊匹配存放
+        userArr: [], // 意向投资人模糊匹配存放
         timeout: null,
-        fileList: [],//批量上传文件列表
-        uploadShow: {//上传文件展示列表,就是老夫操作的列表
+        fileList: [], // 批量上传文件列表
+        uploadShow: {// 上传文件展示列表,就是老夫操作的列表
           lists: [
-            /*{
-              bp_type: "其他",
-              file_id: 2476,
-              file_title: "文件2.docx",
-              type: 4,
-              load:true,
-              uid:1501837722250
-            }*/
+            /* {
+             bp_type: "其他",
+             file_id: 2476,
+             file_title: "文件2.docx",
+             type: 4,
+             load:true,
+             uid:1501837722250
+             } */
           ]
         },
         groups: {
-          input: "",
+          input: '',
           group: [
-/*              {type: "其他", label: '其他', value: '其他'}*/
-              ],
-          type: "",
-          name:""
-        },//分组用的所有参数
-        statusLast:0,
-        loadingcheck:false,
-        follow_id:'',
-        investor_id:'',
-        value:'',
-        followName:"",
-        follow:{
-          project_id:'',//关联项目id
-          project_name:'',//关联项目名称
-          card_id:'',//意向投资人
-          card_name:'',//意向投资人
-          schedule_id:'',//跟进进度
-          follow_desc:'',//跟进描述
-          file_id:[],//文件id
-          follow_id:'',//id
-          type:'',//名片类型card,user
-          user_organization:'',//机构
-          user_mobile:'',//手机号
-          user_wechat:'',//微信
-          user_other:'',//其他联系方式
-          meet_type:'',//约谈方式
-          meet_time:'',//约谈时间
-          meet_address:'',//约谈地点
-          meet_status:'',//约谈状态
-          meet_back:''//约谈反馈
-        },//跟进记录
+            /*              {type: "其他", label: '其他', value: '其他'} */
+          ],
+          type: '',
+          name: ''
+        }, // 分组用的所有参数
+        statusLast: 0,
+        loadingcheck: false,
+        follow_id: '',
+        investor_id: '',
+        value: '',
+        followName: '',
+        follow: {
+          project_id: '', // 关联项目id
+          project_name: '', // 关联项目名称
+          card_id: '', // 意向投资人
+          card_name: '', // 意向投资人
+          schedule_id: '', // 跟进进度
+          follow_desc: '', // 跟进描述
+          file_id: [], // 文件id
+          follow_id: '', // id
+          type: '', // 名片类型card,user
+          user_organization: '', // 机构
+          user_mobile: '', // 手机号
+          user_wechat: '', // 微信
+          user_other: '', // 其他联系方式
+          meet_type: '', // 约谈方式
+          meet_time: '', // 约谈时间
+          meet_address: '', // 约谈地点
+          meet_status: '', // 约谈状态
+          meet_back: ''// 约谈反馈
+        }, // 跟进记录
         meet_choose: [
-            {
+          {
             value: 1,
             label: '电话'
-            }, {
+          }, {
             value: 2,
             label: '面谈'
-            }
-        ],//约谈方式
+          }
+        ], // 约谈方式
         meet_choose1: [
-            {
-          value: 1,
-          label: '待确认'
-            }, {
-              value: 2,
-              label: '已确认'
-            }, {
-              value: 3,
-              label: '完成'
-            }, {
-              value:4,
-              label: '取消'
-           }
-        ],//约谈状态
-        meet_choose2: [
-            {
+          {
             value: 1,
             label: '待确认'
-            }, {
+          }, {
+            value: 2,
+            label: '已确认'
+          }, {
+            value: 3,
+            label: '完成'
+          }, {
+            value: 4,
+            label: '取消'
+          }
+        ], // 约谈状态
+        meet_choose2: [
+          {
+            value: 1,
+            label: '待确认'
+          }, {
             value: 2,
             label: '继续跟进'
-           }, {
+          }, {
             value: 3,
             label: '不跟进'
-           }
-        ],//约谈反馈
+          }
+        ], // 约谈反馈
         schedule_name: [
-/*            {
-          value: '选项1',
-          label: '黄金糕'
-        }*/
-        ],//跟进进度下拉框
-        meet_name:[
+          /*            {
+           value: '选项1',
+           label: '黄金糕'
+           } */
+        ], // 跟进进度下拉框
+        meet_name: [
 
-        ],//约谈方式下拉框
-        project_name:[],//项目搜索下拉框
-        saveJumpData:{
+        ], // 约谈方式下拉框
+        project_name: [], // 项目搜索下拉框
+        saveJumpData: {
 
         },
-        submitButton:false,//是否允许提交false允许/true不允许
-        typein:'',
-        PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },//电话规则
+        submitButton: false, // 是否允许提交false允许/true不允许
+        typein: '',
+        PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' }, // 电话规则
 
-        followMust:false,
-      }
+        followMust: false
+      };
     },
     methods: {
-      handleClose(e){
-          if(!this.submitButton){
-            this.$emit("closeFollow",false);
-          }else{
-              this.$tool.error("请等待上传成功后关闭或取消上传")
-          }
-      },//关闭
-      saveSecond(){
-        this.allSave();//添加
-        this.follow=this.saveJumpData;
-      },//继续添加
-      handleSelectProject(item){
-        this.follow.project_id='';
+      handleClose (e) {
+        if (!this.submitButton) {
+          this.$emit('closeFollow', false);
+        } else {
+          this.$tool.error('请等待上传成功后关闭或取消上传');
+        }
+      }, // 关闭
+      saveSecond () {
+        this.allSave();// 添加
+        this.follow = this.saveJumpData;
+      }, // 继续添加
+      handleSelectProject (item) {
+        this.follow.project_id = '';
         this.follow.project_id = item.label;
-      },//选择项目后
-      querySearchProject(queryString, cb){
+      }, // 选择项目后
+      querySearchProject (queryString, cb) {
         let obj = {};
-        obj.user_id=localStorage.user_id;
-        obj.search=queryString;
-        obj.page=0;
-        obj.type='follow';
+        obj.user_id = localStorage.user_id;
+        obj.search = queryString;
+        obj.page = 0;
+        obj.type = 'follow';
         this.$http.post(this.URL.getProjectList, obj)
           .then(res => {
-            this.restaurants=[];
-            let data=res.data.data;
-            if(data.length === 0) {this.follow.project_id = "";}
-              this.restaurants=this.loadData(data);
-              let restaurants = this.restaurants;
-              clearTimeout(this.timeout);
-              this.timeout = setTimeout(() => {
-                cb(restaurants);
-              }, 300);
+            this.restaurants = [];
+            let data = res.data.data;
+            if (data.length === 0) { this.follow.project_id = ''; }
+            this.restaurants = this.loadData(data);
+            let restaurants = this.restaurants;
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              cb(restaurants);
+            }, 300);
           })
           .catch(err => {
+            console.log(err);
+          });
+      }, // 项目搜索
 
-          })
-      },//项目搜索
-
-      handleSelect(item) {
+      handleSelect (item) {
         this.follow.card_id = item.label;
         this.follow.type = item.type;
         this.typein = item.type;
-        let name=item.value;
+        let name = item.value;
         let na = item.na || '';
-        if(item.label == 0) {
-          if(this.$tool.getNull(na)) {
-            this.$tool.error("名字不能为空");
-            this.follow.card_name="";
-            return false
+        if (item.label === 0) {
+          if (this.$tool.getNull(na)) {
+            this.$tool.error('名字不能为空');
+            this.follow.card_name = '';
+            return false;
           }
           if (name.length > 20) {
-            this.$tool.error("名字不能超过20个字");
-            this.follow.card_name="";
+            this.$tool.error('名字不能超过20个字');
+            this.follow.card_name = '';
           } else {
             this.loading = true;
             this.$http.post(this.URL.createUserCard, {user_id: localStorage.user_id, user_real_name: item.na})
               .then(res => {
                 this.loading = false;
-                this.$tool.success("添加成功");
+                this.$tool.success('添加成功');
                 this.follow.card_id = res.data.card_id;
                 this.follow.card_name = item.na;
                 this.follow.type = 'card';
@@ -455,33 +455,34 @@
               })
               .catch(err => {
                 this.loading = false;
-                this.$tool.error("添加失败");
+                this.$tool.error('添加失败');
                 this.$tool.console(err);
                 this.follow.card_name = item.na;
-              })
+              });
           }
-        }else{
+        } else {
           this.loading = true;
-          this.$http.post(this.URL.getEnjoyedInvestorBasicInfo, {card_id:this.follow.card_id, type:this.follow.type})
+          this.$http.post(this.URL.getEnjoyedInvestorBasicInfo, {card_id: this.follow.card_id, type: this.follow.type})
             .then(res => {
               this.loading = false;
-              this.follow.user_organization=res.data.data.user_organization;
-              this.follow.user_mobile=res.data.data.user_mobile;
-              this.follow.user_other=res.data.data.user_other;
-              this.follow.user_wechat=res.data.data.user_wechat;
+              this.follow.user_organization = res.data.data.user_organization;
+              this.follow.user_mobile = res.data.data.user_mobile;
+              this.follow.user_other = res.data.data.user_other;
+              this.follow.user_wechat = res.data.data.user_wechat;
             })
             .catch(err => {
+              console.log(err);
               this.loading = false;
-            })
+            });
         }
-      },//选择意向投资人后
-      querySearchAsync(queryString, cb) {
+      }, // 选择意向投资人后
+      querySearchAsync (queryString, cb) {
         this.$http.post(this.URL.match_my_relation, {user_id: localStorage.user_id, user_name: queryString})
           .then(res => {
-            this.userArr=[];
-            let data=res.data.data;
-            if(data.length === 0) {this.follow.card_id = "";}
-            this.userArr=this.loadDataUser(data,queryString);
+            this.userArr = [];
+            let data = res.data.data;
+            if (data.length === 0) { this.follow.card_id = ''; }
+            this.userArr = this.loadDataUser(data, queryString);
             let userArr = this.userArr;
             clearTimeout(this.timeout);
             this.timeout = setTimeout(() => {
@@ -489,151 +490,152 @@
             }, 300);
           })
           .catch(err => {
-          })
-      },//意向投资人搜索
+            console.log(err);
+          });
+      }, // 意向投资人搜索
 
-      loadData(arr){
+      loadData (arr) {
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].pro_intro.toString() || "无介绍";
+          obj.value = arr[i].pro_intro.toString() || '无介绍';
           obj.label = arr[i].project_id;
-          newArr.push(obj)
+          newArr.push(obj);
         }
         return newArr;
-  },//获取远程数据模拟
-      loadDataUser(arr,name){
-        let newArr=[];
-        var set="新增‘"+name+"’为意向投资人";
-        newArr = [{value:set,label:0,na:name}];
-        if(name=='') newArr=[];
+      }, // 获取远程数据模拟
+      loadDataUser (arr, name) {
+        let newArr = [];
+        var set = '新增‘' + name + '’为意向投资人';
+        newArr = [{value: set, label: 0, na: name}];
+        if (name === '') newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].user_real_name+'('+arr[i].user_company_name+')';
-          if(arr[i].user_company_name=='') obj.value = arr[i].user_real_name;
-          obj.name=arr[i].user_real_name;
+          obj.value = arr[i].user_real_name + '(' + arr[i].user_company_name + ')';
+          if (arr[i].user_company_name === '') obj.value = arr[i].user_real_name;
+          obj.name = arr[i].user_real_name;
           obj.label = arr[i].card_id;
           obj.type = arr[i].type;
           newArr.push(obj);
         }
         return newArr;
-      },//获取用户
-      getScheduleName(){
-        return new Promise((resolve, reject)=>{
-          //做一些异步操作
-          this.schedule_name=this.$global.data.follow_schedule;//设置项目跟进状态
+      }, // 获取用户
+      getScheduleName () {
+        return new Promise((resolve, reject) => {
+          // 做一些异步操作
+          this.schedule_name = this.$global.data.follow_schedule;// 设置项目跟进状态
 
           resolve(1);
         });
-      },// 获取跟进进度
-      getFileType(data){
+      }, // 获取跟进进度
+      getFileType (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
           let obj = {};
           obj.label = data[i].type_name;
           obj.value = data[i].type_id;
-          arr.push(obj)
+          arr.push(obj);
         }
         return arr;
-      },//获取项目分组信息
-      setFileType(){
+      }, // 获取项目分组信息
+      setFileType () {
         this.$http.post(this.URL.getFileType, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
             this.groups.group = this.getFileType(data);
           })
           .catch(err => {
-            this.$tool.console(err)
-          })
-      },//设置文件分组标签
-      setUploadShow(data){
+            this.$tool.console(err);
+          });
+      }, // 设置文件分组标签
+      setUploadShow (data) {
         for (let i = 0; i < data.length; i++) {
-          this.addDomain(data[i].type_name, data[i].file_title+'.'+data[i].file_ext, data[i].file_id, data[i].type);
+          this.addDomain(data[i].type_name, data[i].file_title + '.' + data[i].file_ext, data[i].file_id, data[i].type);
         }
-      },//设置批量上传文件显示
-      getFollowUp(){
-        return new Promise((resolve, reject)=>{
-          //做一些异步操作
-          if(this.follow_id!==''){
-            this.loading=true;
-            this.uploadShow.lists=[];
-            this.fileList=[];
-            this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id,follow_id:this.follow_id})
+      }, // 设置批量上传文件显示
+      getFollowUp () {
+        return new Promise((resolve, reject) => {
+          // 做一些异步操作
+          if (this.follow_id !== '') {
+            this.loading = true;
+            this.uploadShow.lists = [];
+            this.fileList = [];
+            this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id, follow_id: this.follow_id})
               .then(res => {
                 let data = res.data.data;
 //            data.schedule_id=data.schedule_id;
-                this.$tool.setTimeToReallyTime1(data,'meet_time');//时间格式设置
-                data.file_id=[];
-                this.typein=data.type;
-                this.follow=data;
+                this.$tool.setTimeToReallyTime1(data, 'meet_time');// 时间格式设置
+                data.file_id = [];
+                this.typein = data.type;
+                this.follow = data;
                 this.setUploadShow(data.files);
                 resolve(1);
-                this.loading=false;
+                this.loading = false;
               })
               .catch(err => {
                 this.$tool.console(err);
-              })
-          }else{
+              });
+          } else {
             this.loading = false;
           }
         });
-      },//获取跟进记录
+      }, // 获取跟进记录
 
-      //*项目文件上传
-      beforeUpload(file){
+      //* 项目文件上传
+      beforeUpload (file) {
         this.num++;
-        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
-        let name=file.name;
-        let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
+        let filetypes = ['.doc', '.ppt', '.pdf', '.zip', '.rar', '.pptx', '.png', '.jpg', '.docx', '.jpeg'];
+        let name = file.name;
+        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
         let isnext = false;
-        if(filetypes && filetypes.length>0){
-          for(var i =0; i<filetypes.length;i++){
-            if(filetypes[i]==fileend){
+        if (filetypes && filetypes.length > 0) {
+          for (var i = 0; i < filetypes.length; i++) {
+            if (filetypes[i] === fileend) {
               isnext = true;
               break;
             }
           }
         }
-        if(!isnext){
-          this.$tool.error(file.name+"是不支持的文件格式");
+        if (!isnext) {
+          this.$tool.error(file.name + '是不支持的文件格式');
           return false;
         }
-        if(parseInt(file.size) > parseInt(52428810)){
-          this.$tool.error(file.name+"超过50m文件大小");
+        if (parseInt(file.size) > parseInt(52428810)) {
+          this.$tool.error(file.name + '超过50m文件大小');
           return false;
         };
-        this.addDomain("其他", file.name, 0, 4,true,file.uid);
+        this.addDomain('其他', file.name, 0, 4, true, file.uid);
         this.subButtonCheck(this.uploadShow.lists);
-      },//项目文件上传验证
-      //取消上传
-      cancelUpload(file){
+      }, // 项目文件上传验证
+      // 取消上传
+      cancelUpload (file) {
         this.$refs.upload.abort(file);
         this.deleteLoad(file.uid);
         this.subButtonCheck(this.uploadShow.lists);
       },
-      //当添加文件时,添加入上传列表
-      handleChange(file, fileList){
+      // 当添加文件时,添加入上传列表
+      handleChange (file, fileList) {
       },
-      uploadsuccess(response, file, fileList){
+      uploadsuccess (response, file, fileList) {
         let data = response.data;
 //        this.$tool.success("上传成功");
         this.deleteLoad(file.uid);
-        this.addDomain(data.type_name, data.file_title, data.file_id, data.type,false,file.uid);
+        this.addDomain(data.type_name, data.file_title, data.file_id, data.type, false, file.uid);
         this.subButtonCheck(this.uploadShow.lists);
-      },//上传成功
-      uploaderror(err, file, fileList){
-        this.$tool.error("上传失败,请联系管理员");
-      },//上传失败
-      download(item){
+      }, // 上传成功
+      uploaderror (err, file, fileList) {
+        console.log(err);
+        this.$tool.error('上传失败,请联系管理员');
+      }, // 上传失败
+      download (item) {
         let index = this.uploadShow.lists.indexOf(item);
         if (index !== -1) {
-          let file_id = this.uploadShow.lists[index].file_id;
-          const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+file_id+"&token=" + localStorage.token;
-          window.location.href=url;
+          let fileId = this.uploadShow.lists[index].file_id;
+          const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId + '&token=' + localStorage.token;
+          window.location.href = url;
         }
-
-      },//点击下载
-      removeList(item) {
+      }, // 点击下载
+      removeList (item) {
         var index = this.uploadShow.lists.indexOf(item);
         if (index !== -1) {
           this.fileList.splice(index, 1);
@@ -645,62 +647,62 @@
               if (res.status === 200) {
                 this.loading = false;
                 this.uploadShow.lists.splice(index, 1);
-                this.$tool.success("删除成功");
+                this.$tool.success('删除成功');
               }
             })
             .catch(err => {
               this.$tool.console(err);
-              this.$tool.error("删除失败,请联系管理员");
-            })
+              this.$tool.error('删除失败,请联系管理员');
+            });
         }
-      },//删除当前上传文件
-      addDomain(type_name, file_title, file_id, type,load,uid)  {
+      }, // 删除当前上传文件
+      addDomain (typeName, fileTitle, fileId, type, load, uid) {
         let object = {};
-        object.bp_type = type_name;
-        object.file_title = file_title;
-        object.file_id = file_id;
-        object.type = type;//文件类型
-        object.load = load;//是否在上传中
-        object.uid = uid;//文件唯一标识
+        object.bp_type = typeName;
+        object.file_title = fileTitle;
+        object.file_id = fileId;
+        object.type = type;// 文件类型
+        object.load = load;// 是否在上传中
+        object.uid = uid;// 文件唯一标识
         this.uploadShow.lists.push(object);
-        this.follow.file_id.push(file_id);
-      },//添加上传文件时,加入显示列表
-      deleteLoad(uid){
-        let lists = this.uploadShow.lists;//所有的文件的数组
-        let file_id_lists = this.follow.file_id;
-        for(let i=0; i<lists.length; i++){
-          if(lists[i].uid==uid){
-            lists.splice(i,1)
-            file_id_lists.splice(i,1)
+        this.follow.file_id.push(fileId);
+      }, // 添加上传文件时,加入显示列表
+      deleteLoad (uid) {
+        let lists = this.uploadShow.lists;// 所有的文件的数组
+        let fileIdIists = this.follow.file_id;
+        for (let i = 0; i < lists.length; i++) {
+          if (lists[i].uid === uid) {
+            lists.splice(i, 1);
+            fileIdIists.splice(i, 1);
           }
         }
-      },//剔除Load
-      subButtonCheck(arr){
-        if(arr.length===0){
-          this.submitButton=false;
+      }, // 剔除Load
+      subButtonCheck (arr) {
+        if (arr.length === 0) {
+          this.submitButton = false;
           return false;
         }
-        for(let i=0; i<arr.length; i++){
-          if(arr[i].load){
-            this.submitButton=true;
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].load) {
+            this.submitButton = true;
             return false;
-          }else{
-            this.submitButton=false;
+          } else {
+            this.submitButton = false;
           }
         }
-      },//当文件没有全部上传完时,不能提交
+      }, // 当文件没有全部上传完时,不能提交
 
-      groupchange(label){
+      groupchange (label) {
         let index = this.groups.index;
         let data = this.groups.group;
-        for(let i=0 ;i<data.length; i++){
-          if(data[i].value==label){
-            this.groups.name=data[i].label;
-            this.uploadShow.lists[index].type=label;
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].value === label) {
+            this.groups.name = data[i].label;
+            this.uploadShow.lists[index].type = label;
           }
         }
-      },//点击分组设置中的单选框
-      addGroup(formName) {
+      }, // 点击分组设置中的单选框
+      addGroup (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$http.post(this.URL.createFileType, {
@@ -708,29 +710,29 @@
               type_name: this.groups.input
             })
               .then(res => {
-                let data =res.data;
+                let data = res.data;
                 let newObj = {};
                 newObj.type = this.groups.input;
                 newObj.label = this.groups.input;
                 newObj.value = data.type_id;
                 this.groups.type = data.type_id;
                 this.groups.group.push(newObj);
-                this.groups.input = ''
+                this.groups.input = '';
               })
               .catch(err => {
-                this.$tool.console(err)
-              })
+                this.$tool.console(err);
+              });
           } else {
             this.$tool.console('error submit!!');
             return false;
           }
         });
-      },//添加分组设置的分组选项
-      saveGroupChange(){//file_id type_id user_id
-        this.zgClick("提交跟进");
-        let type = this.groups.type;
+      }, // 添加分组设置的分组选项
+      saveGroupChange () { // file_id type_id user_id
+        this.zgClick('提交跟进');
+        // let type = this.groups.type;
         let index = this.groups.index;
-        let type_name = this.groups.name;
+        let typeName = this.groups.name;
         this.$http.post(this.URL.setFileType, {
           user_id: localStorage.user_id,
           file_id: this.uploadShow.lists[index].file_id,
@@ -738,86 +740,82 @@
         })
           .then(res => {
             if (index !== -1) {
-              this.uploadShow.lists[index].bp_type = type_name;
+              this.uploadShow.lists[index].bp_type = typeName;
               this.dialogFileVisible = false;
             }
           })
           .catch(err => {
             this.$tool.console(err);
-          })
-
-      },//发送分组设置请求
-      toGroup(item){
-        this.groups.type=item.type;
+          });
+      }, // 发送分组设置请求
+      toGroup (item) {
+        this.groups.type = item.type;
         let index = this.uploadShow.lists.indexOf(item);
         this.groups.index = index;
         this.groups.name = item.bp_type;
         this.dialogFileVisible = true;
-      },//获取分组的位置
+      }, // 获取分组的位置
 
-      //*检查所有必填项目以及获取所有数据/true过.false不过
-      submitForm(formName,checkName) {
+      //* 检查所有必填项目以及获取所有数据/true过.false不过
+      submitForm (formName, checkName) {
         this.$refs[formName].validate((valid) => {
-          this[checkName]=!valid;
+          this[checkName] = !valid;
         });
       },
-      //重置
-      resetForm(formName) {
+      // 重置
+      resetForm (formName) {
         this.$refs[formName].resetFields();
       },
 
-
-      //*全部保存按钮
-      allSave(){
-        var submit = ()=>{
-          return new Promise((resolve, reject)=>{
-            //做一些异步操作
-            this.submitForm('follow','followMust');
+      //* 全部保存按钮
+      allSave () {
+        var submit = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            this.submitForm('follow', 'followMust');
             resolve(true);
           });
-        }
+        };
 
-        var check = ()=>{
-          return new Promise((resolve, reject)=>{
-            //做一些异步操作
-            setTimeout(()=>{
-              if (this.followMust) {}
-              else{
+        var check = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            setTimeout(() => {
+              if (this.followMust) {} else {
                 resolve(true);
               }
-            },200)
+            }, 200);
           });
         };
 
         submit()
-          .then((data)=>{
+          .then((data) => {
             return check();
           })
-          .then((data)=> {
+          .then((data) => {
             if (data) {
-              if(this.follow.card_name === "") this.follow.card_id='';
-              if(this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
-                this.$tool.error("请选择或添加正确的投资人")
-              }
-              else if(this.$tool.getNull(this.follow.project_id)) this.$tool.error("请选择正确的项目")
-              else if(this.$tool.getNull(this.follow.project_name)) this.$tool.error("请选择正确的项目")
+              if (this.follow.card_name === '') this.follow.card_id = '';
+              if (this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
+                this.$tool.error('请选择或添加正确的投资人');
+              } else if (this.$tool.getNull(this.follow.project_id)) this.$tool.error('请选择正确的项目');
+              else if (this.$tool.getNull(this.follow.project_name)) this.$tool.error('请选择正确的项目');
               else {
-                this.$tool.setReallyTimeToTime1(this.follow, 'meet_time', 'meet_time_stamp');//标准时间转化为时间戳（单个数据）
+                this.$tool.setReallyTimeToTime1(this.follow, 'meet_time', 'meet_time_stamp');// 标准时间转化为时间戳（单个数据）
                 this.follow.follow_id = this.follow_id;
-                if (this.follow.follow_id == "") delete this.follow.follow_id;
+                if (this.follow.follow_id === '') delete this.follow.follow_id;
                 delete this.follow.files;
                 this.follow.user_id = localStorage.user_id;
                 this.follow.type = this.typein;
 //          this.follow.card_id=this.card_id;
-                if (this.userid != undefined) {
-                  if (this.follow.type == 'user') {
+                if (this.userid !== undefined) {
+                  if (this.follow.type === 'user') {
                     this.follow.card_id = this.userid;
                   }
                 }
                 this.loading = true;
                 this.$http.post(this.URL.add_follow_record, this.follow)
                   .then(res => {
-                    if (res.data.status_code == 2000000) {
+                    if (res.data.status_code === 2000000) {
                       this.follow_id = res.data.data;
                       this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
                     } else {
@@ -828,77 +826,75 @@
 //              this.getFollow.project_id=this.follow.project_id;
                   })
                   .catch(err => {
+                    console.log(err);
                     this.loading = false;
-                  })
+                  });
               }
-
             }
-          })
-
-      },//发送请求
-      /*编辑成功弹窗*/
-      open2(title, main, confirm, cancel) {
+          });
+      }, // 发送请求
+      /* 编辑成功弹窗 */
+      open2 (title, main, confirm, cancel) {
         this.$confirm(main, title, {
           confirmButtonText: confirm,
           cancelButtonText: cancel,
           type: 'success'
         }).then(() => {
           this.clearData();
-          this.follow_id='';
+          this.follow_id = '';
         }).catch(() => {
-          this.$emit("closeFollow",false);
+          this.$emit('closeFollow', false);
           this.clearData();
-          this.follow_id='';
+          this.follow_id = '';
         });
       },
-      clearData(){
+      clearData () {
 //        for(let key in this.follow){
 //          this.follow[key]='';
 //        }
-        this.follow.file_id=[];
-        this.uploadShow.lists=[];
-        this.fileList=[];
-        this.follow.project_id=this.projectid || '';
-        this.follow.project_name=this.projectname || '';
-        this.follow.card_id=this.cardid || '';
-        this.follow.card_name=this.cardname || '';
-        this.investor_id=this.investorid || '';
-        this.saveJumpData=this.follow;
-      },//清除所有数据
+        this.follow.file_id = [];
+        this.uploadShow.lists = [];
+        this.fileList = [];
+        this.follow.project_id = this.projectid || '';
+        this.follow.project_name = this.projectname || '';
+        this.follow.card_id = this.cardid || '';
+        this.follow.card_name = this.cardname || '';
+        this.investor_id = this.investorid || '';
+        this.saveJumpData = this.follow;
+      }// 清除所有数据
     },
-    created(){
+    created () {
 
     },
-    watch : {
-      followid : function(e){
+    watch: {
+      followid: function (e) {
 
-      },//获取跟进id
+      }, // 获取跟进id
 
-      followDisplay: function(e){
-        if(e) {
+      followDisplay: function (e) {
+        if (e) {
           this.clearData();
-          this.follow_id=this.followid || '';
-          this.typein=this.type;
+          this.follow_id = this.followid || '';
+          this.typein = this.type;
           this.loading = true;
           this.$global.func.getWxProjectCategory()
-            .then((data)=>{
+            .then((data) => {
               return this.getScheduleName();
             })
-            .then((data)=>{
+            .then((data) => {
               return this.getFollowUp();
             });
           this.setFileType();
-        }else {
-          this.follow_id = "";
-          this.resetForm('follow')
-
+        } else {
+          this.follow_id = '';
+          this.resetForm('follow');
         }
-      },//清空数据
+      }// 清空数据
     },
-    mounted(){
+    mounted () {
 
     }
-  }
+  };
 </script>
 
 <style lang="less">

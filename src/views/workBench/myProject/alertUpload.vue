@@ -93,243 +93,241 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  props: ["uploadDisplay"],
-  data () {
-    return {
-      uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
-      num:0,//控制一次最多选择个数
+  export default {
+    props: ['uploadDisplay'],
+    data () {
+      return {
+        uploadAddress: this.URL.weitianshiLine + this.URL.projectUpload + localStorage.token, // 上传地址
+        num: 0, // 控制一次最多选择个数
 //      dialogUploadVisible: false,//第一个弹窗的控制
-      dialogUpload2Visible:false,//第二个弹窗的控制
-      status:"",//状态success/exception
-      percentage:0,//进度
-      formLabelWidth: '880px',
-      fileList:[
-      ],//上传文件的列表
-      dateForm: {//展示的列表
-        domains: [
-          /*{
-           pro_intro: "其他",
-           pro_name: 2476,
-           file_title: "文件2.docx",
-           project_id: 4,
-           load:true,
-           uid:1501837722250
-           }*/
-        ],
-      },
-      loading:false,
-      uploadDate:{user_id: localStorage.user_id},//上传所带的额外的参数
-      loadingcheck:false,
-      showList:false,
-      alentTitle:"",
-      submitButton:false,//是否允许提交false允许/true不允许
-      isCheck:true,//显示大上传
-    }
-  },
-  methods: {
-    //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
-    handleChange(file, fileList) {
+        dialogUpload2Visible: false, // 第二个弹窗的控制
+        status: '', // 状态success/exception
+        percentage: 0, // 进度
+        formLabelWidth: '880px',
+        fileList: [
+        ], // 上传文件的列表
+        dateForm: {// 展示的列表
+          domains: [
+            /* {
+             pro_intro: "其他",
+             pro_name: 2476,
+             file_title: "文件2.docx",
+             project_id: 4,
+             load:true,
+             uid:1501837722250
+             } */
+          ]
+        },
+        loading: false,
+        uploadDate: {user_id: localStorage.user_id}, // 上传所带的额外的参数
+        loadingcheck: false,
+        showList: false,
+        alentTitle: '',
+        submitButton: false, // 是否允许提交false允许/true不允许
+        isCheck: true// 显示大上传
+      };
+    },
+    methods: {
+      // 1号添加文件后添加入上传列表,并且跳转到多次上传的列表
+      handleChange (file, fileList) {
 //      this.$emit('uploadDisplayChange',false);
 //      this.dialogUpload2Visible=true;
-      this.isCheck=false;
-    },
-    uploadsuccess(response, file, fileList){
-        let data=response.data;
-        if(response.status_code==2000000) {
+        this.isCheck = false;
+      },
+      uploadsuccess (response, file, fileList) {
+        let data = response.data;
+        if (response.status_code === 2000000) {
           this.deleteLoad(file.uid);
-          this.addDomain(data.pro_intro,data.pro_name,data.file_title,data.project_id,false,file.uid);
+          this.addDomain(data.pro_intro, data.pro_name, data.file_title, data.project_id, false, file.uid);
           this.subButtonCheck(this.dateForm.domains);
 //          this.$tool.success("上传成功");
         }
-    },
-    uploaderror(err, file, fileList){
-      this.$tool.error("上传失败");
-    },
-    handlePreview(file) {
-      this.$tool.console(file);
-    },
-    beforeUpload(file){
-      this.num++;
-      let filetypes=[".doc",".docx",".ppt",".pptx",".pdf",".zip",".rar"];
-      let name=file.name;
-      let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
-      let isnext = false;
-      if(filetypes && filetypes.length>0){
-        for(var i =0; i<filetypes.length;i++){
-          if(filetypes[i]==fileend){
-            isnext = true;
-            break;
+      },
+      uploaderror (err, file, fileList) {
+        console.log(err);
+        this.$tool.error('上传失败');
+      },
+      handlePreview (file) {
+        this.$tool.console(file);
+      },
+      beforeUpload (file) {
+        this.num++;
+        let filetypes = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.zip', '.rar'];
+        let name = file.name;
+        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
+        let isnext = false;
+        if (filetypes && filetypes.length > 0) {
+          for (var i = 0; i < filetypes.length; i++) {
+            if (filetypes[i] === fileend) {
+              isnext = true;
+              break;
+            }
           }
         }
-      }
 
-      if(!isnext){
-        setTimeout(()=>{this.$tool.error(file.name+"是不支持的文件格式");},200);
-        this.num=0;
-        return false;
-      }
-      if(parseInt(file.size) > parseInt(52428810)){
-        setTimeout(()=>{this.$tool.error(file.name+"超过50m哦");},200);
-        this.num=0;
-        return false;
-      }
-      this.addDomain(file.name, file.name, file.name,0,true,file.uid);
-      this.subButtonCheck(this.dateForm.domains);
-    },
-    deleteLoad(uid){
-      let lists=this.dateForm.domains;//所有的文件的数组
-      for(let i=0; i<lists.length; i++){
-        if(lists[i].uid==uid){
-          lists.splice(i,1)
-        }
-      }
-    },//剔除Load
-    subButtonCheck(arr){
-      if(arr.length===0){
-        this.submitButton=false;
-        return false;
-      }
-      for(let i=0; i<arr.length; i++){
-        if(arr[i].load){
-          this.submitButton=true;
+        if (!isnext) {
+          setTimeout(() => { this.$tool.error(file.name + '是不支持的文件格式'); }, 200);
+          this.num = 0;
           return false;
-        }else{
-          this.submitButton=false;
         }
-      }
-    },//当文件没有全部上传完时,不能提交
-    handleProgress(event, file, fileList){
-      this.percentage=parseInt(event.percent);
-    },
-    //提交表单服务器时
-    submitUpload(formName,formData) {
-      this.loading=true;
-      let obj = this.dateForm.domains;
+        if (parseInt(file.size) > parseInt(52428810)) {
+          setTimeout(() => { this.$tool.error(file.name + '超过50m哦'); }, 200);
+          this.num = 0;
+          return false;
+        }
+        this.addDomain(file.name, file.name, file.name, 0, true, file.uid);
+        this.subButtonCheck(this.dateForm.domains);
+      },
+      deleteLoad (uid) {
+        let lists = this.dateForm.domains;// 所有的文件的数组
+        for (let i = 0; i < lists.length; i++) {
+          if (lists[i].uid === uid) {
+            lists.splice(i, 1);
+          }
+        }
+      }, // 剔除Load
+      subButtonCheck (arr) {
+        if (arr.length === 0) {
+          this.submitButton = false;
+          return false;
+        }
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].load) {
+            this.submitButton = true;
+            return false;
+          } else {
+            this.submitButton = false;
+          }
+        }
+      }, // 当文件没有全部上传完时,不能提交
+      handleProgress (event, file, fileList) {
+        this.percentage = parseInt(event.percent);
+      },
+      // 提交表单服务器时
+      submitUpload (formName, formData) {
+        this.loading = true;
+        let obj = this.dateForm.domains;
         this.$refs[formName].validate((valid) => {
-        if (valid) {
-          const saveUploadURL=this.URL.saveUpload;
-          this.$http.post(saveUploadURL,obj)
-            .then(res=>{
+          if (valid) {
+            const saveUploadURL = this.URL.saveUpload;
+            this.$http.post(saveUploadURL, obj)
+              .then(res => {
 //              this.$tool.console(res);
-              if(res.status===200){
-                this.$emit('uploadDisplayChange',false);
-                this.$emit('reload', true);
-                this.dateForm.domains=[];
-                this.fileList=[];
-                this.$tool.success("批量上传成功");
-              }
-              this.loading=false;
-            }).catch(err=>{
-            this.$tool.console(err)
-          })
-          this.$refs.upload.submit();
-        } else {
-          this.$tool.console('error submit!!');
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    //删除当前上传文件
-    removeDomain(item) {
-      const deleteUpload=this.URL.deleteUpload
-      var index = this.dateForm.domains.indexOf(item);
-      if (index !== -1) {
-        this.dateForm.domains.splice(index, 1)
-        this.fileList.splice(index, 1)
-      }
-      this.$http.post(deleteUpload,{user_id: localStorage.user_id,project_id:item.project_id})
-        .then(res=>{
-          if(res.status===200){
-            this.loading=false;
-
+                if (res.status === 200) {
+                  this.$emit('uploadDisplayChange', false);
+                  this.$emit('reload', true);
+                  this.dateForm.domains = [];
+                  this.fileList = [];
+                  this.$tool.success('批量上传成功');
+                }
+                this.loading = false;
+              }).catch(err => {
+                this.$tool.console(err);
+              });
+            this.$refs.upload.submit();
+          } else {
+            this.$tool.console('error submit!!');
+            return false;
           }
-        })
-        .catch(err=>{
-          this.$tool.console(err)
-
-        })
-    },
-    //取消上传
-    cancelUpload(file){
-      this.$refs.upload.abort(file);
-      this.deleteLoad(file.uid);
-      this.subButtonCheck(this.dateForm.domains);
-    },
-    //添加上传文件时,加入显示列表
-    addDomain(pro_intro,pro_name,file_title,project_id,load,uid) {
-      let object ={};
-      object.pro_intro=pro_intro;
-      object.pro_name=pro_name;
-      object.file_title=file_title;
-      object.project_id=project_id;
-      object.load=load;
-      object.uid=uid;
-      this.dateForm.domains.push(object);
-    },
-    //当取消时,清空上传列表
-    cancel(e){
-        if(e==1){
-          this.$emit('uploadDisplayChange',false);
-        }else{
+        });
+      },
+      resetForm (formName) {
+        this.$refs[formName].resetFields();
+      },
+      // 删除当前上传文件
+      removeDomain (item) {
+        const deleteUpload = this.URL.deleteUpload;
+        var index = this.dateForm.domains.indexOf(item);
+        if (index !== -1) {
+          this.dateForm.domains.splice(index, 1);
+          this.fileList.splice(index, 1);
+        }
+        this.$http.post(deleteUpload, {user_id: localStorage.user_id, project_id: item.project_id})
+          .then(res => {
+            if (res.status === 200) {
+              this.loading = false;
+            }
+          })
+          .catch(err => {
+            this.$tool.console(err);
+          });
+      },
+      // 取消上传
+      cancelUpload (file) {
+        this.$refs.upload.abort(file);
+        this.deleteLoad(file.uid);
+        this.subButtonCheck(this.dateForm.domains);
+      },
+      // 添加上传文件时,加入显示列表
+      addDomain (proIntro, proName, fileTitle, projectId, load, uid) {
+        let object = {};
+        object.pro_intro = proIntro;
+        object.pro_name = proName;
+        object.file_title = fileTitle;
+        object.project_id = projectId;
+        object.load = load;
+        object.uid = uid;
+        this.dateForm.domains.push(object);
+      },
+      // 当取消时,清空上传列表
+      cancel (e) {
+        if (e === 1) {
+          this.$emit('uploadDisplayChange', false);
+        } else {
           this.$confirm('确认关闭？关闭后所有数据清空?')
             .then(_ => {
-              let arr=this.dateForm.domains;
-              for(let i=0; i<arr.length; i++){
-                this.$http.post(this.URL.deleteUpload,{user_id: localStorage.user_id,project_id:arr[i].project_id})
-                  .then(res=>{
-                    if(res.status===200){
-                      this.loading=false;
-                      this.$tool.success("删除成功");
+              let arr = this.dateForm.domains;
+              for (let i = 0; i < arr.length; i++) {
+                this.$http.post(this.URL.deleteUpload, {user_id: localStorage.user_id, project_id: arr[i].project_id})
+                  .then(res => {
+                    if (res.status === 200) {
+                      this.loading = false;
+                      this.$tool.success('删除成功');
                     }
-                    this.$tool.console(res)
+                    this.$tool.console(res);
                   })
-                  .catch(err=>{
-                    this.$tool.console(err)
-                  })
+                  .catch(err => {
+                    this.$tool.console(err);
+                  });
               }
-              this.$emit('uploadDisplayChange',false);
-              this.dialogUpload2Visible=false;
-              this.dateForm.domains=[];
+              this.$emit('uploadDisplayChange', false);
+              this.dialogUpload2Visible = false;
+              this.dateForm.domains = [];
               this.$refs.upload.clearFiles();
             })
             .catch(_ => {
 
             });
         }
-
-    },
-    handleClose() {
-      this.$emit('uploadDisplayChange',false);
+      },
+      handleClose () {
+        this.$emit('uploadDisplayChange', false);
 //      this.dialogUpload2Visible=false;
-    },
-  },
-  created(){
-
-  },
-  computed: {
-    //*有上传中的文件吗
-    uploadLength(){
-      let length = this.dateForm.domains.length;
-      if(length==0){
-          return false;
-      }else{
-        return true;
       }
     },
-  },
-  watch: {
-    // 如果路由有变化，会再次执行该方法
-    uploadDisplay: function (e) {
-      if(e){
-        this.isCheck=true;
+    created () {
+
+    },
+    computed: {
+      //* 有上传中的文件吗
+      uploadLength () {
+        let length = this.dateForm.domains.length;
+        if (length === 0) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      uploadDisplay: function (e) {
+        if (e) {
+          this.isCheck = true;
+        }
       }
     }
-  }
-}
+  };
 </script>
 
 <style lang="less">

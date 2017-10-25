@@ -30,80 +30,77 @@
     data () {
       return {
         input: '',
-        loading:false,
+        loading: false,
         timeout: null,
-        num:0,
-        qr:"",
-        close:false,
-        checkout:false,
-        loadIn:false
-      }
+        num: 0,
+        qr: '',
+        close: false,
+        checkout: false,
+        loadIn: false
+      };
     },
     methods: {
-      reload(){
+      reload () {
         window.location.reload();
       },
-      getUserId(){
+      getUserId () {
         this.num++;
-        if(parseInt(this.num)>45) {
+        if (parseInt(this.num) > 45) {
           clearInterval(this.timeout);
         }
-        this.$http.post(this.URL.ajaxPolling,{credential:localStorage.credential})
-          .then(res=>{
+        this.$http.post(this.URL.ajaxPolling, {credential: localStorage.credential})
+          .then(res => {
 //          clearInterval(this.timeout);
-            let data=res.data;
+            let data = res.data;
 //          this.$tool.console(res);
 //            console.log(res);
-            if(data.status_msg=="success"){
+            if (data.status_msg === 'success') {
               clearInterval(this.timeout);
-              localStorage.token=res.data.token;
-              if(data.type=="create") setTimeout(()=>{this.$router.push({ name: 'creatproject'});},50);
-              if(data.type=="update") setTimeout(()=>{this.$router.push({ name: 'editproject',query: {project_id: data.project_id}});},50);
-              localStorage.user_id=data.user_info.user_id;
-              localStorage.user_real_name=data.user_info.user_real_name;
-              this.$store.state.logining.user_id=data.user_info.user_id;
-              this.$store.state.logining.user_real_name=data.user_info.user_real_name;
-            }else if(data.status_msg=="timeout"){
+              localStorage.token = res.data.token;
+              if (data.type === 'create') setTimeout(() => { this.$router.push({name: 'creatproject'}); }, 50);
+              if (data.type === 'update') setTimeout(() => { this.$router.push({name: 'editproject', query: {project_id: data.project_id}}); }, 50);
+              localStorage.user_id = data.user_info.user_id;
+              localStorage.user_real_name = data.user_info.user_real_name;
+              this.$store.state.logining.user_id = data.user_info.user_id;
+              this.$store.state.logining.user_real_name = data.user_info.user_real_name;
+            } else if (data.status_msg === 'timeout') {
               clearInterval(this.timeout);
-              this.checkout=false;
-            }else if(data.status_msg=="continue") {
-              console.log("等待登陆");
+              this.checkout = false;
+            } else if (data.status_msg === 'continue') {
+              console.log('等待登陆');
             }
           })
-          .catch(err=>{
+          .catch(err => {
             this.$tool.console(err);
-          })
-      }//获取id
+          });
+      }// 获取id
 
     },
-    created(){
+    created () {
 
     },
-    mounted(){
-
-      this.checkout=true;
-      this.loadIn=true;
+    mounted () {
+      this.checkout = true;
+      this.loadIn = true;
       setTimeout(() => {
         this.$http.get(this.URL.returnQrCredential)
           .then(res => {
             this.$tool.console(res);
-            let data=res.data;
-            this.qr=data.qr;
-            localStorage.credential=data.credential;
-            this.loadIn=false;
+            let data = res.data;
+            this.qr = data.qr;
+            localStorage.credential = data.credential;
+            this.loadIn = false;
           })
           .catch(err => {
             this.$tool.console(err);
-            this.$tool.error("请刷新页面");
+            this.$tool.error('请刷新页面');
           });
         this.timeout = setInterval(() => {
           this.getUserId();
         }, 2000);
-      },2000);
-
-
+      }, 2000);
     }
-  }
+  };
 </script>
 
 <style scoped lang="less">

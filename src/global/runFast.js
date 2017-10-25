@@ -6,47 +6,47 @@ this.$http.post(this.URL.getCrawlerBrand, {
   com_id: this.comid
 })
   .then(res => {
-    let data=res.data.data;
-    this.business=data;
-    this.trademarkMessage="商标信息"+"("+data.brand.length+")"
+    let data = res.data.data;
+    this.business = data;
+    this.trademarkMessage = '商标信息' + '(' + data.brand.length + ')';
   })
   .catch(err => {
     this.$tool.console(err);
-  })//请求函数
+  });// 请求函数
 
-this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}})//路由传参
+this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}});// 路由传参
 this.$route.query.project_id;
-//state.show?false:true;
+// state.show?false:true;
 
-function add() {
-  var getOneUserInfo = new Promise((resolve, reject)=>{
-    //做一些异步操作
+function add () {
+  var getOneUserInfo = new Promise((resolve, reject) => {
+    // 做一些异步操作
     resolve(1);
-  })
+  });
   return getOneUserInfo;
 }
 
 add()
-.then((data)=>{
+.then((data) => {
   return this.getWxProjectCategory();
-})
+});
 
-window.addEventListener('scroll',()=> {
-  var sh = document.documentElement.scrollHeight || document.body.scrollHeight ;
+window.addEventListener('scroll', () => {
+  var sh = document.documentElement.scrollHeight || document.body.scrollHeight;
   var ch = window.innerHeight || document.documentElement.clientHeight;
   var t = document.documentElement.scrollTop || document.body.scrollTop;
-  if( sh>ch && t >= ch ) {
+  if (sh > ch && t >= ch) {
     this.isHidden = false;
   } else {
     this.isHidden = true;
   }
-})
-/*================输入框================*/
+});
+/* ================输入框================ */
 // <el-input v-model="input" placeholder="请输入内容"></el-input>
 
-/*================浮层================*/
+/* ================浮层================ */
 
-/*<el-dialog
+/* <el-dialog
 title="提示"
 :visible.sync="dialogVisible"
 size="tiny"
@@ -56,11 +56,8 @@ size="tiny"
   <el-button @click="dialogVisible = false">取 消</el-button>
 <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
 </span>
-</el-dialog>*/
+</el-dialog> */
 
-/*================加载动画================*/
+/* ================加载动画================ */
 
 // v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中"
-
-
-

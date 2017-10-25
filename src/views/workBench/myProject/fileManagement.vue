@@ -136,177 +136,177 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import threePoint from '../../../../static/images/threePoint.png'
-  import renameIcon from '../../../../static/images/rename.png'
-  import uploadIcon from '../../../../static/images/upload.png'
-  import deleteIcon from '../../../../static/images/delete.png'
+  import threePoint from '../../../../static/images/threePoint.png';
+  import renameIcon from '../../../../static/images/rename.png';
+  import uploadIcon from '../../../../static/images/upload.png';
+  import deleteIcon from '../../../../static/images/delete.png';
   export default {
-    props: ["proid"],
+    props: ['proid'],
     data () {
       return {
-        //图片资源
-        threePoint:threePoint,
-        renameIcon:renameIcon,
-        uploadIcon:uploadIcon,
-        deleteIcon:deleteIcon,
-        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
-        uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
-        project_id: "",
-        //加载
+        // 图片资源
+        threePoint: threePoint,
+        renameIcon: renameIcon,
+        uploadIcon: uploadIcon,
+        deleteIcon: deleteIcon,
+        uploadAddress: this.URL.weitianshiLine + this.URL.projectUpload + localStorage.token, // 上传地址
+        uploadAddressFile: this.URL.weitianshiLine + this.URL.uploadFile + localStorage.token, // 上传地址
+        project_id: '',
+        // 加载
         loading: false,
-        //分组列表
+        // 分组列表
         groupList: [],
-        //被展开的分组
+        // 被展开的分组
         activeNames: [],
-        //批量上传文件列表(组件处理)
-        bpFileList:[],
+        // 批量上传文件列表(组件处理)
+        bpFileList: [],
         fileList: [],
-        //批量上传文件列表(自己处理)
-        uploadList:[],
-        //上传文件展示列表,就是老夫操作的列表
+        // 批量上传文件列表(自己处理)
+        uploadList: [],
+        // 上传文件展示列表,就是老夫操作的列表
         uploadShow2: {
           lists: [
             {
-              bp_type: "1",
-              file_title:"2",
-              file_id:"3",
-              type:"4"
+              bp_type: '1',
+              file_title: '2',
+              file_id: '3',
+              type: '4'
             }
           ]
         },
-        //新建分组弹窗控制
-        dialogFileVisible:false,
-        //新建分组弹窗是否显示关闭按钮
+        // 新建分组弹窗控制
+        dialogFileVisible: false,
+        // 新建分组弹窗是否显示关闭按钮
         showList: false,
-        //批量上传按钮禁用控制
+        // 批量上传按钮禁用控制
         loadingcheck: false,
-        //新建分组弹框表单数据
-        newGroupName:{
-          name:''
+        // 新建分组弹框表单数据
+        newGroupName: {
+          name: ''
         },
-        //被点击的上传按钮所属分组
-        typeId:0,
-        //文件分组显示和隐藏
-        fileMoveFrame:false,
-        //文件分组单选的值
-        radio:0,
-        list:[],
-        //重命名弹框显隐
-        renameFrame:false,
-        exGroupName:'',
-      }
+        // 被点击的上传按钮所属分组
+        typeId: 0,
+        // 文件分组显示和隐藏
+        fileMoveFrame: false,
+        // 文件分组单选的值
+        radio: 0,
+        list: [],
+        // 重命名弹框显隐
+        renameFrame: false,
+        exGroupName: ''
+      };
     },
     methods: {
-      //重新获取分组列表信息
-      initData(file){
-        //获取分组列表
+      // 重新获取分组列表信息
+      initData (file) {
+        // 获取分组列表
         this.$http.post(this.URL.getAllFileType, {
           user_id: localStorage.user_id
         }).then(res => {
 //          console.log('fisrt-groupList',res.data.data)
           var groupList = res.data.data;
-          //获取分组列表内部文件数据
+          // 获取分组列表内部文件数据
           this.$http.post(this.URL.getProjectFiles, {
             user_id: localStorage.user_id,
             project_id: this.project_id
           }).then(res => {
-            //把分组内的文件放到对应的分组内
-            var groupWithFile=res.data.data;
-            groupList.forEach(y=>{
-              groupWithFile.forEach(x=>{
-                if(y.type_id===x.type) {
+            // 把分组内的文件放到对应的分组内
+            var groupWithFile = res.data.data;
+            groupList.forEach(y => {
+              groupWithFile.forEach(x => {
+                if (y.type_id === x.type) {
                   y.file = x.file;
-                  y.fileNum = x.count
+                  y.fileNum = x.count;
                 }
-              })
-            })
+              });
+            });
 
-            //如果有值传进来
-            if(file){
-              //剔除掉已经上传成功的文件
-              this.uploadList.forEach((x,index)=>{
-                if(x.name===file.name){
-                  this.uploadList.splice(index,1)
+            // 如果有值传进来
+            if (file) {
+              // 剔除掉已经上传成功的文件
+              this.uploadList.forEach((x, index) => {
+                if (x.name === file.name) {
+                  this.uploadList.splice(index, 1);
                 }
-              })
+              });
             }
 
-            //将没有文件的分组设定默认值0
-            groupList.forEach((x,index)=>{
-              if(!x.file){
-                x.file=[];
-                x.fileNum=0;
+            // 将没有文件的分组设定默认值0
+            groupList.forEach((x, index) => {
+              if (!x.file) {
+                x.file = [];
+                x.fileNum = 0;
               }
-              x.newFile=[];
-              //如果有值传进来,那么此次触发由上传成功触发
-              if(file){
-                this.uploadList.forEach((y,index)=>{
-                  if(x.type_id===y.typeId){
-                    x.newFile.push(y)
+              x.newFile = [];
+              // 如果有值传进来,那么此次触发由上传成功触发
+              if (file) {
+                this.uploadList.forEach((y, index) => {
+                  if (x.type_id === y.typeId) {
+                    x.newFile.push(y);
                   }
-                })
+                });
               }
-            })
-            this.groupList=groupList;
-          })
-        })
+            });
+            this.groupList = groupList;
+          });
+        });
       },
-      //打开新建分组弹窗
-      toGroup(){
+      // 打开新建分组弹窗
+      toGroup () {
         this.dialogFileVisible = true;
-        this.newGroupName.name='';
+        this.newGroupName.name = '';
       },
-      //将所有分组名称放到一个数组里(辅助函数)
-      getGroupName(){
-        var allGroupName=[]
-        this.groupList.forEach(x=>{
-          allGroupName.push(x.type_name)
-        })
-        return allGroupName
+      // 将所有分组名称放到一个数组里(辅助函数)
+      getGroupName () {
+        var allGroupName = [];
+        this.groupList.forEach(x => {
+          allGroupName.push(x.type_name);
+        });
+        return allGroupName;
       },
-      //新建分组--确定
-      addGroup() {
-        if(!this.$tool.getNull(this.newGroupName.name)){
-          if(this.newGroupName.name.replace(/(^\s*)|(\s*$)/g,"").length>20){
-            this.$tool.error('分组名称应小于20个字符')
-          }else if(this.getGroupName().indexOf(this.newGroupName.name)===-1){
-            //检查是否和已有分组重名,若全不重名则创建分组
-            this.$http.post(this.URL.createFileType,{
-              user_id:localStorage.user_id,
-              type_name:this.newGroupName.name
-            }).then(res=>{
-              if(res.data.status_code===2000000){
-                this.$tool.success('新建文件分组成功')
+      // 新建分组--确定
+      addGroup () {
+        if (!this.$tool.getNull(this.newGroupName.name)) {
+          if (this.newGroupName.name.replace(/(^\s*)|(\s*$)/g, '').length > 20) {
+            this.$tool.error('分组名称应小于20个字符');
+          } else if (this.getGroupName().indexOf(this.newGroupName.name) === -1) {
+            // 检查是否和已有分组重名,若全不重名则创建分组
+            this.$http.post(this.URL.createFileType, {
+              user_id: localStorage.user_id,
+              type_name: this.newGroupName.name
+            }).then(res => {
+              if (res.data.status_code === 2000000) {
+                this.$tool.success('新建文件分组成功');
                 this.$refs['newGroupName'].resetFields();
-                this.dialogFileVisible=false;
+                this.dialogFileVisible = false;
                 this.initData();
-              }else{
-                this.$tool.error(res.data.error_msg)
+              } else {
+                this.$tool.error(res.data.error_msg);
               }
-            })
-          }else{
-            this.$tool.error('已有相同命名的文件分组')
+            });
+          } else {
+            this.$tool.error('已有相同命名的文件分组');
           }
-        }else{
-          this.$tool.error('请输入分组名称')
+        } else {
+          this.$tool.error('请输入分组名称');
         }
       },
-      //新建分组--取消
-      cancel(){
+      // 新建分组--取消
+      cancel () {
         this.$refs['newGroupName'].resetFields();
         this.dialogFileVisible = false;
       },
-      //获取当前按钮的typeId(辅助函数)
-      getTypeId(typeId,type,groupName){
-        this.typeId=typeId;
-        if(type===1){
+      // 获取当前按钮的typeId(辅助函数)
+      getTypeId (typeId, type, groupName) {
+        this.typeId = typeId;
+        if (type === 1) {
           this.renameGroup(groupName);
-        }else if(type===3){
+        } else if (type === 3) {
           this.deleteGroup();
         }
       },
-      //重命名分组(打开弹框)
-      renameGroup(groupName){
+      // 重命名分组(打开弹框)
+      renameGroup (groupName) {
         /* this.$prompt('请输入分组名', '新建文件分组', {
          confirmButtonText: '确定',
          cancelButtonText: '取消',
@@ -325,74 +325,74 @@
          this.$tool.error(res.data.error_msg)
          }
          })
-         });*/
-        this.exGroupName=groupName;
-        this.renameFrame=true;
+         }); */
+        this.exGroupName = groupName;
+        this.renameFrame = true;
       },
-      //重命名确定
-      renameCertain(){
-        this.exGroupName=this.$tool.trim(this.exGroupName);
-        if(this.exGroupName.length===0){
-          this.$tool.error('请输入分组名称')
-        }else if(this.exGroupName.length>20){
-          this.$tool.error('分组名称长度应在小于20字符')
-        }else{
-          this.$http.post(this.URL.renameFileType,{
-            user_id:localStorage.user_id,
-            type_id:this.typeId,
-            type_name:this.exGroupName
+      // 重命名确定
+      renameCertain () {
+        this.exGroupName = this.$tool.trim(this.exGroupName);
+        if (this.exGroupName.length === 0) {
+          this.$tool.error('请输入分组名称');
+        } else if (this.exGroupName.length > 20) {
+          this.$tool.error('分组名称长度应在小于20字符');
+        } else {
+          this.$http.post(this.URL.renameFileType, {
+            user_id: localStorage.user_id,
+            type_id: this.typeId,
+            type_name: this.exGroupName
           }).then(res => {
 //            console.log(res)
             if (res.data.status_code === 2000000) {
               this.loading = false;
               this.$refs['renameFrame'].resetFields();
-              this.renameFrame=false;
-              this.$tool.success("分组重命名成功")
+              this.renameFrame = false;
+              this.$tool.success('分组重命名成功');
               this.initData();
             } else {
-              this.$tool.error(res.data.error_msg)
+              this.$tool.error(res.data.error_msg);
             }
-          })
+          });
         }
       },
-      //重命名取消
-      renameCancel(){
+      // 重命名取消
+      renameCancel () {
         this.$refs['renameFrame'].resetFields();
-        this.renameFrame=false;
+        this.renameFrame = false;
       },
-      //删除分组
-      deleteGroup(){
+      // 删除分组
+      deleteGroup () {
         this.$confirm('删除文件分组后,分组内文件也会相应删除.确定删除?', '删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.post(this.URL.deleteFileType,{
-            user_id:localStorage.user_id,
-            type_id:this.typeId,
-            project_id:this.project_id
+          this.$http.post(this.URL.deleteFileType, {
+            user_id: localStorage.user_id,
+            type_id: this.typeId,
+            project_id: this.project_id
           }).then(res => {
             if (res.data.status_code === 2000000) {
               this.loading = false;
-              this.$tool.success("删除成功")
-              this.initData()
-            }else{
-              this.$tool.error(res.data.error_msg)
+              this.$tool.success('删除成功');
+              this.initData();
+            } else {
+              this.$tool.error(res.data.error_msg);
             }
-          })
-        })
+          });
+        });
       },
-      //上传文件上传之前的钩子函数(允许上传的文件格式不同)
-      beforeUpload(file){
-        let filetypes = ['.pdf','.ppt','.pptx', '.doc', '.docx', '.rar', '.zip'];
-        //去除文件类型后缀
+      // 上传文件上传之前的钩子函数(允许上传的文件格式不同)
+      beforeUpload (file) {
+        let filetypes = ['.pdf', '.ppt', '.pptx', '.doc', '.docx', '.rar', '.zip'];
+        // 去除文件类型后缀
         let name = file.name;
-        let fileend = name.substring(name.lastIndexOf(".")).toLowerCase();
+        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
         let isnext = false;
-        //文件格式和上传文件数量前端校验
+        // 文件格式和上传文件数量前端校验
         if (filetypes && filetypes.length > 0) {
           for (var i = 0; i < filetypes.length; i++) {
-            if (filetypes[i] == fileend) {
+            if (filetypes[i] === fileend) {
               isnext = true;
               break;
             }
@@ -400,35 +400,35 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error("不支持的文件格式");
+          this.$tool.error('不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(20971521)) {
-          this.$tool.error("暂不支持超过20m文件上传哦");
+          this.$tool.error('暂不支持超过20m文件上传哦');
           return false;
         };
 
-        //给上传文件加typeId属性标志其分组后存入uploadList
-        file.typeId=this.typeId
-        this.uploadList.push(file)
+        // 给上传文件加typeId属性标志其分组后存入uploadList
+        file.typeId = this.typeId;
+        this.uploadList.push(file);
 
-        //将上传文件放入相应数据的newFile属性中
-        this.groupList.forEach(x=>{
-          if(x.type_id===this.typeId){
+        // 将上传文件放入相应数据的newFile属性中
+        this.groupList.forEach(x => {
+          if (x.type_id === this.typeId) {
             x.newFile.push(file);
           }
         });
       },
-      beforeUpload2(file){
-        let filetypes = ['.pdf','.ppt','.pptx', '.doc', '.docx', '.rar', '.zip', '.png', '.jpg', '.jpeg'];
-        //去除文件类型后缀
+      beforeUpload2 (file) {
+        let filetypes = ['.pdf', '.ppt', '.pptx', '.doc', '.docx', '.rar', '.zip', '.png', '.jpg', '.jpeg'];
+        // 去除文件类型后缀
         let name = file.name;
-        let fileend = name.substring(name.lastIndexOf(".")).toLowerCase();
+        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
         let isnext = false;
-        //文件格式和上传文件数量前端校验
+        // 文件格式和上传文件数量前端校验
         if (filetypes && filetypes.length > 0) {
           for (var i = 0; i < filetypes.length; i++) {
-            if (filetypes[i] == fileend) {
+            if (filetypes[i] === fileend) {
               isnext = true;
               break;
             }
@@ -436,146 +436,132 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error("不支持的文件格式");
+          this.$tool.error('不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(20971521)) {
-          this.$tool.error("暂不支持超过20m文件上传哦");
+          this.$tool.error('暂不支持超过20m文件上传哦');
           return false;
         };
 
-        //给上传文件加typeId属性标志其分组后存入uploadList
-        file.typeId=this.typeId
-        this.uploadList.push(file)
+        // 给上传文件加typeId属性标志其分组后存入uploadList
+        file.typeId = this.typeId;
+        this.uploadList.push(file);
 
-        //将上传文件放入相应数据的newFile属性中
-        this.groupList.forEach(x=>{
-          if(x.type_id===this.typeId){
+        // 将上传文件放入相应数据的newFile属性中
+        this.groupList.forEach(x => {
+          if (x.type_id === this.typeId) {
             x.newFile.push(file);
           }
         });
       },
-      //当添加文件时,添加入上传列表
-      handleChange(file, fileList){
+      // 当添加文件时,添加入上传列表
+      handleChange (file, fileList) {
         this.loading = true;
         this.activeNames.push('1');
         if (this.loadingcheck) {
           this.loading = false;
           this.loadingcheck = false;
         }
-//        console.log('handleChange',file,fileList)
       },
-      //文件上传中
-      uploadProgress(event,file,fileList){
-        //不知道为什么文件上传中的勾子函数内的console会触发两次,且event的值不同
-        /*console.log('文件上传中')
+      // 文件上传中
+      uploadProgress (event, file, fileList) {
+        // 不知道为什么文件上传中的勾子函数内的console会触发两次,且event的值不同
+        /* console.log('文件上传中')
          console.log(event)
          console.log(file)
-         console.log(fileList)*/
+         console.log(fileList) */
       },
-      //上传文件成功
-      uploadsuccess(response, file, fileList){
-        let data = response.data;
-        this.$tool.success("上传成功");
+      // 上传文件成功
+      uploadsuccess (response, file, fileList) {
+        this.$tool.success('上传成功');
         this.loadingcheck = true;
-//        console.log('3',response,file)
-//        console.log(file)
-        this.initData(file)
-        //将还未上传成功的文件重新放回newFile中
-//        console.log('重点',this.groupList)
-//        console.log(this.uploadList)
-        /*  this.uploadList.forEach((x)=>{
-         this.groupList.forEach((y,index)=>{
-         if(x.typeId===y.type_id){
-         y.newFile.push(x);
-         }
-         })
-         })*/
+        this.initData(file);
       },
-      //上传失败
-      uploaderror(err, file, fileList){
-        this.$tool.error("上传失败,请联系管理员")
+      // 上传失败
+      uploaderror (err, file, fileList) {
+        console.log(err);
+        this.$tool.error('上传失败,请联系管理员');
         this.loadingcheck = false;
         this.loading = false;
       },
-      //取消上传
-      cancelUpload(type_name,file){
-//        console.log(file);
-        this.$refs[type_name][0].abort(file)
-        this.initData(file)
+      // 取消上传
+      cancelUpload (typeName, file) {
+        this.$refs[typeName][0].abort(file);
+        this.initData(file);
       },
-      //获取fileId(辅助函数)
-      getFileId(fileId,groupId,bp){
-        this.fileId=fileId;
-        this.groupId=groupId;
-        if(bp){
-          this.fileDeal(3)
+      // 获取fileId(辅助函数)
+      getFileId (fileId, groupId, bp) {
+        this.fileId = fileId;
+        this.groupId = groupId;
+        if (bp) {
+          this.fileDeal(3);
         }
       },
-      //文件操作
-      fileDeal(command){
-        //删除文件
-        if(parseInt(command)===3){
+      // 文件操作
+      fileDeal (command) {
+        // 删除文件
+        if (parseInt(command) === 3) {
           this.$confirm('确定删除?', '删除', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$http.post(this.URL.deleteAtFile,{
-              user_id:localStorage.user_id,
-              file_id:this.fileId
+            this.$http.post(this.URL.deleteAtFile, {
+              user_id: localStorage.user_id,
+              file_id: this.fileId
             }).then(res => {
               if (res.data.status_code === 2000000) {
                 this.loading = false;
-                this.$tool.success("删除成功")
-                this.initData()
-              }else{
-                this.$tool.error(res.data.error_msg)
+                this.$tool.success('删除成功');
+                this.initData();
+              } else {
+                this.$tool.error(res.data.error_msg);
               }
-            })
+            });
           }).catch(() => {});
         }
-        //移动文件
-        if(parseInt(command)===2){
-          this.fileMoveFrame=true;
-          this.radio=this.groupId;
+        // 移动文件
+        if (parseInt(command) === 2) {
+          this.fileMoveFrame = true;
+          this.radio = this.groupId;
         }
       },
-      //移动文件接口调用
-      fileMove(){
+      // 移动文件接口调用
+      fileMove () {
 //        console.log(this.radio)
-        this.$http.post(this.URL.setFileType,{user_id:localStorage.user_id,file_id:this.fileId,type:this.radio}).then(res=>{
+        this.$http.post(this.URL.setFileType, {user_id: localStorage.user_id, file_id: this.fileId, type: this.radio}).then(res => {
 //          console.log(res)
-          if(res.data.status_code===2000000){
-            this.fileMoveFrame=false;
-            this.$tool.success('移动文件成功')
+          if (res.data.status_code === 2000000) {
+            this.fileMoveFrame = false;
+            this.$tool.success('移动文件成功');
             this.initData();
-          }else{
-            this.$tool.error(res.data.error_msy)
+          } else {
+            this.$tool.error(res.data.error_msy);
           }
-        })
+        });
       },
-      //点击下载
-      download(fileId){
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+fileId;
-        window.location.href=url;
+      // 点击下载
+      download (fileId) {
+        const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId;
+        window.location.href = url;
       },
-      //点击分组设置中的单选框
-      groupchange(label){
+      // 点击分组设置中的单选框
+      groupchange (label) {
         let index = this.groups.index;
         let data = this.groups.group;
         for (let i = 0; i < data.length; i++) {
-          if (data[i].value == label) {
+          if (data[i].value === label) {
             this.groups.name = data[i].label;
             this.uploadShow2.lists[index].type = label;
           }
         }
       },
-      //发送分组设置请求
-      saveGroupChange(){//file_id type_id user_id
-        let type = this.groups.bp_type;
+      // 发送分组设置请求
+      saveGroupChange () { // file_id type_id user_id
+        // let type = this.groups.bp_type;
         let index = this.groups.index;
-        let type_name = this.groups.name
+        let typeName = this.groups.name;
         this.$http.post(this.URL.setFileType, {
           user_id: localStorage.user_id,
           file_id: this.uploadShow2.lists[index].file_id,
@@ -583,23 +569,22 @@
         })
           .then(res => {
             if (index !== -1) {
-              this.uploadShow2.lists[index].bp_type = type_name;
-              this.dialogFileVisible = false
+              this.uploadShow2.lists[index].bp_type = typeName;
+              this.dialogFileVisible = false;
             }
           })
           .catch(err => {
-            this.$tool.console(err)
-          })
-
-      },
+            this.$tool.console(err);
+          });
+      }
     },
-    created(){
+    created () {
       this.project_id = this.proid;
       this.$tool.getTop();
       this.initData();
     },
     watch: {}
-  }
+  };
 </script>
 
 <style lang="less">

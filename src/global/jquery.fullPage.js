@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2013 alvarotrigo.com - A project by Alvaro Trigo
  */
-
+/* eslint-disable */
 (function($) {
 	$.fn.fullpage = function(options) {
 		// Create some defaults, extending them with any options that were provided

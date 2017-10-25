@@ -233,266 +233,265 @@
 </template>
 
 <script type="text/ecmascript-6">
-import addfollow from './addFollow.vue'
-export default {
-  components: {
-    addfollow
-  },
-  data () {
-    return {
-      followDisplay:false,//控制写跟进弹框
-      followid:'',//跟进id
+  import addfollow from './addFollow.vue';
+  export default {
+    components: {
+      addfollow
+    },
+    data () {
+      return {
+        followDisplay: false, // 控制写跟进弹框
+        followid: '', // 跟进id
 
-      loading: false,//加载动画
-      searchinput:'',//搜索输入框
-      totalData:1,//总页数
-      currentPage:1,//当前页数
-      getFollow:{},//筛选的请求参数
-      tableData:[
-/*        {
-          follow_id: 15,
-          pro_name: "是项目的名称如这里是关联的项目名称这里是关联的项目名称这里",
-          pro_intro: "这里是关联的项目名称这里是关联的项目名称这里",
-          card_name: "投资人投资人投资人",
-          user_organization: "杭州投着乐了网络科技科技科技科技",  //机构
-          schedule_name: "签署投资协议",//进度
-          meet_type: "电话",//约谈方式
-          meet_time: "2017-05-06 12:21",//约谈时间
-          meet_status: "完成",//约谈状态
-          meet_back: "不跟进",//约谈反馈
-          created_at: "2017-07-13 18:47:20",//跟进时间
-//          follow_file_name: "这个是项目文件的啊项目文件的啊项目文件的啊",
-//          follow_desc: "这里是，跟进的具体描述，不用全部显示，默认默认默认默认默认默认默认默认",
+        loading: false, // 加载动画
+        searchinput: '', // 搜索输入框
+        totalData: 1, // 总页数
+        currentPage: 1, // 当前页数
+        getFollow: {}, // 筛选的请求参数
+        tableData: [
+          /*        {
+           follow_id: 15,
+           pro_name: "是项目的名称如这里是关联的项目名称这里是关联的项目名称这里",
+           pro_intro: "这里是关联的项目名称这里是关联的项目名称这里",
+           card_name: "投资人投资人投资人",
+           user_organization: "杭州投着乐了网络科技科技科技科技",  //机构
+           schedule_name: "签署投资协议",//进度
+           meet_type: "电话",//约谈方式
+           meet_time: "2017-05-06 12:21",//约谈时间
+           meet_status: "完成",//约谈状态
+           meet_back: "不跟进",//约谈反馈
+           created_at: "2017-07-13 18:47:20",//跟进时间
+           //          follow_file_name: "这个是项目文件的啊项目文件的啊项目文件的啊",
+           //          follow_desc: "这里是，跟进的具体描述，不用全部显示，默认默认默认默认默认默认默认默认",
 
-          }*/
-      ],//列表数据
-      schedule_nameFilters:[],//跟进状态筛选
-      meet_typeFilters:[{text : "电话",value:1},{text : "面谈",value:2}],//约谈方式筛选
-      meet_statusFilters:[{text : "待确认",value:1},{text : "已确认",value:2}
-        ,{text : "完成",value:3},{text : "取消",value:4}],//约谈状态筛选
-      meet_backFilters:[{text : "待确认",value:1},{text : "继续跟进",value:2},
-        {text : "不跟进",value:3}],//约谈反馈筛选
-      stateCheck:false,//跟进状 态单选
-    }
-  },
-  methods: {
-    handleIconClick(){
-      this.loading=true;
-      this.getFollow.user_id=localStorage.user_id;
-      this.getFollow.pro_name=this.searchinput;
-      this.$store.state.pageANDSelect.followSearchinput = this.searchinput;
-      this.currentPage=1;
-      this.getFollow.page=1;
-      this.$http.post(this.URL.get_follow_records,this.getFollow)
-        .then(res=>{
-          let data = res.data.data;
-          this.tableData=data.follow_record;
-//          console.log(this.tableData.project_id);
-          this.totalData=data.count;
-          this.loading=false;
-        })
-        .catch(err=>{
-          this.loading=false;
-          this.$tool.console(err,2)
-        })
-    },//搜索===首次进入页面加载的数据
-
-    setRouterData(){
-      this.$store.state.pageANDSelect.getFollow = this.getFollow;
-      this.$store.state.pageANDSelect.folcurrentPage = this.currentPage;
-    },//跳转之后设置参数
-    getRouterData(){
-      this.getFollow=this.$store.state.pageANDSelect.getFollow;
-      this.currentPage=this.$store.state.pageANDSelect.folcurrentPage || 1;
-      this.getFollow.page=this.$store.state.pageANDSelect.folcurrentPage || 1;
-      this.searchinput = this.$store.state.pageANDSelect.followSearchinput;
-    },//从vuex中取数据
-
-    addFollow(){
-      this.zgClick("添加跟进");
-      this.followDisplay=true;
-    },//点击写跟近按钮
-    handleSelect(row, event, column) {
-      if(column.label!="重置"){
-        this.zgClick("查看项目详情");
-        this.$router.push({ name: 'projectDetails', query: { project_id:row.project_id,show:'flow',activeTo: 2}})
-        this.setRouterData();
-      }
-    },//跳转到更近详情页
-    handleEdit(index, row){
-      this.zgClick("编辑跟进");
-        this.followDisplay=true;
-        this.followid=row.follow_id;
-        this.setRouterData();
-    },//点击编辑按钮,跳转
-    headerClick(column, event){
-      if(column.label==="重置"){
-        window.location.reload();
-      }
-    },//点击重置按钮时
-    handleDelete(index,row){
-      this.setRouterData();
-      this.$confirm('您确认要删除当前项目跟进记录及关联文件吗?, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.zgClick("删除跟进");
-        this.loading=true;
-        this.$http.post(this.URL.delete_follow_record, {user_id:localStorage.user_id,follow_id: row.follow_id})
+           } */
+        ], // 列表数据
+        schedule_nameFilters: [], // 跟进状态筛选
+        meet_typeFilters: [{text: '电话', value: 1}, {text: '面谈', value: 2}], // 约谈方式筛选
+        meet_statusFilters: [{text: '待确认', value: 1}, {text: '已确认', value: 2},
+          {text: '完成', value: 3}, {text: '取消', value: 4}], // 约谈状态筛选
+        meet_backFilters: [{text: '待确认', value: 1}, {text: '继续跟进', value: 2},
+          {text: '不跟进', value: 3}], // 约谈反馈筛选
+        stateCheck: false// 跟进状 态单选
+      };
+    },
+    methods: {
+      handleIconClick () {
+        this.loading = true;
+        this.getFollow.user_id = localStorage.user_id;
+        this.getFollow.pro_name = this.searchinput;
+        this.$store.state.pageANDSelect.followSearchinput = this.searchinput;
+        this.currentPage = 1;
+        this.getFollow.page = 1;
+        this.$http.post(this.URL.get_follow_records, this.getFollow)
           .then(res => {
-            this.loading=false;
-            this.$tool.success("删除成功");
-            this.getRouterData();
-            this.filterChangeCurrent(this.currentPage || 1);
+            let data = res.data.data;
+            this.tableData = data.follow_record;
+//          console.log(this.tableData.project_id);
+            this.totalData = data.count;
+            this.loading = false;
           })
           .catch(err => {
-            this.loading=false;
-            this.$tool.error("删除失败");
-            this.$tool.console(err);
-          })
+            this.loading = false;
+            this.$tool.console(err, 2);
+          });
+      }, // 搜索===首次进入页面加载的数据
 
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+      setRouterData () {
+        this.$store.state.pageANDSelect.getFollow = this.getFollow;
+        this.$store.state.pageANDSelect.folcurrentPage = this.currentPage;
+      }, // 跳转之后设置参数
+      getRouterData () {
+        this.getFollow = this.$store.state.pageANDSelect.getFollow;
+        this.currentPage = this.$store.state.pageANDSelect.folcurrentPage || 1;
+        this.getFollow.page = this.$store.state.pageANDSelect.folcurrentPage || 1;
+        this.searchinput = this.$store.state.pageANDSelect.followSearchinput;
+      }, // 从vuex中取数据
+
+      addFollow () {
+        this.zgClick('添加跟进');
+        this.followDisplay = true;
+      }, // 点击写跟近按钮
+      handleSelect (row, event, column) {
+        if (column.label !== '重置') {
+          this.zgClick('查看项目详情');
+          this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'flow', activeTo: 2}});
+          this.setRouterData();
+        }
+      }, // 跳转到更近详情页
+      handleEdit (index, row) {
+        this.zgClick('编辑跟进');
+        this.followDisplay = true;
+        this.followid = row.follow_id;
+        this.setRouterData();
+      }, // 点击编辑按钮,跳转
+      headerClick (column, event) {
+        if (column.label === '重置') {
+          window.location.reload();
+        }
+      }, // 点击重置按钮时
+      handleDelete (index, row) {
+        this.setRouterData();
+        this.$confirm('您确认要删除当前项目跟进记录及关联文件吗?, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.zgClick('删除跟进');
+          this.loading = true;
+          this.$http.post(this.URL.delete_follow_record, {user_id: localStorage.user_id, follow_id: row.follow_id})
+            .then(res => {
+              this.loading = false;
+              this.$tool.success('删除成功');
+              this.getRouterData();
+              this.filterChangeCurrent(this.currentPage || 1);
+            })
+            .catch(err => {
+              this.loading = false;
+              this.$tool.error('删除失败');
+              this.$tool.console(err);
+            });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
-      });
-    },//点击删除按钮
-    filterChange(filters){
+      }, // 点击删除按钮
+      filterChange (filters) {
 //      console.log(filters)
-      this.loading=true;
-      this.currentPage=1;
-      this.getFollow.page=1;//控制当前页码
-      this.getFollow.user_id=localStorage.user_id;
-      if(filters.order){
-        if(filters.order=="ascending") filters.order="asc"//升降序
-        else filters.order="desc";
-        this.getFollow[filters.prop] = filters.order;
-      }else{
-        for(let key in filters){
-          this.getFollow[key] = filters[key][0];
-        }
-      } //筛选
-      for(let key in this.getFollow){
-        if(this.getFollow[key]=='' || this.getFollow[key]=='NaN'){
-          delete this.getFollow[key];
-        }
-      }//删除空的查询项
+        this.loading = true;
+        this.currentPage = 1;
+        this.getFollow.page = 1;// 控制当前页码
+        this.getFollow.user_id = localStorage.user_id;
+        if (filters.order) {
+          if (filters.order === 'ascending') filters.order = 'asc';// 升降序
+          else filters.order = 'desc';
+          this.getFollow[filters.prop] = filters.order;
+        } else {
+          for (let key in filters) {
+            this.getFollow[key] = filters[key][0];
+          }
+        } // 筛选
+        for (let key in this.getFollow) {
+          if (this.getFollow[key] === '' || this.getFollow[key] === 'NaN') {
+            delete this.getFollow[key];
+          }
+        }// 删除空的查询项
 //      console.log(this.getFollow);
 
-      this.$http.post(this.URL.get_follow_records,this.getFollow)
-        .then(res=>{
-          let data = res.data.data;
-          this.tableData=data.follow_record;
-          this.totalData=data.count;
-          this.loading=false;
-        })
-        .catch(err=>{
-          this.loading=false
-          this.$tool.console(err,2)
-        })
-    },//筛选 ascending升/descending降/
-    filterChangeCurrent(page){
-      this.$tool.getTop();
-      delete this.getFollow.page;
-      this.loading=true;
-      this.getFollow.user_id=localStorage.user_id;
-      this.getFollow.page=page;//控制当前页码
+        this.$http.post(this.URL.get_follow_records, this.getFollow)
+          .then(res => {
+            let data = res.data.data;
+            this.tableData = data.follow_record;
+            this.totalData = data.count;
+            this.loading = false;
+          })
+          .catch(err => {
+            this.loading = false;
+            this.$tool.console(err, 2);
+          });
+      }, // 筛选 ascending升/descending降/
+      filterChangeCurrent (page) {
+        this.$tool.getTop();
+        delete this.getFollow.page;
+        this.loading = true;
+        this.getFollow.user_id = localStorage.user_id;
+        this.getFollow.page = page;// 控制当前页码
 //      this.$tool.console(this.getFollow);
-      this.$http.post(this.URL.get_follow_records,this.getFollow)
-        .then(res=>{
-          let data = res.data.data;
-          this.tableData = this.getList(data.follow_record);
-          this.totalData=data.count;
-          this.loading=false;
-        })
-        .catch(err=>{
-          this.loading=false;
-          this.$tool.console(err,2)
-        })
-    },//控制页码
-    filterInvestors(data){
-      if(data){
-        let arr = new Array;
-        let filters = this.card_nameFilters;
-        for(let i=0; i<data.length; i++){
-          let filter = new Array;
-          for(let j=0; j<filters.length; j++){
-            if(data[i]==filters[j].value){
-              filter[0]=filters[j].value;
-              filter[1]=filters[j].type;
+        this.$http.post(this.URL.get_follow_records, this.getFollow)
+          .then(res => {
+            let data = res.data.data;
+            this.tableData = this.getList(data.follow_record);
+            this.totalData = data.count;
+            this.loading = false;
+          })
+          .catch(err => {
+            this.loading = false;
+            this.$tool.console(err, 2);
+          });
+      }, // 控制页码
+      filterInvestors (data) {
+        if (data) {
+          let arr = [];
+          let filters = this.card_nameFilters;
+          for (let i = 0; i < data.length; i++) {
+            let filter = [];
+            for (let j = 0; j < filters.length; j++) {
+              if (data[i] === filters[j].value) {
+                filter[0] = filters[j].value;
+                filter[1] = filters[j].type;
+              }
             }
+            arr.push(filter);
           }
-          arr.push(filter);
+          return arr;
+        }
+      }, // 意向投资人筛选控制
+      closeFollow (msg) {
+        this.followDisplay = msg;
+        this.followid = '';
+        this.filterChangeCurrent(this.currentPage || 1);
+      }, // 关闭添加跟进
+
+      getList (list) {
+        let arr = [];
+        for (let i = 0; i < list.length; i++) {
+          let obj = {};
+          obj.follow_id = list[i].follow_id;
+          obj.project_id = list[i].project_id;
+          obj.pro_name = list[i].pro_name;
+          obj.pro_intro = list[i].pro_intro;
+          obj.card_name = list[i].card_name;
+          obj.user_organization = list[i].user_organization;
+          obj.schedule_name = list[i].schedule_name;
+          obj.project_id = list[i].project_id;
+          obj.meet_type = list[i].meet_type;
+          obj.meet_time = list[i].meet_time;
+          obj.meet_status = list[i].meet_status;
+          obj.meet_back = list[i].meet_back;
+          obj.created_at = list[i].created_at;
+          arr.push(obj);
         }
         return arr;
-      }
-    },//意向投资人筛选控制
-    closeFollow(msg){
-      this.followDisplay=msg;
-      this.followid="";
+      }, // 总设置列表的数据处理
+
+      getInvestors (data) {
+        let arr = [];
+        for (let i = 0; i < data.length; i++) {
+          let obj = {};
+          obj.text = data[i].card_name;
+          obj.value = data[i].card_id;
+          obj.type = data[i].type;
+          arr.push(obj);
+        }
+        return arr;
+      }, // 设置意向投资人表头
+      titleSift () {
+        this.$http.post(this.URL.getToInvestor, {user_id: localStorage.user_id})
+          .then(res => {
+            let data = res.data.data;
+            this.schedule_nameFilters = this.$tool.getTitleSift(data.schedule_name);
+          })
+          .catch(err => {
+            this.$tool.console(err, 2);
+          });
+      }// 获取表头
+    },
+    created () {
+      this.getRouterData();
+      this.$tool.getTop();
+      this.titleSift();
       this.filterChangeCurrent(this.currentPage || 1);
-    },//关闭添加跟进
-
-    getList(list){
-      let arr = new Array;
-      for(let i=0; i<list.length; i++){
-        let obj = new Object;
-        obj.follow_id = list[i].follow_id;
-        obj.project_id = list[i].project_id;
-        obj.pro_name = list[i].pro_name;
-        obj.pro_intro = list[i].pro_intro;
-        obj.card_name = list[i].card_name;
-        obj.user_organization = list[i].user_organization;
-        obj.schedule_name = list[i].schedule_name;
-        obj.project_id = list[i].project_id;
-        obj.meet_type = list[i].meet_type;
-        obj.meet_time = list[i].meet_time;
-        obj.meet_status = list[i].meet_status;
-        obj.meet_back = list[i].meet_back;
-        obj.created_at = list[i].created_at;
-        arr.push(obj);
-      }
-      return arr
-    },//总设置列表的数据处理
-
-    getInvestors(data){
-      let arr = new Array;
-      for(let i=0; i<data.length; i++){
-        let obj = new Object;
-        obj.text=data[i].card_name;
-        obj.value=data[i].card_id;
-        obj.type=data[i].type;
-        arr.push(obj);
-      }
-      return arr
-    },//设置意向投资人表头
-    titleSift(){
-      this.$http.post(this.URL.getToInvestor,{user_id: localStorage.user_id})
-        .then(res=>{
-          let data = res.data.data;
-          this.schedule_nameFilters=this.$tool.getTitleSift(data.schedule_name);
-        })
-        .catch(err=>{
-          this.$tool.console(err,2)
-        })
-    },// 获取表头
-  },
-  created(){
-    this.getRouterData();
-    this.$tool.getTop();
-    this.titleSift();
-    this.filterChangeCurrent(this.currentPage || 1);
-  },
-  watch :{
-    followDisplay : function (e) {
-      if (!e) {
+    },
+    watch: {
+      followDisplay: function (e) {
+        if (!e) {
 //        this.handleIconClick();
+        }
       }
     }
-  }
-}
+  };
 </script>
 
 <style lang="less">

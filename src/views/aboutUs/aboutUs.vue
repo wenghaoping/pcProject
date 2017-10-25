@@ -79,30 +79,29 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import weixin from '../../../static/images/img-weixin.png'
-  import dianhua from '../../../static/images/icon-dianhua.png'
-  import youxiang from '../../../static/images/icon-youxiang.png'
-  import dizhi from '../../../static/images/icon-dizhi.png'
-  import xiaochengxu from '../../../static/images/xiaochengxu.png'
-  import ios from '../../../static/images/img-iOS.png'
+  import weixin from '../../../static/images/img-weixin.png';
+  import dianhua from '../../../static/images/icon-dianhua.png';
+  import youxiang from '../../../static/images/icon-youxiang.png';
+  import dizhi from '../../../static/images/icon-dizhi.png';
+  import xiaochengxu from '../../../static/images/xiaochengxu.png';
+  import ios from '../../../static/images/img-iOS.png';
   export default {
     data () {
       return {
-        dianhua:dianhua,
-        youxiang:youxiang,
-        dizhi:dizhi,
-        xiaochengxu:xiaochengxu,
-        ios:ios,
-        weixin:weixin
-      }
+        dianhua: dianhua,
+        youxiang: youxiang,
+        dizhi: dizhi,
+        xiaochengxu: xiaochengxu,
+        ios: ios,
+        weixin: weixin
+      };
     },
-    methods:{
-      goBack(){
+    methods: {
+      goBack () {
         this.$router.go(-1);
-      },//返回上一层
+      }// 返回上一层
     }
-
-  }
+  };
 </script>
 
 <style scoped lang="less">

@@ -16,25 +16,25 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import topNav from '../../../components/topNav.vue'
+  import topNav from '../../../components/topNav.vue';
 
   export default {
-    data() {
+    data () {
       return {
         input2: '',
-        activeName:'first'
-      }
+        activeName: 'first'
+      };
     },
     components: {
       topNav
     },
     methods: {
-      handleIconClick(ev) {
+      handleIconClick (ev) {
         this.$tool.console(ev);
         this.$tool.console(this.input2);
       }
     },
-    created(){
+    created () {
 
     }
   };

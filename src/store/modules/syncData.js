@@ -3,7 +3,7 @@
  */
 export default {
   state: {
-    data:{},
-    checkList:[],
+    data: {},
+    checkList: []
   }
-}
+};

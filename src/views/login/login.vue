@@ -24,46 +24,42 @@
   </div>
 </template>
 
-
 <script type="text/ecmascript-6">
+  /* eslint-disable */
   export default {
     data () {
       return {
         tabs: [{
-          type: "验证码登录", jump: "/login"
+          type: '验证码登录', jump: '/login'
         }, {
-          type: "密码登录", jump: "/login/codeLogin"
-        }]
-        ,
+          type: '密码登录', jump: '/login/codeLogin'
+        }],
         active: 0
-      }
+      };
     },
     methods: {
-      toggle(i){
-        this.active = i
+      toggle (i) {
+        this.active = i;
       },
-      creatObj(){
-        var time=Date.now();
-        var obj = new WxLogin({
-          id: "qrCode",
-          appid: "wx9de571b0aa850c03",
-          scope: "snsapi_login",
-          redirect_uri: "https://www.weitianshi.cn/auth/weixin/callback",
+      creatObj () {
+        const time = Date.now();
+        const obj = new WxLogin({
+          id: 'qrCode',
+          appid: 'wx9de571b0aa850c03',
+          scope: 'snsapi_login',
+          redirect_uri: 'https://www.weitianshi.cn/auth/weixin/callback',
           href: 'https://www.weitianshi.cn/static/css/qrCode.css',
-          state:time
+          state: time
         });
-      },
-      checkReload(){
-
       }
     },
-    mounted(){
+    mounted () {
       this.creatObj();
     },
-    created(){
+    created () {
 
-    },
-  }
+    }
+  };
 </script>
 
 <style scoped lang="less">

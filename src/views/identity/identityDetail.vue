@@ -206,13 +206,13 @@
 
 
 <script type="text/ecmascript-6">
-  import cardUpload from '../../components/cardUpload.vue'
-  import investSuccessCase from '../../components/investSuccessCase'
+  import cardUpload from '../../components/cardUpload.vue';
+  import investSuccessCase from '../../components/investSuccessCase';
   export default {
     data () {
       return {
 //      身份认证所选择的身份的group_id
-        group_id:'',
+        group_id: '',
 //      初始列表信息
         industry: '',
         area: '',
@@ -232,18 +232,18 @@
           email: '',
           weixin: '',
           brand: '',
-          desc: '',
+          desc: ''
         },
         ruleForm2: {
           investIndustry: '',
           investStage: '',
           investScale: '',
           investArea: '',
-          is_financing:0,//是否需要FA(财务顾问)融资服务[0否，1是]
-          is_alliance:0,//是否申请加入中国FA行业聪明
-          is_identify_member:0,//是否加入FA社群认证会员
-          is_saas:0,//是否申请试用创业项目库的管理(saas)
-          is_FA_part:0,//是否兼做FA业务
+          is_financing: 0, // 是否需要FA(财务顾问)融资服务[0否，1是]
+          is_alliance: 0, // 是否申请加入中国FA行业聪明
+          is_identify_member: 0, // 是否加入FA社群认证会员
+          is_saas: 0, // 是否申请试用创业项目库的管理(saas)
+          is_FA_part: 0// 是否兼做FA业务
         },
 //      表单验证规则
         rule1: {
@@ -270,13 +270,13 @@
           desc: [
             {required: false, message: '请输入个人描述', trigger: 'blur'},
             {min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur'}
-          ],
+          ]
         },
         rule2: {
           investIndustry: [{type: 'array', required: false, message: '投资领域不能为空', trigger: 'change'}],
           investStage: [{type: 'array', required: false, message: '投资轮次不能为空', trigger: 'change'}],
           investScale: [{type: 'array', required: false, message: '投资金额不能为空', trigger: 'change'}],
-          investArea: [{type: 'array', required: false, message: '投资地区不能为空', trigger: 'change'}],
+          investArea: [{type: 'array', required: false, message: '投资地区不能为空', trigger: 'change'}]
         },
 //      是否添加过成功案例
         hasSuccessCase: false,
@@ -285,43 +285,43 @@
 //      上传图片成功的返回值
         authenticate_id: '',
 //      成功案例数据
-        investCaseData:[{
-          case_name : '',
+        investCaseData: [{
+          case_name: '',
           case_deal_time: '',
           case_industry: '',
           case_stage: '',
           case_province: '',
           case_city: '',
-          case_money: '',
-        }],
-      }
+          case_money: ''
+        }]
+      };
     },
     components: {
       cardUpload, investSuccessCase
     },
     methods: {
       // 跳过
-      skip(){
-        this.zgClick("跳过");
-        if(localStorage.entrance==undefined){
-          this.$router.push({name:'myProject'});
-        }else {
-          this.$router.push({name:localStorage.entrance})
+      skip () {
+        this.zgClick('跳过');
+        if (localStorage.entrance === undefined) {
+          this.$router.push({name: 'myProject'});
+        } else {
+          this.$router.push({name: localStorage.entrance});
         }
       },
       // 完成
-      next(){
+      next () {
 //        console.log(this.investCaseData)
-        if (!this.ruleForm1.name.replace(/^\s+|\s+$/g, "")) {
-          this.$tool.error('请正确填写姓名')
-        } else if (!this.ruleForm1.company.replace(/^\s+|\s+$/g, "")) {
-          this.$tool.error('请正确填写公司名称')
-        } else if (!this.ruleForm1.career.replace(/^\s+|\s+$/g, "")) {
-          this.$tool.error('请正确填写职位')
-        }else if (this.ruleForm1.email && !this.$tool.checkEmail(this.ruleForm1.email)) {
-          this.$tool.error('请正确填写邮箱')
-        }else {
-          this.zgClick("提交投资名片");
+        if (!this.ruleForm1.name.replace(/^\s+|\s+$/g, '')) {
+          this.$tool.error('请正确填写姓名');
+        } else if (!this.ruleForm1.company.replace(/^\s+|\s+$/g, '')) {
+          this.$tool.error('请正确填写公司名称');
+        } else if (!this.ruleForm1.career.replace(/^\s+|\s+$/g, '')) {
+          this.$tool.error('请正确填写职位');
+        } else if (this.ruleForm1.email && !this.$tool.checkEmail(this.ruleForm1.email)) {
+          this.$tool.error('请正确填写邮箱');
+        } else {
+          this.zgClick('提交投资名片');
 //          console.log(this.ruleForm1, this.ruleForm2);
           this.$http.post(this.URL.saveUserIdentity, {
             authenticate_id: localStorage.authenticate_id,
@@ -337,126 +337,124 @@
             area: this.ruleForm2.investArea,
             stage: this.ruleForm2.investStage,
             scale: this.ruleForm2.investScale,
-            is_financing:this.ruleForm2.is_financing,
-            is_alliance:this.ruleForm2.is_alliance,
-            is_identify_member:this.ruleForm2.is_identify_member,
-            is_saas:this.ruleForm2.is_saas,
-            is_FA_part:this.ruleForm2.is_FA_part,
-            group_id:localStorage.group_id,
-            project_case:this.investCaseData
+            is_financing: this.ruleForm2.is_financing,
+            is_alliance: this.ruleForm2.is_alliance,
+            is_identify_member: this.ruleForm2.is_identify_member,
+            is_saas: this.ruleForm2.is_saas,
+            is_FA_part: this.ruleForm2.is_FA_part,
+            group_id: localStorage.group_id,
+            project_case: this.investCaseData
           }).then(res => {
             if (res.data.status_code === 2000000) {
               this.getCheckUserInfo(localStorage.user_id);
-              setTimeout(()=>{
-                if(localStorage.entrance==undefined){
-                  this.$router.push({name:'myProject'});
-                }else {
-                  this.$router.push({name:localStorage.entrance})
+              setTimeout(() => {
+                if (localStorage.entrance === undefined) {
+                  this.$router.push({name: 'myProject'});
+                } else {
+                  this.$router.push({name: localStorage.entrance});
                 }
-              },1000)
-
+              }, 1000);
             } else {
-              this.$tool.error(res.data.error_msg)
+              this.$tool.error(res.data.error_msg);
             }
-          })
+          });
         }
       },
       // 显示成功案例弹窗
-      addInvestCase(){
-        this.dialogShow = true
+      addInvestCase () {
+        this.dialogShow = true;
       },
       // 关闭成功案例弹窗
-      closeInvestCase(e){
-        this.dialogShow = false
+      closeInvestCase (e) {
+        this.dialogShow = false;
       },
       // 公司搜索相关函数
-      handleSelect(item) {
+      handleSelect (item) {
         this.companyTitle = item.company_name;
         this.$http.post(this.URL.getOneCompany, {user_id: localStorage.user_id, com_id: item.address})
-        .then(res => {
-          let data = res.data.data;
-          this.queryData = data;
-//          console.log(this.$tool.getToObject(data));
-        })
-        .catch(err => {
-          this.alert("获取失败");
-//          console.log(err);
-        });
-        this.dialogVisible = true;
-      },
-      querySearchAsync(queryString, cb) {
-        if(queryString.length>2){
-          this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
           .then(res => {
-            this.restaurants = [];
             let data = res.data.data;
-            this.restaurants = this.loadData(data);
-            if (queryString == "") this.restaurants = [];
-            let restaurants = this.restaurants;
-            /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-              cb(restaurants);
-            }, 300);
+            this.queryData = data;
+//          console.log(this.$tool.getToObject(data));
           })
           .catch(err => {
+            this.alert('获取失败');
             console.log(err);
-          })
-        }else{
-          cb([]);
+          });
+        this.dialogVisible = true;
+      },
+      querySearchAsync (queryString, cb) {
+        if (queryString.length > 2) {
+          this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
+            .then(res => {
+              this.restaurants = [];
+              let data = res.data.data;
+              this.restaurants = this.loadData(data);
+              if (queryString === '') this.restaurants = [];
+              let restaurants = this.restaurants;
+              /*          let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants; */
+              clearTimeout(this.timeout);
+              this.timeout = setTimeout(() => {
+                cb(restaurants);
+              }, 300);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          let callback = [];
+          cb(callback);
         }
       },
-      createStateFilter(queryString) {
+      createStateFilter (queryString) {
         return (state) => {
           return (state.value.indexOf(queryString.toLowerCase()) === 0);
         };
       },
-      loadData(arr){
+      loadData (arr) {
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].project_name=="" ? arr[i].company_name : arr[i].company_name + ' ( ' +arr[i].project_name + ' ) ';
+          obj.value = arr[i].project_name === '' ? arr[i].company_name : arr[i].company_name + ' ( ' + arr[i].project_name + ' ) ';
           obj.address = arr[i].com_id;
           obj.company_name = arr[i].company_name;
-          newArr.push(obj)
+          newArr.push(obj);
         }
         return newArr;
       },
       // 接收上传图片时返回的authenticate_id
-      uploadSuccess(response){
+      uploadSuccess (response) {
 //        console.log('图片上传返回数据',response)
       },
-      getWxProjectCategory(){
+      getWxProjectCategory () {
         this.industry = this.$global.data.industry;
         this.scale = this.$global.data.scale;
         this.stage = this.$global.data.stage;
         this.hotCity = this.$global.data.hotCity;
       }
     },
-    mounted(){
+    mounted () {
     },
-    created(){
+    created () {
       this.$global.func.getWxProjectCategory()
-        .then((data)=>{
+        .then((data) => {
           return this.getWxProjectCategory();
-        })
-      //核对是否认证过身份
-//      this.$http.post(this.URL.getUserGroupByStatus, {
-//        user_id: localStorage.user_id
-//      }).then(res => {
-//        if (res.data.status_code === 2000000) {
-//          if (res.data.status === 1 || res.data.status === 2){
-//            this.$router.push({name: 'index'})
-//          }
-//        } else {
-//          this.$tool.error('核对身份接口调用失败')
-//        }
-//      })
-//      this.group_id = localStorage.group_id;
-
-//      console.log(this.group_id)
+        });
+      // 核对是否认证过身份
+      this.$http.post(this.URL.getUserGroupByStatus, {
+        user_id: localStorage.user_id
+      }).then(res => {
+        if (res.data.status_code === 2000000) {
+          if (res.data.status === 1 || res.data.status === 2) {
+            this.$router.push({name: 'index'});
+          }
+        } else {
+          this.$tool.error('核对身份接口调用失败');
+        }
+      });
+      this.group_id = localStorage.group_id;
     }
-  }
+  };
 </script>
 
 <style lang="less">

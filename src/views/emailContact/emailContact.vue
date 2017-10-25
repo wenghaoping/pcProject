@@ -11,19 +11,16 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import img from '../../../static/images/img-fageerweima.png'
+  import img from '../../../static/images/img-fageerweima.png';
   export default {
     data () {
       return {
-       img:img,
-        loading:false,
-      }
+        img: img,
+        loading: false
+      };
     },
-    methods:{
-
-    }
-
-  }
+    methods: {}
+  };
 </script>
 
 <style scoped lang="less">

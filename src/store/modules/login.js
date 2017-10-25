@@ -4,7 +4,7 @@
 export default {
   state: {
     user_id: '',
-    user_real_name:'',
-    routeName:"",
+    user_real_name: '',
+    routeName: ''
   }
-}
+};

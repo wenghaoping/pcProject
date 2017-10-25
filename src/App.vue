@@ -77,245 +77,245 @@
   export default {
     data () {
       return {
-        brand1:'',
+        brand1: '',
         restaurants: [],
         companyTitle: '',
-        timeout:  null,
-        cb:'',
+        timeout: null,
+        cb: '',
         options: [
           {
             value: 0,
             label: '个人信息'
           },
           {
-          value: 1,
-          label: '退出登录'
-        }],
-        value:'',
-        flag:false,
+            value: 1,
+            label: '退出登录'
+          }],
+        value: '',
+        flag: false,
         active: 0,
         tabs: [
           {type: '首页', jump: '/'},
-          {type: '工作站', jump: '/workBench'},
+          {type: '工作站', jump: '/workBench'}
 //          {type: '扫码登陆',jump:'/logining'},
 //          {type: '一键尽调', jump: '/API/DD?company=杭州卓健信息科技有限公司&id=NC81sv9XmvLTsIQ5g7PeHWD0iOySYBrtAHC5M5poeOlkITcTYTChn92kadP9Kau8&includeInvestorMap=false;'},
 //          {type: '测试页面2', jump: '/test2'}
         ],
-        user_name:'',
-        user_id:'',
-        routerName:""
-      }
+        user_name: '',
+        user_id: '',
+        routerName: ''
+      };
     },
-    mounted(){
+    mounted () {
     },
     methods: {
       // 切换选项卡
-      toggle(i){
+      toggle (i) {
         this.active = i;
-        if(this.active===0){this.zgClick("首页");}
-        if(this.active===1){this.zgClick("工作站");}
-        if(this.active===2){this.zgClick("小程序");}
+        if (this.active === 0) { this.zgClick('首页'); }
+        if (this.active === 1) { this.zgClick('工作站'); }
+        if (this.active === 2) { this.zgClick('小程序'); }
         // 控制点击工作台跳转情况
-        if(this.active===1){
-          localStorage.entrance='myProject';
-          if(localStorage.user_id){
-            this.$router.push({name: 'myProject',query: {activeTo: 0}});
+        if (this.active === 1) {
+          localStorage.entrance = 'myProject';
+          if (localStorage.user_id) {
+            this.$router.push({name: 'myProject', query: {activeTo: 0}});
 
 //            setTimeout(()=>{ window.location.reload()},1000);
-          }else{
-            this.$router.push({name:"telephoneLogin"});
+          } else {
+            this.$router.push({name: 'telephoneLogin'});
           }
         }
       },
       // 伪造user_id
-      setUserId(){
+      setUserId () {
 //        localStorage.user_id = 'V0VznXa0';
-        localStorage.user_id = '8W1ERo3W';//自己的
+        localStorage.user_id = '8W1ERo3W';// 自己的
 //        localStorage.user_id='2rzyz5vp';
 //        localStorage.user_id='2rzyJEwp';
-        localStorage.user_real_name='翁浩平';
-        this.$store.state.logining.user_real_name='黄晨曦';
+        localStorage.user_real_name = '翁浩平';
+        this.$store.state.logining.user_real_name = '黄晨曦';
       },
       // 登录
-      login(){
-        this.zgClick("登陆");
-        localStorage.entrance='myProject';
+      login () {
+        this.zgClick('登陆');
+        localStorage.entrance = 'myProject';
         this.$router.push('/login');
       },
       //
 
-      //显示退出登录
-      opp(){
-        this.flag=!this.flag;
+      // 显示退出登录
+      opp () {
+        this.flag = !this.flag;
       },
-      //*获取远程数据模拟
-      loadData(arr){
+      //* 获取远程数据模拟
+      loadData (arr) {
         var newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].project_name=="" ? arr[i].company_name : arr[i].company_name + '(' +arr[i].project_name + ')';
+          obj.value = arr[i].project_name === '' ? arr[i].company_name : arr[i].company_name + '(' + arr[i].project_name + ')';
           obj.address = arr[i].com_id;
           obj.company_name = arr[i].company_name;
-          obj.pro_id=arr[i].pro_id;
-          newArr.push(obj)
+          obj.pro_id = arr[i].pro_id;
+          newArr.push(obj);
         }
         return newArr;
       },
-      //*自动搜索,接口写这里面
-      querySearchAsync(queryString, cb) {
-
-        if(queryString.length>2) {
+      //* 自动搜索,接口写这里面
+      querySearchAsync (queryString, cb) {
+        if (queryString.length > 2) {
           this.$http.post(this.URL.selectCompany, {company_name: queryString})
             .then(res => {
               this.restaurants = [];
               let data = res.data.data;
-                this.restaurants = this.loadData(data);
+              this.restaurants = this.loadData(data);
               let restaurants = this.restaurants;
               clearTimeout(this.timeout);
               this.timeout = setTimeout(() => {
-                  if(data.length==0){
-                    cb([{value:"未查询到结果，换个关键词试试",address:-1}]);
-                  }else{
-                    cb(restaurants);
-                  }
+                if (data.length === 0) {
+                  let callback = [{value: '未查询到结果，换个关键词试试', address: -1}];
+                  cb(callback);
+                } else {
+                  cb(restaurants);
+                }
               }, 500);
             })
             .catch(err => {
-              this.$tool.console(this.restaurants);
-            })
-        }else{
-          cb([]);
+              this.$tool.console(err);
+            });
+        } else {
+          let callback = [];
+          cb(callback);
         }
       },
-      handleSelect(item) {
-        this.loading=true;
-        this.companyTitle=item.company_name;
-        this.companyId = item.address ;
-        this.$http.post(this.URL.getCrawlerCompany, {company_name:this.companyTitle})
+      handleSelect (item) {
+        this.loading = true;
+        this.companyTitle = item.company_name;
+        this.companyId = item.address;
+        this.$http.post(this.URL.getCrawlerCompany, {company_name: this.companyTitle})
           .then(res => {
             let data = res.data.data;
-            if(data.length!=0){
-              this.$router.push({name: 'onekeyResearch', query: {company:  item.company_name,pro:item.pro_id}})//路由传参
-            }else{
-              this.$tool.warning("未查询到该公司信息，无法获取");
+            if (data.length !== 0) {
+              this.$router.push({name: 'onekeyResearch', query: {company: item.company_name, pro: item.pro_id}});// 路由传参
+            } else {
+              this.$tool.warning('未查询到该公司信息，无法获取');
             }
-            this.loading=false;
+            this.loading = false;
           })
           .catch(err => {
-            this.$tool.error("获取失败");
+            this.$tool.error('获取失败');
             this.$tool.console(err);
-            this.loading=false;
+            this.loading = false;
           });
-      },//选择了搜索出来的数据后
-      //检查localStorage.user_id
-      checkUser(){
-        //this.$tool.console(this.$route.path)
-        this.user_id=localStorage.user_id;
+      }, // 选择了搜索出来的数据后
+      // 检查localStorage.user_id
+      checkUser () {
+        // this.$tool.console(this.$route.path)
+        this.user_id = localStorage.user_id;
 //        this.user_name = this.userRealName;
-        //头部导航下标不对应问题解决
-        if(this.$route.path==='/workBench' || this.$route.path==='/workBench/'){
-          this.active=1
+        // 头部导航下标不对应问题解决
+        if (this.$route.path === '/workBench' || this.$route.path === '/workBench/') {
+          this.active = 1;
         }
 
-        //看是否需要加入项目库
+        // 看是否需要加入项目库
         this.addProject();
 
-        //未登录状态下拦截
-        if(!localStorage.user_id && this.$route.path!=='/'
-          && this.$route.path!=='/login' && this.$route.path!=='/login/codeLogin'
-          && this.$route.path!=='/login/telephoneLogin' && this.$route.path!=='/forgetPassword'
-          && this.$route.path!=='/loginReady' &&this.$route.path!=='/login/'
-          && this.$route.path!=='/bindTelephone'&& this.$route.path!=='/qr'
-          && this.$route.path!=='/API/DD' && this.$route.path!=='/aboutUs'
-          && this.$route.path!=='/onekeyResearch' && this.$route.path!='/emailContact'
-          && this.$route.path!='/addProject' && this.$route.path!='/iosBanner'
-          && this.$route.path!='/skipToPc'){
+        // 未登录状态下拦截
+        if (!localStorage.user_id && this.$route.path !== '/' &&
+          this.$route.path !== '/login' && this.$route.path !== '/login/codeLogin' &&
+          this.$route.path !== '/login/telephoneLogin' && this.$route.path !== '/forgetPassword' &&
+          this.$route.path !== '/loginReady' && this.$route.path !== '/login/' &&
+          this.$route.path !== '/bindTelephone' && this.$route.path !== '/qr' &&
+          this.$route.path !== '/API/DD' && this.$route.path !== '/aboutUs' &&
+          this.$route.path !== '/onekeyResearch' && this.$route.path !== '/emailContact' &&
+          this.$route.path !== '/addProject' && this.$route.path !== '/iosBanner' &&
+          this.$route.path !== '/skipToPc') {
 //          this.$tool.error('请先登录');
 //          && this.$route.path!=='/workBench/'&& this.$route.path!=='/workBench'
-          this.$router.push({name:'index'});
-          this.$store.state.logining.user_id = "";
-          this.$store.state.logining.user_real_name = "";
+          this.$router.push({name: 'index'});
+          this.$store.state.logining.user_id = '';
+          this.$store.state.logining.user_real_name = '';
         }
-        //十二小时不动后退出登录
-        setTimeout(function(){
+        // 十二小时不动后退出登录
+        setTimeout(function () {
           localStorage.clear();
           sessionStorage.clear();
-        },43200000)
-        //登录状态下拦截
-        /*if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
-          this.$router.push({name:'index'})
-        }*/
-
-
+        }, 43200000);
+        // 登录状态下拦截
+        /* if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
+         this.$router.push({name:'index'})
+         } */
       },
-      //登出
-      loginOut(e){
-        if(e==1){
+      // 登出
+      loginOut (e) {
+        if (e === 1) {
           localStorage.clear();
           sessionStorage.clear();
-          this.$router.push({name: 'login'});//路由传参
-          this.$store.state.logining.user_real_name = "";
-          this.$store.state.logining.user_id = "";
-          setTimeout(()=>{ window.location.reload();},100)
+          this.$router.push({name: 'login'});// 路由传参
+          this.$store.state.logining.user_real_name = '';
+          this.$store.state.logining.user_id = '';
+          setTimeout(() => { window.location.reload(); }, 100);
         }
 //        if(e==0){
 //          this.$router.push({name: 'identityDetail', query: {user: localStorage.user_id}})//路由传参
 //        }
-
       },
-      //加入项目库
-      addProject(){
-        //如果是加入项目库操作的
-        if(sessionStorage.flog === 'mail'){
-          if(!localStorage.user_id) {
-            //没有登录的人去登录
+      // 加入项目库
+      addProject () {
+        // 如果是加入项目库操作的
+        if (sessionStorage.flog === 'mail') {
+          if (!localStorage.user_id) {
+            // 没有登录的人去登录
 
-          }else if(sessionStorage.userId !== localStorage.user_id){
-            //推送者和接受者是不是一人时
-            this.$tool.warning("此链接不是分享给您的,请进入正确的链接");
-            sessionStorage.clear();//把默认值清空;
-            setTimeout(()=>{ this.$router.push({name: 'myProject',query: {activeTo: 0}}); },1000);
-          }else if((sessionStorage.userId === localStorage.user_id) && (sessionStorage.flog==='mail') && (sessionStorage.type==='user')) {
-            //当是同一人时,且是加入项目的时候
-            this.$http.post(this.URL.importProject,{user_id: sessionStorage.userId, project_id:sessionStorage.projectId})
-              .then(res=>{
-                if(res.data.status_code==2000000) {
-                  this.$tool.success("项目导入成功");
-                  sessionStorage.clear();//把默认值清空;
-                  setTimeout(()=>{this.$router.push({name: 'myProject',query: {activeTo: 0}}); },1000);}
+          } else if (sessionStorage.userId !== localStorage.user_id) {
+            // 推送者和接受者是不是一人时
+            this.$tool.warning('此链接不是分享给您的,请进入正确的链接');
+            sessionStorage.clear();// 把默认值清空;
+            setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 1000);
+          } else if ((sessionStorage.userId === localStorage.user_id) && (sessionStorage.flog === 'mail') && (sessionStorage.type === 'user')) {
+            // 当是同一人时,且是加入项目的时候
+            this.$http.post(this.URL.importProject, {user_id: sessionStorage.userId, project_id: sessionStorage.projectId})
+              .then(res => {
+                if (res.data.status_code === 2000000) {
+                  this.$tool.success('项目导入成功');
+                  sessionStorage.clear();// 把默认值清空;
+                  setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 1000);
+                }
               })
-              .catch(err=>{
-                this.$tool.error("项目导入失败");
-                sessionStorage.clear();//把默认值清空;
-                setTimeout(()=>{this.$router.push({name: 'myProject',query: {activeTo: 0}});},1000);
-              })
+              .catch(err => {
+                this.$tool.error('项目导入失败');
+                console.log(err);
+                sessionStorage.clear();// 把默认值清空;
+                setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 1000);
+              });
           }
         }
-      },//邮箱加入项目库
+      }// 邮箱加入项目库
     },
-    //当dom一创建时
-    created(){
+    // 当dom一创建时
+    created () {
       this.user_name = localStorage.user_real_name;
-      this.zgIdentify(localStorage.user_id,{name:localStorage.user_real_name});
+      this.zgIdentify(localStorage.user_id, {name: localStorage.user_real_name});
       this.getCheckUserInfo(localStorage.user_id);
     },
-    computed:{
-      userRealName(){
-        let user_real_name = this.$store.state.logining.user_real_name || localStorage.user_real_name;
-        return user_real_name;
-      },
+    computed: {
+      userRealName () {
+        let userRealName = this.$store.state.logining.user_real_name || localStorage.user_real_name;
+        return userRealName;
+      }
     },
     watch: {
-      "$route" (to, from){
+      '$route' (to, from) {
         this.checkUser();
-        if(from.name === this.routerName){
+        if (from.name === this.routerName) {
           this.zgTimeOut(from.name);
         }
         this.routerName = to.name;
         this.zgTimeIn();
       }
     }
-  }
+  };
 </script>
 
 <style lang="less">

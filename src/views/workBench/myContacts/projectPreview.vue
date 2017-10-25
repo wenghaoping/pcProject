@@ -1,5 +1,4 @@
 <template>
-
   <div id="projectPreview" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================项目推送预览弹框=============================================-->
     <el-dialog :visible="previewShow" :show-close="close"  custom-class="dialogCon" :before-close="closePreview" close-on-press-escape close-on-click-modal>
@@ -263,268 +262,238 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import yichu from "../../../assets/images/icon-yichu.png"
-  import xiaochengxu from '../../../../static/images/xiaochengxu1.png'
-  import pinpai from '../../../../static/images/icon-pinpa.png'
-  import yunying from '../../../../static/images/icon-yunying.png'
-  import cirIcon from '../../../../static/images/circle.png'
-export default {
-  props: ["previewShow","investorid",'comeFrom'],
-  data () {
-    return {
-      yichu:yichu,
-      yunying:yunying,
-      pinpai:pinpai,
-      cirIcon:cirIcon,
-      xiaochengxu:xiaochengxu,
-      close:false,//默认关闭
-      loading:false,//加载动画
-      show: "detail",
-      styleObject: {
-        color: '',
-      },
-      file:{
-        pro_BP:{
-          created_at: "",//2017-08-30 10:51:15
-          deleted_at: null,
-          file_ext: "",//docx
-          file_id: '',//3530
-          file_title: "",//微天使PC端开发文档1
-          file_url: "",///test_file/20170830/egKaSAxsZ7UNshhkCIuvbpjqNzDW59a628010b3d0.docx
-          follow_id: '',//0
-          project_id: '',//8215
-          type: '',//1
-          updated_at: "",//2017-08-30 10:51:15
-          user_id: '',//182510
+  import yichu from '../../../assets/images/icon-yichu.png';
+  import xiaochengxu from '../../../../static/images/xiaochengxu1.png';
+  import pinpai from '../../../../static/images/icon-pinpa.png';
+  import yunying from '../../../../static/images/icon-yunying.png';
+  import cirIcon from '../../../../static/images/circle.png';
+  export default {
+    props: ['previewShow', 'investorid', 'comeFrom'],
+    data () {
+      return {
+        yichu: yichu,
+        yunying: yunying,
+        pinpai: pinpai,
+        cirIcon: cirIcon,
+        xiaochengxu: xiaochengxu,
+        close: false, // 默认关闭
+        loading: false, // 加载动画
+        show: 'detail',
+        styleObject: {
+          color: ''
         },
-
-      },
-      team:{
-        core_users:{
-          ct_member_career:'',//技术
-          ct_member_intro:'',//亮点亮点亮点亮点亮点亮点亮点亮点
-          ct_member_name:'',//张三
-          stock_scale:'',//10
-
-        },
-        tag:{
-          tag_name:'',//大海
-        }
-      },
-      financing:{
-        pro_finance_use:'',//用途
-        pro_history_finance:[
-          {
-            finance_time:'',//1503331200
-            pro_finance_investor:'',//aS财经asaS财经asaS财经asaS财saSasaSS财经asaS
-            pro_finance_scale:'',//10000
-            belongs_to_stage:{
-              sort: '',//5
-              stage_id: '',//18
-              stage_name: "",//A+轮
-            }
+        file: {
+          pro_BP: {
+            created_at: '', // 2017-08-30 10:51:15
+            deleted_at: null,
+            file_ext: '', // docx
+            file_id: '', // 3530
+            file_title: '', // 微天使PC端开发文档1
+            file_url: '', /// test_file/20170830/egKaSAxsZ7UNshhkCIuvbpjqNzDW59a628010b3d0.docx
+            follow_id: '', // 0
+            project_id: '', // 8215
+            type: '', // 1
+            updated_at: '', // 2017-08-30 10:51:15
+            user_id: ''// 182510
           }
-        ]
-      },
-      company:{
-        pro_status:{
-          status_name: ""//上线1
-        },
-        pro_company_scale:{
-          comp_scale_value:''//1-20
-        },
-        pro_website:''//baidu.com
-      },
-      pro:{
-        is_exclusive:'',//1
-      },
-      milepost:{
-        pro_develop:{
-          dh_start_time:'',//1503331200
-          dh_event:''//事件
-        }
 
-      },
-      brands:{},
-      private:{
-        commission:'',//10
-        contact_user_career:'',//技术
-        stock_follow:'',//12
-        stock_other:'',//22
-        stock_right:'',//12
-        user_mobile:'',//18745852123
-        user_name:'',//张三
-        pro_source:{
-          tag_name:''//baidu
-        }
-      },
-      project:{
-        pro_industry:{
-          industry_name:''//轮次
         },
-        follow_user:'',//张小五
-        open_status:'',//1
-        pro_company_name:'',//aaa
-        pro_intro: "",//微天使PC端开发文档
-        pro_name: "",//微天使PC端开发文档
-        pro_schedule:'',//10
-        pro_total_score:'',//94
-        pro_area:{
-          area_title:''//北京市
-        },
-        goodness:{
-          pro_business_model:'',
-          pro_goodness:{
-            goodness_desc: "",//凉凉凉凉
-            goodness_title: ""//亮点亮点
-          },
-          pro_market_genera:{},
-          pro_service:{},
-        },
-        pro_scale:{
-          scale_money:'',//1001W-200W
-        },
-        pro_stage:{
-          stage_name:''//天使论
-        },
-        goodness:{
-          pro_business_model:[{
-            goodness_desc: "",//凉凉凉凉
-            goodness_title: ""//亮点亮点
-          },
-            {
-              goodness_desc: "",//凉凉凉凉
-              goodness_title: ""//亮点亮点
-            }
-          ],
-          pro_goodness:[{
-            goodness_desc: "",//凉凉凉凉
-            goodness_title: ""//亮点亮点
-          },
-            {
-              goodness_desc: "",//凉凉凉凉
-              goodness_title: ""//亮点亮点
-            }
-          ],
-          pro_market_genera:[{
-            goodness_desc: "",//凉凉凉凉
-            goodness_title: ""//亮点亮点
-          },
-            {
-              goodness_desc: "",//凉凉凉凉
-              goodness_title: ""//亮点亮点
-            }
-          ],
-          pro_service:[{
-            goodness_desc: "",//凉凉凉凉
-            goodness_title: ""//亮点亮点
-          },
-            {
-              goodness_desc: "",//凉凉凉凉
-              goodness_title: ""//亮点亮点
-            }
-          ],
-        },
-      },
+        team: {
+          core_users: {
+            ct_member_career: '', // 技术
+            ct_member_intro: '', // 亮点亮点亮点亮点亮点亮点亮点亮点
+            ct_member_name: '', // 张三
+            stock_scale: ''// 10
 
-
-      user:{
-        user_real_name:'顾家',//被推送的人
-        user_company_career:'投资尽力',
-        user_company_name:'杭州投着乐网络科技有限公司',
-        firse_user_real_name:'顾家',//当前用户
-        firse_user_company_career:'投资尽力',
-        firse_user_company_name:'杭州投着乐网络科技有限公司',
-        user_brand:'',//品牌
-      },
-      pushMessage:{},//推送用的数据
-      project_id:'',
-      project_intro:'',
-      email:{
-
-      }
-    }
-  },
-  methods: {
-    getteam_tag(arr){
-      let str=[];
-      for(let i=0;i<arr.length;i++){
-        if(arr[i].type==1){
-          str.push(arr[i].tag_name)
-        }
-      }
-      return str
-    },//项目来源编辑
-    closePreview(){
-      this.$emit('closePreview', false);
-    },//关闭当前弹窗
-    getFirstUser() {
-      this.$http.post(this.URL.getOneUserInfo,{user_id: localStorage.user_id})
-        .then(res=>{
-          if(res.data.status_code==2000000) {
-            let data = res.data.data;
-            this.user.firse_user_real_name=data.user_real_name;
-            this.user.firse_user_company_career=data.user_company_career;
-            this.user.firse_user_company_name=data.user_company_name;
-            this.user.user_brand=data.user_brand || '';
+          },
+          tag: {
+            tag_name: ''// 大海
           }
-        })
-        .catch(err=>{
-          this.$tool.console(err,2);
-          this.$tool.error("加载超时");
-        })
-    },//获取当前用户部分信息
-    getProjectTag(arr){
-      let str=""
-      for(let i=0;i<arr.length;i++){
-        if(arr[i].type==2){
-          str+=arr[i].tag_name+'.'
-        }
-      }
-      return str
-    },//项目来源编辑
-    getProjectDetail () {
-      return new Promise((resolve, reject)=>{
-        //做一些异步操作
-        this.$http.post(this.URL.getProjectDetail,{user_id:localStorage.user_id,project_id:this.project_id})
-          .then(res=>{
-            let data = res.data.data;
-            // 项目介绍
-            if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money=" ";}
-            if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title=" ";}
-            if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name=' '}
-            if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after=' '}
-            if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro=' '}
-            if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name=' '}
-            if(data.company.pro_status==''){data.company.pro_status={};data.company.pro_status.status_name='-'}
-            if(data.company.pro_website==''){data.company.pro_website={};data.company.pro_website='-'}
-            if(data.company.pro_company_scale==''){data.company.pro_company_scale={};data.company.pro_company_scale.comp_scale_value='-'}
-            if(data.project.pro_schedule=="") {data.project.pro_schedule={};data.project.pro_schedule.schedule_name="";data.project.pro_schedule.schedule_id="";}
-            this.project=data.project;
-            //公司运营
-            this.company=data.company;
-            //项目文件
-            this.file.pro_BP.file_title=data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext;
-            this.file=data.file;
-            //融资信息
-            this.$tool.setTime(data.financing.pro_history_finance,'finance_time');
-            this.financing=data.financing;
-            //里程碑
-            this.$tool.setTime(data.milepost.pro_develop,'dh_start_time');
-            this.milepost=data.milepost;
-            //FA业务
-            this.private=data.private;
-            //团队
-            this.team.tag=this.getteam_tag(data.team.tag);
-            this.team=data.team;
+        },
+        financing: {
+          pro_finance_use: '', // 用途
+          pro_history_finance: [
+            {
+              finance_time: '', // 1503331200
+              pro_finance_investor: '', // aS财经asaS财经asaS财经asaS财saSasaSS财经asaS
+              pro_finance_scale: '', // 10000
+              belongs_to_stage: {
+                sort: '', // 5
+                stage_id: '', // 18
+                stage_name: '' // A+轮
+              }
+            }
+          ]
+        },
+        company: {
+          pro_status: {
+            status_name: ''// 上线1
+          },
+          pro_company_scale: {
+            comp_scale_value: ''// 1-20
+          },
+          pro_website: ''// baidu.com
+        },
+        pro: {
+          is_exclusive: ''// 1
+        },
+        milepost: {
+          pro_develop: {
+            dh_start_time: '', // 1503331200
+            dh_event: ''// 事件
+          }
 
-            //is_exclusive
-            this.pro=data.pro_FA;
-            //brand
-            this.brands=data.brands;
+        },
+        brands: {},
+        private: {
+          commission: '', // 10
+          contact_user_career: '', // 技术
+          stock_follow: '', // 12
+          stock_other: '', // 22
+          stock_right: '', // 12
+          user_mobile: '', // 18745852123
+          user_name: '', // 张三
+          pro_source: {
+            tag_name: ''// baidu
+          }
+        },
+        project: {
+          pro_industry: {
+            industry_name: ''// 轮次
+          },
+          follow_user: '', // 张小五
+          open_status: '', // 1
+          pro_company_name: '', // aaa
+          pro_intro: '', // 微天使PC端开发文档
+          pro_name: '', // 微天使PC端开发文档
+          pro_schedule: '', // 10
+          pro_total_score: '', // 94
+          pro_area: {
+            area_title: ''// 北京市
+          },
+          pro_scale: {
+            scale_money: ''// 1001W-200W
+          },
+          pro_stage: {
+            stage_name: ''// 天使论
+          },
+          goodness: {
+            pro_business_model: [{
+              goodness_desc: '', // 凉凉凉凉
+              goodness_title: ''// 亮点亮点
+            }],
+            pro_goodness: [{
+              goodness_desc: '', // 凉凉凉凉
+              goodness_title: ''// 亮点亮点
+            }],
+            pro_market_genera: [{
+              goodness_desc: '', // 凉凉凉凉
+              goodness_title: ''// 亮点亮点
+            }],
+            pro_service: [{
+              goodness_desc: '', // 凉凉凉凉
+              goodness_title: ''// 亮点亮点
+            }]
+          }
+        },
+
+        user: {
+          user_real_name: '顾家', // 被推送的人
+          user_company_career: '投资尽力',
+          user_company_name: '杭州投着乐网络科技有限公司',
+          firse_user_real_name: '顾家', // 当前用户
+          firse_user_company_career: '投资尽力',
+          firse_user_company_name: '杭州投着乐网络科技有限公司',
+          user_brand: ''// 品牌
+        },
+        pushMessage: {}, // 推送用的数据
+        project_id: '',
+        project_intro: '',
+        email: {
+
+        }
+      };
+    },
+    methods: {
+      getteam_tag (arr) {
+        let str = [];
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].type === 1) {
+            str.push(arr[i].tag_name);
+          }
+        }
+        return str;
+      }, // 项目来源编辑
+      closePreview () {
+        this.$emit('closePreview', false);
+      }, // 关闭当前弹窗
+      getFirstUser () {
+        this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id})
+          .then(res => {
+            if (res.data.status_code === 2000000) {
+              let data = res.data.data;
+              this.user.firse_user_real_name = data.user_real_name;
+              this.user.firse_user_company_career = data.user_company_career;
+              this.user.firse_user_company_name = data.user_company_name;
+              this.user.user_brand = data.user_brand || '';
+            }
+          })
+          .catch(err => {
+            this.$tool.console(err, 2);
+            this.$tool.error('加载超时');
+          });
+      }, // 获取当前用户部分信息
+      getProjectTag (arr) {
+        let str = '';
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].type === 2) {
+            str += arr[i].tag_name + '.';
+          }
+        }
+        return str;
+      }, // 项目来源编辑
+      getProjectDetail () {
+        return new Promise((resolve, reject) => {
+          // 做一些异步操作
+          this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
+            .then(res => {
+              let data = res.data.data;
+              // 项目介绍
+              if (data.project.pro_scale === '') { data.project.pro_scale = {}; data.project.pro_scale.scale_money = ' '; }
+              if (data.project.pro_area === '') { data.project.pro_area = {}; data.project.pro_area.area_title = ' '; }
+              if (data.project.pro_stage === '') { data.project.pro_stage = {}; data.project.pro_stage.stage_name = ' '; }
+              if (data.project.pro_finance_stock_after === '') { data.project.pro_finance_stock_after = {}; data.project.pro_finance_stock_after = ' '; }
+              if (data.project.pro_intro === '') { data.project.pro_intro = {}; data.project.pro_intro = ' '; }
+              if (data.project.pro_industry === '') { data.project.pro_industry = {}; data.project.pro_industry.industry_name = ' '; }
+              if (data.company.pro_status === '') { data.company.pro_status = {}; data.company.pro_status.status_name = '-'; }
+              if (data.company.pro_website === '') { data.company.pro_website = {}; data.company.pro_website = '-'; }
+              if (data.company.pro_company_scale === '') { data.company.pro_company_scale = {}; data.company.pro_company_scale.comp_scale_value = '-'; }
+              if (data.project.pro_schedule === '') { data.project.pro_schedule = {}; data.project.pro_schedule.schedule_name = ''; data.project.pro_schedule.schedule_id = ''; }
+              this.project = data.project;
+              // 公司运营
+              this.company = data.company;
+              // 项目文件
+              this.file.pro_BP.file_title = data.file.pro_BP.file_title + '.' + data.file.pro_BP.file_ext;
+              this.file = data.file;
+              // 融资信息
+              this.$tool.setTime(data.financing.pro_history_finance, 'finance_time');
+              this.financing = data.financing;
+              // 里程碑
+              this.$tool.setTime(data.milepost.pro_develop, 'dh_start_time');
+              this.milepost = data.milepost;
+              // FA业务
+              this.private = data.private;
+              // 团队
+              this.team.tag = this.getteam_tag(data.team.tag);
+              this.team = data.team;
+
+              // is_exclusive
+              this.pro = data.pro_FA;
+              // brand
+              this.brands = data.brands;
 //              if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
 //              if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
-            if(data.pro_schedule=="") {data.pro_schedule={};data.pro_schedule.schedule_name="";data.pro_schedule.schedule_id="";}
+              if (data.pro_schedule === '') { data.pro_schedule = {}; data.pro_schedule.schedule_name = ''; data.pro_schedule.schedule_id = ''; }
 //              if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
 
 //              this.project=data;
@@ -532,53 +501,52 @@ export default {
 //              this.project.pro_source=this.getProjectTag(data.tag);
 //              this.project.team_tag=this.getteam_tag(data.tag);
 //              this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
-            resolve(3);
-            this.loading=false;
-          })
-          .catch(err=>{
-            this.$tool.console(err,2)
-          })
-
-      });
-    },//获取项目详情数据
-    pushProject(){
-      if(this.comeFrom==='contacts'){
-        this.$http.post(this.URL.pushUser, this.pushMessage)
-        .then(res => {
-          if(res.data.status_code===2000000){
-            let data=res.data.data;
-            this.$tool.success("推送成功");
-            this.$emit('closePreviewANDProjectPush', false);//关闭所有的弹框包括预览,推送
-            this.$emit('closePreview', false);//关闭预览弹框
-          }
-        })
-        .catch(err => {
-          this.$tool.console(err);
-          this.$tool.success("推送失败");
-        })
-      }else{
-        this.$emit('previewPush',true);
-      }
-    },//推送项目
-  },
-  create(){
+              resolve(3);
+              this.loading = false;
+            })
+            .catch(err => {
+              this.$tool.console(err, 2);
+            });
+        });
+      }, // 获取项目详情数据
+      pushProject () {
+        if (this.comeFrom === 'contacts') {
+          this.$http.post(this.URL.pushUser, this.pushMessage)
+            .then(res => {
+              if (res.data.status_code === 2000000) {
+                // let data = res.data.data;
+                this.$tool.success('推送成功');
+                this.$emit('closePreviewANDProjectPush', false);// 关闭所有的弹框包括预览,推送
+                this.$emit('closePreview', false);// 关闭预览弹框
+              }
+            })
+            .catch(err => {
+              this.$tool.console(err);
+              this.$tool.success('推送失败');
+            });
+        } else {
+          this.$emit('previewPush', true);
+        }
+      }// 推送项目
+    },
+    create () {
 //    this.getProjectDetail();
-  },
-  watch:{
-    previewShow:function(e){
-      if(e){
-        this.project_id=this.$store.state.pushProject.project_id;
-        this.user=this.$store.state.pushProject.user;
-        this.pushMessage=this.$store.state.pushProject.pushMessage;
+    },
+    watch: {
+      previewShow: function (e) {
+        if (e) {
+          this.project_id = this.$store.state.pushProject.project_id;
+          this.user = this.$store.state.pushProject.user;
+          this.pushMessage = this.$store.state.pushProject.pushMessage;
 //        console.log(this.$store.state.pushProject.pushMessage);
-        this.project_intro=this.$store.state.pushProject.pro_intro;
-        this.email=this.$store.state.pushProject.email;
-        this.getFirstUser();
-        this.getProjectDetail();
+          this.project_intro = this.$store.state.pushProject.pro_intro;
+          this.email = this.$store.state.pushProject.email;
+          this.getFirstUser();
+          this.getProjectDetail();
+        }
       }
     }
-  }
-}
+  };
 </script>
 
 <style lang="less">

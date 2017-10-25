@@ -22,111 +22,111 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  props: ["comid","compName","chartData"],
-  data () {
-    return {
-      compaName:"",
-      downloadEchartName:'1',
-      title:"累计下载量",
-      main:"综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。",
-      xdata:[],//时间
-      download:{
-        ydataTotal:[],//获取的数据
-        ydataAverage:[]//平均数据
-      },//APP下载量
-      dau:{
-        ydataTotal:[],
-        ydataAverage:[]
-      },//活跃用户
-      pv:{
-        ydataTotal:[],
-        ydataAverage:[]
-      },//浏览页面
-      uv:{
-        ydataTotal:[],
-        ydataAverage:[]
-      },//访问用户数
-      time:{
-        ydataTotal:[],
-        ydataAverage:[]
-      },//访问时长
-      chart:"",
-      chartCheck:true,
+  export default {
+    props: ['comid', 'compName', 'chartData'],
+    data () {
+      return {
+        compaName: '',
+        downloadEchartName: '1',
+        title: '累计下载量',
+        main: '综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。',
+        xdata: [], // 时间
+        download: {
+          ydataTotal: [], // 获取的数据
+          ydataAverage: []// 平均数据
+        }, // APP下载量
+        dau: {
+          ydataTotal: [],
+          ydataAverage: []
+        }, // 活跃用户
+        pv: {
+          ydataTotal: [],
+          ydataAverage: []
+        }, // 浏览页面
+        uv: {
+          ydataTotal: [],
+          ydataAverage: []
+        }, // 访问用户数
+        time: {
+          ydataTotal: [],
+          ydataAverage: []
+        }, // 访问时长
+        chart: '',
+        chartCheck: true
 
-    }
-  },
-  computed:{
-
-  },
-  methods: {
-    getChart(data){
-      if(data[0].project_views!=""){
-          return JSON.parse(data[0].project_views);
-      }else{
-        return {data:[]};
-      }
-    },//获取图表数据变成json
-    getAverage(data){
-        let arr=[];
-      let index=this.xdata.length;
-        for(let i=0; i<index; i++){
-          arr[i]=data;
-        };
-        return arr;
-    },//获取平均数
-    getTotal(data){
-      for(let i=0; i<data.length; i++){
-        if(data[i]=="") data[i]=0;
-      };
-      return data
-    },//获取爬来的数据
-    handleClick(tab, event) {
-      let index=tab.index
-//      console.log(tab.index);
-      switch (index){
-        case '0':
-          this.getdownload();
-          break;
-/*        case '1':
-          this.getdau();
-          break;*/
-        case '1':
-          this.getpv();
-          break;
-        case '2':
-          this.getuv();
-          break;
-        case '3':
-          this.gettime();
-          break;
-        default:
-          alert("你瞎按了吧");
-          break;
       };
     },
-    eChart(xdata,ydata1,ydata2){
-      if(this.chartCheck){
-        this.chart = this.$echart.init(document.getElementById('pieBox'));
-      }
-      let option = {
+    computed: {
+
+    },
+    methods: {
+      getChart (data) {
+        if (data[0].project_views !== '') {
+          return JSON.parse(data[0].project_views);
+        } else {
+          return {data: []};
+        }
+      }, // 获取图表数据变成json
+      getAverage (data) {
+        let arr = [];
+        let index = this.xdata.length;
+        for (let i = 0; i < index; i++) {
+          arr[i] = data;
+        };
+        return arr;
+      }, // 获取平均数
+      getTotal (data) {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i] === '') data[i] = 0;
+        };
+        return data;
+      }, // 获取爬来的数据
+      handleClick (tab, event) {
+        let index = tab.index;
+//      console.log(tab.index);
+        switch (index) {
+          case '0':
+            this.getdownload();
+            break;
+          /*        case '1':
+           this.getdau();
+           break; */
+          case '1':
+            this.getpv();
+            break;
+          case '2':
+            this.getuv();
+            break;
+          case '3':
+            this.gettime();
+            break;
+          default:
+            alert('你瞎按了吧');
+            break;
+        };
+      },
+      eChart (xdata, ydata1, ydata2) {
+        if (this.chartCheck) {
+          this.chart = this.$echart.init(document.getElementById('pieBox'));
+        }
+        let option = {
           title: {},
           color: ['#28DC41', '#009eff'],
           tooltip: {
             trigger: 'axis',
-            backgroundColor:'rgba(31,45,61,0.85);',
+            backgroundColor: 'rgba(31,45,61,0.85);',
             padding: [10],
-            transitionDuration:0.5,
-            extraCssText:'border-radius:8px;',
-            formatter: function(e){
-              let res = e[0].axisValue.slice(0,4)+'.'+e[0].axisValue.slice(4,6)+'.'+e[0].axisValue.slice(6,8)+'</br>'
-              res+='尽调公司:　'+e[0].value+'</br>'
-              res+='行业平均:　'+e[1].value
+            transitionDuration: 0.5,
+            extraCssText: 'border-radius:8px;',
+            formatter: function (e) {
+              let res = e[0].axisValue.slice(0, 4) + '.' + e[0].axisValue.slice(4, 6) + '.' + e[0].axisValue.slice(6, 8) + '</br>';
+              res += '尽调公司:　' + e[0].value + '</br>';
+              res += '行业平均:　' + e[1].value;
               return res;
             }
           },
           legend: {
-            data: ['行业平均','尽调公司']
+            data: ['行业平均', '尽调公司']
           },
           grid: {
             left: '3%',
@@ -134,14 +134,14 @@ export default {
             bottom: '3%',
             containLabel: true
           },
-        toolbox: {
+          toolbox: {
 
           },
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            splitLine:{
-              show:true
+            splitLine: {
+              show: true
             },
             data: xdata
           },
@@ -162,98 +162,94 @@ export default {
             data: ydata1
           }]
         };
-      this.chart.setOption(option);
-      this.chartCheck=false;
+        this.chart.setOption(option);
+        this.chartCheck = false;
       },
-    getdownload(){
-      this.title="累计下载量";
-      this.main="综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。";
-      this.eChart(this.xdata,this.download.ydataTotal,this.download.ydataAverage);
-    },//累计下载量
-    getdau(){
-      this.title="累计用户";
-      this.main="日活跃用户量";
-      this.eChart(this.xdata,this.dau.ydataTotal,this.dau.ydataAverage);
-    },//累计用户
-    getpv(){
-      this.title="浏览页面数(PV)";
-      this.main="对目标公司网站在全网的日均访问量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了用户对目标公司官方网站的访问情况,是可以表明目标公司网站内容受访问热度的指标."
-      this.eChart(this.xdata,this.pv.ydataTotal,this.pv.ydataAverage);
-    },//浏览页面数
-    getuv(){
-      this.title="访问用户数(UV)";
-      this.main="对目标公司网站在全网的日均独立访问用户量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了木不熬公司官方网站吸引用户的能力,是可以表明目标公司网站的获客能力的指标."
-      this.eChart(this.xdata,this.uv.ydataTotal,this.uv.ydataAverage);
-    },//访问用户数
-    gettime(){
-      this.title="访问时长";
-      this.main="所有访问用户在统计时间段内,从进入到离开该网站的时长平均值,是可以表现公司网站用户粘性的指标."
-      this.eChart(this.xdata,this.time.ydataTotal,this.time.ydataAverage);
-    },//访问时长
-    getCrawlerProject(){
-      let data=this.getChart(this.chartData).data;
-      this.chartDataCheck=data.length;
-      if(data.length!=0){
-        this.xdata=data.three_month;
-        this.download.ydataTotal=this.getAverage(data.total_download_mid);
-        this.download.ydataAverage=this.getTotal(data.total_download[0].value);
+      getdownload () {
+        this.title = '累计下载量';
+        this.main = '综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。';
+        this.eChart(this.xdata, this.download.ydataTotal, this.download.ydataAverage);
+      }, // 累计下载量
+      getdau () {
+        this.title = '累计用户';
+        this.main = '日活跃用户量';
+        this.eChart(this.xdata, this.dau.ydataTotal, this.dau.ydataAverage);
+      }, // 累计用户
+      getpv () {
+        this.title = '浏览页面数(PV)';
+        this.main = '对目标公司网站在全网的日均访问量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了用户对目标公司官方网站的访问情况,是可以表明目标公司网站内容受访问热度的指标.';
+        this.eChart(this.xdata, this.pv.ydataTotal, this.pv.ydataAverage);
+      }, // 浏览页面数
+      getuv () {
+        this.title = '访问用户数(UV)';
+        this.main = '对目标公司网站在全网的日均独立访问用户量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了木不熬公司官方网站吸引用户的能力,是可以表明目标公司网站的获客能力的指标.';
+        this.eChart(this.xdata, this.uv.ydataTotal, this.uv.ydataAverage);
+      }, // 访问用户数
+      gettime () {
+        this.title = '访问时长';
+        this.main = '所有访问用户在统计时间段内,从进入到离开该网站的时长平均值,是可以表现公司网站用户粘性的指标.';
+        this.eChart(this.xdata, this.time.ydataTotal, this.time.ydataAverage);
+      }, // 访问时长
+      getCrawlerProject () {
+        let data = this.getChart(this.chartData).data;
+        this.chartDataCheck = data.length;
+        if (data.length !== 0) {
+          this.xdata = data.three_month;
+          this.download.ydataTotal = this.getAverage(data.total_download_mid);
+          this.download.ydataAverage = this.getTotal(data.total_download[0].value);
 
-        /*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
-         this.dau.ydataAverage=this.getTotal(data.dau[0].value);*/
+          /*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
+           this.dau.ydataAverage=this.getTotal(data.dau[0].value); */
 
-        this.pv.ydataTotal=this.getAverage(data.pv_mid);
-        this.pv.ydataAverage=this.getTotal(data.pv[0].value);
+          this.pv.ydataTotal = this.getAverage(data.pv_mid);
+          this.pv.ydataAverage = this.getTotal(data.pv[0].value);
 
-        this.uv.ydataTotal=this.getAverage(data.uv_mid);
-        this.uv.ydataAverage=this.getTotal(data.uv[0].value);
+          this.uv.ydataTotal = this.getAverage(data.uv_mid);
+          this.uv.ydataAverage = this.getTotal(data.uv[0].value);
 
-        this.time.ydataTotal=this.getAverage(data.time_mid);
-        this.time.ydataAverage=this.getTotal(data.time[0].value);
-        this.getdownload();
-      }else{
+          this.time.ydataTotal = this.getAverage(data.time_mid);
+          this.time.ydataAverage = this.getTotal(data.time[0].value);
+          this.getdownload();
+        } else {
           this.clearData();
+        }
+      }, // 获取项目
+      clearData () {
+        this.download.ydataTotal = [];
+        this.download.ydataAverage = [];
+        this.pv.ydataTotal = [];
+        this.pv.ydataAverage = [];
+        this.uv.ydataTotal = [];
+        this.uv.ydataAverage = [];
+        this.time.ydataTotal = [];
+        this.time.ydataAverage = [];
+        this.downloadEchartName = '1';
       }
-    },//获取项目
-    clearData(){
-      this.download.ydataTotal=[];
-      this.download.ydataAverage=[];
-      this.pv.ydataTotal=[];
-      this.pv.ydataAverage=[];
-      this.uv.ydataTotal=[];
-      this.uv.ydataAverage=[];
-      this.time.ydataTotal=[];
-      this.time.ydataAverage=[];
-      this.downloadEchartName='1';
+
+    },
+    // Echart组件
+    mounted () {
+      /*    setTimeout(() =>{
+       this.getdownload();
+       },100) */
+    },
+    watch: {
+      comid: function (e) {
+
+      }, // 获取公司id
+      compName: function (e) {
+
+      }, // 获取公司名称
+      chartData: function (e) {
+        this.clearData();
+        if (e.length !== 0) {
+          this.getCrawlerProject();
+        }
+      }// 获取图表数据
+    },
+    created () {
     }
-
-  },
-  //Echart组件
-  mounted(){
-/*    setTimeout(() =>{
-      this.getdownload();
-    },100)*/
-  },
-  watch : {
-    comid : function(e){
-
-    },//获取公司id
-    compName: function(e){
-
-
-    },//获取公司名称
-    chartData: function(e){
-      this.clearData();
-      if(e.length!=0){
-        this.getCrawlerProject();
-      }
-
-
-
-    },//获取图表数据
-  },
-  created(){
-  },
-}
+  };
 </script>
 
 <style lang="less">

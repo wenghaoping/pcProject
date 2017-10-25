@@ -126,342 +126,335 @@
 </template>
 
 <script type="text/ecmascript-6">
-
-export default {
-  props: ["projectPushShow", "userMessage", "userEmail"],
-  data () {
-    var checkEmail = (rule, value, callback) => {
-      if (this.$tool.getNull(value)) {
-        return callback(new Error('邮箱不能为空'));
-      }
-      setTimeout(() => {
-        if (!this.$tool.checkEmail(value)) {
-          callback(new Error('请输入正确的邮箱'));
+  export default {
+    props: ['projectPushShow', 'userMessage', 'userEmail'],
+    data () {
+      var checkEmail = (rule, value, callback) => {
+        if (this.$tool.getNull(value)) {
+          return callback(new Error('邮箱不能为空'));
+        }
+        setTimeout(() => {
+          if (!this.$tool.checkEmail(value)) {
+            callback(new Error('请输入正确的邮箱'));
+          } else {
+            callback();
+          }
+        }, 300);
+      };// 邮箱判断
+      var checkTitle = (rule, value, callback) => {
+        if (this.$tool.getNull(value)) {
+          return callback(new Error('不能为空'));
         } else {
           callback();
         }
-      }, 300);
+      };// 不为空判断
 
-
-    };//邮箱判断
-    var checkTitle = (rule, value, callback) => {
-      if (this.$tool.getNull(value)) {
-        return callback(new Error('不能为空'));
-      } else {
-        callback();
-      }
-    };//不为空判断
-
-    return {
-      emailRule: {validator: checkEmail, trigger: 'blur'},
-      titleRule: {validator: checkTitle, trigger: 'blur'},
-      close: false,//默认关闭
-      loading: false,//加载动画
-      pushTitle1:'',
-      activeName: 'first',
+      return {
+        emailRule: {validator: checkEmail, trigger: 'blur'},
+        titleRule: {validator: checkTitle, trigger: 'blur'},
+        close: false, // 默认关闭
+        loading: false, // 加载动画
+        pushTitle1: '',
+        activeName: 'first',
 //      dialogPush:false,//控制显不显示
 
-      email: {
-        title: this.pushTitle1,//邮件标题
-        body: '',//邮件正文
-      },
-      email2: {
-        nameEmail: '',//人脉的邮箱(一个)
-      },
-      user: {
-        user_real_name: '',
-        user_company_career: '',
-        user_company_name: '',
-        card_id: ""
-      },//推送的用户消息
-      project:{
-        pro_id:"",//项目id
-        pro_intro:"",//项目介绍
-      },//推送的项目消息
-      projectList: [],//推送的项目列表
-      projectAll: [],//项目列表下拉框基本是不用的
+        email: {
+          title: this.pushTitle1, // 邮件标题
+          body: ''// 邮件正文
+        },
+        email2: {
+          nameEmail: ''// 人脉的邮箱(一个)
+        },
+        user: {
+          user_real_name: '',
+          user_company_career: '',
+          user_company_name: '',
+          card_id: ''
+        }, // 推送的用户消息
+        project: {
+          pro_id: '', // 项目id
+          pro_intro: ''// 项目介绍
+        }, // 推送的项目消息
+        projectList: [], // 推送的项目列表
+        projectAll: [], // 项目列表下拉框基本是不用的
 
-      tableData3: [
-        /*          {
-        pro_intro: '项目的一句话介绍，字数可能会有点长，但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那',
-        match_weight : '100',
-        project_id:1
-      }*/
-      ],
-      projectRadio:'',//绑定当前项目数据,单选框的数据(project_id)
-      firstInData:{
-        user:{},
-        email2:{},
-        email:{}
-      },//保存数据
-      pushCount:0,//剩余推送次数
-      totalMatchProject: 0,//项目加载总页数
-      currentPageMatchProject:1,//当前第几页
-      searchProject:{},//搜索项目的数据
-      searchProjectInput:'',//搜素项目用的
-    }
-  },
-  methods: {
-    title(){
-      this.user_company_name=localStorage.user_company_name;
-      this.user_brand=localStorage.user_brand;
-      this.user_company_career=localStorage.user_company_career+'-' || "";
-      this.user_real_name=localStorage.user_real_name;
-      if(!this.user_brand){
-        this.pushbrand=this.user_company_name+'-' || "";
-      }else{
-        this.pushbrand=this.user_brand+'-' || "";
-      }
-
-      this.pushTitle1=this.pushbrand+this.user_company_career+this.user_real_name+'推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+        tableData3: [
+          /*          {
+           pro_intro: '项目的一句话介绍，字数可能会有点长，但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那',
+           match_weight : '100',
+           project_id:1
+           } */
+        ],
+        projectRadio: '', // 绑定当前项目数据,单选框的数据(project_id)
+        firstInData: {
+          user: {},
+          email2: {},
+          email: {}
+        }, // 保存数据
+        pushCount: 0, // 剩余推送次数
+        totalMatchProject: 0, // 项目加载总页数
+        currentPageMatchProject: 1, // 当前第几页
+        searchProject: {}, // 搜索项目的数据
+        searchProjectInput: ''// 搜素项目用的
+      };
     },
-    preview(){
-      if(this.pushCount!=0) {
-        if (this.projectRadio == '' || this.projectRadio==undefined) this.$tool.error("请选择要推送的项目")
-        else if (!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
-        else if(this.email.title.length>100) this.$tool.error("标题不能大于100个字")
-        else if(this.email.body.length>500) this.$tool.error("正文不能大于500个字")
-        else {
-          this.zgClick("预览");
-          this.$store.state.pushProject.project_id = this.projectRadio;
-          this.$store.state.pushProject.user = this.user;
-          this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
-          this.$store.state.pushProject.pushMessage.card_id = this.user.card_id;
+    methods: {
+      title () {
+        this.user_company_name = localStorage.user_company_name;
+        this.user_brand = localStorage.user_brand;
+        this.user_company_career = localStorage.user_company_career + '-' || '';
+        this.user_real_name = localStorage.user_real_name;
+        if (!this.user_brand) {
+          this.pushbrand = this.user_company_name + '-' || '';
+        } else {
+          this.pushbrand = this.user_brand + '-' || '';
+        }
+
+        this.pushTitle1 = this.pushbrand + this.user_company_career + this.user_real_name + '推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+      },
+      preview () {
+        if (this.pushCount !== 0) {
+          if (this.projectRadio === '' || this.projectRadio === undefined) this.$tool.error('请选择要推送的项目');
+          else if (!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error('请输入正确的邮箱');
+          else if (this.email.title.length > 100) this.$tool.error('标题不能大于100个字');
+          else if (this.email.body.length > 500) this.$tool.error('正文不能大于500个字');
+          else {
+            this.zgClick('预览');
+            this.$store.state.pushProject.project_id = this.projectRadio;
+            this.$store.state.pushProject.user = this.user;
+            this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
+            this.$store.state.pushProject.pushMessage.card_id = this.user.card_id;
 //          this.$store.state.pushProject.pushMessage.investor_id=this.user.investor_id;
-          this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
-          this.$store.state.pushProject.pushMessage.title = this.email.title;
-          this.$store.state.pushProject.pushMessage.body = this.email.body;
-          this.$store.state.pushProject.pushMessage.project_ids = new Array;
-          this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
-          this.$store.state.pushProject.pushMessage.type=this.user.type;
-/*          console.log(this.$store.state.pushProject.pushMessage)
-          console.log(this.user)*/
-          this.$store.state.pushProject.email.title = this.email.title;
-          this.$store.state.pushProject.email.body = this.email.body;
-          this.$emit('openPreview', true);//
-        }
-      }else{
-        this.$tool.warning("您今日的推送次数已用完,请明天再试")
-      }
-    },//推送预览
-
-    push(type){
-      if(this.pushCount!=0){
-        this.firstInData.email=this.email;
-        let check1 = this.submitForm('email');
-        let check2 = this.submitForm('email2');
-        if(this.projectRadio=='' || this.projectRadio==undefined) this.$tool.error("请选择要推送的项目")
-        else if(!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error("请输入正确的邮箱")
-        else if(this.email.title.length>100) this.$tool.error("标题不能大于100个字")
-        else if(this.email.body.length>500) this.$tool.error("正文不能大于500个字")
-        else if(type ==1){ //关闭
-          if(check1 && check2) {
-            this.zgClick("推送");
-            let pushData=new Object;
-            pushData.user_id= localStorage.user_id;
-            pushData.card_id=this.user.card_id;
-            pushData.email=this.email2.nameEmail;
-            pushData.title=this.email.title;
-            pushData.body=this.email.body;
-            pushData.type=this.userMessage.type || '';
-            pushData.project_ids=new Array;
-            pushData.project_ids.push(this.projectRadio);
-//            alert("过")
-            this.loading=true;
-            this.$http.post(this.URL.pushUser, pushData)
-              .then(res => {
-                let data=res.data.data;
-//              this.$tool.console(res);
-                this.$tool.success("推送成功");
-                this.getpushCount();
-                this.loading=false;
-                this.open2('推送成功', '推送成功', '继续推送', '返回');
-              })
-              .catch(err => {
-                this.$tool.console(err);
-                this.$tool.success("推送失败");
-              })
+            this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
+            this.$store.state.pushProject.pushMessage.title = this.email.title;
+            this.$store.state.pushProject.pushMessage.body = this.email.body;
+            this.$store.state.pushProject.pushMessage.project_ids = [];
+            this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
+            this.$store.state.pushProject.pushMessage.type = this.user.type;
+            /*          console.log(this.$store.state.pushProject.pushMessage)
+             console.log(this.user) */
+            this.$store.state.pushProject.email.title = this.email.title;
+            this.$store.state.pushProject.email.body = this.email.body;
+            this.$emit('openPreview', true);//
           }
+        } else {
+          this.$tool.warning('您今日的推送次数已用完,请明天再试');
         }
+      }, // 推送预览
 
-      }else{
-          this.$tool.warning("您今日的推送次数已用完")
-      }
-    },//推送按钮
+      push (type) {
+        if (this.pushCount !== 0) {
+          this.firstInData.email = this.email;
+          let check1 = this.submitForm('email');
+          let check2 = this.submitForm('email2');
+          if (this.projectRadio === '' || this.projectRadio === undefined) this.$tool.error('请选择要推送的项目');
+          else if (!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error('请输入正确的邮箱');
+          else if (this.email.title.length > 100) this.$tool.error('标题不能大于100个字');
+          else if (this.email.body.length > 500) this.$tool.error('正文不能大于500个字');
+          else if (type === 1) { // 关闭
+            if (check1 && check2) {
+              this.zgClick('推送');
+              let pushData = [];
+              pushData.user_id = localStorage.user_id;
+              pushData.card_id = this.user.card_id;
+              pushData.email = this.email2.nameEmail;
+              pushData.title = this.email.title;
+              pushData.body = this.email.body;
+              pushData.type = this.userMessage.type || '';
+              pushData.project_ids = [];
+              pushData.project_ids.push(this.projectRadio);
+//            alert("过")
+              this.loading = true;
+              this.$http.post(this.URL.pushUser, pushData)
+                .then(res => {
+                  // let data = res.data.data;
+//              this.$tool.console(res);
+                  this.$tool.success('推送成功');
+                  this.getpushCount();
+                  this.loading = false;
+                  this.open2('推送成功', '推送成功', '继续推送', '返回');
+                })
+                .catch(err => {
+                  this.$tool.console(err);
+                  this.$tool.success('推送失败');
+                });
+            }
+          }
+        } else {
+          this.$tool.warning('您今日的推送次数已用完');
+        }
+      }, // 推送按钮
 
-    remoteMethod(query) {
-      return new Promise((resolve, reject)=>{
-        if(query=="") this.projectRadio="";
-        this.loading=true;
-        this.currentPageMatchProject=1;
-        this.searchProject.user_id=localStorage.user_id;
-        this.searchProject.card_id=this.user.card_id;
-        this.searchProject.pro_intro=query;
-        this.searchProject.page=1;
-        this.searchProject.type=this.userMessage.type || '';
-        this.$http.post(this.URL.matchProject,this.searchProject)
-          .then(res=>{
+      remoteMethod (query) {
+        return new Promise((resolve, reject) => {
+          if (query === '') this.projectRadio = '';
+          this.loading = true;
+          this.currentPageMatchProject = 1;
+          this.searchProject.user_id = localStorage.user_id;
+          this.searchProject.card_id = this.user.card_id;
+          this.searchProject.pro_intro = query;
+          this.searchProject.page = 1;
+          this.searchProject.type = this.userMessage.type || '';
+          this.$http.post(this.URL.matchProject, this.searchProject)
+            .then(res => {
+              let data = res.data.data;
+//          this.$tool.console(data);
+              this.tableData3 = data.projects;
+              this.projectAll = this.setProjectAll(data.projects);
+              this.totalMatchProject = data.count;
+              this.loading = false;
+              resolve(1);
+            })
+            .catch(err => {
+              this.$tool.console(err, 2);
+              this.loading = false;
+            });
+        });
+      }, // 项目搜索
+      filterChangeMatchProject (page) {
+        this.loading = true;
+        this.searchProject.page = page;
+        this.searchProject.pro_intro = this.searchProjectInput;
+        this.$http.post(this.URL.matchProject, this.searchProject)
+          .then(res => {
             let data = res.data.data;
 //          this.$tool.console(data);
-            this.tableData3=data.projects;
-            this.projectAll=this.setProjectAll(data.projects);
-            this.totalMatchProject=data.count;
-            this.loading=false;
-            resolve(1);
+            this.tableData3 = data.projects;
+            this.projectAll = this.setProjectAll(data.projects);
+            this.loading = false;
+            this.totalMatchProject = data.count;
           })
-          .catch(err =>{
-            this.$tool.console(err,2);
-            this.loading=false;
-          })
-
-      })
-    },//项目搜索
-    filterChangeMatchProject(page){
-
-      this.loading=true;
-      this.searchProject.page=page;
-      this.searchProject.pro_intro=this.searchProjectInput;
-      this.$http.post(this.URL.matchProject,this.searchProject)
-        .then(res=>{
-          let data = res.data.data;
-//          this.$tool.console(data);
-          this.tableData3=data.projects;
-          this.projectAll=this.setProjectAll(data.projects);
-          this.loading=false;
-          this.totalMatchProject=data.count;
-        })
-        .catch(err =>{
-          this.$tool.console(err,2);
-          this.loading=false;
-        })
-    },//页码控制
-    removeTag(e){
-      this.projectRadio='';
-      this.remoteMethod("");
-    },//删除标签
-    setProjectAll(data){
-      let arr = [];
-      data.forEach((x)=>{
-        let obj = {};
-        obj.label = x.pro_intro;
-        obj.value = x.project_id;
-        arr.push(obj);
-      });
-      return arr
-    },//设置项目下拉框,虽然没什么卵用
-    tableRowClassName(row, index) {
-      if (index%2 === 1) {
-        return 'info-row';
-      }
-      return '';
-    },//控制列表颜色
-    getIntroduce(id){
-      if(id!=""){
-        this.projectList=[];
-        this.projectList.push(id);
-        let arr = this.tableData3;
-        for(let i=0; i<arr.length; i++){
-          if(arr[i].project_id==id){
-            this.$store.state.pushProject.pro_intro=arr[i].pro_intro;
-
+          .catch(err => {
+            this.$tool.console(err, 2);
+            this.loading = false;
+          });
+      }, // 页码控制
+      removeTag (e) {
+        this.projectRadio = '';
+        this.remoteMethod('');
+      }, // 删除标签
+      setProjectAll (data) {
+        let arr = [];
+        data.forEach((x) => {
+          let obj = {};
+          obj.label = x.pro_intro;
+          obj.value = x.project_id;
+          arr.push(obj);
+        });
+        return arr;
+      }, // 设置项目下拉框,虽然没什么卵用
+      tableRowClassName (row, index) {
+        if (index % 2 === 1) {
+          return 'info-row';
+        }
+        return '';
+      }, // 控制列表颜色
+      getIntroduce (id) {
+        if (id !== '') {
+          this.projectList = [];
+          this.projectList.push(id);
+          let arr = this.tableData3;
+          for (let i = 0; i < arr.length; i++) {
+            if (arr[i].project_id === id) {
+              this.$store.state.pushProject.pro_intro = arr[i].pro_intro;
+            }
           }
         }
-      }
-    },//获取项目详情
-    submitForm(formName) {
-      let check = true;
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          return
-        } else {
-          check = false;
-        }
-      });
-      return check;
-    },
-    closeProjectPush(){
-      this.$emit('closeProjectPush',false);
-    },//关闭项目推送
-    getpushCount(){
-      this.$http.post(this.URL.pushCount,{
-        user_id: localStorage.user_id})
-        .then(res=>{
-          let data = res.data.data;
-          this.pushCount=data.push_count.remain_times || 0;
+      }, // 获取项目详情
+      submitForm (formName) {
+        let check = true;
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+
+          } else {
+            check = false;
+          }
+        });
+        return check;
+      },
+      closeProjectPush () {
+        this.$emit('closeProjectPush', false);
+      }, // 关闭项目推送
+      getpushCount () {
+        this.$http.post(this.URL.pushCount, {
+          user_id: localStorage.user_id})
+          .then(res => {
+            let data = res.data.data;
+            this.pushCount = data.push_count.remain_times || 0;
 //          this.$tool.console(data.push_count);
-        })
-        .catch(err =>{
-          this.$tool.console(err,2);
-          this.loading=false;
-        })
-    },//获取剩余推送次数
-    handleSelect(row, event, column) {
-      this.projectRadio=row.project_id;
-      this.remoteMethod(row.pro_intro);
-    },//点击单选
-    open2(title, main, confirm, cancel) {
-      this.$confirm(main, title, {
-        confirmButtonText: confirm,
-        cancelButtonText: cancel,
-        type: 'success'
-      }).then(() => {
-        this.remoteMethod("");
-        this.getpushCount();
-        this.clearData();
-      }).catch(() => {
-        this.$emit("closeProjectPush",false);
-        this.clearData();
-      });
+          })
+          .catch(err => {
+            this.$tool.console(err, 2);
+            this.loading = false;
+          });
+      }, // 获取剩余推送次数
+      handleSelect (row, event, column) {
+        this.projectRadio = row.project_id;
+        this.remoteMethod(row.pro_intro);
+      }, // 点击单选
+      open2 (title, main, confirm, cancel) {
+        this.$confirm(main, title, {
+          confirmButtonText: confirm,
+          cancelButtonText: cancel,
+          type: 'success'
+        }).then(() => {
+          this.remoteMethod('');
+          this.getpushCount();
+          this.clearData();
+        }).catch(() => {
+          this.$emit('closeProjectPush', false);
+          this.clearData();
+        });
+      },
+      clearData () {
+        this.user = {};
+        this.email2.nameEmai = '';
+        this.projectList = [];
+        this.tableData3 = [];
+        this.email = this.firstInData.email;
+        this.user = this.firstInData.user;
+        this.email2 = this.firstInData.email2;
+      }
     },
-    clearData(){
-      this.user={};
-      this.email2.nameEmai="";
-      this.projectList=[];
-      this.tableData3 =[];
-      this.email=this.firstInData.email;
-      this.user=this.firstInData.user;
-      this.email2=this.firstInData.email2;
-    }
-  },
-  watch : {
-    projectRadio : function(e){
-      this.getIntroduce(e);
-    },
-    projectPushShow : function (e) {
-        if(e){
+    watch: {
+      projectRadio: function (e) {
+        this.getIntroduce(e);
+      },
+      projectPushShow: function (e) {
+        if (e) {
           this.getCheckUserInfo(localStorage.user_id);
 
-          setTimeout(()=>{this.title();this.email.title = this.pushTitle1;},1000);
-          this.user={};
-          this.email2.nameEmai="";
-          this.projectList=[];
-          this.tableData3 =[];
-          this.projectRadio="";
-          this.user =this.userMessage || this.$store.state.pushProject.user;
+          setTimeout(() => { this.title(); this.email.title = this.pushTitle1; }, 1000);
+          this.user = {};
+          this.email2.nameEmai = '';
+          this.projectList = [];
+          this.tableData3 = [];
+          this.projectRadio = '';
+          this.user = this.userMessage || this.$store.state.pushProject.user;
           this.project = this.$store.state.pushProject.projectMessgae || {};
-          this.email2.nameEmail =this.userEmail;
-          this.firstInData.user =this.userMessage;
+          this.email2.nameEmail = this.userEmail;
+          this.firstInData.user = this.userMessage;
           this.firstInData.email2.nameEmail = this.userEmail;
           this.firstInData.project = this.$store.state.pushProject.projectMessgae || {};
 
           /*    this.email.body=this.$store.state.pushProject.email.body || '';
-           this.projectRadio=this.$store.state.pushProject.project_id || '';*/
-          if(this.firstInData.project.pro_id!=""){
+           this.projectRadio=this.$store.state.pushProject.project_id || ''; */
+          if (this.firstInData.project.pro_id !== '') {
             this.remoteMethod(this.firstInData.project.pro_intro)
-              .then((data)=>{
-                this.projectRadio=this.firstInData.project.pro_id;
-              })
-          }else{
-            this.remoteMethod("");
+              .then((data) => {
+                this.projectRadio = this.firstInData.project.pro_id;
+              });
+          } else {
+            this.remoteMethod('');
           }
         }
         this.getpushCount();
+      }
     },
-  },
-  created(){
+    created () {
 
-  }
-}
+    }
+  };
 </script>
 
 <style lang="less">

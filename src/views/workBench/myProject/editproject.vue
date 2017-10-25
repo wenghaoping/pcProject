@@ -1174,19 +1174,19 @@
 
 <script type="text/ecmascript-6">
   import syncprojectdetail from '@/components/syncProjectDetail.vue';
-  import { mapState } from 'vuex'
+  // import { mapState } from 'vuex';
   export default {
-    data(){
+    data () {
       var oneNumber = (rule, value, callback) => {
-          console.log(value);
+        console.log(value);
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
 
           }, 100);
-        }else{
+        } else {
           callback();
         }
-      };//投资亮点判断
+      };// 投资亮点判断
 
       var checkPhoneNumber = (rule, value, callback) => {
         if (!this.$tool.getNull(value)) {
@@ -1196,15 +1196,15 @@
             } else {
               if (!this.$tool.checkPhoneNumber(value)) {
                 callback(new Error('请输入正确的手机号'));
-              }else{
+              } else {
                 callback();
               }
             }
           }, 100);
-        }else{
+        } else {
           callback();
         }
-      };//电话号码正则判断
+      };// 电话号码正则判断
 
       var checkNumber = (rule, value, callback) => {
         if (!this.$tool.getNull(value)) {
@@ -1215,378 +1215,291 @@
               callback();
             }
           }, 100);
-        }else{
+        } else {
           callback();
         }
-      };//可以为空,必须为数字正则判断
+      };// 可以为空,必须为数字正则判断
 
       var checkHundred = (rule, value, callback) => {
 //          alert((typeof(value)==="number")&&(value!==Infinity)&&!isNaN(value))
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
-            if(this.$tool.checkNumber(value)){
-              if (value > 100){
+            if (this.$tool.checkNumber(value)) {
+              if (value > 100) {
                 callback(new Error('请输入小于100的值'));
               } else {
                 callback();
               }
-            }else{
+            } else {
               callback(new Error('请输入数字'));
             }
           }, 100);
-        }else{
+        } else {
           callback();
         }
-      };//可以为空,必须为数字,比例数值1-100判断
+      };// 可以为空,必须为数字,比例数值1-100判断
 
       var checkBigNumber = (rule, value, callback) => {
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
-            if(this.$tool.checkNumber(value)){
-              if (parseFloat(value)>99999999){
+            if (this.$tool.checkNumber(value)) {
+              if (parseFloat(value) > 99999999) {
                 callback(new Error('请输入小于99999999的值'));
               } else {
                 callback();
               }
-            }else{
+            } else {
               callback(new Error('请输入数字'));
             }
           }, 100);
-        }else{
+        } else {
           callback();
         }
-      };//可以为空,必须为数字,数值不大于999999999999
-
-      var checkNubmer8 = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
-          setTimeout(() => {
-            if(value.length>8){
-              callback(new Error('最多输入8个字符'));
-            }else{
-              callback();
-            }
-          }, 100);
-        }else{
-          callback();
-        }
-      };//可以为空,最长字段8个字符
-
-      var checkNubmer20 = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
-          setTimeout(() => {
-            if(value.length>20){
-              callback(new Error('最多输入20个字符'));
-            }else{
-              callback();
-            }
-          }, 100);
-        }else{
-          callback();
-        }
-      };//可以为空,最长字段20个字符
-
-      var checkNubmer40 = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
-          setTimeout(() => {
-            if(value.length>40){
-              callback(new Error('最多输入40个字符'));
-            }else{
-              callback();
-            }
-          }, 100);
-        }else{
-          callback();
-        }
-      };//可以为空,最长字段40个字符
-
-      var checkNubmer50 = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
-          setTimeout(() => {
-            if(value.length>500){
-              callback(new Error('最多输入500个字符'));
-            }else{
-              callback();
-            }
-          }, 100);
-        }else{
-          callback();
-        }
-      };//可以为空,最长字段500个字符
-
-      var checkNubmer1000 = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
-          setTimeout(() => {
-            if(value.length>1000){
-              callback(new Error('最多输入1000个字符'));
-            }else{
-              callback();
-            }
-          }, 100);
-        }else{
-          callback();
-        }
-      };//可以为空,最长字段1000个字符
+      };// 可以为空,必须为数字,数值不大于999999999999
 
       return {
         dynamicValidateForm: {
           pro_goodness: [{
             goodness_title: '标题1',
-            goodness_desc:'内容1',
-          },{
+            goodness_desc: '内容1'
+          }, {
             goodness_title: '标题1',
-            goodness_desc:'标题1',
-          },{
+            goodness_desc: '标题1'
+          }, {
             goodness_title: '标题1',
-            goodness_desc:'标题1',
-          }],
+            goodness_desc: '标题1'
+          }]
         },
         addStateDisplay: false,
         setFileDisplay: false,
-        syncProjectDetailDisplay: false,//同步弹窗
-        syncDialogDisplay:false,//一键同步提示框
-        uploadAddress:this.URL.weitianshiLine+this.URL.projectUpload + localStorage.token,//上传地址
-        uploadAddressFile:this.URL.weitianshiLine+this.URL.uploadFile + localStorage.token,//上传地址
-        project_id: "",//项目Id全局保存
-        planList: [],//商业计划书上传列表
-        fileList: [],//批量上传文件列表
-        planButton: true,//控制上传按钮的显示
-        uploadShow: {//计划书上传列表,需要存数据啦
+        syncProjectDetailDisplay: false, // 同步弹窗
+        syncDialogDisplay: false, // 一键同步提示框
+        uploadAddress: this.URL.weitianshiLine + this.URL.projectUpload + localStorage.token, // 上传地址
+        uploadAddressFile: this.URL.weitianshiLine + this.URL.uploadFile + localStorage.token, // 上传地址
+        project_id: '', // 项目Id全局保存
+        planList: [], // 商业计划书上传列表
+        fileList: [], // 批量上传文件列表
+        planButton: true, // 控制上传按钮的显示
+        uploadShow: {// 计划书上传列表,需要存数据啦
         },
-        uploadShow2: {//上传文件展示列表,就是老夫操作的列表
+        uploadShow2: {// 上传文件展示列表,就是老夫操作的列表
           lists: [
-            /*{
+            /* {
              bp_type: "其他",
              file_id: 2476,
              file_title: "文件2.docx",
              type: 4,
              load:true,
              uid:1501837722250
-             }*/
+             } */
           ]
         },
-        uploadDate: {user_id: localStorage.user_id},//商业计划书上传所带的额外的参数
-        fileuploadDate: {user_id: localStorage.user_id},//项目文件上传带的参数
+        uploadDate: {user_id: localStorage.user_id}, // 商业计划书上传所带的额外的参数
+        fileuploadDate: {user_id: localStorage.user_id}, // 项目文件上传带的参数
         groups: {
-          input: "",
-          group: [{type: "其他", label: '其他', value: '其他'}],
-          type: "",
-          name:""
-        },//分组用的所有参数
-        name: "",
-        show: "detail",
+          input: '',
+          group: [{type: '其他', label: '其他', value: '其他'}],
+          type: '',
+          name: ''
+        }, // 分组用的所有参数
+        name: '',
+        show: 'detail',
         multiplelimit: 5,
 
-        //标签设置
-        tags:{
-          changepro:[],//项目标签新增
-          changeTeam:[],//团队标签
-          changesource:[],//项目来源
+        // 标签设置
+        tags: {
+          changepro: [], // 项目标签新增
+          changeTeam: [], // 团队标签
+          changesource: []// 项目来源
         },
-        //项目详情
+        // 项目详情
         project: {
-          goodness:{
-            pro_business_model:[{
-              goodness_desc: "",//凉凉凉凉
-              goodness_title: ""//亮点亮点
-              },
-              {
-                goodness_desc: "",//凉凉凉凉
-                goodness_title: ""//亮点亮点
-              }
+          goodness: {
+            pro_business_model: [{
+              goodness_desc: '', // 凉凉凉凉
+              goodness_title: ''// 亮点亮点
+            }],
+            pro_goodness: [{
+              goodness_desc: '亮点1', // 凉凉凉凉
+              goodness_title: '亮点1'// 亮点亮点
+            }
             ],
-            pro_goodness:[{
-              goodness_desc: "亮点1",//凉凉凉凉
-              goodness_title: "亮点1"//亮点亮点
-            },
-              {
-                goodness_desc: "亮点1",//凉凉凉凉
-                goodness_title: "亮点1"//亮点亮点
-              }
-            ],
-            pro_market_genera:[{
-              goodness_desc: "",//凉凉凉凉
-              goodness_title: ""//亮点亮点
-            },
-              {
-                goodness_desc: "",//凉凉凉凉
-                goodness_title: ""//亮点亮点
-              }
-            ],
-            pro_service:[{
-              goodness_desc: "",//凉凉凉凉
-              goodness_title: ""//亮点亮点
-            },
-              {
-                goodness_desc: "",//凉凉凉凉
-                goodness_title: ""//亮点亮点
-              }
-            ],
-          },//亮点
-          open_status: '1',//私密设置
+            pro_market_genera: [{
+              goodness_desc: '', // 凉凉凉凉
+              goodness_title: ''// 亮点亮点
+            }],
+            pro_service: [{
+              goodness_desc: '', // 凉凉凉凉
+              goodness_title: ''// 亮点亮点
+            }]
+          }, // 亮点
+          open_status: '1', // 私密设置
           pro_area: {
             area_id: 2,
-            area_title: "北京市",//市级
-            pid: 1//省级
-          },//所属地区1省级单位
-          pro_company_name:"",
-          pro_finance_stock_after:"0.00",//投后股份
-          pro_finance_value:"0.00",//项目估值
-          pro_industry:[
-/*              {
-            industry_id: 12,
-            industry_name: "",
-            parent_id: 0
-          }*/
+            area_title: '北京市', // 市级
+            pid: 1// 省级
+          }, // 所属地区1省级单位
+          pro_company_name: '',
+          pro_finance_stock_after: '0.00', // 投后股份
+          pro_finance_value: '0.00', // 项目估值
+          pro_industry: [
+            /*              {
+             industry_id: 12,
+             industry_name: "",
+             parent_id: 0
+             } */
           ],
-          pro_intro:"",
-          pro_name:"",
+          pro_intro: '',
+          pro_name: '',
           pro_scale: {
             scale_id: 1,
-            scale_money: "100W以下",
-          },//规模多少钱
-          pro_stage:{
+            scale_money: '100W以下'
+          }, // 规模多少钱
+          pro_stage: {
             sort: 4,
             stage_id: 13,
-            stage_name: "A轮"
+            stage_name: 'A轮'
           },
-          project_id:"",
-          tag:[],
+          project_id: '',
+          tag: []
         },
-        //公司运营
-        company:{
+        // 公司运营
+        company: {
           pro_company_scale: {comp_scale_id: 1},
-          pro_status: {status_id: 3, status_name: "上线"},
-          pro_website:""
+          pro_status: {status_id: 3, status_name: '上线'},
+          pro_website: ''
         },
-        //产品
-        brands:{
-          brand:[
+        // 产品
+        brands: {
+          brand: [
             {
-              brand_name:'',
-              type_id:'',
-            brand_desc:''
+              brand_name: '',
+              type_id: '',
+              brand_desc: ''
             },
             {
-              brand_name:'',
-            type_id:'',
-            brand_desc:''
+              brand_name: '',
+              type_id: '',
+              brand_desc: ''
             },
             {
-              brand_name:'',
-            type_id:'',
-            brand_desc:''
+              brand_name: '',
+              type_id: '',
+              brand_desc: ''
             }
-            ]
+          ]
         },
-        //核心团队
+        // 核心团队
         team: {
-          tag: [],//团队标签
+          tag: [], // 团队标签
           core_users: [
-            /*{
-              project_ct_id: 30,
-              ct_index: "9bd0c8d7d615832340340aab0c0625b7",
-              project_id: 37,
-              project_index: "275fa4f135eecf08e5660d23e294e6cd",
-              ct_member_name: "赵工佐",
-              ct_member_career: "创始人兼首席执行官",
-              ct_member_intro: "前高中和大学校队主力球员，"
-            }*/],
+            /* {
+             project_ct_id: 30,
+             ct_index: "9bd0c8d7d615832340340aab0c0625b7",
+             project_id: 37,
+             project_index: "275fa4f135eecf08e5660d23e294e6cd",
+             ct_member_name: "赵工佐",
+             ct_member_career: "创始人兼首席执行官",
+             ct_member_intro: "前高中和大学校队主力球员，"
+             } */
+          ]
         },
-        //融资信息
+        // 融资信息
         financing: {
-          pro_finance_use: '',//资金用途
-          //历史融资信息
+          pro_finance_use: '', // 资金用途
+          // 历史融资信息
           pro_history_finance: [
-              /*{
-            project_id: 37,
-            pro_finance_stage: 10,//轮次
-            pro_finance_scale: "",//金额
-            pro_finance_investor: "",//投资人
-            created_at: "2017-06-20",
-            updated_time: null
-          }*/
-          ],
+            /* {
+             project_id: 37,
+             pro_finance_stage: 10,//轮次
+             pro_finance_scale: "",//金额
+             pro_finance_investor: "",//投资人
+             created_at: "2017-06-20",
+             updated_time: null
+             } */
+          ]
         },
-        //里程碑
+        // 里程碑
         milepost: {
           pro_develop: [
-            /*{
-              project_dh_id: 6,
-              dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
-              project_id: 37,
-              project_index: "275fa4f135eecf08e5660d23e294e6cd",
-              dh_start_time: "2017-06-20 17:39:25",//时间
-              dh_end_time: "1443542400",
-              dh_event: "组建团队和设立办公室",//事件
-              created_at: null,
-              updated_at: null
-            }*/]
+            /* {
+             project_dh_id: 6,
+             dh_index: "24c2886c937e9a3eea25c7d0ffe7f713",
+             project_id: 37,
+             project_index: "275fa4f135eecf08e5660d23e294e6cd",
+             dh_start_time: "2017-06-20 17:39:25",//时间
+             dh_end_time: "1443542400",
+             dh_event: "组建团队和设立办公室",//事件
+             created_at: null,
+             updated_at: null
+             } */
+          ]
         },
-        //FA签约协议
+        // FA签约协议
         pro_FA: {
-          is_exclusive: 1,//0其他 1独家 2非独家
+          is_exclusive: 1// 0其他 1独家 2非独家
         },
-        //仅自己可见信息
-        private:{
-          commission: "0.00",//签约佣金
-          contact_user_career: "",
-          pro_remark: "",
+        // 仅自己可见信息
+        private: {
+          commission: '0.00', // 签约佣金
+          contact_user_career: '',
+          pro_remark: '',
           pro_source: [
-            /*{
+            /* {
 
-            }*/
+             } */
           ],
-          stock_follow: "0.00",
-          stock_other: "0.00",
-          stock_right: "0.00",//股权赠与
-          contact_user_mobile: "",
-          contact_user_name: ""
+          stock_follow: '0.00',
+          stock_other: '0.00',
+          stock_right: '0.00', // 股权赠与
+          contact_user_mobile: '',
+          contact_user_name: ''
         },
-        companyList: [],//公司搜索的数据
+        companyList: [], // 公司搜索的数据
         list: [],
-        //*公司远程搜索
+        //* 公司远程搜索
         states: [],
-        //*所属地区1省级选项
+        //* 所属地区1省级选项
         area: [],
-        //*所属地区2市级选项
+        //* 所属地区2市级选项
         area2: [],
-        //*项目轮次选项
+        //* 项目轮次选项
         stage: [],
-        //*项目领域默认选项
+        //* 项目领域默认选项
         industry: [],
-        //*运营状态默认值
+        //* 运营状态默认值
         company_status: [],
-        //*公司规模
+        //* 公司规模
         company_scale: [],
-        //*项目标签
+        //* 项目标签
         tags_pro: [],
-        //项目来源
-        tags_source:[],
-        //产品选择
-        brand_type:[],
+        // 项目来源
+        tags_source: [],
+        // 产品选择
+        brand_type: [],
 
         formLabelWidth: '120px',
 
-        //*运营状态
+        //* 运营状态
         form: {
           state: ''
         },
 
-        //*==================团队标签=====================
+        //* ==================团队标签=====================
         tags_team: [],
-        //*==================融资范围=====================
+        //* ==================融资范围=====================
         scale: [],
-        //控制显示收起
+        // 控制显示收起
         fileShow: true,
         ProjectShow: true,
         teamShow: true,
         financingShow: true,
         milepostShow: true,
         SignShow: true,
-        operateShow:true,//运营
-        brandShow:true,//产品
+        operateShow: true, // 运营
+        brandShow: true, // 产品
 
-        //控制锚点跳转
+        // 控制锚点跳转
         node0: true,
         node1: false,
         node2: false,
@@ -1596,76 +1509,67 @@
         node6: false,
         node7: false,
 
-        //*判断项目完整度(是否全部填写完整)
-        filePerfect: false,//项目文件
-        projectPerfect: false,//项目详情
-        companyPerfect: false,//公司运营
-        brandsPerfect:false,//产品
-        teamPerfect: false,//核心团队
-        financingPerfect: false,//融资信息
-        milepostPerfect: false,//里程碑
-        privatePerfect: false,//FA业务
+        //* 判断项目完整度(是否全部填写完整)
+        filePerfect: false, // 项目文件
+        projectPerfect: false, // 项目详情
+        companyPerfect: false, // 公司运营
+        brandsPerfect: false, // 产品
+        teamPerfect: false, // 核心团队
+        financingPerfect: false, // 融资信息
+        milepostPerfect: false, // 里程碑
+        privatePerfect: false, // FA业务
 
-
-        //填写有误显示
-        fileMust: false,//项目文件
-        projectMust: false,//项目详情
-        companyMust: false,//公司运营
-        brandtMust:false,//产品必填
-        teamMust: false,//核心团队
-        financingMust: false,//融资信息
-        milepostMust: false,//里程碑
-        privateMust: false,//FA业务
-
-
+        // 填写有误显示
+        fileMust: false, // 项目文件
+        projectMust: false, // 项目详情
+        companyMust: false, // 公司运营
+        brandtMust: false, // 产品必填
+        teamMust: false, // 核心团队
+        financingMust: false, // 融资信息
+        milepostMust: false, // 里程碑
+        privateMust: false, // FA业务
 
         close: false,
-        restaurants: [],//数据存放
-        loading: false,//加载
-        add_pro: [],//添加个人标签暂存
-        companyTitle: "",//尽调搜索的公司的名称
-        companyid: "",//尽调搜索的公司的ID
-        syncData: {},//一键同步存放的数据
+        restaurants: [], // 数据存放
+        loading: false, // 加载
+        add_pro: [], // 添加个人标签暂存
+        companyTitle: '', // 尽调搜索的公司的名称
+        companyid: '', // 尽调搜索的公司的ID
+        syncData: {}, // 一键同步存放的数据
         timeout: null,
         showList: false,
-        loadingcheck:false,
-        statusLast:0,
+        loadingcheck: false,
+        statusLast: 0,
 
-        oneRule: { validator: oneNumber, trigger: 'blur' },//投资亮点规则
-        PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },//电话规则
-        NumberRule: { validator: checkNumber, trigger: 'blur' },//可以为空,必须为数字
-        ScaleRule:{ validator:checkHundred, trigger:'blur'},//可以为空,必须为数字,比例数值1-100
-        BigNumberRule:{ validator:checkBigNumber, trigger:'blur'},//可以为空,必须为数字,数值不大于999999999999
-        Number8Rule:{ validator:checkNubmer8, trigger:'blur'},//可以为空,最长字段8个字符
-        Number20Rule:{ validator:checkNubmer20, trigger:'blur'},//可以为空,最长字段20个字符
-        Number40Rule:{ validator:checkNubmer40, trigger:'blur'},//可以为空,最长字段40个字符
-        Number50Rule:{ validator:checkNubmer50, trigger:'blur'},//可以为空,最长字段50个字符
-        Number1000Rule:{ validator:checkNubmer1000, trigger:'blur'},//可以为空,最长字段1000个字符
-
-        one:false,//第一次进来的时候
-        submitButton:false,//是否允许提交false允许/true不允许
-        uploadLoading:false,//BP上传动画
+        oneRule: { validator: oneNumber, trigger: 'blur' }, // 投资亮点规则
+        PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' }, // 电话规则
+        NumberRule: { validator: checkNumber, trigger: 'blur' }, // 可以为空,必须为数字
+        ScaleRule: { validator: checkHundred, trigger: 'blur' }, // 可以为空,必须为数字,比例数值1-100
+        BigNumberRule: { validator: checkBigNumber, trigger: 'blur' }, // 可以为空,必须为数字,数值不大于999999999999
+        one: false, // 第一次进来的时候
+        submitButton: false, // 是否允许提交false允许/true不允许
+        uploadLoading: false, // BP上传动画
         screenWidth: document.body.clientWidth,
-        timer:null,
-        timer2:null,
-        scrollTop:0,
-        tagShow:0,//控制标签显示隐藏
+        timer: null,
+        timer2: null,
+        scrollTop: 0,
+        tagShow: 0// 控制标签显示隐藏
       };
     },
     computed: {
-      //*项目完整度判断
-      proportion(){
-        let number = 0;//所有的空值数
-        let fileValue = this.planList;//项目文件
-        let projectValue = this.project;//项目详情
-        let companyValue = this.company;//公司运营
-        let brandsValue = this.brands;//产品
-        let teamValue = this.team;//核心团队
-        let financingValue = this.financing;//融资信息
-        let milepostValue = this.milepost;//里程碑
-        let privateValue = this.private;//仅自己可见信息
+      //* 项目完整度判断
+      proportion () {
+        let number = 0;// 所有的空值数
+        let fileValue = this.planList;// 项目文件
+        let projectValue = this.project;// 项目详情
+        let companyValue = this.company;// 公司运营
+        let brandsValue = this.brands;// 产品
+        let teamValue = this.team;// 核心团队
+        let financingValue = this.financing;// 融资信息
+        let milepostValue = this.milepost;// 里程碑
+        let privateValue = this.private;// 仅自己可见信息
 
-        let sum = Object.keys(projectValue).length +//所有数据的总长度
+        let sum = Object.keys(projectValue).length +// 所有数据的总长度
           Object.keys(companyValue).length +
           Object.keys(brandsValue).length +
           Object.keys(teamValue).length +
@@ -1673,146 +1577,127 @@
           Object.keys(milepostValue).length +
           Object.keys(privateValue).length + 6;
 
-
-        //判断所有为空的数值,包括数组内的第一组
-        function forFor(value) {
-          let inner = 0;//每一次调用的空值
+        // 判断所有为空的数值,包括数组内的第一组
+        function forFor (value) {
+          let inner = 0;// 每一次调用的空值
           if (isArray(value)) {
             if (value.length === 0) {
               number++;
-              inner++
+              inner++;
             };
           } else {
             for (let key in value) {
               if (isArray(value[key])) {
                 if (value[key].length === 0) {
                   number++;
-                  inner++
+                  inner++;
                 }
-              /*else {
-                  for (let key2 in value[key][0]) {
-                    if (value[key][0][key2] == "") {
-                      number++;
-                      inner++;
-                    }
-                  }
-                }*/
-              } else if (value[key] === "") {
+                /* else {
+                 for (let key2 in value[key][0]) {
+                 if (value[key][0][key2] == "") {
+                 number++;
+                 inner++;
+                 }
+                 }
+                 } */
+              } else if (value[key] === '') {
                 number++;
-                inner++
+                inner++;
               }
             }
           }
-          return inner
+          return inner;
         }
 
-        //是否为数组
-        function isArray(o) {
-          return Object.prototype.toString.call(o) == '[object Array]';
+        // 是否为数组
+        function isArray (o) {
+          return Object.prototype.toString.call(o) === '[object Array]';
         }
 
-        //判断是否为空对象
-        function isOwnEmpty(obj) {
-          for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
-              return false;//返回false，不为空对象
-            }
-          }
-          return true;//返回true，为空对象
-        }
-
-        if (forFor(fileValue) == 0) this.filePerfect = true;
+        if (forFor(fileValue) === 0) this.filePerfect = true;
         else this.filePerfect = false;
 
+        if (forFor(projectValue) !== 0) this.projectPerfect = false;
+        else if (this.project.goodness.pro_goodness.goodness_desc === '' || this.project.goodness.pro_goodness.goodness_title === '') { this.projectPerfect = false; } else this.projectPerfect = true;
 
-
-        if (forFor(projectValue) != 0) this.projectPerfect = false;
-        else if(this.project.goodness.pro_goodness.goodness_desc=="" || this.project.goodness.pro_goodness.goodness_title=="") {this.projectPerfect = false;}
-        else this.projectPerfect = true;
-
-
-        if (forFor(companyValue) == 0) this.companyPerfect = true;
+        if (forFor(companyValue) === 0) this.companyPerfect = true;
         else this.companyPerfect = false;
 
-        if (forFor(brandsValue) == 0) this.brandsPerfect = true;
+        if (forFor(brandsValue) === 0) this.brandsPerfect = true;
         else this.brandsPerfect = false;
 
-        if (forFor(teamValue) == 0) this.teamPerfect = true;
+        if (forFor(teamValue) === 0) this.teamPerfect = true;
         else this.teamPerfect = false;
 
-        if (forFor(financingValue) == 0) this.financingPerfect = true;
+        if (forFor(financingValue) === 0) this.financingPerfect = true;
         else this.financingPerfect = false;
 
-        if (forFor(milepostValue) == 0) this.milepostPerfect = true;
+        if (forFor(milepostValue) === 0) this.milepostPerfect = true;
         else this.milepostPerfect = false;
 
-        if (forFor(privateValue) == 0) this.privatePerfect = true;
+        if (forFor(privateValue) === 0) this.privatePerfect = true;
         else this.privatePerfect = false;
 
-
-
-      /*        if(this.project.goodness.pro_goodness.goodness_desc!="") number-1;
-        if(this.project.goodness.pro_goodness.goodness_title!="") number-1;*/
+        /*        if(this.project.goodness.pro_goodness.goodness_desc!="") number-1;
+         if(this.project.goodness.pro_goodness.goodness_title!="") number-1; */
         return parseInt(((sum - number) / sum) * 100);
-
-      },
+      }
     },
-    mounted() {
-      let leftWidth=document.getElementById("wid").offsetLeft+935;
-      this.$refs.right.style.left = leftWidth +'px';
+    mounted () {
+      let leftWidth = document.getElementById('wid').offsetLeft + 935;
+      this.$refs.right.style.left = leftWidth + 'px';
       const that = this;
       window.onresize = () => {
         return (() => {
           window.screenWidth = document.body.clientWidth;
-          that.screenWidth = window.screenWidth
-        })()
+          that.screenWidth = window.screenWidth;
+        })();
       };
       window.onscroll = () => {
         return (() => {
           that.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        })()
-      }
+        })();
+      };
     },
-    components:{
+    components: {
       syncprojectdetail
     },
     methods: {
-        //获得项目亮点焦点
-      focus(e){
+      // 获得项目亮点焦点
+      focus (e) {
 //          console.log(e)
-        this.tagShow=e;
+        this.tagShow = e;
 //        console.log(this.tagShow);
       },
-      //取消项目亮点焦点
-      blur(e){
-//        console.log(e)
-        this.tagShow=0;
+      // 取消项目亮点焦点
+      blur (e) {
+        this.tagShow = 0;
       },
-      //*获取列表各种数据
-      getCompanyStatus(data){
+      //* 获取列表各种数据
+      getCompanyStatus (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
           let obj = {};
           obj.label = data[i].status_id;
           obj.value = data[i].status_name;
-          arr.push(obj)
+          arr.push(obj);
         }
-        arr.push({label: '自定义添加', value: '自定义添加'})
-        return arr
-      },//获取运营状态
-      getFileType(data){
+        arr.push({label: '自定义添加', value: '自定义添加'});
+        return arr;
+      }, // 获取运营状态
+      getFileType (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
           let obj = {};
           obj.label = data[i].type_name;
           obj.value = data[i].type_id;
-          arr.push(obj)
+          arr.push(obj);
         }
         return arr;
-      },//获取项目分组信息
+      }, // 获取项目分组信息
 
-      setFileType(){
-        return new Promise((resolve, reject)=>{
+      setFileType () {
+        return new Promise((resolve, reject) => {
           this.$http.post(this.URL.getFileType, {user_id: localStorage.user_id})
             .then(res => {
               let data = res.data.data;
@@ -1820,264 +1705,259 @@
               resolve(4);
             })
             .catch(err => {
-              this.$tool.console(err)
-            })
+              this.$tool.console(err);
+            });
         });
-      },//设置文件分组标签
-      getWxProjectCategory(){
-        return new Promise((resolve, reject)=>{
-          //做一些异步操作
-          setTimeout(()=>{
-            this.area = this.$global.data.area;//设置城市1列表
-            this.scale = this.$global.data.scale;//设置期望融资
-            this.stage = this.$global.data.stage;//设置轮次信息
-            this.industry = this.$global.data.industry;//设置轮次信息
-            this.company_status = this.$global.data.company_status;//设置运营状态
-            this.company_scale = this.$global.data.company_scale;//设置公司规模几人
-            this.tags_pro = this.$global.data.tags_pro;//设置项目标签
-            this.tags.changepro = this.$global.data.tags_pro;//设置项目标签2另外的
-            this.tags_team = this.$global.data.tags_team;//设置团队标签
-            this.tags.changeTeam = this.$global.data.tags_team;//设置团队标签
-            this.tags_source = this.$global.data.pro_source;//设置项目来源
-            this.brand_type = this.$global.data.brand_type;//设置产品来源
-            this.tags.changesource = this.$global.data.pro_source;//设置项目来源
+      }, // 设置文件分组标签
+      getWxProjectCategory () {
+        return new Promise((resolve, reject) => {
+          // 做一些异步操作
+          setTimeout(() => {
+            this.area = this.$global.data.area;// 设置城市1列表
+            this.scale = this.$global.data.scale;// 设置期望融资
+            this.stage = this.$global.data.stage;// 设置轮次信息
+            this.industry = this.$global.data.industry;// 设置轮次信息
+            this.company_status = this.$global.data.company_status;// 设置运营状态
+            this.company_scale = this.$global.data.company_scale;// 设置公司规模几人
+            this.tags_pro = this.$global.data.tags_pro;// 设置项目标签
+            this.tags.changepro = this.$global.data.tags_pro;// 设置项目标签2另外的
+            this.tags_team = this.$global.data.tags_team;// 设置团队标签
+            this.tags.changeTeam = this.$global.data.tags_team;// 设置团队标签
+            this.tags_source = this.$global.data.pro_source;// 设置项目来源
+            this.brand_type = this.$global.data.brand_type;// 设置产品来源
+            this.tags.changesource = this.$global.data.pro_source;// 设置项目来源
             resolve(2);
-          },500)
+          }, 500);
         });
-
-      },//获取所有下拉框的数据
-      area1Change(data){
-        this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})//pid省
+      }, // 获取所有下拉框的数据
+      area1Change (data) {
+        this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
           .then(res => {
             let data = res.data.data;
             this.area2 = this.$tool.getCity(data);
           })
           .catch(err => {
-            this.$tool.console(err)
-          })
-
-      },//设置二级城市下拉列表
-      area1Change2(data){
+            this.$tool.console(err);
+          });
+      }, // 设置二级城市下拉列表
+      area1Change2 (data) {
         let newData = data;
-        if(data!=""){
-          let pid=localStorage.pid;
-          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})//pid省
+        if (data !== '') {
+          let pid = localStorage.pid;
+          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
             .then(res => {
               let data = res.data.data;
               this.area2 = this.$tool.getCity(data);
-              if(parseInt(newData)===parseInt(pid)){
-              }else{
-                this.project.pro_area.area_id="";
+              if (parseInt(newData) === parseInt(pid)) {
+              } else {
+                this.project.pro_area.area_id = '';
               }
             })
             .catch(err => {
-              this.$tool.console(err)
-            })
+              this.$tool.console(err);
+            });
         }
-      },//设置二级城市下拉列表2
+      }, // 设置二级城市下拉列表2
 
-      //*获取项目详情
-      setUploadShow2(data){
+      //* 获取项目详情
+      setUploadShow2 (data) {
         for (let i = 0; i < data.length; i++) {
-          if(data[i].belongs_to_type==null) {
-            data[i].belongs_to_type={type_name:"其他"};
+          if (data[i].belongs_to_type == null) {
+            data[i].belongs_to_type = {type_name: '其他'};
           };
-          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title+'.'+data[i].file_ext, data[i].file_id, data[i].belongs_to_type.type_id);
+          this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title + '.' + data[i].file_ext, data[i].file_id, data[i].belongs_to_type.type_id);
         }
-      },//设置批量上传文件显示
+      }, // 设置批量上传文件显示
 
       getProjectDetail () {
-        return new Promise((resolve, reject)=>{
-          //做一些异步操作
+        return new Promise((resolve, reject) => {
+          // 做一些异步操作
           this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
             .then(res => {
-              if(res.data.status_code === 430004){
-                this.$tool.warning("找不到项目");
-                this.loading=false;
-                this.$router.push({name: 'index'})//路由传参
-              }else{
-                this.uploadShow2.lists=[];
+              if (res.data.status_code === 430004) {
+                this.$tool.warning('找不到项目');
+                this.loading = false;
+                this.$router.push({name: 'index'});// 路由传参
+              } else {
+                this.uploadShow2.lists = [];
                 let data = res.data.data;
-                //项目文件设置=============================================
+                // 项目文件设置=============================================
 
-                //计划书清空
-                if(data.file.pro_BP.length=="") {
-                  this.planList=[];this.uploadShow={};
-                }else{
-                  this.planList = [{name: data.file.pro_BP.file_title+'.'+data.file.pro_BP.file_ext, url: data.file.pro_BP.file_url}];//设置计划书
+                // 计划书清空
+                if (data.file.pro_BP.length === '') {
+                  this.planList = []; this.uploadShow = {};
+                } else {
+                  this.planList = [{name: data.file.pro_BP.file_title + '.' + data.file.pro_BP.file_ext, url: data.file.pro_BP.file_url}];// 设置计划书
                   this.uploadShow = {
                     file_title: data.file.pro_BP.file_title,
                     pro_intro: data.file.pro_BP.file_title,
                     pro_name: data.file.pro_BP.file_title,
                     project_id: this.project_id,
                     file_id: data.file.pro_BP.file_id
-                  };//设置计划书上传列表
+                  };// 设置计划书上传列表
                 }
 
                 delete data.project.pro_schedule;
 
-                if (this.planList.length != 0) this.planButton = false;
-                else this.planButton = true;//判断计划书上传按钮显示被否
-                this.setUploadShow2(data.file.pro_file);//设置项目文件上传列表
+                if (this.planList.length !== 0) this.planButton = false;
+                else this.planButton = true;// 判断计划书上传按钮显示被否
+                this.setUploadShow2(data.file.pro_file);// 设置项目文件上传列表
 
-                //项目介绍设置=============================================
-                if (data.project.pro_area.length==0) {
-                  data.project.pro_area = {area_id:"",pid:""};
+                // 项目介绍设置=============================================
+                if (data.project.pro_area.length === 0) {
+                  data.project.pro_area = {area_id: '', pid: ''};
                 }
 
-                if(data.project.pro_scale==""){
-                  data.project.pro_scale = {scale_id: ''}
+                if (data.project.pro_scale === '') {
+                  data.project.pro_scale = {scale_id: ''};
                 }
 
-                this.area1Change(data.project.pro_area.pid);//取到省级设置市级
-                if (data.project.pro_stage == "") {
-                  data.project.pro_stage = {stage_id: ""}
-                }//轮次设置
-                data.project.pro_industry = this.$tool.setIdToArr(data.project.pro_industry,'industry_id');//领域标签取出id
-                this.companyTitle=data.project.pro_company_name;
-                localStorage.pid=data.project.pro_area.pid;
+                this.area1Change(data.project.pro_area.pid);// 取到省级设置市级
+                if (data.project.pro_stage === '') {
+                  data.project.pro_stage = {stage_id: ''};
+                }// 轮次设置
+                data.project.pro_industry = this.$tool.setIdToArr(data.project.pro_industry, 'industry_id');// 领域标签取出id
+                this.companyTitle = data.project.pro_company_name;
+                localStorage.pid = data.project.pro_area.pid;
 
+                data.project.tag = this.$tool.setIdToArr(data.project.tag, 'tag_id');// 设置项目标签
+                data.project.open_status = data.project.open_status.toString();// 私密设置
+                if (data.project.pro_finance_stock_after === 0) data.project.pro_finance_stock_after = '';// 投后股份
 
-                data.project.tag = this.$tool.setIdToArr(data.project.tag,'tag_id');//设置项目标签
-                data.project.open_status = data.project.open_status.toString();//私密设置
-                if(data.project.pro_finance_stock_after==0) data.project.pro_finance_stock_after="";//投后股份
-
-                if(data.project.pro_finance_value==0) data.project.pro_finance_value="";//项目估值
-                this.project=data.project;
-                //亮点设置=============================================addgoodNess1pro_servicepro_business_model
-                if(data.project.goodness.pro_goodness.length==0){
-                  for(let i=0;i<5-data.project.goodness.pro_goodness.length;i++){
+                if (data.project.pro_finance_value === 0) data.project.pro_finance_value = '';// 项目估值
+                this.project = data.project;
+                // 亮点设置=============================================addgoodNess1pro_servicepro_business_model
+                if (data.project.goodness.pro_goodness.length === 0) {
+                  for (let i = 0; i < 5 - data.project.goodness.pro_goodness.length; i++) {
                     this.addgoodNess();
                   }
-                }else if(data.project.goodness.pro_goodness.length<3){
-                  this.project.goodness.pro_goodness=data.project.goodness.pro_goodness;
-                  for(let i=0;i<4-data.project.goodness.pro_goodness.length;i++){
+                } else if (data.project.goodness.pro_goodness.length < 3) {
+                  this.project.goodness.pro_goodness = data.project.goodness.pro_goodness;
+                  for (let i = 0; i < 4 - data.project.goodness.pro_goodness.length; i++) {
                     this.addgoodNess();
                   }
-                }else if(data.project.goodness.pro_goodness.length>=3){
-                  this.project.goodness.pro_goodness=data.project.goodness.pro_goodness;
+                } else if (data.project.goodness.pro_goodness.length >= 3) {
+                  this.project.goodness.pro_goodness = data.project.goodness.pro_goodness;
                 }
 
-                if(data.project.goodness.pro_market_genera.length==0){
-                  for(let i=0;i<5-data.project.goodness.pro_market_genera.length;i++){
+                if (data.project.goodness.pro_market_genera.length === 0) {
+                  for (let i = 0; i < 5 - data.project.goodness.pro_market_genera.length; i++) {
                     this.addgoodNess1();
                   }
-                } else  if(data.project.goodness.pro_market_genera.length<3){
-                  this.project.goodness.pro_market_genera=data.project.goodness.pro_market_genera;
-                  for(let i=0;i<4-data.project.goodness.pro_market_genera.length;i++){
+                } else if (data.project.goodness.pro_market_genera.length < 3) {
+                  this.project.goodness.pro_market_genera = data.project.goodness.pro_market_genera;
+                  for (let i = 0; i < 4 - data.project.goodness.pro_market_genera.length; i++) {
                     this.addgoodNess1();
                   }
-                }
-                else if(data.project.goodness.pro_market_genera.length>=3){
-                  this.project.goodness.pro_market_genera=data.project.goodness.pro_market_genera;
+                } else if (data.project.goodness.pro_market_genera.length >= 3) {
+                  this.project.goodness.pro_market_genera = data.project.goodness.pro_market_genera;
                 }
 
-                if(data.project.goodness.pro_service.length==0){
-                  for(let i=0;i<5-data.project.goodness.pro_service.length;i++){
+                if (data.project.goodness.pro_service.length === 0) {
+                  for (let i = 0; i < 5 - data.project.goodness.pro_service.length; i++) {
                     this.addgoodNess2();
                   }
-                }  else if(data.project.goodness.pro_service.length<3){
-                  this.project.goodness.pro_service=data.project.goodness.pro_service;
-                  for(let i=0;i<4-data.project.goodness.pro_service.length;i++){
+                } else if (data.project.goodness.pro_service.length < 3) {
+                  this.project.goodness.pro_service = data.project.goodness.pro_service;
+                  for (let i = 0; i < 4 - data.project.goodness.pro_service.length; i++) {
                     this.addgoodNess2();
                   }
-                }else if(data.project.goodness.pro_service.length>=3){
-                  this.project.goodness.pro_service=data.project.goodness.pro_service;
+                } else if (data.project.goodness.pro_service.length >= 3) {
+                  this.project.goodness.pro_service = data.project.goodness.pro_service;
                 }
 
-
-                if(data.project.goodness.pro_business_model.length==0){
-                  for(let i=0;i<5-data.project.goodness.pro_business_model.length;i++){
+                if (data.project.goodness.pro_business_model.length === 0) {
+                  for (let i = 0; i < 5 - data.project.goodness.pro_business_model.length; i++) {
                     this.addgoodNess3();
                   }
-                }else if(data.project.goodness.pro_business_model.length<3){
-                  this.project.goodness.pro_business_model=data.project.goodness.pro_business_model;
-                  for(let i=0;i<4-data.project.goodness.pro_business_model.length;i++){
+                } else if (data.project.goodness.pro_business_model.length < 3) {
+                  this.project.goodness.pro_business_model = data.project.goodness.pro_business_model;
+                  for (let i = 0; i < 4 - data.project.goodness.pro_business_model.length; i++) {
                     this.addgoodNess3();
                   }
-                }else if(data.project.goodness.pro_business_model.length>=3){
-                  this.project.goodness.pro_business_model=data.project.goodness.pro_business_model;
+                } else if (data.project.goodness.pro_business_model.length >= 3) {
+                  this.project.goodness.pro_business_model = data.project.goodness.pro_business_model;
                 }
-                //公司运营设置=============================================
+                // 公司运营设置=============================================
 
-                if (data.company.pro_company_scale == "") {
-                  data.company.pro_company_scale = {comp_scale_id: 1}
-                }//规模为空的时候
-                if (data.company.pro_status == "") {
-                  data.company.pro_status = {status_id: 3}
-                }//规模为空的时候
-                this.statusLast = data.company.pro_status.status_id;//运营状态多余的
+                if (data.company.pro_company_scale === '') {
+                  data.company.pro_company_scale = {comp_scale_id: 1};
+                }// 规模为空的时候
+                if (data.company.pro_status === '') {
+                  data.company.pro_status = {status_id: 3};
+                }// 规模为空的时候
+                this.statusLast = data.company.pro_status.status_id;// 运营状态多余的
 
-                this.company=data.company;
+                this.company = data.company;
 
-                //产品设置=============================================
-                this.brands=data.brands;
-                //核心团队设置=============================================
-                data.team.tag = this.$tool.setIdToArr(data.team.tag,'tag_id');//团队标签
-                this.$tool.setZeroToNull(data.team.core_users,'stock_scale');//项目成员
-                if (data.team.core_users == "") data.team.core_users = [];//项目成员为空判断
-                this.team=data.team;
+                // 产品设置=============================================
+                this.brands = data.brands;
+                // 核心团队设置=============================================
+                data.team.tag = this.$tool.setIdToArr(data.team.tag, 'tag_id');// 团队标签
+                this.$tool.setZeroToNull(data.team.core_users, 'stock_scale');// 项目成员
+                if (data.team.core_users === '') data.team.core_users = [];// 项目成员为空判断
+                this.team = data.team;
 
+                // 融资信息设置=============================================
+                this.$tool.setZeroToNull(data.financing.pro_history_finances, 'pro_finance_scale');// 设置历史融资信息
+                this.$tool.setTimeToReallyTime(data.financing.pro_history_finance, 'finance_time');// 历史融资信息时间格式设置
+                if (data.financing.pro_history_finance === '') data.financing.pro_history_finance = [];
+                this.financing = data.financing;
 
-                //融资信息设置=============================================
-                this.$tool.setZeroToNull(data.financing.pro_history_finances,'pro_finance_scale');//设置历史融资信息
-                this.$tool.setTimeToReallyTime(data.financing.pro_history_finance,'finance_time');//历史融资信息时间格式设置
-                if (data.financing.pro_history_finance == "") data.financing.pro_history_finance = [];
-                this.financing=data.financing;
+                // 里程碑设置=============================================
+                this.$tool.setTimeToReallyTime(data.milepost.pro_develop, 'dh_start_time');// 里程碑时间格式设置
+                this.milepost = data.milepost;
 
-                //里程碑设置=============================================
-                this.$tool.setTimeToReallyTime(data.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
-                this.milepost=data.milepost;
+                // FA业务=============================================
+                this.pro_FA = data.pro_FA;
 
-                //FA业务=============================================
-                this.pro_FA=data.pro_FA;
+                // FA业务仅自己可见=============================================
+                data.private.pro_source = this.$tool.setIdToArr(data.private.pro_source, 'tag_id');// 项目来源标签
+                if (data.private.commission === 0) data.private.commission = '';
+                if (data.private.stock_right === 0) data.private.stock_right = '';
+                if (data.private.stock_follow === 0) data.private.stock_follow = '';
+                if (data.private.stock_other === 0) data.private.stock_other = '';
 
-                //FA业务仅自己可见=============================================
-                data.private.pro_source = this.$tool.setIdToArr(data.private.pro_source,'tag_id');//项目来源标签
-                if(data.private.commission==0) data.private.commission="";
-                if(data.private.stock_right==0) data.private.stock_right="";
-                if(data.private.stock_follow==0) data.private.stock_follow="";
-                if(data.private.stock_other==0) data.private.stock_other="";
-
-                this.private=data.private;
+                this.private = data.private;
 
                 this.loading = false;
-                this.tags_pro=this.tags.changepro.slice(0);
-                this.tags_team=this.tags.changeTeam.slice(0);
-                this.tags_source=this.tags.changesource.slice(0);
+                this.tags_pro = this.tags.changepro.slice(0);
+                this.tags_team = this.tags.changeTeam.slice(0);
+                this.tags_source = this.tags.changesource.slice(0);
                 resolve(3);
               }
             })
             .catch(err => {
               this.loading = false;
-              this.$tool.console(err, 2)
-            })
+              this.$tool.console(err, 2);
+            });
         });
-      },//获取项目详情数据
+      }, // 获取项目详情数据
 
-      //*商业计划书
-      planChange(file, fileList){
-        this.planList = fileList
-        if (file.status === "fail") this.planButton = true;
+      //* 商业计划书
+      planChange (file, fileList) {
+        this.planList = fileList;
+        if (file.status === 'fail') this.planButton = true;
         else this.planButton = false;
       },
-      planuploadsuccess(response, file, fileList){
-        this.$tool.success("上传成功");
+      planuploadsuccess (response, file, fileList) {
+        this.$tool.success('上传成功');
         let data = response.data;
         this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id);
-        this.uploadLoading=false;
-        this.submitButton=false;
-      },//上传成功后添加字段
-      planuploaderror(err, file, fileList){
-        this.$tool.error("上传失败,请联系管理员")
-      },//上传失败
-      planRemove(file, fileList) {
+        this.uploadLoading = false;
+        this.submitButton = false;
+      }, // 上传成功后添加字段
+      planuploaderror (err, file, fileList) {
+        console.log(err);
+        this.$tool.error('上传失败,请联系管理员');
+      }, // 上传失败
+      planRemove (file, fileList) {
         const deleteAtUpload = this.URL.deleteAtUpload;
-        if (fileList.length == 0) this.planButton = true;
+        if (fileList.length === 0) this.planButton = true;
         else {
           this.planButton = true;
-          this.uploadLoading=false;
-          this.submitButton=false;
+          this.uploadLoading = false;
+          this.submitButton = false;
         }
         this.$http.post(deleteAtUpload, {user_id: localStorage.user_id, project_id: this.uploadShow.project_id})
           .then(res => {
@@ -2086,123 +1966,122 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err)
+            this.$tool.console(err);
 //            this.alert("删除失败,请联系管理员")
-          })
-
-      },//删除文件
-      addplan(file_title, pro_intro, pro_name, project_id, file_id) {
+          });
+      }, // 删除文件
+      addplan (fileTitle, proIntro, proName, projectId, fileId) {
         let object = {};
-        object.file_title = file_title;
-        object.pro_intro = pro_intro;
-        object.pro_name = pro_name;
-        object.project_id = project_id;
-        object.file_id = file_id;
+        object.file_title = fileTitle;
+        object.pro_intro = proIntro;
+        object.pro_name = proName;
+        object.project_id = projectId;
+        object.file_id = fileId;
         this.uploadShow = object;
-      },//添加上传文件时,保存返回的数据
-      planPreview(file){
-        const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+this.uploadShow.file_id;
-        window.location.href=url;
-      },//点击下载
-      beforeUpload(file){
+      }, // 添加上传文件时,保存返回的数据
+      planPreview (file) {
+        const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + this.uploadShow.file_id;
+        window.location.href = url;
+      }, // 点击下载
+      beforeUpload (file) {
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
-        let filetypes=[".doc",".docx",".ppt",".pptx",".pdf",".zip",".rar"];
-        let name=file.name;
-        let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
+        let filetypes = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.zip', '.rar'];
+        let name = file.name;
+        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
         let isnext = false;
-        if(filetypes && filetypes.length>0){
-          for(var i =0; i<filetypes.length;i++){
-            if(filetypes[i]==fileend){
+        if (filetypes && filetypes.length > 0) {
+          for (var i = 0; i < filetypes.length; i++) {
+            if (filetypes[i] === fileend) {
               isnext = true;
               break;
             }
           }
         }
-        this.loading=false;
-        if(!isnext){
-          this.$tool.error("不支持的文件格式");
+        this.loading = false;
+        if (!isnext) {
+          this.$tool.error('不支持的文件格式');
           return false;
         }
-        if(parseInt(file.size) > parseInt(52428810)){
-          this.$tool.error("暂不支持超过50M文件上传哦");
+        if (parseInt(file.size) > parseInt(52428810)) {
+          this.$tool.error('暂不支持超过50M文件上传哦');
           return false;
         };
-        this.uploadLoading=true;
-        this.submitButton=true;
-      },//上传前的验证
+        this.uploadLoading = true;
+        this.submitButton = true;
+      }, // 上传前的验证
 
-      //取消上传
-      cancelUpload(file){
+      // 取消上传
+      cancelUpload (file) {
         this.$refs.upload.abort(file);
         this.deleteLoad(file.uid);
         this.subButtonCheck(this.uploadShow2.lists);
       },
-      //*批量上传
+      //* 批量上传
 
-      beforeUpload1(file){
+      beforeUpload1 (file) {
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
-        let filetypes=[".doc",".ppt",".pdf",".zip",".rar",".pptx",".png",".jpg",".docx",".jpeg"];
-        let name=file.name;
-        let fileend=name.substring(name.lastIndexOf(".")).toLowerCase();
+        let filetypes = ['.doc', '.ppt', '.pdf', '.zip', '.rar', '.pptx', '.png', '.jpg', '.docx', '.jpeg'];
+        let name = file.name;
+        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
         let isnext = false;
-        if(filetypes && filetypes.length>0){
-          for(var i =0; i<filetypes.length;i++){
-            if(filetypes[i]==fileend){
+        if (filetypes && filetypes.length > 0) {
+          for (var i = 0; i < filetypes.length; i++) {
+            if (filetypes[i] === fileend) {
               isnext = true;
               break;
             }
           }
         }
-        this.loading=false;
-        if(!isnext){
-          this.$tool.error("不支持的文件格式");
+        this.loading = false;
+        if (!isnext) {
+          this.$tool.error('不支持的文件格式');
           return false;
         }
-        if(parseInt(file.size) > parseInt(52428810)){
-          this.$tool.error("暂不支持超过50m文件上传哦");
+        if (parseInt(file.size) > parseInt(52428810)) {
+          this.$tool.error('暂不支持超过50m文件上传哦');
           return false;
         };
-        this.addDomain("其他", file.name, 0, 4,true,file.uid);
+        this.addDomain('其他', file.name, 0, 4, true, file.uid);
         this.subButtonCheck(this.uploadShow2.lists);
-      },//项目文件上传验证
-      //当添加文件时,添加入上传列表
-      handleChange(file, fileList){
-        this.loading=true;
-        if(this.loadingcheck){
-          this.loading=false;
-          this.loadingcheck=false;
+      }, // 项目文件上传验证
+      // 当添加文件时,添加入上传列表
+      handleChange (file, fileList) {
+        this.loading = true;
+        if (this.loadingcheck) {
+          this.loading = false;
+          this.loadingcheck = false;
         }
-        this.subButtonCheck(this.uploadShow2.lists)
+        this.subButtonCheck(this.uploadShow2.lists);
       },
-      uploadsuccess(response, file, fileList){
+      uploadsuccess (response, file, fileList) {
         let data = response.data;
 //        this.$tool.success("上传成功");
         this.deleteLoad(file.uid);
-        this.addDomain(data.type_name, data.file_title, data.file_id, data.type,false,file.uid);
-        this.loadingcheck=true;
+        this.addDomain(data.type_name, data.file_title, data.file_id, data.type, false, file.uid);
+        this.loadingcheck = true;
         this.subButtonCheck(this.uploadShow2.lists);
       },
-      uploaderror(err, file, fileList){
-        this.$tool.error("上传失败,请联系管理员");
-        this.loadingcheck=false;
-        this.loading=false;
-      },//上传失败
-      download(item){
+      uploaderror (err, file, fileList) {
+        console.log(err);
+        this.$tool.error('上传失败,请联系管理员');
+        this.loadingcheck = false;
+        this.loading = false;
+      }, // 上传失败
+      download (item) {
         let index = this.uploadShow2.lists.indexOf(item);
-         if (index !== -1) {
-         let file_id = this.uploadShow2.lists[index].file_id;
-         const url=this.URL.weitianshi+this.URL.download+"?user_id="+localStorage.user_id+"&file_id="+file_id;
-         window.location.href=url;
-         }
+        if (index !== -1) {
+          let fileId = this.uploadShow2.lists[index].file_id;
+          const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId;
+          window.location.href = url;
+        }
+      }, // 点击下载
 
-      },//点击下载
-
-      removeList(item) {
+      removeList (item) {
         var index = this.uploadShow2.lists.indexOf(item);
         if (index !== -1) {
-          this.fileList.splice(index, 1)
+          this.fileList.splice(index, 1);
           const deleteAtFile = this.URL.deleteAtFile;
           this.$http.post(deleteAtFile, {
             user_id: localStorage.user_id,
@@ -2212,61 +2091,61 @@
             .then(res => {
               if (res.status === 200) {
                 this.loading = false;
-                this.uploadShow2.lists.splice(index, 1)
+                this.uploadShow2.lists.splice(index, 1);
 //                this.$tool.success("删除成功");
               }
             })
             .catch(err => {
-              this.$tool.console(err)
-              this.$tool.error("删除失败,请联系管理员")
-            })
+              this.$tool.console(err);
+              this.$tool.error('删除失败,请联系管理员');
+            });
         }
-      },//删除当前上传文件
+      }, // 删除当前上传文件
 
-      addDomain(type_name, file_title, file_id, type,load,uid)  {
+      addDomain (typeName, fileTitle, fileId, type, load, uid) {
         let object = {};
-        object.bp_type = type_name;
-        object.file_title = file_title;
-        object.file_id = file_id;
-        object.type = type;//文件类型
-        object.load = load;//是否在上传中
-        object.uid = uid;//文件唯一标识
+        object.bp_type = typeName;
+        object.file_title = fileTitle;
+        object.file_id = fileId;
+        object.type = type;// 文件类型
+        object.load = load;// 是否在上传中
+        object.uid = uid;// 文件唯一标识
         this.uploadShow2.lists.push(object);
-      },//添加上传文件时,加入显示列表
-      deleteLoad(uid){
-        let lists=this.uploadShow2.lists;//所有的文件的数组
-        for(let i=0; i<lists.length; i++){
-          if(lists[i].uid==uid){
-            lists.splice(i,1)
+      }, // 添加上传文件时,加入显示列表
+      deleteLoad (uid) {
+        let lists = this.uploadShow2.lists;// 所有的文件的数组
+        for (let i = 0; i < lists.length; i++) {
+          if (lists[i].uid === uid) {
+            lists.splice(i, 1);
           }
         }
-      },//剔除Load
-      subButtonCheck(arr){
-        if(arr.length===0){
-          this.submitButton=false;
+      }, // 剔除Load
+      subButtonCheck (arr) {
+        if (arr.length === 0) {
+          this.submitButton = false;
           return false;
         }
-        for(let i=0; i<arr.length; i++){
-          if(arr[i].load){
-            this.submitButton=true;
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].load) {
+            this.submitButton = true;
             return false;
-          }else{
-            this.submitButton=false;
+          } else {
+            this.submitButton = false;
           }
         }
-      },//当文件没有全部上传完时,不能提交
+      }, // 当文件没有全部上传完时,不能提交
 
-      groupchange(label){
+      groupchange (label) {
         let index = this.groups.index;
         let data = this.groups.group;
-        for(let i=0 ;i<data.length; i++){
-          if(data[i].value==label){
-              this.groups.name=data[i].label;
-              this.uploadShow2.lists[index].type=label;
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].value === label) {
+            this.groups.name = data[i].label;
+            this.uploadShow2.lists[index].type = label;
           }
         }
-      },//点击文件分组设置中的单选框
-      addGroup(formName) {
+      }, // 点击文件分组设置中的单选框
+      addGroup (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$http.post(this.URL.createFileType, {
@@ -2274,28 +2153,28 @@
               type_name: this.groups.input
             })
               .then(res => {
-                  let data =res.data;
-                  let newObj = {};
-                  newObj.type = this.groups.input;
-                  newObj.label = this.groups.input;
-                  newObj.value = data.type_id;
-                  this.groups.type = data.type_id;
-                  this.groups.group.push(newObj);
-                  this.groups.input = ''
+                let data = res.data;
+                let newObj = {};
+                newObj.type = this.groups.input;
+                newObj.label = this.groups.input;
+                newObj.value = data.type_id;
+                this.groups.type = data.type_id;
+                this.groups.group.push(newObj);
+                this.groups.input = '';
               })
               .catch(err => {
-                this.$tool.console(err)
-              })
+                this.$tool.console(err);
+              });
           } else {
             this.$tool.console('error submit!!');
             return false;
           }
         });
-      },//添加文件分组设置的分组选项
-      saveGroupChange(){//file_id type_id user_id
-        let type = this.groups.bp_type;
+      }, // 添加文件分组设置的分组选项
+      saveGroupChange () { // file_id type_id user_id
+        // let type = this.groups.bp_type;
         let index = this.groups.index;
-        let type_name = this.groups.name
+        let typeName = this.groups.name;
         this.$http.post(this.URL.setFileType, {
           user_id: localStorage.user_id,
           file_id: this.uploadShow2.lists[index].file_id,
@@ -2303,57 +2182,54 @@
         })
           .then(res => {
             if (index !== -1) {
-              this.uploadShow2.lists[index].bp_type = type_name;
-              this.setFileDisplay = false
+              this.uploadShow2.lists[index].bp_type = typeName;
+              this.setFileDisplay = false;
             }
           })
           .catch(err => {
-            this.$tool.console(err)
-          })
-
-      },//发送文件分组设置请求
-      toGroup(item){
-        this.groups.type=item.type;
+            this.$tool.console(err);
+          });
+      }, // 发送文件分组设置请求
+      toGroup (item) {
+        this.groups.type = item.type;
         var index = this.uploadShow2.lists.indexOf(item);
         this.groups.index = index;
         this.setFileDisplay = true;
+      }, // 获取文件分组的位置
 
-      },//获取文件分组的位置
-
-      openDiv(v){
+      openDiv (v) {
         this[v] = true;
       },
-      closeDiv(v){
+      closeDiv (v) {
         this[v] = false;
       },
-      goBack(){
-        this.zgClick("退出编辑项目");
+      goBack () {
+        this.zgClick('退出编辑项目');
         this.$router.go(-1);
-      },//返回上一层
+      }, // 返回上一层
 
-      //*获取远程数据模拟
-      loadData(arr){
+      //* 获取远程数据模拟
+      loadData (arr) {
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
           let obj = {};
-          obj.value = arr[i].project_name=="" ? arr[i].company_name : arr[i].company_name + '(' +arr[i].project_name + ')';
+          obj.value = arr[i].project_name === '' ? arr[i].company_name : arr[i].company_name + '(' + arr[i].project_name + ')';
           obj.address = arr[i].com_id;
           obj.company_name = arr[i].company_name;
-          newArr.push(obj)
+          newArr.push(obj);
         }
         return newArr;
       },
-      //*自动搜索,接口写这里面
-      querySearchAsync(queryString, cb) {
-        if(queryString.length>2) {
+      //* 自动搜索,接口写这里面
+      querySearchAsync (queryString, cb) {
+        if (queryString.length > 2) {
           this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
             .then(res => {
               this.restaurants = [];
               let data = res.data.data;
               this.restaurants = this.loadData(data);
-              if (queryString == "") this.restaurants = [];
+              if (queryString === '') this.restaurants = [];
               let restaurants = this.restaurants;
-              /*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;*/
               clearTimeout(this.timeout);
               this.timeout = setTimeout(() => {
                 cb(restaurants);
@@ -2361,34 +2237,36 @@
             })
             .catch(err => {
 //          this.alert("加载失败");
+              console.log(err);
               this.$tool.console(this.restaurants);
-            })
-        } else{
-          cb([]);
+            });
+        } else {
+          let callback = [];
+          cb(callback);
         }
       },
-      createStateFilter(queryString) {
+      createStateFilter (queryString) {
         return (state) => {
           return (state.value.indexOf(queryString.toLowerCase()) === 0);
         };
       },
-      handleSelect(item) {
+      handleSelect (item) {
         this.companyTitle = item.company_name;
         this.companyid = item.address;
         this.project.pro_company_name = item.company_name;
-      },//选择了搜索出来的数据后
+      }, // 选择了搜索出来的数据后
 
-      //控制添加radio
-      radiochange(label){
-        if (label == "自定义添加") {
+      // 控制添加radio
+      radiochange (label) {
+        if (label === '自定义添加') {
           this.addStateDisplay = true;
         }
       },
-      cancelGroupChange(){
+      cancelGroupChange () {
         this.addStateDisplay = false;
         this.company.pro_status.status_id = this.statusLast;
-      },//取消后添加运营状态
-      addState(){
+      }, // 取消后添加运营状态
+      addState () {
         this.$http.post(this.URL.createStatusPro, {user_id: localStorage.user_id, status_name: this.form.state})
           .then(res => {
             let data = res.data;
@@ -2398,18 +2276,18 @@
 //            this.project.companystate = this.form.state;
             this.company_status.splice(length - 1, 0, newState);
             this.addStateDisplay = false;
-            this.company.pro_status.status_id=data.status_id;
-            this.statusLast=data.status_id;
-            this.form.state="";
+            this.company.pro_status.status_id = data.status_id;
+            this.statusLast = data.status_id;
+            this.form.state = '';
           })
           .catch(err => {
-            this.$tool.error("添加失败");
+            this.$tool.error('添加失败');
             this.$tool.console(err);
-          })
-      },//添加运营状态
-      addChangepro(e){
+          });
+      }, // 添加运营状态
+      addChangepro (e) {
         let tagName = this.$tool.checkArr(e, this.tags_pro);
-        if (tagName != undefined) {
+        if (tagName !== undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 0, tag_name: tagName})
             .then(res => {
               let newState = {};
@@ -2418,15 +2296,15 @@
               this.tags.changepro.push(newState);
             })
             .catch(err => {
-              this.$tool.error("添加失败");
+              this.$tool.error('添加失败');
               this.$tool.console(err);
-            })
+            });
         }
-      },//添加项目标签
-      addChangeTeam(e){
+      }, // 添加项目标签
+      addChangeTeam (e) {
         let tagName = this.$tool.checkArr(e, this.tags_team);
 
-        if (tagName != undefined) {
+        if (tagName !== undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 1, tag_name: tagName})
             .then(res => {
               let newState = {};
@@ -2434,21 +2312,21 @@
               newState.value = res.data.tag_id;
 //              this.tags_team.push(newState);
               this.tags.changeTeam.push(newState);
-              /*this.tags.changeTeam.push(res.data.tag_id);*/
+              /* this.tags.changeTeam.push(res.data.tag_id); */
             })
             .catch(err => {
-              this.$tool.error("添加失败");
+              this.$tool.error('添加失败');
               this.$tool.console(err);
-            })
+            });
         }
 //        else{
 //          this.tags.changeTeam=this.team.tags_team.slice(0);
 //        }
-      },//添加团队标签
-      addChangesource(e){
+      }, // 添加团队标签
+      addChangesource (e) {
         let tagName = this.$tool.checkArr(e, this.tags_source);
 
-        if (tagName != undefined) {
+        if (tagName !== undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 2, tag_name: tagName})
             .then(res => {
               let newState = {};
@@ -2456,295 +2334,293 @@
               newState.value = res.data.tag_id;
 //              this.tags_source.push(newState);
               this.tags.changesource.push(newState);
-              /*this.tags.changesource.push(res.data.tag_id);*/
+              /* this.tags.changesource.push(res.data.tag_id); */
             })
             .catch(err => {
-              this.$tool.error("添加失败");
+              this.$tool.error('添加失败');
               this.$tool.console(err);
-            })
+            });
         }
-        /*else{
-          this.tags.changesource=this.project.pro_source.slice(0);
-        }*/
-      },//添加项目来源
-
+        /* else{
+         this.tags.changesource=this.project.pro_source.slice(0);
+         } */
+      }, // 添加项目来源
 
 //      添加投资亮点
-      addgoodNess(){
+      addgoodNess () {
         this.project.goodness.pro_goodness.push({
           goodness_desc: '',
           goodness_title: '',
           goodness_id: '',
-          type:'pro_goodness',
+          type: 'pro_goodness'
         });
       },
 //      删除投资亮点
-      removegoodNess(item){
-        var index = this.project.goodness.pro_goodness.indexOf(item)
+      removegoodNess (item) {
+        var index = this.project.goodness.pro_goodness.indexOf(item);
         if (index !== -1) {
-          this.project.goodness.pro_goodness.splice(index, 1)
+          this.project.goodness.pro_goodness.splice(index, 1);
         }
       },
 
       // 添加市场概况
-      addgoodNess1(){
+      addgoodNess1 () {
         this.project.goodness.pro_market_genera.push({
           goodness_desc: '',
           goodness_title: '',
           goodness_id: '',
-          type:'pro_market_genera',
+          type: 'pro_market_genera'
         });
       },
 //      删除市场概况
-      removegoodNess1(item){
-        var index = this.project.goodness.pro_market_genera.indexOf(item)
+      removegoodNess1 (item) {
+        var index = this.project.goodness.pro_market_genera.indexOf(item);
         if (index !== -1) {
-          this.project.goodness.pro_market_genera.splice(index, 1)
+          this.project.goodness.pro_market_genera.splice(index, 1);
         }
       },
 
       // 添加产品概况pro_servicepro_business_model
-      addgoodNess2(){
+      addgoodNess2 () {
         this.project.goodness.pro_service.push({
           goodness_desc: '',
           goodness_title: '',
           goodness_id: '',
-          type:'pro_service',
+          type: 'pro_service'
         });
       },
 //      删除产品概况
-      removegoodNess2(item){
-        var index = this.project.goodness.pro_service.indexOf(item)
+      removegoodNess2 (item) {
+        var index = this.project.goodness.pro_service.indexOf(item);
         if (index !== -1) {
-          this.project.goodness.pro_service.splice(index, 1)
+          this.project.goodness.pro_service.splice(index, 1);
         }
       },
 
       // 添加商业模式pro_business_model
-      addgoodNess3(){
+      addgoodNess3 () {
         this.project.goodness.pro_business_model.push({
           goodness_desc: '',
           goodness_title: '',
           goodness_id: '',
-          type:'pro_business_model',
+          type: 'pro_business_model'
         });
       },
 //      删除商业模式
-      removegoodNess3(item){
-        var index = this.project.goodness.pro_business_model.indexOf(item)
+      removegoodNess3 (item) {
+        var index = this.project.goodness.pro_business_model.indexOf(item);
         if (index !== -1) {
-          this.project.goodness.pro_business_model.splice(index, 1)
+          this.project.goodness.pro_business_model.splice(index, 1);
         }
       },
-      //添加产品
-      addBrand(){
+      // 添加产品
+      addBrand () {
         this.brands.brand.push({
           brand_desc: '',
           brand_name: '',
           type_id: '',
-          brand_id:''
+          brand_id: ''
         });
       },
-      removeBrand(item){
-        if(item.brand_id=="" || item.brand_id==null) {
+      removeBrand (item) {
+        if (item.brand_id === '' || item.brand_id == null) {
           let index = this.brands.brand.indexOf(item);
           if (index !== -1) {
-            this.brands.brand.splice(index, 1)
+            this.brands.brand.splice(index, 1);
           }
-        }else{
+        } else {
           this.$http.post(this.URL.deleteBrand, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
             brand_id: item.brand_id
           })
             .then(res => {
-              this.$tool.success("删除成功");
+              this.$tool.success('删除成功');
               let index = this.brands.brand.indexOf(item);
               if (index !== -1) {
-                this.brands.brand.splice(index, 1)
+                this.brands.brand.splice(index, 1);
               }
             })
             .catch(err => {
-              this.$tool.error("删除失败");
+              this.$tool.error('删除失败');
               this.$tool.console(err);
-            })
+            });
         }
       },
 
-      //*添加团队成员
-      addMember() {
+      //* 添加团队成员
+      addMember () {
         this.team.core_users.push({
           ct_member_name: '',
           ct_member_career: '',
           stock_scale: '',
           ct_member_intro: '',
-          project_ct_id: '',
+          project_ct_id: ''
         });
       },
-      removeMember(item) {
-        if(item.project_ct_id=="" || item.project_ct_id==null) {
+      removeMember (item) {
+        if (item.project_ct_id === '' || item.project_ct_id == null) {
           let index = this.team.core_users.indexOf(item);
           if (index !== -1) {
-            this.team.core_users.splice(index, 1)
+            this.team.core_users.splice(index, 1);
           }
-        }else{
+        } else {
           this.$http.post(this.URL.deleteCoreTeam, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
             project_ct_id: item.project_ct_id
           })
             .then(res => {
-              this.$tool.success("删除成功");
+              this.$tool.success('删除成功');
               let index = this.team.core_users.indexOf(item);
               if (index !== -1) {
-                this.team.core_users.splice(index, 1)
+                this.team.core_users.splice(index, 1);
               }
             })
             .catch(err => {
-              this.$tool.error("删除失败");
+              this.$tool.error('删除失败');
               this.$tool.console(err);
-            })
+            });
         }
       },
 
-      //*添加历史融资信息
-      addHistory() {
+      //* 添加历史融资信息
+      addHistory () {
         this.financing.pro_history_finance.push({
           finance_time: '',
           pro_finance_stage: '',
           pro_finance_scale: '',
           pro_finance_investor: '',
-          history_id:''
+          history_id: ''
         });
       },
-      removeHistory(item) {
-        if(item.history_id=="" || item.history_id==null){
-          let index = this.financing.pro_history_finance.indexOf(item)
+      removeHistory (item) {
+        if (item.history_id === '' || item.history_id == null) {
+          let index = this.financing.pro_history_finance.indexOf(item);
           if (index !== -1) {
-            this.financing.pro_history_finance.splice(index, 1)
+            this.financing.pro_history_finance.splice(index, 1);
           }
-        }else{
+        } else {
           this.$http.post(this.URL.deleteFinance, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
             history_id: item.history_id
           })
             .then(res => {
-              this.$tool.success("删除成功");
+              this.$tool.success('删除成功');
               let index = this.financing.pro_history_finance.indexOf(item);
               if (index !== -1) {
-                this.financing.pro_history_finance.splice(index, 1)
+                this.financing.pro_history_finance.splice(index, 1);
               }
             })
             .catch(err => {
-              this.$tool.error("删除失败");
+              this.$tool.error('删除失败');
               this.$tool.console(err);
-            })
+            });
         }
-
       },
 
-      //*添加里程碑
-      addmilePost() {
+      //* 添加里程碑
+      addmilePost () {
         this.milepost.pro_develop.push({
           dh_start_time: '',
           dh_event: '',
           history_id: '',
-          project_dh_id:''
+          project_dh_id: ''
         });
       },
-      removemilePost(item) {
-        if(item.project_dh_id=="" || item.project_dh_id==null){
-          let index = this.milepost.pro_develop.indexOf(item)
+      removemilePost (item) {
+        if (item.project_dh_id === '' || item.project_dh_id == null) {
+          let index = this.milepost.pro_develop.indexOf(item);
           if (index !== -1) {
-            this.milepost.pro_develop.splice(index, 1)
+            this.milepost.pro_develop.splice(index, 1);
           }
-        }else{
+        } else {
           this.$http.post(this.URL.deleteDevelop, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
             project_dh_id: item.project_dh_id
           })
             .then(res => {
-              this.$tool.success("删除成功");
-              let index = this.milepost.pro_develop.indexOf(item)
+              this.$tool.success('删除成功');
+              let index = this.milepost.pro_develop.indexOf(item);
               if (index !== -1) {
-                this.milepost.pro_develop.splice(index, 1)
+                this.milepost.pro_develop.splice(index, 1);
               }
             })
             .catch(err => {
-              this.$tool.error("删除失败");
+              this.$tool.error('删除失败');
               this.$tool.console(err);
-            })
-        }
-      },
-
-      //投资亮点循环一条必填
-      oneCheck(item){
-          var check = true;
-          for(let i=0;i<item.length;i++){
-              if(item[i].goodness_title !== "" && item[i].goodness_desc !== "" ){
-                check = false;
-                return check;
-              }else{
-                check = true;
-              }
-          }
-          return check;
-      },
-      //*检查所有必填项目以及获取所有数据/true过.false不过
-      submitForm(formName,checkName) {
-        this.$refs[formName].validate((valid) => {
-          this[checkName]=!valid;
-        });
-      },
-  //*全部保存按钮
-      allSave(){
-        var submit = ()=>{
-            return new Promise((resolve, reject)=>{
-              //做一些异步操作
-              this.submitForm('project','projectMust');
-              this.submitForm('company','companyMust');
-              this.submitForm('brands','brandtMust');
-              this.submitForm('team','teamMust');
-              this.submitForm('financing','financingMust');
-              this.submitForm('milepost','milepostMust');
-              this.submitForm('private','privateMust');
-              resolve(true);
             });
         }
+      },
 
-        var check = ()=>{
-          return new Promise((resolve, reject)=>{
-            //做一些异步操作
-            setTimeout(()=>{
-              if (this.projectMust) {}
-              else if (this.brandtMust) {}
-              else if (this.teamMust) {}
-              else if (this.financingMust) {}
-              else if (this.milepostMust) {}
-              else if (this.privateMust) {}
-              else if(this.oneCheck(this.project.goodness.pro_goodness) ){this.$tool.error("投资亮点最少填写一条")}
-//              else if(this.$tool.getNull(this.project.goodness.pro_goodness[1].goodness_desc)) {this.$tool.error("投资亮点内容不能为空")}
-              else{
+      // 投资亮点循环一条必填
+      oneCheck (item) {
+        var check = true;
+        for (let i = 0; i < item.length; i++) {
+          if (item[i].goodness_title !== '' && item[i].goodness_desc !== '') {
+            check = false;
+            return check;
+          } else {
+            check = true;
+          }
+        }
+        return check;
+      },
+      //* 检查所有必填项目以及获取所有数据/true过.false不过
+      submitForm (formName, checkName) {
+        this.$refs[formName].validate((valid) => {
+          this[checkName] = !valid;
+        });
+      },
+      //* 全部保存按钮
+      allSave () {
+        var submit = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            this.submitForm('project', 'projectMust');
+            this.submitForm('company', 'companyMust');
+            this.submitForm('brands', 'brandtMust');
+            this.submitForm('team', 'teamMust');
+            this.submitForm('financing', 'financingMust');
+            this.submitForm('milepost', 'milepostMust');
+            this.submitForm('private', 'privateMust');
+            resolve(true);
+          });
+        };
+
+        var check = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            setTimeout(() => {
+              if (this.projectMust) {
+              } else if (this.brandtMust) {
+              } else if (this.teamMust) {
+              } else if (this.financingMust) {
+              } else if (this.milepostMust) {
+              } else if (this.privateMust) {
+              } else if (this.oneCheck(this.project.goodness.pro_goodness)) {
+                this.$tool.error('投资亮点最少填写一条');
+              } else {
                 resolve(true);
               }
-            },200)
+            }, 200);
           });
         };
 
         submit()
-          .then((data)=>{
+          .then((data) => {
             return check();
-        })
-          .then((data)=>{
-            if(data){
-              this.zgClick("提交编辑项目");
-              this.loading=true;
+          })
+          .then((data) => {
+            if (data) {
+              this.zgClick('提交编辑项目');
+              this.loading = true;
               let allData = {};
-              this.$tool.setTag(this.project.tag,this.tags.changepro);//标签设置,去处ID存入数组
-              this.$tool.setTag(this.team.tag,this.tags.changeTeam);//标签设置,去处ID存入数组
-              this.$tool.setTag(this.private.pro_source,this.tags.changesource);//标签设置,去处ID存入数组
+              this.$tool.setTag(this.project.tag, this.tags.changepro);// 标签设置,去处ID存入数组
+              this.$tool.setTag(this.team.tag, this.tags.changeTeam);// 标签设置,去处ID存入数组
+              this.$tool.setTag(this.private.pro_source, this.tags.changesource);// 标签设置,去处ID存入数组
               allData.project = this.$tool.simpleClone(this.project);
               allData.company = this.$tool.simpleClone(this.company);
               allData.brands = this.$tool.simpleClone(this.brands);
@@ -2753,54 +2629,54 @@
               allData.milepost = this.$tool.simpleClone(this.milepost);
               allData.pro_FA = this.$tool.simpleClone(this.pro_FA);
               allData.private = this.$tool.simpleClone(this.private);
-              allData.user_id = localStorage.user_id;//用户id
-              allData.pro_total_score = this.proportion;//完整度
-              allData.project_id = this.project.project_id;//项目id
+              allData.user_id = localStorage.user_id;// 用户id
+              allData.pro_total_score = this.proportion;// 完整度
+              allData.project_id = this.project.project_id;// 项目id
 
-              this.$tool.setReallyTimeToTime(allData.financing.pro_history_finance,'finance_time','finance_time_stamp');//标准时间转化为时间戳
-              this.$tool.setReallyTimeToTime(allData.milepost.pro_develop,'dh_start_time','dh_start_time_stamp');//标准时间转化为时间戳
+              this.$tool.setReallyTimeToTime(allData.financing.pro_history_finance, 'finance_time', 'finance_time_stamp');// 标准时间转化为时间戳
+              this.$tool.setReallyTimeToTime(allData.milepost.pro_develop, 'dh_start_time', 'dh_start_time_stamp');// 标准时间转化为时间戳
 
-              this.$tool.setNullToZero(allData.team.core_users,'stock_scale');//核心成员股权比例如果没填,就给0
-              this.$tool.setNullToZero(allData.financing.pro_history_finance,'pro_finance_scale');//期望融资,融资金额如果没填,就给0
+              this.$tool.setNullToZero(allData.team.core_users, 'stock_scale');// 核心成员股权比例如果没填,就给0
+              this.$tool.setNullToZero(allData.financing.pro_history_finance, 'pro_finance_scale');// 期望融资,融资金额如果没填,就给0
 
-              allData.project.pro_finance_value=allData.project.pro_finance_value+'';//数字转字符串
-              allData.project.pro_schedule='';//项目进度
+              allData.project.pro_finance_value = allData.project.pro_finance_value + '';// 数字转字符串
+              allData.project.pro_schedule = '';// 项目进度
 
-              if(allData.private.stock_right=="" || allData.private.stock_right==undefined) allData.private.stock_right=0;//股权赠与
-              if(allData.private.commission=="" || allData.private.commission==undefined) allData.private.commission=0;//签约佣金
+              if (allData.private.stock_right === '' || allData.private.stock_right === undefined) allData.private.stock_right = 0;// 股权赠与
+              if (allData.private.commission === '' || allData.private.commission === undefined) allData.private.commission = 0;// 签约佣金
 
-              allData.company.pro_company_scale=allData.company.pro_company_scale.comp_scale_id;
+              allData.company.pro_company_scale = allData.company.pro_company_scale.comp_scale_id;
 
-              allData.company.pro_status=allData.company.pro_status.status_id;
+              allData.company.pro_status = allData.company.pro_status.status_id;
 //              console.log(allData);
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
-                  this.loading=false;
-                  this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '返回列表')
+                  this.loading = false;
+                  this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '返回列表');
                 })
                 .catch(err => {
-                  this.loading=false;
-                  this.$tool.error("编辑失败");
+                  this.loading = false;
+                  this.$tool.error('编辑失败');
                   this.$tool.console(err);
-                })
+                });
             }
-        })
+          });
       },
 
-      //*编辑成功弹窗
-      open2(title, main, confirm, cancel) {
+      //* 编辑成功弹窗
+      open2 (title, main, confirm, cancel) {
         this.$confirm(main, title, {
           confirmButtonText: confirm,
           cancelButtonText: cancel,
           type: 'success'
         }).then(() => {
-          this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}})
+          this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}});
         }).catch(() => {
-          this.$router.push({name: 'myProject',query: {activeTo: 0}})
+          this.$router.push({name: 'myProject', query: {activeTo: 0}});
         });
       },
-      //*锚点跳转
-      setNode(v){
+      //* 锚点跳转
+      setNode (v) {
         this.node0 = false;
         this.node1 = false;
         this.node2 = false;
@@ -2811,240 +2687,232 @@
         this.node7 = false;
         this['node' + v] = true;
         switch (v) {
-          case "0":
+          case '0':
             this.fileShow = true;
             break;
-          case "1":
+          case '1':
             this.ProjectShow = true;
             break;
-          case "2":
+          case '2':
             this.operateShow = true;
             break;
-          case "3":
+          case '3':
             this.brandShow = true;
             break;
-          case "4":
+          case '4':
             this.teamShow = true;
             break;
-          case "5":
+          case '5':
             this.financingShow = true;
             break;
-          case "6":
+          case '6':
             this.milepostShow = true;
             break;
-          case "7":
+          case '7':
             this.SignShow = true;
             break;
           default:
             this.fileShow = true;
             break;
         };
-        let jump = document.querySelectorAll('.d_jump')
+        let jump = document.querySelectorAll('.d_jump');
         // 获取需要滚动的距离
-        let total = jump[v].offsetTop
-        let distance = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+        let total = jump[v].offsetTop;
+        let distance = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
         // 平滑滚动，时长500ms，每10ms一跳，共50跳
-        let step = total / 50
+        let step = total / 50;
         if (total > distance) {
-          smoothDown()
+          smoothDown();
         } else {
-          let newTotal = distance - total
-          step = newTotal / 50
-          smoothUp()
+          let newTotal = distance - total;
+          step = newTotal / 50;
+          smoothUp();
         }
-        function smoothDown() {
+        function smoothDown () {
           if (distance < total) {
-            distance += step
-            document.body.scrollTop = distance
-            document.documentElement.scrollTop = distance
-            window.pageYOffset = distance
-            setTimeout(smoothDown, 10)
+            distance += step;
+            document.body.scrollTop = distance;
+            document.documentElement.scrollTop = distance;
+            window.pageYOffset = distance;
+            setTimeout(smoothDown, 10);
           } else {
-            document.body.scrollTop = total
-            document.documentElement.scrollTop = total
-            window.pageYOffset = total
+            document.body.scrollTop = total;
+            document.documentElement.scrollTop = total;
+            window.pageYOffset = total;
           }
         }
 
-        function smoothUp() {
+        function smoothUp () {
           if (distance > total) {
-            distance -= step
-            document.body.scrollTop = distance
-            document.documentElement.scrollTop = distance
-            window.pageYOffset = distance
-            setTimeout(smoothUp, 10)
+            distance -= step;
+            document.body.scrollTop = distance;
+            document.documentElement.scrollTop = distance;
+            window.pageYOffset = distance;
+            setTimeout(smoothUp, 10);
           } else {
-            document.body.scrollTop = total
-            document.documentElement.scrollTop = total
-            window.pageYOffset = total
+            document.body.scrollTop = total;
+            document.documentElement.scrollTop = total;
+            window.pageYOffset = total;
           }
         }
       },
 
-
-      //*一键同步按钮
-      syncOne(){
+      //* 一键同步按钮
+      syncOne () {
         this.companyTitle = this.project.pro_company_name;
-        if(this.companyTitle===''){
-            this.$tool.warning("请先填写公司名称");
-        }else{
-          this.loading=true;
+        if (this.companyTitle === '') {
+          this.$tool.warning('请先填写公司名称');
+        } else {
+          this.loading = true;
           this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.companyTitle})
-           .then(res => {
-             let data = res.data.data;
-             if(data.length!=0){
-               this.companyid=data.company.com_id;
+            .then(res => {
+              let data = res.data.data;
+              if (data.length !== 0) {
+                this.companyid = data.company.com_id;
                 this.syncDialogDisplay = true;
-             }else{
-               this.$tool.warning("未查询到该公司信息，无法获取");
-             }
-             this.loading=false;
-           })
-           .catch(err => {
-             this.$tool.error("获取失败");
-             this.$tool.console(err);
-             this.loading=false;
-           });
-
+              } else {
+                this.$tool.warning('未查询到该公司信息，无法获取');
+              }
+              this.loading = false;
+            })
+            .catch(err => {
+              this.$tool.error('获取失败');
+              this.$tool.console(err);
+              this.loading = false;
+            });
         }
-      },//点击同步按钮
+      }, // 点击同步按钮
 
-      changeSyncProjectDetail(msg){
-        this.syncProjectDetailDisplay=msg;
-        this.syncDialogDisplay=false;
-      },//项目详情弹窗关闭函数
-      getprojectId(){
+      changeSyncProjectDetail (msg) {
+        this.syncProjectDetailDisplay = msg;
+        this.syncDialogDisplay = false;
+      }, // 项目详情弹窗关闭函数
+      getprojectId () {
         this.project_id = this.$route.query.project_id || '';
         this.project.project_id = this.$route.query.project_id || '';
-      },//获取id
-      syncCompanyData(msg){
-          this.loading=true;
-          this.syncDialogDisplay=false;
-          let syncDataCheck = this.$store.state.syncData;
-          let syncData = syncDataCheck.data;
-          let checkList = syncDataCheck.checkedSync;
+      }, // 获取id
+      syncCompanyData (msg) {
+        this.loading = true;
+        this.syncDialogDisplay = false;
+        let syncDataCheck = this.$store.state.syncData;
+        let syncData = syncDataCheck.data;
+        let checkList = syncDataCheck.checkedSync;
 //          console.log(syncData);
-          if(msg.updateCategory){               //看是否需要更新标签
-            this.$global.func.getWxProjectCategory()
-              .then((data)=>{
-                return this.getWxProjectCategory();
-              }).then((data)=>{
-                syncDataFunc();
-              })
-          }else{
-            this.getWxProjectCategory()
-              .then((data)=>{
-                syncDataFunc();
-              })
-          }
+        if (msg.updateCategory) {               // 看是否需要更新标签
+          this.$global.func.getWxProjectCategory()
+            .then((data) => {
+              return this.getWxProjectCategory();
+            }).then((data) => {
+              syncDataFunc();
+            });
+        } else {
+          this.getWxProjectCategory()
+            .then((data) => {
+              syncDataFunc();
+            });
+        }
 
-          //数据同步函数
-           const syncDataFunc = () =>{
-                syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry,'industry_id');//领域标签取出id
-                syncData.project.open_status = syncData.project.open_status.toString();//字符串化
-                if(syncData.project.pro_stage.length==0){
-                    syncData.project.pro_stage = {};
-                    syncData.project.pro_stage={stage_id: ""};
-                }else{
-                    syncData.project.pro_stage;
+        // 数据同步函数
+        const syncDataFunc = () => {
+          syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry, 'industry_id');// 领域标签取出id
+          syncData.project.open_status = syncData.project.open_status.toString();// 字符串化
+          if (syncData.project.pro_stage.length === 0) {
+            syncData.project.pro_stage = {};
+            syncData.project.pro_stage = {stage_id: ''};
+          };
+          if (syncData.project.pro_industry.length === 0) { syncData.project.pro_industry = []; }
+          this.$tool.setTimeToReallyTime(syncData.milepost.pro_develop, 'dh_start_time');// 里程碑时间格式设置
+          this.$tool.setTimeToReallyTime(syncData.financing.pro_history_finance, 'finance_time');// 里程碑时间格式设置
+          if (syncData.company.pro_company_scale === '') { syncData.company.pro_company_scale = {comp_scale_id: ''}; }
+          // 数据格式化
+
+          if (msg.cover) {
+            // 覆盖的时候
+            checkList.forEach((x) => {
+              for (let index in syncData) { // 需要同步那些数据
+                if (x === index) {
+                  if (x === 'project' || x === 'company') {   // 因为不是数组,单独处理
+                    for (let key in syncData[index]) {
+                      if (key !== 'pro_area') {            // 后端都没有,跳过处理
+                        this[x][key] = syncData[index][key];
+                      } else {
+                        this.project.pro_area.pid = syncData[index][key].pid;
+                        this.area1Change(syncData[index][key].pid);
+                        localStorage.pid = syncData[index][key].pid;
+                        setTimeout(() => { this.project.pro_area.area_id = syncData[index][key].area_id; }, 100);
+                      }
+                    }
+                  } else {
+                    for (let key in syncData[index]) {
+                      this[x][key] = syncData[index][key];
+                    }
+                  }
                 }
-                syncData.project.pro_industry.length==0 ? syncData.project.pro_industry=[] : syncData.project.pro_industry;
-
-                this.$tool.setTimeToReallyTime(syncData.milepost.pro_develop,'dh_start_time');//里程碑时间格式设置
-
-                this.$tool.setTimeToReallyTime(syncData.financing.pro_history_finance,'finance_time');//里程碑时间格式设置
-
-                syncData.company.pro_company_scale=="" ? syncData.company.pro_company_scale={comp_scale_id: ''} : syncData.company.pro_company_scale;
-            //数据格式化
-
-            if(msg.cover){
-              //覆盖的时候
-              checkList.forEach((x)=>{
-                for(let index in syncData){//需要同步那些数据
-                  if(x==index){
-                    if(x=='project' || x=='company'){   //因为不是数组,单独处理
-                      for(let key in syncData[index]){
-                        if(key!='pro_area'){            //后端都没有,跳过处理
-                          this[x][key]=syncData[index][key];
-                        }else{
+              }
+            });
+          } else {
+            // 不覆盖
+            checkList.forEach((x) => {
+              for (let index in syncData) {
+                if (x === index) {
+                  if (x === 'project' || x === 'company') {
+                    for (let key in syncData[index]) {
+                      if (key === 'pro_area') {            // 地区需要单独处理
+                        if (this.project.pro_area.pid === '') {
                           this.project.pro_area.pid = syncData[index][key].pid;
                           this.area1Change(syncData[index][key].pid);
                           localStorage.pid = syncData[index][key].pid;
-                          setTimeout(()=>{this.project.pro_area.area_id = syncData[index][key].area_id},100)
+                          setTimeout(() => { this.project.pro_area.area_id = syncData[index][key].area_id; }, 100);
                         }
-                      }
-                    }else{
-                      for(let key in syncData[index]){
-                        this[x][key]=syncData[index][key];
+                      } else if (key === 'pro_stage') {       // 项目轮次单独处理
+                        if (this.project.pro_stage.stage_id === '') {
+                          this[x][key] = syncData[index][key];
+                        }
+                      } else if (this.$tool.isArray(this[x][key])) { // 标签需要数组合并
+                        this[x][key] = [...this[x][key], ...syncData[index][key]];// 数组合并
+                      } else if (this[x][key] === '') { // 其他为空是不覆盖
+                        this[x][key] = syncData[index][key];
                       }
                     }
-                  }
-                }
-              });
-            }else{
-              //不覆盖
-              checkList.forEach((x)=>{
-                for(let index in syncData){
-                  if(x==index){
-                    if(x=='project' || x=='company'){
-                      for(let key in syncData[index]){
-                        if(key=='pro_area'){            //地区需要单独处理
-                          if(this.project.pro_area.pid == ''){
-                            this.project.pro_area.pid = syncData[index][key].pid;
-                            this.area1Change(syncData[index][key].pid);
-                            localStorage.pid = syncData[index][key].pid;
-                            setTimeout(()=>{this.project.pro_area.area_id = syncData[index][key].area_id},100);
-                          }
-                        }else if(key=='pro_stage'){       //项目轮次单独处理
-                          if(this.project.pro_stage.stage_id == ''){
-                            this[x][key]=syncData[index][key];
-                          }
-                        }else if(this.$tool.isArray(this[x][key])){//标签需要数组合并
-                          this[x][key] = [...this[x][key], ...syncData[index][key]];//数组合并
-                        }else if(this[x][key]==''){//其他为空是不覆盖
-                          this[x][key]=syncData[index][key];
-                        }
-                      }
-                    }else{
-                      for(let Arrkey in syncData[index]){
-                        if(this.$tool.isArray(syncData[index][Arrkey])){
-                          if(Arrkey!='tag'){
-                            this[x][Arrkey] = [...this[x][Arrkey], ...syncData[index][Arrkey]];//数组合并
-                          }
+                  } else {
+                    for (let Arrkey in syncData[index]) {
+                      if (this.$tool.isArray(syncData[index][Arrkey])) {
+                        if (Arrkey !== 'tag') {
+                          this[x][Arrkey] = [...this[x][Arrkey], ...syncData[index][Arrkey]];// 数组合并
                         }
                       }
                     }
                   }
                 }
-              });
-            }
-             this.loading=false;
+              }
+            });
           }
-      },//开始同步信息(是否覆盖信息)
+          this.loading = false;
+        };
+      }// 开始同步信息(是否覆盖信息)
     },
-    //当dom一创建时
-    created(){
+    // 当dom一创建时
+    created () {
       this.$tool.getTop();
       this.loading = true;
       this.getprojectId();
       this.$global.func.getWxProjectCategory()
-        .then((data)=>{
+        .then((data) => {
           return this.getWxProjectCategory();
         })
-         .then((data)=>{
+        .then((data) => {
           return this.setFileType();
         })
-        .then((data)=>{
+        .then((data) => {
           return this.getProjectDetail();
-        })
-      this.ProjectShow=true;
-      this.teamShow=false;
-      this.financingShow=false;
-      this.milepostShow=false;
-      this.SignShow=false;
-      this.operateShow=false;
-      this.brandShow=false;
-
+        });
+      this.ProjectShow = true;
+      this.teamShow = false;
+      this.financingShow = false;
+      this.milepostShow = false;
+      this.SignShow = false;
+      this.operateShow = false;
+      this.brandShow = false;
     },
     watch: {
       screenWidth (val) {
@@ -3053,28 +2921,28 @@
           this.timer = true;
           let that = this;
           setTimeout(function () {
-            that.$refs.right.style.left=that.$refs.left.offsetLeft +935+'px';
-            that.timer = false
-          }, 100)
+            that.$refs.right.style.left = that.$refs.left.offsetLeft + 935 + 'px';
+            that.timer = false;
+          }, 100);
         }
       },
-      scrollTop(val){
+      scrollTop (val) {
         if (!this.timer2) {
           this.scrollTop = val;
           this.timer2 = true;
           let that = this;
           setTimeout(function () {
-            if(that.scrollTop>90){
-              that.$refs.right.style.top=80+'px';
-            }else{
-              that.$refs.right.style.top=153+'px';
+            if (that.scrollTop > 90) {
+              that.$refs.right.style.top = 80 + 'px';
+            } else {
+              that.$refs.right.style.top = 153 + 'px';
             }
             that.timer2 = false;
-          }, 100)
+          }, 100);
         }
       }
     }
-  }
+  };
 </script>
 
 <style lang="less">
