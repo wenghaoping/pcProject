@@ -23,7 +23,7 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
         options5: [{
           value: 'HTML',
@@ -36,18 +36,18 @@
           label: 'JavaScript'
         }],
         value10: [],
-        block:'display: none;'
-      }
+        block: 'display: none;'
+      };
     },
     methods: {
-      change(e){
-          console.log(e)
+      change (e) {
+        console.log(e);
       },
-      remoteMethod(query){
-          console.log(query)
+      remoteMethod (query) {
+        console.log(query);
       }
     }
-  }
+  };
 </script>
 
 <style lang="less">

@@ -29,10 +29,7 @@
       topNav
     },
     methods: {
-      handleIconClick (ev) {
-        this.$tool.console(ev);
-        this.$tool.console(this.input2);
-      }
+
     },
     created () {
 

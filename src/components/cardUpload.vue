@@ -24,76 +24,76 @@
 
 
 <script type="text/ecmascript-6">
-    export default {
-        data () {
-            return {
-              uploadAddress:this.URL.weitianshiLine+"api/user/uploadCard",//上传地址
-              uploadData:{
-                user_id:localStorage.user_id,
-                authenticate_id:localStorage.authenticate_id,
-              },
-              fileList: [],
-              btnShow:true,
-            }
+  export default {
+    data () {
+      return {
+        uploadAddress: this.URL.weitianshiLine + 'api/user/uploadCard', // 上传地址
+        uploadData: {
+          user_id: localStorage.user_id,
+          authenticate_id: localStorage.authenticate_id
         },
-        methods: {
-          // 取消列表里的文件时触发
-          handleRemove(file, fileList) {
-            this.btnShow=true;
-          },
-          // 点击列表里的文件触发
-          handlePreview(file) {},
-          // 上传文件之前触发
-          beforeUpload(file){
+        fileList: [],
+        btnShow: true
+      };
+    },
+    methods: {
+      // 取消列表里的文件时触发
+      handleRemove (file, fileList) {
+        this.btnShow = true;
+      },
+      // 点击列表里的文件触发
+      handlePreview (file) {},
+      // 上传文件之前触发
+      beforeUpload (file) {
 //            console.log(file)
-            let filetypes=[".png",".jpg",".jpeg"];
-            let name=file.name;
-            let fileend=name.substring(name.lastIndexOf("."));
-            let isnext = false;
-            this.btnShow=false;
-            if(filetypes && filetypes.length>0){
-              for(var i =0; i<filetypes.length;i++){
-                if(filetypes[i]===fileend){
-                  isnext = true;
-                  break;
-                }
-              }
+        let filetypes = ['.png', '.jpg', '.jpeg'];
+        let name = file.name;
+        let fileend = name.substring(name.lastIndexOf('.'));
+        let isnext = false;
+        this.btnShow = false;
+        if (filetypes && filetypes.length > 0) {
+          for (var i = 0; i < filetypes.length; i++) {
+            if (filetypes[i] === fileend) {
+              isnext = true;
+              break;
             }
-            this.loading=false;
-            if(!isnext){
-              this.$tool.error("不支持的文件格式");
-              return false;
-            }
-            if(parseInt(file.size) > parseInt(1048576)){
-              this.$tool.error("暂不支持超过1m文件上传哦");
-              return false;
-            };
-            if(parseInt(this.num) > parseInt(1)){
-              this.$tool.error("一次最多选择1个文件");
-              this.num=0;
-              return false;
-            }
-          },
-          // 上传成功时触发
-          uploadSuccess(response, file, fileList){
-            if(response.status_code===2000000){
-              this.btnShow=false;
-              localStorage.authenticate_id=response.authenticate_id;
-              this.$emit('upLoadSuccess',response)
-            }else{
-              this.$tool.error('上传失败')
-              return '上传失败'
-            }
-          },
-          //上传失败
-          handleError(){
-            this.btnShow=true;
           }
-        },
-        created(){
-//          console.log(localStorage.user_id,localStorage.authenticate_id)
         }
+        this.loading = false;
+        if (!isnext) {
+          this.$tool.error('不支持的文件格式');
+          return false;
+        }
+        if (parseInt(file.size) > parseInt(1048576)) {
+          this.$tool.error('暂不支持超过1m文件上传哦');
+          return false;
+        };
+        if (parseInt(this.num) > parseInt(1)) {
+          this.$tool.error('一次最多选择1个文件');
+          this.num = 0;
+          return false;
+        }
+      },
+      // 上传成功时触发
+      uploadSuccess (response, file, fileList) {
+        if (response.status_code === 2000000) {
+          this.btnShow = false;
+          localStorage.authenticate_id = response.authenticate_id;
+          this.$emit('upLoadSuccess', response);
+        } else {
+          this.$tool.error('上传失败');
+          return '上传失败';
+        }
+      },
+      // 上传失败
+      handleError () {
+        this.btnShow = true;
+      }
+    },
+    created () {
+//          console.log(localStorage.user_id,localStorage.authenticate_id)
     }
+  };
 </script>
 
 <style scoped lang="less">

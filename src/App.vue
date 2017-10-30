@@ -1,87 +1,81 @@
 <template>
   <div id="app">
-    <el-row>
+    <!--<el-row>-->
 
-    <!--     头部导航 -->
-    <header id="header">
-      <ul class="select ulfl tc" style="position: relative">
-        <li style="width: 150px;margin-right: 100px;vertical-align: middle;display: table-cell;height: 60px;"><img
-          src="./assets/images/logoing.png" style="vertical-align:middle;"></li>
-        <li @click="toggle(index)" v-for="(tab,index) in tabs">
-          <router-link :to=" tab.jump " :class="{border:active===index}">
-            {{tab.type}}
-          </router-link>
-        </li>
-        <li id="samllrou">小程序</li>
-        <div class="weixin">
-          <p style="margin-top: 34px;">微信扫一扫</p>
-          <p style="margin-bottom: 15px">发现更多精选资源</p>
-          <div class="img">
-            <img src="./assets/images/weixin.jpg">
+      <!--     头部导航 -->
+      <header id="header">
+        <ul class="select ulfl tc" style="position: relative">
+          <li style="width: 150px;margin-right: 100px;vertical-align: middle;display: table-cell;height: 60px;"><img
+            src="./assets/images/logoing.png" style="vertical-align:middle;"></li>
+          <li @click="toggle(index)" v-for="(tab,index) in tabs">
+            <router-link :to=" tab.jump " :class="{border:active===index}">
+              {{tab.type}}
+            </router-link>
+          </li>
+          <li id="samllrou">小程序</li>
+          <div class="weixin">
+            <p style="margin-top: 34px;">微信扫一扫</p>
+            <p style="margin-bottom: 15px">发现更多精选资源</p>
+            <div class="img">
+              <img src="./assets/images/weixin.jpg">
+            </div>
+            <div class="arrow">
+              <img src="./assets/images/arrow.png">
+            </div>
           </div>
-          <div class="arrow">
-            <img src="./assets/images/arrow.png">
-          </div>
-        </div>
-        <!--<li>-->
-          <!--<a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>-->
-        <!--</li>-->
-        <li v-show="userRealName" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
-          {{userRealName}}
-          <span style="display:inline-block;margin-left: 5px"><i class="el-icon-caret-bottom" style="font-size: 10px"></i></span>
-          <div class="login-show" style="position: absolute;top: -10px;">
-            <el-select v-model="value" style="opacity: 0;height: 33px;color: #000000" placeholder="请选择" @change="loginOut">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-            <!--<div class="sss" @click="opp" style="position: absolute;top: 36px;z-index: 111111">-->
-             <!--<i class="el-icon-caret-bottom "></i>-->
-            <!--</div>-->
-          <!--<div class="out" v-if="flag" @click="loginOut" >退出登录</div>-->
+          <!--<li>-->
+            <!--<a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>-->
+          <!--</li>-->
+          <li v-show="userRealName" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
+            {{userRealName}}
+            <span style="display:inline-block;margin-left: 5px"><i class="el-icon-caret-bottom" style="font-size: 10px"></i></span>
+            <div class="login-show" style="position: absolute;top: -10px;">
+              <el-select v-model="value" style="opacity: 0;height: 33px;color: #000000" placeholder="请选择" @change="loginOut">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
 
-          </div>
+          </li>
+          <li v-show="!userRealName" class="login" @click="login">
+            登录
+          </li>
+          <el-autocomplete
+            v-model="companyTitle"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="查竞品，查工商，请输入公司或品牌名称"
+            @select="handleSelect"
+            class="width350"
+          ></el-autocomplete>
+        </ul>
+      </header>
 
-        </li>
-        <li v-show="!userRealName" class="login" @click="login">
-          登录
-        </li>
-        <el-autocomplete
-          v-model="companyTitle"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="查竞品，查工商，请输入公司或品牌名称"
-          @select="handleSelect"
-          class="width350"
-        ></el-autocomplete>
-      </ul>
-    </header>
-    <div style="height: 60px;"></div>
+      <div style="height: 60px;"></div>
 
-    <!--下方主内容切换区-->
-    <main style="width: 100%;">
-      <transition name="fade" mode="out-in">
-        <router-view class="view">
-        </router-view>
-      </transition>
-    </main>
+      <!--下方主内容切换区-->
+      <main style="width: 100%;">
+        <transition name="fade" mode="out-in">
+          <router-view class="view">
+          </router-view>
+        </transition>
+      </main>
 
-
-
-    </el-row>
+    <!--</el-row>-->
+    <alert-identity :identityDisplay="identityDisplay" @closeIdentity="closeIdentity"></alert-identity>
   </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
+  import alertIdentity from './views/identity/alertIdentity.vue';
   export default {
     data () {
       return {
-        brand1: '',
         restaurants: [],
         companyTitle: '',
         timeout: null,
-        cb: '',
         options: [
           {
             value: 0,
@@ -89,6 +83,10 @@
           },
           {
             value: 1,
+            label: '身份认证'
+          },
+          {
+            value: 2,
             label: '退出登录'
           }],
         value: '',
@@ -103,10 +101,12 @@
         ],
         user_name: '',
         user_id: '',
-        routerName: ''
+        routerName: '',
+        identityDisplay: false // 显示认证弹框
       };
     },
     mounted () {
+
     },
     methods: {
       // 切换选项卡
@@ -127,28 +127,13 @@
           }
         }
       },
-      // 伪造user_id
-      setUserId () {
-//        localStorage.user_id = 'V0VznXa0';
-        localStorage.user_id = '8W1ERo3W';// 自己的
-//        localStorage.user_id='2rzyz5vp';
-//        localStorage.user_id='2rzyJEwp';
-        localStorage.user_real_name = '翁浩平';
-        this.$store.state.logining.user_real_name = '黄晨曦';
-      },
       // 登录
       login () {
         this.zgClick('登陆');
         localStorage.entrance = 'myProject';
-        this.$router.push('/login');
+        this.$router.push({path: 'login'});
       },
-      //
-
-      // 显示退出登录
-      opp () {
-        this.flag = !this.flag;
-      },
-      //* 获取远程数据模拟
+      // 获取远程数据模拟
       loadData (arr) {
         var newArr = [];
         for (let i = 0; i < arr.length; i++) {
@@ -161,7 +146,7 @@
         }
         return newArr;
       },
-      //* 自动搜索,接口写这里面
+      // 自动搜索,接口写这里面
       querySearchAsync (queryString, cb) {
         if (queryString.length > 2) {
           this.$http.post(this.URL.selectCompany, {company_name: queryString})
@@ -188,6 +173,7 @@
           cb(callback);
         }
       },
+      // 选择了搜索出来的数据后
       handleSelect (item) {
         this.loading = true;
         this.companyTitle = item.company_name;
@@ -207,12 +193,10 @@
             this.$tool.console(err);
             this.loading = false;
           });
-      }, // 选择了搜索出来的数据后
+      },
       // 检查localStorage.user_id
       checkUser () {
-        // this.$tool.console(this.$route.path)
         this.user_id = localStorage.user_id;
-//        this.user_name = this.userRealName;
         // 头部导航下标不对应问题解决
         if (this.$route.path === '/workBench' || this.$route.path === '/workBench/') {
           this.active = 1;
@@ -247,19 +231,21 @@
          this.$router.push({name:'index'})
          } */
       },
-      // 登出
+      // 个人信息,认证,登出
       loginOut (e) {
-        if (e === 1) {
+        if (e === 0) {
+          this.$router.push({name: 'personalInformation'}); // 个人信息
+        } else if (e === 1) {
+          this.identityDisplay = true;
+        } else if (e === 2) {
           localStorage.clear();
           sessionStorage.clear();
-          this.$router.push({name: 'login'});// 路由传参
+          this.$router.push({path: 'login'});// 登陆
           this.$store.state.logining.user_real_name = '';
           this.$store.state.logining.user_id = '';
           setTimeout(() => { window.location.reload(); }, 100);
         }
-//        if(e==0){
-//          this.$router.push({name: 'identityDetail', query: {user: localStorage.user_id}})//路由传参
-//        }
+        this.value = '';
       },
       // 加入项目库
       addProject () {
@@ -291,7 +277,29 @@
               });
           }
         }
-      }// 邮箱加入项目库
+      },
+      // 关闭认证信息
+      closeIdentity () {
+        this.identityDisplay = false;
+      },
+      // 是否认证过身份
+      getUserGroupByStatus () {
+        // 核对是否认证过身份
+        this.$http.post(this.URL.getUserGroupByStatus, {
+          user_id: localStorage.user_id
+        }).then(res => {
+          if (res.data.status_code === 2000000) {
+            if (res.data.status === 1 || res.data.status === 2) {
+              // 认证过了
+              this.identityDisplay = true;
+            } else {
+              this.$router.push({name: 'identityChoose'});
+            }
+          } else {
+            this.$tool.error('核对身份接口调用失败');
+          }
+        });
+      }
     },
     // 当dom一创建时
     created () {
@@ -304,6 +312,9 @@
         let userRealName = this.$store.state.logining.user_real_name || localStorage.user_real_name;
         return userRealName;
       }
+    },
+    components: {
+      alertIdentity
     },
     watch: {
       '$route' (to, from) {
@@ -351,14 +362,9 @@
   .sss{
     width:30px;
     height:30px;
-background: red;
+    background: red;
   }
-  .out{
-    /*display: none;*/
-  }
-  /*.sss:focus + .out{*/
-    /*display: block;*/
-  /*}*/
+
   .el-table-filter__content{
     max-height: 250px;
     overflow-y: auto;
@@ -372,32 +378,23 @@ background: red;
     font-family: "Microsoft YaHei", "微软雅黑";
 
   }
-
   body {
     margin: 0;
     position: relative;
     padding:0!important;
-    /*overflow: auto!important;*/
   }
   .newColor{
     color:#40587A!important;
   }
-  /*  .is-light{
-      border: none!important;
-    }
-    .el-tooltip__popper{
-      padding: 0!important;
-    }*/
+
    #app {
      -webkit-font-smoothing: antialiased;
      -moz-osx-font-smoothing: grayscale;
-    /*min-width: 1903px;*/
     background: #f3f4f8;
-     /*overflow-x: hidden;*/
     main {
-      min-height: 791px;
+      min-height: 872px;
     }
-    font-family: "Helvetica Neue", "PingFang SC", Arial, sans-serif;
+    font-family: "He`lvetica Neue", "PingFang SC", Arial, sans-serif;
     header {
       width: 100%;
       background: #40587a;
@@ -454,10 +451,6 @@ background: red;
   #samllrou:hover + .weixin {
     display: block;
   }
-
-  #samllrou {
-  }
-
   .weixin {
     display: none;
     position: fixed;
@@ -491,9 +484,6 @@ background: red;
     }
   }
 
-  /*  !* 主内容区 *!*/
-  /*  main{min-height: 800px;}*/
-
   /* 路由切换动效 */
   .fade-enter-active, .fade-leave-active {
     transition: all .2s;
@@ -517,9 +507,6 @@ background: red;
     }
   }
   .btn1{
-/*    background:#40587a;
-    border-radius:2px;
-    width:88px;
-    height:36px;color:#ffffff;cursor: pointer;*/margin-left: 16px;
+    margin-left: 16px;
   }
 </style>

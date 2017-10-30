@@ -12,33 +12,32 @@
 </template>
 
 <script type="text/ecmascript-6">
-
   export default {
     name: 'hello',
     data () {
       return {
         active: 0,
         tabs: [
-          {type: '我的项目',jump:{name:"myProject",query: {activeTo: 0}}},
-          {type: '我的人脉',jump:{name:"myContacts",query: {activeTo: 1}}},
-          {type: '跟进记录',jump:{name:"followUp",query: {activeTo: 2}}}
+          {type: '我的项目', jump: {name: 'myProject', query: {activeTo: 0}}},
+          {type: '我的人脉', jump: {name: 'myContacts', query: {activeTo: 1}}},
+          {type: '跟进记录', jump: {name: 'followUp', query: {activeTo: 2}}}
         ]
-      }
+      };
     },
     methods: {
-      toggle(i){
+      toggle (i) {
         this.active = i;
       }
     },
     watch: {
       '$route' (to, from) {
-        this.active=to.query.activeTo;
+        this.active = to.query.activeTo;
       }
     },
-    created(){
-      this.active=parseInt(this.$route.query.activeTo) || 0;
+    created () {
+      this.active = parseInt(this.$route.query.activeTo) || 0;
     }
-  }
+  };
 </script>
 
 <style lang="less">

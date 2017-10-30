@@ -221,7 +221,6 @@
         projectListsSmall: [], // 默认2个的表
         projectListsAll: [], // 默认全部的表
         getPra: {}, // 获取项目的请求参数
-        in: true, // 进入时
         user_invest: true, // 投资需求
         user_resource: true// 资源需求
 
@@ -297,57 +296,6 @@
         }
       }, // 获取项目列表
       /* 以下都是辅助函数 */
-      set_industry (arr) {
-        let str = '';
-        if (arr.length === 0) {
-          str = '';
-        } else {
-          arr.forEach((x) => {
-            str += x.industry_name + '、';
-          });
-        }
-        return str;
-      }, // 列表领域处理
-      set_stage (arr) {
-        let str = '';
-        if (arr.length === 0) {
-          str = '';
-        } else {
-          arr.forEach((x) => {
-            str += x.stage_name + '、';
-          });
-        }
-        return str;
-      }, // 列表轮次处理
-      set_scale (arr) {
-        let str = '';
-        if (arr.length === 0) {
-          str = '';
-        } else {
-          arr.forEach((x) => {
-            str += x.scale_money + '、';
-          });
-        }
-        return str;
-      }, // 列表期望金额处理
-      set_GiveFind (arr) {
-        let str = '';
-        if (arr.length === 0) {
-          str = '';
-        } else {
-          arr.forEach((x) => {
-            str += x.resource_name + '、';
-          });
-        }
-        return str;
-      }, // 资源提供或者寻求处理
-      setTag (arr) {
-        let newArr = [];
-        arr.forEach((x) => {
-          newArr.push(x.tag_id);
-        });
-        return newArr;
-      }, // 设置标签的函数
       setProjectCase (arr) {
         let newArr = [];
         arr.forEach((x) => {
@@ -356,7 +304,7 @@
           obj.case_stage_name = x.case_stage_name;
           obj.case_name = x.case_name;
           obj.case_money = x.case_money;
-          obj.has_many_industry = this.set_industry(x.has_many_industry);
+          obj.has_many_industry = this.$tool.setTagToString(x.has_many_industry, 'industry_name');
           obj.has_one_city = x.has_one_city.area_title;
           newArr.push(obj);
         });
@@ -368,11 +316,11 @@
           .then(res => {
             let data = res.data.data;
             this.$tool.console(this.$tool.getToObject(data));
-            data.user_invest_industry = this.set_industry(data.user_invest_industry);
-            data.user_invest_stage = this.set_stage(data.user_invest_stage);
-            data.user_invest_scale = this.set_scale(data.user_invest_scale);
-            data.user_resource_find = this.set_GiveFind(data.user_resource_find);
-            data.user_resource_give = this.set_GiveFind(data.user_resource_give);
+            data.user_invest_industry = this.$tool.setTagToString(data.user_invest_industry, 'industry_name');
+            data.user_invest_stage = this.$tool.setTagToString(data.user_invest_stage, 'stage_name');
+            data.user_invest_scale = this.$tool.setTagToString(data.user_invest_scale, 'scale_money');
+            data.user_resource_find = this.$tool.setTagToString(data.user_resource_find, 'resource_name');
+            data.user_resource_give = this.$tool.setTagToString(data.user_resource_give, 'resource_name');
             data.project_case = this.setProjectCase(data.project_case);
             data.user_avatar_txt = this.$tool.setUrlChange(data.user_avatar_url, data.user_real_name);
             if (data.user_invest_industry === '' && data.user_invest_stage === '' && data.user_invest_scale === '' && data.user_invest_desc === '') {
@@ -385,8 +333,8 @@
             } else {
               this.user_resource = true;// 投资需求
             }
-            this.tagsValue = this.setTag(data.user_invest_tag);
-            this.tags.changecont = this.setTag(data.user_invest_tag);
+            this.tagsValue = this.$tool.setIdToArr(data.user_invest_tag, 'tag_id');
+            this.tags.changecont = this.$tool.setIdToArr(data.user_invest_tag, 'tag_id');
             this.contacts = data;
           })
           .catch(err => {
@@ -399,30 +347,26 @@
     },
     created () {
 
-//      this.getProjectList(1);
-//      this.getOneUserInfo();
     },
     watch: {
       cardid: function (e) {
         this.pro_id = e;
       }, // 获取项目id
       contactDisplay: function (e) {
-        for (let key in this.contacts) {
-          if (this.$tool.isArray(this.contacts[key])) {
-            this.contacts[key] = [];
-          } else {
-            this.contacts[key] = '';
-          }
-        }
-        if (this.in) {
+        if (e) {
           this.contacts.card_id = this.cardid || 0;
           this.contacts.user_id = this.userid || '';
-          setTimeout(() => {
-            this.getOneUserInfo();
-            this.getProjectList(1);
-          }, 200);
+          this.getOneUserInfo();
+          this.getProjectList(1);
+        } else {
+          for (let key in this.contacts) {
+            if (this.$tool.isArray(this.contacts[key])) {
+              this.contacts[key] = [];
+            } else {
+              this.contacts[key] = '';
+            }
+          }
         }
-        this.in = !this.in;
       }
     }
   };

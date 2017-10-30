@@ -1,3 +1,4 @@
+/* eslint-disable */
 option = {
   title: {
 
@@ -6,8 +7,8 @@ option = {
   tooltip: {
     trigger: 'axis',
 
-    formatter: function(params) {
-      return params[i].componentType
+    formatter: function (params) {
+      return params[i].componentType;
     }
 
   },

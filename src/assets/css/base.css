@@ -100,6 +100,9 @@ html {
   cursor: pointer;
 }
 
+.inlineBlock {
+  display: inline-block;
+}
 /*输入框中时的边框颜色*/
 input:focus{
   border-color:#40587A !important;

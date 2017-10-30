@@ -15,10 +15,10 @@
 
 <script>
   export default {
-    data() {
+    data () {
       var checkAge = (rule, value, callback) => {
-        console.log(value,1);
-        console.log(rule,2);
+        console.log(value, 1);
+        console.log(rule, 2);
         if (!value) {
           return callback(new Error('年龄不能为空'));
         }
@@ -38,13 +38,13 @@
         ruleForm2: {
           age: ''
         },
-          age: [
-            { validator: checkAge, trigger: 'blur' }
-          ]
+        age: [
+          { validator: checkAge, trigger: 'blur' }
+        ]
       };
     },
     methods: {
-      submitForm(formName) {
+      submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             alert('submit!');
@@ -54,38 +54,38 @@
           }
         });
       },
-      resetForm(formName) {
+      resetForm (formName) {
         this.$refs[formName].resetFields();
       },
-      isClickAble(){
+      isClickAble () {
 //        zhuge.track('点击测试2', {
 //          '商品分类' : '手机',
 //          '商品名称' : 'iPhone7 64g',
 //          '数量' : 2
 //        });   //属性名称不能超过255个字符，属性值不能超过200个字符
       },
-      handleClose(){
-        alert("测试")
+      handleClose () {
+        alert('测试');
       }
     },
-    mounted() {
+    mounted () {
 
     },
     watch: {
       '$route' (to, from) {
-          console.log(to);
-          console.log(from);
-        if(to){
-            this.zgTimeIn();
-          console.log("计时开始")
+        console.log(to);
+        console.log(from);
+        if (to) {
+          this.zgTimeIn();
+          console.log('计时开始');
         }
-        if(from){
-            this.zgTimeOut("开始计时");
-            console.log("计时结束")
+        if (from) {
+          this.zgTimeOut('开始计时');
+          console.log('计时结束');
         }
       }
     }
-  }
+  };
 </script>
 
 <style lang="less">

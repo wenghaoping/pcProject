@@ -33,7 +33,7 @@
                                :data="uploadDate">
                       <i class="el-icon-plus" v-show="planButton"></i>
                       <!--<el-button slot="trigger" type="primary" v-show="planButton" class="fl button"><i class="el-icon-plus"></i>上传名片</el-button>-->
-                      <div slot="tip" class="el-upload__tip fr" v-show="planButton">支持JPG、PNG、JPEG</div>
+                      <div slot="tip" class="el-upload__tip fr" v-show="planButton">支持JPG、PNG、JPEG、文件不大于1M</div>
                     </el-upload>
 
                     <el-dialog v-model="dialogImg" size="tiny">
@@ -130,6 +130,7 @@
               </div>
             </el-collapse-transition>
           </div>
+
           <!--=================================投资需求=================================-->
           <div class="item-block" style="margin-top:0;margin-bottom: 16px;padding-bottom: 26px;">
             <div class="block-tt-line">
@@ -472,7 +473,7 @@
         this.dialogImageUrl = file.url;
         this.dialogImg = true;
       }, // 点击预览名片
-      /* 添加人脉标签 */
+      // 添加人脉标签
       addChangeTag (e) {
         let tagName = this.$tool.checkArr(e, this.tags_con);
         if (tagName !== undefined) {
@@ -541,8 +542,6 @@
           allData.user_id = localStorage.user_id;
           allData.card_id = this.contacts.card_id || '';
           allData.image_id = this.uploadShow.image_id || '';
-//          this.$tool.console(allData);
-//          console.log(allData);
           this.$http.post(this.URL.createUserCard, allData)
             .then(res => {
               this.card_id = res.data.card_id;
@@ -557,8 +556,8 @@
             });
         }
       }, // 保存人脉
-      /* 公司搜索 */
-      /* 获取远程数据模拟 */
+      // 公司搜索
+      // 获取远程数据模拟
       loadData (arr) {
         var newArr = [];
         for (let i = 0; i < arr.length; i++) {
@@ -570,7 +569,7 @@
         }
         return newArr;
       },
-      /* 自动搜索,接口写这里面 */
+      // 自动搜索,接口写这里面
       querySearchAsync (queryString, cb) {
         if (queryString.length > 2) {
           this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
@@ -596,8 +595,7 @@
           cb(callback);
         }
       },
-
-      /* 编辑成功弹窗 */
+      // 编辑成功弹窗
       open2 (title, main, confirm, cancel) {
         this.$confirm(main, title, {
           confirmButtonText: confirm,
@@ -613,16 +611,11 @@
         let check = true;
         this.$refs[formName].validate((valid) => {
           check = valid;
-          /* if (valid) {
-           check = true;
-           } else {
-           check = false;
-
-           } */
         });
         return check;
       }, // 提交用
       getWxProjectCategory () {
+        this.loading = true;
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           setTimeout(() => {
@@ -635,7 +628,8 @@
             this.giveTo = this.$global.data.resource;// 设置提供的资源和对接的资源
             this.pushTo = this.$global.data.resource;// 设置提供的资源和对接的资源
             resolve(2);
-          }, 500);
+            this.loading = false;
+          }, 200);
         });
       }, // 获取所有下拉框的数据
       setImage (obj) {

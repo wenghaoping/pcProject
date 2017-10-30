@@ -49,10 +49,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import ElForm from "../../node_modules/element-ui/packages/form/src/form";
-  import ElCol from "element-ui/packages/col/src/col";
-  import ElFormItem from "../../node_modules/element-ui/packages/form/src/form-item";
-  import {tool} from '../global/tool.js'
+  import ElForm from '../../node_modules/element-ui/packages/form/src/form';
+  import ElCol from 'element-ui/packages/col/src/col';
+  import ElFormItem from '../../node_modules/element-ui/packages/form/src/form-item';
+  // import {tool} from '../global/tool.js';
   export default {
     components: {
       ElFormItem,
@@ -64,44 +64,44 @@
       return {
         dateForm: {
           domains: [{
-            name : '',
-            position : '',
-            money : ''
-          }],
+            name: '',
+            position: '',
+            money: ''
+          }]
         }
-      }
+      };
     },
     methods: {
-      submitForm(formName,formData) {
+      submitForm (formName, formData) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             alert('submit!');
             let obj = formData.domains;
-            console.log(this.$tool.getToArrObject(obj))
+            console.log(this.$tool.getToArrObject(obj));
           } else {
             console.log('error submit!!');
             return false;
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields()
+      resetForm (formName) {
+        this.$refs[formName].resetFields();
       },
-      removeDomain(item) {
-        var index = this.dateForm.domains.indexOf(item)
+      removeDomain (item) {
+        var index = this.dateForm.domains.indexOf(item);
         if (index !== -1) {
-          this.dateForm.domains.splice(index, 1)
+          this.dateForm.domains.splice(index, 1);
         }
       },
-      addDomain() {
+      addDomain () {
         this.dateForm.domains.push({
           name: '',
-          collage : '',
-          money : ''
+          collage: '',
+          money: ''
         });
       }
     }
-  }
+  };
 </script>
 
 <style scoped lang="less">

@@ -378,7 +378,8 @@
              ct_member_name: "赵工佐",
              ct_member_career: "创始人兼首席执行官",
              ct_member_intro: "前高中和大学校队主力球员，"
-             } */]
+             } */
+          ]
         },
         // 融资信息
         financing: {
@@ -408,7 +409,8 @@
              dh_event: "组建团队和设立办公室",//事件
              created_at: null,
              updated_at: null
-             } */]
+             } */
+          ]
         },
         // FA签约协议
         pro_FA: {

@@ -1,6 +1,7 @@
 /**
  * Created by Administrator on 2017/7/25.
  */
+/* eslint-disable */
 (function () {
   window.zhuge = window.zhuge || [];
   window.zhuge.methods = '_init identify track getDid getSid getKey setSuperProperty setUserProperties setPlatform'.split(' ');

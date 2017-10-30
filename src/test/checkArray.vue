@@ -19,15 +19,15 @@
 
 <script>
   export default {
-    data() {
+    data () {
       var checkAge = (rule, value, callback) => {
-        console.log(value,1);
-        console.log(rule,2);
+        console.log(value, 1);
+        console.log(rule, 2);
         if (!value) {
           return callback(new Error('年龄不能为空'));
         }
         setTimeout(() => {
-          console.log("判断啦")
+          console.log('判断啦');
           if (!Number.isInteger(value)) {
             callback(new Error('请输入数字值'));
           } else {
@@ -49,7 +49,7 @@
       };
     },
     methods: {
-      submitForm(formName) {
+      submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             alert('submit!');
@@ -59,14 +59,14 @@
           }
         });
       },
-      resetForm(formName) {
+      resetForm (formName) {
         this.$refs[formName].resetFields();
       },
-      add(){
-        this.ruleForm2.push({age1:""});
+      add () {
+        this.ruleForm2.push({age1: ''});
       }
     }
-  }
+  };
 </script>
 
 <style lang="less">

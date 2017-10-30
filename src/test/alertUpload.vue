@@ -99,89 +99,89 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  name: 'hello',
-  data () {
-    return {
-      dialogUploadVisible: true,//第一个弹窗的控制
-      dialogUpload2Visible:false,//第二个弹窗的控制
-      formLabelWidth: '880px',
-      fileList:[
-      ],//上传文件的列表
-      dateForm: {//展示的列表
-        domains: [],
-      },
-      uploadDate:{}//上传所带的额外的参数
+  export default {
+    name: 'hello',
+    data () {
+      return {
+        dialogUploadVisible: true, // 第一个弹窗的控制
+        dialogUpload2Visible: false, // 第二个弹窗的控制
+        formLabelWidth: '880px',
+        fileList: [
+        ], // 上传文件的列表
+        dateForm: {// 展示的列表
+          domains: []
+        },
+        uploadDate: {}// 上传所带的额外的参数
 
-    }
-  },
-  methods: {
-    //1号添加文件后添加入上传列表,并且跳转到多次上传的列表
-    handleChange(file, fileList) {
-      this.dialogUploadVisible=false;
-      this.dialogUpload2Visible=true;
-      if(file.status=="ready"){
-        this.addDomain(file.name,file.name,file.name)
-      }
-      this.fileList.push(file)
+      };
     },
-    //2号当添加文件时,添加入上传列表
-    handleChange2(file, fileList){
-      if(file.status=="ready"){
-        this.addDomain(file.name,file.name,file.name)
-      }
-    },
-    uploadsuccess(response, file, fileList){
-      console.log(response);
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    //上传到服务器时
-    submitUpload(formName,formData) {
-      let obj = formData.domains;
-        for(let i=0; i<obj.length; i++){
-          this.uploadDate=obj[i]
+    methods: {
+      // 1号添加文件后添加入上传列表,并且跳转到多次上传的列表
+      handleChange (file, fileList) {
+        this.dialogUploadVisible = false;
+        this.dialogUpload2Visible = true;
+        if (file.status === 'ready') {
+          this.addDomain(file.name, file.name, file.name);
+        }
+        this.fileList.push(file);
+      },
+      // 2号当添加文件时,添加入上传列表
+      handleChange2 (file, fileList) {
+        if (file.status === 'ready') {
+          this.addDomain(file.name, file.name, file.name);
+        }
+      },
+      uploadsuccess (response, file, fileList) {
+        console.log(response);
+      },
+      handleRemove (file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview (file) {
+        console.log(file);
+      },
+      // 上传到服务器时
+      submitUpload (formName, formData) {
+        let obj = formData.domains;
+        for (let i = 0; i < obj.length; i++) {
+          this.uploadDate = obj[i];
         }
         this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.$refs.upload.submit();
-        } else {
-          console.log('error submit!!');
-          return false;
+          if (valid) {
+            this.$refs.upload.submit();
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm (formName) {
+        this.$refs[formName].resetFields();
+      },
+      // 删除当前上传文件
+      removeDomain (item) {
+        console.log(this.fileList);
+        var index = this.dateForm.domains.indexOf(item);
+        if (index !== -1) {
+          this.dateForm.domains.splice(index, 1);
+          this.fileList.splice(index, 1);
         }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    //删除当前上传文件
-    removeDomain(item) {
-      console.log(this.fileList)
-      var index = this.dateForm.domains.indexOf(item)
-      if (index !== -1) {
-        this.dateForm.domains.splice(index, 1)
-        this.fileList.splice(index, 1)
+      },
+      // 添加上传文件时,加入显示列表
+      addDomain (projectName, projectDetails, prospectus, url, status) {
+        let object = {};
+        object.projectName = projectName;
+        object.projectDetails = projectDetails;
+        object.prospectus = prospectus;
+        this.dateForm.domains.push(object);
+      },
+      // 当取消时,清空上传列表
+      cancel () {
+        this.dialogUpload2Visible = false;
+        this.dateForm.domains.splice(0, this.dateForm.domains.length);
       }
-    },
-    //添加上传文件时,加入显示列表
-    addDomain(projectName,projectDetails,prospectus,url,status) {
-      let object ={};
-      object.projectName=projectName;
-      object.projectDetails=projectDetails;
-      object.prospectus=prospectus;
-      this.dateForm.domains.push(object);
-    },
-    //当取消时,清空上传列表
-    cancel(){
-      this.dialogUpload2Visible = false
-      this.dateForm.domains.splice(0,this.dateForm.domains.length)
     }
-  }
-}
+  };
 </script>
 
 <style scoped lang="less">

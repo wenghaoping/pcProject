@@ -56,6 +56,9 @@ const addProject = r => require.ensure([], () => r(require('@/views/addProject/a
 /* ===============================跳转到PC======================================= */
 const skipToPc = r => require.ensure([], () => r(require('@/views/skipToPc/skipToPc.vue')), 'skipToPc');
 
+/* ===============================个人信息详情======================================= */
+const personalInformation = r => require.ensure([], () => r(require('@/views/personalInformation/personalInformation.vue')), 'personalInformation');
+
 // 测试路由
 // import createForm from '@/test/createForm.vue'
 // import watch from '@/test/watch.vue'
@@ -81,16 +84,16 @@ export default [
       { path: '/workBench',
         component: indexmyProject,
         children: [
-          { path: '', component: myProject, name: 'myProject'},
-          { path: 'myContacts', component: myContacts, name: 'myContacts'},
-          { path: 'followup', component: followUp, name: 'followUp'}
+          {path: '', component: myProject, name: 'myProject'},
+          {path: 'myContacts', component: myContacts, name: 'myContacts'},
+          {path: 'followup', component: followUp, name: 'followUp'}
         ]
       },
-      { path: 'projectDetails', component: projectDetails, name: 'projectDetails'}, // 项目详情
-      { path: 'editproject', component: editproject, name: 'editproject'}, // 编辑项目
-      { path: 'creatproject', component: creatproject, name: 'creatproject'}, // 创建项目
-      { path: 'createContacts', component: createContacts, name: 'createContacts'}, // 创建人脉
-      { path: 'contactsDetails', component: contactsDetails, name: 'contactsDetails'}// 人脉详情
+      {path: 'projectDetails', component: projectDetails, name: 'projectDetails'}, // 项目详情
+      {path: 'editproject', component: editproject, name: 'editproject'}, // 编辑项目
+      {path: 'creatproject', component: creatproject, name: 'creatproject'}, // 创建项目
+      {path: 'createContacts', component: createContacts, name: 'createContacts'}, // 创建人脉
+      {path: 'contactsDetails', component: contactsDetails, name: 'contactsDetails'}// 人脉详情
     ]
   },
   {
@@ -102,10 +105,9 @@ export default [
   {
     path: '/login',
     component: login,
-    name: 'login',
     children: [
-      { path: '', name: 'telephoneLogin', component: telephoneLogin},
-      { path: 'codeLogin', name: 'codeLogin', component: codeLogin}
+      {path: '', name: 'telephoneLogin', component: telephoneLogin},
+      {path: 'codeLogin', name: 'codeLogin', component: codeLogin}
     ]
   },
   {
@@ -141,7 +143,9 @@ export default [
   {
     path: '/skipToPc', name: 'skipToPc', component: skipToPc
   },
-
+  {
+    path: '/personalInformation', name: 'personalInformation', component: personalInformation
+  },
   {
     path: '/test', name: 'test', component: checkone
   }

@@ -48,173 +48,170 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import cirIcon from '../../static/images/circle.png';
+  import pinpai from '../../static/images/icon-pinpa.png';
+  import yunying from '../../static/images/icon-yunying.png';
   const checkAllOption = ['project'];
-
-  import cirIcon from '../../static/images/circle.png'
-  import pinpai from '../../static/images/icon-pinpa.png'
-  import yunying from '../../static/images/icon-yunying.png'
   export default {
-    props: ["syncCreatProjectDetailDisplay","companyid"],
+    props: ['syncCreatProjectDetailDisplay', 'companyid'],
     data () {
       return {
         checkAll: false,
         isIndeterminate: false,
-        checkedSync:[],//已勾选数组
-        checkedSyncS:checkAllOption,//勾选数组所有的
-        cover:false,//是否允许覆盖
-        yunying:yunying,
-        pinpai:pinpai,
-        cirIcon:cirIcon,
-        loading:false,//加载动画
-        companyId:"",//尽调搜索公司ID
+        checkedSync: [], // 已勾选数组
+        checkedSyncS: checkAllOption, // 勾选数组所有的
+        cover: false, // 是否允许覆盖
+        yunying: yunying,
+        pinpai: pinpai,
+        cirIcon: cirIcon,
+        loading: false, // 加载动画
+        companyId: '', // 尽调搜索公司ID
 
-        //项目信息
-        project:{
-          follow_user:'张小五',
-          open_status:1,
-          pro_company_name:'公司',
-          pro_intro: "微天使PC端开发文档介绍介绍介绍介绍",
-          pro_name: "微天使PC端开发文档",
-          pro_schedule:'10',
-          pro_total_score:'94',
-          pro_area:{
-            area_title:'北京市'
+        // 项目信息
+        project: {
+          follow_user: '张小五',
+          open_status: 1,
+          pro_company_name: '公司',
+          pro_intro: '微天使PC端开发文档介绍介绍介绍介绍',
+          pro_name: '微天使PC端开发文档',
+          pro_schedule: '10',
+          pro_total_score: '94',
+          pro_area: {
+            area_title: '北京市'
           },
-          pro_scale:{
-            scale_money:'1001W-200W',
+          pro_scale: {
+            scale_money: '1001W-200W'
           },
-          pro_finance_stock_after:'-',
-          pro_finance_value:'-',
-          pro_stage:{
-            stage_name:'天使论'
+          pro_finance_stock_after: '-',
+          pro_finance_value: '-',
+          pro_stage: {
+            stage_name: '天使论'
           },
-          pro_industry:[{
+          pro_industry: [{
             industry_id: 12,
-            industry_name: "社交网络"
+            industry_name: '社交网络'
           }],
-          tag:[]
+          tag: []
         },
-        team:{
-          core_users:[{
-            ct_member_career:'career',
-            ct_member_intro:'intro',
-            ct_member_name:'name',
+        team: {
+          core_users: [{
+            ct_member_career: 'career',
+            ct_member_intro: 'intro',
+            ct_member_name: 'name'
           }],
 
-          tag:{
-            tag_name:'大海',
+          tag: {
+            tag_name: '大海'
           }
         },
-        financing:{
-          pro_finance_use:'用途',
-          pro_history_finance:[
-            /*{
-              finance_time:1503331200,
-              pro_finance_investor:'10000',
-              pro_finance_scale:"天使轮",
-              belongs_to_stage:{
-                sort: 5,
-                stage_id: 18,
-                stage_name: ""
-              }
-            },*/
+        financing: {
+          pro_finance_use: '用途',
+          pro_history_finance: [
+            /* {
+             finance_time:1503331200,
+             pro_finance_investor:'10000',
+             pro_finance_scale:"天使轮",
+             belongs_to_stage:{
+             sort: 5,
+             stage_id: 18,
+             stage_name: ""
+             }
+             }, */
           ]
         },
-        company:{
-          pro_company_scale:{
-            comp_scale_value:'1-20'
+        company: {
+          pro_company_scale: {
+            comp_scale_value: '1-20'
           },
-          pro_website:'m'
+          pro_website: 'm'
         },
-        milepost:{
-          pro_develop:[
-              /*{
-            dh_start_time:1503331200,
-            dh_event:'事件'
-          },*/
+        milepost: {
+          pro_develop: [
+            /* {
+             dh_start_time:1503331200,
+             dh_event:'事件'
+             }, */
           ]
-        },//里程碑
-        brands:{
-          brand:[]
-        },//产品
+        }, // 里程碑
+        brands: {
+          brand: []
+        }// 产品
 
-      }
+      };
     },
     methods: {
-      //关闭弹框
-      handleClose(){
+      // 关闭弹框
+      handleClose () {
         this.$emit('changeSyncProjectDetail', false);
       },
-      //获取一键尽调同步数据
+      // 获取一键尽调同步数据
       getProjectDetail () {
-        this.loading=true;
-        this.$http.post(this.URL.getProjectAllData,{user_id:localStorage.user_id,com_id:this.companyId})
-        .then(res=>{
-          if(res.data.status_code===2000000){
-            let data = res.data.data;
+        this.loading = true;
+        this.$http.post(this.URL.getProjectAllData, {user_id: localStorage.user_id, com_id: this.companyId})
+          .then(res => {
+            if (res.data.status_code === 2000000) {
+              let data = res.data.data;
 //            console.log(data);
-            this.$store.state.syncData.data=data;
-/*            if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
-            if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title="-";}
-            if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name='-'}
-            if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after='-'}
-            if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro='-'}
-            if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'}*/
-            this.project=data.project;
-/*            //团队
-            this.team=data.team;
-            //公司运营
-             this.company=data.company;
-            //融资信息
-            this.financing=data.financing;
-            //里程碑
-            this.milepost=data.milepost;
-            //brand
-            this.brands=data.brands;*/
-          }
-          this.loading=false;
-        })
-        .catch(err=>{
-          this.loading=false;
-          this.$tool.console(err,2)
-        })
+              this.$store.state.syncData.data = data;
+              /*            if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
+               if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title="-";}
+               if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name='-'}
+               if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after='-'}
+               if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro='-'}
+               if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'} */
+              this.project = data.project;
+              /*            //团队
+               this.team=data.team;
+               //公司运营
+               this.company=data.company;
+               //融资信息
+               this.financing=data.financing;
+               //里程碑
+               this.milepost=data.milepost;
+               //brand
+               this.brands=data.brands; */
+            }
+            this.loading = false;
+          })
+          .catch(err => {
+            this.loading = false;
+            this.$tool.console(err, 2);
+          });
       },
-      //全选时
-      handleCheckAllChange(event) {
+      // 全选时
+      handleCheckAllChange (event) {
         this.checkedSync = event.target.checked ? checkAllOption : [];
         this.isIndeterminate = false;
       },
-      //勾选时
-      checkChange(value) {
+      // 勾选时
+      checkChange (value) {
         let checkedCount = value.length;
         this.checkAll = checkedCount === this.checkedSyncS.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.checkedSyncS.length;
       },
-      //确定同步
-      syncTrue(){
+      // 确定同步
+      syncTrue () {
         this.$store.state.syncData.checkedSync = this.checkedSync;
-        if (this.checkedSync.length == 0) {
-          this.$tool.warning("请勾选你要同步的模块")
+        if (this.checkedSync.length === 0) {
+          this.$tool.warning('请勾选你要同步的模块');
         } else {
-
           this.$emit('syncCompanyData', {cover: this.cover});
           this.$emit('changeSyncProjectDetail', false);
         }
       }
     },
-    created(){
-
+    created () {
 
     },
-    watch : {
-      syncCreatProjectDetailDisplay : function (e) {
-          if(e){
-            this.companyId =this.companyid;
-            this.getProjectDetail();
-          }
+    watch: {
+      syncCreatProjectDetailDisplay: function (e) {
+        if (e) {
+          this.companyId = this.companyid;
+          this.getProjectDetail();
+        }
       }
     }
-  }
+  };
 </script>
 
 <style lang="less">

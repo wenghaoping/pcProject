@@ -31,7 +31,7 @@
       }
       if (!localStorage.user_id) {
         // 没有登录的人去登录
-        this.$router.push({name: 'login'});
+        this.$router.push({path: 'login'});
         this.loading = false;
       } else if ((sessionStorage.userId === localStorage.user_id) && (sessionStorage.flog === 'mail') && (sessionStorage.type === 'user')) {
         // 当分享者正确时,且是加入项目的时候

@@ -16,24 +16,23 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import visible from './dialog2.vue'
+  import visible from './dialog2.vue';
   export default {
-    data() {
+    data () {
       return {
         value1: ''
-      }
+      };
     },
-    methods:{
-//1498060800
+    methods: {
+// 1498060800
 //      var timestamp3 = 1403058804;
 //  var newDate = new Date();
 //  newDate.setTime(timestamp3 * 1000);
-      change(e){
-          console.log(new Date(1403058804))
+      change (e) {
+        console.log(new Date(1403058804));
       }
     }
-  }
-
+  };
 </script>
 
 <style scoped lang="less">

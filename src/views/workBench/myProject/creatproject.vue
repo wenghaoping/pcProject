@@ -371,88 +371,6 @@
                     <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
                     <el-button type="text" @click="addgoodNess3" class="addMember fl"> 添加条目</el-button></div>
                 </div>
-
-                <!--<el-row :span="24" :gutter="10">-->
-                  <!--<el-col :span="5">-->
-                    <!--<el-form-item label="项目亮点"-->
-                                  <!--prop="goodness.pro_goodness.goodness_title"-->
-                                  <!--:rules="[{required: true, message: '不能为空', trigger: 'blur'},{min: 1, max:8,message: '最大8个字符'}]">-->
-                      <!--<el-input  v-model="project.goodness.pro_goodness.goodness_title"-->
-                                 <!--placeholder="项目亮点" ></el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                  <!--<el-col :span="19">-->
-                    <!--<div class="goodnessTag" :class="{goodnessTagBl:tagShow==1}" style="top: -86px;">-->
-                      <!--<img src="../../../assets/images/xiangmuliangdian.png">-->
-                    <!--</div>-->
-                    <!--<el-form-item label="介绍"-->
-                                  <!--prop="goodness.pro_goodness.goodness_desc"-->
-                                  <!--:rules="[{required: true, message: '不能为空', trigger: 'blur'},{min: 1, max:1000,message: '最大1000个字符'}]">-->
-                      <!--<el-input  v-model="project.goodness.pro_goodness.goodness_desc"-->
-                                 <!--placeholder="是决定投资人是否查看项目详情的重要因素，以不超过3点为宜" @focus="focus(1)" @blur="blur(1)"></el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                <!--</el-row>-->
-                <!--<el-row :span="24" :gutter="10">-->
-                  <!--<el-col :span="5">-->
-                    <!--<el-form-item label="　"-->
-                                  <!--:rules="[{max:8,message: '最大8个字符'}]"-->
-                                  <!--prop="goodness.pro_market_genera.goodness_title">-->
-                      <!--<el-input  v-model="project.goodness.pro_market_genera.goodness_title" placeholder="市场概况" ></el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                  <!--<el-col :span="19">-->
-                    <!--<div class="goodnessTag" :class="{goodnessTagBl:tagShow==2}"  style="top: -86px;">-->
-                      <!--<img src="../../../assets/images/shichanggaikuang.png">-->
-                    <!--</div>-->
-                    <!--<el-form-item label="　"-->
-                                  <!--:rules="[{max:1000,message: '最大1000个字符'}]"-->
-                                  <!--prop="goodness.pro_market_genera.goodness_desc">-->
-                      <!--<el-input  v-model="project.goodness.pro_market_genera.goodness_desc" placeholder="市场规模和增速、竞争格局、政策等，以不超过3点为宜"-->
-                                 <!--@focus="focus(2)" @blur="blur(2)"></el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                <!--</el-row>-->
-                <!--<el-row :span="24" :gutter="10">-->
-                  <!--<el-col :span="5">-->
-                    <!--<el-form-item label="　"-->
-                                  <!--:rules="[{max:8,message: '最大8个字符'}]"-->
-                                  <!--prop="goodness.pro_business_model.goodness_title">-->
-                      <!--<el-input  v-model="project.goodness.pro_service.goodness_title" placeholder="产品概况"></el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                  <!--<el-col :span="19">-->
-                    <!--<div class="goodnessTag" :class="{goodnessTagBl:tagShow==3}"  style="top: -50px;">-->
-                      <!--<img src="../../../assets/images/chanpiongaikuang.png">-->
-                    <!--</div>-->
-                    <!--<el-form-item label="　"-->
-                                  <!--:rules="[{max:1000,message: '最大1000个字符'}]"-->
-                                  <!--prop="goodness.pro_business_model.goodness_desc">-->
-                      <!--<el-input  v-model="project.goodness.pro_service.goodness_desc" placeholder="选择项目产品或模式一种重点介绍即可，以不超过3点为宜"-->
-                                 <!--@focus="focus(3)" @blur="blur(3)"></el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                <!--</el-row>-->
-                <!--<el-row :span="24" :gutter="10" style="margin-bottom: 32px;">-->
-                  <!--<el-col :span="5">-->
-                    <!--<el-form-item label="　"-->
-                                  <!--:rules="[{max:8,message: '最大8个字符'}]"-->
-                                  <!--prop="goodness.pro_service.goodness_title">-->
-                      <!--<el-input  v-model="project.goodness.pro_business_model.goodness_title" placeholder="商业模式"></el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                  <!--<el-col :span="19">-->
-                    <!--<div class="goodnessTag" :class="{goodnessTagBl:tagShow==4}"  style="top: -50px;">-->
-                      <!--<img src="../../../assets/images/shangyemoshi.png">-->
-                    <!--</div>-->
-                    <!--<el-form-item label="　"-->
-                                  <!--:rules="[{max:1000,message: '最大1000个字符'}]"-->
-                                  <!--prop="goodness.pro_service.goodness_desc">-->
-                      <!--<el-input  v-model="project.goodness.pro_business_model.goodness_desc" placeholder="用来说明通过什么方式盈利"-->
-                                 <!--@focus="focus(4)" @blur="blur(4)"></el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                <!--</el-row>-->
               </div>
             </el-form>
           </div>
@@ -547,22 +465,62 @@
           pro_finance_stock_after: '', // 投后股分
           open_status: '1', // 私密设置
           goodness: {
-            pro_business_model: [{
-              goodness_desc: '', // 凉凉凉凉
-              goodness_title: ''// 亮点亮点
-            }],
-            pro_goodness: [{
-              goodness_desc: '', // 凉凉凉凉
-              goodness_title: ''// 亮点亮点
-            }],
-            pro_market_genera: [{
-              goodness_desc: '', // 凉凉凉凉
-              goodness_title: ''// 亮点亮点
-            }],
-            pro_service: [{
-              goodness_desc: '', // 凉凉凉凉
-              goodness_title: ''// 亮点亮点
-            }]
+            pro_business_model: [
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              },
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              },
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              }
+            ],
+            pro_goodness: [
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              },
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              },
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              }
+            ],
+            pro_market_genera: [
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              },
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              },
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              }
+            ],
+            pro_service: [
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              },
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              },
+              {
+                goodness_desc: '', // 凉凉凉凉
+                goodness_title: ''// 亮点亮点
+              }
+            ]
           }, // 亮点
           is_exclusive: 1// 0其他 1独家 2非独家
         }, // 项目介绍
@@ -722,7 +680,7 @@
         }
       }, // 上传前的验证
 
-      /// /项目同步
+      // 项目同步
       changeSyncProjectDetail (msg) {
         this.syncCreatProjectDetailDisplay = msg;
         this.dialogVisible = false;

@@ -32,7 +32,7 @@
         localStorage.token = this.$route.query.token || '';
         this.getCheckUserInfo(this.$route.query.user_id)
           .then((data) => {
-            return this.$router.push({ name: 'projectDetails', query: {project_id: this.project_id, show: this.show}});
+            return this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, show: this.show}});
           });
       }
     },

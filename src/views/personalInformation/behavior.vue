@@ -12,33 +12,33 @@
               @sort-change="filterChange"
               stripe
               v-loading.body="loading" element-loading-text="拼命加载中">
-      <el-table-column prop="pro_name" label="姓名" width="85" show-overflow-tooltip>
+      <el-table-column prop="pro_name" label="项目名称" width="145" show-overflow-tooltip>
         <template scope="scope">
-          <el-tooltip placement="top" :disabled="scope.row.user_name.length > 4 ? false:true">
+          <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 7 ? false:true">
             <div slot="content">
-              <div class="tips-txt">{{scope.row.user_name}}</div>
+              <div class="tips-txt">{{scope.row.pro_name}}</div>
             </div>
             <div>
-              {{scope.row.user_name}}
+              {{scope.row.pro_name}}
             </div>
           </el-tooltip>
-          <div v-if="scope.row.user_name.length === 0">
+          <div v-if="scope.row.pro_name.length === 0">
             -
           </div>
         </template>
       </el-table-column>
 
-      <el-table-column prop="user_organization" label="机构" width="205">
+      <el-table-column prop="pro_intro" label="项目介绍" width="175">
         <template scope="scope">
-          <el-tooltip placement="top" :disabled="scope.row.user_organization.length > 14 ? false:true">
+          <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 12 ? false:true">
             <div slot="content">
-              <div class="tips-txt">{{scope.row.user_organization}}</div>
+              <div class="tips-txt">{{scope.row.pro_intro}}</div>
             </div>
             <div>
-              {{scope.row.user_organization}}
+              {{scope.row.pro_intro}}
             </div>
           </el-tooltip>
-          <div v-if="scope.row.user_organization.length === 0">
+          <div v-if="scope.row.pro_intro.length === 0">
             -
           </div>
         </template>
@@ -46,24 +46,41 @@
 
 
 
-      <el-table-column prop="group_title" label="角色" width="75"
+      <el-table-column prop="pro_company_name" label="项目公司" width="105"
                        show-overflow-tooltip>
         <template scope="scope">
-          <el-tooltip placement="top" :disabled="scope.row.group_title.length > 3 ? false:true">
+          <el-tooltip placement="top" :disabled="scope.row.pro_company_name.length > 6 ? false:true">
             <div slot="content">
-              <div class="tips-txt">{{scope.row.group_title}}</div>
+              <div class="tips-txt">{{scope.row.pro_company_name}}</div>
             </div>
             <div>
-              {{scope.row.group_title}}
+              {{scope.row.pro_company_name}}
             </div>
           </el-tooltip>
-          <div v-if="scope.row.group_title.length === 0">
+          <div v-if="scope.row.pro_company_name.length === 0">
             -
           </div>
         </template>
       </el-table-column>
 
-      <el-table-column prop="created_at" label="更新时间" width="140"
+      <el-table-column prop="pro_follow_up_user" label="发布者" width="75"
+                       show-overflow-tooltip>
+        <template scope="scope">
+          <el-tooltip placement="top" :disabled="scope.row.pro_follow_up_user.length > 4 ? false:true">
+            <div slot="content">
+              <div class="tips-txt">{{scope.row.pro_follow_up_user}}</div>
+            </div>
+            <div>
+              {{scope.row.pro_follow_up_user}}
+            </div>
+          </el-tooltip>
+          <div v-if="scope.row.pro_follow_up_user.length === 0">
+            -
+          </div>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="created_at" label="更新时间" width="130"
                        column-key="created_at"
                        sortable="custom">
         <template scope="scope">
@@ -76,7 +93,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="service_desc" label="备注" width="280"
+      <el-table-column prop="service_desc" label="备注" width="250"
                        show-overflow-tooltip>
         <template scope="scope">
           <el-tooltip placement="top" :disabled="scope.row.service_desc.length > 25 ? false:true">
@@ -110,7 +127,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ['proid'],
+    props: ['userid'],
     data () {
       return {
         loading: false,
@@ -118,15 +135,17 @@
         totalData: 0, // 总页数
         getPra: {}, // 筛选的请求参数
         currentPage: 1, // 当前页数
-        project_id: this.proid,
+        user_id: this.userid,
         tableData: [
-          /* {
-           user_name : "张三疯子",//姓名
-           user_organization : "杭州投着乐了网络科技有限公司",//机构
-           group_title : "投资方",//角色
-           created_at : "2017-08-08 13:00", //更新时间
-           service_desc : "这是备注，这里是备注最大宽度是300，最大宽度是300",  //备注
-           } */
+          {
+            pro_name: '公司名称公司名称公司名称公司名称',
+            pro_intro: '我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
+            pro_company_name: '迪丽热巴',
+            pro_follow_up_user: '迪丽热巴',
+            project_id: '',
+            created_at: '2017-08-08 13:00', // 更新时间
+            service_desc: '这是备注，这里是备注最大宽度是300，最大宽度是300'  // 备注
+          }
         ],
         URLChange: this.URL.getProjectViewData// URL地址修改
       };
@@ -222,7 +241,7 @@
     },
     // 当dom一创建时
     created () {
-      this.filterChangeCurrent(1);
+//      this.filterChangeCurrent(1);
     },
     watch: {
 
@@ -231,7 +250,5 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/onlineData.less';
-
-
+  @import '../../assets/css/onlineData.less';
 </style>

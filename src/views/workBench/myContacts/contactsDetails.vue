@@ -850,7 +850,7 @@
           // 做一些异步操作
           this.$http.post(this.URL.getEnjoyProjectsGroup, {user_id: localStorage.user_id, card_id: this.contacts.card_id, card_link_user_id: this.contacts.user_id})
             .then(res => {
-              if (res.data.status_code == 2000000) {
+              if (res.data.status_code === 2000000) {
                 let data = res.data.data;
                 this.chartData = data;
                 this.eChart(data.going, data.hold, data.reject);
@@ -1236,7 +1236,7 @@
           return this.getOneUserInfo();
         })
         .then((data) => {
-          if (this.contacts.user_id != 0) this.getProjectList(1);
+          if (this.contacts.user_id !== 0) this.getProjectList(1);
           else this.projectLists = [];
           return this.getEchartData();
         })

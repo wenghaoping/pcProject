@@ -23,10 +23,10 @@
 
 <script type="text/ecmascript-6">
   export default {
-    prop:['dialogFormVisible'],
+    prop: ['dialogFormVisible'],
     data () {
       return {
-        isShow:this.dialogFormVisible,
+        isShow: this.dialogFormVisible,
         form: {
           name: '',
           region: '',
@@ -38,14 +38,11 @@
           desc: ''
         },
         formLabelWidth: '120px'
-      }
+      };
     },
     methods: {},
-    create(){
-//      console.log(this.dialogFormVisible)
-//      console.log(this.isShow)
-    }
-  }
+    create () {}
+  };
 </script>
 
 <style scoped lang="less">

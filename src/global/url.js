@@ -168,6 +168,8 @@ export default
   getProjectDetailsData: 'api/project/getProjectDetailsData', // 上线后数据-详情
   getProjectBPData: 'api/project/getProjectBPData', // 上线后数据-查看BP
 
-  getProjectServiceData: 'api/project/getProjectServiceData'// 上线后数据-请求联系
+  getProjectServiceData: 'api/project/getProjectServiceData', // 上线后数据-请求联系
 
+  // 个人信息
+  getUserBasicInfo: '/api/user/getUserBasicInfo' // 获取个人信息
 };

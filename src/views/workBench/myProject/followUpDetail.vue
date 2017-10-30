@@ -8,7 +8,7 @@
             <!--<div class="item-cicle1"></div>-->
             <img :src="cirIcon">
           </div>
-           <div class="item-time">{{item.investor_name}}</div>
+           <div class="item-time" @click="toDetail(item)">{{item.investor_name}}</div>
           <div class="item-name" v-if="item.user_organization">
             <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.user_organization.length > 20 ? false:true">
               <div slot="content">
@@ -215,6 +215,9 @@
       };
     },
     methods: {
+      toDetail (data) {
+        this.$emit('toDetail', data);
+      },
       upload (item1, index) {
         let fileId = this.content[index].follow_file[item1].file_id;
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId;

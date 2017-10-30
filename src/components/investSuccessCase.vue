@@ -111,7 +111,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ['dialogShow','investCase'],
+    props: ['dialogShow', 'investCase'],
     data () {
       return {
         caseForm: {
@@ -123,106 +123,105 @@
         stageList: '',
         multiplelimit: 5,
         // 标准时间记录
-        caseTime:[],
-      }
+        caseTime: []
+      };
     },
     methods: {
 //    area1选项变更
-      area1Change(index){
-        this.$http.post(this.URL.getArea,{
-          pid:this.caseForm.investSuccessCase[index].case_province
-        }).then(res=>{
+      area1Change (index) {
+        this.$http.post(this.URL.getArea, {
+          pid: this.caseForm.investSuccessCase[index].case_province
+        }).then(res => {
           let arr = [];
-          let data=res.data.data
+          let data = res.data.data;
           for (let i = 0; i < data.length; i++) {
             let obj = {};
             obj.label = data[i].area_title;
             obj.value = data[i].area_id;
-            arr.push(obj)
+            arr.push(obj);
           }
-          this.area2List=arr;
-          this.caseForm.investSuccessCase[index].case_city='';
+          this.area2List = arr;
+          this.caseForm.investSuccessCase[index].case_city = '';
 //          console.log(this.area2List)
-        })
+        });
       },
 //    继续添加
-      continueAdd(){
+      continueAdd () {
         this.caseForm.investSuccessCase.push({
           case_name: '', case_deal_time: '', case_industry: '', case_stage: '', case_province: '', case_city: '', case_money: ''
-        })
+        });
       },
 //    删除本条
-      deleteItem(index){
-        this.caseForm.investSuccessCase.splice(index, 1)
+      deleteItem (index) {
+        this.caseForm.investSuccessCase.splice(index, 1);
       },
 //    确定
-      certain(){
-        var that=this;
-        var item=this.caseForm.investSuccessCase;
-        var is_complete=true;
+      certain () {
+        var that = this;
+        var item = this.caseForm.investSuccessCase;
+        var isComplete = true;
         // 前端验证表单
-        item.forEach((x,index)=>{
-          if(x.case_name.replace(/^\s+|\s+$/g, "") && x.case_name.replace(/^\s+|\s+$/g, "").length<16 && x.case_industry && x.case_stage && x.case_province && x.case_city && x.case_money.replace(/^\s+|\s+$/g, "") && x.case_money.replace(/^\s+|\s+$/g, "").length<9){
+        item.forEach((x, index) => {
+          if (x.case_name.replace(/^\s+|\s+$/g, '') && x.case_name.replace(/^\s+|\s+$/g, '').length < 16 && x.case_industry && x.case_stage && x.case_province && x.case_city && x.case_money.replace(/^\s+|\s+$/g, '') && x.case_money.replace(/^\s+|\s+$/g, '').length < 9) {
 
-          }else{
+          } else {
             this.$tool.error('请完善表单');
-            is_complete=false;
-            return
+            isComplete = false;
           }
-        })
-        if(is_complete){
+        });
+        if (isComplete) {
           // 标准时间转化为毫秒数
-          this.caseForm.investSuccessCase.forEach(x=>{
+          this.caseForm.investSuccessCase.forEach(x => {
             this.caseTime.push(x.case_deal_time);
-            x.case_deal_time=Date.parse(x.case_deal_time);
-            var date=new Date(x.case_deal_time);
-            x.case_deal_time=date.getFullYear()+'-'+ (date.getMonth()+1)+'-'+ date.getDate();
+            x.case_deal_time = Date.parse(x.case_deal_time);
+            var date = new Date(x.case_deal_time);
+            x.case_deal_time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 //            console.log(x.case_deal_time)
-          })
+          });
 
           // 发送请求
-          /*this.$http.post(this.URL.createUserProjectCase,{
-            user_id:localStorage.user_id,
-            project_case:this.caseForm.investSuccessCase,
-          }).then(res=>{
-            console.log(res);
-            if(res.data.status_code===2000000){
-              this.$tool.success('投资成功案例保存成功')
-              this.caseForm.investSuccessCase.forEach((x,index)=>{
-                x.case_deal_time=this.caseTime[index]
-              })
-              this.caseTime=[];
-              that.$emit('closeInvestCase', false)
-            }else{
-              that.$tool.error(res.data.error_msg)
-            }
-          })*/
+          /* this.$http.post(this.URL.createUserProjectCase,{
+           user_id:localStorage.user_id,
+           project_case:this.caseForm.investSuccessCase,
+           }).then(res=>{
+           console.log(res);
+           if(res.data.status_code===2000000){
+           this.$tool.success('投资成功案例保存成功')
+           this.caseForm.investSuccessCase.forEach((x,index)=>{
+           x.case_deal_time=this.caseTime[index]
+           })
+           this.caseTime=[];
+           that.$emit('closeInvestCase', false)
+           }else{
+           that.$tool.error(res.data.error_msg)
+           }
+           }) */
 //          this.$tool.success('投资成功案例保存成功')
-          this.caseForm.investSuccessCase.forEach((x,index)=>{
-            x.case_deal_time=this.caseTime[index]
-          })
-          this.caseTime=[];
-          that.$emit('closeInvestCase', false)
+          this.caseForm.investSuccessCase.forEach((x, index) => {
+            x.case_deal_time = this.caseTime[index];
+          });
+          this.caseTime = [];
+          that.$emit('closeInvestCase', false);
         }
       },
 
 //    取消
-      cancel(){
-        this.$emit('closeInvestCase', false)
+      cancel () {
+        this.$emit('closeInvestCase', false);
       },
 //    关闭弹窗前的回调
-      closeInvestCase(){
-        this.$emit('closeInvestCase', false)
-      },
+      closeInvestCase () {
+        this.$emit('closeInvestCase', false);
+      }
     },
-    created(){
-      setTimeout(x=>{
+    created () {
+      setTimeout(x => {
         this.area1List = this.$global.data.area;
         this.industryList = this.$global.data.industry;
         this.stageList = this.$global.data.stage;
-      },200)
+      }, 200);
     }
-  }
+  };
 </script>
 
 <style lang="less">

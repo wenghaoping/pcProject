@@ -13,7 +13,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    data() {
+    data () {
       return {
         options: [{
           value: '选项1',
@@ -32,7 +32,7 @@
           label: '北京烤鸭'
         }],
         value: ''
-      }
+      };
     }
   };
 </script>

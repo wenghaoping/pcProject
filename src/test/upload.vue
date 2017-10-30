@@ -30,79 +30,74 @@
 </template>
 <script>
   export default {
-    data() {
+    data () {
       return {
         fileList: [],
-        uploadAddress:this.URL.weitianshiLine+"api/v/project/projectUpload",//上传地址
-        uploadDate:{user_id: localStorage.user_id},//上传所带的额外的参数
-        timeout:null,
-        check:false,
+        uploadAddress: this.URL.weitianshiLine + 'api/v/project/projectUpload', // 上传地址
+        uploadDate: {user_id: localStorage.user_id}, // 上传所带的额外的参数
+        timeout: null,
+        check: false
       };
     },
     methods: {
-      beforeUpload(file){
-          console.log(file);
-          let arr = {}
-          arr.uid=file.uid;
-console.log(arr)
-          this.fileList.push(arr);
-          console.log(this.fileList)
-          this.uploadProgress();
+      beforeUpload (file) {
+        console.log(file);
+        let arr = {};
+        arr.uid = file.uid;
+        console.log(arr);
+        this.fileList.push(arr);
+        console.log(this.fileList);
+        this.uploadProgress();
       },
-      submitUpload() {
+      submitUpload () {
         this.$refs.upload.submit();
       },
-      handleRemove(file, fileList) {
+      handleRemove (file, fileList) {
 //        console.log(file, fileList);
       },
-      handlePreview(file) {
+      handlePreview (file) {
         console.log(file);
         this.$refs.upload.abort(file);
       },
-      uploadsuccess(response, file, fileList){
+      uploadsuccess (response, file, fileList) {
         console.log(response);
-        this.check=false;
+        this.check = false;
       },
-      progress(event, file, fileList){
+      progress (event, file, fileList) {
 //        console.log(event)
 
       },
-      abort(file){
+      abort (file) {
         console.log(file);
         this.$refs.upload.abort(file);
-
       },
-      clearFiles(){
+      clearFiles () {
         this.$refs.upload.clearFiles();
       },
-      fileListLook(e){
+      fileListLook (e) {
 
       },
-      uploadProgress(){
-/*        this.timeout = setInterval(()=>{
-          this.$http.get(this.URL.uploadProgress,{params: {
-            'PHP_SESSION_UPLOAD_PROGRESS' : 'test'}
-          })
-            .then(res => {
-              let data=res.data.data;
-              console.log(res);
-            })
-            .catch(err => {
-              this.$tool.console(err);
-            })//请求函数
-        },1000)
-        setTimeout(()=>{clearInterval(this.timeout);},10000)*/
+      uploadProgress () {
+        /*        this.timeout = setInterval(()=>{
+         this.$http.get(this.URL.uploadProgress,{params: {
+         'PHP_SESSION_UPLOAD_PROGRESS' : 'test'}
+         })
+         .then(res => {
+         let data=res.data.data;
+         console.log(res);
+         })
+         .catch(err => {
+         this.$tool.console(err);
+         })//请求函数
+         },1000)
+         setTimeout(()=>{clearInterval(this.timeout);},10000) */
       }
 
-
     },
-    mounted(){
-
-
-
+    mounted () {
 
     }
-  }
+  };
 </script>
 
 <style scoped lang="less">

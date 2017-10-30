@@ -7,12 +7,11 @@
 
 </template>
 <script type="text/ecmascript-6">
-
   export default {
     data () {
       return {
 
-        myAllCont:[{
+        myAllCont: [{
           value: -1,
           label: '全部'
         }, {
@@ -22,13 +21,13 @@
           value: 1,
           label: '我的人脉'
         }
-        ],
-      }
+        ]
+      };
     },
-    method:{
+    method: {
 
     }
-  }
+  };
 </script>
 <style>
   .two{

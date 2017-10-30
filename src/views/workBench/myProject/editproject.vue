@@ -19,7 +19,7 @@
                   <span class="f-title fl">商业计划书</span>
                   <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-if="uploadLoading"><img src="../../../assets/images/loading.gif"></span>
                   <span class="uploadImg fl" style="margin: 15px 0px 0px 20px;" v-else></span>
-                  <span style="    margin-left: -13px;" class="fl">
+                  <span class="fl">
                     <el-upload class="planUpload"
                                :action="uploadAddress"
                                :on-preview="planPreview"
@@ -1177,17 +1177,6 @@
   // import { mapState } from 'vuex';
   export default {
     data () {
-      var oneNumber = (rule, value, callback) => {
-        console.log(value);
-        if (!this.$tool.getNull(value)) {
-          setTimeout(() => {
-
-          }, 100);
-        } else {
-          callback();
-        }
-      };// 投资亮点判断
-
       var checkPhoneNumber = (rule, value, callback) => {
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
@@ -1221,7 +1210,6 @@
       };// 可以为空,必须为数字正则判断
 
       var checkHundred = (rule, value, callback) => {
-//          alert((typeof(value)==="number")&&(value!==Infinity)&&!isNaN(value))
         if (!this.$tool.getNull(value)) {
           setTimeout(() => {
             if (this.$tool.checkNumber(value)) {
@@ -1541,7 +1529,6 @@
         loadingcheck: false,
         statusLast: 0,
 
-        oneRule: { validator: oneNumber, trigger: 'blur' }, // 投资亮点规则
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' }, // 电话规则
         NumberRule: { validator: checkNumber, trigger: 'blur' }, // 可以为空,必须为数字
         ScaleRule: { validator: checkHundred, trigger: 'blur' }, // 可以为空,必须为数字,比例数值1-100
@@ -1557,7 +1544,7 @@
       };
     },
     computed: {
-      //* 项目完整度判断
+      // 项目完整度判断
       proportion () {
         let number = 0;// 所有的空值数
         let fileValue = this.planList;// 项目文件
@@ -1665,15 +1652,13 @@
     methods: {
       // 获得项目亮点焦点
       focus (e) {
-//          console.log(e)
         this.tagShow = e;
-//        console.log(this.tagShow);
       },
       // 取消项目亮点焦点
       blur (e) {
         this.tagShow = 0;
       },
-      //* 获取列表各种数据
+      // 获取列表各种数据
       getCompanyStatus (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -1727,7 +1712,7 @@
             this.brand_type = this.$global.data.brand_type;// 设置产品来源
             this.tags.changesource = this.$global.data.pro_source;// 设置项目来源
             resolve(2);
-          }, 500);
+          }, 200);
         });
       }, // 获取所有下拉框的数据
       area1Change (data) {
@@ -1952,14 +1937,13 @@
         this.$tool.error('上传失败,请联系管理员');
       }, // 上传失败
       planRemove (file, fileList) {
-        const deleteAtUpload = this.URL.deleteAtUpload;
         if (fileList.length === 0) this.planButton = true;
         else {
           this.planButton = true;
-          this.uploadLoading = false;
           this.submitButton = false;
         }
-        this.$http.post(deleteAtUpload, {user_id: localStorage.user_id, project_id: this.uploadShow.project_id})
+        this.uploadLoading = false;
+        this.$http.post(this.URL.deleteAtUploa, {user_id: localStorage.user_id, project_id: this.uploadShow.project_id})
           .then(res => {
             if (res.status === 200) {
               this.loading = false;
@@ -2018,7 +2002,6 @@
         this.subButtonCheck(this.uploadShow2.lists);
       },
       //* 批量上传
-
       beforeUpload1 (file) {
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;

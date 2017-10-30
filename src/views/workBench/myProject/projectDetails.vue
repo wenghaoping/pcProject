@@ -415,7 +415,7 @@
             </el-tab-pane>
             <el-tab-pane label="跟进记录" name="flow">
               <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData"
-                       @getfollowid="getFollowId" @changefollowdata="changefollowdata"></folowup>
+                       @getfollowid="getFollowId" @changefollowdata="changefollowdata" @toDetail="toDetail"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id">
@@ -810,39 +810,19 @@
             pro_business_model: [{
               goodness_desc: '', // 凉凉凉凉
               goodness_title: ''// 亮点亮点
-            },
-              {
-                goodness_desc: '', // 凉凉凉凉
-                goodness_title: ''// 亮点亮点
-              }
-            ],
+            }],
             pro_goodness: [{
               goodness_desc: '', // 凉凉凉凉
               goodness_title: ''// 亮点亮点
-            },
-              {
-                goodness_desc: '', // 凉凉凉凉
-                goodness_title: ''// 亮点亮点
-              }
-            ],
+            }],
             pro_market_genera: [{
               goodness_desc: '', // 凉凉凉凉
               goodness_title: ''// 亮点亮点
-            },
-              {
-                goodness_desc: '', // 凉凉凉凉
-                goodness_title: ''// 亮点亮点
-              }
-            ],
+            }],
             pro_service: [{
               goodness_desc: '', // 凉凉凉凉
               goodness_title: ''// 亮点亮点
-            },
-              {
-                goodness_desc: '', // 凉凉凉凉
-                goodness_title: ''// 亮点亮点
-              }
-            ]
+            }]
           },
           pro_scale: {
             scale_money: ''// 1001W-200W
@@ -865,11 +845,13 @@
         follow_schedule: [/* {
          value: 1,
          label: '项目推进中'
-         } */], // 项目跟进进度
+         } */
+        ], // 项目跟进进度
         follow_scheduleAll: [/* {
          value: 1,
          label: '项目推进中'
-         } */], // 项目跟进进度搜索用,多一个全部
+         } */
+        ], // 项目跟进进度搜索用,多一个全部
         searchSchedule: 0, // 意向项目的筛选进度
         getConCon: {}, // 获取意向投资人的请求参数
         chartData: {
@@ -1235,6 +1217,7 @@
         this.$router.push({name: 'editproject', query: {project_id: this.project.project_id}});
       }, // 编辑项目
       toDetail (data) {
+        console.log(data);
         this.cardid = data.card_id;
         this.userid = data.user_id;
         this.contactDisplay = true;

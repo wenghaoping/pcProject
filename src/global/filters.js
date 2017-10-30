@@ -4,7 +4,7 @@
 import Vue from 'vue';
 
 Vue.filter('timeToReallTime', (value) => {
-  if (value == '') return '';
+  if (value === '') return '';
   var date = new Date();
   if (value.length > 11) date.setTime(value);
   else date.setTime(value * 1000);
@@ -23,7 +23,7 @@ Vue.filter('timeToReallTime', (value) => {
 });
 
 Vue.filter('nullToZ', (value) => {
-  if (value === '' || value == undefined) {
+  if (value === '' || value === undefined) {
     return '暂无数据';
   } else {
     return value;

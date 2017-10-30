@@ -1,6 +1,7 @@
  /**
  * Created by WengHaoping on 2017/5/18.
  */
+ /* eslint-disable */
 /**
  * 总的工具类
  */
@@ -68,10 +69,7 @@ const tool = {
     }
   }, // 判断是不是空(空字符串也算是空)
   checkNumber (data) {
-      // let reg = new RegExp("^[0-9]*$");
     let reg = new RegExp('^\\d+(\\.\\d+)?$');
-/*      let oldlength  = data.length;
-      let newLength  = parseFloat(data).toFixed(2).toString().length; */
     if (reg.test(data)) {
       return true;
     } else {

@@ -253,7 +253,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-
   export default {
     props: ['followDisplay', 'followid', 'projectid', 'projectname', 'cardid', 'cardname', 'type', 'userid'],
     data () {
