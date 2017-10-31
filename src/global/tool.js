@@ -261,7 +261,18 @@ const tool = {
       x[title] = tool.formatDateTime(x[title]);
     });
   }, // 时间戳转化正常时间,在数组中循环,time为总的数组,title为要改变的字段(字符串格式)
-
+// 将数组中需要的id取出来合并为一个数组
+  setIdToArr (arr, title) {
+    if (tool.isArray(arr)) {
+      let tags = [];
+      arr.forEach((x) => {
+        tags.push(x[title]);
+      });
+      return tags;
+    } else {
+      return arr;
+    }
+  },
   //* 将标签转化为字符长串==========例子'汽车交通、物流、房产服务、体育运动、工业生产'data为总的数组,title为要改变的字段(字符串格式)*/
   setTagToString (data, title) {
     if (tool.isArray(data)) {
@@ -336,18 +347,6 @@ const tool = {
       time[title2] = Date.parse(time[title]) ? Date.parse(time[title]) : ' ';
     } else {
       return time;
-    }
-  },
-// 将数组中需要的id取出来合并为一个数组
-  setIdToArr (arr, title) {
-    if (tool.isArray(arr)) {
-      let tags = [];
-      arr.forEach((x) => {
-        tags.push(x[title]);
-      });
-      return tags;
-    } else {
-      return arr;
     }
   },
 

@@ -11,6 +11,7 @@
           :on-error="handleError"
           :before-upload="beforeUpload"
           :file-list="fileList"
+          accept=".jpg, .png, .jpeg"
           :on-success="uploadSuccess">
           <el-button size="small" type="primary" style="background:#40587a;border-color: #40587a" v-show="btnShow" >
             <i class="el-icon-plus"></i>
@@ -27,7 +28,7 @@
   export default {
     data () {
       return {
-        uploadAddress: this.URL.weitianshiLine + 'api/user/uploadCard', // 上传地址
+        uploadAddress: this.URL.weitianshiLine + this.URL.uploadCard + localStorage.token, // 上传地址
         uploadData: {
           user_id: localStorage.user_id,
           authenticate_id: localStorage.authenticate_id
@@ -44,13 +45,13 @@
       // 点击列表里的文件触发
       handlePreview (file) {},
       // 上传文件之前触发
+      // 上传前的验证
       beforeUpload (file) {
-//            console.log(file)
-        let filetypes = ['.png', '.jpg', '.jpeg'];
+//        this.uploadDate.user_id = localStorage.user_id;
+        let filetypes = ['.jpg', '.png', '.jpeg'];
         let name = file.name;
-        let fileend = name.substring(name.lastIndexOf('.'));
+        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
         let isnext = false;
-        this.btnShow = false;
         if (filetypes && filetypes.length > 0) {
           for (var i = 0; i < filetypes.length; i++) {
             if (filetypes[i] === fileend) {
@@ -61,18 +62,14 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error('不支持的文件格式');
+          this.$tool.error(file.name + '是不支持的文件格式');
           return false;
         }
-        if (parseInt(file.size) > parseInt(1048576)) {
-          this.$tool.error('暂不支持超过1m文件上传哦');
+        if (parseInt(file.size) > parseInt(1048580)) {
+          this.$tool.error(file.name + '超过1M大小哦');
           return false;
         };
-        if (parseInt(this.num) > parseInt(1)) {
-          this.$tool.error('一次最多选择1个文件');
-          this.num = 0;
-          return false;
-        }
+        this.submitButton = true;
       },
       // 上传成功时触发
       uploadSuccess (response, file, fileList) {

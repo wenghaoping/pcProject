@@ -13,8 +13,8 @@ export default
   weitianshiLine: 'https://pc.dev.weitianshi.cn/', // 上传
   // weitianshi:"https://pc.debug.weitianshi.cn/",//接口下载用
   // weitianshiLine:"https://pc.debug.weitianshi.cn/",//接口上传
-  // weitianshi:"https://wts.weitianshi.cn/",//上线接口下载用
-  // weitianshiLine:"https://wts.weitianshi.cn/",//上线接口上传
+  // weitianshi: 'https://wts.weitianshi.cn/', // 上线接口下载用
+  // weitianshiLine: 'https://wts.weitianshi.cn/', // 上线接口上传
   openUrl: 'https://www.weitianshi.cn/workbench/#/API/DD', // 一键尽调对外接口
   oneUrl: 'https://www.weitianshi.cn/workbench/#/', // 一键尽调对内接口
   // 一键尽调跳转用接口
@@ -88,7 +88,7 @@ export default
   saveUserIdentity: 'api/user/saveUserAuthentication', // 保存身份认证信息
   createUserProjectCase: 'api/v/project/createUserProjectCase', // 保存投资成功案例
   getUserGroupByStatus: '/api/user/getUserGroupByStatus', // 核对用户认证状态（用于判断用户是否能进入认证相关页面）
-
+  uploadCard: 'api/user/uploadCard?token=', // 上传名片
   // 登录方面相关
   authCaptcha: 'api/auth/authCaptcha', // 用户注册,登录获取验证码接口
   loginForCaptcha: 'api/auth/loginForCaptcha', // 用户注册/登录接口(验证码登录)
@@ -171,5 +171,6 @@ export default
   getProjectServiceData: 'api/project/getProjectServiceData', // 上线后数据-请求联系
 
   // 个人信息
-  getUserBasicInfo: '/api/user/getUserBasicInfo' // 获取个人信息
+  getUserBasicInfo: '/api/user/getUserBasicInfo', // 获取个人信息
+  getUserAuthenticateInfo: '/api/user/getUserAuthenticateInfo' // 获取认证信息
 };

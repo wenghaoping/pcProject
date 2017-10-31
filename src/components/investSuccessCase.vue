@@ -1,5 +1,5 @@
 <template>
-  <div id="investSuccessCase">
+  <div id="investSuccessCase" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <el-dialog title="| 添加成功案例"
                :visible.sync="dialogShow"
                :before-close='closeInvestCase'
@@ -71,17 +71,17 @@
                           :prop="'investSuccessCase['+ index +'].case_city'"
                           class="width360 mr32"
                           :rules="{required: true, message: '请填写投资地区', trigger: 'blur'}">
-              <el-select v-model="item.case_province" placeholad="请选择" class="width175" @change="area1Change(index)">
-                <el-option v-for="area1Item in area1List"
-                           :key="area1Item.value"
-                           :label="area1Item.label"
-                           :value="area1Item.value"></el-option>
+              <el-select v-model="item.case_province" placeholad="请选择" class="width175" @change="area1Change2">
+                <el-option v-for="item in area"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value"></el-option>
               </el-select>
               <el-select v-model="item.case_city" placeholad="请选择" class="width175" style="margin-left: 5px;">
-                <el-option v-for="area2Item in area2List"
-                           :key="area2Item.value"
-                           :label="area2Item.label"
-                           :value="area2Item.value"></el-option>
+                <el-option v-for="item in area2"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="投资金额(万)"
@@ -111,14 +111,15 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ['dialogShow', 'investCase'],
+    props: ['dialogShow'],
     data () {
       return {
+        loading: false,
         caseForm: {
-          investSuccessCase: this.investCase
+          investSuccessCase: []
         },
-        area1List: [],
-        area2List: [],
+        area1: [],
+        area2: [],
         industryList: '',
         stageList: '',
         multiplelimit: 5,
@@ -127,35 +128,45 @@
       };
     },
     methods: {
-//    area1选项变更
-      area1Change (index) {
-        this.$http.post(this.URL.getArea, {
-          pid: this.caseForm.investSuccessCase[index].case_province
-        }).then(res => {
-          let arr = [];
-          let data = res.data.data;
-          for (let i = 0; i < data.length; i++) {
-            let obj = {};
-            obj.label = data[i].area_title;
-            obj.value = data[i].area_id;
-            arr.push(obj);
-          }
-          this.area2List = arr;
-          this.caseForm.investSuccessCase[index].case_city = '';
-//          console.log(this.area2List)
-        });
-      },
-//    继续添加
+      area1Change (data) {
+        this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
+          .then(res => {
+            let data = res.data.data;
+            this.area2 = this.$tool.getCity(data);
+          })
+          .catch(err => {
+            this.$tool.console(err);
+          });
+      }, // 设置二级城市下拉列表
+      area1Change2 (data) {
+        let newData = data;
+        if (data !== '') {
+          let pid = localStorage.pid;
+          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
+            .then(res => {
+              let data = res.data.data;
+              this.area2 = this.$tool.getCity(data);
+              if (parseInt(newData) === parseInt(pid)) {
+              } else {
+                this.project.pro_area.area_id = '';
+              }
+            })
+            .catch(err => {
+              this.$tool.console(err);
+            });
+        }
+      }, // 设置二级城市下拉列表2
+      // 继续添加
       continueAdd () {
         this.caseForm.investSuccessCase.push({
           case_name: '', case_deal_time: '', case_industry: '', case_stage: '', case_province: '', case_city: '', case_money: ''
         });
       },
-//    删除本条
+      // 删除本条
       deleteItem (index) {
         this.caseForm.investSuccessCase.splice(index, 1);
       },
-//    确定
+      // 确定
       certain () {
         var that = this;
         var item = this.caseForm.investSuccessCase;
@@ -204,22 +215,60 @@
           that.$emit('closeInvestCase', false);
         }
       },
-
-//    取消
+      // 取消
       cancel () {
         this.$emit('closeInvestCase', false);
       },
-//    关闭弹窗前的回调
+      // 关闭弹窗前的回调
       closeInvestCase () {
         this.$emit('closeInvestCase', false);
+      },
+      // 获取微信
+      getWxProjectCategory () {
+        return new Promise((resolve, reject) => {
+          this.area = this.$global.data.area;
+          this.industryList = this.$global.data.industry;
+          this.stageList = this.$global.data.stage;
+          resolve(true);
+        });
+      },
+      // 获取认证个人详情
+      getUserBasicInfo () {
+        return new Promise((resolve, reject) => {
+          // 做一些异步操作
+          this.loading = true;
+          this.$http.post(this.URL.getUserBasicInfo, {user_id: localStorage.user_id})
+            .then(res => {
+              let data = res.data;
+              // 成功案例处理
+              data.project_case.forEach((x) => {
+                x.case_industry = this.$tool.setIdToArr(x.case_industry, 'industry_id');
+                this.$tool.setTimeToReallyTime1(x, 'case_deal_time');
+              });
+              this.caseForm.investSuccessCase = data.project_case; // 成功案例
+              this.caseForm.investSuccessCase.forEach((x) => { this.area1Change(x.case_province); });
+              this.loading = false;
+            })
+            .catch(err => {
+              console.log(err);
+              this.loading = false;
+              this.$tool.error('加载超时');
+            });
+          resolve(1);
+        });
       }
     },
     created () {
-      setTimeout(x => {
-        this.area1List = this.$global.data.area;
-        this.industryList = this.$global.data.industry;
-        this.stageList = this.$global.data.stage;
-      }, 200);
+    },
+    watch: {
+      dialogShow: function (e) {
+        if (e) {
+          this.getWxProjectCategory()
+            .then((data) => {
+              return this.getUserBasicInfo();
+            });
+        }
+      }
     }
   };
 </script>

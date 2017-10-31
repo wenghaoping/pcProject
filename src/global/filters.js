@@ -23,7 +23,7 @@ Vue.filter('timeToReallTime', (value) => {
 });
 
 Vue.filter('nullToZ', (value) => {
-  if (value === '' || value === undefined) {
+  if (value === '' || value === undefined || value === null) {
     return '暂无数据';
   } else {
     return value;
@@ -31,7 +31,7 @@ Vue.filter('nullToZ', (value) => {
 });
 
 Vue.filter('nullTo_', (value) => {
-  if (value === '' || value === undefined) {
+  if (value === '' || value === undefined || value === null) {
     return '-';
   } else {
     return value;

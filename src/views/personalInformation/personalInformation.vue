@@ -509,8 +509,9 @@
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
         BigNumberRule: { validator: checkBigNumber, trigger: 'blur' }, // 可以为空,必须为数字,数值不大于999999999999
         uploadHeadAddress: this.URL.weitianshiLine + this.URL.uploadConnectCard + localStorage.token, // 上传地址
-        uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadConnectCard + localStorage.token, // 上传地址
+        uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadCard + localStorage.token, // 上传地址
         uploadDate: {user_id: localStorage.user_id}, // 名片上传所带的额外的参数
+        // 个人信息
         user_info: {
           card_id: '', // id
           user_id: '', // user_id
@@ -624,14 +625,17 @@
       },
       // 设置二级城市下拉列表
       area1Change (data) {
-        this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
-          .then(res => {
-            let data = res.data.data;
-            this.area2 = this.$tool.getCity(data);
-          })
-          .catch(err => {
-            this.$tool.console(err);
-          });
+        return new Promise((resolve, reject) => {
+          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
+            .then(res => {
+              let data = res.data.data;
+              this.area2 = this.$tool.getCity(data);
+              resolve(true);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        });
       },
       // 设置二级城市下拉列表2
       area1Change2 (data) {
@@ -699,7 +703,7 @@
         object.image_id = obj.image_id;
         this[uploadShow] = object;
       },
-      // 获取个人详情
+      // 获取认证个人详情
       getUserBasicInfo () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -712,7 +716,6 @@
                 this.$router.push({name: 'index'});// 路由传参
               } else {
                 let data = res.data;
-                console.log(res.data);
                 // 头像名片设置
                 this.setImage(data.user_info.user_avatar_url, 'HeadPlanList', 'HeadUploadShow');
                 this.setImage(data.user_info.user_card_image, 'CardplanList', 'CardUploadShow');
@@ -725,14 +728,16 @@
                 data.invest_info.user_invest_stage = this.$tool.setIdToArr(data.invest_info.user_invest_stage, 'stage_id');
                 data.invest_info.user_invest_scale = this.$tool.setIdToArr(data.invest_info.user_invest_scale, 'scale_id');
                 data.invest_info.user_invest_area = this.$tool.setIdToArr(data.invest_info.user_invest_area, 'area_id');
-                this.investment = data.invest_info; // 投资需求
+                this.investment = data.invest_info;
                 // 成功案例处理
                 data.project_case.forEach((x) => {
                   x.case_industry = this.$tool.setIdToArr(x.case_industry, 'industry_id');
-                  x = this.$tool.setTimeToReallyTime1(x, 'case_deal_time');
+                  this.$tool.setTimeToReallyTime1(x, 'case_deal_time');
                 });
                 this.investCases.investCase = data.project_case; // 成功案例
-                console.log(data);
+
+                this.investCases.investCase.forEach((x) => { this.area1Change(x.case_province); });
+
                 this.loading = false;
               }
             })
@@ -895,30 +900,42 @@
           })
           .then((data) => {
             if (data) {
-              alert('过');
+              this.loading = true;
+              this.zgClick('提交个人信息');
+              let allData = {};
+              allData.user_id = localStorage.user_id;
+              allData.user_info = this.$tool.simpleClone(this.user_info);
+              allData.investment = this.$tool.simpleClone(this.investment);
+              allData.investCases = this.$tool.simpleClone(this.investCases);
+              delete allData.user_info.user_avatar_url;
+              delete allData.user_info.user_card_image;
+              this.$tool.setReallyTimeToTime(allData.investCases.investCase, 'case_deal_time', 'case_deal_time_stamp');
+              console.log(allData);
+//              this.$http.post(this.URL.getUserBasicInfo, allData)
+//                .then(res => {
+//                  this.card_id = res.data.card_id;
+//                  this.loading = false;
+//                  this.open2('信息编辑成功', '是否返回', '继续编辑', '返回上一页');
+//                })
+//                .catch(err => {
+//                  this.$tool.error('编辑失败');
+//                  this.$tool.console(err);
+              this.loading = false;
+//                });
             }
           });
-//        this.loading = true;
-//        if (this.$tool.getNull(this.contacts.user_real_name)) { this.$tool.error('姓名不能为空'); } else if (this.$tool.checkLength(this.contacts.user_real_name)) { this.$tool.error('姓名不超过20字'); } else if (this.$tool.checkLength(this.contacts.user_nickname)) { this.$tool.error('昵称不超过20字'); } else if (!this.checkEmail(this.contacts.user_email)) { this.$tool.console('请输入正确的邮箱邮箱'); } else if (!this.checkPhoneNumber(this.contacts.user_mobile)) { this.$tool.console('请输入正确的电话'); } else if (this.$tool.checkLength1(this.contacts.user_company_name)) { this.$tool.error('公司不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_brand)) { this.$tool.error('品牌不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_company_career)) { this.$tool.error('职位不超过40字'); } else if (!contacts) {} else if (!contacts1) { this.$tool.error('投资需求不超过500字'); } else if (!contacts2) { this.$tool.error('资源需求不超过500字'); } else {
-//          this.zgClick('提交人脉');
-//          this.$tool.setTag(this.contacts.user_invest_tag, this.tags.changecont);
-//          let allData = {};
-//          allData = this.contacts;
-//          allData.user_id = localStorage.user_id;
-//          allData.card_id = this.contacts.card_id || '';
-//          allData.image_id = this.uploadShow.image_id || '';
-//          this.$http.post(this.URL.createUserCard, allData)
-//            .then(res => {
-//              this.card_id = res.data.card_id;
-//              this.loading = false;
-//              this.open2('名片编辑成功', '是否返回', '查看详情', '返回人脉列表');
-//            })
-//            .catch(err => {
-//              this.$tool.error('编辑失败');
-//              this.$tool.console(err);
-//              this.loading = false;
-//            });
-//        }
+      },
+      // 编辑成功弹窗
+      open2 (title, main, confirm, cancel) {
+        this.$confirm(main, title, {
+          confirmButtonText: confirm,
+          cancelButtonText: cancel,
+          type: 'success'
+        }).then(() => {
+          this.getUserBasicInfo();
+        }).catch(() => {
+          this.$router.go(-1);
+        });
       },
       //* 添加成功案例
       addinvestCase () {

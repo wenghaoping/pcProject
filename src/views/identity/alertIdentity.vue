@@ -9,9 +9,9 @@
           <div class="renzheng_center">
             <div class="imgrenzhen">
               <div class="renzhen inlineBlock">
-                <img v-if="renzhen === 0" src="../../assets/images/shenhezhong.png"><!--!-->
-                <img v-else-if="renzhen === 1" src="../../assets/images/shenhetongguo.png"><!--勾-->
-                <img v-else-if="renzhen === 2" src="../../assets/images/weitongguo.png"><!--X-->
+                <img v-if="auth_info.identify_status === 1" src="../../assets/images/shenhezhong.png"><!--!-->
+                <img v-else-if="auth_info.identify_status === 2" src="../../assets/images/shenhetongguo.png"><!--勾-->
+                <img v-else-if="auth_info.identify_status === 3" src="../../assets/images/weitongguo.png"><!--X-->
               </div>
               <div class="faweixin inlineBlock">
                 <img src="../../assets/images/index-qr.png">
@@ -30,110 +30,114 @@
                 <div class="tit_second inlineBlock">
                   <div class="tit clearfix">
                     <div class="tit_left fl">姓名 ： </div>
-                    <div class="tit_right1 fl">{{contacts.user_real_name | nullTo_}}</div>
+                    <div class="tit_right1 fl">{{auth_info.iden_name | nullTo_}}</div>
                   </div>
                   <div class="tit clearfix">
                     <div class="tit_left fl">公司 ： </div>
-                    <div class="tit_right1 fl">{{contacts.user_company_name | nullTo_}}</div>
+                    <div class="tit_right1 fl">{{auth_info.iden_company_name | nullTo_}}</div>
                   </div>
                   <div class="tit clearfix">
                     <div class="tit_left fl">邮箱 ： </div>
-                    <div class="tit_right1 fl">{{contacts.user_email | nullTo_}}</div>
+                    <div class="tit_right1 fl">{{auth_info.iden_email | nullTo_}}</div>
                   </div>
                 </div>
                 <div class="tit_second inlineBlock">
                   <div class="tit clearfix">
                     <div class="tit_left fl">职位 ： </div>
-                    <div class="tit_right1 fl">{{contacts.user_company_career | nullTo_}}</div>
+                    <div class="tit_right1 fl">{{auth_info.iden_company_career | nullTo_}}</div>
                   </div>
                   <div class="tit clearfix">
                     <div class="tit_left fl">品牌 ： </div>
-                    <div class="tit_right1 fl">{{contacts.user_brand | nullTo_}}</div>
+                    <div class="tit_right1 fl">{{auth_info.iden_brand | nullTo_}}</div>
                   </div>
                   <div class="tit clearfix">
                     <div class="tit_left fl">微信 ： </div>
-                    <div class="tit_right1 fl">{{contacts.weixin | nullTo_}}</div>
+                    <div class="tit_right1 fl">{{auth_info.iden_wx | nullTo_}}</div>
                   </div>
                 </div>
-                <div class="tit_second">
+                <div class="tit_second" v-if="auth_info.user_card_image !== ''">
                   <div class="tit clearfix">
                     <div class="tit_left fl">名片 ： </div>
-                    <div class="tit_right1 fl"><div class="img"><img src="../../assets/images/header.png"></div></div>
+                    <div class="tit_right1 fl"><div class="img"><img :src="auth_info.user_card_image"></div></div>
                   </div>
                 </div>
               </div>
               <!--投资案例-->
-              <div class="item" v-if="contacts.project_case.length!=0">
+              <div class="item" v-if="projectCases.length!=0">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../assets/images/anli.png">投资案例</span>
                 </div>
-                <div class="block lh" v-for="cased in contacts.project_case">
+                <div class="block lh" v-for="projectCase in projectCases.projectCase">
                   <span class="radio" style=" line-height: 14px;"><img src="../../assets/images/radioTag.png"></span>
-                  <span class="time" style="margin-left: 15px">{{cased.case_deal_time}}</span>
-                  <span class="tag_To">{{cased.case_stage_name}}</span>
-                  <span class="title1">{{cased.case_name}}</span>
-                  <span class="title2">{{cased.case_money}}万元</span>
-                  <span class="tags_To">{{cased.has_many_industry}}</span>
-                  <span class="address">{{cased.has_one_city}}</span>
+                  <span class="time" style="margin-left: 15px">{{projectCase.case_deal_time}}</span>
+                  <span class="tag_To">{{projectCase.case_stage_name}}</span>
+                  <span class="title1">{{projectCase.case_name}}</span>
+                  <span class="title2">{{projectCase.case_money}}万元</span>
+                  <span class="tags_To">{{projectCase.case_industry}}</span>
+                  <span class="address">{{projectCase.case_city_name}}</span>
                 </div>
               </div>
               <!--个人描述-->
-              <div class="item" v-if="contacts.user_intro!=''">
+              <div class="item" v-if="auth_info.iden_desc!=''">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../assets/images/miaoshu.png">个人描述</span>
                 </div>
                 <div class="block">
                   <div class="main">
-                    {{contacts.user_intro}}
+                    {{auth_info.iden_desc}}
                   </div>
                 </div>
               </div>
               <!--投资需求-->
-              <div class="item" v-if="user_invest">
+              <div class="item" v-if="investment.industry!='' || investment.stage!='' || investment.scale!='' || investment.area!='' || investment.user_invest_desc!=''">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../assets/images/money2.png">投资需求</span>
                 </div>
-                <div class="block tit clearfix" v-if="contacts.user_invest_industry!=''">
+                <div class="block tit clearfix" v-if="investment.industry!=''">
                   <div class="tit_left fl">投资领域 ： </div>
-                  <div class="tit_right fl">{{contacts.user_invest_industry}}</div>
+                  <div class="tit_right fl">{{investment.industry}}</div>
                 </div>
-                <div class="block tit clearfix" v-if="contacts.user_invest_stage!=''">
+                <div class="block tit clearfix" v-if="investment.stage!=''">
                   <div class="tit_left fl">投资轮次 ： </div>
-                  <div class="tit_right fl">{{contacts.user_invest_stage}}</div>
+                  <div class="tit_right fl">{{investment.stage}}</div>
                 </div>
-                <div class="block tit clearfix" v-if="contacts.user_invest_scale!=''">
+                <div class="block tit clearfix" v-if="investment.scale!=''">
                   <div class="tit_left fl">投资金额 ： </div>
-                  <div class="tit_right fl">{{contacts.user_invest_scale}}</div>
+                  <div class="tit_right fl">{{investment.scale}}</div>
                 </div>
-                <div class="block tit clearfix" v-if="contacts.user_invest_desc!=''">
+                <div class="block tit clearfix" v-if="investment.area!=''">
+                  <div class="tit_left fl">投资地区 ： </div>
+                  <div class="tit_right fl">{{investment.area}}</div>
+                </div>
+                <div class="block tit clearfix" v-if="investment.user_invest_desc!=''">
                   <div class="tit_left fl">投资描述 ： </div>
                 </div>
-                <div class="block" v-if="contacts.user_invest_desc!=''">
-                  <div class="tit_mian">{{contacts.user_invest_desc}}</div>
+                <div class="block" v-if="investment.user_invest_desc!=''">
+                  <div class="tit_mian">{{investment.user_invest_desc}}</div>
                 </div>
               </div>
               <!--业务需求-->
-              <div class="item">
+              <div class="item" v-if="auth_info.is_financing === 1 || auth_info.is_alliance === 1 || auth_info.is_identify_member === 1 || auth_info.is_saas === 1 || auth_info.is_FA_part === 1">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../assets/images/anli.png">业务需求</span>
                 </div>
-                <div class="block tit clearfix">
+                <div class="block tit clearfix" v-if="auth_info.is_financing === 1">
                   <div class="tit_left fl queren"><img src="../../assets/images/queren.png"></div>
                   <div class="tit_right2 fl ">需要FA（财务顾问）融资服务</div>
                 </div>
-                <div class="block tit clearfix">
+                <div class="block tit clearfix" v-if="auth_info.is_alliance === 1">
                   <div class="tit_left fl queren"><img src="../../assets/images/queren.png"></div>
                   <div class="tit_right2 fl ">申请加入中国FA行业联盟</div>
                 </div>
-                <div class="block tit clearfix">
+                <div class="block tit clearfix" v-if="auth_info.is_identify_member === 1">
                   <div class="tit_left fl queren"><img src="../../assets/images/queren.png"></div>
                   <div class="tit_right2 fl ">加入FA社群认证会员</div>
                 </div>
-                <div class="block tit clearfix">
+                <div class="block tit clearfix" v-if="auth_info.is_saas === 1">
                   <div class="tit_left fl queren"><img src="../../assets/images/queren.png"></div>
                   <div class="tit_right2 fl ">申请试用创业项目库的管理saas系统</div>
                 </div>
-                <div class="block tit clearfix">
+                <div class="block tit clearfix" v-if="auth_info.is_FA_part === 1">
                   <div class="tit_left fl queren"><img src="../../assets/images/queren.png"></div>
                   <div class="tit_right2 fl ">兼做FA业务</div>
                 </div>
@@ -155,47 +159,52 @@
     data () {
       return {
         loading: false, // 加载动画
-        contacts: {
-          card_id: '', // id
-          user_id: '', // user_id
-          user_real_name: '张三', // 姓名
-          user_nickname: '昵称', // 昵称
-          user_mobile: '18758307033', // 名片手机号
-          user_email: 'zhangsan@weitianshi.cn', // 邮箱
-          user_company_name: '杭州投着乐网络科技有限公司 ', // 公司名称
-          import_user_name: '', // 来源
-          user_brand: '投着乐', // 品牌
-          user_company_career: '投资经理', // 职位
-          user_invest_tag: [], // 人脉标签
-          user_avatar_url: '', // 头像URL
-          user_invest_industry: [], // 领域标签
-          user_invest_stage: [], // 轮次
-          user_invest_scale: [], // 投资金额
-          user_invest_area: {
-            area_id: '',
-            area_title: '', // 市级
-            pid: ''// 省级
-          }, // 所属地区1省级单位
-          user_intro: '我们重点解决的是行中问题，同时兼顾行前和行后。 1.行前：定制个性化的用户攻略 发现旅行行前环节最大的特色是为用户定制专属的用户攻略，内部称“小册子”。小册子不仅对每个订单用户而言都不一样，小册子本身还会根据用户的人数以及特征进行调整。 2.行中：管家确保出现在用户出行过程中每一个重要和紧急的环节。 我们的管家分为线上的总部管家和线下的目的地管家。目前，我们在全球7个国家建立了分公司、办事处。飞机落地之后，对接当地管家。此外，用户在任何时候都可以通过微信公众号或者 24 小时待机的国内电话联系到总部管家，并得到总部管家的帮助。', // 个人描述
-          user_resource_give: [], // 提供的资源
-          user_resource_find: [], // 寻求对接的资源
-          user_invest_desc: '', // 投资需求描述
-          user_resource_desc: '', // 资源需求描述
-          project_case: [
-            {
-              case_deal_time: 1503936000, // 时间
-              case_stage_name: 'pre-A轮', // 轮次
-              case_name: '第三个项目', // 名称
-              case_money: '15800000', // 钱
-              has_many_industry: '金融', // 金融,人工智能
-              has_one_city: '北京'// 地区
-            }
-          ], // 投资案例
-          weixin: '12345321' // 微信
-        }, // 人脉参数
-        user_invest: true, // 投资需求
-        user_resource: true, // 资源需求
-        renzhen: 1 // 认证情况
+        // 个人信息
+        auth_info: {
+          authenticate_id: 7906,
+          created_at: '2017-09-05 14:38:41',
+          deleted_at: '',
+          group_id: 18,
+          iden_brand: '',
+          iden_company_career: '',
+          iden_company_name: '',
+          iden_desc: '',
+          iden_email: '',
+          iden_image_id: '',
+          iden_name: '',
+          iden_wx: '',
+          identify_status: 2, // 认证情况
+          is_FA_part: 0,
+          is_alliance: 0,
+          is_financing: 0,
+          is_identify_member: 0,
+          is_saas: 0,
+          message_board: '',
+          updated_at: '2017-09-05 20:42:41',
+          user_card_image: '',
+          user_id: '8W1ERo3W'
+        },
+        // 投资需求
+        investment: {
+          industry: '', // 领域标签
+          stage: '', // 轮次
+          scale: '', // 投资金额
+          area: '', // 所属地区1省级单位
+          user_invest_desc: '' // 投资需求描述
+        },
+        // 成功案例数据
+        projectCases: {
+          projectCase: [{
+            case_name: '', // 项目名称
+            case_province: '', // 投资地区
+            case_city: '', // 投资城市
+            case_industry: '', // 项目领域
+            case_money: '', // 投资金额
+            case_deal_time: '', // 交易时间
+            case_stage_name: '', // 项目轮次
+            case_id: '' // 项目id
+          }]
+        }
       };
     },
     methods: {
@@ -212,37 +221,28 @@
           obj.case_stage_name = x.case_stage_name;
           obj.case_name = x.case_name;
           obj.case_money = x.case_money;
-          obj.has_many_industry = this.$tool.setTagToString(x.has_many_industry, 'industry_name');
-          obj.has_one_city = x.has_one_city.area_title;
+          obj.case_industry = this.$tool.setTagToString(x.case_industry, 'industry_name');
+          obj.case_city_name = x.case_city_name;
           newArr.push(obj);
         });
         return newArr;
       },
-      // 获取个人详情
-      getOneUserInfo () {
+      // 获取认证个人详情
+      getUserAuthenticateInfo () {
         this.loading = true;
-        this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.contacts.card_id, investor_user_id: this.contacts.user_id})
+        this.$http.post(this.URL.getUserAuthenticateInfo, {user_id: localStorage.user_id})
           .then(res => {
-            let data = res.data.data;
-            this.$tool.console(this.$tool.getToObject(data));
-            data.user_invest_industry = this.$tool.setTagToString(data.user_invest_industry, 'industry_name');
-            data.user_invest_stage = this.$tool.setTagToString(data.user_invest_stage, 'stage_name');
-            data.user_invest_scale = this.$tool.setTagToString(data.user_invest_scale, 'scale_money');
-            data.user_resource_find = this.$tool.setTagToString(data.user_resource_find, 'resource_name');
-            data.user_resource_give = this.$tool.setTagToString(data.user_resource_give, 'resource_name');
-            data.project_case = this.setProjectCase(data.project_case);
-            data.user_avatar_txt = this.$tool.setUrlChange(data.user_avatar_url, data.user_real_name);
-            if (data.user_invest_industry === '' && data.user_invest_stage === '' && data.user_invest_scale === '' && data.user_invest_desc === '') {
-              this.user_invest = false;// 投资需求
-            } else {
-              this.user_invest = true;// 投资需求
-            }
-            if (data.user_resource_give === '' && data.user_resource_find === '' && data.user_resource_desc === '') {
-              this.user_resource = false;// 资源需求
-            } else {
-              this.user_resource = true;// 投资需求
-            }
-            this.contacts = data;
+            let data = res.data;
+            // 个人信息
+            this.auth_info = data.auth_info;
+            // 投资需求
+            data.invest_info.industry = this.$tool.setTagToString(data.invest_info.industry, 'industry_name');
+            data.invest_info.stage = this.$tool.setTagToString(data.invest_info.stage, 'stage_name');
+            data.invest_info.scale = this.$tool.setTagToString(data.invest_info.scale, 'scale_money');
+            data.invest_info.area = this.$tool.setTagToString(data.invest_info.area, 'area_name');
+            this.investment = data.invest_info;
+            // 成功案例
+            this.projectCases.projectCase = this.setProjectCase(data.project_case);
           })
           .catch(err => {
             this.$tool.console(err, 2);
@@ -252,6 +252,7 @@
       },
       // 重新认证
       newIdentity () {
+        this.$emit('closeIdentity', false);
         this.$router.push({name: 'identityChoose'});
       },
       // 是否认证过身份
@@ -275,30 +276,28 @@
     },
     computed: {
       maiFang () {
-        if (this.renzhen === 0) {
+        if (this.auth_info.identify_status === 1) {
           return '买方FA认证审核中';
-        } else if (this.renzhen === 1) {
+        } else if (this.auth_info.identify_status === 2) {
           return '买方FA认证审核通过';
-        } else if (this.renzhen === 2) {
+        } else if (this.auth_info.identify_status === 3) {
           return '买方FA认证审核未通过';
         }
       },
       maiFangWeiXin () {
-        if (this.renzhen === 0) {
+        if (this.auth_info.identify_status === 1) {
           return '添加FA哥微信weitianshicn，加速审核';
-        } else if (this.renzhen === 1) {
+        } else if (this.auth_info.identify_status === 2) {
           return '认证会员将由微天使创始人直接服务，添加微信weitianshicn';
-        } else if (this.renzhen === 2) {
+        } else if (this.auth_info.identify_status === 3) {
           return '添加FA哥微信weitianshicn，重新审核';
         }
       }
     },
     watch: {
-      contactDisplay: function (e) {
+      identityDisplay: function (e) {
         if (e) {
-          this.contacts.card_id = this.cardid || 0;
-          this.contacts.user_id = this.userid || '';
-          this.getOneUserInfo();
+          this.getUserAuthenticateInfo();
         } else {
           for (let key in this.contacts) {
             if (this.$tool.isArray(this.contacts[key])) {

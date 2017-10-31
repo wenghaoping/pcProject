@@ -1,4 +1,5 @@
 #identityChoose {
+
   .border {
     border: 1px solid #40587a;
     box-shadow: 0 4px 4px 0 rgba(64, 88, 122, 0.10);
@@ -41,6 +42,82 @@
 
 
 #identityDetail {
+  .Upload {
+    .el-upload-list__item {
+      line-height: 1.8;
+      margin-top: 0px;
+
+    }
+    .el-upload-list__item-name {
+      font-size: 14px;
+      color: #475669;
+      letter-spacing: 0;
+      text-decoration: underline
+    }
+    .el-upload-list__item:first-child{
+      margin-top: 0px;
+    }
+
+  }
+  .el-upload__tip{
+    margin-left: 16px;
+    font-size:14px;
+    color:#5e6d82;
+    line-height: 18px;
+  }
+  .is-success{
+    width: 300px;
+    height: 150px;
+  }
+  .marginAuto{
+    display: block;
+    margin: 0 auto;
+    width: 90px;
+    height: 32px;
+    margin-bottom: 20px;
+    .addhover{
+      display: inline-block;
+      position:relative;
+    }
+    .addhover:hover .addmemberimg{
+      transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+    }
+    .addMember {
+      transition: all .5s;
+      font-size:16px;
+      color:#009eff;
+    }
+    /*.addmemberimg:hover i{*/
+    /*transform: rotate(360deg);*/
+    /*-webkit-transform: rotate(360deg);*/
+    /*-moz-transform: rotate(360deg);*/
+    /*-o-transform: rotate(360deg);*/
+    /*-ms-transform: rotate(360deg);*/
+    /*}*/
+    .addMember2{
+      margin-left: 22px;
+    }
+    .addmemberimg{
+      transform:  rotate(0) ;
+      display: inline-block;
+      float: left;
+      margin-top: 11px;
+      width: 17px;
+      height: 17px;
+      margin-right: 7px;
+      transition: all .5s;
+      img{
+        width:100%;
+      }
+    }
+    .addmemberimg :hover{
+      transform: rotate(360deg);
+    }
+  }
   width: 1200px;
   background: white;
   margin: 0 auto;

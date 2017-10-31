@@ -680,7 +680,7 @@
               resolve(1);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
               this.loading = false;
             });
         });
