@@ -508,8 +508,8 @@
         activeName: 'person',
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
         BigNumberRule: { validator: checkBigNumber, trigger: 'blur' }, // 可以为空,必须为数字,数值不大于999999999999
-        uploadHeadAddress: this.URL.weitianshiLine + this.URL.uploadConnectCard + localStorage.token, // 上传地址
-        uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadCard + localStorage.token, // 上传地址
+        uploadHeadAddress: this.URL.weitianshiLine + this.URL.uploadUserImage + localStorage.token, // 上传地址
+        uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadUserCardImage + localStorage.token, // 上传地址
         uploadDate: {user_id: localStorage.user_id}, // 名片上传所带的额外的参数
         // 个人信息
         user_info: {
@@ -769,14 +769,14 @@
       uploaderror (err, file, fileList) {
         console.log(err);
         this.$tool.error('上传失败,请联系管理员');
+        this.submitButton = false;
       },
       // 删除文件
       HeadPlanRemove (file, fileList) {
         if (file) {
           if (fileList.length === 0) this.headPlanButton = true;
           else this.headPlanButton = true;
-          if (this.card_id === 'creat') this.card_id = 0;
-          this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.HeadUploadShow.image_id, card_id: this.card_id})
+          this.$http.post(this.URL.deleteImage, {user_id: localStorage.user_id, image_id: this.HeadUploadShow.image_id})
             .then(res => {
               if (res.status === 200) {
                 this.HeadPlanList = [];
@@ -844,8 +844,7 @@
           if (fileList.length === 0) this.cardPlanButton = true;
           else this.cardPlanButton = true;
           this.submitButton = false;
-          if (this.card_id === 'creat') this.card_id = 0;
-          this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.CardUploadShow.image_id, card_id: this.card_id})
+          this.$http.post(this.URL.deleteCardImage, {user_id: localStorage.user_id, image_id: this.CardUploadShow.image_id})
             .then(res => {
               if (res.status === 200) {
                 this.planList = [];
@@ -906,22 +905,22 @@
               allData.user_id = localStorage.user_id;
               allData.user_info = this.$tool.simpleClone(this.user_info);
               allData.investment = this.$tool.simpleClone(this.investment);
-              allData.investCases = this.$tool.simpleClone(this.investCases);
+              allData.project_case = this.investCases.investCase;
               delete allData.user_info.user_avatar_url;
               delete allData.user_info.user_card_image;
-              this.$tool.setReallyTimeToTime(allData.investCases.investCase, 'case_deal_time', 'case_deal_time_stamp');
+              this.$tool.setReallyTimeToTime(allData.project_case, 'case_deal_time', 'case_deal_time_stamp');
               console.log(allData);
-//              this.$http.post(this.URL.getUserBasicInfo, allData)
-//                .then(res => {
-//                  this.card_id = res.data.card_id;
-//                  this.loading = false;
-//                  this.open2('信息编辑成功', '是否返回', '继续编辑', '返回上一页');
-//                })
-//                .catch(err => {
-//                  this.$tool.error('编辑失败');
-//                  this.$tool.console(err);
-              this.loading = false;
-//                });
+              this.$http.post(this.URL.updateUserInfo, allData)
+                .then(res => {
+                  this.card_id = res.data.card_id;
+                  this.loading = false;
+                  this.open2('信息编辑成功', '是否返回', '继续编辑', '返回上一页');
+                })
+                .catch(err => {
+                  this.$tool.error('编辑失败');
+                  this.$tool.console(err);
+                  this.loading = false;
+                });
             }
           });
       },

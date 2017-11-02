@@ -63,18 +63,18 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="pro_follow_up_user" label="发布者" width="75"
+      <el-table-column prop="user_name" label="发布者" width="75"
                        show-overflow-tooltip>
         <template scope="scope">
-          <el-tooltip placement="top" :disabled="scope.row.pro_follow_up_user.length > 4 ? false:true">
+          <el-tooltip placement="top" :disabled="scope.row.user_name.length > 4 ? false:true">
             <div slot="content">
-              <div class="tips-txt">{{scope.row.pro_follow_up_user}}</div>
+              <div class="tips-txt">{{scope.row.user_name}}</div>
             </div>
             <div>
-              {{scope.row.pro_follow_up_user}}
+              {{scope.row.user_name}}
             </div>
           </el-tooltip>
-          <div v-if="scope.row.pro_follow_up_user.length === 0">
+          <div v-if="scope.row.user_name.length === 0">
             -
           </div>
         </template>
@@ -137,17 +137,17 @@
         currentPage: 1, // 当前页数
         user_id: this.userid,
         tableData: [
-          {
-            pro_name: '公司名称公司名称公司名称公司名称',
-            pro_intro: '我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
-            pro_company_name: '迪丽热巴',
-            pro_follow_up_user: '迪丽热巴',
-            project_id: '',
-            created_at: '2017-08-08 13:00', // 更新时间
-            service_desc: '这是备注，这里是备注最大宽度是300，最大宽度是300'  // 备注
-          }
+//          {
+//            pro_name: '公司名称公司名称公司名称公司名称',
+//            pro_intro: '我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
+//            pro_company_name: '迪丽热巴',
+//            pro_follow_up_user: '迪丽热巴',
+//            project_id: '',
+//            created_at: '2017-08-08 13:00', // 更新时间
+//            service_desc: '这是备注，这里是备注最大宽度是300，最大宽度是300'  // 备注
+//          }
         ],
-        URLChange: this.URL.getProjectViewData// URL地址修改
+        URLChange: this.URL.getUserViewData// URL地址修改
       };
     },
     computed: {},
@@ -162,19 +162,19 @@
       tabClick (tab, event) {
         switch (tab.name) {
           case 'browse':
-            this.URLChange = this.URL.getProjectViewData;
+            this.URLChange = this.URL.getUserViewData;
             break;
           case 'apply':
-            this.URLChange = this.URL.getProjectApplyData;
+            this.URLChange = this.URL.getUserApplyData;
             break;
           case 'details':
-            this.URLChange = this.URL.getProjectDetailsData;
+            this.URLChange = this.URL.getUserDetailsData;
             break;
           case 'bp':
-            this.URLChange = this.URL.getProjectBPData;
+            this.URLChange = this.URL.getUserBPData;
             break;
           case 'contact':
-            this.URLChange = this.URL.getProjectServiceData;
+            this.URLChange = this.URL.getUserServiceData;
             break;
           default:
             alert('错误');
@@ -229,9 +229,10 @@
         let arr = [];
         for (let i = 0; i < list.length; i++) {
           let obj = {};
+          obj.pro_name = list[i].pro_name;
+          obj.pro_intro = list[i].pro_intro;
+          obj.pro_company_name = list[i].pro_company_name;
           obj.user_name = list[i].user_name;
-          obj.user_organization = list[i].user_organization;
-          obj.group_title = list[i].group_title;
           obj.created_at = list[i].created_at;
           obj.service_desc = list[i].service_desc;
           arr.push(obj);
@@ -241,7 +242,7 @@
     },
     // 当dom一创建时
     created () {
-//      this.filterChangeCurrent(1);
+      this.filterChangeCurrent(1);
     },
     watch: {
 

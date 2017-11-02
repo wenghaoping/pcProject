@@ -167,10 +167,21 @@ export default
   getProjectApplyData: 'api/project/getProjectApplyData', // 上线后数据-申请
   getProjectDetailsData: 'api/project/getProjectDetailsData', // 上线后数据-详情
   getProjectBPData: 'api/project/getProjectBPData', // 上线后数据-查看BP
-
   getProjectServiceData: 'api/project/getProjectServiceData', // 上线后数据-请求联系
 
   // 个人信息
   getUserBasicInfo: '/api/user/getUserBasicInfo', // 获取个人信息
-  getUserAuthenticateInfo: '/api/user/getUserAuthenticateInfo' // 获取认证信息
+  getUserAuthenticateInfo: '/api/user/getUserAuthenticateInfo', // 获取认证信息
+  updateUserInfo: 'api/user/updateUserInfo', // 个人信息编辑
+  uploadUserImage: 'api/user/uploadUserImage?token=', // 上传头像
+  deleteImage: 'api/user/deleteImage', // 删除头像
+  uploadUserCardImage: 'api/user/uploadUserCardImage?token=', // 上传名片
+  deleteCardImage: 'api/user/deleteCardImage', // 删除名片
+
+  // 行为数据
+  getUserViewData: 'api/user/getUserViewData', // 行为数据-浏览数据
+  getUserApplyData: 'api/user/getUserApplyData', // 行为数据-申请
+  getUserDetailsData: 'api/user/getUserDetailsData', // 行为数据-查看详情
+  getUserBPData: 'api/user/getUserBPData', // 行为数据-BP
+  getUserServiceData: 'api/user/getUserServiceData' // 行为数据-请求联系
 };

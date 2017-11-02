@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <!--<el-row>-->
-
       <!--     头部导航 -->
       <header id="header">
         <ul class="select ulfl tc" style="position: relative">

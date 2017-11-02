@@ -230,13 +230,14 @@ const tool = {
     }
     return true;// 返回true，为空对象
   }, // 判断是否为空对象
-  cloneObj (myObj) {
+  simpleClone (myObj) {
     if (typeof (myObj) !== 'object') return myObj;
     if (myObj == null) return myObj;
-    let myNewObj = [];
+    let myNewObj = {};
     for (var i in myObj) { myNewObj[i] = myObj[i]; }
     return myNewObj;
   }, // 对象深拷贝
+
   //* 时间戳的处理
   formatDateTime (timeStamp) {
     if (timeStamp === '') return '';
@@ -295,7 +296,6 @@ const tool = {
     if (tool.isArray(data)) {
       data.forEach((x) => {
         if (x[title] === 0) x[title] = '';
-        else x[title] = parseFloat(x[title]);
       });
     } else {
       return data;
@@ -306,7 +306,6 @@ const tool = {
     if (tool.isArray(data)) {
       data.forEach((x) => {
         if (x[title] === '' || x[title] === undefined) x[title] = 0;
-        else x[title] = parseFloat(x[title]);
       });
     } else {
       return data;
@@ -356,15 +355,6 @@ const tool = {
     if (url === '') string = name.charAt(0);
     else string = '';
     return string;
-  },
-
-// 对象深拷贝
-  simpleClone (initalObj) {
-    let obj = {};
-    for (let i in initalObj) {
-      obj[i] = initalObj[i];
-    }
-    return obj;
   },
 
   // 返回的是字符串形式的参数，例如：class_id=3&id=2&
