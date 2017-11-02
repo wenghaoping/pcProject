@@ -9,7 +9,7 @@
             <img :src="cirIcon">
           </div>
            <div class="item-time" @click="toDetail(item)">{{item.investor_name}}</div>
-          <div class="item-name" v-if="item.user_organization">
+          <div class="item-name" v-if="item.user_organization" @click="contanctDetail(item)">
             <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.user_organization.length > 20 ? false:true">
               <div slot="content">
                 <span class="tips-txt">{{item.user_organization}}</span>
@@ -298,7 +298,10 @@
         this.followid = this.content[index].follow_id;
         this.getProjectFollowList();
         this.$emit('getfollowid', this.content[index].follow_id);
-      }// 点击写跟近按钮
+      }, // 点击写跟近按钮
+      contanctDetail (item) {
+        this.$emit('contanctDetail', item);
+      } // 点击显示详情
     },
     created () {
       this.$tool.getTop();

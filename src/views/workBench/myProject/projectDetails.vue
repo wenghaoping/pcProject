@@ -415,7 +415,8 @@
             </el-tab-pane>
             <el-tab-pane label="跟进记录" name="flow">
               <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData"
-                       @getfollowid="getFollowId" @changefollowdata="changefollowdata" @toDetail="toDetail"></folowup>
+                       @getfollowid="getFollowId" @changefollowdata="changefollowdata"
+                       @toDetail="toDetail" @contanctDetail="toDetail"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id">
@@ -1442,7 +1443,7 @@
             width = 0;
             break;
           default:
-            alert('错误');
+            console.log('你乱写了吧');
             break;
         }
         let index = this.scheduleIndex;

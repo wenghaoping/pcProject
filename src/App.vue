@@ -235,7 +235,7 @@
         if (e === 0) {
           this.$router.push({name: 'personalInformation'}); // 个人信息
         } else if (e === 1) {
-          this.identityDisplay = true;
+          this.getUserGroupByStatus();
         } else if (e === 2) {
           localStorage.clear();
           sessionStorage.clear();

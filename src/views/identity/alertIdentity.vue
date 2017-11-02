@@ -144,7 +144,7 @@
               </div>
             </div>
           </div>
-          <div class="toButton" style="padding-left: 0;">
+          <div class="toButton" style="padding-left: 0;position: relative">
             <el-button type="primary" size="large" style="margin-left:45%;margin-bottom: 15px;" @click="newIdentity">重新认证</el-button>
           </div>
         </div>
