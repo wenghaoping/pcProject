@@ -848,9 +848,9 @@
         });
       },
       clearData () {
-//        for(let key in this.follow){
-//          this.follow[key]='';
-//        }
+        for (let key in this.follow) {
+          this.follow[key] = '';
+        }
         this.follow.file_id = [];
         this.uploadShow.lists = [];
         this.fileList = [];

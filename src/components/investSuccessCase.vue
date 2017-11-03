@@ -250,9 +250,8 @@
               this.loading = false;
             })
             .catch(err => {
-              console.log(err);
               this.loading = false;
-              this.$tool.error('加载超时');
+              console.log(err);
             });
           resolve(1);
         });

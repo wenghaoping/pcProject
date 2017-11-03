@@ -273,10 +273,9 @@
       getProjectList (page) {
         this.loading1 = true;
         this.getPra.user_id = this.contacts.user_id;
-//      this.getPra.user_id="2rzyz5vp";
         this.currentPage = page;
         this.getPra.page = page;
-        if (this.contacts.user_id === 0) {
+        if (this.contacts.user_id === 0 || this.contacts.user_id === '') {
           this.projectLists = [];
         } else {
           this.$http.post(this.URL.getProjectList, this.getPra)
@@ -289,8 +288,7 @@
               this.totalData = res.data.count;
             })
             .catch(err => {
-              this.$tool.console(err, 2);
-              this.$tool.error('加载超时');
+              console.log(err);
             });
           this.loading1 = false;
         }
@@ -339,7 +337,7 @@
           })
           .catch(err => {
             this.$tool.console(err, 2);
-            this.$tool.error('加载超时');
+            console.log(err);
           });
         this.loading = false;
       }// 获取个人详情

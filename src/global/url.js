@@ -89,6 +89,7 @@ export default
   createUserProjectCase: 'api/v/project/createUserProjectCase', // 保存投资成功案例
   getUserGroupByStatus: '/api/user/getUserGroupByStatus', // 核对用户认证状态（用于判断用户是否能进入认证相关页面）
   uploadCard: 'api/user/uploadCard?token=', // 上传名片
+  deleteCard: 'api/user/deleteCard', // 删除名片
   // 登录方面相关
   authCaptcha: 'api/auth/authCaptcha', // 用户注册,登录获取验证码接口
   loginForCaptcha: 'api/auth/loginForCaptcha', // 用户注册/登录接口(验证码登录)

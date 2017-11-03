@@ -440,7 +440,7 @@
           })
           .catch(err => {
             this.$tool.console(err, 2);
-            this.$tool.error('加载超时');
+            console.log(err);
           });
       }, // 获取当前用户部分信息
       getProjectTag (arr) {

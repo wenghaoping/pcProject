@@ -97,6 +97,35 @@ Vue.mixin({
           });
         });
       }
+    },
+    getUserGroupByStatusName (user_id = 0) {
+      // 核对是否认证过身份
+      let group_name = '';
+      if (user_id !== 0) {
+        this.$http.post(this.URL.getUserGroupByStatus, {
+          user_id: user_id
+        }).then(res => {
+          if (res.data.status_code === 2000000) {
+            if (res.data.status === 0) {
+              group_name = '身份认证';
+              this.$store.state.logining.group_name = '身份认证';
+            } else if (res.data.status === 1) {
+              group_name = '审核中';
+              this.$store.state.logining.group_name = '审核中';
+            } else if (res.data.status === 3) {
+              group_name = '审核未通过';
+              this.$store.state.logining.group_name = '审核未通过';
+            } else if (res.data.status === 2) {
+              group_name = res.data.group.group_title;
+              this.$store.state.logining.group_name = res.data.group.group_title;
+            }
+            localStorage.group_name = group_name;
+            this.$store.state.logining.group_name = group_name;
+          } else {
+            this.$tool.error('核对身份接口调用失败');
+          }
+        });
+      }
     }
 
   }

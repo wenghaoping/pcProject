@@ -631,7 +631,7 @@
           .catch(err => {
             this.$tool.console(err, 2);
             this.loading = false;
-            this.$tool.error('加载超时');
+            console.log(err);
           });
       }, // 控制意向项目页码
       handleClick (tab, event) {
@@ -779,7 +779,7 @@
             .catch(err => {
               this.$tool.console(err, 2);
 //              this.loading=false;
-              this.$tool.error('加载超时');
+              console.log(err);
             });
         });
       }, // 获取个人详情
@@ -889,7 +889,7 @@
             })
             .catch(err => {
               this.$tool.console(err, 2);
-              this.$tool.error('加载超时');
+              console.log(err);
             });
         });
       }, // 获取意向项目列表
@@ -1057,9 +1057,8 @@
             this.loading = false;
           })
           .catch(err => {
-            this.$tool.console(err, 2);
             this.loading = false;
-            this.$tool.error('加载超时');
+            console.log(err);
           });
       }, // 筛选意向项目
       /* 设置匹配项目(右边) */
@@ -1131,9 +1130,8 @@
             this.loading = false;
           })
           .catch(err => {
-            this.$tool.console(err, 2);
             this.loading = false;
-            this.$tool.error('加载超时');
+            console.log(err);
           });
       }, // 控制匹配项目页码
       delMatchAction (data) {

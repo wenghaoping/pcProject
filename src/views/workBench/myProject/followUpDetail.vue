@@ -8,8 +8,8 @@
             <!--<div class="item-cicle1"></div>-->
             <img :src="cirIcon">
           </div>
-           <div class="item-time" @click="toDetail(item)">{{item.investor_name}}</div>
-          <div class="item-name" v-if="item.user_organization" @click="contanctDetail(item)">
+           <div class="item-time cursor" @click="toDetail(item)">{{item.investor_name}}</div>
+          <div class="item-name" v-if="item.user_organization">
             <el-tooltip class="item" effect="dark"  placement="top" :disabled="item.user_organization.length > 20 ? false:true">
               <div slot="content">
                 <span class="tips-txt">{{item.user_organization}}</span>
@@ -243,9 +243,7 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err);
-//            this.loading1=false;
-            this.$tool.error('加载超时');
+            console.log(err);
           });
       }, // 获取跟进记录.toLocaleString('chinese',{hour12:false}).substr(0, 15).replace(/\//g,'.').replace(/:$/,"")
       //* 时间戳的处理

@@ -82,7 +82,7 @@
           },
           {
             value: 1,
-            label: '身份认证'
+            label: this.groupStatus
           },
           {
             value: 2,
@@ -290,6 +290,7 @@
           if (res.data.status_code === 2000000) {
             if (res.data.status === 1 || res.data.status === 2) {
               // 认证过了
+              localStorage.group_title = res.data.group.group_title || '';
               this.identityDisplay = true;
             } else {
               this.$router.push({name: 'identityChoose'});
@@ -298,6 +299,29 @@
             this.$tool.error('核对身份接口调用失败');
           }
         });
+      },
+      getUserGroupByStatus2 () {
+        // 核对是否认证过身份
+        if (localStorage.user_id) {
+          this.$http.post(this.URL.getUserGroupByStatus, {
+            user_id: localStorage.user_id
+          }).then(res => {
+            if (res.data.status_code === 2000000) {
+              if (res.data.status === 0) {
+                this.options[1].label = '身份认证';
+              } else if (res.data.status === 1) {
+                this.options[1].label = '审核中';
+              } else if (res.data.status === 3) {
+                this.options[1].label = '审核未通过';
+              } else if (res.data.status === 2) {
+                this.options[1].label = res.data.group.group_title;
+              }
+              localStorage.group_title = res.data.group.group_title || '';
+            } else {
+              this.$tool.error('核对身份接口调用失败');
+            }
+          });
+        }
       }
     },
     // 当dom一创建时
@@ -305,11 +329,18 @@
       this.user_name = localStorage.user_real_name;
       this.zgIdentify(localStorage.user_id, {name: localStorage.user_real_name});
       this.getCheckUserInfo(localStorage.user_id);
+      this.getUserGroupByStatusName(localStorage.user_id);
     },
     computed: {
       userRealName () {
         let userRealName = this.$store.state.logining.user_real_name || localStorage.user_real_name;
+        console.log(userRealName);
         return userRealName;
+      },
+      groupStatus () {
+        let groupName = this.$store.state.logining.group_name || localStorage.group_name;
+        console.log(groupName);
+        return groupName;
       }
     },
     components: {

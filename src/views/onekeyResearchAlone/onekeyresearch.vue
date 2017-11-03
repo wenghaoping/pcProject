@@ -814,8 +814,7 @@
                  } */
               })
               .catch(err => {
-                this.$tool.console(err, 2);
-                this.$tool.error('加载超时');
+                console.log(err);
                 this.loading = false;
               });
           }

@@ -80,6 +80,7 @@
               localStorage.token = res.data.token;
               // 重新获取个人标签(因为获取个人标签必须要有user_id)
               this.$global.func.getWxProjectCategory();
+              this.getUserGroupByStatusName(localStorage.user_id);
               // is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
               this.loading = false;
               if (res.data.is_exist === 0) {

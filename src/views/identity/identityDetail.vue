@@ -1,13 +1,10 @@
 <template>
   <div id="identityDetail" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
-    <div class="title clearfix tc" v-show="!this.$route.query.user">
+    <div class="title clearfix tc">
       创建您的投资名片?
       <div class="fr">
         <button class="skip btn1" type="text" @click="skip" style="color: rgb(0, 158, 255);cursor: pointer">跳过</button>
       </div>
-    </div>
-    <div class="title clearfix tc" v-show="this.$route.query.user">
-      个人信息
     </div>
     <!--基本资料-->
     <div class="item-block" style="margin-top:0;margin-bottom: 16px;padding-bottom: 26px;">
@@ -39,9 +36,9 @@
                 <i class="el-icon-plus" v-show="cardPlanButton"></i>
                 <!--<div slot="tip" class="el-upload__tip fr" v-show="cardPlanButton">支持JPG、PNG、JPEG、<br>文件不大于1M</div>-->
               </el-upload>
-              <el-dialog v-model="dialogImg" size="tiny">
-                                <img width="100%" :src="dialogImageUrl" alt="">
-                              </el-dialog>
+              <el-dialog v-model="dialogImg" size="small">
+                <img width="100%" :src="dialogImageUrl" alt="">
+              </el-dialog>
             </span>
           </div>
 
@@ -50,11 +47,11 @@
           <el-form :model="auth_info" :rules="rule1" ref="auth_info" label-width="100px" class="demo-ruleForm"
                    label-position="top" style="height: 520px;margin-top: 22px;">
             <div class="flex">
-              <el-form-item label="姓名" prop="iden_name" class="mr32 item">
+              <el-form-item label="*姓名" prop="iden_name" class="mr32 item">
                 <el-input v-model="auth_info.iden_name" placeholder="请输入姓名"></el-input>
               </el-form-item>
               <el-form-item
-                label="公司名称"
+                label="*公司名称"
                 class="item"
                 prop="iden_company_name">
                 <el-autocomplete v-model="auth_info.iden_company_name"
@@ -65,7 +62,7 @@
               </el-form-item>
             </div>
             <div class="flex">
-              <el-form-item label="职位" prop="iden_company_career" class="mr32 item">
+              <el-form-item label="*职位" prop="iden_company_career" class="mr32 item">
                 <el-input v-model="auth_info.iden_company_career" placeholder="请输入职位"></el-input>
               </el-form-item>
               <el-form-item class="item" label="邮箱" prop="iden_email">
@@ -245,7 +242,7 @@
                     :prop="'investCase.' + index + '.case_province'"
                     :key="investCase.index"
                     :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]" style="width: 170px;">
-                    <el-select v-model="investCase.case_province" placeholder="请选择" @change="area1Change2">
+                    <el-select v-model="investCase.case_province" placeholder="请选择" @change="area1Change2(investCase.case_province,index)">
                       <el-option
                         v-for="item in area"
                         :key="item.value"
@@ -264,7 +261,7 @@
                     :rules="[{required: true, message: '所属市级不能为空', trigger: 'change',type: 'number'}]" style="width: 160px;">
                     <el-select v-model="investCase.case_city" placeholder="请选择">
                       <el-option
-                        v-for="item in area2"
+                        v-for="item in investCase.area_data"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -380,6 +377,32 @@
           }, 100);
         }
       };// 必须为数字,数值不大于999999999999
+      var checkNull20 = (rule, value, callback) => {
+        if (!this.$tool.getNull(value)) {
+          setTimeout(() => {
+            if (value.length > 20) {
+              callback(new Error('最大长度为20'));
+            } else {
+              callback();
+            }
+          }, 100);
+        } else {
+          callback(new Error('不能为空'));
+        }
+      };// 不为空,20
+      var checkNull40 = (rule, value, callback) => {
+        if (!this.$tool.getNull(value)) {
+          setTimeout(() => {
+            if (value.length > 40) {
+              callback(new Error('最大长度为40'));
+            } else {
+              callback();
+            }
+          }, 100);
+        } else {
+          callback(new Error('不能为空'));
+        }
+      };// 不为空,40
       return {
         loading: false, //
         uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadCard + localStorage.token, // 上传地址
@@ -456,18 +479,9 @@
         },
 //      表单验证规则
         rule1: {
-          iden_name: [
-            {required: true, message: '请输入姓名', trigger: 'blur'},
-            {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
-          ],
-          iden_company_name: [
-            {required: true, message: '请输入公司名称', trigger: 'blur'},
-            {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
-          ],
-          iden_company_career: [
-            {required: true, message: '请输入您的职位', trigger: 'blur'},
-            {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
-          ],
+          iden_name: checkNull20,
+          iden_company_name: checkNull40,
+          iden_company_career: checkNull40,
           iden_wx: [
             {required: false, message: '请输入微信号码', trigger: 'blur'},
             {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
@@ -509,7 +523,8 @@
 //                    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
         ], // 名片上传列表
         cardPlanButton: true, // 控制上传按钮的显示
-        uploadDate: {user_id: localStorage.user_id, authenticate_id: localStorage.authenticate_id} // 名片上传所带的额外的参数
+        uploadDate: {user_id: localStorage.user_id, authenticate_id: localStorage.authenticate_id}, // 名片上传所带的额外的参数
+        areaChangeCheck: false
       };
     },
     components: {
@@ -558,7 +573,7 @@
           })
           .then((data) => {
             if (data) {
-//              this.loading = true;
+              this.loading = true;
               this.zgClick('提交投资名片');
               let allData = {};
               this.clone(allData, this.auth_info);
@@ -568,30 +583,8 @@
               allData.group_id = localStorage.group_id;
               allData.user_id = localStorage.user_id;
               this.$tool.setReallyTimeToTime(allData.project_case, 'case_deal_time', 'case_deal_time_stamp');
-              console.log(allData);
-              this.$http.post(this.URL.saveUserIdentity, {
-                allData
-//                authenticate_id: localStorage.authenticate_id,
-//                user_id: localStorage.user_id,
-//                iden_name: this.ruleForm1.name,
-//                iden_company_name: this.ruleForm1.company,
-//                iden_company_career: this.ruleForm1.career,
-//                iden_email: this.ruleForm1.email,
-//                iden_wx: this.ruleForm1.weixin,
-//                iden_desc: this.ruleForm1.desc,
-//                iden_brand: this.ruleForm1.brand,
-//                industry: this.ruleForm2.investIndustry,
-//                area: this.ruleForm2.investArea,
-//                stage: this.ruleForm2.investStage,
-//                scale: this.ruleForm2.investScale,
-//                is_financing: this.ruleForm2.is_financing,
-//                is_alliance: this.ruleForm2.is_alliance,
-//                is_identify_member: this.ruleForm2.is_identify_member,
-//                is_saas: this.ruleForm2.is_saas,
-//                is_FA_part: this.ruleForm2.is_FA_part,
-//                group_id: localStorage.group_id,
-//                project_case: this.investCaseData
-              }).then(res => {
+//              console.log(allData);
+              this.$http.post(this.URL.saveUserIdentity, allData).then(res => {
                 if (res.data.status_code === 2000000) {
                   if (localStorage.entrance === undefined) {
                     this.$router.push({name: 'myProject'});
@@ -601,6 +594,7 @@
                 } else {
                   this.$tool.error(res.data.error_msg);
                 }
+                this.loading = false;
               });
             }
           });
@@ -614,35 +608,34 @@
 // 设置二级城市下拉列表
       area1Change (data) {
         return new Promise((resolve, reject) => {
-          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
-            .then(res => {
-              let data = res.data.data;
-              this.area2 = this.$tool.getCity(data);
-              resolve(true);
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          data.forEach((x) => {
+            this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: x.case_province})// pid省
+              .then(res => {
+                let data = res.data.data;
+                x.area_data = this.$tool.getCity(data);
+                resolve(true);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          });
         });
       },
       // 设置二级城市下拉列表2
-      area1Change2 (data) {
+      area1Change2 (data, index) {
         let newData = data;
-        if (data !== '') {
-          let pid = localStorage.pid;
-          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
+        if (this.areaChangeCheck) {
+          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: newData})// pid省
             .then(res => {
               let data = res.data.data;
-              this.area2 = this.$tool.getCity(data);
-              if (parseInt(newData) === parseInt(pid)) {
-              } else {
-                this.project.pro_area.area_id = '';
-              }
+              this.investCases.investCase[index].case_city = '';
+              this.investCases.investCase[index].area_data = this.$tool.getCity(data);
             })
             .catch(err => {
               this.$tool.console(err);
             });
         }
+        this.areaChangeCheck = true;
       },
       // 公司搜索相关函数
       handleSelect (item) {
@@ -694,6 +687,7 @@
       // 接收上传图片时返回的authenticate_id
       uploadSuccess (response) {
 //        console.log('图片上传返回数据',response)
+        this.addplan(response.image_id, 'CardUploadShow');
       },
       // 获取下拉框数据
       getWxProjectCategory () {
@@ -711,6 +705,11 @@
             let data = res.data;
             localStorage.authenticate_id = data.auth_info.authenticate_id;
             // 个人信息
+            data.auth_info.is_FA_part = data.auth_info.is_FA_part.toString();
+            data.auth_info.is_alliance = data.auth_info.is_alliance.toString();
+            data.auth_info.is_financing = data.auth_info.is_financing.toString();
+            data.auth_info.is_identify_member = data.auth_info.is_identify_member.toString();
+            data.auth_info.is_saas = data.auth_info.is_saas.toString();
             this.auth_info = data.auth_info;
             this.setImage(data.auth_info.user_card_image, 'CardplanList', 'CardUploadShow');
             // 投资需求
@@ -724,15 +723,15 @@
               x.case_industry = this.$tool.setIdToArr(x.case_industry, 'industry_id');
               this.$tool.setTimeToReallyTime1(x, 'case_deal_time');
             });
-            this.investCases.investCase = data.project_case; // 成功案例
-
-            this.investCases.investCase.forEach((x) => { this.area1Change(x.case_province); });
+            this.area1Change(data.project_case);
+            setTimeout(() => {
+              this.investCases.investCase = data.project_case; // 成功案例
+            }, 500);
             this.loading = false;
           })
           .catch(err => {
-            console.log(err);
             this.loading = false;
-            this.$tool.error('加载超时');
+            console.log(err);
           });
       },
       //* 添加成功案例
@@ -745,37 +744,38 @@
           case_industry: [], // 项目领域
           case_money: '', // 投资金额
           case_deal_time: '', // 交易时间
-          case_stage: '' // 项目轮次
+          case_stage: '', // 项目轮次
+          area_data: [] // 下拉框数据
         });
       },
       // 删除成功案例
       removeinvestCase (item) {
-        if (item.case_id === '' || item.case_id == null) {
-          let index = this.investCases.investCase.indexOf(item);
-          if (index !== -1) {
-            this.investCases.investCase.splice(index, 1);
-          }
-        } else {
-          this.$http.post(this.URL.deleteDevelop, {
-            user_id: localStorage.user_id,
-            case_id: item.case_id
-          })
-            .then(res => {
-              this.$tool.success('删除成功');
-              let index = this.investCases.investCase.indexOf(item);
-              if (index !== -1) {
-                this.investCases.investCase.splice(index, 1);
-              }
-            })
-            .catch(err => {
-              this.$tool.error('删除失败');
-              this.$tool.console(err);
-            });
+//        if (item.case_id === '' || item.case_id == null) {
+        let index = this.investCases.investCase.indexOf(item);
+        if (index !== -1) {
+          this.investCases.investCase.splice(index, 1);
         }
+//        } else {
+//          this.$http.post(this.URL.deleteDevelop, {
+//            user_id: localStorage.user_id,
+//            case_id: item.case_id
+//          })
+//            .then(res => {
+//              this.$tool.success('删除成功');
+//              let index = this.investCases.investCase.indexOf(item);
+//              if (index !== -1) {
+//                this.investCases.investCase.splice(index, 1);
+//              }
+//            })
+//            .catch(err => {
+//              this.$tool.error('删除失败');
+//              this.$tool.console(err);
+//            });
+//        }
       },
       // 设置图片
       setImage (obj, planList, uploadShow) {
-        if (obj === '') {
+        if (obj === '' || obj.length === 0) {
           this[planList] = [];
           this[uploadShow] = {};
         } else {
@@ -845,7 +845,7 @@
           else this.cardPlanButton = true;
           this.submitButton = false;
           if (this.card_id === 'creat') this.card_id = 0;
-          this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.CardUploadShow.image_id, card_id: this.card_id})
+          this.$http.post(this.URL.deleteCard, {user_id: localStorage.user_id, image_id: this.CardUploadShow.image_id, authenticate_id: localStorage.authenticate_id})
             .then(res => {
               if (res.status === 200) {
                 this.planList = [];
@@ -891,7 +891,11 @@
 
 <style lang="less">
   @import "../../assets/css/indentity.less";
-
+  .UploadImg{
+    height: 148px;
+    width: 308px;
+    overflow: hidden;
+  }
   .el-input__inner {
     border-radius: 2px !important;
   }

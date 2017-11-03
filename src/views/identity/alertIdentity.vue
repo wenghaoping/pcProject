@@ -55,10 +55,10 @@
                     <div class="tit_right1 fl">{{auth_info.iden_wx | nullTo_}}</div>
                   </div>
                 </div>
-                <div class="tit_second" v-if="auth_info.user_card_image !== ''">
+                <div class="tit_second" v-if="auth_info.user_card_image.image_src !== ''">
                   <div class="tit clearfix">
                     <div class="tit_left fl">名片 ： </div>
-                    <div class="tit_right1 fl"><div class="img"><img :src="auth_info.user_card_image"></div></div>
+                    <div class="tit_right1 fl"><div class="img"><img :src="auth_info.user_card_image.image_src"></div></div>
                   </div>
                 </div>
               </div>
@@ -234,19 +234,25 @@
           .then(res => {
             let data = res.data;
             // 个人信息
+            if (this.$tool.isArray(data.auth_info.user_card_image)) {
+              if (data.auth_info.user_card_image.length === 0) {
+                data.auth_info.user_card_image = {};
+                data.auth_info.user_card_image.image_src = '';
+              }
+            }
+
             this.auth_info = data.auth_info;
             // 投资需求
             data.invest_info.industry = this.$tool.setTagToString(data.invest_info.industry, 'industry_name');
             data.invest_info.stage = this.$tool.setTagToString(data.invest_info.stage, 'stage_name');
             data.invest_info.scale = this.$tool.setTagToString(data.invest_info.scale, 'scale_money');
-            data.invest_info.area = this.$tool.setTagToString(data.invest_info.area, 'area_name');
+            data.invest_info.area = this.$tool.setTagToString(data.invest_info.area, 'area_title');
             this.investment = data.invest_info;
             // 成功案例
             this.projectCases.projectCase = this.setProjectCase(data.project_case);
           })
           .catch(err => {
-            this.$tool.console(err, 2);
-            this.$tool.error('加载超时');
+            console.log(err);
           });
         this.loading = false;
       },
@@ -277,11 +283,11 @@
     computed: {
       maiFang () {
         if (this.auth_info.identify_status === 1) {
-          return '买方FA认证审核中';
+          return localStorage.group_title + '认证审核中';
         } else if (this.auth_info.identify_status === 2) {
-          return '买方FA认证审核通过';
+          return localStorage.group_title + '认证审核通过';
         } else if (this.auth_info.identify_status === 3) {
-          return '买方FA认证审核未通过';
+          return localStorage.group_title + '认证审核未通过';
         }
       },
       maiFangWeiXin () {

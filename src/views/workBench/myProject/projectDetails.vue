@@ -416,7 +416,7 @@
             <el-tab-pane label="跟进记录" name="flow">
               <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData"
                        @getfollowid="getFollowId" @changefollowdata="changefollowdata"
-                       @toDetail="toDetail" @contanctDetail="toDetail"></folowup>
+                       @toDetail="toDetail"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id">
@@ -1218,7 +1218,6 @@
         this.$router.push({name: 'editproject', query: {project_id: this.project.project_id}});
       }, // 编辑项目
       toDetail (data) {
-        console.log(data);
         this.cardid = data.card_id;
         this.userid = data.user_id;
         this.contactDisplay = true;
@@ -1241,14 +1240,12 @@
               this.project.pro_schedule.schedule_name = data.schedule_name;
             })
             .catch(err => {
-              this.$tool.console(err, 2);
               this.loading = false;
-              this.$tool.error('加载超时');
+              console.log(err);
             });
         }
         this.takechange = true;
       }, // hold切换后
-
       handleClick2 (tab, event) {
         if (tab.name === '1') this.zgClick('意向投资人');
         if (tab.name === '2') this.zgClick('买家图谱');
@@ -1298,8 +1295,7 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err, 2);
-              this.$tool.error('加载超时');
+              console.log(err);
             });
         });
       }, // 获取意向投资人列表
@@ -1493,9 +1489,8 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err, 2);
             this.loading = false;
-            this.$tool.error('加载超时');
+            console.log(err);
           });
       }, // 筛选意向项目
 
