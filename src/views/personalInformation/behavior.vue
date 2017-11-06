@@ -80,7 +80,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="created_at" label="更新时间" width="130"
+      <el-table-column prop="created_at" label="更新时间" width="140"
                        column-key="created_at"
                        sortable="custom">
         <template scope="scope">
@@ -93,7 +93,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="service_desc" label="备注" width="250"
+      <el-table-column prop="service_desc" label="备注" width="240"
                        show-overflow-tooltip>
         <template scope="scope">
           <el-tooltip placement="top" :disabled="scope.row.service_desc.length > 25 ? false:true">

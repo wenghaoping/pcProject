@@ -53,7 +53,7 @@
 
             </div>
             <!--<div class="item height" style="margin-top:18px;display: inline-block;" v-if="project.pro_source!=''">-->
-              <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
+            <!--<span class="flower2">来源 : {{project.pro_source}}</span>-->
             <!--</div>-->
             <div class="item height" style="margin-top:40px;    display: inline-block;">
             <span id="bottom_width1" class="project"  style="padding-left: 6px;">
@@ -106,8 +106,8 @@
             <!--<div class="qrTab fr"><img src="../../../assets/images/qrTab.png"></div>-->
 
             <!--<span class="qrposition">-->
-              <!--<img :src="qrImg">-->
-              <!--<span class="sanjiao"><img src="../../../assets/images/sanjiao.png"/></span>-->
+            <!--<img :src="qrImg">-->
+            <!--<span class="sanjiao"><img src="../../../assets/images/sanjiao.png"/></span>-->
             <!--</span>-->
             <div class="button-float fr" @click="goOnkey" style="cursor:pointer" >一键尽调</div>
 
@@ -123,9 +123,9 @@
                   <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
                   <span class="flower" v-show="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
                   <!--<div class="person-info" v-if="project.contact.user_name!=''">-->
-                    <!--<span>项目联系人 : </span>-->
-                    <!--<span>{{project.contact.user_name}}</span>-->
-                    <!--<span>{{project.contact.user_mobile}}</span>-->
+                  <!--<span>项目联系人 : </span>-->
+                  <!--<span>{{project.contact.user_name}}</span>-->
+                  <!--<span>{{project.contact.user_mobile}}</span>-->
                   <!--</div>-->
                 </div>
                 <div class="item" style="margin-top:33px;">
@@ -142,43 +142,43 @@
                 <div class="ul-lists" style="margin-top:16px;padding: 0">
                   <div class="item" >
                     <div  v-show="project.goodness.pro_goodness.length!=0"  style="margin-bottom: 20px">
-                    <div class="title" style="font-size:16px;color:#475669;">投资亮点</div>
-                    <div class="prod-doc" style="font-size: 13px;"v-for=" (goodness1,index) in project.goodness.pro_goodness">
+                      <div class="title" style="font-size:16px;color:#475669;">投资亮点</div>
+                      <div class="prod-doc" style="font-size: 13px;"v-for=" (goodness1,index) in project.goodness.pro_goodness">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669;margin-top: -4px">{{goodness1.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness1.goodness_desc}}
                        </span>
-                      <!--<span>{{highlights.goodness_desc}}</span>-->
-                    </div>
+                        <!--<span>{{highlights.goodness_desc}}</span>-->
+                      </div>
                     </div>
                     <div  v-show="project.goodness.pro_market_genera.length!=0" style="margin-bottom: 20px">
-                    <div class="title" style="font-size:16px;color:#475669;">市场概况</div>
-                    <div class="prod-doc" style="font-size: 13px;"   v-for="goodness2 in project.goodness.pro_market_genera">
+                      <div class="title" style="font-size:16px;color:#475669;">市场概况</div>
+                      <div class="prod-doc" style="font-size: 13px;"   v-for="goodness2 in project.goodness.pro_market_genera">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669;margin-top: -4px">{{goodness2.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness2.goodness_desc}}
                        </span>
-                      <!--<span>{{highlights.goodness_desc}}</span>-->
-                    </div>
+                        <!--<span>{{highlights.goodness_desc}}</span>-->
+                      </div>
                     </div>
                     <div v-show="project.goodness.pro_business_model.length!=0" style="margin-bottom: 20px">
-                    <div class="title" style="font-size:16px;color:#475669;">商业模式</div>
-                    <div class="prod-doc" style="font-size: 13px;"  v-for="goodness3 in project.goodness.pro_business_model">
+                      <div class="title" style="font-size:16px;color:#475669;">商业模式</div>
+                      <div class="prod-doc" style="font-size: 13px;"  v-for="goodness3 in project.goodness.pro_business_model">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669;margin-top: -4px">{{goodness3.goodness_title}}</span>&nbsp;:&nbsp;
                       {{goodness3.goodness_desc}}
                        </span>
-                      <!--<span>{{highlights.goodness_desc}}</span>-->
-                    </div>
+                        <!--<span>{{highlights.goodness_desc}}</span>-->
+                      </div>
                     </div>
                     <div v-if="project.goodness.pro_service.length!=0"  style="">
-                    <div class="title" style="font-size:16px;color:#475669;">产品概况</div>
-                    <div class="prod-doc" style="font-size: 13px;" v-for="goodness4 in project.goodness.pro_service">
+                      <div class="title" style="font-size:16px;color:#475669;">产品概况</div>
+                      <div class="prod-doc" style="font-size: 13px;" v-for="goodness4 in project.goodness.pro_service">
                        <span style="line-height: 23px; color:#8492a6">
                          <span style="color:#475669;margin-top: -4px">{{goodness4.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness4.goodness_desc}}
                        </span>
-                    </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -363,12 +363,12 @@
                       <p class="det-info">{{private.stock_right}}%</p>
                     </div>
                     <!--<div class="rz-detail" style="width: 25%">-->
-                      <!--<p class="det-title">其他权益</p>-->
-                      <!--<p class="det-info">{{project.pro_FA.stock_other}}%</p>-->
+                    <!--<p class="det-title">其他权益</p>-->
+                    <!--<p class="det-info">{{project.pro_FA.stock_other}}%</p>-->
                     <!--</div>-->
                     <!--<div class="rz-detail" style="width: 25%">-->
-                      <!--<p class="det-title">跟投权</p>-->
-                      <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
+                    <!--<p class="det-title">跟投权</p>-->
+                    <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
                     <!--</div>-->
                   </div>
                   <div class="item"   style="margin-top:24px;height: 34px;" v-show="private.contact_user_name!=''||private.contact_user_career!=''||private.contact_user_mobile!=''">
@@ -432,9 +432,9 @@
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
             <div class="toButton" style="padding-left: 0;z-index: 111">
-              <el-button  type="primary" @click="toEdit" class="btn1">编辑</el-button>
-              <el-button  type="primary" @click="addFollow" class="btn1">写跟进</el-button>
-              <el-button  type="primary" @click="projectPush2" class="btn1">项目推送</el-button>
+              <el-button type="primary" @click="toEdit" class="btn1">编辑</el-button>
+              <el-button type="primary" @click="addFollow" class="btn1">写跟进</el-button>
+              <el-button type="primary" @click="projectPush2" class="btn1">项目推送</el-button>
             </div>
           </div>
         </div>
@@ -653,10 +653,10 @@
 
     <!--项目推送弹窗,项目入口弹窗-->
     <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="project.project_id"
-                  :pro-name="project.pro_name" :pro-intro="project.pro_intro"   :emitPush="emitPush"
-                  @openPreview="openPreview"
-                  @closeProjectPush2="closeProjectPush2"
-                  @previewPush="previewPush"></projectpushtopro>
+                      :pro-name="project.pro_name" :pro-intro="project.pro_intro"   :emitPush="emitPush"
+                      @openPreview="openPreview"
+                      @closeProjectPush2="closeProjectPush2"
+                      @previewPush="previewPush"></projectpushtopro>
 
     <!--项目推送弹窗,人脉入口弹窗============================-->
     <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage"
@@ -1197,7 +1197,8 @@
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.schedule = this.$global.data.schedule;// 设置项目跟进状态
-          this.follow_schedule = this.$global.data.follow_schedule;// 设置项目状态
+          this.follow_schedule = this.$global.data.follow_schedule.slice(0);// 设置项目状态
+          this.follow_schedule.unshift({label: '请选择', value: 0});// 设置项目状态
           this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
           this.follow_scheduleAll.unshift({label: '全部', value: 0});// 设置项目状态
           resolve(2);
@@ -1295,21 +1296,22 @@
               }
             })
             .catch(err => {
-              console.log(err);
+              this.$tool.console(err, 2);
+              this.$tool.error('加载超时');
             });
         });
       }, // 获取意向投资人列表
       setEnjoyInvestor (arr) {
         let newArr = [];
         arr.forEach((x) => {
-          let obj = [];
+          let obj = {};
           obj.follow_id = x.follow_id;
           obj.user_id = x.card.user_id;
           obj.card_id = x.card.card_id;
           obj.user_real_name = x.card.user_real_name;
           obj.is_add = x.card.is_add;
           obj.is_bind = x.card.is_bind;
-          obj.schedule_id = x.schedule.schedule_id;
+          obj.schedule_id = x.schedule.schedule_id || 0;
           obj.user_invest_industry = x.card.user_invest_industry;
           obj.user_invest_stage = x.card.user_invest_stage;
           obj.type = x.type;
@@ -1385,9 +1387,7 @@
         this.chartCheck = false;
       }, // 图表
       getIndex (index) {
-        console.log(index);
         this.scheduleIndex = index;
-        console.log(this.enjoyInvestors);
       }, // 获取意向投资人索引
       filterChangeCurrent (page) {
         this.$tool.getTop();
@@ -1411,10 +1411,11 @@
           });
       }, // 控制意向投资人页码
       selectChange (e) {
-        alert('改变');
-        console.log(e);
         let width = 0;
         switch (e) {
+          case 0:
+            width = 0;
+            break;
           case 1:
             width = 10;
             break;
@@ -1443,11 +1444,10 @@
             width = 0;
             break;
           default:
-            console.log('你乱写了吧');
+            console.log('错误');
             break;
         }
         let index = this.scheduleIndex;
-        console.log(index);
         if (index !== -1) {
           this.enjoyInvestors[index].width = width;
           let followId = this.enjoyInvestors[index].follow_id;
@@ -1494,8 +1494,9 @@
             }
           })
           .catch(err => {
+            this.$tool.console(err, 2);
             this.loading = false;
-            console.log(err);
+            this.$tool.error('加载超时');
           });
       }, // 筛选意向项目
 

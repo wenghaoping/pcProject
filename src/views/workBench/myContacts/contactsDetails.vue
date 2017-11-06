@@ -686,7 +686,7 @@
         }
         return arr;
       }, // 设置项目库项目的标签
-      /* 请求函数 */
+      // 请求函数
       getProjectList (page) {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -786,14 +786,13 @@
       getWxProjectCategory () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
-          setTimeout(() => {
-            this.addTags = this.$global.data.tags_user;// 设置人脉标签()
+          this.addTags = this.$global.data.tags_user;// 设置人脉标签()
 //      this.tags.changecont = this.$global.data.tags_user;//设置人脉标签2另外的
-            this.follow_schedule = this.$global.data.follow_schedule.slice(0);// 设置项目状态
-            this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
-            this.follow_scheduleAll.unshift({label: '全部', value: 0});// 设置项目状态
-            resolve(2);
-          }, 500);
+          this.follow_schedule = this.$global.data.follow_schedule.slice(0);// 设置项目状态
+          this.follow_schedule.unshift({label: '请选择', value: 0});// 设置项目状态
+          this.follow_scheduleAll = this.$global.data.follow_schedule.slice(0);
+          this.follow_scheduleAll.unshift({label: '全部', value: 0});// 设置项目状态
+          resolve(2);
         });
       }, // 获取所有下拉框的数据
       addChangeTag (e) {
@@ -844,7 +843,7 @@
             this.getWxProjectCategory();
           });
       }, // 设置人脉标签
-      /* 设置意向项目右边 */
+      // 设置意向项目右边
       getEchartData () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -979,6 +978,9 @@
       selectChange (e) {
         let width = 0;
         switch (e) {
+          case 0:
+            width = 0;
+            break;
           case 1:
             width = 10;
             break;

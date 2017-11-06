@@ -43,9 +43,9 @@
                 {{userRealName}}<i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item><span @click="loginOut(0)">个人信息</span></el-dropdown-item>
-                <el-dropdown-item><span @click="loginOut(1)">{{groupStatus}}</span></el-dropdown-item>
-                <el-dropdown-item divided><span @click="loginOut(2)">退出</span></el-dropdown-item>
+                <el-dropdown-item><span @click="loginOut(0)" style="display: block">个人信息</span></el-dropdown-item>
+                <el-dropdown-item><span @click="loginOut(1)" style="display: block">{{groupStatus}}</span></el-dropdown-item>
+                <el-dropdown-item divided><span @click="loginOut(2)" style="display: block">退出</span></el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </li>
@@ -318,16 +318,17 @@
       this.zgIdentify(localStorage.user_id, {name: localStorage.user_real_name});
       this.getCheckUserInfo(localStorage.user_id);
       this.getUserGroupByStatusName(localStorage.user_id);
+      if (this.$tool.IEVersion() !== -1) { alert('请不要使用IE浏览器,建议使用谷歌浏览器及其他浏览器,以获得更好体验'); };
     },
     computed: {
       userRealName () {
         let userRealName = this.$store.state.logining.user_real_name || localStorage.user_real_name;
-        console.log(userRealName);
+//        console.log(userRealName);
         return userRealName;
       },
       groupStatus () {
         let groupName = this.$store.state.logining.group_name || localStorage.group_name || '身份认证';
-        console.log(groupName);
+//        console.log(groupName);
         return groupName;
       }
     },

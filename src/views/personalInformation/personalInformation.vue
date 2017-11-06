@@ -93,17 +93,17 @@
                             label="手机"
                             prop="user_mobile"
                             :rules="PhoneRule">
-                            <el-input v-model.number="user_info.user_mobile" placeholder="请输入手机"></el-input>
+                            <el-input v-model.number="user_info.user_mobile" placeholder="请输入手机" :disabled="true"></el-input>
                           </el-form-item>
                         </el-col>
                       </el-row>
                       <el-row :span="24" :gutter="32">
                         <el-col :span="12">
                           <el-form-item
-                            label="公司"
+                            label="公司,IE暂不支持输入"
                             prop="user_company_name"
                             :rules="NullRule40">
-                            <el-autocomplete v-model="user_info.user_company_name" placeholder="请输入公司名称,IE暂不支持输入"
+                            <el-autocomplete v-model="user_info.user_company_name" placeholder="请输入公司名称"
                                              :fetch-suggestions="querySearchAsync" class="width360">
                             </el-autocomplete>
                           </el-form-item>
@@ -757,6 +757,13 @@
                 // 基本信息
                 this.user_info = data.user_info;
                 // 投资需求处理
+                if (data.invest_info.length === 0) {
+                  data.invest_info = {};
+                  data.invest_info.user_invest_industry = data.invest_info.user_invest_industry = [];
+                  data.invest_info.user_invest_stage = data.invest_info.user_invest_stage = [];
+                  data.invest_info.user_invest_scale = data.invest_info.user_invest_scale = [];
+                  data.invest_info.user_invest_area = data.invest_info.user_invest_area = [];
+                }
                 data.invest_info.user_invest_industry = this.$tool.setIdToArr(data.invest_info.user_invest_industry, 'industry_id');
                 data.invest_info.user_invest_stage = this.$tool.setIdToArr(data.invest_info.user_invest_stage, 'stage_id');
                 data.invest_info.user_invest_scale = this.$tool.setIdToArr(data.invest_info.user_invest_scale, 'scale_id');

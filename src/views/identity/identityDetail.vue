@@ -84,6 +84,7 @@
         </div>
       </el-collapse-transition>
     </div>
+
     <!--投资偏好-->
     <div class="item-block" style="margin-top:0;margin-bottom: 16px;padding-bottom: 26px;">
       <div class="block-tt-line">
@@ -155,64 +156,12 @@
                 </el-select>
               </el-form-item>
             </div>
-            <!--成功案例和新添单选项-->
-            <div class="flex">
-              <!--<el-form-item class="item mr32" label="成功案例">
-                <el-button v-show="!hasSuccessCase" @click="addInvestCase">添加</el-button>
-                <el-button v-show="hasSuccessCase">继续添加</el-button>
-              </el-form-item>-->
-              <!--创业者身份-->
-              <el-form-item v-if="group_id==3" class="item" label="是否需要财务顾问服务">
-                <el-radio class="radio mr120" v-model="auth_info.is_financing" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_financing" label="0">否</el-radio>
-              </el-form-item>
-              <!--买方FA身份-->
-              <el-form-item v-if="group_id==18" class="item" label="是否申请加入FA行业联盟">
-                <el-radio class="radio mr120" v-model="auth_info.is_alliance" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_alliance" label="0">否</el-radio>
-              </el-form-item>
-              <!--卖方FA身份-->
-              <el-form-item v-if="group_id==21" class="item" label="是否申请加入FA行业联盟">
-                <el-radio class="radio mr120" v-model="auth_info.is_alliance" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_alliance" label="0">否</el-radio>
-              </el-form-item>
-              <!--投资方身份-->
-              <el-form-item v-if="group_id==6" class="item" label="是否兼职FA业务">
-                <el-radio class="radio mr120" v-model="auth_info.is_FA_part" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_FA_part" label="0">否</el-radio>
-              </el-form-item>
-              <!--其他身份-->
-              <el-form-item v-if="group_id==8" class="item" label="是否兼职FA业务">
-                <el-radio class="radio mr120" v-model="auth_info.is_FA_part" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_FA_part" label="0">否</el-radio>
-              </el-form-item>
-            </div>
-            <!--新添单选项-买方FA身份-->
-            <div class="flex" v-if="group_id==18">
-              <el-form-item class="item mr32" label="是否申请试用为FA量身定制的sass系统">
-                <el-radio class="radio mr120" v-model="auth_info.is_saas" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_saas" label="0">否</el-radio>
-              </el-form-item>
-              <el-form-item class="item" label="是否加入FA社群认证会员">
-                <el-radio class="radio mr120" v-model="auth_info.is_identify_member" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_identify_member" label="0">否</el-radio>
-              </el-form-item>
-            </div>
-            <!--新添单选项-卖方FA身份-->
-            <div class="flex" v-if="group_id==21">
-              <el-form-item class="item mr32" label="是否申请试用为FA量身定制的sass系统">
-                <el-radio class="radio mr120" v-model="auth_info.is_saas" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_saas" label="0">否</el-radio>
-              </el-form-item>
-              <el-form-item class="item" label="是否加入FA社群认证会员">
-                <el-radio class="radio mr120" v-model="auth_info.is_identify_member" label="1">是</el-radio>
-                <el-radio class="radio" v-model="auth_info.is_identify_member" label="0">否</el-radio>
-              </el-form-item>
-            </div>
+
           </el-form>
         </div>
       </el-collapse-transition>
     </div>
+
     <!--=================================成功案例=================================-->
     <div class="item-block" style="margin-top:0;margin-bottom: 16px;padding-bottom: 26px;">
       <div class="block-tt-line">
@@ -348,13 +297,78 @@
       </el-collapse-transition>
     </div>
 
+    <!--=================================业务需求=================================-->
+    <div class="item-block" style="margin-top:0;margin-bottom: 16px;padding-bottom: 26px;">
+      <div class="block-tt-line">
+        <span class="b-title">业务需求</span>
+        <span class="b-line"></span>
+        <span class="b-hander" @click="needShow=!needShow" v-show="needShow">收起</span>
+        <span class="b-hander" @click="needShow=!needShow" v-show="!needShow">展开</span>
+      </div>
+      <el-collapse-transition>
+        <div v-show="needShow">
+          <el-form :model="auth_info" ref="auth_info" label-width="100px" class="demo-ruleForm"
+                   label-position="top" style="margin-top: 22px;">
+            <!--成功案例和新添单选项-->
+            <div class="flex">
+              <!--创业者身份-->
+              <el-form-item v-if="group_id==3" class="item" label="是否需要财务顾问服务">
+                <el-radio class="radio mr120" v-model="auth_info.is_financing" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_financing" label="0">否</el-radio>
+              </el-form-item>
+              <!--买方FA身份-->
+              <el-form-item v-if="group_id==18" class="item" label="是否申请加入FA行业联盟">
+                <el-radio class="radio mr120" v-model="auth_info.is_alliance" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_alliance" label="0">否</el-radio>
+              </el-form-item>
+              <!--卖方FA身份-->
+              <el-form-item v-if="group_id==21" class="item" label="是否申请加入FA行业联盟">
+                <el-radio class="radio mr120" v-model="auth_info.is_alliance" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_alliance" label="0">否</el-radio>
+              </el-form-item>
+              <!--投资方身份-->
+              <el-form-item v-if="group_id==6" class="item" label="是否兼职FA业务">
+                <el-radio class="radio mr120" v-model="auth_info.is_FA_part" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_FA_part" label="0">否</el-radio>
+              </el-form-item>
+              <!--其他身份-->
+              <el-form-item v-if="group_id==8" class="item" label="是否兼职FA业务">
+                <el-radio class="radio mr120" v-model="auth_info.is_FA_part" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_FA_part" label="0">否</el-radio>
+              </el-form-item>
+            </div>
+            <!--新添单选项-买方FA身份-->
+            <div class="flex" v-if="group_id==18">
+              <el-form-item class="item mr32" label="是否申请试用为FA量身定制的sass系统">
+                <el-radio class="radio mr120" v-model="auth_info.is_saas" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_saas" label="0">否</el-radio>
+              </el-form-item>
+              <el-form-item class="item" label="是否加入FA社群认证会员">
+                <el-radio class="radio mr120" v-model="auth_info.is_identify_member" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_identify_member" label="0">否</el-radio>
+              </el-form-item>
+            </div>
+            <!--新添单选项-卖方FA身份-->
+            <div class="flex" v-if="group_id==21">
+              <el-form-item class="item mr32" label="是否申请试用为FA量身定制的sass系统">
+                <el-radio class="radio mr120" v-model="auth_info.is_saas" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_saas" label="0">否</el-radio>
+              </el-form-item>
+              <el-form-item class="item" label="是否加入FA社群认证会员">
+                <el-radio class="radio mr120" v-model="auth_info.is_identify_member" label="1">是</el-radio>
+                <el-radio class="radio" v-model="auth_info.is_identify_member" label="0">否</el-radio>
+              </el-form-item>
+            </div>
+          </el-form>
+        </div>
+      </el-collapse-transition>
+    </div>
     <!--完成-->
     <div class="clearfix">
       <el-button class="fr next" @click="next" :disabled="submitButton">完成</el-button>
     </div>
   </div>
 </template>
-
 
 <script type="text/ecmascript-6">
   import cardUpload from '../../components/cardUpload.vue';
@@ -425,6 +439,7 @@
         baseInfo: true,
         investPrefer: false,
         investCaseShow: false, // 成功案例
+        needShow: false,
         // 验证
         authInfoMust: false, // 个人信息验证
         investmentMust: false, // 投资需求
@@ -492,7 +507,7 @@
           ],
           iden_desc: [
             {required: false, message: '请输入个人描述', trigger: 'blur'},
-            {min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur'}
+            {min: 1, max: 1000, message: '长度在 1 到 1000 个字符', trigger: 'blur'}
           ]
         },
         rule2: {
@@ -708,6 +723,13 @@
             this.auth_info = data.auth_info;
             this.setImage(data.auth_info.user_card_image, 'CardplanList', 'CardUploadShow');
             // 投资需求
+            if (data.invest_info.length === 0) {
+              data.invest_info = {};
+              data.invest_info.industry = data.invest_info.industry = [];
+              data.invest_info.stage = data.invest_info.stage = [];
+              data.invest_info.scale = data.invest_info.scale = [];
+              data.invest_info.area = data.invest_info.area = [];
+            }
             data.invest_info.industry = this.$tool.setIdToArr(data.invest_info.industry, 'industry_id');
             data.invest_info.stage = this.$tool.setIdToArr(data.invest_info.stage, 'stage_id');
             data.invest_info.scale = this.$tool.setIdToArr(data.invest_info.scale, 'scale_id');
@@ -848,6 +870,7 @@
                 this.planList = [];
                 this.loading = false;
                 this.$tool.success('删除成功');
+                this.auth_info.iden_image_id = '';
               }
             })
             .catch(err => {

@@ -377,10 +377,12 @@
           is_exclusive: ''// 1
         },
         milepost: {
-          pro_develop: {
-            dh_start_time: '', // 1503331200
-            dh_event: ''// 事件
-          }
+          pro_develop: [
+            {
+              dh_start_time: '', // 1503331200
+              dh_event: ''// 事件
+            }
+          ]
 
         },
         brands: {},
@@ -469,10 +471,8 @@
             // 公司运营
             this.company = data.company;
             // 融资信息
-//          this.$tool.setTime(data.financing.pro_history_finance,'finance_time');
             this.financing = data.financing;
             // 里程碑
-//          this.$tool.setTime(data.milepost.pro_develop,'dh_start_time');
             this.milepost = data.milepost;
             // FA业务
             this.private = data.private;
@@ -483,7 +483,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       },
       // 项目来源编辑(获取项目详情数据的辅助函数)

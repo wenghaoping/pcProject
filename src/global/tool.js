@@ -461,6 +461,7 @@ const tool = {
       return -1;// 不是ie浏览器
     }
   }, // 判断是不是IE(所有版本)
+
 //* 请求类
   getCity (data) {
     let arr = [];
