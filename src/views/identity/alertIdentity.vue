@@ -63,7 +63,7 @@
                 </div>
               </div>
               <!--投资案例-->
-              <div class="item" v-if="projectCases.length!=0">
+              <div class="item" v-if="projectCases.projectCase.length!=0">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../assets/images/anli.png">投资案例</span>
                 </div>
@@ -89,7 +89,7 @@
                 </div>
               </div>
               <!--投资需求-->
-              <div class="item" v-if="investment.industry!='' || investment.stage!='' || investment.scale!='' || investment.area!='' || investment.user_invest_desc!=''">
+              <div class="item" v-if="investment.industry!='' || investment.stage!='' || investment.scale!='' || investment.area!='' || investment.investor_desc!=''">
                 <div class="block clearfix" style="margin-bottom: 33px;">
                   <span class="title fl"><img class="img1" src="../../assets/images/money2.png">投资需求</span>
                 </div>
@@ -109,11 +109,11 @@
                   <div class="tit_left fl">投资地区 ： </div>
                   <div class="tit_right fl">{{investment.area}}</div>
                 </div>
-                <div class="block tit clearfix" v-if="investment.user_invest_desc!=''">
+                <div class="block tit clearfix" v-if="investment.investor_desc!=''">
                   <div class="tit_left fl">投资描述 ： </div>
                 </div>
-                <div class="block" v-if="investment.user_invest_desc!=''">
-                  <div class="tit_mian">{{investment.user_invest_desc}}</div>
+                <div class="block" v-if="investment.investor_desc!=''">
+                  <div class="tit_mian">{{investment.investor_desc}}</div>
                 </div>
               </div>
               <!--业务需求-->
@@ -190,7 +190,7 @@
           stage: '', // 轮次
           scale: '', // 投资金额
           area: '', // 所属地区1省级单位
-          user_invest_desc: '' // 投资需求描述
+          investor_desc: '' // 投资需求描述
         },
         // 成功案例数据
         projectCases: {
@@ -240,7 +240,7 @@
                 data.auth_info.user_card_image.image_src = '';
               }
             }
-
+            localStorage.authenticate_id = data.auth_info.authenticate_id;
             this.auth_info = data.auth_info;
             // 投资需求
             data.invest_info.industry = this.$tool.setTagToString(data.invest_info.industry, 'industry_name');

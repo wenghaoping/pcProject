@@ -65,7 +65,7 @@
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.card_name}}</div>
                   </div>
-                  <div>
+                  <div style="text-decoration:underline;" @click="contanctDetail(scope.row)">
                     {{scope.row.card_name}}
                   </div>
                 </el-tooltip>
@@ -228,21 +228,27 @@
 
   <!--写跟进弹框-->
   <addfollow :follow-display="followDisplay" :followid="followid" @closeFollow="closeFollow"></addfollow>
-    <!--<div style="width: 200px;height: 200px;background: red; position: fixed;bottom: 0;right:0;"></div>-->
+  <!--人脉详情弹窗-->
+  <alertcontactsdetail :contact-display="contactDisplay" :cardid="cardid" :userid="userid"
+                       @closeContact="closeContact"></alertcontactsdetail>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import addfollow from './addFollow.vue';
+  import alertcontactsdetail from '../myProject/alertContactsDetail.vue';
   export default {
     components: {
-      addfollow
+      addfollow,
+      alertcontactsdetail
     },
     data () {
       return {
         followDisplay: false, // 控制写跟进弹框
+        contactDisplay: false, // 人脉详情弹窗
+        cardid: '', // 人脉详情弹框用(点击的那个人的cardid)
+        userid: '', // 人脉详情弹框用(点击的那个人的userid)
         followid: '', // 跟进id
-
         loading: false, // 加载动画
         searchinput: '', // 搜索输入框
         totalData: 1, // 总页数
@@ -313,7 +319,7 @@
         this.followDisplay = true;
       }, // 点击写跟近按钮
       handleSelect (row, event, column) {
-        if (column.label !== '重置') {
+        if (column.label !== '重置' && column.label !== '投资人') {
           this.zgClick('查看项目详情');
           this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'flow', activeTo: 2}});
           this.setRouterData();
@@ -439,6 +445,8 @@
         for (let i = 0; i < list.length; i++) {
           let obj = {};
           obj.follow_id = list[i].follow_id;
+          obj.type = list[i].type;
+          obj.card_id = list[i].card_id;
           obj.project_id = list[i].project_id;
           obj.pro_name = list[i].pro_name;
           obj.pro_intro = list[i].pro_intro;
@@ -476,7 +484,15 @@
           .catch(err => {
             this.$tool.console(err, 2);
           });
-      }// 获取表头
+      }, // 获取表头
+      closeContact (msg) {
+        this.contactDisplay = msg;
+      }, // 人脉详情弹窗关闭
+      contanctDetail (row) {
+        this.cardid = row.type === 'user' ? 0 : row.card_id;
+        this.userid = row.type === 'user' ? row.card_id : 0;
+        this.contactDisplay = true;
+      }
     },
     created () {
       this.getRouterData();

@@ -296,10 +296,7 @@
         this.followid = this.content[index].follow_id;
         this.getProjectFollowList();
         this.$emit('getfollowid', this.content[index].follow_id);
-      }, // 点击写跟近按钮
-      contanctDetail (item) {
-        this.$emit('contanctDetail', item);
-      } // 点击显示详情
+      } // 点击写跟近按钮
     },
     created () {
       this.$tool.getTop();

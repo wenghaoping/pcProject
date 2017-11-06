@@ -347,13 +347,10 @@
 
     },
     watch: {
-      cardid: function (e) {
-        this.pro_id = e;
-      }, // 获取项目id
       contactDisplay: function (e) {
         if (e) {
           this.contacts.card_id = this.cardid || 0;
-          this.contacts.user_id = this.userid || '';
+          this.contacts.user_id = this.userid || 0;
           this.getOneUserInfo();
           this.getProjectList(1);
         } else {

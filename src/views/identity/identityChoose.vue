@@ -58,14 +58,14 @@
         if (typeof this.active === 'number') {
           this.$http.post(this.URL.setUserGroup, {
             user_id: localStorage.user_id,
-            group_id: this.identitys[this.active].group_id
+            group_id: this.identitys[this.active].group_id,
+            authenticate_id: localStorage.authenticate_id
           }).then(res => {
             this.zgClick('选择角色');
             if (res.data.status_code === 2000000) {
-//              console.log(res.data)
               localStorage.group_id = this.identitys[this.active].group_id;
               localStorage.authenticate_id = res.data.authenticate_id;
-              this.getUserGroupByStatusName();
+              this.getUserGroupByStatusName(localStorage.user_id);
               this.$router.push('/identityDetail');
             } else {
               this.$tool.error(res.data.error_msg);

@@ -47,11 +47,11 @@
           <el-form :model="auth_info" :rules="rule1" ref="auth_info" label-width="100px" class="demo-ruleForm"
                    label-position="top" style="height: 520px;margin-top: 22px;">
             <div class="flex">
-              <el-form-item label="*姓名" prop="iden_name" class="mr32 item">
+              <el-form-item label="姓名" prop="iden_name" class="mr32 item">
                 <el-input v-model="auth_info.iden_name" placeholder="请输入姓名"></el-input>
               </el-form-item>
               <el-form-item
-                label="*公司名称"
+                label="公司名称"
                 class="item"
                 prop="iden_company_name">
                 <el-autocomplete v-model="auth_info.iden_company_name"
@@ -62,7 +62,7 @@
               </el-form-item>
             </div>
             <div class="flex">
-              <el-form-item label="*职位" prop="iden_company_career" class="mr32 item">
+              <el-form-item label="职位" prop="iden_company_career" class="mr32 item">
                 <el-input v-model="auth_info.iden_company_career" placeholder="请输入职位"></el-input>
               </el-form-item>
               <el-form-item class="item" label="邮箱" prop="iden_email">
@@ -294,7 +294,7 @@
                 </el-col>
                 <el-col :span="4">
                   <el-form-item
-                    label="* 投资金额(万)"
+                    label="投资金额(万)"
                     :prop="'investCase.' + index + '.case_money'"
                     :key="investCase.index"
                     :rules="BigNumberRule">
@@ -406,7 +406,7 @@
       return {
         loading: false, //
         uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadCard + localStorage.token, // 上传地址
-        BigNumberRule: { validator: checkBigNumber, trigger: 'blur' }, // 可以为空,必须为数字,数值不大于999999999999
+        BigNumberRule: [{ required: true, message: '请输入' }, { validator: checkBigNumber, trigger: 'blur' }], // 可以为空,必须为数字,数值不大于999999999999
 //      身份认证所选择的身份的group_id
         group_id: '',
 //      初始列表信息
@@ -479,9 +479,9 @@
         },
 //      表单验证规则
         rule1: {
-          iden_name: checkNull20,
-          iden_company_name: checkNull40,
-          iden_company_career: checkNull40,
+          iden_name: [{ required: true, message: '请输入名称', trigger: 'blur' }, checkNull20],
+          iden_company_name: [{ required: true, message: '请输入名称', trigger: 'blur' }, checkNull40],
+          iden_company_career: [{ required: true, message: '请输入名称', trigger: 'blur' }, checkNull40],
           iden_wx: [
             {required: false, message: '请输入微信号码', trigger: 'blur'},
             {min: 1, max: 40, message: '长度在 1 到 40 个字符', trigger: 'blur'}
@@ -523,8 +523,7 @@
 //                    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
         ], // 名片上传列表
         cardPlanButton: true, // 控制上传按钮的显示
-        uploadDate: {user_id: localStorage.user_id, authenticate_id: localStorage.authenticate_id}, // 名片上传所带的额外的参数
-        areaChangeCheck: false
+        uploadDate: {user_id: localStorage.user_id, authenticate_id: localStorage.authenticate_id} // 名片上传所带的额外的参数
       };
     },
     components: {
@@ -583,9 +582,10 @@
               allData.group_id = localStorage.group_id;
               allData.user_id = localStorage.user_id;
               this.$tool.setReallyTimeToTime(allData.project_case, 'case_deal_time', 'case_deal_time_stamp');
-//              console.log(allData);
               this.$http.post(this.URL.saveUserIdentity, allData).then(res => {
                 if (res.data.status_code === 2000000) {
+                  this.getCheckUserInfo(localStorage.user_id);
+                  this.getUserGroupByStatusName(localStorage.user_id);
                   if (localStorage.entrance === undefined) {
                     this.$router.push({name: 'myProject'});
                   } else {
@@ -624,7 +624,7 @@
       // 设置二级城市下拉列表2
       area1Change2 (data, index) {
         let newData = data;
-        if (this.areaChangeCheck) {
+        if (this.investCases.investCase[index].oldProvince !== newData) {
           this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: newData})// pid省
             .then(res => {
               let data = res.data.data;
@@ -635,7 +635,6 @@
               this.$tool.console(err);
             });
         }
-        this.areaChangeCheck = true;
       },
       // 公司搜索相关函数
       handleSelect (item) {
@@ -684,11 +683,6 @@
         }
         return newArr;
       },
-      // 接收上传图片时返回的authenticate_id
-      uploadSuccess (response) {
-//        console.log('图片上传返回数据',response)
-        this.addplan(response.image_id, 'CardUploadShow');
-      },
       // 获取下拉框数据
       getWxProjectCategory () {
         this.industry = this.$global.data.industry;
@@ -710,6 +704,7 @@
             data.auth_info.is_financing = data.auth_info.is_financing.toString();
             data.auth_info.is_identify_member = data.auth_info.is_identify_member.toString();
             data.auth_info.is_saas = data.auth_info.is_saas.toString();
+            data.auth_info.iden_image_id = data.auth_info.iden_image_id ? data.auth_info.iden_image_id : data.auth_info.user_card_image.image_id;
             this.auth_info = data.auth_info;
             this.setImage(data.auth_info.user_card_image, 'CardplanList', 'CardUploadShow');
             // 投资需求
@@ -722,6 +717,7 @@
             data.project_case.forEach((x) => {
               x.case_industry = this.$tool.setIdToArr(x.case_industry, 'industry_id');
               this.$tool.setTimeToReallyTime1(x, 'case_deal_time');
+              x.oldProvince = x.case_province;
             });
             this.area1Change(data.project_case);
             setTimeout(() => {
@@ -797,6 +793,7 @@
         let object = {};
         object.image_id = imageId;
         this[uploadShow] = object;
+        this.auth_info.iden_image_id = imageId;
       },
       // 上传前的验证
       beforeUpload (file) {

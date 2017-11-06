@@ -26,19 +26,28 @@
             <!--<a target="_blank" href="http://cqc.casicloud.com/youthCmpe/common/home.do" style="width: 200px;">团中央·青年APP大赛</a>-->
           <!--</li>-->
           <li v-show="userRealName" style="float: right;position: relative;margin-right: 55px;line-height: 60px">
-            {{userRealName}}
-            <span style="display:inline-block;margin-left: 5px"><i class="el-icon-caret-bottom" style="font-size: 10px"></i></span>
-            <div class="login-show" style="position: absolute;top: -10px;">
-              <el-select v-model="value" style="opacity: 0;height: 33px;color: #000000" placeholder="请选择" @change="loginOut">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-
+            <!--{{userRealName}}-->
+            <!--<span style="display:inline-block;margin-left: 5px"><i class="el-icon-caret-bottom" style="font-size: 10px"></i></span>-->
+            <!--<div class="login-show" style="position: absolute;top: -10px;">-->
+              <!--<el-select v-model="value" style="opacity: 0;height: 33px;color: #000000" placeholder="请选择" @change="loginOut">-->
+                <!--<el-option-->
+                  <!--v-for="item in options"-->
+                  <!--:key="item.value"-->
+                  <!--:label="item.label"-->
+                  <!--:value="item.value">-->
+                <!--</el-option>-->
+              <!--</el-select>-->
+            <!--</div>-->
+            <el-dropdown trigger="click">
+              <span class="el-dropdown-link" style="color: #ffffff">
+                {{userRealName}}<i class="el-icon-caret-bottom el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item><span @click="loginOut(0)">个人信息</span></el-dropdown-item>
+                <el-dropdown-item><span @click="loginOut(1)">{{groupStatus}}</span></el-dropdown-item>
+                <el-dropdown-item divided><span @click="loginOut(2)">退出</span></el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </li>
           <li v-show="!userRealName" class="login" @click="login">
             登录
@@ -67,6 +76,7 @@
     <alert-identity :identityDisplay="identityDisplay" @closeIdentity="closeIdentity"></alert-identity>
   </div>
 </template>
+
 <script type="text/ecmascript-6">
   import alertIdentity from './views/identity/alertIdentity.vue';
   export default {
@@ -288,40 +298,18 @@
           user_id: localStorage.user_id
         }).then(res => {
           if (res.data.status_code === 2000000) {
-            if (res.data.status === 1 || res.data.status === 2) {
+            if (res.data.status === 0) {
+              this.$router.push({name: 'identityChoose'});
+              localStorage.authenticate_id = '';
+            } else {
               // 认证过了
               localStorage.group_title = res.data.group.group_title || '';
               this.identityDisplay = true;
-            } else {
-              this.$router.push({name: 'identityChoose'});
             }
           } else {
             this.$tool.error('核对身份接口调用失败');
           }
         });
-      },
-      getUserGroupByStatus2 () {
-        // 核对是否认证过身份
-        if (localStorage.user_id) {
-          this.$http.post(this.URL.getUserGroupByStatus, {
-            user_id: localStorage.user_id
-          }).then(res => {
-            if (res.data.status_code === 2000000) {
-              if (res.data.status === 0) {
-                this.options[1].label = '身份认证';
-              } else if (res.data.status === 1) {
-                this.options[1].label = '审核中';
-              } else if (res.data.status === 3) {
-                this.options[1].label = '审核未通过';
-              } else if (res.data.status === 2) {
-                this.options[1].label = res.data.group.group_title;
-              }
-              localStorage.group_title = res.data.group.group_title || '';
-            } else {
-              this.$tool.error('核对身份接口调用失败');
-            }
-          });
-        }
       }
     },
     // 当dom一创建时
@@ -338,7 +326,7 @@
         return userRealName;
       },
       groupStatus () {
-        let groupName = this.$store.state.logining.group_name || localStorage.group_name;
+        let groupName = this.$store.state.logining.group_name || localStorage.group_name || '身份认证';
         console.log(groupName);
         return groupName;
       }

@@ -1,7 +1,6 @@
 <template>
   <div id="personalInformation" v-loading.body="loading" element-loading-text="拼命加载中">
     <div class="contain-center edit-page">
-
       <div class="main-box" ref="left">
         <div class="left-wrap">
           <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
@@ -73,7 +72,7 @@
                       <el-row :span="24" :gutter="32">
                         <el-col :span="12">
                           <el-form-item
-                            label="*姓名"
+                            label="姓名"
                             prop="user_real_name"
                             :rules="NullRule20">
                             <el-input v-model="user_info.user_real_name" placeholder="请输入真实姓名"></el-input>
@@ -101,7 +100,7 @@
                       <el-row :span="24" :gutter="32">
                         <el-col :span="12">
                           <el-form-item
-                            label="*公司"
+                            label="公司"
                             prop="user_company_name"
                             :rules="NullRule40">
                             <el-autocomplete v-model="user_info.user_company_name" placeholder="请输入公司名称,IE暂不支持输入"
@@ -121,7 +120,7 @@
                       <el-row :span="24" :gutter="32">
                         <el-col :span="12">
                           <el-form-item
-                            label="*职位"
+                            label="职位"
                             prop="user_company_career"
                             :rules="NullRule40">
                             <el-input v-model="user_info.user_company_career" placeholder="请输入职位"></el-input>
@@ -324,7 +323,7 @@
                         <el-row :span="24" :gutter="32">
                           <el-col :span="12">
                             <el-form-item
-                              label="* 项目名称"
+                              label="项目名称"
                               :prop="'investCase.' + index + '.case_name'"
                               :key="investCase.index"
                               :rules="NullRule40">
@@ -336,7 +335,7 @@
                               label="项目省级地区"
                               :prop="'investCase.' + index + '.case_province'"
                               :key="investCase.index"
-                              :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]" style="width: 170px;">
+                              :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]" style="width: 188px;">
                               <el-select v-model="investCase.case_province" placeholder="请选择" @change="area1Change2(investCase.case_province,index)">
                                 <el-option
                                   v-for="item in area"
@@ -388,11 +387,11 @@
                           </el-col>
                           <el-col :span="4">
                             <el-form-item
-                              label="* 投资金额(万)"
+                              label="投资金额(万)"
                               :prop="'investCase.' + index + '.case_money'"
                               :key="investCase.index"
                               :rules="BigNumberRule">
-                              <el-input v-model="investCase.case_money" placeholder="请输入数值"></el-input>
+                              <el-input v-model="investCase.case_money" placeholder="请输入数值" style="width: 123px;"></el-input>
                             </el-form-item>
                           </el-col>
                           <el-col :span="4">
@@ -532,9 +531,9 @@
         loading: false,
         activeName: 'person',
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
-        BigNumberRule: { validator: checkBigNumber, trigger: 'blur' }, // 可以为空,必须为数字,数值不大于999999999999
-        NullRule20: { validator: checkNull20, trigger: 'blur' }, // 不为空,20
-        NullRule40: { validator: checkNull40, trigger: 'blur' }, // 不为空,40
+        BigNumberRule: [{ required: true, message: '请输入' }, { validator: checkBigNumber, trigger: 'blur' }], // 可以为空,必须为数字,数值不大于999999999999
+        NullRule20: [{ required: true, message: '请输入名称' }, { validator: checkNull20, trigger: 'blur' }], // 不为空,20
+        NullRule40: [{ required: true, message: '请输入名称' }, { validator: checkNull40, trigger: 'blur' }], // 不为空,40
         uploadHeadAddress: this.URL.weitianshiLine + this.URL.uploadUserImage + localStorage.token, // 上传地址
         uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadUserCardImage + localStorage.token, // 上传地址
         uploadDate: {user_id: localStorage.user_id}, // 名片上传所带的额外的参数
@@ -616,8 +615,7 @@
         CardUploadShow: {}, // 计划书上传列表,需要存数据啦
         submitButton: false, // 是否允许提交false允许/true不允许
         dialogImg: false, // 名片预览控制
-        dialogImageUrl: '', // 图片预览路径
-        areaChangeCheck: false
+        dialogImageUrl: '' // 图片预览路径
       };
     },
     computed: {},
@@ -674,7 +672,7 @@
       // 设置二级城市下拉列表2
       area1Change2 (data, index) {
         let newData = data;
-        if (this.areaChangeCheck) {
+        if (this.investCases.investCase[index].oldProvince !== newData) {
           this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: newData})// pid省
             .then(res => {
               let data = res.data.data;
@@ -685,10 +683,9 @@
               this.$tool.console(err);
             });
         }
-        this.areaChangeCheck = true;
       },
-      //* 公司搜索
-      //* 获取远程数据模
+      // 公司搜索
+      // 获取远程数据模
       loadData (arr) {
         var newArr = [];
         for (let i = 0; i < arr.length; i++) {
@@ -700,7 +697,7 @@
         }
         return newArr;
       },
-      /* 自动搜索,接口写这里面 */
+      // 自动搜索,接口写这里面
       querySearchAsync (queryString, cb) {
         if (queryString.length > 2) {
           this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
@@ -769,6 +766,7 @@
                 data.project_case.forEach((x) => {
                   x.case_industry = this.$tool.setIdToArr(x.case_industry, 'industry_id');
                   this.$tool.setTimeToReallyTime1(x, 'case_deal_time');
+                  x.oldProvince = x.case_province;
                 });
                 this.area1Change(data.project_case);
                 setTimeout(() => {
@@ -952,6 +950,7 @@
                 .then(res => {
                   this.card_id = res.data.card_id;
                   this.loading = false;
+                  this.getCheckUserInfo(localStorage.user_id);
                   this.open2('信息编辑成功', '是否返回', '继续编辑', '返回上一页');
                 })
                 .catch(err => {
@@ -995,6 +994,8 @@
         if (index !== -1) {
           this.investCases.investCase.splice(index, 1);
         }
+//        this.area1Change(this.investCases.investCase);
+        console.log(this.investCases.investCase);
 //        } else {
 //          this.$http.post(this.URL.deleteDevelop, {
 //            user_id: localStorage.user_id,

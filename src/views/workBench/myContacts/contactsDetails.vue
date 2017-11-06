@@ -72,7 +72,7 @@
                 v-show="listShow">
               </el-pagination>
               <span class="b-hander" @click="closeDiv('listShow')" v-show="listShow">收起</span>
-              <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow" v-if="projectLists.length>2">展开</span>
+              <span class="b-hander" @click="openDiv('listShow')" v-show="!listShow">展开</span>
             </div>
             <!--投资案例-->
             <div class="item" v-if="contacts.project_case.length!=0">
@@ -1007,7 +1007,7 @@
             width = 0;
             break;
           default:
-            alert('错误');
+            console.log('错误');
             break;
         }
         let index = this.scheduleIndex;

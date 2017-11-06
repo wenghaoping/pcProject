@@ -1385,7 +1385,9 @@
         this.chartCheck = false;
       }, // 图表
       getIndex (index) {
+        console.log(index);
         this.scheduleIndex = index;
+        console.log(this.enjoyInvestors);
       }, // 获取意向投资人索引
       filterChangeCurrent (page) {
         this.$tool.getTop();
@@ -1409,6 +1411,8 @@
           });
       }, // 控制意向投资人页码
       selectChange (e) {
+        alert('改变');
+        console.log(e);
         let width = 0;
         switch (e) {
           case 1:
@@ -1443,6 +1447,7 @@
             break;
         }
         let index = this.scheduleIndex;
+        console.log(index);
         if (index !== -1) {
           this.enjoyInvestors[index].width = width;
           let followId = this.enjoyInvestors[index].follow_id;
