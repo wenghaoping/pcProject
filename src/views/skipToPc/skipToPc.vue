@@ -28,11 +28,16 @@
       if (this.$route.path === '/skipToPc') {
         this.project_id = this.$route.query.project_id || '';
         this.show = this.$route.query.show || '';
+        this.type = this.$route.query.type || '';
         localStorage.user_id = this.$route.query.user_id || '';
         localStorage.token = this.$route.query.token || '';
         this.getCheckUserInfo(this.$route.query.user_id)
           .then((data) => {
-            return this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, show: this.show}});
+            if (this.type === 'project_list') {
+              return this.$router.push({name: 'myProject', query: {activeTo: 0}});
+            } else {
+              return this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, show: this.show}});
+            }
           });
       }
     },

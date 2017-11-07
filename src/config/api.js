@@ -7,9 +7,9 @@ import qs from 'qs';
 axios.defaults.timeout = 60000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-// axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
+axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
 // axios.defaults.baseURL = 'https://pc.debug.weitianshi.cn';
-axios.defaults.baseURL = 'https://wts.weitianshi.cn';
+// axios.defaults.baseURL = 'https://wts.weitianshi.cn';
 
 // POST传参序列化 http request 拦截器
 axios.interceptors.request.use((config) => {
@@ -19,7 +19,7 @@ axios.interceptors.request.use((config) => {
   }
   return config;
 }, (error) => {
-  console.log('错误的传参');
+  console.log(error);
   return Promise.reject(error);
 });
 
@@ -37,7 +37,6 @@ axios.interceptors.response.use((res) => {
   }
   return res;
 }, (error) => {
-  console.log('网络异常');
   console.log(error);
   return Promise.reject(error);
 });
