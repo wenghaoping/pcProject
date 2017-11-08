@@ -1063,7 +1063,7 @@
             console.log(err);
           });
       }, // 筛选意向项目
-      /* 设置匹配项目(右边) */
+      // 设置匹配项目(右边)
       getInvestorsMatchProjects () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -1167,7 +1167,7 @@
           });
         });
       }, // 移除匹配
-      /* 项目推送 */
+      // 项目推送
       getpushCount () {
         this.$http.post(this.URL.pushCount, {
           user_id: localStorage.user_id})

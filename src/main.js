@@ -21,7 +21,8 @@ import echarts from 'echarts';// echart封装
 import axios from './config/api.js';//  axios请求配置
 import URL_ from './global/url.js';// URL请求地址汇总
 import './global/filters';// 过滤器
-
+import NProgress from 'nprogress' // Progress 进度条
+import 'nprogress/nprogress.css'// Progress 进度条样式
 import Vuex from 'vuex';
 import global from './global/global.js';
 Vue.prototype.$http = axios;
@@ -47,7 +48,15 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes: routerConfig
 });
-
+router.beforeEach((to, from, next) => {
+  if (to) {
+    NProgress.start() // 开启Progress
+  }
+  next()
+})
+router.afterEach(() => {
+  NProgress.done() // 结束Progress
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
