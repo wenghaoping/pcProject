@@ -8,7 +8,7 @@ import routerConfig from './config/router_config.js';
 import store from './store/';
 import Element from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
-import zhuge from './global/zhuge.js';
+// import zhuge from './global/zhuge.js';
 import zhugeMiXins from './global/zhugeIoMiXins.js';
 // 引入自己的CSS,格式化样式
 import './assets/css/base.css';
@@ -37,7 +37,7 @@ Vue.use(Element);// UI库
 Vue.use(tool);// 自己的库
 Vue.use(Vuex);
 // Vue.use($);
-Vue.use(zhuge);// 诸葛io
+// Vue.use(zhuge);// 诸葛io
 
 Vue.prototype.$store = store;
 

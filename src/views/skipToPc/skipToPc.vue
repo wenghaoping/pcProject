@@ -36,7 +36,7 @@
             if (this.type === 'project_list') {
               return this.$router.push({name: 'myProject', query: {activeTo: 0}});
             } else if (this.type === 'user_detail') {
-              return this.$router.push({name: 'personalInformation', query: {}});
+              return this.$router.push({name: 'personalInformation'}); // 个人信息
             } else {
               return this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, show: this.show}});
             }

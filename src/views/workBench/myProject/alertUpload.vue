@@ -130,8 +130,6 @@
     methods: {
       // 1号添加文件后添加入上传列表,并且跳转到多次上传的列表
       handleChange (file, fileList) {
-//      this.$emit('uploadDisplayChange',false);
-//      this.dialogUpload2Visible=true;
         this.isCheck = false;
       },
       uploadsuccess (response, file, fileList) {
