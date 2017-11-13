@@ -140,6 +140,8 @@
   import renameIcon from '../../../../static/images/rename.png';
   import uploadIcon from '../../../../static/images/upload.png';
   import deleteIcon from '../../../../static/images/delete.png';
+  import { error, success } from '@/utils/notification';
+  import * as validata from '@/utils/validata';
   export default {
     props: ['proid'],
     data () {
@@ -266,9 +268,9 @@
       },
       // 新建分组--确定
       addGroup () {
-        if (!this.$tool.getNull(this.newGroupName.name)) {
+        if (!validata.getNull(this.newGroupName.name)) {
           if (this.newGroupName.name.replace(/(^\s*)|(\s*$)/g, '').length > 20) {
-            this.$tool.error('分组名称应小于20个字符');
+            error('分组名称应小于20个字符');
           } else if (this.getGroupName().indexOf(this.newGroupName.name) === -1) {
             // 检查是否和已有分组重名,若全不重名则创建分组
             this.$http.post(this.URL.createFileType, {
@@ -276,19 +278,19 @@
               type_name: this.newGroupName.name
             }).then(res => {
               if (res.data.status_code === 2000000) {
-                this.$tool.success('新建文件分组成功');
+                success('新建文件分组成功');
                 this.$refs['newGroupName'].resetFields();
                 this.dialogFileVisible = false;
                 this.initData();
               } else {
-                this.$tool.error(res.data.error_msg);
+                error(res.data.error_msg);
               }
             });
           } else {
-            this.$tool.error('已有相同命名的文件分组');
+            error('已有相同命名的文件分组');
           }
         } else {
-          this.$tool.error('请输入分组名称');
+          error('请输入分组名称');
         }
       },
       // 新建分组--取消
@@ -307,35 +309,16 @@
       },
       // 重命名分组(打开弹框)
       renameGroup (groupName) {
-        /* this.$prompt('请输入分组名', '新建文件分组', {
-         confirmButtonText: '确定',
-         cancelButtonText: '取消',
-         }).then(({ value }) => {
-         this.$http.post(this.URL.renameFileType,{
-         user_id:localStorage.user_id,
-         type_id:this.typeId,
-         type_name:value
-         }).then(res => {
-         console.log(res)
-         if (res.data.status_code === 2000000) {
-         this.loading = false;
-         this.$tool.success("分组重命名成功")
-         this.initData()
-         }else{
-         this.$tool.error(res.data.error_msg)
-         }
-         })
-         }); */
         this.exGroupName = groupName;
         this.renameFrame = true;
       },
       // 重命名确定
       renameCertain () {
-        this.exGroupName = this.$tool.trim(this.exGroupName);
+        this.exGroupName = validata.trim(this.exGroupName);
         if (this.exGroupName.length === 0) {
-          this.$tool.error('请输入分组名称');
+          error('请输入分组名称');
         } else if (this.exGroupName.length > 20) {
-          this.$tool.error('分组名称长度应在小于20字符');
+          error('分组名称长度应在小于20字符');
         } else {
           this.$http.post(this.URL.renameFileType, {
             user_id: localStorage.user_id,
@@ -347,10 +330,10 @@
               this.loading = false;
               this.$refs['renameFrame'].resetFields();
               this.renameFrame = false;
-              this.$tool.success('分组重命名成功');
+              success('分组重命名成功');
               this.initData();
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
             }
           });
         }
@@ -374,10 +357,10 @@
           }).then(res => {
             if (res.data.status_code === 2000000) {
               this.loading = false;
-              this.$tool.success('删除成功');
+              success('删除成功');
               this.initData();
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
             }
           });
         });
@@ -400,11 +383,11 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error('不支持的文件格式');
+          error('不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(20971521)) {
-          this.$tool.error('暂不支持超过20m文件上传哦');
+          error('暂不支持超过20m文件上传哦');
           return false;
         };
 
@@ -436,11 +419,11 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error('不支持的文件格式');
+          error('不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(20971521)) {
-          this.$tool.error('暂不支持超过20m文件上传哦');
+          error('暂不支持超过20m文件上传哦');
           return false;
         };
 
@@ -474,14 +457,14 @@
       },
       // 上传文件成功
       uploadsuccess (response, file, fileList) {
-        this.$tool.success('上传成功');
+        success('上传成功');
         this.loadingcheck = true;
         this.initData(file);
       },
       // 上传失败
       uploaderror (err, file, fileList) {
         console.log(err);
-        this.$tool.error('上传失败,请联系管理员');
+        error('上传失败,请联系管理员');
         this.loadingcheck = false;
         this.loading = false;
       },
@@ -513,10 +496,10 @@
             }).then(res => {
               if (res.data.status_code === 2000000) {
                 this.loading = false;
-                this.$tool.success('删除成功');
+                success('删除成功');
                 this.initData();
               } else {
-                this.$tool.error(res.data.error_msg);
+                error(res.data.error_msg);
               }
             });
           }).catch(() => {});
@@ -534,10 +517,10 @@
 //          console.log(res)
           if (res.data.status_code === 2000000) {
             this.fileMoveFrame = false;
-            this.$tool.success('移动文件成功');
+            success('移动文件成功');
             this.initData();
           } else {
-            this.$tool.error(res.data.error_msy);
+            error(res.data.error_msy);
           }
         });
       },
@@ -574,7 +557,7 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       }
     },

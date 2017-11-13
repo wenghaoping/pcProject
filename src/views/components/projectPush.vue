@@ -9,7 +9,7 @@
         <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
         <el-tooltip content="Top center" placement="top">
           <div slot="content">每天可以推送5次，1个项目推送给1个投资人计1次，1个项目推送给多个投资人计多次</div>
-          <div class="img fl" style="cursor: pointer"><img src="../../../assets/images/why.png"></div>
+          <div class="img fl" style="cursor: pointer"><img src="../../assets/images/why.png"></div>
         </el-tooltip>
       </span>
 
@@ -126,15 +126,17 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import * as validata from '@/utils/validata';
+  import { error, success, warning } from '@/utils/notification';
   export default {
     props: ['projectPushShow', 'userMessage', 'userEmail'],
     data () {
       var checkEmail = (rule, value, callback) => {
-        if (this.$tool.getNull(value)) {
+        if (validata.getNull(value)) {
           return callback(new Error('邮箱不能为空'));
         }
         setTimeout(() => {
-          if (!this.$tool.checkEmail(value)) {
+          if (!validata.checkEmail(value)) {
             callback(new Error('请输入正确的邮箱'));
           } else {
             callback();
@@ -142,7 +144,7 @@
         }, 300);
       };// 邮箱判断
       var checkTitle = (rule, value, callback) => {
-        if (this.$tool.getNull(value)) {
+        if (validata.getNull(value)) {
           return callback(new Error('不能为空'));
         } else {
           callback();
@@ -214,10 +216,10 @@
       },
       preview () {
         if (this.pushCount !== 0) {
-          if (this.projectRadio === '' || this.projectRadio === undefined) this.$tool.error('请选择要推送的项目');
-          else if (!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error('请输入正确的邮箱');
-          else if (this.email.title.length > 100) this.$tool.error('标题不能大于100个字');
-          else if (this.email.body.length > 500) this.$tool.error('正文不能大于500个字');
+          if (this.projectRadio === '' || this.projectRadio === undefined) error('请选择要推送的项目');
+          else if (!validata.checkEmail(this.email2.nameEmail)) error('请输入正确的邮箱');
+          else if (this.email.title.length > 100) error('标题不能大于100个字');
+          else if (this.email.body.length > 500) error('正文不能大于500个字');
           else {
             this.zgClick('预览');
             this.$store.state.pushProject.project_id = this.projectRadio;
@@ -238,7 +240,7 @@
             this.$emit('openPreview', true);//
           }
         } else {
-          this.$tool.warning('您今日的推送次数已用完,请明天再试');
+          warning('您今日的推送次数已用完,请明天再试');
         }
       }, // 推送预览
 
@@ -247,10 +249,10 @@
           this.firstInData.email = this.email;
           let check1 = this.submitForm('email');
           let check2 = this.submitForm('email2');
-          if (this.projectRadio === '' || this.projectRadio === undefined) this.$tool.error('请选择要推送的项目');
-          else if (!this.$tool.checkEmail(this.email2.nameEmail)) this.$tool.error('请输入正确的邮箱');
-          else if (this.email.title.length > 100) this.$tool.error('标题不能大于100个字');
-          else if (this.email.body.length > 500) this.$tool.error('正文不能大于500个字');
+          if (this.projectRadio === '' || this.projectRadio === undefined) error('请选择要推送的项目');
+          else if (!validata.checkEmail(this.email2.nameEmail)) error('请输入正确的邮箱');
+          else if (this.email.title.length > 100) error('标题不能大于100个字');
+          else if (this.email.body.length > 500) error('正文不能大于500个字');
           else if (type === 1) { // 关闭
             if (check1 && check2) {
               this.zgClick('推送');
@@ -267,21 +269,19 @@
               this.loading = true;
               this.$http.post(this.URL.pushUser, pushData)
                 .then(res => {
-                  // let data = res.data.data;
-//              this.$tool.console(res);
-                  this.$tool.success('推送成功');
+                  success('推送成功');
                   this.getpushCount();
                   this.loading = false;
                   this.open2('推送成功', '推送成功', '继续推送', '返回');
                 })
                 .catch(err => {
-                  this.$tool.console(err);
-                  this.$tool.success('推送失败');
+                  console.log(err);
+                  success('推送失败');
                 });
             }
           }
         } else {
-          this.$tool.warning('您今日的推送次数已用完');
+          warning('您今日的推送次数已用完');
         }
       }, // 推送按钮
 
@@ -298,7 +298,6 @@
           this.$http.post(this.URL.matchProject, this.searchProject)
             .then(res => {
               let data = res.data.data;
-//          this.$tool.console(data);
               this.tableData3 = data.projects;
               this.projectAll = this.setProjectAll(data.projects);
               this.totalMatchProject = data.count;
@@ -306,7 +305,7 @@
               resolve(1);
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
             });
         });
@@ -318,14 +317,13 @@
         this.$http.post(this.URL.matchProject, this.searchProject)
           .then(res => {
             let data = res.data.data;
-//          this.$tool.console(data);
             this.tableData3 = data.projects;
             this.projectAll = this.setProjectAll(data.projects);
             this.loading = false;
             this.totalMatchProject = data.count;
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
             this.loading = false;
           });
       }, // 页码控制
@@ -381,10 +379,9 @@
           .then(res => {
             let data = res.data.data;
             this.pushCount = data.push_count.remain_times || 0;
-//          this.$tool.console(data.push_count);
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
             this.loading = false;
           });
       }, // 获取剩余推送次数
@@ -458,7 +455,7 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/projectPush';
+  @import '../../assets/css/projectPush';
   .popper{
     display: none;
   }

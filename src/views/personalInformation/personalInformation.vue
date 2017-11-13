@@ -464,16 +464,20 @@
 
 <script type="text/ecmascript-6">
   import behavior from './behavior.vue';
+  import { getCity } from '@/utils/setSelect';
+  import { error, success, warning } from '@/utils/notification';
+  import * as formatData from '@/utils/formatData';
+  import * as validata from '@/utils/validata';
   export default {
     props: [],
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (!this.$tool.checkNumber(value)) {
+            if (!validata.checkNumber(value)) {
               callback(new Error('请输入数字值'));
             } else {
-              if (!this.$tool.checkPhoneNumber(value)) {
+              if (!validata.checkPhoneNumber(value)) {
                 callback(new Error('请输入正确的手机号'));
               } else {
                 callback();
@@ -485,11 +489,11 @@
         }
       };// 电话号码正则判断
       var checkBigNumber = (rule, value, callback) => {
-        if (this.$tool.getNull(value)) {
+        if (validata.getNull(value)) {
           callback(new Error('不能为空'));
         } else {
           setTimeout(() => {
-            if (this.$tool.checkNumber(value)) {
+            if (validata.checkNumber(value)) {
               if (value > 99999999) {
                 callback(new Error('请输入小于99999999的值'));
               } else {
@@ -502,7 +506,7 @@
         }
       };// 必须为数字,数值不大于999999999999
       var checkNull20 = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
             if (value.length > 20) {
               callback(new Error('最大长度为20'));
@@ -515,7 +519,7 @@
         }
       };// 不为空,20
       var checkNull40 = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
             if (value.length > 40) {
               callback(new Error('最大长度为40'));
@@ -660,7 +664,7 @@
             this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: x.case_province})// pid省
               .then(res => {
                 let data = res.data.data;
-                x.area_data = this.$tool.getCity(data);
+                x.area_data = getCity(data);
                 resolve(true);
               })
               .catch(err => {
@@ -677,10 +681,10 @@
             .then(res => {
               let data = res.data.data;
               this.investCases.investCase[index].case_city = '';
-              this.investCases.investCase[index].area_data = this.$tool.getCity(data);
+              this.investCases.investCase[index].area_data = getCity(data);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
             });
         }
       },
@@ -715,7 +719,6 @@
             })
             .catch(err => {
               console.log(err);
-              this.$tool.console(this.restaurants);
             });
         } else {
           let callback = [];
@@ -744,7 +747,7 @@
           this.$http.post(this.URL.getUserBasicInfo, {user_id: localStorage.user_id})
             .then(res => {
               if (res.data.status_code === 420008) {
-                this.$tool.warning('这不是您的个人信息,您无权查看');
+                warning('这不是您的个人信息,您无权查看');
                 this.loading = false;
                 this.$router.push({name: 'index'});// 路由传参
               } else {
@@ -764,15 +767,15 @@
                   data.invest_info.user_invest_scale = data.invest_info.user_invest_scale = [];
                   data.invest_info.user_invest_area = data.invest_info.user_invest_area = [];
                 }
-                data.invest_info.user_invest_industry = this.$tool.setIdToArr(data.invest_info.user_invest_industry, 'industry_id');
-                data.invest_info.user_invest_stage = this.$tool.setIdToArr(data.invest_info.user_invest_stage, 'stage_id');
-                data.invest_info.user_invest_scale = this.$tool.setIdToArr(data.invest_info.user_invest_scale, 'scale_id');
-                data.invest_info.user_invest_area = this.$tool.setIdToArr(data.invest_info.user_invest_area, 'area_id');
+                data.invest_info.user_invest_industry = formatData.setIdToArr(data.invest_info.user_invest_industry, 'industry_id');
+                data.invest_info.user_invest_stage = formatData.setIdToArr(data.invest_info.user_invest_stage, 'stage_id');
+                data.invest_info.user_invest_scale = formatData.setIdToArr(data.invest_info.user_invest_scale, 'scale_id');
+                data.invest_info.user_invest_area = formatData.setIdToArr(data.invest_info.user_invest_area, 'area_id');
                 this.investment = data.invest_info;
                 // 成功案例处理
                 data.project_case.forEach((x) => {
-                  x.case_industry = this.$tool.setIdToArr(x.case_industry, 'industry_id');
-                  this.$tool.setTimeToReallyTime1(x, 'case_deal_time');
+                  x.case_industry = formatData.setIdToArr(x.case_industry, 'industry_id');
+                  formatData.setTimeToReallyTime1(x, 'case_deal_time');
                   x.oldProvince = x.case_province;
                 });
                 this.area1Change(data.project_case);
@@ -804,14 +807,14 @@
       },
       // 上传成功后添加字段
       HeadPlanuploadsuccess (response, file, fileList) {
-        this.$tool.success('上传成功');
+        success('上传成功');
         this.submitButton = false;
         this.addplan(response.image_id, 'HeadUploadShow');
       },
       // 上传失败
       uploaderror (err, file, fileList) {
         console.log(err);
-        this.$tool.error('上传失败,请联系管理员');
+        error('上传失败,请联系管理员');
         this.submitButton = false;
       },
       // 删除文件
@@ -824,12 +827,12 @@
               if (res.status === 200) {
                 this.HeadPlanList = [];
                 this.loading = false;
-                this.$tool.success('删除成功');
+                success('删除成功');
               }
             })
             .catch(err => {
-              this.$tool.console(err);
-              this.$tool.error('删除失败,请联系管理员');
+              console.log(err);
+              error('删除失败,请联系管理员');
             });
         } else {
           this.headPlanButton = true;
@@ -860,11 +863,11 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error(file.name + '是不支持的文件格式');
+          error(file.name + '是不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(1048580)) {
-          this.$tool.error(file.name + '超过1M大小哦');
+          error(file.name + '超过1M大小哦');
           return false;
         };
         this.submitButton = true;
@@ -877,7 +880,7 @@
       },
       // 上传成功后添加字段
       CardPlanuploadsuccess (response, file, fileList) {
-        this.$tool.success('上传成功');
+        success('上传成功');
         this.submitButton = false;
         this.addplan(response.image_id, 'CardUploadShow');
       },
@@ -892,12 +895,12 @@
               if (res.status === 200) {
                 this.CardplanList = [];
                 this.loading = false;
-                this.$tool.success('删除成功');
+                success('删除成功');
               }
             })
             .catch(err => {
-              this.$tool.console(err);
-              this.$tool.error('删除失败,请联系管理员');
+              console.log(err);
+              error('删除失败,请联系管理员');
             });
         } else {
           this.cardPlanButton = true;
@@ -925,11 +928,11 @@
             // 做一些异步操作
             setTimeout(() => {
               if (this.user_infoMust) {
-                this.$tool.error('基本资料有误');
+                error('基本资料有误');
               } else if (this.investmentMust) {
-                this.$tool.error('投资需求有误');
+                error('投资需求有误');
               } else if (this.investCasesMust) {
-                this.$tool.error('成功案例有误');
+                error('成功案例有误');
               } else {
                 resolve(true);
               }
@@ -946,13 +949,12 @@
               this.zgClick('提交个人信息');
               let allData = {};
               allData.user_id = localStorage.user_id;
-              allData.user_info = this.$tool.simpleClone(this.user_info);
-              allData.investment = this.$tool.simpleClone(this.investment);
+              allData.user_info = validata.simpleClone(this.user_info);
+              allData.investment = validata.simpleClone(this.investment);
               allData.project_case = this.investCases.investCase;
               delete allData.user_info.user_avatar_url;
               delete allData.user_info.user_card_image;
-              this.$tool.setReallyTimeToTime(allData.project_case, 'case_deal_time', 'case_deal_time_stamp');
-              console.log(allData);
+              formatData.setReallyTimeToTime(allData.project_case, 'case_deal_time', 'case_deal_time_stamp');
               this.$http.post(this.URL.updateUserInfo, allData)
                 .then(res => {
                   this.card_id = res.data.card_id;
@@ -961,8 +963,8 @@
                   this.open2('信息编辑成功', '是否返回', '继续编辑', '返回上一页');
                 })
                 .catch(err => {
-                  this.$tool.error('编辑失败');
-                  this.$tool.console(err);
+                  error('编辑失败');
+                  console.log(err);
                   this.loading = false;
                 });
             }

@@ -10,7 +10,7 @@
         <div class="lost fl">今日剩余推送<i>{{pushCount}}</i>次</div>
         <el-tooltip content="Top center" placement="top">
           <div slot="content">每天可以推送5次，1个项目推送给1个投资人计1次，1个项目推送给多个投资人计多次</div>
-          <div class="img fl" style="cursor: pointer"><img src="../../../assets/images/why.png"></div>
+          <div class="img fl" style="cursor: pointer"><img src="../../assets/images/why.png"></div>
         </el-tooltip>
       </span>
 
@@ -360,16 +360,18 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import * as validata from '@/utils/validata';
+  import { error, success, warning } from '@/utils/notification';
   export default {
     props: ['projectPushShow2', 'proid', 'proIntro', 'proName', 'emitPush'],
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (!this.$tool.checkNumber(value)) {
+            if (!validata.checkNumber(value)) {
               callback(new Error('请输入数字值'));
             } else {
-              if (!this.$tool.checkPhoneNumber(value)) {
+              if (!validata.checkPhoneNumber(value)) {
                 callback(new Error('请输入正确的手机号'));
               } else {
                 callback();
@@ -664,12 +666,12 @@
               tag.card_index = res.data.card_id + '-' + res.data.investor_id;
               this.pushTagMyConCheck.push(tag.card_index);
               this.pushTagMyCon.push(tag);
-              this.$tool.success('人脉添加成功');
+              success('人脉添加成功');
               this.$refs['customerAddForm'].resetFields();
               this.customerAddFormDisplay = false;
               this.getMyContacts(1);
             } else {
-              this.$tool.error('添加失败');
+              error('添加失败');
               this.customerAddFormDisplay = false;
               this.getMyContacts(1);
             }
@@ -690,13 +692,13 @@
           this.pushData.push([x.id, x.conType, x.user_email]);// 推送人脉单个参数
         });
         if (this.pushData.length === 0) {
-          this.$tool.error('请选择推送人脉');
+          error('请选择推送人脉');
         } else if (this.pushData.length > this.pushCount) {
-          this.$tool.error('推送人数不能超过今日剩余推送次数');
+          error('推送人数不能超过今日剩余推送次数');
         } else if (this.email.title.length > 100) {
-          this.$tool.error('标题不能大于100个字');
+          error('标题不能大于100个字');
         } else if (this.email.main.length > 500) {
-          this.$tool.error('正文不能大于500个字');
+          error('正文不能大于500个字');
         } else {
           this.zgClick('推送');
           this.loading = true;
@@ -708,7 +710,7 @@
             receives: this.pushData
           }).then(res => {
             if (res.data.status_code === 2000000) {
-              this.$tool.success('推送成功');
+              success('推送成功');
               this.$emit('closePreviewANDProjectPush', false);
               this.$emit('openPreview', false);
               this.$emit('previewPush', false);
@@ -719,7 +721,7 @@
             }
           })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
             });
         }
@@ -731,13 +733,13 @@
           this.pushData.push([x.id, x.conType, x.user_email]);// 推送人脉单个参数
         });
         if (this.email.title.length > 100) {
-          this.$tool.error('标题不能大于100个字');
+          error('标题不能大于100个字');
         } else if (this.email.main.length > 500) {
-          this.$tool.error('正文不能大于500个字');
+          error('正文不能大于500个字');
         } else if (this.pushData.length === 0) {
-          this.$tool.error('请先选择推送人脉 ');
+          error('请先选择推送人脉 ');
         } else if (this.pushData.length > this.pushCount) {
-          this.$tool.error('推送人数不能超过今日剩余推送次数');
+          error('推送人数不能超过今日剩余推送次数');
         } else {
           this.zgClick('预览');
           let targetUser = this.pushTags[0];
@@ -759,7 +761,7 @@
             this.$store.state.pushProject.email.body = this.email.main;
             this.$emit('openPreview', true);
           } else {
-            this.$tool.warning('您今日的推送次数已用完');
+            warning('您今日的推送次数已用完');
           }
         }
       },
@@ -829,7 +831,7 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/projectPush';
+  @import '../../assets/css/projectPush';
 
 
 

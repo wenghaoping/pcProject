@@ -81,7 +81,7 @@
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
                     </span>
-                  <span class="date fl">{{history.history_financing_time}}</span>
+                  <span class="date fl">{{history.history_financing_time | timeToReallTime}}</span>
                   <span class="blood fl">{{history.history_financing_money}}</span>
                   <span class="blood1 fl">{{history.history_financing_rounds}}</span>
                   <span class="main fl">{{history.history_financing_who}}</span>
@@ -97,7 +97,7 @@
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
                     </span>
-                  <span class="date">{{milestone.milestone_time}}</span>
+                  <span class="date">{{milestone.milestone_time | timeToReallTime}}</span>
                   <span class="blood blood2">
 
                     <el-tooltip placement="top" :disabled="milestone.milestone_event.length > 40 ? false:true">
@@ -117,7 +117,7 @@
                       <span class="radio"></span>
                       <!--<span class="l-line"></span>-->
                     </span>
-                  <span class="date">{{new1.project_news_time}}</span>
+                  <span class="date">{{new1.project_news_time | timeToReallTime}}</span>
                   <span class="dateTag"><el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
                   <span class="blood blood3">{{new1.project_news_title}}</span>
                   <span class="mian2"><a :href="new1.source" target="_Blank">新闻链接</a></span>
@@ -159,7 +159,7 @@
                   </li>
                   <li class="table2" style="margin-top: 21px;" v-else>----</li>
 
-                  <li class="table7" style="height: 101px;" v-if="compet.company_register_date!=''">{{compet.company_register_date}}</li>
+                  <li class="table7" style="height: 101px;" v-if="compet.company_register_date!=''">{{compet.company_register_date | timeToReallTime}}</li>
                   <li class="table7" style="height: 101px;" v-else>----</li>
 
                   <li class="table4" style="height: 101px;" v-if="compet.project_location!=''">{{compet.project_location}}</li>
@@ -169,7 +169,7 @@
                   <li class="table5" style="height: 101px;" v-else>--</li>
 
                   <li class="table6" style="height: 101px;">
-                    <i style="margin-top: 16px;display: inline-block;">{{compet.history_financing_time}}</i>
+                    <i style="margin-top: 16px;display: inline-block;">{{compet.history_financing_time | timeToReallTime}}</i>
                     <i style="margin-left: 10px;">{{compet.history_financing_money}}</i>
                     <i class="founder">{{compet.history_financing_who}}</i>
                   </li>
@@ -262,6 +262,8 @@
   import companyMessage from '../workBench/myProject/onkeyresearch/companyMessage.vue';
   import business from '../workBench/myProject/onkeyresearch/business.vue';
   import downloadechart from '../workBench/myProject/onkeyresearch/downloadEchart.vue';
+  import { error } from '@/utils/notification';
+  import * as formatData from '@/utils/formatData';
   export default {
     data () {
       return {
@@ -425,7 +427,7 @@
               resolve(1);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
               this.loading = false;
               this.loading = false;
             });
@@ -439,12 +441,11 @@
           })
             .then(res => {
               let data = res.data.data;
-              this.$tool.setTime(data, 'history_financing_time');
               this.history_finance = data;
               resolve(1);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
               this.loading = false;
             });
         });
@@ -457,12 +458,11 @@
           })
             .then(res => {
               let data = res.data.data;
-              this.$tool.setTime(data, 'milestone_time');
               this.milestone_list = data;
               resolve(1);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
               this.loading = false;
             });
         });
@@ -475,12 +475,11 @@
           })
             .then(res => {
               let data = res.data.data;
-              this.$tool.setTime(data, 'project_news_time');
               this.news = data;
               resolve(1);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
               this.loading = false;
             });
         });
@@ -498,7 +497,7 @@
               resolve(1);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
               this.loading = false;
             });
         });
@@ -513,15 +512,15 @@
             .then(res => {
               let data = res.data.data;
               if (data.length === 0) { // 搜索不到信息
-                this.$tool.error('匹配不到当前公司');
+                error('匹配不到当前公司');
               } else { // 搜索到了
                 this.comMessage = data;
                 resolve(1);
               }
             })
             .catch(err => {
-              this.$tool.error('请求失败');
-              this.$tool.console(err);
+              error('请求失败');
+              console.log(err);
               this.loading = false;
             });
         });
@@ -533,10 +532,10 @@
           let obj = {};
           obj.com_id = x.com_id;
           obj.company_name = x.company_name;
-          obj.company_register_date = this.$tool.formatDateTime(x.company_register_date);
+          obj.company_register_date = x.company_register_date;
           obj.history_financing_money = x.history_financing.history_financing_money || '';
           obj.history_financing_rounds = x.history_financing.history_financing_rounds || '';
-          obj.history_financing_time = this.$tool.formatDateTime(x.history_financing.history_financing_time || '');
+          obj.history_financing_time = x.history_financing.history_financing_time || '';
           obj.history_financing_who = x.history_financing.history_financing_who || '';
           obj.project_industry = x.project_industry.split(',');
           obj.project_introduce = x.project_introduce;
@@ -566,7 +565,7 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
               this.loading = false;
             });
           resolve(1);
@@ -593,13 +592,13 @@
           let obj = {};
           obj.match = x.match;
           obj.user_avatar_url = x.user_avatar_url;
-          obj.user_avatar_txt = this.$tool.setUrlChange(x.user_avatar_url, x.user_real_name);
+          obj.user_avatar_txt = formatData.setUrlChange(x.user_avatar_url, x.user_real_name);
           obj.user_real_name = x.user_real_name;
           obj.user_company_career = x.user_company_career;
           obj.user_company_name = x.user_company_name;
           obj.user_invest_industry = x.user_invest_industry;
           obj.user_invest_stage = x.user_invest_stage;
-          obj.user_group = this.$tool.setTagToString(x.user_group, 'group_title');
+          obj.user_group = formatData.setTagToString(x.user_group, 'group_title');
           newArr.push(obj);
         });
         return newArr;
@@ -620,9 +619,6 @@
                   this.totalInvestors = res.data.count;
                   resolve(6);
                 }
-                /* else{
-                 this.$tool.error(res.data.error_msg);
-                 } */
               })
               .catch(err => {
                 console.log(err);
@@ -648,9 +644,9 @@
             this.loading = false;
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
             this.loading = false;
-            this.$tool.error('加载超时');
+            error('加载超时');
           });
       }, // 控制买家图谱页码
 
@@ -665,7 +661,7 @@
               resolve(1);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
               this.loading = false;
             });
         });
@@ -690,7 +686,7 @@
 //          console.log(this.$route.query.includeInvestorMap);
 
           if (routerCompany === '') {
-            this.$tool.error('请填写公司名称');
+            error('请填写公司名称');
             this.empty = true;
             this.loading = false;
           } else {
@@ -703,14 +699,14 @@
                   this.empty = false;
                   resolve(1);
                 } else {
-                  this.$tool.error(res.data.error_msg);
+                  error(res.data.error_msg);
                   this.empty = true;
                   this.loading = false;
                 }
               })
               .catch(err => {
-                this.$tool.error('请求失败');
-                this.$tool.console(err);
+                error('请求失败');
+                console.log(err);
                 this.loading = false;
                 this.empty = true;
               });

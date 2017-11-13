@@ -1173,17 +1173,21 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import syncprojectdetail from '@/components/syncProjectDetail.vue';
+  import syncprojectdetail from '@/views/components/syncProjectDetail.vue';
   // import { mapState } from 'vuex';
+  import * as validata from '@/utils/validata';
+  import { getCity } from '@/utils/setSelect';
+  import { error, success, warning } from '@/utils/notification';
+  import * as formatData from '@/utils/formatData';
   export default {
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (!this.$tool.checkNumber(value)) {
+            if (!validata.checkNumber(value)) {
               callback(new Error('请输入数字值'));
             } else {
-              if (!this.$tool.checkPhoneNumber(value)) {
+              if (!validata.checkPhoneNumber(value)) {
                 callback(new Error('请输入正确的手机号'));
               } else {
                 callback();
@@ -1196,9 +1200,9 @@
       };// 电话号码正则判断
 
       var checkNumber = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (!this.$tool.checkNumber(value)) {
+            if (!validata.checkNumber(value)) {
               callback(new Error('请输入数字值'));
             } else {
               callback();
@@ -1210,9 +1214,9 @@
       };// 可以为空,必须为数字正则判断
 
       var checkHundred = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (this.$tool.checkNumber(value)) {
+            if (validata.checkNumber(value)) {
               if (value > 100) {
                 callback(new Error('请输入小于100的值'));
               } else {
@@ -1228,9 +1232,9 @@
       };// 可以为空,必须为数字,比例数值1-100判断
 
       var checkBigNumber = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (this.$tool.checkNumber(value)) {
+            if (validata.checkNumber(value)) {
               if (parseFloat(value) > 99999999) {
                 callback(new Error('请输入小于99999999的值'));
               } else {
@@ -1690,7 +1694,7 @@
               resolve(4);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
             });
         });
       }, // 设置文件分组标签
@@ -1719,10 +1723,10 @@
         this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
           .then(res => {
             let data = res.data.data;
-            this.area2 = this.$tool.getCity(data);
+            this.area2 = getCity(data);
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       }, // 设置二级城市下拉列表
       area1Change2 (data) {
@@ -1732,14 +1736,14 @@
           this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
             .then(res => {
               let data = res.data.data;
-              this.area2 = this.$tool.getCity(data);
+              this.area2 = getCity(data);
               if (parseInt(newData) === parseInt(pid)) {
               } else {
                 this.project.pro_area.area_id = '';
               }
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
             });
         }
       }, // 设置二级城市下拉列表2
@@ -1760,7 +1764,7 @@
           this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
             .then(res => {
               if (res.data.status_code === 430004) {
-                this.$tool.warning('找不到项目');
+                warning('找不到项目');
                 this.loading = false;
                 this.$router.push({name: 'index'});// 路由传参
               } else {
@@ -1801,11 +1805,11 @@
                 if (data.project.pro_stage === '') {
                   data.project.pro_stage = {stage_id: ''};
                 }// 轮次设置
-                data.project.pro_industry = this.$tool.setIdToArr(data.project.pro_industry, 'industry_id');// 领域标签取出id
+                data.project.pro_industry = formatData.setIdToArr(data.project.pro_industry, 'industry_id');// 领域标签取出id
                 this.companyTitle = data.project.pro_company_name;
                 localStorage.pid = data.project.pro_area.pid;
 
-                data.project.tag = this.$tool.setIdToArr(data.project.tag, 'tag_id');// 设置项目标签
+                data.project.tag = formatData.setIdToArr(data.project.tag, 'tag_id');// 设置项目标签
                 data.project.open_status = data.project.open_status.toString();// 私密设置
                 if (data.project.pro_finance_stock_after === 0) data.project.pro_finance_stock_after = '';// 投后股份
 
@@ -1878,26 +1882,26 @@
                 // 产品设置=============================================
                 this.brands = data.brands;
                 // 核心团队设置=============================================
-                data.team.tag = this.$tool.setIdToArr(data.team.tag, 'tag_id');// 团队标签
-                this.$tool.setZeroToNull(data.team.core_users, 'stock_scale');// 项目成员
+                data.team.tag = formatData.setIdToArr(data.team.tag, 'tag_id');// 团队标签
+                formatData.setZeroToNull(data.team.core_users, 'stock_scale');// 项目成员
                 if (data.team.core_users === '') data.team.core_users = [];// 项目成员为空判断
                 this.team = data.team;
 
                 // 融资信息设置=============================================
-                this.$tool.setZeroToNull(data.financing.pro_history_finances, 'pro_finance_scale');// 设置历史融资信息
-                this.$tool.setTimeToReallyTime(data.financing.pro_history_finance, 'finance_time');// 历史融资信息时间格式设置
+                formatData.setZeroToNull(data.financing.pro_history_finances, 'pro_finance_scale');// 设置历史融资信息
+                formatData.setTimeToReallyTime(data.financing.pro_history_finance, 'finance_time');// 历史融资信息时间格式设置
                 if (data.financing.pro_history_finance === '') data.financing.pro_history_finance = [];
                 this.financing = data.financing;
 
                 // 里程碑设置=============================================
-                this.$tool.setTimeToReallyTime(data.milepost.pro_develop, 'dh_start_time');// 里程碑时间格式设置
+                formatData.setTimeToReallyTime(data.milepost.pro_develop, 'dh_start_time');// 里程碑时间格式设置
                 this.milepost = data.milepost;
 
                 // FA业务=============================================
                 this.pro_FA = data.pro_FA;
 
                 // FA业务仅自己可见=============================================
-                data.private.pro_source = this.$tool.setIdToArr(data.private.pro_source, 'tag_id');// 项目来源标签
+                data.private.pro_source = formatData.setIdToArr(data.private.pro_source, 'tag_id');// 项目来源标签
                 if (data.private.commission === 0) data.private.commission = '';
                 if (data.private.stock_right === 0) data.private.stock_right = '';
                 if (data.private.stock_follow === 0) data.private.stock_follow = '';
@@ -1914,7 +1918,7 @@
             })
             .catch(err => {
               this.loading = false;
-              this.$tool.console(err, 2);
+              console.log(err);
             });
         });
       }, // 获取项目详情数据
@@ -1926,7 +1930,7 @@
         else this.planButton = false;
       },
       planuploadsuccess (response, file, fileList) {
-        this.$tool.success('上传成功');
+        success('上传成功');
         let data = response.data;
         this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id);
         this.uploadLoading = false;
@@ -1934,7 +1938,7 @@
       }, // 上传成功后添加字段
       planuploaderror (err, file, fileList) {
         console.log(err);
-        this.$tool.error('上传失败,请联系管理员');
+        error('上传失败,请联系管理员');
       }, // 上传失败
       planRemove (file, fileList) {
         if (fileList.length === 0) this.planButton = true;
@@ -1950,7 +1954,7 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
 //            this.alert("删除失败,请联系管理员")
           });
       }, // 删除文件
@@ -1984,11 +1988,11 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error('不支持的文件格式');
+          error('不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(52428810)) {
-          this.$tool.error('暂不支持超过50M文件上传哦');
+          error('暂不支持超过50M文件上传哦');
           return false;
         };
         this.uploadLoading = true;
@@ -2019,11 +2023,11 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error('不支持的文件格式');
+          error('不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(52428810)) {
-          this.$tool.error('暂不支持超过50m文件上传哦');
+          error('暂不支持超过50m文件上传哦');
           return false;
         };
         this.addDomain('其他', file.name, 0, 4, true, file.uid);
@@ -2040,7 +2044,6 @@
       },
       uploadsuccess (response, file, fileList) {
         let data = response.data;
-//        this.$tool.success("上传成功");
         this.deleteLoad(file.uid);
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type, false, file.uid);
         this.loadingcheck = true;
@@ -2048,7 +2051,7 @@
       },
       uploaderror (err, file, fileList) {
         console.log(err);
-        this.$tool.error('上传失败,请联系管理员');
+        error('上传失败,请联系管理员');
         this.loadingcheck = false;
         this.loading = false;
       }, // 上传失败
@@ -2075,12 +2078,11 @@
               if (res.status === 200) {
                 this.loading = false;
                 this.uploadShow2.lists.splice(index, 1);
-//                this.$tool.success("删除成功");
               }
             })
             .catch(err => {
-              this.$tool.console(err);
-              this.$tool.error('删除失败,请联系管理员');
+              console.log(err);
+              error('删除失败,请联系管理员');
             });
         }
       }, // 删除当前上传文件
@@ -2146,10 +2148,10 @@
                 this.groups.input = '';
               })
               .catch(err => {
-                this.$tool.console(err);
+                console.log(err);
               });
           } else {
-            this.$tool.console('error submit!!');
+            console.log('error submit!!');
             return false;
           }
         });
@@ -2170,7 +2172,7 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       }, // 发送文件分组设置请求
       toGroup (item) {
@@ -2219,9 +2221,7 @@
               }, 300);
             })
             .catch(err => {
-//          this.alert("加载失败");
               console.log(err);
-              this.$tool.console(this.restaurants);
             });
         } else {
           let callback = [];
@@ -2264,12 +2264,12 @@
             this.form.state = '';
           })
           .catch(err => {
-            this.$tool.error('添加失败');
-            this.$tool.console(err);
+            error('添加失败');
+            console.log(err);
           });
       }, // 添加运营状态
       addChangepro (e) {
-        let tagName = this.$tool.checkArr(e, this.tags_pro);
+        let tagName = formatData.checkArr(e, this.tags_pro);
         if (tagName !== undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 0, tag_name: tagName})
             .then(res => {
@@ -2279,13 +2279,13 @@
               this.tags.changepro.push(newState);
             })
             .catch(err => {
-              this.$tool.error('添加失败');
-              this.$tool.console(err);
+              error('添加失败');
+              console.log(err);
             });
         }
       }, // 添加项目标签
       addChangeTeam (e) {
-        let tagName = this.$tool.checkArr(e, this.tags_team);
+        let tagName = formatData.checkArr(e, this.tags_team);
 
         if (tagName !== undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 1, tag_name: tagName})
@@ -2298,8 +2298,8 @@
               /* this.tags.changeTeam.push(res.data.tag_id); */
             })
             .catch(err => {
-              this.$tool.error('添加失败');
-              this.$tool.console(err);
+              error('添加失败');
+              console.log(err);
             });
         }
 //        else{
@@ -2307,7 +2307,7 @@
 //        }
       }, // 添加团队标签
       addChangesource (e) {
-        let tagName = this.$tool.checkArr(e, this.tags_source);
+        let tagName = formatData.checkArr(e, this.tags_source);
 
         if (tagName !== undefined) {
           this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 2, tag_name: tagName})
@@ -2320,8 +2320,8 @@
               /* this.tags.changesource.push(res.data.tag_id); */
             })
             .catch(err => {
-              this.$tool.error('添加失败');
-              this.$tool.console(err);
+              error('添加失败');
+              console.log(err);
             });
         }
         /* else{
@@ -2418,15 +2418,15 @@
             brand_id: item.brand_id
           })
             .then(res => {
-              this.$tool.success('删除成功');
+              success('删除成功');
               let index = this.brands.brand.indexOf(item);
               if (index !== -1) {
                 this.brands.brand.splice(index, 1);
               }
             })
             .catch(err => {
-              this.$tool.error('删除失败');
-              this.$tool.console(err);
+              error('删除失败');
+              console.log(err);
             });
         }
       },
@@ -2454,15 +2454,15 @@
             project_ct_id: item.project_ct_id
           })
             .then(res => {
-              this.$tool.success('删除成功');
+              success('删除成功');
               let index = this.team.core_users.indexOf(item);
               if (index !== -1) {
                 this.team.core_users.splice(index, 1);
               }
             })
             .catch(err => {
-              this.$tool.error('删除失败');
-              this.$tool.console(err);
+              error('删除失败');
+              console.log(err);
             });
         }
       },
@@ -2490,15 +2490,15 @@
             history_id: item.history_id
           })
             .then(res => {
-              this.$tool.success('删除成功');
+              success('删除成功');
               let index = this.financing.pro_history_finance.indexOf(item);
               if (index !== -1) {
                 this.financing.pro_history_finance.splice(index, 1);
               }
             })
             .catch(err => {
-              this.$tool.error('删除失败');
-              this.$tool.console(err);
+              error('删除失败');
+              console.log(err);
             });
         }
       },
@@ -2525,15 +2525,15 @@
             project_dh_id: item.project_dh_id
           })
             .then(res => {
-              this.$tool.success('删除成功');
+              success('删除成功');
               let index = this.milepost.pro_develop.indexOf(item);
               if (index !== -1) {
                 this.milepost.pro_develop.splice(index, 1);
               }
             })
             .catch(err => {
-              this.$tool.error('删除失败');
-              this.$tool.console(err);
+              error('删除失败');
+              console.log(err);
             });
         }
       },
@@ -2584,7 +2584,7 @@
               } else if (this.milepostMust) {
               } else if (this.privateMust) {
               } else if (this.oneCheck(this.project.goodness.pro_goodness)) {
-                this.$tool.error('投资亮点最少填写一条');
+                error('投资亮点最少填写一条');
               } else {
                 resolve(true);
               }
@@ -2601,26 +2601,26 @@
               this.zgClick('提交编辑项目');
               this.loading = true;
               let allData = {};
-              this.$tool.setTag(this.project.tag, this.tags.changepro);// 标签设置,去处ID存入数组
-              this.$tool.setTag(this.team.tag, this.tags.changeTeam);// 标签设置,去处ID存入数组
-              this.$tool.setTag(this.private.pro_source, this.tags.changesource);// 标签设置,去处ID存入数组
-              allData.project = this.$tool.simpleClone(this.project);
-              allData.company = this.$tool.simpleClone(this.company);
-              allData.brands = this.$tool.simpleClone(this.brands);
-              allData.team = this.$tool.simpleClone(this.team);
-              allData.financing = this.$tool.simpleClone(this.financing);
-              allData.milepost = this.$tool.simpleClone(this.milepost);
-              allData.pro_FA = this.$tool.simpleClone(this.pro_FA);
-              allData.private = this.$tool.simpleClone(this.private);
+              formatData.setTag(this.project.tag, this.tags.changepro);// 标签设置,去处ID存入数组
+              formatData.setTag(this.team.tag, this.tags.changeTeam);// 标签设置,去处ID存入数组
+              formatData.setTag(this.private.pro_source, this.tags.changesource);// 标签设置,去处ID存入数组
+              allData.project = validata.simpleClone(this.project);
+              allData.company = validata.simpleClone(this.company);
+              allData.brands = validata.simpleClone(this.brands);
+              allData.team = validata.simpleClone(this.team);
+              allData.financing = validata.simpleClone(this.financing);
+              allData.milepost = validata.simpleClone(this.milepost);
+              allData.pro_FA = validata.simpleClone(this.pro_FA);
+              allData.private = validata.simpleClone(this.private);
               allData.user_id = localStorage.user_id;// 用户id
               allData.pro_total_score = this.proportion;// 完整度
               allData.project_id = this.project.project_id;// 项目id
 
-              this.$tool.setReallyTimeToTime(allData.financing.pro_history_finance, 'finance_time', 'finance_time_stamp');// 标准时间转化为时间戳
-              this.$tool.setReallyTimeToTime(allData.milepost.pro_develop, 'dh_start_time', 'dh_start_time_stamp');// 标准时间转化为时间戳
+              formatData.setReallyTimeToTime(allData.financing.pro_history_finance, 'finance_time', 'finance_time_stamp');// 标准时间转化为时间戳
+              formatData.setReallyTimeToTime(allData.milepost.pro_develop, 'dh_start_time', 'dh_start_time_stamp');// 标准时间转化为时间戳
 
-              this.$tool.setNullToZero(allData.team.core_users, 'stock_scale');// 核心成员股权比例如果没填,就给0
-              this.$tool.setNullToZero(allData.financing.pro_history_finance, 'pro_finance_scale');// 期望融资,融资金额如果没填,就给0
+              formatData.setNullToZero(allData.team.core_users, 'stock_scale');// 核心成员股权比例如果没填,就给0
+              formatData.setNullToZero(allData.financing.pro_history_finance, 'pro_finance_scale');// 期望融资,融资金额如果没填,就给0
 
               allData.project.pro_finance_value = allData.project.pro_finance_value + '';// 数字转字符串
               allData.project.pro_schedule = '';// 项目进度
@@ -2639,8 +2639,8 @@
                 })
                 .catch(err => {
                   this.loading = false;
-                  this.$tool.error('编辑失败');
-                  this.$tool.console(err);
+                  error('编辑失败');
+                  console.log(err);
                 });
             }
           });
@@ -2744,7 +2744,7 @@
       syncOne () {
         this.companyTitle = this.project.pro_company_name;
         if (this.companyTitle === '') {
-          this.$tool.warning('请先填写公司名称');
+          warning('请先填写公司名称');
         } else {
           this.loading = true;
           this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.companyTitle})
@@ -2754,13 +2754,13 @@
                 this.companyid = data.company.com_id;
                 this.syncDialogDisplay = true;
               } else {
-                this.$tool.warning('未查询到该公司信息，无法获取');
+                warning('未查询到该公司信息，无法获取');
               }
               this.loading = false;
             })
             .catch(err => {
-              this.$tool.error('获取失败');
-              this.$tool.console(err);
+              error('获取失败');
+              console.log(err);
               this.loading = false;
             });
         }
@@ -2797,15 +2797,15 @@
 
         // 数据同步函数
         const syncDataFunc = () => {
-          syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry, 'industry_id');// 领域标签取出id
+          syncData.project.pro_industry = formatData.setIdToArr(syncData.project.pro_industry, 'industry_id');// 领域标签取出id
           syncData.project.open_status = syncData.project.open_status.toString();// 字符串化
           if (syncData.project.pro_stage.length === 0) {
             syncData.project.pro_stage = {};
             syncData.project.pro_stage = {stage_id: ''};
           };
           if (syncData.project.pro_industry.length === 0) { syncData.project.pro_industry = []; }
-          this.$tool.setTimeToReallyTime(syncData.milepost.pro_develop, 'dh_start_time');// 里程碑时间格式设置
-          this.$tool.setTimeToReallyTime(syncData.financing.pro_history_finance, 'finance_time');// 里程碑时间格式设置
+          formatData.setTimeToReallyTime(syncData.milepost.pro_develop, 'dh_start_time');// 里程碑时间格式设置
+          formatData.setTimeToReallyTime(syncData.financing.pro_history_finance, 'finance_time');// 里程碑时间格式设置
           if (syncData.company.pro_company_scale === '') { syncData.company.pro_company_scale = {comp_scale_id: ''}; }
           // 数据格式化
 
@@ -2851,7 +2851,7 @@
                         if (this.project.pro_stage.stage_id === '') {
                           this[x][key] = syncData[index][key];
                         }
-                      } else if (this.$tool.isArray(this[x][key])) { // 标签需要数组合并
+                      } else if (validata.isArray(this[x][key])) { // 标签需要数组合并
                         this[x][key] = [...this[x][key], ...syncData[index][key]];// 数组合并
                       } else if (this[x][key] === '') { // 其他为空是不覆盖
                         this[x][key] = syncData[index][key];
@@ -2859,7 +2859,7 @@
                     }
                   } else {
                     for (let Arrkey in syncData[index]) {
-                      if (this.$tool.isArray(syncData[index][Arrkey])) {
+                      if (validata.isArray(syncData[index][Arrkey])) {
                         if (Arrkey !== 'tag') {
                           this[x][Arrkey] = [...this[x][Arrkey], ...syncData[index][Arrkey]];// 数组合并
                         }

@@ -21,12 +21,12 @@
                 <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               </div>
               <div class="tag" style="padding-top: 20px;    display: inline-block;">
-                <span class="tag-bottom" style="margin-right: 11px;" v-if="project.tag.length!=0"><img src="../assets/images/tag2.png"></span>
+                <span class="tag-bottom" style="margin-right: 11px;" v-if="project.tag.length!=0"><img src="../../assets/images/tag2.png"></span>
                 <span class="tag-bottom" v-if="project.tag.length!=0"><i v-for="tag in project.tag">{{tag}}　</i></span>
               </div>
               <div class="onlyone">
-                <img v-if="project.is_exclusive==1" src="../assets/images/onlyonedark.png"/>
-                <img v-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>
+                <img v-if="project.is_exclusive==1" src="../../assets/images/onlyonedark.png"/>
+                <img v-if="project.is_exclusive==2" src="../../assets/images/onlyonelight.png"/>
                 <!--<img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>-->
               </div>
             </div>
@@ -38,7 +38,7 @@
           <el-checkbox label="team" v-if="team.core_users.length!=0">
             <div class="ul-lists" v-show="team.core_users!=''&&team.tag!=''">
             <div class="item">
-              <span class="title"><img class="img" src="../assets/images/team.png">核心团队</span>
+              <span class="title"><img class="img" src="../../assets/images/team.png">核心团队</span>
             </div>
             <div style="margin-top:32px;"></div>
             <div class="item" v-for="core_user in team.core_users" style="margin-top:10px;" >
@@ -113,7 +113,7 @@
           <el-checkbox label="financing" v-if="financing.pro_history_finance.length!=0">
             <div class="ul-lists">
               <div class="item">
-                <span class="title"><img class="img" src="../assets/images/money.png">融资信息</span>
+                <span class="title"><img class="img" src="../../assets/images/money.png">融资信息</span>
                   <div class="v-progress-table" style="padding-left: 10px;padding-top: 20px;">
                     <div class="v-progress-txt" v-for="finance in financing.pro_history_finance">
                       <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
@@ -136,7 +136,7 @@
           <el-checkbox label="milepost" v-if="milepost.pro_develop.length!=0">
             <div class="ul-lists" style="margin-bottom: 0px;" >
             <div class="item">
-              <span class="title"><img class="img" src="../assets/images/Milepost.png">里程碑</span>
+              <span class="title"><img class="img" src="../../assets/images/Milepost.png">里程碑</span>
             </div>
             <div class="item" style="margin-top:6px;">
               <div>
@@ -177,9 +177,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import cirIcon from '../../static/images/circle.png';
-  import pinpai from '../../static/images/icon-pinpa.png';
-  import yunying from '../../static/images/icon-yunying.png';
+  import cirIcon from '../../../static/images/circle.png';
+  import pinpai from '../../../static/images/icon-pinpa.png';
+  import yunying from '../../../static/images/icon-yunying.png';
+  import { warning } from '@/utils/notification';
   const checkAllOption = ['project', 'team', 'company', 'brands', 'financing', 'milepost'];
   export default {
     props: ['syncProjectDetailDisplay', 'companyid'],
@@ -304,7 +305,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       },
       // 全选时
@@ -322,7 +323,7 @@
       syncTrue () {
         this.$store.state.syncData.checkedSync = this.checkedSync;
         if (this.checkedSync.length === 0) {
-          this.$tool.warning('请勾选你要同步的模块');
+          warning('请勾选你要同步的模块');
         } else {
           if (this.project.tag.length !== 0) {
             this.syncTag(this.project.tag)
@@ -352,7 +353,7 @@
             })
             .catch(err => {
               this.loading = false;
-              this.$tool.console(err, 2);
+              console.log(err);
             });
         });
       }

@@ -408,13 +408,17 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import synccreatprojectdetail from '../../../components/syncCreatProjectDetail.vue';
+  import synccreatprojectdetail from '@/views/components/syncCreatProjectDetail.vue';
+  import { getCity } from '@/utils/setSelect';
+  import * as validata from '@/utils/validata';
+  import { setIdToArr } from '@/utils/formatData';
+  import { error, success, warning } from '@/utils/notification';
   export default {
     data () {
       var checkHundred = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (this.$tool.checkNumber(value)) {
+            if (validata.checkNumber(value)) {
               if (value > 100) {
                 callback(new Error('请输入小于100的值'));
               } else {
@@ -574,37 +578,29 @@
         this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})
           .then(res => {
             let data = res.data.data;
-            this.area2 = this.$tool.getCity(data);
+            this.area2 = getCity(data);
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       }, // 设置二级城市下拉列表
       getNumberFull (data, title1, title2) {
         let check = true;
-        if (this.$tool.getNull(data)) {
+        if (validata.getNull(data)) {
 
         } else {
-          if (this.$tool.checkNumber(data)) {
+          if (validata.checkNumber(data)) {
             if (parseFloat(data) > 100) {
-              this.$tool.error(title1);
+              error(title1);
               check = false;
             }
           } else {
-            this.$tool.error(title2);
+            error(title2);
             check = false;
           }
         }
         return check;
       }, // 1大于100,2必须为数字
-      getNull (data) {
-        let reg = /\S/;
-        if (!reg.test(data)) {
-          return true;
-        } else {
-          return false;
-        }
-      }, // 判断是不是空
       checkNumber (theObj) {
         let reg = /^[0-9]+.?[0-9]*$/;
         if (reg.test(theObj)) {
@@ -619,13 +615,13 @@
         else this.planButton = false;
       },
       planuploadsuccess (response, file, fileList) {
-        this.$tool.success('上传成功');
+        success('上传成功');
         let data = response.data;
         this.addplan(data.file_title, data.pro_intro, data.pro_name, data.project_id, data.file_id);
       }, // 上传成功后添加字段
       planuploaderror (err, file, fileList) {
         console.log(err);
-        this.$tool.error('上传失败,请联系管理员');
+        error('上传失败,请联系管理员');
       }, // 上传失败
       planRemove (file, fileList) {
         const deleteAtUpload = this.URL.deleteAtUpload;
@@ -635,13 +631,12 @@
           .then(res => {
             if (res.status === 200) {
               this.loading = false;
-              this.$tool.success('删除成功');
+              success('删除成功');
             }
-            this.$tool.console(res);
           })
           .catch(err => {
-            this.$tool.console(err);
-            this.$tool.error('删除失败,请联系管理员');
+            console.log(err);
+            error('删除失败,请联系管理员');
           });
       }, // 删除文件
       addplan (fileTitle, proIntro, proName, projectId, fileId) {
@@ -671,11 +666,11 @@
           }
         }
         if (!isnext) {
-          this.$tool.error('不支持的文件格式');
+          error('不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(52428810)) {
-          this.$tool.error('暂不支持超过50m文件上传哦');
+          error('暂不支持超过50m文件上传哦');
           return false;
         }
       }, // 上传前的验证
@@ -697,7 +692,7 @@
           });
         // 数据同步函数
         const syncDataFunc = () => {
-          syncData.project.pro_industry = this.$tool.setIdToArr(syncData.project.pro_industry, 'industry_id');// 领域标签取出id
+          syncData.project.pro_industry = setIdToArr(syncData.project.pro_industry, 'industry_id');// 领域标签取出id
           syncData.project.open_status = syncData.project.open_status.toString();// 字符串化
           if (syncData.project.pro_stage.length === 0) {
             syncData.project.pro_stage = {};
@@ -757,7 +752,7 @@
                     }
                   } else {
                     for (let Arrkey in syncData[index]) {
-                      if (this.$tool.isArray(syncData[index][Arrkey])) {
+                      if (validata.isArray(syncData[index][Arrkey])) {
                         if (Arrkey !== 'tag') {
                           this[x][Arrkey] = [...this[x][Arrkey], ...syncData[index][Arrkey]];// 数组合并
                         }
@@ -825,7 +820,7 @@
           return new Promise((resolve, reject) => {
             // 做一些异步操作
             setTimeout(() => {
-              if (this.projectMust) { this.$tool.error('项目介绍填写有误'); } else if (this.oneCheck(this.project.goodness.pro_goodness)) { this.$tool.error('投资亮点最少填写一条'); } else {
+              if (this.projectMust) { error('项目介绍填写有误'); } else if (this.oneCheck(this.project.goodness.pro_goodness)) { error('投资亮点最少填写一条'); } else {
                 resolve(true);
               }
             }, 200);
@@ -842,7 +837,7 @@
               this.loading = true;
               this.project.project_id = this.uploadShow.project_id;
               let allData = {};
-              allData.project = this.$tool.simpleClone(this.project);
+              allData.project = validata.simpleClone(this.project);
               delete allData.project.tag;
               allData.pro_FA = {is_exclusive: this.project.is_exclusive};
               allData.user_id = localStorage.user_id;// 用户id
@@ -854,8 +849,8 @@
                   this.loading = false;
                 })
                 .catch(err => {
-                  this.$tool.error('创建失败');
-                  this.$tool.console(err);
+                  error('创建失败');
+                  console.log(err);
                   this.loading = false;
                 });
             }
@@ -890,8 +885,8 @@
               }, 300);
             })
             .catch(err => {
-              this.$tool.error('加载失败');
-              this.$tool.console(err);
+              error('加载失败');
+              console.log(err);
             });
         } else {
           let callback = [];
@@ -980,7 +975,7 @@
       syncOne () {
         this.companyTitle = this.project.pro_company_name;
         if (this.companyTitle === '') {
-          this.$tool.warning('请先填写公司名称');
+          warning('请先填写公司名称');
         } else {
           this.loading = true;
           this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.companyTitle})
@@ -990,13 +985,13 @@
                 this.companyid = data.company.com_id;
                 this.dialogVisible = true;
               } else {
-                this.$tool.warning('未查询到该公司信息，无法获取');
+                warning('未查询到该公司信息，无法获取');
               }
               this.loading = false;
             })
             .catch(err => {
-              this.$tool.error('获取失败');
-              this.$tool.console(err);
+              error('获取失败');
+              console.log(err);
               this.loading = false;
             });
         }
@@ -1048,7 +1043,7 @@
                 resolve(1);
               })
               .catch(err => {
-                this.$tool.console(err);
+                console.log(err);
               });
             return getOneUserInfo;
           }

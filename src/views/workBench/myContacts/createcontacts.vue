@@ -46,7 +46,7 @@
                     <el-col :span="12">
                       <el-form-item
                         label="姓名"
-                        prop="user_real_name" :rules="[{ required: true, message: '请输入姓名', trigger: 'blur' },{max: 20, message: '长度不能大于20个字符', trigger: 'blur' }]">
+                        prop="user_real_name" :rules="[{ required: true, message: '请输入姓名', trigger: 'blur' },{max: 20, message: '长度不能大于20个字符', trigger: 'blur' },nullRule]">
                         <el-input v-model="contacts.user_real_name" placeholder="请输入姓名"></el-input>
                       </el-form-item>
                     </el-col>
@@ -307,10 +307,13 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import * as validata from '@/utils/validata';
+  import { error, success, warning } from '@/utils/notification';
+  import * as formatData from '@/utils/formatData';
   export default {
     data () {
       var checkNull = (rule, value, callback) => {
-        if (this.$tool.getNull(value)) {
+        if (validata.getNull(value)) {
           return callback(new Error('不能为空'));
         } else {
           if (value.length > 20) {
@@ -321,12 +324,12 @@
         }
       };// 不为空判断
       var checkPhoneNumber = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (!this.$tool.checkNumber(value)) {
+            if (!validata.checkNumber(value)) {
               callback(new Error('请输入数字值'));
             } else {
-              if (!this.$tool.checkPhoneNumber(value)) {
+              if (!validata.checkPhoneNumber(value)) {
                 callback(new Error('请输入正确的手机号'));
               } else {
                 callback();
@@ -410,12 +413,12 @@
         else this.planButton = false;
       },
       planuploadsuccess (response, file, fileList) {
-        this.$tool.success('上传成功');
+        success('上传成功');
         this.addplan(response.image_id);
       }, // 上传成功后添加字段
       planuploaderror (err, file, fileList) {
         console.log(err);
-        this.$tool.error('上传失败,请联系管理员');
+        error('上传失败,请联系管理员');
       }, // 上传失败
       planRemove (file, fileList) {
         if (file) {
@@ -427,12 +430,12 @@
               if (res.status === 200) {
                 this.planList = [];
                 this.loading = false;
-                this.$tool.success('删除成功');
+                success('删除成功');
               }
             })
             .catch(err => {
-              this.$tool.console(err);
-              this.$tool.error('删除失败,请联系管理员');
+              console.log(err);
+              error('删除失败,请联系管理员');
             });
         } else {
           this.planButton = true;
@@ -461,11 +464,11 @@
         }
         this.loading = false;
         if (!isnext) {
-          this.$tool.error(file.name + '是不支持的文件格式');
+          error(file.name + '是不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(1048580)) {
-          this.$tool.error(file.name + '超过1M大小哦');
+          error(file.name + '超过1M大小哦');
           return false;
         };
       }, // 上传前的验证
@@ -475,10 +478,10 @@
       }, // 点击预览名片
       // 添加人脉标签
       addChangeTag (e) {
-        let tagName = this.$tool.checkArr(e, this.tags_con);
+        let tagName = formatData.checkArr(e, this.tags_con);
         if (tagName !== undefined) {
           if (tagName.length > 40) {
-            this.$tool.error('最多输入40个字');
+            error('最多输入40个字');
             this.contacts.user_invest_tag.pop();
           } else {
             this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
@@ -490,21 +493,21 @@
 //                this.$global.func.getWxProjectCategory();
               })
               .catch(err => {
-                this.$tool.error('添加失败');
-                this.$tool.console(err);
+                error('添加失败');
+                console.log(err);
               });
           }
         }
       }, // 添加人脉标签
       checkPhoneNumber (value) {
         let check = false;
-        if (!this.$tool.getNull(value)) {
-          if (!this.$tool.checkNumber(value)) {
-            this.$tool.error('请输入数字值');
+        if (!validata.getNull(value)) {
+          if (!validata.checkNumber(value)) {
+            error('请输入数字值');
             check = false;
           } else {
-            if (!this.$tool.checkPhoneNumber(value)) {
-              this.$tool.error('请输入正确的手机号');
+            if (!validata.checkPhoneNumber(value)) {
+              error('请输入正确的手机号');
               check = false;
             } else {
               check = true;
@@ -517,9 +520,9 @@
       }, // 验证手机号高级版
       checkEmail (value) {
         let check = false;
-        if (!this.$tool.getNull(value)) {
-          if (!this.$tool.checkEmail(value)) {
-            this.$tool.error('请输入正确的邮箱');
+        if (!validata.getNull(value)) {
+          if (!validata.checkEmail(value)) {
+            error('请输入正确的邮箱');
             check = false;
           } else {
             check = true;
@@ -534,9 +537,9 @@
         let contacts = this.submitForm('contacts');
         let contacts1 = this.submitForm('contacts1');
         let contacts2 = this.submitForm('contacts2');
-        if (this.$tool.getNull(this.contacts.user_real_name)) { this.$tool.error('姓名不能为空'); } else if (this.$tool.checkLength(this.contacts.user_real_name)) { this.$tool.error('姓名不超过20字'); } else if (this.$tool.checkLength(this.contacts.user_nickname)) { this.$tool.error('昵称不超过20字'); } else if (!this.checkEmail(this.contacts.user_email)) { this.$tool.console('请输入正确的邮箱邮箱'); } else if (!this.checkPhoneNumber(this.contacts.user_mobile)) { this.$tool.console('请输入正确的电话'); } else if (this.$tool.checkLength1(this.contacts.user_company_name)) { this.$tool.error('公司不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_brand)) { this.$tool.error('品牌不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_company_career)) { this.$tool.error('职位不超过40字'); } else if (!contacts) {} else if (!contacts1) { this.$tool.error('投资需求不超过500字'); } else if (!contacts2) { this.$tool.error('资源需求不超过500字'); } else {
+        if (validata.getNull(this.contacts.user_real_name)) { error('姓名不能为空'); } else if (this.$tool.checkLength(this.contacts.user_real_name)) { error('姓名不超过20字'); } else if (this.$tool.checkLength(this.contacts.user_nickname)) { error('昵称不超过20字'); } else if (!this.checkEmail(this.contacts.user_email)) { } else if (!this.checkPhoneNumber(this.contacts.user_mobile)) { } else if (this.$tool.checkLength1(this.contacts.user_company_name)) { error('公司不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_brand)) { error('品牌不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_company_career)) { error('职位不超过40字'); } else if (!contacts) {} else if (!contacts1) { error('投资需求不超过500字'); } else if (!contacts2) { error('资源需求不超过500字'); } else {
           this.zgClick('提交人脉');
-          this.$tool.setTag(this.contacts.user_invest_tag, this.tags.changecont);
+          formatData.setTag(this.contacts.user_invest_tag, this.tags.changecont);
           let allData = {};
           allData = this.contacts;
           allData.user_id = localStorage.user_id;
@@ -550,8 +553,8 @@
 //              //路由传参
             })
             .catch(err => {
-              this.$tool.error('编辑失败');
-              this.$tool.console(err);
+              error('编辑失败');
+              console.log(err);
               this.loading = false;
             });
         }
@@ -586,9 +589,7 @@
               }, 300);
             })
             .catch(err => {
-//          this.alert("加载失败");
               console.log(err);
-              this.$tool.console(this.restaurants);
             });
         } else {
           let callback = [];
@@ -648,25 +649,23 @@
             this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.card_id})
               .then(res => {
                 if (res.data.status_code === 420008) {
-                  this.$tool.warning('这不是您的人脉,您无权查看');
+                  warning('这不是您的人脉,您无权查看');
                   this.loading = false;
                   this.$router.push({name: 'index'});// 路由传参
                 } else {
                   let data = res.data.data;
-                  data.user_invest_industry = this.$tool.setIdToArr(data.user_invest_industry, 'industry_id');
-                  data.user_invest_stage = this.$tool.setIdToArr(data.user_invest_stage, 'stage_id');
-                  data.user_invest_scale = this.$tool.setIdToArr(data.user_invest_scale, 'scale_id');
-                  data.user_resource_find = this.$tool.setIdToArr(data.user_resource_find, 'resource_id');
-                  data.user_resource_give = this.$tool.setIdToArr(data.user_resource_give, 'resource_id');
-                  data.user_invest_area = this.$tool.setIdToArr(data.user_invest_area, 'area_id');
-                  data.user_invest_tag = this.$tool.setIdToArr(data.user_invest_tag, 'tag_id');
+                  data.user_invest_industry = formatData.setIdToArr(data.user_invest_industry, 'industry_id');
+                  data.user_invest_stage = formatData.setIdToArr(data.user_invest_stage, 'stage_id');
+                  data.user_invest_scale = formatData.setIdToArr(data.user_invest_scale, 'scale_id');
+                  data.user_resource_find = formatData.setIdToArr(data.user_resource_find, 'resource_id');
+                  data.user_resource_give = formatData.setIdToArr(data.user_resource_give, 'resource_id');
+                  data.user_invest_area = formatData.setIdToArr(data.user_invest_area, 'area_id');
+                  data.user_invest_tag = formatData.setIdToArr(data.user_invest_tag, 'tag_id');
                   this.setImage(data.user_image);
                   if (data.user_image.length === 0) { this.uploadShow = {}; this.planList = []; }
                   this.contacts = data;
                   this.tags_con = this.tags.changecont.slice(0);
                   this.loading = false;
-//          this.$tool.console(this.$tool.getToObject(data));
-//            console.log(this.$tool.getToObject(data));
                   if (this.planList.length !== 0) this.planButton = false;
                   else this.planButton = true;
                 }

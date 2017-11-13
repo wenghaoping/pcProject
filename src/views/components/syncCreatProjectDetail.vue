@@ -21,12 +21,12 @@
                 <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               </div>
               <div class="tag" style="padding-top: 20px;    display: inline-block;">
-                <span class="tag-bottom" style="margin-right: 11px;" v-if="project.tag.length!=0"><img src="../assets/images/tag2.png"></span>
+                <span class="tag-bottom" style="margin-right: 11px;" v-if="project.tag.length!=0"><img src="../../assets/images/tag2.png"></span>
                 <span class="tag-bottom" v-if="project.tag.length!=0"><i v-for="tag in project.tag">{{tag}}　</i></span>
               </div>
               <div class="onlyone">
-                <img v-if="project.is_exclusive==1" src="../assets/images/onlyonedark.png"/>
-                <img v-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>
+                <img v-if="project.is_exclusive==1" src="../../assets/images/onlyonedark.png"/>
+                <img v-if="project.is_exclusive==2" src="../../assets/images/onlyonelight.png"/>
                 <!--<img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>-->
               </div>
             </div>
@@ -48,9 +48,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import cirIcon from '../../static/images/circle.png';
-  import pinpai from '../../static/images/icon-pinpa.png';
-  import yunying from '../../static/images/icon-yunying.png';
+  import cirIcon from '../../../static/images/circle.png';
+  import pinpai from '../../../static/images/icon-pinpa.png';
+  import yunying from '../../../static/images/icon-yunying.png';
+  import { warning } from '@/utils/notification';
   const checkAllOption = ['project'];
   export default {
     props: ['syncCreatProjectDetailDisplay', 'companyid'],
@@ -175,7 +176,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       },
       // 全选时
@@ -193,7 +194,7 @@
       syncTrue () {
         this.$store.state.syncData.checkedSync = this.checkedSync;
         if (this.checkedSync.length === 0) {
-          this.$tool.warning('请勾选你要同步的模块');
+          warning('请勾选你要同步的模块');
         } else {
           this.$emit('syncCompanyData', {cover: this.cover});
           this.$emit('changeSyncProjectDetail', false);

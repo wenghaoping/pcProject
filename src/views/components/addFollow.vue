@@ -253,6 +253,9 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import * as validata from '@/utils/validata';
+  import { error, success } from '@/utils/notification';
+  import * as formatData from '@/utils/formatData';
   export default {
     props: {
       followDisplay: {
@@ -279,12 +282,12 @@
     },
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
-        if (!this.$tool.getNull(value)) {
+        if (!validata.getNull(value)) {
           setTimeout(() => {
-            if (!this.$tool.checkNumber(value)) {
+            if (!validata.checkNumber(value)) {
               callback(new Error('请输入数字值'));
             } else {
-              if (!this.$tool.checkPhoneNumber(value)) {
+              if (!validata.checkPhoneNumber(value)) {
                 callback(new Error('请输入正确的手机号'));
               } else {
                 callback();
@@ -414,7 +417,7 @@
         if (!this.submitButton) {
           this.$emit('closeFollow', false);
         } else {
-          this.$tool.error('请等待上传成功后关闭或取消上传');
+          error('请等待上传成功后关闭或取消上传');
         }
       }, // 关闭
       saveSecond () {
@@ -455,20 +458,20 @@
         let name = item.value;
         let na = item.na || '';
         if (item.label === 0) {
-          if (this.$tool.getNull(na)) {
-            this.$tool.error('名字不能为空');
+          if (validata.getNull(na)) {
+            error('名字不能为空');
             this.follow.card_name = '';
             return false;
           }
           if (name.length > 20) {
-            this.$tool.error('名字不能超过20个字');
+            error('名字不能超过20个字');
             this.follow.card_name = '';
           } else {
             this.loading = true;
             this.$http.post(this.URL.createUserCard, {user_id: localStorage.user_id, user_real_name: item.na})
               .then(res => {
                 this.loading = false;
-                this.$tool.success('添加成功');
+                success('添加成功');
                 this.follow.card_id = res.data.card_id;
                 this.follow.card_name = item.na;
                 this.follow.type = 'card';
@@ -476,8 +479,8 @@
               })
               .catch(err => {
                 this.loading = false;
-                this.$tool.error('添加失败');
-                this.$tool.console(err);
+                error('添加失败');
+                console.log(err);
                 this.follow.card_name = item.na;
               });
           }
@@ -566,7 +569,7 @@
             this.groups.group = this.getFileType(data);
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       }, // 设置文件分组标签
       setUploadShow (data) {
@@ -585,7 +588,7 @@
               .then(res => {
                 let data = res.data.data;
 //            data.schedule_id=data.schedule_id;
-                this.$tool.setTimeToReallyTime1(data, 'meet_time');// 时间格式设置
+                formatData.setTimeToReallyTime1(data, 'meet_time');// 时间格式设置
                 data.file_id = [];
                 this.typein = data.type;
                 this.follow = data;
@@ -594,7 +597,7 @@
                 this.loading = false;
               })
               .catch(err => {
-                this.$tool.console(err);
+                console.log(err);
               });
           } else {
             this.loading = false;
@@ -618,11 +621,11 @@
           }
         }
         if (!isnext) {
-          this.$tool.error(file.name + '是不支持的文件格式');
+          error(file.name + '是不支持的文件格式');
           return false;
         }
         if (parseInt(file.size) > parseInt(52428810)) {
-          this.$tool.error(file.name + '超过50m文件大小');
+          error(file.name + '超过50m文件大小');
           return false;
         };
         this.addDomain('其他', file.name, 0, 4, true, file.uid);
@@ -639,14 +642,13 @@
       },
       uploadsuccess (response, file, fileList) {
         let data = response.data;
-//        this.$tool.success("上传成功");
         this.deleteLoad(file.uid);
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type, false, file.uid);
         this.subButtonCheck(this.uploadShow.lists);
       }, // 上传成功
       uploaderror (err, file, fileList) {
         console.log(err);
-        this.$tool.error('上传失败,请联系管理员');
+        error('上传失败,请联系管理员');
       }, // 上传失败
       download (item) {
         let index = this.uploadShow.lists.indexOf(item);
@@ -668,12 +670,12 @@
               if (res.status === 200) {
                 this.loading = false;
                 this.uploadShow.lists.splice(index, 1);
-                this.$tool.success('删除成功');
+                success('删除成功');
               }
             })
             .catch(err => {
-              this.$tool.console(err);
-              this.$tool.error('删除失败,请联系管理员');
+              console.log(err);
+              error('删除失败,请联系管理员');
             });
         }
       }, // 删除当前上传文件
@@ -741,10 +743,9 @@
                 this.groups.input = '';
               })
               .catch(err => {
-                this.$tool.console(err);
+                console.log(err);
               });
           } else {
-            this.$tool.console('error submit!!');
             return false;
           }
         });
@@ -766,7 +767,7 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       }, // 发送分组设置请求
       toGroup (item) {
@@ -816,12 +817,12 @@
           .then((data) => {
             if (data) {
               if (this.follow.card_name === '') this.follow.card_id = '';
-              if (this.$tool.getNull(this.follow.card_id) && !this.$tool.getNull(this.follow.card_name)) {
-                this.$tool.error('请选择或添加正确的投资人');
-              } else if (this.$tool.getNull(this.follow.project_id)) this.$tool.error('请选择正确的项目');
-              else if (this.$tool.getNull(this.follow.project_name)) this.$tool.error('请选择正确的项目');
+              if (validata.getNull(this.follow.card_id) && !validata.getNull(this.follow.card_name)) {
+                error('请选择或添加正确的投资人');
+              } else if (validata.getNull(this.follow.project_id)) error('请选择正确的项目');
+              else if (validata.getNull(this.follow.project_name)) error('请选择正确的项目');
               else {
-                this.$tool.setReallyTimeToTime1(this.follow, 'meet_time', 'meet_time_stamp');// 标准时间转化为时间戳（单个数据）
+                formatData.setReallyTimeToTime1(this.follow, 'meet_time', 'meet_time_stamp');// 标准时间转化为时间戳（单个数据）
                 this.follow.follow_id = this.follow_id;
                 if (this.follow.follow_id === '') delete this.follow.follow_id;
                 delete this.follow.files;
@@ -840,7 +841,7 @@
                       this.follow_id = res.data.data;
                       this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
                     } else {
-                      this.$tool.error(res.data.error_msg);
+                      error(res.data.error_msg);
                     }
                     this.loading = false;
 //              this.getFollow.user_id=localStorage.user_id;
@@ -871,6 +872,13 @@
       },
       clearData () {
         this.uploadShow.lists = [];
+        this.investor_id = this.investorid || '';
+        this.follow.file_id = [];
+        this.fileList = [];
+        this.follow.project_id = this.projectid || '';
+        this.follow.project_name = this.projectname || '';
+        this.follow.card_id = this.cardid || '';
+        this.follow.card_name = this.cardname || '';
         this.investor_id = this.investorid || '';
         this.saveJumpData = this.follow;
       }// 清除所有数据

@@ -21,6 +21,7 @@
   import c from '../../../static/images/touzifang.png';
   import d from '../../../static/images/chuangyezhe.png';
   import e from '../../../static/images/qita.png';
+  import { error } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -68,11 +69,11 @@
               this.getUserGroupByStatusName(localStorage.user_id);
               this.$router.push('/identityDetail');
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
             }
           });
         } else {
-          this.$tool.error('请选择身份');
+          error('请选择身份');
         }
       },
       // 获取身份列表信息

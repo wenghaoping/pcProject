@@ -22,7 +22,7 @@
           </el-row>
           <el-row :span="24">
             <el-col :span="4"><div class="content left">成立日期</div></el-col>
-            <el-col :span="8"><div class="content right">{{company.company_register_date}}</div></el-col>
+            <el-col :span="8"><div class="content right">{{company.company_register_date | timeToReallTime}}</div></el-col>
             <el-col :span="4"><div class="content left">公司规模</div></el-col>
             <el-col :span="8"><div class="content right">{{company.company_team_size}}</div></el-col>
           </el-row>
@@ -137,11 +137,9 @@
     },
     methods: {
       handleClick (tab, event) {
-//      this.$tool.console(tab, event);
       },
       getCrawlerCompany () {
         let data = this.comMessage || {};
-        data.company.company_register_date = this.$tool.formatDateTime(data.company.company_register_date);
         this.company = data.company;
         this.company.company_project = data.project_product;
         this.productMessage = '产品信息' + '(' + data.project_product.length + ')';

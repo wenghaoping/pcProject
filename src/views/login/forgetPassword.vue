@@ -20,6 +20,8 @@
 
 
 <script type="text/ecmascript-6">
+  import * as validata from '@/utils/validata';
+  import { error } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -39,8 +41,8 @@
       },
       // 获取验证码
       getCode () {
-        if (!this.$tool.checkPhoneNumber(this.telephone)) {
-          this.$tool.error('请正确输入手机号码');
+        if (!validata.checkPhoneNumber(this.telephone)) {
+          error('请正确输入手机号码');
         } else {
           this.$http.post(this.URL.resetPasswordCaptcha, {
             user_mobile: this.telephone
@@ -55,34 +57,32 @@
                 this.captchaNum = 60;
                 this.is_getCode = 0;
               }, 60000);
-              this.$tool.console('验证码发送成功');
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
             }
           });
         }
       },
       // 登录
       next () {
-        if (!this.$tool.checkPhoneNumber(this.telephone)) {
-          this.$tool.error('请正确输入手机号码');
-        } else if (this.$tool.getNull(this.captcha)) {
-          this.$tool.error('请正确输入验证码');
-        } else if (this.$tool.getNull(this.resetPassword)) {
-          this.$tool.error('请正确输入重置密码');
+        if (!validata.checkPhoneNumber(this.telephone)) {
+          error('请正确输入手机号码');
+        } else if (validata.getNull(this.captcha)) {
+          error('请正确输入验证码');
+        } else if (validata.getNull(this.resetPassword)) {
+          error('请正确输入重置密码');
         } else if (this.$tool.checkPassword(this.resetPassword)) {
-          this.$tool.error('重置密码长度应为6-20');
+          error('重置密码长度应为6-20');
         } else {
           this.$http.post(this.URL.resetPassword, {
             user_mobile: parseInt(this.telephone),
             captcha: parseInt(this.captcha),
             user_passwd: this.resetPassword
           }).then(res => {
-            this.$tool.console(res);
             if (res.data.status_code === 2000000) {
               this.$router.push({name: 'telephoneLogin'});
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
             }
           });
         }

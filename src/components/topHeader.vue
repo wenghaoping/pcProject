@@ -146,7 +146,7 @@
               }, 500);
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
             });
         } else {
           let callback = [];
@@ -170,7 +170,7 @@
           })
           .catch(err => {
             this.$tool.error('获取失败');
-            this.$tool.console(err);
+            console.log(err);
             this.loading = false;
           });
       },

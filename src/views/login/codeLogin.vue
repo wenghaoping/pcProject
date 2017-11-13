@@ -12,6 +12,8 @@
 
 
 <script type="text/ecmascript-6">
+  import * as validata from '@/utils/validata';
+  import { error } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -27,10 +29,10 @@
       },
       // 登录
       login () {
-        if (!this.$tool.checkPhoneNumber(this.telephone)) {
-          this.$tool.error('请正确填写手机号码');
-        } else if (this.$tool.getNull(this.password)) {
-          this.$tool.error('请正确填写密码');
+        if (!validata.checkPhoneNumber(this.telephone)) {
+          error('请正确填写手机号码');
+        } else if (validata.getNull(this.password)) {
+          error('请正确填写密码');
         } else {
           this.loading = true;
           this.$http.post(this.URL.loginForPassword, {
@@ -62,7 +64,7 @@
                 this.$router.push({name: localStorage.entrance});
               }
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
               this.loading = false;
             }
           });

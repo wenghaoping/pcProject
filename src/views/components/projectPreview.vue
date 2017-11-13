@@ -39,7 +39,7 @@
           <div class="item-lists clearfix" style="">
             <div class="ul-lists">
               <div class="item">
-                <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
+                <span class="title"><img class="img" src="../../assets/images/projectIntroduce.png">项目介绍</span>
                 <span class="flower" v-show="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
               </div>
               <div class="item" style="margin-top:33px;">
@@ -47,7 +47,7 @@
               </div>
               <div class="item" style="margin-top:24px;">
                 <div class="paper" v-if="file.pro_BP.length!=0">
-                  <img class="img" style="padding-left: 16px;" src="../../../assets/images/paper.png">
+                  <img class="img" style="padding-left: 16px;" src="../../assets/images/paper.png">
                   <span class="pt">{{file.pro_BP.file_title}}</span>
 
                 </div>
@@ -99,7 +99,7 @@
             <!--核心团队-->
             <div class="ul-lists" style="margin-top:16px;" v-show="team.core_users!=''||team.tag!=''" >
               <div class="item">
-                <span class="title"><img class="img" src="../../../assets/images/team.png">核心团队</span>
+                <span class="title"><img class="img" src="../../assets/images/team.png">核心团队</span>
               </div>
               <div class="item" v-show="team.tag!=''" style="margin-top:33px;">
                 <span class="person-tag" v-for="tag1 in team.tag">{{tag1.tag_name}}</span>
@@ -185,7 +185,7 @@
             <!--融资信息-->
             <div class="ul-lists" v-show="financing.pro_finance_use!=''||financing.pro_history_finance.length!=0" style="margin-top:16px;">
               <div class="item">
-                <span class="title"><img class="img" src="../../../assets/images/money.png">融资信息</span>
+                <span class="title"><img class="img" src="../../assets/images/money.png">融资信息</span>
                 <div class="rz-details">
                   <div class="rz-detail">
                     <p class="det-title">期望融资</p>
@@ -213,7 +213,7 @@
                   <div class="v-progress-table">
                     <div class="v-progress-txt" style="height: 45px;" v-for="finance in financing.pro_history_finance">
                       <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
-                      <span class="pro-txt-1">{{finance.finance_time}}</span>
+                      <span class="pro-txt-1">{{finance.finance_time | timeToReallTime}}</span>
                       <span class="pro-txt-2">{{finance.pro_finance_scale}}</span>
                       <span class="pro-txt-3" style="width: 68px;">{{finance.belongs_to_stage.stage_name}}</span>
                       <el-tooltip class="item" effect="dark"  placement="top" >
@@ -230,7 +230,7 @@
             <!--里程碑-->
             <div class="ul-lists" style="margin-top:16px;margin-bottom: 30px" v-show="milepost.pro_develop!=''" >
               <div class="item">
-                <span class="title"><img class="img" src="../../../assets/images/Milepost.png">里程碑</span>
+                <span class="title"><img class="img" src="../../assets/images/Milepost.png">里程碑</span>
               </div>
               <div class="item" style="margin-top:6px;">
                 <div>
@@ -238,7 +238,7 @@
                     <div class="v-progress-txt" style="height: 45px;" v-for="develop in milepost.pro_develop">
                       <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                       <span class="pro-txt-1">
-                        {{develop.dh_start_time}}
+                        {{develop.dh_start_time | timeToReallTime}}
                       </span>
                       <span class="pro-txt-2"  style="color:#5e6d82;white-space: normal;word-break: break-all;width: 546px;line-height: 20px">
                         {{develop.dh_event}}
@@ -262,11 +262,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import yichu from '../../../assets/images/icon-yichu.png';
-  import xiaochengxu from '../../../../static/images/xiaochengxu1.png';
-  import pinpai from '../../../../static/images/icon-pinpa.png';
-  import yunying from '../../../../static/images/icon-yunying.png';
-  import cirIcon from '../../../../static/images/circle.png';
+  import yichu from '../../assets/images/icon-yichu.png';
+  import xiaochengxu from '../../../static/images/xiaochengxu1.png';
+  import pinpai from '../../../static/images/icon-pinpa.png';
+  import yunying from '../../../static/images/icon-yunying.png';
+  import cirIcon from '../../../static/images/circle.png';
+  import { success } from '@/utils/notification';
   export default {
     props: ['previewShow', 'investorid', 'comeFrom'],
     data () {
@@ -439,7 +440,6 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err, 2);
             console.log(err);
           });
       }, // 获取当前用户部分信息
@@ -476,10 +476,8 @@
               this.file.pro_BP.file_title = data.file.pro_BP.file_title + '.' + data.file.pro_BP.file_ext;
               this.file = data.file;
               // 融资信息
-              this.$tool.setTime(data.financing.pro_history_finance, 'finance_time');
               this.financing = data.financing;
               // 里程碑
-              this.$tool.setTime(data.milepost.pro_develop, 'dh_start_time');
               this.milepost = data.milepost;
               // FA业务
               this.private = data.private;
@@ -505,7 +503,7 @@
               this.loading = false;
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
             });
         });
       }, // 获取项目详情数据
@@ -515,14 +513,14 @@
             .then(res => {
               if (res.data.status_code === 2000000) {
                 // let data = res.data.data;
-                this.$tool.success('推送成功');
+                success('推送成功');
                 this.$emit('closePreviewANDProjectPush', false);// 关闭所有的弹框包括预览,推送
                 this.$emit('closePreview', false);// 关闭预览弹框
               }
             })
             .catch(err => {
-              this.$tool.console(err);
-              this.$tool.success('推送失败');
+              console.log(err);
+              success('推送失败');
             });
         } else {
           this.$emit('previewPush', true);
@@ -550,6 +548,6 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/projectPreview';
+  @import '../../assets/css/projectPreview';
 
 </style>

@@ -93,6 +93,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { error, success } from '@/utils/notification';
   export default {
     props: ['uploadDisplay'],
     data () {
@@ -138,15 +139,14 @@
           this.deleteLoad(file.uid);
           this.addDomain(data.pro_intro, data.pro_name, data.file_title, data.project_id, false, file.uid);
           this.subButtonCheck(this.dateForm.domains);
-//          this.$tool.success("上传成功");
         }
       },
       uploaderror (err, file, fileList) {
         console.log(err);
-        this.$tool.error('上传失败');
+        error('上传失败');
       },
       handlePreview (file) {
-        this.$tool.console(file);
+//        console.log(file);
       },
       beforeUpload (file) {
         this.num++;
@@ -164,12 +164,12 @@
         }
 
         if (!isnext) {
-          setTimeout(() => { this.$tool.error(file.name + '是不支持的文件格式'); }, 200);
+          setTimeout(() => { error(file.name + '是不支持的文件格式'); }, 200);
           this.num = 0;
           return false;
         }
         if (parseInt(file.size) > parseInt(52428810)) {
-          setTimeout(() => { this.$tool.error(file.name + '超过50m哦'); }, 200);
+          setTimeout(() => { error(file.name + '超过50m哦'); }, 200);
           this.num = 0;
           return false;
         }
@@ -210,21 +210,19 @@
             const saveUploadURL = this.URL.saveUpload;
             this.$http.post(saveUploadURL, obj)
               .then(res => {
-//              this.$tool.console(res);
                 if (res.status === 200) {
                   this.$emit('uploadDisplayChange', false);
                   this.$emit('reload', true);
                   this.dateForm.domains = [];
                   this.fileList = [];
-                  this.$tool.success('批量上传成功');
+                  success('批量上传成功');
                 }
                 this.loading = false;
               }).catch(err => {
-                this.$tool.console(err);
+                console.log(err);
               });
             this.$refs.upload.submit();
           } else {
-            this.$tool.console('error submit!!');
             return false;
           }
         });
@@ -247,7 +245,7 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       },
       // 取消上传
@@ -280,12 +278,11 @@
                   .then(res => {
                     if (res.status === 200) {
                       this.loading = false;
-                      this.$tool.success('删除成功');
+                      success('删除成功');
                     }
-                    this.$tool.console(res);
                   })
                   .catch(err => {
-                    this.$tool.console(err);
+                    console.log(err);
                   });
               }
               this.$emit('uploadDisplayChange', false);
@@ -293,8 +290,8 @@
               this.dateForm.domains = [];
               this.$refs.upload.clearFiles();
             })
-            .catch(_ => {
-
+            .catch(error => {
+              console.log(error);
             });
         }
       },

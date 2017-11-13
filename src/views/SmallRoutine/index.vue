@@ -26,6 +26,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { error } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -50,10 +51,7 @@
         }
         this.$http.post(this.URL.ajaxPolling, {credential: localStorage.credential})
           .then(res => {
-//          clearInterval(this.timeout);
             let data = res.data;
-//          this.$tool.console(res);
-//            console.log(res);
             if (data.status_msg === 'success') {
               clearInterval(this.timeout);
               localStorage.token = res.data.token;
@@ -71,7 +69,7 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       }// 获取id
 
@@ -85,15 +83,14 @@
       setTimeout(() => {
         this.$http.get(this.URL.returnQrCredential)
           .then(res => {
-            this.$tool.console(res);
             let data = res.data;
             this.qr = data.qr;
             localStorage.credential = data.credential;
             this.loadIn = false;
           })
           .catch(err => {
-            this.$tool.console(err);
-            this.$tool.error('请刷新页面');
+            console.log(err);
+            error('请刷新页面');
           });
         this.timeout = setInterval(() => {
           this.getUserId();

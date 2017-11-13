@@ -369,11 +369,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import alertprojectdetail from '../../../components/alertProjectDetail.vue';
-  import addfollow from '../../components/addFollow.vue';
-
-  import projectpush from './projectPush.vue';
-  import projectpreview from './projectPreview.vue';
+  import alertprojectdetail from '@/views/components/alertProjectDetail.vue';
+  import addfollow from '@/views/components/addFollow.vue';
+  import projectpush from '@/views/components/projectPush.vue';
+  import projectpreview from '@/views/components/projectPreview.vue';
+  import { error, success, warning } from '@/utils/notification';
+  import { checkEmail } from '@/utils/validata';
+  import * as formatData from '@/utils/formatData';
+  import { getTagsPro } from '@/utils/setSelect';
   export default {
     data () {
       return {
@@ -541,7 +544,7 @@
       }, // 获取userid/card_id
       handlePush (data) {
         if (data === 0) {
-          this.$tool.warning('已推送过');
+          warning('已推送过');
         } else {
           this.zgClick('推送项目');
           this.userMessage.user_real_name = this.contacts.user_real_name;
@@ -574,8 +577,8 @@
       }, // 打开预览弹框
       preview () {
         if (this.pushCount !== 0) {
-          if (!this.$tool.checkEmail(this.pushData.email)) this.$tool.error('请输入正确的邮箱');
-          else if (this.pushData.body > 40) this.$tool.error('标题不能大于40个字');
+          if (!checkEmail(this.pushData.email)) error('请输入正确的邮箱');
+          else if (this.pushData.body > 40) error('标题不能大于40个字');
           else {
             this.$store.state.pushProject.project_id = this.$store.state.pushProject.projectMessgae.pro_id;
             this.$store.state.pushProject.user = this.user;
@@ -590,7 +593,7 @@
             this.previewDisplay = true;
           }
         } else {
-          this.$tool.warning('您今日的推送次数已用完,请明天再试');
+          warning('您今日的推送次数已用完,请明天再试');
         }
       }, // 项目预览
 
@@ -629,9 +632,8 @@
             this.loading = false;
           })
           .catch(err => {
-            this.$tool.console(err, 2);
-            this.loading = false;
             console.log(err);
+            this.loading = false;
           });
       }, // 控制意向项目页码
       handleClick (tab, event) {
@@ -706,9 +708,9 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
-              this.$tool.error('加载超时');
+              error('加载超时');
             });
           resolve(4);
         });
@@ -724,11 +726,11 @@
         let newArr = [];
         arr.forEach((x) => {
           let obj = {};
-          obj.case_deal_time = this.$tool.formatDateTime(x.case_deal_time);
+          obj.case_deal_time = formatData.formatDateTime(x.case_deal_time);
           obj.case_stage_name = x.case_stage_name;
           obj.case_name = x.case_name;
           obj.case_money = x.case_money;
-          obj.has_many_industry = this.$tool.setTagToString(x.has_many_industry, 'industry_name');
+          obj.has_many_industry = formatData.setTagToString(x.has_many_industry, 'industry_name');
           if (x.has_one_cit == null) x.has_one_city.area_title = '';
           obj.has_one_city = x.has_one_city.area_title;
           newArr.push(obj);
@@ -741,17 +743,16 @@
           this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.contacts.card_id})
             .then(res => {
               if (res.data.status_code === 420008) {
-                this.$tool.warning('这不是您的人脉,您无权查看');
+                warning('这不是您的人脉,您无权查看');
                 this.loading = false;
                 this.$router.push({name: 'index'});// 路由传参
               } else {
                 let data = res.data.data;
-//          this.$tool.console(this.$tool.getToObject(data));
-                data.user_invest_industry = this.$tool.setTagToString(data.user_invest_industry, 'industry_name');
-                data.user_invest_stage = this.$tool.setTagToString(data.user_invest_stage, 'stage_name');
-                data.user_invest_scale = this.$tool.setTagToString(data.user_invest_scale, 'scale_money');
-                data.user_resource_find = this.$tool.setTagToString(data.user_resource_find, 'resource_name');
-                data.user_resource_give = this.$tool.setTagToString(data.user_resource_give, 'resource_name');
+                data.user_invest_industry = formatData.setTagToString(data.user_invest_industry, 'industry_name');
+                data.user_invest_stage = formatData.setTagToString(data.user_invest_stage, 'stage_name');
+                data.user_invest_scale = formatData.setTagToString(data.user_invest_scale, 'scale_money');
+                data.user_resource_find = formatData.setTagToString(data.user_resource_find, 'resource_name');
+                data.user_resource_give = formatData.setTagToString(data.user_resource_give, 'resource_name');
                 data.project_case = this.setProjectCase(data.project_case);
                 data.user_email = data.user_email;
                 data.user_company_name = data.user_company_name || '暂无填写';
@@ -759,7 +760,7 @@
                 data.user_company_career = data.user_company_career || '暂无填写';
                 data.user_mobile = data.user_mobile || '暂无填写';
                 data.user_intro = data.user_intro || '';
-                data.user_avatar_txt = this.$tool.setUrlChange(data.user_avatar_url, data.user_real_name);
+                data.user_avatar_txt = formatData.setUrlChange(data.user_avatar_url, data.user_real_name);
                 if (data.user_invest_industry === '' && data.user_invest_stage === '' && data.user_invest_scale === '' && data.user_invest_desc === '') {
                   this.user_invest = false;// 投资需求
                 } else {
@@ -777,9 +778,8 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err, 2);
-//              this.loading=false;
               console.log(err);
+              this.loading = false;
             });
         });
       }, // 获取个人详情
@@ -796,10 +796,10 @@
         });
       }, // 获取所有下拉框的数据
       addChangeTag (e) {
-        let tagName = this.$tool.checkArr(e, this.addTags);
+        let tagName = formatData.checkArr(e, this.addTags);
         if (tagName !== undefined) {
           if (tagName.length > 40) {
-            this.$tool.error('最多输入40个字');
+            error('最多输入40个字');
             this.tagsValue.pop();
           } else {
             this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
@@ -810,27 +810,27 @@
                 this.tags.changecont.push(newState);
               })
               .catch(err => {
-                this.$tool.error('添加失败');
-                this.$tool.console(err);
+                error('添加失败');
+                console.log(err);
               });
           }
         }
       }, // 添加项目标签
       addTag () {
         this.loading = true;
-        this.$tool.setTag(this.tagsValue, this.tags.changecont);
+        formatData.setTag(this.tagsValue, this.tags.changecont);
         this.$http.post(this.URL.setConnectTag, {user_id: localStorage.user_id, card_id: this.tags.card_id, tag: this.tagsValue})
           .then(res => {
             this.loading = false;
-            this.$tool.success('设置成功');
+            success('设置成功');
             this.setTagDisplay = false;
             this.gettags_user();
             setTimeout(() => { this.getOneUserInfo(); }, 100);
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.error('添加失败');
-            this.$tool.console(err);
+            error('添加失败');
+            console.log(err);
             this.setTagDisplay = false;
           });
       }, // 保存标签选择
@@ -838,7 +838,7 @@
         this.$http.post(this.URL.getWxProjectCategory, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
-            this.addTags = this.$tool.getTags_pro(data.tags_user);// 设置人脉标签
+            this.addTags = getTagsPro(data.tags_user);// 设置人脉标签
             this.$global.func.getWxProjectCategory();
             this.getWxProjectCategory();
           });
@@ -857,9 +857,9 @@
               resolve(5);
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
-              this.$tool.error('加载超时');
+              error('加载超时');
             });
         });
       }, // 获取意向项目数据(图表)
@@ -887,7 +887,6 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err, 2);
               console.log(err);
             });
         });
@@ -1023,15 +1022,15 @@
             schedule_id: scheduleId
           })
             .then(res => {
-              this.$tool.success('设置成功');
+              success('设置成功');
               this.scheduleIndex = -1;
               this.loading = false;
               this.getEchartData();
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
-              this.$tool.error('加载超时');
+              error('加载超时');
             });
         }
         return width;
@@ -1087,9 +1086,9 @@
               resolve(6);
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
-              this.$tool.error('加载超时');
+              error('加载超时');
             });
         });
       }, // 获取匹配项目列表
@@ -1150,15 +1149,15 @@
           this.$http.post(this.URL.exceptMatchAction, delData)
             .then(res => {
               if (res.data.status_code === 2000000) {
-                this.$tool.success('移除成功');
+                success('移除成功');
                 this.getInvestorsMatchProjects();
               }
               this.loading = false;
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
-              this.$tool.error('加载超时');
+              error('加载超时');
             });
         }).catch(() => {
           this.$message({
@@ -1174,10 +1173,9 @@
           .then(res => {
             let data = res.data.data;
             this.pushCount = data.push_count.remain_times;
-//          this.$tool.console(data.push_count);
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
             this.loading = false;
           });
       }, // 获取剩余推送次数
@@ -1205,21 +1203,21 @@
             .then(res => {
               if (res.data.status_code === 2000000) {
                 // let data = res.data.data;
-                this.$tool.success('推送成功');
+                success('推送成功');
                 this.getpushCount();
                 this.getInvestorsMatchProjects();
                 this.dialogPushVisible = false;
               } else {
-                this.$tool.error(res.data.error_msg);
+                error(res.data.error_msg);
               }
             })
             .catch(err => {
-              this.$tool.console(err);
-              this.$tool.success('推送失败');
+              console.log(err);
+              success('推送失败');
               this.dialogPushVisible = false;
             });
         } else {
-          this.$tool.warning('您今日的推送次数已用完');
+          warning('您今日的推送次数已用完');
         }
       }// 推送
     },

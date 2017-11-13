@@ -5,6 +5,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { error, success, warning } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -38,21 +39,21 @@
         this.$http.post(this.URL.importProject, {user_id: sessionStorage.userId, project_id: sessionStorage.projectId})
           .then(res => {
             if (res.data.status_code === 2000000) {
-              this.$tool.success('项目导入成功');
+              success('项目导入成功');
               sessionStorage.flog = '';// 把默认值清空;
               setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 50);
             }
           })
           .catch(err => {
             console.log(err);
-            this.$tool.error('项目导入失败');
+            error('项目导入失败');
             sessionStorage.flog = '';// 把默认值清空;
             setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 50);
           });
         this.loading = false;
       } else if (sessionStorage.userId !== localStorage.user_id) {
         // 推送者和接受者是不是一人时
-        this.$tool.warning('此链接不是分享给您的,请进入正确的链接');
+        warning('此链接不是分享给您的,请进入正确的链接');
         sessionStorage.clear();// 把默认值清空;
         setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 1000);
       }

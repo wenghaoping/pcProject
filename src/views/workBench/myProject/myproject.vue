@@ -342,14 +342,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import ElButton from '../../../../node_modules/element-ui/packages/button/src/button';
   import alertUpload from './alertUpload.vue';
-  import addfollow from '../../components/addFollow.vue';
-  import projectpushtopro from './projectPushToPro.vue';
-  import projectpreview from '../myContacts/projectPreview.vue';
+  import addfollow from '@/views/components/addFollow.vue';
+  import projectpushtopro from '@/views/components/projectPushToPro.vue';
+  import projectpreview from '@/views/components/projectPreview.vue';
+  import * as formatData from '@/utils/formatData';
+  import { getTitleSift } from '@/utils/setSelect';
+  import { error, success } from '@/utils/notification';
   export default {
     components: {
-      ElButton,
       alertUpload,
       addfollow,
       projectpreview,
@@ -523,7 +524,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 搜索===首次进入页面加载的数据
 
@@ -570,7 +571,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 筛选 ascending升/descending降/
       filterChangeCurrent (page) {
@@ -583,14 +584,13 @@
           .then(res => {
             this.loading = false;
             let data = res.data.data;
-            this.$tool.console(res);
             this.tableData = this.getProjectList(data);
             this.totalData = res.data.count;
             this.$tool.getTop();
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 控制页码
 
@@ -618,7 +618,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err, 2);
           });
       }, // 控制顶部样式并且筛选
 
@@ -682,22 +682,21 @@
         this.$http.post(titleSiftURL, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
-//            this.$tool.console(data)
             let proArea = data.pro_area;// 地区
             let proIndustry = data.pro_industry;// 领域
             let proScale = data.pro_scale;// 期望融资
             let proSchedule = data.pro_schedule;// 跟进状态
             let proSsource = data.pro_source;// 项目来源
             let proStage = data.pro_stage;// 轮次
-            this.pro_areaFilters = this.$tool.getTitleSift(proArea);
-            this.pro_industryFilters = this.$tool.getTitleSift(proIndustry);
-            this.pro_scaleFilters = this.$tool.getTitleSift(proScale);
-            this.pro_scheduleFilters = this.$tool.getTitleSift(proSchedule);
-            this.pro_sourceFilters = this.$tool.getTitleSift(proSsource);
-            this.pro_stageFilters = this.$tool.getTitleSift(proStage);
+            this.pro_areaFilters = getTitleSift(proArea);
+            this.pro_industryFilters = getTitleSift(proIndustry);
+            this.pro_scaleFilters = getTitleSift(proScale);
+            this.pro_scheduleFilters = getTitleSift(proSchedule);
+            this.pro_sourceFilters = getTitleSift(proSsource);
+            this.pro_stageFilters = getTitleSift(proStage);
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 获取表头
 
@@ -708,14 +707,14 @@
           obj.pro_name = list[i].pro_name;
           obj.pro_intro = list[i].pro_intro;
           obj.pro_company_name = list[i].pro_company_name;
-          obj.pro_source = this.$tool.setTagToString(list[i].pro_source, 'tag_name');
+          obj.pro_source = formatData.setTagToString(list[i].pro_source, 'tag_name');
           obj.pro_follow_up_user = list[i].pro_follow_up_user;
           obj.pro_schedule = list[i].pro_schedule;
-          obj.pro_industry = this.$tool.setTagToString(list[i].pro_industry, 'industry_name');
+          obj.pro_industry = formatData.setTagToString(list[i].pro_industry, 'industry_name');
           obj.is_exclusive = list[i].is_exclusive;
-          obj.pro_stage = this.$tool.setTagToString(list[i].pro_stage, 'stage_name');
-          obj.pro_area = this.$tool.setTagToString(list[i].pro_area, 'area_title');
-          obj.pro_scale = this.$tool.setTagToString(list[i].pro_scale, 'scale_money');
+          obj.pro_stage = formatData.setTagToString(list[i].pro_stage, 'stage_name');
+          obj.pro_area = formatData.setTagToString(list[i].pro_area, 'area_title');
+          obj.pro_scale = formatData.setTagToString(list[i].pro_scale, 'scale_money');
           obj.project_id = list[i].project_id;
           obj.created_at = list[i].created_at;
           obj.moreShow = '';
@@ -739,14 +738,14 @@
             this.$http.post(this.URL.deleteProject, {user_id: localStorage.user_id, project_id: row.project_id})
               .then(res => {
                 this.loading = false;
-                this.$tool.success('删除成功');
+                success('删除成功');
                 this.getRouterData();
                 this.filterChangeCurrent(this.currentPage || 1);
               })
               .catch(err => {
                 this.loading = false;
-                this.$tool.error('删除失败');
-                this.$tool.console(err);
+                error('删除失败');
+                console.log(err);
               });
           }).catch(() => {
             this.$message({

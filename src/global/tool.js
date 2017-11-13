@@ -62,35 +62,19 @@ const tool = {
 
   getNull (data) {
     let reg = /\S/;
-    if (!reg.test(data)) {
-      return true;// 是空
-    } else {
-      return false;// 不是空
-    }
+    return !reg.test(data);
   }, // 判断是不是空(空字符串也算是空)
   checkNumber (data) {
     let reg = new RegExp('^\\d+(\\.\\d+)?$');
-    if (reg.test(data)) {
-      return true;
-    } else {
-      return false;
-    }
+    return reg.test(data);
   }, // 判断是不是非浮点数
   checkEmail (data) {
     let data1 = this.trim(data);
-    // let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-    // let reg= /^[_a-z0-9]+@([_a-z0-9]+\.)+[a-z0-9]{2,3}$/;
     let reg = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-    if (reg.test(data1)) {
-      return true;
-    } else {
-      return false;
-    }
+    return reg.test(data1);
   }, // 邮箱验证
   checkEmail1 (data) {
     let data1 = this.trim(data);
-    // let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-    // let reg= /^[_a-z0-9]+@([_a-z0-9]+\.)+[a-z0-9]{2,3}$/;
     let reg = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
     if (reg.test(data1) || !data1) {
       return true;
@@ -99,19 +83,11 @@ const tool = {
     }
   }, // 邮箱验证(可以为空  为空情况不提示)
   checkURL (data) {
-    if (data.match(/(http[s]?|ftp):\/\/[^\/\.]+?\..+\w$/i) == null) {
-      return false;
-    } else {
-      return true;
-    }
+    return data.match(/(http[s]?|ftp):\/\/[^\/\.]+?\..+\w$/i) == null
   }, // 网址验证
   checkPhoneNumber (data) {
     let reg = /^1(3|4|5|7|8)\d{9}$/;
-    if (reg.test(data)) {
-      return true;
-    } else {
-      return false;
-    }
+    return reg.test(data);
   }, // 电话号码验证
   checkPhoneNumber1 (value) {
     let check = false;
@@ -148,20 +124,6 @@ const tool = {
       return false;
     }
   }, // 长度认证(1-40)
-  checkLength2 (data) {
-    if (data.length > 500) {
-      return true;
-    } else {
-      return false;
-    }
-  }, // 长度认证(1-500)
-  checkLength3 (data) {
-    if (data.length > 200) {
-      return true;
-    } else {
-      return false;
-    }
-  }, // 长度认证(1-200)
   checkPassword (data) {
     if (data.length > 20 || data.length < 6) {
       return true;
@@ -169,56 +131,6 @@ const tool = {
       return false;
     }
   }, // 密码长度认证(6-20)
-  checkLength20 (data) {
-    if (typeof data === 'array') {
-      data.forEach(x => {
-        if (x.length > 20) {
-          return true;
-        }
-      });
-      return false;
-    } else {
-      if (data.length > 20) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }, // input框长度验证(超出20字就返回true)
-  checkLength40 (data) {
-    if (typeof data === 'array') {
-      data.forEach(x => {
-        if (x.length > 40) {
-          return true;
-        }
-      });
-      return false;
-    } else {
-      if (data.length > 40) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }, // input框长度验证(超出40字就返回true)
-  getMemberHunder (data) {
-    let check = true;
-    if (this.getNull(data)) {
-
-    } else {
-      if (this.checkNumber(parseFloat(data))) {
-        if (parseFloat(data) > 100) {
-          this.error('核心团队股权比例不能大于100');
-          check = false;
-        }
-      } else {
-        this.error('核心团队股权比例必须为数字');
-        check = false;
-      }
-    }
-
-    return check;
-  }, // 判断成员股权比例
   isArray (o) {
     return Object.prototype.toString.call(o) === '[object Array]';
   }, // 是否为数组
@@ -357,39 +269,6 @@ const tool = {
     return string;
   },
 
-  // 返回的是字符串形式的参数，例如：class_id=3&id=2&
-  getUrlArgStr (data) {
-    var q = data;
-    var qs = q.split('&');
-    var argStr = '';
-    if (qs) {
-      for (var i = 0; i < qs.length; i++) {
-        argStr += qs[i].substring(0, qs[i].indexOf('=')) + '=' + qs[i].substring(qs[i].indexOf('=') + 1) + '&';
-      }
-    }
-    return argStr;
-  },
-  // 返回的是对象形式的参数
-  getUrlArgObject (data) {
-    var args = new Object();
-    var query = data;// 获取查询串
-    var pairs = query.split(',');// 在逗号处断开
-    for (var i = 0; i < pairs.length; i++) {
-      var pos = pairs[i].indexOf('=');// 查找name=value
-      if (pos === -1) { // 如果没有找到就跳过
-        continue;
-      }
-      var argname = pairs[i].substring(0, pos);// 提取name
-      var value = pairs[i].substring(pos + 1);// 提取value
-      args[argname] = unescape(value);// 存为属性
-    }
-    var name = '';
-    for (let key in args) {
-      name = args[key];
-    }
-    return name.split('&');// 返回对象
-  },
-
   // 计时器返回时分秒毫秒
   getIntervalTime () {
     second = second + 2;
@@ -410,7 +289,7 @@ const tool = {
     minute = 0;
     second = 0;
   },
-
+// ===========================================================
 //* 弹框类
   error (text) {
     Notification.error({
@@ -461,7 +340,7 @@ const tool = {
       return -1;// 不是ie浏览器
     }
   }, // 判断是不是IE(所有版本)
-
+// ===========================================================
 //* 请求类
   getCity (data) {
     let arr = [];
@@ -503,7 +382,7 @@ const tool = {
     }
     return arr;
   }, // 获取领域
-  getTags_pro (data) {
+  getTagsPro (data) {
     let arr = [];
     for (let i = 0; i < data.length; i++) {
       let obj = {};

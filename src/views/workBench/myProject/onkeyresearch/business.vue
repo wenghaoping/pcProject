@@ -164,6 +164,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { setTime } from '@/utils/formatData';
   export default {
     props: ['comid', 'busData'],
     data () {
@@ -222,8 +223,8 @@
     methods: {
       getCrawlerBrand () {
         let data = this.busData || {};
-        this.$tool.setTime(data.company_change, 'company_change_time');
-        this.$tool.setTime(data.brand, 'company_brand_time');
+        setTime(data.company_change, 'company_change_time');
+        setTime(data.brand, 'company_brand_time');
         this.business = data;
         this.trademarkMessage = '知识产权-商标信息' + '(' + data.brand.length + ')';
       }// 获取商标信息

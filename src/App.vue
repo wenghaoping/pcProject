@@ -19,6 +19,7 @@
 <script type="text/ecmascript-6">
   import alertIdentity from './views/identity/alertIdentity.vue';
   import topHeader from '@/components/topHeader.vue';
+  import { IEVersion } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -107,7 +108,7 @@
       this.zgIdentify(localStorage.user_id, {name: localStorage.user_real_name});
       this.getCheckUserInfo(localStorage.user_id);
       this.getUserGroupByStatusName(localStorage.user_id);
-      if (this.$tool.IEVersion() !== -1) { alert('请不要使用IE浏览器,建议使用谷歌浏览器及其他浏览器,以获得更好体验'); };
+      if (IEVersion() !== -1) { alert('请不要使用IE浏览器,建议使用谷歌浏览器及其他浏览器,以获得更好体验'); };
     },
     computed: {
 

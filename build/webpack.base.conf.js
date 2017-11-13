@@ -24,9 +24,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'jquery': path.resolve(__dirname, '../node_modules/jquery/src/jquery'),
-      'components': path.resolve(__dirname, '../src/components'),
-      'views': path.resolve(__dirname, '../src/views'),
-      'viewscomponents': path.resolve(__dirname, '../src/views/components')
+      'viewscomponents': path.resolve(__dirname, '../src/components'),
     }
   },
   module: {

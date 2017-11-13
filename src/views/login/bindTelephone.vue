@@ -20,6 +20,8 @@
 
 
 <script type="text/ecmascript-6">
+  import * as validata from '@/utils/validata';
+  import { error } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -34,8 +36,8 @@
     methods: {
       // 获取验证码
       getCode () {
-        if (!this.$tool.checkPhoneNumber(this.telephone)) {
-          this.$tool.error('请正确输入手机号码');
+        if (!validata.checkPhoneNumber(this.telephone)) {
+          error('请正确输入手机号码');
         } else {
           this.$http.post(this.URL.authCaptcha, {
             user_mobile: this.telephone
@@ -50,9 +52,8 @@
                 this.captchaNum = 60;
                 this.is_getCode = 0;
               }, 60000);
-              this.$tool.console('验证码发送成功');
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
             }
           });
         }
@@ -82,11 +83,11 @@
                 this.$router.push({name: localStorage.entrance});
               }
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
             }
           });
         } else {
-          this.$tool.error('请正确填写手机号码和验证码');
+          error('请正确填写手机号码和验证码');
         }
       }
     },

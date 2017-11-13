@@ -1,3 +1,4 @@
+
 <template>
   <div id="alertContactsDetail" >
     <!--===========================================人脉详情弹窗=============================================-->
@@ -24,10 +25,10 @@
               <div class="header fr" v-else>
                 <span class="change">{{contacts.user_avatar_txt}}</span>
               </div>
-              <div class="item com"><img src="../../../assets/images/company.png">{{contacts.user_company_name}} | {{contacts.user_brand}}</div>
-              <div class="item com"><img src="../../../assets/images/phone.png">{{contacts.user_mobile}}</div>
+              <div class="item com"><img src="../../assets/images/company.png">{{contacts.user_company_name}} | {{contacts.user_brand}}</div>
+              <div class="item com"><img src="../../assets/images/phone.png">{{contacts.user_mobile}}</div>
               <div class="item com" style="width: 780px;">
-                <img src="../../../assets/images/email.png">{{contacts.user_email}}
+                <img src="../../assets/images/email.png">{{contacts.user_email}}
                 <div class="fr" v-if="contacts.import_user_name!=''" style="color: #8492A6">
                   来源: {{contacts.import_user_name}}
                 </div>
@@ -37,7 +38,7 @@
               <!--个人标签-->
               <div class="item" v-if="contacts.user_invest_tag.length!=0">
                 <div class="block clearfix" style="margin-bottom: 33px;">
-                  <span class="title fl"><img class="img1" src="../../../assets/images/tag.png">个人标签</span>
+                  <span class="title fl"><img class="img1" src="../../assets/images/tag.png">个人标签</span>
                 </div>
                 <div class="block">
                   <div class="tag" style="margin-top: 12px" v-for="tag in contacts.user_invest_tag">{{tag.tag_name}}</div>
@@ -46,13 +47,13 @@
               <!--项目库-->
               <div class="item" v-if="projectLists.length!=0">
                 <div class="block clearfix" style="margin-bottom: 33px;">
-                  <span class="title fl"><img class="img1" src="../../../assets/images/projectColl.png">项目库</span>
+                  <span class="title fl"><img class="img1" src="../../assets/images/projectColl.png">项目库</span>
                 </div>
                 <div class="ul_lists clearfix" v-loading.body="loading1" element-loading-text="拼命加载中">
                   <div class="list" v-for="projectList in projectLists" >
                     <div class="li title" style="line-height: 24px;width: 292px;">{{projectList.pro_intro}}</div>
-                    <div class="img" v-show="projectList.is_exclusive=='独家'"><img src="../../../assets/images/dujia.png"></div>
-                    <div class="img" v-show="projectList.is_exclusive=='非独家'"><img src="../../../assets/images/feidujia.png"></div>
+                    <div class="img" v-show="projectList.is_exclusive=='独家'"><img src="../../assets/images/dujia.png"></div>
+                    <div class="img" v-show="projectList.is_exclusive=='非独家'"><img src="../../assets/images/feidujia.png"></div>
                     <div class="li">
                       <span class="tags" v-for="industry in projectList.pro_industry">{{industry}}</span>
                     </div>
@@ -80,11 +81,11 @@
               <!--投资案例-->
               <div class="item" v-if="contacts.project_case.length!=0">
                 <div class="block clearfix" style="margin-bottom: 33px;">
-                  <span class="title fl"><img class="img1" src="../../../assets/images/anli.png">投资案例</span>
+                  <span class="title fl"><img class="img1" src="../../assets/images/anli.png">投资案例</span>
                 </div>
                 <div class="block lh" v-for="cased in contacts.project_case">
-                  <span class="radio" style=" line-height: 14px;"><img src="../../../assets/images/radioTag.png"></span>
-                  <span class="time" style="margin-left: 15px">{{cased.case_deal_time}}</span>
+                  <span class="radio" style=" line-height: 14px;"><img src="../../assets/images/radioTag.png"></span>
+                  <span class="time" style="margin-left: 15px">{{cased.case_deal_time | timeToReallTime}}</span>
                   <span class="tag_To">{{cased.case_stage_name}}</span>
                   <span class="title1">{{cased.case_name}}</span>
                   <span class="title2">{{cased.case_money}}万元</span>
@@ -95,7 +96,7 @@
               <!--个人描述-->
               <div class="item" v-if="contacts.user_intro!=''">
                 <div class="block clearfix" style="margin-bottom: 33px;">
-                  <span class="title fl"><img class="img1" src="../../../assets/images/miaoshu.png">个人描述</span>
+                  <span class="title fl"><img class="img1" src="../../assets/images/miaoshu.png">个人描述</span>
                 </div>
                 <div class="block">
                   <div class="main">
@@ -106,7 +107,7 @@
               <!--投资需求-->
               <div class="item" v-if="user_invest">
                 <div class="block clearfix" style="margin-bottom: 33px;">
-                  <span class="title fl"><img class="img1" src="../../../assets/images/money2.png">投资需求</span>
+                  <span class="title fl"><img class="img1" src="../../assets/images/money2.png">投资需求</span>
                 </div>
                 <div class="block tit clearfix" v-if="contacts.user_invest_industry!=''">
                   <div class="tit_left fl">投资领域 ： </div>
@@ -130,7 +131,7 @@
               <!--资源需求-->
               <div class="item" v-if="user_resource">
                 <div class="block clearfix" style="margin-bottom: 33px;">
-                  <span class="title fl"><img class="img1" src="../../../assets/images/ziyuan.png">资源需求</span>
+                  <span class="title fl"><img class="img1" src="../../assets/images/ziyuan.png">资源需求</span>
                 </div>
                 <div class="block tit clearfix" v-if="contacts.user_resource_give!=''">
                   <div class="tit_left fl">拥有的资源 ： </div>
@@ -156,6 +157,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import * as formatData from '@/utils/formatData';
+  import { isArray } from '@/utils/validata';
   export default {
     props: ['contactDisplay', 'cardid', 'userid'],
     data () {
@@ -247,11 +250,11 @@
           let obj = {};
           obj.pro_intro = data[i].pro_intro || '暂无信息';// 项目介绍
           obj.is_exclusive = data[i].is_exclusive;// 独家/非独家
-          obj.pro_industry = this.setIndustry(data[i].pro_industry) || [];// 项目标签
-          obj.pro_stage = this.$tool.setTagToString(data[i].pro_stage, 'stage_name');
+          obj.pro_industry = formatData.setIdToArr(data[i].pro_industry, 'industry_name') || [];// 项目标签
+          obj.pro_stage = formatData.setTagToString(data[i].pro_stage, 'stage_name');
 
-          obj.pro_area = this.$tool.setTagToString(data[i].pro_area, 'area_title');
-          obj.pro_scale = this.$tool.setTagToString(data[i].pro_scale, 'scale_money');
+          obj.pro_area = formatData.setTagToString(data[i].pro_area, 'area_title');
+          obj.pro_scale = formatData.setTagToString(data[i].pro_scale, 'scale_money');
           if (obj.pro_stage === '') obj.pro_stage = '-';
           if (obj.pro_area === '') obj.pro_area = '-';
           if (obj.pro_scale === '') obj.pro_scale = '-';
@@ -260,14 +263,6 @@
         }
         return arr;
       }, // 设置项目库函数
-      setIndustry (data) {
-        let arr = [];
-        for (let i = 0; i < data.length; i++) {
-          arr.push(data[i].industry_name);
-        }
-        return arr;
-      }, // 设置项目库项目的标签
-
       /* 请求函数 */
 
       getProjectList (page) {
@@ -298,11 +293,11 @@
         let newArr = [];
         arr.forEach((x) => {
           let obj = {};
-          obj.case_deal_time = this.$tool.formatDateTime(x.case_deal_time);
+          obj.case_deal_time = x.case_deal_time;
           obj.case_stage_name = x.case_stage_name;
           obj.case_name = x.case_name;
           obj.case_money = x.case_money;
-          obj.has_many_industry = this.$tool.setTagToString(x.has_many_industry, 'industry_name');
+          obj.has_many_industry = formatData.setTagToString(x.has_many_industry, 'industry_name');
           obj.has_one_city = x.has_one_city.area_title;
           newArr.push(obj);
         });
@@ -313,14 +308,13 @@
         this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.contacts.card_id, investor_user_id: this.contacts.user_id})
           .then(res => {
             let data = res.data.data;
-            this.$tool.console(this.$tool.getToObject(data));
-            data.user_invest_industry = this.$tool.setTagToString(data.user_invest_industry, 'industry_name');
-            data.user_invest_stage = this.$tool.setTagToString(data.user_invest_stage, 'stage_name');
-            data.user_invest_scale = this.$tool.setTagToString(data.user_invest_scale, 'scale_money');
-            data.user_resource_find = this.$tool.setTagToString(data.user_resource_find, 'resource_name');
-            data.user_resource_give = this.$tool.setTagToString(data.user_resource_give, 'resource_name');
+            data.user_invest_industry = formatData.setTagToString(data.user_invest_industry, 'industry_name');
+            data.user_invest_stage = formatData.setTagToString(data.user_invest_stage, 'stage_name');
+            data.user_invest_scale = formatData.setTagToString(data.user_invest_scale, 'scale_money');
+            data.user_resource_find = formatData.setTagToString(data.user_resource_find, 'resource_name');
+            data.user_resource_give = formatData.setTagToString(data.user_resource_give, 'resource_name');
             data.project_case = this.setProjectCase(data.project_case);
-            data.user_avatar_txt = this.$tool.setUrlChange(data.user_avatar_url, data.user_real_name);
+            data.user_avatar_txt = formatData.setUrlChange(data.user_avatar_url, data.user_real_name);
             if (data.user_invest_industry === '' && data.user_invest_stage === '' && data.user_invest_scale === '' && data.user_invest_desc === '') {
               this.user_invest = false;// 投资需求
             } else {
@@ -331,12 +325,12 @@
             } else {
               this.user_resource = true;// 投资需求
             }
-            this.tagsValue = this.$tool.setIdToArr(data.user_invest_tag, 'tag_id');
-            this.tags.changecont = this.$tool.setIdToArr(data.user_invest_tag, 'tag_id');
+            this.tagsValue = formatData.setIdToArr(data.user_invest_tag, 'tag_id');
+            this.tags.changecont = formatData.setIdToArr(data.user_invest_tag, 'tag_id');
             this.contacts = data;
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
             console.log(err);
           });
         this.loading = false;
@@ -355,7 +349,7 @@
           this.getProjectList(1);
         } else {
           for (let key in this.contacts) {
-            if (this.$tool.isArray(this.contacts[key])) {
+            if (isArray(this.contacts[key])) {
               this.contacts[key] = [];
             } else {
               this.contacts[key] = '';
@@ -368,6 +362,6 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/alertContactsDetail';
+  @import '../../assets/css/alertContactsDetail';
 </style>
 

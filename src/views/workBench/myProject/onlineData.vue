@@ -183,7 +183,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err, 2);
           });
       }, // ascending升/descending降/
       filterChangeCurrent (page) {
@@ -196,14 +196,13 @@
           .then(res => {
             this.loading = false;
             let data = res.data.data;
-            this.$tool.console(res);
             this.tableData = this.getList(data);
             this.totalData = res.data.count;
             this.$tool.getTop();
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 控制页码
       getList (list) {

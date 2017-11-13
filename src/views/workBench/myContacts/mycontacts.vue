@@ -290,8 +290,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import projectpush from './projectPush.vue';
-  import projectpreview from './projectPreview.vue';
+  import projectpush from '@/views/components/projectPush.vue';
+  import projectpreview from '@/views/components/projectPreview.vue';
+  import { error, success } from '@/utils/notification';
+  import { getTitleSift, getTagsPro } from '@/utils/setSelect';
+  import * as formatData from '@/utils/formatData';
   export default {
     data () {
       return {
@@ -416,14 +419,14 @@
           this.$http.post(this.URL.deleteConnectUser, {user_id: localStorage.user_id, card_id: row.card_id})
             .then(res => {
               this.loading = false;
-              this.$tool.success('删除成功');
+              success('删除成功');
               this.getRouterData();
               this.filterChangeCurrent(this.currentPage || 1);
             })
             .catch(err => {
               this.loading = false;
-              this.$tool.error('删除失败');
-              this.$tool.console(err);
+              error('删除失败');
+              console.log(err);
             });
         }).catch(() => {
           this.$message({
@@ -490,7 +493,7 @@
             })
             .catch(err => {
               this.loading = false;
-              this.$tool.console(err, 2);
+              console.log(err, 2);
             });
         });
       }, // 搜索===首次进入页面加载的数据
@@ -498,7 +501,6 @@
         this.loading = true;
         this.currentPage = 1;
         this.getCon.created_at_time = time;
-        console.log(this.getCon);
         this.$http.post(this.URL.getConnectUser, this.getCon)
           .then(res => {
             let data = res.data.data;
@@ -508,7 +510,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 筛选时间
       filterChange (filters) {
@@ -531,8 +533,6 @@
             delete this.getCon[key];
           }
         }// 删除空的查询项
-
-        this.$tool.console(this.getCon);
         this.$http.post(this.URL.getConnectUser, this.getCon)
           .then(res => {
             this.loading = false;
@@ -542,7 +542,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 筛选 ascending升/descending降/
       filterChangeCurrent (page) {
@@ -550,11 +550,9 @@
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
         this.getCon.page = page;// 控制当前页码
-//      this.$tool.console(this.getCon);
         this.$http.post(this.URL.getConnectUser, this.getCon)
           .then(res => {
             let data = res.data.data;
-            this.$tool.console(res);
             this.tableData = this.setProjectList(data);
             this.totalData = res.data.count;
             this.loading = false;
@@ -562,7 +560,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err, 2);
           });
       }, // 控制页码
 
@@ -573,12 +571,12 @@
             let cardIndustry = data.card_industry;// 投资领域
             let cardStage = data.card_stage;// 投资轮次
             let cardTag = data.card_tag;// 标签
-            this.user_invest_industryFilters = this.$tool.getTitleSift(cardIndustry);
-            this.user_invest_stageFilters = this.$tool.getTitleSift(cardStage);
-            this.tagFilters = this.$tool.getTitleSift(cardTag);
+            this.user_invest_industryFilters = getTitleSift(cardIndustry);
+            this.user_invest_stageFilters = getTitleSift(cardStage);
+            this.tagFilters = getTitleSift(cardTag);
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 获取表头
       setProjectList (list) {
@@ -588,7 +586,7 @@
           obj.user_id = list[i].user_id;
           obj.user_avatar_url = list[i].user_avatar_url;
           obj.user_real_name = list[i].user_real_name;// 姓名
-          obj.user_avatar_url_change = this.$tool.setUrlChange(list[i].user_avatar_url, list[i].user_real_name);// 代替名称
+          obj.user_avatar_url_change = formatData.setUrlChange(list[i].user_avatar_url, list[i].user_real_name);// 代替名称
           obj.is_add = list[i].is_add;// 标签
           obj.is_bind = list[i].is_bind;// 编辑
           obj.user_company_career = list[i].user_company_career;// 职位
@@ -596,9 +594,9 @@
           obj.user_brand = list[i].user_brand;// 品牌
           obj.user_mobile = list[i].user_mobile;// 手机
           obj.user_email = list[i].user_email;// 邮箱
-          obj.user_invest_industry = this.$tool.setTagToString(list[i].user_invest_industry, 'industry_name');// 投资领域
-          obj.user_invest_stage = this.$tool.setTagToString(list[i].user_invest_stage, 'stage_name');// 投资轮次
-          obj.tag = this.$tool.setTagToString(list[i].user_invest_tag, 'tag_name');// 标签
+          obj.user_invest_industry = formatData.setTagToString(list[i].user_invest_industry, 'industry_name');// 投资领域
+          obj.user_invest_stage = formatData.setTagToString(list[i].user_invest_stage, 'stage_name');// 投资轮次
+          obj.tag = formatData.setTagToString(list[i].user_invest_tag, 'tag_name');// 标签
           obj.tagArray = list[i].user_invest_tag;// 标签
           obj.login_time = list[i].login_time;// 活跃时间
           obj.card_id = list[i].card_id;// 活跃时间
@@ -619,10 +617,10 @@
         });
       }, // 获取所有下拉框的数据
       addChangeTag (e) {
-        let tagName = this.$tool.checkArr(e, this.addTags);
+        let tagName = formatData.checkArr(e, this.addTags);
         if (tagName !== undefined) {
           if (tagName.length > 40) {
-            this.$tool.error('最多输入40个字');
+            error('最多输入40个字');
             this.tagsValue.pop();
           } else {
             this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
@@ -634,27 +632,27 @@
                 this.$global.func.getWxProjectCategory();
               })
               .catch(err => {
-                this.$tool.error('添加失败');
-                this.$tool.console(err);
+                error('添加失败');
+                console.log(err);
               });
           }
         }
       }, // 添加项目标签
       addTag () {
         this.loading = true;
-        this.$tool.setTag(this.tagsValue, this.tags.changecont);
+        formatData.setTag(this.tagsValue, this.tags.changecont);
         this.$http.post(this.URL.setConnectTag, {user_id: localStorage.user_id, card_id: this.tags.card_id, tag: this.tagsValue})
           .then(res => {
             this.loading = false;
-            this.$tool.success('设置成功');
+            success('设置成功');
             this.addTagDislpay = false;
             this.handleIconClick();
             this.gettags_user();
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.error('设置失败');
-            this.$tool.console(err);
+            error('设置失败');
+            console.log(err);
             this.addTagDislpay = false;
           });
       }, // 保存标签选择
@@ -662,7 +660,7 @@
         this.$http.post(this.URL.getWxProjectCategory, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
-            this.addTags = this.$tool.getTags_pro(data.tags_user);// 设置人脉标签
+            this.addTags = getTagsPro(data.tags_user);// 设置人脉标签
           });
       }// 设置人脉标签
 

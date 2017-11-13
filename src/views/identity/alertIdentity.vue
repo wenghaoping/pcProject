@@ -69,7 +69,7 @@
                 </div>
                 <div class="block lh" v-for="projectCase in projectCases.projectCase">
                   <span class="radio" style=" line-height: 14px;"><img src="../../assets/images/radioTag.png"></span>
-                  <span class="time" style="margin-left: 15px">{{projectCase.case_deal_time}}</span>
+                  <span class="time" style="margin-left: 15px">{{projectCase.case_deal_time | timeToReallTime}}</span>
                   <span class="tag_To">{{projectCase.case_stage_name}}</span>
                   <span class="title1">{{projectCase.case_name}}</span>
                   <span class="title2">{{projectCase.case_money}}万元</span>
@@ -154,6 +154,9 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import * as formatData from '@/utils/formatData';
+  import * as validata from '@/utils/validata';
+  import { error } from '@/utils/notification';
   export default {
     props: ['identityDisplay'],
     data () {
@@ -217,11 +220,11 @@
         let newArr = [];
         arr.forEach((x) => {
           let obj = {};
-          obj.case_deal_time = this.$tool.formatDateTime(x.case_deal_time);
+          obj.case_deal_time = x.case_deal_time;
           obj.case_stage_name = x.case_stage_name;
           obj.case_name = x.case_name;
           obj.case_money = x.case_money;
-          obj.case_industry = this.$tool.setTagToString(x.case_industry, 'industry_name');
+          obj.case_industry = formatData.setTagToString(x.case_industry, 'industry_name');
           obj.case_city_name = x.case_city_name;
           newArr.push(obj);
         });
@@ -234,7 +237,7 @@
           .then(res => {
             let data = res.data;
             // 个人信息
-            if (this.$tool.isArray(data.auth_info.user_card_image)) {
+            if (validata.isArray(data.auth_info.user_card_image)) {
               if (data.auth_info.user_card_image.length === 0) {
                 data.auth_info.user_card_image = {};
                 data.auth_info.user_card_image.image_src = '';
@@ -243,10 +246,10 @@
             localStorage.authenticate_id = data.auth_info.authenticate_id;
             this.auth_info = data.auth_info;
             // 投资需求
-            data.invest_info.industry = this.$tool.setTagToString(data.invest_info.industry, 'industry_name');
-            data.invest_info.stage = this.$tool.setTagToString(data.invest_info.stage, 'stage_name');
-            data.invest_info.scale = this.$tool.setTagToString(data.invest_info.scale, 'scale_money');
-            data.invest_info.area = this.$tool.setTagToString(data.invest_info.area, 'area_title');
+            data.invest_info.industry = formatData.setTagToString(data.invest_info.industry, 'industry_name');
+            data.invest_info.stage = formatData.setTagToString(data.invest_info.stage, 'stage_name');
+            data.invest_info.scale = formatData.setTagToString(data.invest_info.scale, 'scale_money');
+            data.invest_info.area = formatData.setTagToString(data.invest_info.area, 'area_title');
             this.investment = data.invest_info;
             // 成功案例
             this.projectCases.projectCase = this.setProjectCase(data.project_case);
@@ -272,7 +275,7 @@
               // 认证过了
             }
           } else {
-            this.$tool.error('核对身份接口调用失败');
+            error('核对身份接口调用失败');
           }
         });
       }
@@ -306,7 +309,7 @@
           this.getUserAuthenticateInfo();
         } else {
           for (let key in this.contacts) {
-            if (this.$tool.isArray(this.contacts[key])) {
+            if (validata.isArray(this.contacts[key])) {
               this.contacts[key] = [];
             } else {
               this.contacts[key] = '';

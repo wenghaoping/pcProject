@@ -42,8 +42,8 @@
             </span>
           </div>
           <div class="onlyone">
-            <img v-if="project.is_exclusive==1" src="../assets/images/onlyonedark.png"/>
-            <img v-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>
+            <img v-if="project.is_exclusive==1" src="../../assets/images/onlyonedark.png"/>
+            <img v-if="project.is_exclusive==2" src="../../assets/images/onlyonelight.png"/>
             <!--<img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>-->
           </div>
         </div>
@@ -55,7 +55,7 @@
         <!--项目资料-->
         <div class="ul-lists" style="background:#f9fafc;padding:20px;">
           <div class="item">
-            <span class="title"><img class="img" src="../assets/images/projectIntroduce.png">项目资料</span>
+            <span class="title"><img class="img" src="../../assets/images/projectIntroduce.png">项目资料</span>
             <span class="flower" v-show="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
           </div>
           <div class="item" style="margin-top:33px;">
@@ -63,7 +63,7 @@
           </div>
           <div class="item"  style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;" >
             <!--v-if="file.pro_BP.length!=0"-->
-              <img class="img" style="padding-left: 16px;" src="../assets/images/paper.png">
+              <img class="img" style="padding-left: 16px;" src="../../assets/images/paper.png">
               <span class="pt"  v-if="file.pro_BP.file_title!==''">{{file.pro_BP.file_title}}</span>
           </div>
           <div class="line"></div>
@@ -114,7 +114,7 @@
         <!--核心团队-->
         <div class="ul-lists" style="margin-top: 16px;background: rgb(249, 250, 252); padding: 20px;" v-show="team.core_users!='' || team.tag!=''">
           <div class="item">
-            <span class="title"><img class="img" src="../assets/images/team.png">核心团队</span>
+            <span class="title"><img class="img" src="../../assets/images/team.png">核心团队</span>
           </div>
           <div class="item" style="margin-top:33px;" v-show="team.tag!=''">
             <span class="person-tag" style="padding: 0 12px;" v-for="tag in team.tag" v-if="tag.type==1">{{tag.tag_name}}</span>
@@ -178,7 +178,7 @@
         <!--融资信息-->
         <div class="ul-lists" style="margin-top:16px;background: rgb(249, 250, 252); padding: 20px;">
           <div class="item">
-            <span class="title"><img class="img" src="../assets/images/money.png">融资信息</span>
+            <span class="title"><img class="img" src="../../assets/images/money.png">融资信息</span>
             <div class="rz-details">
               <div class="rz-detail" v-show="project.pro_scale.scale_money!=''">
                 <p class="det-title">期望融资</p>
@@ -225,7 +225,7 @@
         <!--里程碑-->
         <div class="ul-lists" style="margin-top:16px;background: rgb(249, 250, 252); padding: 20px;" v-show="milepost.pro_develop!=''">
           <div class="item">
-            <span class="title"><img class="img" src="../assets/images/Milepost.png">里程碑</span>
+            <span class="title"><img class="img" src="../../assets/images/Milepost.png">里程碑</span>
           </div>
           <div class="item" style="margin-top:6px;">
             <div>
@@ -249,7 +249,7 @@
         <!--FA签约协议-->
         <div class="ul-lists" style="margin-top:16px;margin-bottom: 10px;background: rgb(249, 250, 252); padding: 20px;">
           <div class="item">
-            <span class="title"><img class="img" src="../assets/images/money.png">FA业务</span>
+            <span class="title"><img class="img" src="../../assets/images/money.png">FA业务</span>
             <div class="item" style="margin-top:33px;" v-show="private.pro_source!=''">
               <span style="font-size:14px;color:#8492a6;">项目来源:&nbsp;&nbsp;</span>
               <span class="person-tag" v-for="source in private.pro_source"> {{source.tag_name}}</span>
@@ -309,9 +309,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import cirIcon from '../../static/images/circle.png';
-  import pinpai from '../../static/images/icon-pinpa.png';
-  import yunying from '../../static/images/icon-yunying.png';
+  import cirIcon from '../../../static/images/circle.png';
+  import pinpai from '../../../static/images/icon-pinpa.png';
+  import yunying from '../../../static/images/icon-yunying.png';
   export default {
     props: ['alertProjectDetailDisplay', 'proid'],
     data () {

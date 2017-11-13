@@ -193,6 +193,7 @@
 
 <script type="text/ecmascript-6">
   import cirIcon from '../../../../static/images/circle.png';
+  import { success } from '@/utils/notification';
   export default {
     components: {
     },
@@ -282,7 +283,7 @@
           user_id: localStorage.user_id,
           follow_id: this.followid
         }).then(res => {
-          this.$tool.success('删除成功');
+          success('删除成功');
           this.getProjectFollowList();
           this.$emit('changefollowdata', true);
         });

@@ -235,8 +235,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import addfollow from 'viewscomponents/addFollow.vue';
-  import alertcontactsdetail from '../myProject/alertContactsDetail.vue';
+  import addfollow from '@/views/components/addFollow.vue';
+  import alertcontactsdetail from '@/views/components/alertContactsDetail.vue';
+  import { error, success } from '@/utils/notification';
+  import { getTitleSift } from '@/utils/setSelect';
+
   export default {
     components: {
       addfollow,
@@ -299,7 +302,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err, 2);
           });
       }, // 搜索===首次进入页面加载的数据
 
@@ -348,14 +351,14 @@
           this.$http.post(this.URL.delete_follow_record, {user_id: localStorage.user_id, follow_id: row.follow_id})
             .then(res => {
               this.loading = false;
-              this.$tool.success('删除成功');
+              success('删除成功');
               this.getRouterData();
               this.filterChangeCurrent(this.currentPage || 1);
             })
             .catch(err => {
               this.loading = false;
-              this.$tool.error('删除失败');
-              this.$tool.console(err);
+              error('删除失败');
+              console.log(err);
             });
         }).catch(() => {
           this.$message({
@@ -395,7 +398,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 筛选 ascending升/descending降/
       filterChangeCurrent (page) {
@@ -404,7 +407,6 @@
         this.loading = true;
         this.getFollow.user_id = localStorage.user_id;
         this.getFollow.page = page;// 控制当前页码
-//      this.$tool.console(this.getFollow);
         this.$http.post(this.URL.get_follow_records, this.getFollow)
           .then(res => {
             let data = res.data.data;
@@ -414,7 +416,7 @@
           })
           .catch(err => {
             this.loading = false;
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 控制页码
       filterInvestors (data) {
@@ -479,10 +481,10 @@
         this.$http.post(this.URL.getToInvestor, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
-            this.schedule_nameFilters = this.$tool.getTitleSift(data.schedule_name);
+            this.schedule_nameFilters = getTitleSift(data.schedule_name);
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
           });
       }, // 获取表头
       closeContact (msg) {

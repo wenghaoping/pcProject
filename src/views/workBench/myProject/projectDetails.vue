@@ -682,12 +682,15 @@
   import research from './onekeyresearch.vue';
   import folowup from './followUpDetail.vue';
   import filemanagement from './fileManagement.vue';
-  import alertcontactsdetail from './alertContactsDetail.vue';
-  import addfollow from 'viewscomponents/addFollow.vue';
-  import projectpushtopro from './projectPushToPro.vue';
-  import projectpreview from '../myContacts/projectPreview.vue';
-  import projectpush from '../myContacts/projectPush.vue';
   import onlinedata from './onlineData.vue';
+  import projectpreview from '@/views/components/projectPreview.vue';
+  import alertcontactsdetail from '@/views/components/alertContactsDetail.vue';
+  import addfollow from '@/views/components/addFollow.vue';
+  import projectpushtopro from '@/views/components/projectPushToPro.vue';
+  import projectpush from '@/views/components/projectPush.vue';
+  import { error, success, warning } from '@/utils/notification';
+  import * as formatData from '@/utils/formatData';
+  import { checkEmail } from '@/utils/validata';
   export default {
     data () {
       return {
@@ -1005,7 +1008,7 @@
             this.loadingSmall = false;
           })
           .catch(err => {
-            this.$tool.console(err);
+            console.log(err);
           });
       }, // 搜索公司
       goOnkey () {
@@ -1031,13 +1034,13 @@
             })
             .catch(err => {
               alert('加载失败');
-              this.$tool.console(err);
+              console.log(err);
             });
         }
       }, // 一键尽调按钮
       search (data) {
         if (data.com_id === -2) {
-          this.$tool.error('匹配不到你要搜索的公司,请重新继续输入');
+          error('匹配不到你要搜索的公司,请重新继续输入');
         } else {
           this.$confirm('把' + data.newName + '设置为您的公司?, 是否继续?', '提示', {
             confirmButtonText: '确定',
@@ -1048,7 +1051,7 @@
               .then(res => {
 //                console.log(res);
                 if (res.data.status_code === 2000000) {
-                  this.$tool.success('修改成功');
+                  success('修改成功');
                   if (data.com_id !== -1) {
                     this.companySearchDisplay = false;
                     this.companyid = data.com_id;
@@ -1060,7 +1063,7 @@
                 }
               })
               .catch(err => {
-                this.$tool.console(err);
+                console.log(err);
               });
           }).catch(() => {
             this.companySearchDisplay = false;
@@ -1143,7 +1146,7 @@
           this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project.project_id})
             .then(res => {
               if (res.data.status_code === 430004) {
-                this.$tool.warning('找不到项目');
+                warning('找不到项目');
                 this.loading = false;
                 this.$router.push({name: 'index'});// 路由传参
               } else {
@@ -1167,10 +1170,10 @@
                 this.file.pro_BP.file_title = data.file.pro_BP.file_title + '.' + data.file.pro_BP.file_ext;
                 this.file = data.file;
                 // 融资信息
-                this.$tool.setTime(data.financing.pro_history_finance, 'finance_time');
+                formatData.setTime(data.financing.pro_history_finance, 'finance_time');
                 this.financing = data.financing;
                 // 里程碑
-                this.$tool.setTime(data.milepost.pro_develop, 'dh_start_time');
+                formatData.setTime(data.milepost.pro_develop, 'dh_start_time');
                 this.milepost = data.milepost;
                 // FA业务
                 this.private = data.private;
@@ -1189,7 +1192,7 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
             });
         });
       }, // 获取项目详情数据
@@ -1235,7 +1238,7 @@
           this.$http.post(this.URL.setProjectSchedule, getData)
             .then(res => {
               let data = res.data.data;
-              this.$tool.success('设置成功');
+              success('设置成功');
               this.loading = false;
               this.project.pro_schedule.schedule_id = data.schedule_id;
               this.project.pro_schedule.schedule_name = data.schedule_name;
@@ -1268,8 +1271,8 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err, 2);
-              this.$tool.error('加载超时');
+              console.log(err);
+              error('加载超时');
             });
         });
       }, // 获取意向项目数据(图表)
@@ -1296,8 +1299,8 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err, 2);
-              this.$tool.error('加载超时');
+              console.log(err);
+              error('加载超时');
             });
         });
       }, // 获取意向投资人列表
@@ -1316,11 +1319,11 @@
           obj.user_invest_stage = x.card.user_invest_stage;
           obj.type = x.type;
           obj.user_avatar_url = x.card.user_avatar_url;
-          obj.user_avatar_txt = this.$tool.setUrlChange(x.card.user_avatar_url, x.card.user_real_name);
+          obj.user_avatar_txt = formatData.setUrlChange(x.card.user_avatar_url, x.card.user_real_name);
           obj.user_company_career = x.card.user_company_career;
           obj.user_company_name = x.card.user_company_name;
           obj.match = x.match;
-          obj.user_group = this.$tool.setTagToString(x.card.user_group, 'group_title');
+          obj.user_group = formatData.setTagToString(x.card.user_group, 'group_title');
           obj.width = this.selectChange(x.schedule.schedule_id);
           obj.source = x.source;
           newArr.push(obj);
@@ -1405,9 +1408,9 @@
             this.loading = false;
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
             this.loading = false;
-            this.$tool.error('加载超时');
+            error('加载超时');
           });
       }, // 控制意向投资人页码
       selectChange (e) {
@@ -1458,15 +1461,15 @@
             schedule_id: scheduleId
           })
             .then(res => {
-              this.$tool.success('设置成功');
+              success('设置成功');
               this.scheduleIndex = -1;
               this.loading = false;
               this.getEchartData();
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
-              this.$tool.error('加载超时');
+              error('加载超时');
             });
         }
         return width;
@@ -1494,9 +1497,9 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
             this.loading = false;
-            this.$tool.error('加载超时');
+            error('加载超时');
           });
       }, // 筛选意向项目
 
@@ -1510,7 +1513,7 @@
           obj.type = x.type;
           obj.push_statues = x.push_statues;
           obj.user_avatar_url = x.card.user_avatar_url;
-          obj.user_avatar_txt = this.$tool.setUrlChange(x.card.user_avatar_url, x.card.user_real_name);
+          obj.user_avatar_txt = formatData.setUrlChange(x.card.user_avatar_url, x.card.user_real_name);
           obj.user_real_name = x.card.user_real_name;
           obj.user_company_career = x.card.user_company_career;
           obj.user_company_name = x.card.user_company_name;
@@ -1521,7 +1524,7 @@
           obj.user_eamil = x.card.user_email;
           obj.investor_id = x.card.investor_id;
           obj.type = x.type;
-          obj.user_group = this.$tool.setTagToString(x.card.user_group, 'group_title');
+          obj.user_group = formatData.setTagToString(x.card.user_group, 'group_title');
           newArr.push(obj);
         });
         return newArr;
@@ -1544,8 +1547,8 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err, 2);
-              this.$tool.error('加载超时');
+              console.log(err, 2);
+              error('加载超时');
             });
         });
       }, // 买家图谱列表
@@ -1567,14 +1570,14 @@
             this.loading = false;
           })
           .catch(err => {
-            this.$tool.console(err, 2);
+            console.log(err);
             this.loading = false;
-            this.$tool.error('加载超时');
+            error('加载超时');
           });
       }, // 控制买家图谱页码
       industryPush (data) {
         if (data === 0) {
-          this.$tool.warning('已推送过');
+          warning('已推送过');
         } else {
           this.zgClick('推送项目');
           this.userMessage.user_real_name = data.user_real_name;
@@ -1609,15 +1612,15 @@
           this.$http.post(this.URL.exceptMatchAction, delData)
             .then(res => {
               if (res.data.status_code === 2000000) {
-                this.$tool.success('移除成功');
+                success('移除成功');
                 this.getProjectMatchInvestors();
               }
               this.loading = false;
             })
             .catch(err => {
-              this.$tool.console(err, 2);
+              console.log(err);
               this.loading = false;
-              this.$tool.error('加载超时');
+              error('加载超时');
             });
         }).catch(() => {
           this.$message({
@@ -1642,8 +1645,8 @@
             }
           })
           .catch(err => {
-            this.$tool.console(err, 2);
-            this.$tool.error('加载超时');
+            console.log(err);
+            error('加载超时');
           });
       }, // 筛选买家图谱
       //* 编辑跟进记录
@@ -1654,9 +1657,9 @@
       }, // 拿到跟进记录id
       littlePushCertain () {
         if (!this.littlePush.email) {
-          this.$tool.error('请输入邮箱');
-        } else if (!this.$tool.checkEmail(this.littlePush.email)) {
-          this.$tool.error('请正确输入邮箱');
+          error('请输入邮箱');
+        } else if (!checkEmail(this.littlePush.email)) {
+          error('请正确输入邮箱');
         } else {
           this.pushData.push(this.littlePush.email);
           // 转化为二维数组
@@ -1670,13 +1673,13 @@
             receives: newPushData
           }).then(res => {
             if (res.data.status_code === 2000000) {
-              this.$tool.success('推送成功');
+              success('推送成功');
               this.$refs['littlePush'].resetFields();
               this.littlePushShow = false;
               this.pushData.pop();
               this.getProjectMatchInvestors();
             } else {
-              this.$tool.error(res.data.error_msg);
+              error(res.data.error_msg);
               this.pushData.pop();
             }
           }).catch(err => {
@@ -1739,7 +1742,7 @@
               }
             })
             .catch(err => {
-              this.$tool.console(err);
+              console.log(err);
             });// 请求函数
           resolve(6);
         });
