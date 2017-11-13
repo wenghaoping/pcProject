@@ -848,18 +848,10 @@
         });
       },
       clearData () {
-        for (let key in this.follow) {
-          this.follow[key] = '';
-        }
-        this.follow.file_id = [];
         this.uploadShow.lists = [];
-        this.fileList = [];
-        this.follow.project_id = this.projectid || '';
-        this.follow.project_name = this.projectname || '';
-        this.follow.card_id = this.cardid || '';
-        this.follow.card_name = this.cardname || '';
         this.investor_id = this.investorid || '';
         this.saveJumpData = this.follow;
+        this.$refs['follow'].resetFields();
       }// 清除所有数据
     },
     created () {

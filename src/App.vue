@@ -63,10 +63,6 @@
           localStorage.clear();
           sessionStorage.clear();
         }, 43200000);
-        // 登录状态下拦截
-        /* if(localStorage.user_id && (this.$route.path==='/identityChoose' || this.$route.path==='/identityDetail')){
-         this.$router.push({name:'index'})
-         } */
       },
 
       // 加入项目库

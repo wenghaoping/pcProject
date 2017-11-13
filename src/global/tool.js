@@ -10,7 +10,7 @@ let hour, minute, second;// 时 分 秒
 hour = minute = second = 0;// 初始化
 
 const tool = {
-/// *数据封装类
+// 数据封装类
   getToObject (data) {
     let object = {};
     for (let key in data) {

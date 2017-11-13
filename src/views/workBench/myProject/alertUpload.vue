@@ -28,7 +28,7 @@
               <i style="margin-top: 10px;display: inline-block;color:#99A9BF">
                 BP私密保护，认证投资人需要向您申请并得到同意后才能查看<br>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式<br>单个文件最大50M
               </i>
-            </div>
+          </div>
           </div>
 
         </el-upload>
