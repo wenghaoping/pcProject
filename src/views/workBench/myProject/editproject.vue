@@ -1340,11 +1340,11 @@
           pro_intro: '',
           pro_name: '',
           pro_scale: {
-            scale_id: 1,
+            scale_id: '',
             scale_money: '100W以下'
           }, // 规模多少钱
           pro_stage: {
-            sort: 4,
+            sort: '',
             stage_id: 13,
             stage_name: 'A轮'
           },

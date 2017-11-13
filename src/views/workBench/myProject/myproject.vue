@@ -19,7 +19,6 @@
             <div slot="content">
               <div style="width:50px;text-align: center;">约谈 : {{nodeCount.interview}} </div>
             </div>
-
               <span class="circle circle-0" @click="setNode('2')">
                 <span class="getClick"></span>
             </span>
@@ -87,8 +86,6 @@
         <div class="btns-box">
           <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
-
-
         </div>
       </div>
       <div class="top-lists" style="cursor: pointer">
@@ -347,7 +344,7 @@
 <script type="text/ecmascript-6">
   import ElButton from '../../../../node_modules/element-ui/packages/button/src/button';
   import alertUpload from './alertUpload.vue';
-  import addfollow from './../followUp/addFollow.vue';
+  import addfollow from '../../components/addFollow.vue';
   import projectpushtopro from './projectPushToPro.vue';
   import projectpreview from '../myContacts/projectPreview.vue';
   export default {
@@ -636,7 +633,6 @@
         this.$http.post(getNodeCountURL, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
-
             this.nodeCount.whole = data.total.schedule_count;// 全部项目
             this.totalData = data.total.schedule_count;// 页码
             let nodeList = data.node_list;

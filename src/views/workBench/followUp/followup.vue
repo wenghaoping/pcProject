@@ -235,7 +235,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import addfollow from './addFollow.vue';
+  import addfollow from 'viewscomponents/addFollow.vue';
   import alertcontactsdetail from '../myProject/alertContactsDetail.vue';
   export default {
     components: {

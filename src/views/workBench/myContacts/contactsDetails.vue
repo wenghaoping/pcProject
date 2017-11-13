@@ -370,7 +370,7 @@
 
 <script type="text/ecmascript-6">
   import alertprojectdetail from '../../../components/alertProjectDetail.vue';
-  import addfollow from './../followUp/addFollow.vue';
+  import addfollow from '../../components/addFollow.vue';
 
   import projectpush from './projectPush.vue';
   import projectpreview from './projectPreview.vue';

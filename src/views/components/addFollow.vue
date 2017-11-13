@@ -208,9 +208,9 @@
                   style="cursor: pointer">{{list.file_title}}</span>
           </el-tooltip>
 
-          <span v-if="!list.load" class="del-btn fl" @click.prevent="removeList(list)"><img src="../../../assets/images/delete.png"></span>
+          <span v-if="!list.load" class="del-btn fl" @click.prevent="removeList(list)"><img src="../../assets/images/delete.png"></span>
           <span v-if="!list.load" class="solt-btn" @click.prevent="toGroup(list)">分组设置</span>
-          <span v-if="list.load" class="uploadImg"><img src="../../../assets/images/loading.gif"></span>
+          <span v-if="list.load" class="uploadImg"><img src="../../assets/images/loading.gif"></span>
           <span v-if="list.load"  class="del-btn  fl" @click.prevent="cancelUpload(list)">取消</span>
         </div>
         <div slot="footer" class="dialog-footer fr" style="margin: 32px 0">
@@ -254,7 +254,29 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: ['followDisplay', 'followid', 'projectid', 'projectname', 'cardid', 'cardname', 'type', 'userid'],
+    props: {
+      followDisplay: {
+        type: Boolean,
+        default: false,
+        required: true
+      },
+      followid: [String, Number],
+      projectid: [String, Number],
+      cardid: [String, Number],
+      userid: [String, Number],
+      projectname: {
+        type: String,
+        default: ''
+      },
+      cardname: {
+        type: String,
+        default: ''
+      },
+      type: {
+        type: String,
+        default: ''
+      }
+    },
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
         if (!this.$tool.getNull(value)) {
@@ -851,7 +873,6 @@
         this.uploadShow.lists = [];
         this.investor_id = this.investorid || '';
         this.saveJumpData = this.follow;
-        this.$refs['follow'].resetFields();
       }// 清除所有数据
     },
     created () {
@@ -889,7 +910,7 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/addFollow';
+  @import '../../assets/css/addFollow';
   #addFollow{
     .el-radio-group{
       line-height: 3!important;

@@ -683,7 +683,7 @@
   import folowup from './followUpDetail.vue';
   import filemanagement from './fileManagement.vue';
   import alertcontactsdetail from './alertContactsDetail.vue';
-  import addfollow from './../followUp/addFollow.vue';
+  import addfollow from 'viewscomponents/addFollow.vue';
   import projectpushtopro from './projectPushToPro.vue';
   import projectpreview from '../myContacts/projectPreview.vue';
   import projectpush from '../myContacts/projectPush.vue';
