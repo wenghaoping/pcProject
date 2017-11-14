@@ -1,8 +1,8 @@
 {
-  "name": "pcproject",
-  "version": "1.0.0",
+  "name": "PC",
+  "version": "2.6.0",
   "description": "A Vue.js project",
-  "author": "wenghaoping <541920112@qq.om>",
+  "author": "wenghaoping",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -21,6 +21,7 @@
     "vue": "^2.2.6",
     "vue-axios": "^2.0.2",
     "vue-router": "^2.3.1",
+    "vuedraggable": "^2.15.0",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

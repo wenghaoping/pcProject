@@ -1947,7 +1947,7 @@
           this.submitButton = false;
         }
         this.uploadLoading = false;
-        this.$http.post(this.URL.deleteAtUploa, {user_id: localStorage.user_id, project_id: this.uploadShow.project_id})
+        this.$http.post(this.URL.deleteAtUpload, {user_id: localStorage.user_id, project_id: this.uploadShow.project_id})
           .then(res => {
             if (res.status === 200) {
               this.loading = false;
