@@ -109,7 +109,6 @@
                       </el-form-item>
                     </el-col>
 
-
                     <el-tooltip class="item" effect="dark" placement="top-end">
                       <div slot="content">从微天使创投数据库自动获取公司行业，融资轮次<br/>历史融资，核心团队及里程碑等项目信息</div>
                       <el-button class="tong" @click="syncOne" type="text">一键同步</el-button>
@@ -1773,7 +1772,7 @@
                 // 项目文件设置=============================================
 
                 // 计划书清空
-                if (data.file.pro_BP.length === '') {
+                if (data.file.pro_BP.length === 0) {
                   this.planList = []; this.uploadShow = {};
                 } else {
                   this.planList = [{name: data.file.pro_BP.file_title + '.' + data.file.pro_BP.file_ext, url: data.file.pro_BP.file_url}];// 设置计划书
