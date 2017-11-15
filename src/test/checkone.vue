@@ -9,7 +9,6 @@
     </draggable>
     <card-upload :uploadCardAddress="uploadCardAddress" :filetypes="filetypes" :uploadDate="uploadDate"
                  @delete="remove" @success="success">
-
     </card-upload>
   </div>
 </template>

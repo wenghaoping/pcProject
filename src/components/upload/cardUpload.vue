@@ -120,7 +120,7 @@
   };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .cardUpload{
     .is-success{
       width: 300px;
