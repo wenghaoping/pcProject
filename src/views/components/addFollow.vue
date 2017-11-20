@@ -224,7 +224,7 @@
     <el-dialog title="文件分组设置" :visible.sync="dialogFileVisible" :show-close="showList">
       <el-form :model="groups" ref="groups">
         <el-form-item label="分组名称" label-width="80px" prop="input"
-                      :rules="[{required: true, message: '分组不能为空', trigger: 'blur',max:40,message: '不超过40个字符'}]">
+                      :rules="[{required: true, message: '分组不能为空', trigger: 'blur'},{max:40,message: '不超过40个字符'}]">
           <el-row :span="24" :gutter="32">
             <el-col :span="18">
               <el-input v-model="groups.input" auto-complete="off"></el-input>
@@ -548,7 +548,6 @@
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.schedule_name = this.$global.data.follow_schedule;// 设置项目跟进状态
-
           resolve(1);
         });
       }, // 获取跟进进度

@@ -1022,10 +1022,15 @@
 //              this.$tool.console(err);
 //            });
 //        }
+      },
+      // 设置tab切换
+      setTabChange () {
+        this.activeName = this.$route.query.active || 'person';
       }
     },
     // 当dom一创建时
     created () {
+      this.setTabChange();
       this.$global.func.getWxProjectCategory()
         .then((data) => {
           return this.getWxProjectCategory();

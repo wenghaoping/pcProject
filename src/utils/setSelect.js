@@ -57,6 +57,7 @@ export function getTitleSift (data) {
   }
   return arr;
 }
+// 设置标签
 export function getTagsPro (data) {
   let arr = [];
   for (let i = 0; i < data.length; i++) {
@@ -66,4 +67,15 @@ export function getTagsPro (data) {
     arr.push(obj);
   }
   return arr;
-} // 设置标签
+}
+// 设置阶段
+export function getSchedule (data) {
+  let arr = [];
+  for (let i = 0; i < data.length; i++) {
+    let obj = {};
+    obj.label = data[i].schedule_name;
+    obj.value = data[i].schedule_id;
+    arr.push(obj);
+  }
+  return arr;
+}

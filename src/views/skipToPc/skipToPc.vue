@@ -27,7 +27,7 @@
     created () {
       if (this.$route.path === '/skipToPc') {
         this.project_id = this.$route.query.project_id || '';
-        this.show = this.$route.query.show || '';
+        this.active = this.$route.query.active || '';
         this.type = this.$route.query.type || '';
         localStorage.user_id = this.$route.query.user_id || '';
         localStorage.token = this.$route.query.token || '';
@@ -35,10 +35,12 @@
           .then((data) => {
             if (this.type === 'project_list') {
               return this.$router.push({name: 'myProject', query: {activeTo: 0}});
+            } else if (this.type === 'follow_up') {
+              return this.$router.push({name: 'followUp', query: {activeTo: 2}});
             } else if (this.type === 'user_detail') {
-              return this.$router.push({name: 'personalInformation'}); // 个人信息
+              return this.$router.push({name: 'personalInformation', query: {active: this.active}}); // 个人信息
             } else {
-              return this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, show: this.show}});
+              return this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, show: this.active}});
             }
           });
       }

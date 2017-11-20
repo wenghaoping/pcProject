@@ -34,13 +34,18 @@ export default
   projectUpload: 'api/v/project/projectUpload?token=',
 
   /* 项目列表页 */
-  getNodeCount: 'api/v/project/getNodeCount', // 项目节点数量
+  getNodeCount: 'api/project/getNodeCount', // 项目节点数量
+  getAllNode: 'api/category/getAllNode', // 获取所有项目节点
+  setScheduleOrder: 'api/category/setScheduleOrder', // 设置自定义进度标签
   deleteUpload: 'api/v/project/deleteUpload',  // 删除批量上传的文件
   saveUpload: 'api/v/project/saveUpload',  // 修改批量上传文件的绑定
   titleSift: 'api/v/project/titleSift', // 项目列表表头数据
   getProjectList: 'api/v/project/getProjectList',  // 获取項目列表
   deleteProject: 'api/v/project/deleteProject', // 删除项目
-
+  deleteSchedule: 'api/category/deleteSchedule', // 删除项目节点
+  getCompetitionIndex: '/api/competition/getCompetitionIndex', // 获取大赛名称、阶段、评分指标
+  deleteCompetitionIndex: '/api/competition/deleteCompetitionIndex', // 删除自定义的指标
+  createCompetitionIndex: '/api/competition/createCompetitionIndex', // 自定义指标的创建和更新
   /* 项目详情页 */
   getProjectDetail: 'api/project/getProjectDetail',  // 获取項目詳情
   deleteCoreTeam: 'api/v/project/deleteCoreTeam',  // 删除核心成员
@@ -100,16 +105,16 @@ export default
   checkUserInfo: 'api/user/checkUserInfo', // 获取用户信息
 
   /* 我的人脉 */
-  uploadConnectCard: 'api/v/user/uploadConnectCard?token=', // 人脉图片上传
+  uploadConnectCard: 'api/user/uploadConnectCard?token=', // 人脉图片上传
 
-  userTitleSift: 'api/v/user/userTitleSift', // 人脉列表表头
-  getConnectUser: 'api/v/user/getConnectUser', // 获取人脉列表
-  setConnectTag: 'api/v/user/setConnectTag', // 给人脉设置标签
-  deleteConnectUser: 'api/v/user/deleteConnectUser', // .删除人脉
-  createUserCard: 'api/v/user/createUserCard', // 添加人脉
-  deleteConnectCard: 'api/v/user/deleteConnectCard', // 删除人脉名片(图片)
-  getOneUserInfo: 'api/v/user/getOneUserInfo', // 人脉详情
-
+  userTitleSift: 'api/user/userTitleSift', // 人脉列表表头
+  getConnectUser: 'api/user/getConnectUser', // 获取人脉列表
+  setConnectTag: 'api/user/setConnectTag', // 给人脉设置标签
+  deleteConnectUser: 'api/user/deleteConnectUser', // .删除人脉
+  createUserCard: 'api/user/createUserCard', // 添加人脉
+  deleteConnectCard: 'api/user/deleteConnectCard', // 删除人脉名片(图片)
+  getOneUserInfo: 'api/user/getOneUserInfo', // 人脉详情
+  setJudgeAuth: 'api/user/setJudgeAuth', // 设置是否成为评委
   /* 跟进记录 */
   get_follow_records: '/api/project/get_follow_records', // 获取跟进记录总列表
   get_follow_record: '/api/project/get_follow_record', // 获取跟进记录单独

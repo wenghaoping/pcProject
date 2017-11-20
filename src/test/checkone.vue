@@ -10,12 +10,17 @@
     <card-upload :uploadCardAddress="uploadCardAddress" :filetypes="filetypes" :uploadDate="uploadDate"
                  @delete="remove" @success="success">
     </card-upload>
+
+    <carousel>
+
+    </carousel>
   </div>
 </template>
 
 <script>
   import draggable from 'vuedraggable';
   import cardUpload from '@/components/upload/cardUpload.vue';
+  import carousel from '@/views/components/carousel.vue';
   export default {
     data () {
       return {
@@ -52,7 +57,8 @@
     },
     components: {
       draggable,
-      cardUpload
+      cardUpload,
+      carousel
     },
     watch: {
       '$route' (to, from) {

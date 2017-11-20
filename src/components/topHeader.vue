@@ -27,9 +27,9 @@
                 {{userRealName}}<i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item><span @click="loginOut(0)" style="display: block">个人信息</span></el-dropdown-item>
-            <el-dropdown-item><span @click="loginOut(1)" style="display: block">{{groupStatus}}</span></el-dropdown-item>
-            <el-dropdown-item divided><span @click="loginOut(2)" style="display: block">退出</span></el-dropdown-item>
+            <el-dropdown-item><div @click="loginOut(0)">个人信息</div></el-dropdown-item>
+            <el-dropdown-item><div @click="loginOut(1)" >{{groupStatus}}</div></el-dropdown-item>
+            <el-dropdown-item divided><div @click="loginOut(2)">退出</div></el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </li>

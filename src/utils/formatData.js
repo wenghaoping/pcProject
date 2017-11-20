@@ -1,9 +1,9 @@
 /**
  * Created by Admin on 2017/11/13.
  */
-import * as validata from '@/utils/validata';
-// 用来格式化时间,以及标签取出的id
-// 数据格式化
+import { isArray } from '@/utils/validata';
+/* 用来格式化时间,以及标签取出的id
+数据格式化 */
 
 // 对象封装 将对象中无用的参数去除
 export function getToObject (data) {
@@ -43,9 +43,9 @@ export function setTag (arr, pro) {
     }
   }
 }
-
+// 将数组中需要的id取出来合并为一个数组
 export function setIdToArr (arr, title) {
-  if (validata.isArray(arr)) {
+  if (isArray(arr)) {
     let tags = [];
     arr.forEach((x) => {
       tags.push(x[title]);
@@ -55,10 +55,11 @@ export function setIdToArr (arr, title) {
     return arr;
   }
 }
-//* 将标签转化为字符长串例子'汽车交通、物流、房产服务、
-// 体育运动、工业生产'data为总的数组,title为要改变的字段(字符串格式)*/
+
+// 将标签转化为字符长串例子'汽车交通、物流、房产服务、
+// 体育运动、工业生产'data为总的数组,title为要改变的字段(字符串格式)
 export function setTagToString (data, title) {
-  if (validata.isArray(data)) {
+  if (isArray(data)) {
     let str = '';
     if (data.length === 0) {
       str = '';
@@ -75,7 +76,7 @@ export function setTagToString (data, title) {
 }
 // 如果数据为0,则返回空字符串data为总的数组,title为要改变的字段(字符串格式)
 export function setZeroToNull (data, title) {
-  if (validata.isArray(data)) {
+  if (isArray(data)) {
     data.forEach((x) => {
       if (x[title] === 0) x[title] = '';
     });
@@ -85,7 +86,7 @@ export function setZeroToNull (data, title) {
 }
 // 如果数据为空字符串,则返回0,data为总的数组,title为要改变的字段(字符串格式)
 export function setNullToZero (data, title) {
-  if (validata.isArray(data)) {
+  if (isArray(data)) {
     data.forEach((x) => {
       if (x[title] === '' || x[title] === undefined) x[title] = 0;
     });
@@ -102,6 +103,7 @@ export function setUrlChange (url, name = '') {
 }
 
 // 时间戳的处理
+
 // 时间戳转化为正常时间yyyy-mm-dd-hh-m===========单个时间的处理
 export function formatDateTime (timeStamp) {
   if (timeStamp === '') return '';
@@ -127,17 +129,6 @@ export function setTime (time, title) {
     x[title] = formatDateTime(x[title]);
   });
 }
-// 将数组中需要的id取出来合并为一个数组
-// 时间转化接受从时间戳转化为中国标准时间
-export function setTimeToReallyTime (time, title) {
-  if (validata.isArray(time)) {
-    time.forEach((x) => {
-      x[title] = new Date(x[title].length > 11 ? x[title] : x[title] * 1000);
-    });
-  } else {
-    return time;
-  }
-}
 // 时间转化接受从时间戳转化为中国标准时间(单个数据)
 export function setTimeToReallyTime1 (time, title) {
   if (time[title]) {
@@ -146,9 +137,17 @@ export function setTimeToReallyTime1 (time, title) {
     return '';
   }
 }
+// 时间转化接受从标准时间转换为时间戳(单个数据)
+export function setReallyTimeToTime1 (time, title, title2) {
+  if (time) {
+    time[title2] = Date.parse(time[title]) ? Date.parse(time[title]) : ' ';
+  } else {
+    return time;
+  }
+}
 // 时间转化接受从中国标准时间转化为时间戳title为要转化的字段title2为新赋值的字段
 export function setReallyTimeToTime (time, title, title2) {
-  if (validata.isArray(time)) {
+  if (isArray(time)) {
     time.forEach((x) => {
       x[title2] = Date.parse(x[title]);
     });
@@ -156,10 +155,12 @@ export function setReallyTimeToTime (time, title, title2) {
     return time;
   }
 }
-// 单个数据从标准时间转换为时间戳
-export function setReallyTimeToTime1 (time, title, title2) {
-  if (time) {
-    time[title2] = Date.parse(time[title]) ? Date.parse(time[title]) : ' ';
+// 时间转化接受从时间戳转化为中国标准时间
+export function setTimeToReallyTime (time, title) {
+  if (isArray(time)) {
+    time.forEach((x) => {
+      x[title] = new Date(x[title].length > 11 ? x[title] : x[title] * 1000);
+    });
   } else {
     return time;
   }

@@ -311,7 +311,8 @@
                     <div class="marginAuto" style="width:156px;">
                       <div class="addhover">
                         <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
-                        <el-button type="text" @click="addgoodNess" class="addMember fl"> 添加条目</el-button></div>
+                        <el-button type="text" @click="addgoodNess" class="addMember fl"> 添加条目</el-button>
+                      </div>
                     </div>
 
                     <!--市场概况-->
@@ -737,7 +738,7 @@
                     </el-col>
                     <el-col :span="4">
                       <el-form-item
-                        label="融资金额(万)"
+                        label="融资金额"
                         :prop="'pro_history_finance.' + index + '.pro_finance_scale'"
                         v-for="(history, index) in financing.pro_history_finance"
                         :key="history.index"

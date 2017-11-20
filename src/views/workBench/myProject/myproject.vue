@@ -1,77 +1,18 @@
 <template>
   <div id="myproject">
-    <div class="wrap-left fl" style="">
-      <div class="top-big-progress">
-        <div class="pp-item pp-node pp-start" :class="{'pp-cur':node0}" @click="setNode('0')">
+    <div class="wrap-left fl">
+      <div class="top-big-progress inlineBlock">
+        <div class="pp-item pp-node pp-start" :class="{'pp-cur': node0}" @click="setNode(0)">
           <p class="pp-num pp-txt">{{nodeCount.whole}}</p>
           <span class="pp-sec-title">全部项目</span>
         </div>
-        <div class="pp-item pp-lines">
-          <span class="lp-line">&nbsp;</span>
-        </div>
-        <div class="pp-item pp-node" :class="{'pp-cur':node1}" @click="setNode('1')">
-          <p class="pp-num pp-txt">{{nodeCount.clue}}</p>
-          <span class="pp-sec-title">项目线索</span>
-        </div>
-        <div class="pp-item pp-lines">
-          <span class="lp-line">&nbsp;</span>
-          <el-tooltip placement="top" :class="{'pp-cur':node2}" >
-            <div slot="content">
-              <div style="width:50px;text-align: center;">约谈 : {{nodeCount.interview}} </div>
-            </div>
-              <span class="circle circle-0" @click="setNode('2')">
-                <span class="getClick"></span>
-            </span>
-          </el-tooltip>
-        </div>
-        <div class="pp-item pp-node" :class="{'pp-cur':node4}" @click="setNode('4')">
-          <p class="pp-num pp-txt">{{nodeCount.sign}}</p>
-          <span class="pp-sec-title">FA签约</span>
-        </div>
-        <div class="pp-item pp-lines">
-          <span class="lp-line">&nbsp;</span>
-          <el-tooltip placement="top" :class="{'pp-cur':node5}" >
-            <div slot="content">
-              <div style="width:100px;text-align: center;">引荐投资方 : {{nodeCount.recommended}} </div>
-            </div>
-            <span class="circle circle-1" @click="setNode('5')">
-              <span class="getClick"></span>
-            </span>
-          </el-tooltip>
-
-          <el-tooltip placement="top" :class="{'pp-cur':node6}" >
-            <div slot="content">
-              <div style="width:80px;text-align: center;">投资协议 : {{nodeCount.agreement}} </div>
-            </div>
-            <span class="circle circle-2" @click="setNode('6')">
-              <span class="getClick"></span>
-            </span>
-          </el-tooltip>
-
-          <el-tooltip placement="top" :class="{'pp-cur':node7}" >
-            <div slot="content">
-              <div style="width:50px;text-align: center;">交割 : {{nodeCount.delivery}} </div>
-            </div>
-            <span class="circle circle-3" @click="setNode('7')">
-              <span class="getClick"></span>
-            </span>
-          </el-tooltip>
-
-          <el-tooltip placement="top" :class="{'pp-cur':node8}">
-            <div slot="content">
-              <div style="width:80px;text-align: center;">待收佣金 : {{nodeCount.collect}} </div>
-            </div>
-            <span class="circle circle-4"  @click="setNode('8')">
-              <span class="getClick"></span>
-            </span>
-          </el-tooltip>
-
-        </div>
-        <div class="pp-item pp-node" :class="{'pp-cur':node9}" @click="setNode('9')">
-          <p class="pp-num pp-txt">{{nodeCount.revenue}}</p>
-          <span class="pp-sec-title"  >佣金收讫</span>
-        </div>
       </div>
+
+      <carousel class="inlineBlock" :nodelist="nodeCount.nodelist"
+                :scheduleid="schedule"
+                @setNode="setNode"></carousel>
+
+      <el-button style="position: absolute;right: -50px;top: 65px;" @click.native="closeStage(true)">阶段设置</el-button>
       <div class="clearfx"></div>
       <div class="top-search-box">
         <div class="input-box">
@@ -84,6 +25,8 @@
           </el-input>
         </div>
         <div class="btns-box">
+          <el-button type="primary" @click="closeScore(true)">大赛评分指标</el-button>
+          <el-button type="primary" @click="scoreDownload">评分下载</el-button>
           <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
         </div>
@@ -125,9 +68,6 @@
                 </el-tooltip>
               </template>
             </el-table-column>
-
-
-
             <el-table-column prop="pro_source" label="项目来源" width="96" :filters="pro_sourceFilters"
                              filter-placement="bottom-end"
                              column-key="pro_source"
@@ -141,10 +81,6 @@
                 </div>
               </template>
             </el-table-column>
-
-<!--            <el-table-column prop="pro_follow_up_user" label="跟进人" width="96" show-overflow-tooltip>
-            </el-table-column>-->
-
             <el-table-column prop="pro_schedule" label="项目进度" width="96" :filters="pro_scheduleFilters"
                              filter-placement="bottom-end"
                              :filter-multiple="stateCheck"
@@ -277,19 +213,16 @@
                   size="small" class="send-btn btn-cur">
                   推送
                 </el-button>
-                <el-button
-                  type="text"
-                  size="small" class="send-btn btn-cur">
-                  <img src="../../../assets/images/more.png" alt="" class="more">
-                </el-button>
-                <el-select v-model="scope.row.moreShow" placeholder="请选择" @change="moreChange(scope.$index, scope.row)">
-                  <el-option
-                    v-for="item in moreList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
+                <el-dropdown trigger="click" style="height: 19px;">
+                  <el-button
+                    type="text"
+                    size="small" class="send-btn btn-cur">
+                    <img src="../../../assets/images/more.png" alt="" class="more">
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item><div @click="deleteProject(scope.$index, scope.row)">删除</div></el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </template>
             </el-table-column>
           </el-table>
@@ -311,22 +244,30 @@
     <alertUpload :upload-display="uploadDisplay"
                  @uploadDisplayChange="uploadDisplayChange"
                  @reload="handleIconClick"></alertUpload>
+
     <!--写跟进弹框-->
-    <addfollow :follow-display="followDisplay" :projectid="projecmessage.project_id" :projectname="projecmessage.project_name"
+    <addfollow :follow-display="followDisplay" :projectid="projecmessage.project_id"
+               :projectname="projecmessage.project_name"
                @closeFollow="closeFollow"></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="pushId" :pro-intro="pushIntro" :emitPush="emitPush"
-                  @openPreview="openPreview"
-                  @closeProjectPush2="closeProjectPush2"
-                  @previewPush="previewPush"
-    ></projectpushtopro>
+    <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="pushId"
+                      :pro-intro="pushIntro" :emitPush="emitPush"
+                      @openPreview="openPreview"
+                      @closeProjectPush2="closeProjectPush2"
+                      @previewPush="previewPush"></projectpushtopro>
 
     <!--项目预览弹窗-->
     <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
                     @closePreview="closePreview"
                     @closePreviewANDProjectPush="closePreviewANDProjectPush"
                     @previewPush="previewPush"></projectpreview>
+
+    <!--评分指标-->
+    <score-index :scoreDisplay="scoreDisplay" @closeScore="closeScore" :nodelist="nodeCount.nodelist"></score-index>
+
+    <!--自定义项目阶段-->
+    <stage-custom :stageDisplay="stageDisplay" @closeStage="closeStage"></stage-custom>
 
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
@@ -337,15 +278,17 @@
         </div>
       </div>
     </div>-->
-    <!--<div style="width: 200px;height: 200px;background: red; position: fixed;bottom: 0;right:0;"></div>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import alertUpload from './alertUpload.vue';
+  import scoreIndex from './scoreIndex.vue';
+  import stageCustom from './stageCustom.vue';
   import addfollow from '@/views/components/addFollow.vue';
   import projectpushtopro from '@/views/components/projectPushToPro.vue';
   import projectpreview from '@/views/components/projectPreview.vue';
+  import carousel from '@/views/components/carousel.vue';
   import * as formatData from '@/utils/formatData';
   import { getTitleSift } from '@/utils/setSelect';
   import { error, success } from '@/utils/notification';
@@ -354,12 +297,20 @@
       alertUpload,
       addfollow,
       projectpreview,
-      projectpushtopro
+      projectpushtopro,
+      scoreIndex,
+      stageCustom,
+      carousel
     },
     data () {
       return {
         followDisplay: false, // 控制写跟进弹框
         projectPushDisplay2: false, // 项目推送弹窗
+        uploadDisplay: false, // 上传弹框控制
+        previewDisplay: false, // 控制项目推送预览显隐
+        scoreDisplay: false, // 评分指标弹窗
+        stageDisplay: false, // 自定义阶段弹窗控制
+        scoreDowlondDisplay: false, // 评分下载弹框
         projecmessage: {
           project_id: '',
           project_name: ''
@@ -380,12 +331,8 @@
            project_id:''
            } */
         ],
-        pro_sourceFilters: [
-          /*            { text: '约谈', value: '约谈' } */
-        ],
-        pro_scheduleFilters: [
-          /* { text: '项目线索', value: '项目线索' } */
-        ],
+        pro_sourceFilters: [/*            { text: '约谈', value: '约谈' } */],
+        pro_scheduleFilters: [/* { text: '项目线索', value: '项目线索' } */],
         pro_industryFilters: [/* { text: '大数据服务', value: '大数据服务' } */],
         soleFilters: [{text: '独家', value: 1}, {text: '非独', value: 2}, {text: '其他', value: 0}],
         pro_stageFilters: [/* { text: 'IPO上市后', value: 'IPO上市后' } */],
@@ -393,120 +340,114 @@
         pro_scaleFilters: [/* { text: '3000万', value: '3000万' } */],
         stateCheck: false, // 状态单选
         searchinput: '', // 搜索输入框
-        uploadDisplay: false, // 上传弹框控制
         node0: true,
-        node1: false,
-        node2: false,
-        node3: false,
-        node4: false,
-        node5: false,
-        node6: false,
-        node7: false,
-        node8: false,
-        node9: false,
         currentPage: 1, // 当前第几页
         totalData: 0, // 总数据条数
         nodeCount: {
-          whole: 0, // 全部项目
-          clue: 0, // 项目线索
-          interview: 0, // 约谈
-          investigate: 0, // 考察
-          sign: 0, // 签署FA协议
-          recommended: 0, // 引荐投资方
-          agreement: 0, // 投资协议
-          delivery: 0, // 交割
-          collect: 0, // 待收佣金
-          revenue: 0// 佣金收益
+          whole: 0,
+          nodelist: []
         },
+
         loading: false,
         filter: true,
         getPra: {}, // 筛选的请求参数
         getProjectListURL: '', // 首页获取列表的URL
-        moreShow: false, // 更多的选项绑定
         moreList: [{
           value: '0',
           label: '删除'
         }], // 更多的选项表单
         pushId: '', // 推送项目传值-项目ID
         pushIntro: '', // 推送项目传值-项目名称
-        previewDisplay: false, // 控制项目推送预览显隐
         emitPush: false, // 控制项目推送-项目入口的推送函数触发
-        pro_schedule: ''// 筛选选项
+        pro_schedule: '', // 筛选选项
+        schedule: ''
       };
     },
     methods: {
+      // 批量上传项目
       uploadAll () {
         this.uploadDisplay = true;
         this.zgClick('批量上传项目');
-      }, // 批量上传项目
+      },
+      // 跳转到项目详情页面传参数
       handleSelect (row, event, column) {
         if (column.label !== '重置') {
           this.zgClick('查看项目详情');
           this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'detail'}});
           this.setRouterData();
         }
-      }, // 跳转到项目详情页面传参数
+      },
+      // 跳转之后设置参数
       setRouterData () {
         this.$store.state.pageANDSelect.getPra = this.getPra;
         this.$store.state.pageANDSelect.pracurrentPage = this.currentPage;
-      }, // 跳转之后设置参数
+      },
+      // 从vuex中取数据
       getRouterData () {
         this.getPra = this.$store.state.pageANDSelect.getPra;
         this.currentPage = this.$store.state.pageANDSelect.pracurrentPage || 1;
         this.getPra.page = this.$store.state.pageANDSelect.pracurrentPage || 1;
         let node = this.$store.state.pageANDSelect.node | 0;
-        for (let i = 0; i < 9; i++) { this['node' + i] = false; };
-        this['node' + node] = true;
+//        for (let i = 0; i < 9; i++) { this['node' + i] = false; };
+//        this['node' + node] = true;
         this.searchinput = this.$store.state.pageANDSelect.proSearchinput || '';
-//        console.log(this.searchinput);
         this.pro_schedule = node;
-      }, // 从vuex中取数据
-
+        this.setNodeCss(node);
+      },
+      // 跳转到编辑页
       handleEdit (index, row) {
         this.zgClick('编辑项目');
         this.$router.push({name: 'editproject', query: {project_id: row.project_id}});
         this.setRouterData();
-      }, // 跳转到编辑页
+      },
+      // 跳转到创建项目页面
       createProject () {
         this.zgClick('创建项目');
         this.$router.push({name: 'creatproject'});
         this.setRouterData();
-      }, // 跳转到创建项目页面
-
+      },
+      // 控制上传弹窗
       uploadDisplayChange (msg) {
         this.uploadDisplay = msg;
-      }, // 控制上传弹窗
+      },
 
       // 跟进
+      // 点击写跟近按钮
       addFollow (index, row) {
         this.zgClick('添加跟进');
         this.followDisplay = true;
         this.projecmessage.project_id = row.project_id;
         this.projecmessage.project_name = row.pro_intro;
-      }, // 点击写跟近按钮
+      },
+      // 打开预览弹框
       openPreview (msg) {
         this.previewDisplay = msg;
-      }, // 打开预览弹框
+      },
+      // 关闭添加跟进
       closeFollow (msg) {
         this.followDisplay = msg;
-      }, // 关闭添加跟进
+      },
+      // 点击项目推送
       addprojectPush (index, row) {
         this.zgClick('项目推送');
         this.pushId = row.project_id;
         this.pushIntro = row.pro_intro;
         this.projectPushDisplay2 = true;
-      }, // 点击项目推送
+      },
+      // 关闭项目推送弹窗
       closeProjectPush2 (msg) {
         this.projectPushDisplay2 = msg;
 //        this.handleIconClick();
-      }, // 关闭项目推送弹窗
+      },
+      // 关闭预览AND关闭项目推送1,关闭项目推送2
       closePreviewANDProjectPush (msg) {
         this.projectPushDisplay2 = false;
         this.previewDisplay = false;
 //        this.handleIconClick();
-      }, // 关闭预览AND关闭项目推送1,关闭项目推送2
+      },
 
-      //* 请求函数
+      // 请求函数
+      // 搜索===首次进入页面加载的数据
       handleIconClick () {
         this.$tool.getTop();
         this.loading = true;
@@ -526,8 +467,8 @@
             this.loading = false;
             console.log(err);
           });
-      }, // 搜索===首次进入页面加载的数据
-
+      },
+      // 筛选 ascending升/descending降/
       filterChange (filters) {
         this.loading = true;
         this.currentPage = 1;
@@ -573,7 +514,8 @@
             this.loading = false;
             console.log(err);
           });
-      }, // 筛选 ascending升/descending降/
+      },
+      // 控制页码
       filterChangeCurrent (page) {
         delete this.getPra.page;
         this.loading = true;
@@ -592,24 +534,15 @@
             this.loading = false;
             console.log(err);
           });
-      }, // 控制页码
-
-      setNode (v) {
+      },
+      // 控制顶部样式并且筛选
+      setNode (id) {
         this.currentPage = 1;
         this.loading = true;
         this.node0 = false;
-        this.node1 = false;
-        this.node2 = false;
-        this.node3 = false;
-        this.node4 = false;
-        this.node5 = false;
-        this.node6 = false;
-        this.node7 = false;
-        this.node8 = false;
-        this.node9 = false;
-        this['node' + v] = true;
-        this.$store.state.pageANDSelect.node = v;
-        this.$http.post(this.getProjectListURL, {user_id: localStorage.user_id, pro_schedule: parseInt(v)})
+        this.setNodeCss(id);
+        this.$store.state.pageANDSelect.node = id;
+        this.$http.post(this.getProjectListURL, {user_id: localStorage.user_id, pro_schedule: parseInt(id)})
           .then(res => {
             this.loading = false;
             let data = res.data.data;
@@ -620,63 +553,32 @@
             this.loading = false;
             console.log(err, 2);
           });
-      }, // 控制顶部样式并且筛选
-
+      },
+      // 设置样式
+      setNodeCss (id) {
+        this.schedule = id;
+        if (id === 0) { this.node0 = true; };
+      },
+      // 点击重置按钮时
       headerClick (column, event) {
         if (column.label === '重置') {
           window.location.reload();
         }
-      }, // 点击重置按钮时
-
+      },
+      // 获取项目节点数量
       getNodeCount () {
-        const getNodeCountURL = this.URL.getNodeCount;
-        this.$http.post(getNodeCountURL, {user_id: localStorage.user_id})
+        this.$http.post(this.URL.getNodeCount, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
-            this.nodeCount.whole = data.total.schedule_count;// 全部项目
-            this.totalData = data.total.schedule_count;// 页码
-            let nodeList = data.node_list;
-            for (let key in nodeList) { // 数据导入顶部标签
-              switch (nodeList[key].schedule_id) {
-                case 1:
-                  this.nodeCount.clue = nodeList[key].schedule_count;
-                  break;
-                case 2:
-                  this.nodeCount.interview = nodeList[key].schedule_count;
-                  break;
-                case 3:
-                  this.nodeCount.investigate = nodeList[key].schedule_count;
-                  break;
-                case 4:
-                  this.nodeCount.sign = nodeList[key].schedule_count;
-                  break;
-                case 5:
-                  this.nodeCount.recommended = nodeList[key].schedule_count;
-                  break;
-                case 6:
-                  this.nodeCount.agreement = nodeList[key].schedule_count;
-                  break;
-                case 7:
-                  this.nodeCount.delivery = nodeList[key].schedule_count;
-                  break;
-                case 8:
-                  this.nodeCount.collect = nodeList[key].schedule_count;
-                  break;
-                case 9:
-                  this.nodeCount.revenue = nodeList[key].schedule_count;
-                  break;
-                default:
-                  alert('错误');
-                  break;
-              };
-            }
-//              this.loading=false;
+            this.nodeCount.whole = data.count;// 全部项目
+            this.nodeCount.nodelist = data.node_list;
           })
           .catch(err => {
             console.log(err);
 //            this.loading=false;
           });
-      }, // 获取项目节点数量
+      },
+      // 获取表头
       titleSift () {
         const titleSiftURL = this.URL.titleSift;
         this.$http.post(titleSiftURL, {user_id: localStorage.user_id})
@@ -698,8 +600,8 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 获取表头
-
+      },
+      // 总设置列表的数据处理
       getProjectList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
@@ -717,51 +619,62 @@
           obj.pro_scale = formatData.setTagToString(list[i].pro_scale, 'scale_money');
           obj.project_id = list[i].project_id;
           obj.created_at = list[i].created_at;
-          obj.moreShow = '';
           arr.push(obj);
         }
         return arr;
-      }, // 总设置列表的数据处理
+      },
 
       // 更多按钮
-      moreChange (index, row) {
+      // 删除项目
+      deleteProject (index, row) {
         this.setRouterData();
-        this.moreShow = !this.moreShow;
-        if (this.moreShow) {
-          this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.zgClick('删除项目');
-            this.loading = true;
-            this.$http.post(this.URL.deleteProject, {user_id: localStorage.user_id, project_id: row.project_id})
-              .then(res => {
-                this.loading = false;
-                success('删除成功');
-                this.getRouterData();
-                this.filterChangeCurrent(this.currentPage || 1);
-              })
-              .catch(err => {
-                this.loading = false;
-                error('删除失败');
-                console.log(err);
-              });
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消删除'
+        this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.zgClick('删除项目');
+          this.loading = true;
+          this.$http.post(this.URL.deleteProject, {user_id: localStorage.user_id, project_id: row.project_id})
+            .then(res => {
+              this.loading = false;
+              success('删除成功');
+              this.getRouterData();
+              this.filterChangeCurrent(this.currentPage || 1);
+            })
+            .catch(err => {
+              this.loading = false;
+              error('删除失败');
+              console.log(err);
             });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
           });
-        }
-      }, // 删除项目
-
+        });
+      },
+      // 项目推送预览隐藏
       previewPush (x) {
         this.emitPush = x;
-      }, // 项目推送预览隐藏
+      },
+      // 关闭项目预览
       closePreview (msg) {
         this.previewDisplay = msg;
-      }// 关闭项目预览
+      },
+      // 评分指标下载
+      scoreDownload () {},
+      // 控制评分指标
+      closeScore (e) {
+        this.scoreDisplay = e;
+      },
+      // 控制自定义
+      closeStage (e) {
+        this.stageDisplay = e;
+        if (!e) {
+          this.getNodeCount();
+        }
+      }
     },
     computed: {
 
