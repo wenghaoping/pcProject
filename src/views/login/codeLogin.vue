@@ -53,6 +53,7 @@
               this.$store.state.logining.user_brand = res.data.user_brand;
               this.$store.state.logining.user_company_career = res.data.user_company_career;
               this.$store.state.logining.user_company_name = res.data.user_company_name;
+              this.getCheckUserInfo(localStorage.user_id);
               this.getUserGroupByStatusName(localStorage.user_id);
               localStorage.token = res.data.token;
               // 重新获取个人标签(因为获取个人标签必须要有user_id)

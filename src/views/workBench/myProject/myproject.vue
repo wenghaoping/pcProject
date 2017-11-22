@@ -9,8 +9,7 @@
       </div>
 
       <carousel class="inlineBlock" :nodelist="nodeCount.nodelist"
-                :scheduleid="schedule"
-                @setNode="setNode"></carousel>
+                @setNode="setNode" v-loading.body="loading2" element-loading-text="拼命加载中"></carousel>
 
       <el-button style="position: absolute;right: -50px;top: 65px;" @click.native="closeStage(true)">阶段设置</el-button>
       <div class="clearfx"></div>
@@ -25,8 +24,8 @@
           </el-input>
         </div>
         <div class="btns-box">
-          <el-button type="primary" @click="closeScore(true)">大赛评分指标</el-button>
-          <el-button type="primary" @click="scoreDownload">评分下载</el-button>
+          <el-button type="primary" @click="closeScore(true)" v-if="is_competition == 'true'">大赛评分指标</el-button>
+          <el-button type="primary" @click="scoreDownload" v-if="is_competition == 'true'">评分下载</el-button>
           <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
         </div>
@@ -347,8 +346,9 @@
           whole: 0,
           nodelist: []
         },
-
+        is_competition: false, // 是否是赛事方
         loading: false,
+        loading2: false,
         filter: true,
         getPra: {}, // 筛选的请求参数
         getProjectListURL: '', // 首页获取列表的URL
@@ -359,8 +359,7 @@
         pushId: '', // 推送项目传值-项目ID
         pushIntro: '', // 推送项目传值-项目名称
         emitPush: false, // 控制项目推送-项目入口的推送函数触发
-        pro_schedule: '', // 筛选选项
-        schedule: ''
+        pro_schedule: '' // 筛选选项
       };
     },
     methods: {
@@ -539,9 +538,8 @@
       setNode (id) {
         this.currentPage = 1;
         this.loading = true;
-        this.node0 = false;
         this.setNodeCss(id);
-        this.$store.state.pageANDSelect.node = id;
+        this.getPra.pro_schedule = parseInt(id);
         this.$http.post(this.getProjectListURL, {user_id: localStorage.user_id, pro_schedule: parseInt(id)})
           .then(res => {
             this.loading = false;
@@ -556,7 +554,8 @@
       },
       // 设置样式
       setNodeCss (id) {
-        this.schedule = id;
+        this.node0 = false;
+        this.$store.state.pageANDSelect.node = id;
         if (id === 0) { this.node0 = true; };
       },
       // 点击重置按钮时
@@ -567,15 +566,17 @@
       },
       // 获取项目节点数量
       getNodeCount () {
+        this.loading2 = true;
         this.$http.post(this.URL.getNodeCount, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
             this.nodeCount.whole = data.count;// 全部项目
             this.nodeCount.nodelist = data.node_list;
+            this.loading2 = false;
           })
           .catch(err => {
             console.log(err);
-//            this.loading=false;
+            this.loading2 = false;
           });
       },
       // 获取表头
@@ -623,7 +624,6 @@
         }
         return arr;
       },
-
       // 更多按钮
       // 删除项目
       deleteProject (index, row) {
@@ -663,7 +663,10 @@
         this.previewDisplay = msg;
       },
       // 评分指标下载
-      scoreDownload () {},
+      scoreDownload () {
+        const url = this.URL.weitianshi + this.URL.exportScoreByCompetition + '?user_id=' + localStorage.user_id;
+        window.open(url);
+      },
       // 控制评分指标
       closeScore (e) {
         this.scoreDisplay = e;
@@ -680,10 +683,10 @@
 
     },
     created () {
+      this.is_competition = localStorage.is_competition;
       // 组件创建完后获取数据，
       this.getProjectListURL = this.URL.getProjectList;
       this.getRouterData();
-
       this.loading = true;
       this.getNodeCount();
       this.titleSift();

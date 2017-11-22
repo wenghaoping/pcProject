@@ -55,7 +55,7 @@
         // 推送者和接受者是不是一人时
         warning('此链接不是分享给您的,请进入正确的链接');
         sessionStorage.clear();// 把默认值清空;
-        setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 1000);
+        setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 50);
       }
     },
     watch: {

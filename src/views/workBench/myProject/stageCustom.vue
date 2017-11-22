@@ -160,10 +160,12 @@
             schedule_id: item.schedule_id
           })
             .then(res => {
-              success('删除成功');
-              let index = this.team.core_users.indexOf(item);
-              if (index !== -1) {
-                this.team.core_users.splice(index, 1);
+              if (res.data.status_code === 2000000) {
+                success('删除成功');
+                let index = this.customData.customDatas.indexOf(item);
+                if (index !== -1) {
+                  this.customData.customDatas.splice(index, 1);
+                }
               }
             })
             .catch(err => {

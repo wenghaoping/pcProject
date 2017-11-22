@@ -94,7 +94,7 @@
 
 <script type="text/ecmascript-6">
     import { getSchedule } from '@/utils/setSelect';
-    import { error, success } from '@/utils/notification';
+    import { error, success, warning } from '@/utils/notification';
     import * as validata from '@/utils/validata';
     export default {
       props: {
@@ -209,12 +209,16 @@
         },
         // 添加指标
         addScore () {
-          this.competition.competition_index.push({
-            index_name: '',
-            index_desc: '',
-            index_score: '',
-            index_id: 0
-          });
+          if (this.competition.competition_index.length > 5) {
+            warning('最多添加5项');
+          } else {
+            this.competition.competition_index.push({
+              index_name: '',
+              index_desc: '',
+              index_score: '',
+              index_id: 0
+            });
+          }
         },
         // 删除指标
         deleteScore (item) {

@@ -1,13 +1,13 @@
 <template>
   <!--顶部轮播-->
-  <div class="carousel clearfix" id="carousel">
+  <div class="carousel clearfix" id="carousel" >
     <div class="goTo tc toleft" @click="goLeft">
       <img src="../../assets/images/zuobian.png">
     </div>
     <div class="top-big-progress-out">
       <div class="top-big-progress" ref="progress">
         <div v-for="(node, index) in nodelist" :key="index">
-          <div class="pp-item pp-node" :class="{'pp-cur': active === node.schedule_id}" @click="setNode(node.schedule_id)">
+          <div class="pp-item pp-node" :class="{'pp-cur': getActive === node.schedule_id}" @click="setNode(node.schedule_id)">
             <p class="pp-num pp-txt">{{node.node_count}}</p>
             <span class="pp-sec-title">{{node.schedule_name}}</span>
           </div>
@@ -29,18 +29,16 @@
         nodelist: {
           type: Array,
           default: []
-        },
-        scheduleid: {
-          type: [Number, String]
         }
       },
       data () {
-        return {
-          msg: '1',
-          active: -1
-        };
+        return {};
       },
-      computed: {},
+      computed: {
+        getActive () {
+          return this.$store.state.pageANDSelect.node;
+        }
+      },
       mounted () {
 
       },
@@ -48,7 +46,7 @@
       components: {},
       methods: {
         setNode (id) {
-          this.active = id;
+          this.$store.state.pageANDSelect.node = id;
           this.$emit('setNode', id);
         },
         goRight () {
@@ -63,14 +61,8 @@
         }
       },
       // 当dom一创建时
-      created () {
-
-      },
-      watch: {
-        scheduleid: function (e) {
-          this.active = e;
-        }
-      }
+      created () {},
+      watch: {}
     };
 </script>
 

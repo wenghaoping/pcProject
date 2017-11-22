@@ -21,7 +21,7 @@ export default
   // openUrl:"http://192.168.9.19:8090/#/API/DD",
   // openUrl:"https://dev.weitianshi.cn/workbench/#/API/DD",
 
-  investorMatch: '/api/project/InvestorMatch', // 一键尽调买家图谱
+  investorMatch: 'api/project/InvestorMatch', // 一键尽调买家图谱
 
   /* 上传用 */
 
@@ -46,6 +46,7 @@ export default
   getCompetitionIndex: '/api/competition/getCompetitionIndex', // 获取大赛名称、阶段、评分指标
   deleteCompetitionIndex: '/api/competition/deleteCompetitionIndex', // 删除自定义的指标
   createCompetitionIndex: '/api/competition/createCompetitionIndex', // 自定义指标的创建和更新
+  exportScoreByCompetition: '/api/competition/exportScoreByCompetition', // 导出大赛的统计评分数据，数据按照大赛的阶段分成不同的sheet表
   /* 项目详情页 */
   getProjectDetail: 'api/project/getProjectDetail',  // 获取項目詳情
   deleteCoreTeam: 'api/v/project/deleteCoreTeam',  // 删除核心成员

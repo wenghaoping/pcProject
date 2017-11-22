@@ -92,7 +92,7 @@
       // 保存
       save () {
         let isJudge = this.judgeData.is_judge === '是' ? 1 : 0;
-        this.$http.post(this.URL.setJudgeAuth, {user_id: localStorage.user_id, schedule_id: this.judgeData.schedule_id, is_judge: isJudge, judge_user_id: this.judgeData.card_id})
+        this.$http.post(this.URL.setJudgeAuth, {user_id: localStorage.user_id, schedule_id: this.judgeData.schedule_id, is_judge: isJudge, judge_user_id: this.judgeData.user_id})
           .then(res => {
             if (res.data.status_code === 2000000) {
               success('设置成功');
@@ -111,7 +111,7 @@
         let data = this.judgeSet;
         this.judgeData.schedule_id = data.schedule_id === '' ? this.schedule[0].value : data.schedule_id;// 评分阶段
         this.judgeData.is_judge = data.is_judge;
-        this.judgeData.card_id = data.card_id;
+        this.judgeData.user_id = data.user_id;
       }
     },
     // 当dom一创建时

@@ -1213,7 +1213,6 @@
       }, // 项目推送入口,项目入口
       getprojectId () {
         this.project.project_id = this.$route.query.project_id;
-
         this.activeFrom = this.$route.query.activeTo || 0;
         this.show = this.$route.query.show || 'detail';
       }, // 获取id

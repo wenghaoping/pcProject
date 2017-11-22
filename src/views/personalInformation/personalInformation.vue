@@ -451,9 +451,7 @@
 
             </el-tab-pane>
             <el-tab-pane label="行为数据" name="behavior">
-              <behavior>
-
-              </behavior>
+              <behavior></behavior>
             </el-tab-pane>
           </el-tabs>
         </div>
