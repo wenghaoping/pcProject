@@ -9,8 +9,9 @@
           <el-col :span="12">
             赛事评委
           </el-col>
-          <el-col :span="12" class="fr">
+          <el-col :span="12">
             <el-switch
+              class="fr"
               v-model="judgeData.is_judge"
               on-text="是"
               off-text="否"
@@ -37,7 +38,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="save">应 用</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -97,6 +98,8 @@
             if (res.data.status_code === 2000000) {
               success('设置成功');
               this.handleClose();
+            } else {
+              error(res.data.error_msg);
             }
             this.loading = false;
           })

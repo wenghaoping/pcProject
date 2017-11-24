@@ -8,8 +8,9 @@
         </div>
       </div>
 
-      <carousel class="inlineBlock" :nodelist="nodeCount.nodelist"
-                @setNode="setNode" v-loading.body="loading2" element-loading-text="拼命加载中"></carousel>
+      <carousel ref="carousel" class="inlineBlock" :nodelist="nodeCount.nodelist"
+                @setNode="setNode"
+                v-loading.body="loading2" element-loading-text="拼命加载中" ></carousel>
 
       <el-button style="position: absolute;right: -50px;top: 65px;" @click.native="closeStage(true)">阶段设置</el-button>
       <div class="clearfx"></div>
@@ -534,12 +535,13 @@
             console.log(err);
           });
       },
-      // 控制顶部样式并且筛选
+      // 控制顶部样式并且筛选$ro
       setNode (id) {
         this.currentPage = 1;
         this.loading = true;
         this.setNodeCss(id);
         this.getPra.pro_schedule = parseInt(id);
+        this.pro_schedule = this.getPra.pro_schedule;
         this.$http.post(this.getProjectListURL, {user_id: localStorage.user_id, pro_schedule: parseInt(id)})
           .then(res => {
             this.loading = false;
@@ -573,11 +575,16 @@
             this.nodeCount.whole = data.count;// 全部项目
             this.nodeCount.nodelist = data.node_list;
             this.loading2 = false;
+            this.carouselGoLeft();
           })
           .catch(err => {
             console.log(err);
             this.loading2 = false;
           });
+      },
+      // 修改完成后,表头恢复
+      carouselGoLeft () {
+        this.$refs.carousel.goLeft();
       },
       // 获取表头
       titleSift () {

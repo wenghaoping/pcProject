@@ -43,8 +43,7 @@
                 v-for="(compe, index) in competition.competition_index"
                 :key="compe.index"
                 :rules="[{required: true, message: '不能为空', trigger: 'blur'},{max:20,message: '不超过20个字符'}]">
-                <el-input v-model="compe.index_name">
-                </el-input>
+                <el-input v-model="compe.index_name" placeholder="请输入"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="9">
@@ -53,8 +52,7 @@
                 v-for="(compe, index) in competition.competition_index"
                 :key="compe.index"
                 :rules="[{required: true, message: '不能为空', trigger: 'blur'},{max:100,message: '不超过100个字符'}]">
-                <el-input v-model="compe.index_desc">
-                </el-input>
+                <el-input v-model="compe.index_desc" placeholder="请输入"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -63,8 +61,7 @@
                 v-for="(compe, index) in competition.competition_index"
                 :key="compe.index"
                 :rules="hunderdRule">
-                <el-input v-model="compe.index_score">
-                </el-input>
+                <el-input v-model="compe.index_score" placeholder="请输入"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="1">
@@ -172,10 +169,10 @@
           })
             .then(res => {
               let data = res.data.data;
-              this.schedule_id = data.schedule_id;
               if (data.schedule_id === 0) {
                 data.schedule_id = this.competitionChooseUse[0].value;
               }
+              this.schedule_id = data.schedule_id;
               this.competition = data;
               if (data.competition_index.length === 0) {
                 this.addScore();
@@ -209,7 +206,9 @@
         },
         // 添加指标
         addScore () {
-          if (this.competition.competition_index.length > 5) {
+          console.log(this.competition.competition_index.length);
+          console.log(this.competition.competition_index);
+          if (this.competition.competition_index.length > 4) {
             warning('最多添加5项');
           } else {
             this.competition.competition_index.push({
@@ -222,7 +221,6 @@
         },
         // 删除指标
         deleteScore (item) {
-          console.log(item);
           if (item.index_id === 0) {
             let index = this.competition.competition_index.indexOf(item);
             if (index !== -1) {
@@ -292,12 +290,12 @@
                       success('编辑成功');
                       this.$emit('closeScore', false);
                     } else {
-                      error('编辑失败');
+                      error(res.data.error_msg);
                     }
                     this.loading = false;
                   })
                   .catch(err => {
-                    error('编辑失败');
+                    error('请求失败');
                     console.log(err);
                     this.loading = false;
                   });

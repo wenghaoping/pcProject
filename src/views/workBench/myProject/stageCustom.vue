@@ -235,6 +235,9 @@
       font-size:12px;
       color:#99a9bf;
     }
+    .el-dialog__body{
+      padding-top: 8px;
+    }
     .el-dialog .el-dialog__header{
       padding-left: 20px;
     }
@@ -250,6 +253,7 @@
       }
     }
     .dragUl{
+      margin-top: 15px;
       .dragll{
         height: 45px;
         width: 350px;

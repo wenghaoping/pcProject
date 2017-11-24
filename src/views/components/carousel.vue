@@ -39,9 +39,7 @@
           return this.$store.state.pageANDSelect.node;
         }
       },
-      mounted () {
-
-      },
+      mounted () {},
       // 组件
       components: {},
       methods: {
@@ -54,7 +52,7 @@
             this.$refs.progress.style.left = -1000 + 'px';
           }
         },
-        goLeft () {
+        goLeft (e) {
           if (this.nodelist.length > 5) {
             this.$refs.progress.style.left = 0 + 'px';
           }
