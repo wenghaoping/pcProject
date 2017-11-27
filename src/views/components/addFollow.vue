@@ -214,7 +214,6 @@
           <span v-if="list.load"  class="del-btn  fl" @click.prevent="cancelUpload(list)">取消</span>
         </div>
         <div slot="footer" class="dialog-footer fr" style="margin: 32px 0">
-          <!--<el-button @click="saveSecond">继续添加</el-button>-->
           <el-button type="primary" @click="allSave" :disabled="submitButton">提 交</el-button>
         </div>
       </div>
@@ -413,21 +412,20 @@
       };
     },
     methods: {
+      // 关闭
       handleClose (e) {
         if (!this.submitButton) {
           this.$emit('closeFollow', false);
         } else {
           error('请等待上传成功后关闭或取消上传');
         }
-      }, // 关闭
-      saveSecond () {
-        this.allSave();// 添加
-        this.follow = this.saveJumpData;
-      }, // 继续添加
+      },
+      // 选择项目后
       handleSelectProject (item) {
         this.follow.project_id = '';
         this.follow.project_id = item.label;
-      }, // 选择项目后
+      },
+      // 项目搜索
       querySearchProject (queryString, cb) {
         let obj = {};
         obj.user_id = localStorage.user_id;
@@ -449,8 +447,8 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 项目搜索
-
+      },
+      // 选择意向投资人后
       handleSelect (item) {
         this.follow.card_id = item.label;
         this.follow.type = item.type;
@@ -499,7 +497,8 @@
               this.loading = false;
             });
         }
-      }, // 选择意向投资人后
+      },
+      // 意向投资人搜索
       querySearchAsync (queryString, cb) {
         this.$http.post(this.URL.match_my_relation, {user_id: localStorage.user_id, user_name: queryString})
           .then(res => {
@@ -516,8 +515,8 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 意向投资人搜索
-
+      },
+      // 获取远程数据模拟
       loadData (arr) {
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
@@ -527,7 +526,8 @@
           newArr.push(obj);
         }
         return newArr;
-      }, // 获取远程数据模拟
+      },
+      // 获取用户
       loadDataUser (arr, name) {
         let newArr = [];
         var set = '新增‘' + name + '’为意向投资人';
@@ -543,14 +543,16 @@
           newArr.push(obj);
         }
         return newArr;
-      }, // 获取用户
+      },
+      // 获取跟进进度
       getScheduleName () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.schedule_name = this.$global.data.follow_schedule;// 设置项目跟进状态
           resolve(1);
         });
-      }, // 获取跟进进度
+      },
+      // 获取项目分组信息
       getFileType (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -560,7 +562,8 @@
           arr.push(obj);
         }
         return arr;
-      }, // 获取项目分组信息
+      },
+      // 设置文件分组标签
       setFileType () {
         this.$http.post(this.URL.getFileType, {user_id: localStorage.user_id})
           .then(res => {
@@ -570,12 +573,14 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 设置文件分组标签
+      },
+      // 设置批量上传文件显示
       setUploadShow (data) {
         for (let i = 0; i < data.length; i++) {
           this.addDomain(data[i].type_name, data[i].file_title + '.' + data[i].file_ext, data[i].file_id, data[i].type);
         }
-      }, // 设置批量上传文件显示
+      },
+      // 获取跟进记录
       getFollowUp () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -602,9 +607,9 @@
             this.loading = false;
           }
         });
-      }, // 获取跟进记录
-
-      //* 项目文件上传
+      },
+      // 项目文件上传==========================
+      // 项目文件上传验证
       beforeUpload (file) {
         this.num++;
         let filetypes = ['.doc', '.ppt', '.pdf', '.zip', '.rar', '.pptx', '.png', '.jpg', '.docx', '.jpeg'];
@@ -629,7 +634,7 @@
         };
         this.addDomain('其他', file.name, 0, 4, true, file.uid);
         this.subButtonCheck(this.uploadShow.lists);
-      }, // 项目文件上传验证
+      },
       // 取消上传
       cancelUpload (file) {
         this.$refs.upload.abort(file);
@@ -639,16 +644,19 @@
       // 当添加文件时,添加入上传列表
       handleChange (file, fileList) {
       },
+      // 上传成功
       uploadsuccess (response, file, fileList) {
         let data = response.data;
         this.deleteLoad(file.uid);
         this.addDomain(data.type_name, data.file_title, data.file_id, data.type, false, file.uid);
         this.subButtonCheck(this.uploadShow.lists);
-      }, // 上传成功
+      },
+      // 上传失败
       uploaderror (err, file, fileList) {
         console.log(err);
         error('上传失败,请联系管理员');
-      }, // 上传失败
+      },
+      // 点击下载
       download (item) {
         let index = this.uploadShow.lists.indexOf(item);
         if (index !== -1) {
@@ -656,7 +664,8 @@
           const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId + '&token=' + localStorage.token;
           window.location.href = url;
         }
-      }, // 点击下载
+      },
+      // 删除当前上传文件
       removeList (item) {
         var index = this.uploadShow.lists.indexOf(item);
         if (index !== -1) {
@@ -677,7 +686,8 @@
               error('删除失败,请联系管理员');
             });
         }
-      }, // 删除当前上传文件
+      },
+      // 添加上传文件时,加入显示列表
       addDomain (typeName, fileTitle, fileId, type, load, uid) {
         let object = {};
         object.bp_type = typeName;
@@ -688,7 +698,8 @@
         object.uid = uid;// 文件唯一标识
         this.uploadShow.lists.push(object);
         this.follow.file_id.push(fileId);
-      }, // 添加上传文件时,加入显示列表
+      },
+      // 剔除Load
       deleteLoad (uid) {
         let lists = this.uploadShow.lists;// 所有的文件的数组
         let fileIdIists = this.follow.file_id;
@@ -698,7 +709,8 @@
             fileIdIists.splice(i, 1);
           }
         }
-      }, // 剔除Load
+      },
+      // 当文件没有全部上传完时,不能提交
       subButtonCheck (arr) {
         if (arr.length === 0) {
           this.submitButton = false;
@@ -712,8 +724,8 @@
             this.submitButton = false;
           }
         }
-      }, // 当文件没有全部上传完时,不能提交
-
+      },
+      // 点击分组设置中的单选框
       groupchange (label) {
         let index = this.groups.index;
         let data = this.groups.group;
@@ -723,7 +735,8 @@
             this.uploadShow.lists[index].type = label;
           }
         }
-      }, // 点击分组设置中的单选框
+      },
+      // 添加分组设置的分组选项
       addGroup (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -748,7 +761,8 @@
             return false;
           }
         });
-      }, // 添加分组设置的分组选项
+      },
+      // 发送分组设置请求
       saveGroupChange () { // file_id type_id user_id
         this.zgClick('提交跟进');
         // let type = this.groups.type;
@@ -768,15 +782,15 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 发送分组设置请求
+      },
+      // 获取分组的位置
       toGroup (item) {
         this.groups.type = item.type;
         let index = this.uploadShow.lists.indexOf(item);
         this.groups.index = index;
         this.groups.name = item.bp_type;
         this.dialogFileVisible = true;
-      }, // 获取分组的位置
-
+      },
       //* 检查所有必填项目以及获取所有数据/true过.false不过
       submitForm (formName, checkName) {
         this.$refs[formName].validate((valid) => {
@@ -787,8 +801,7 @@
       resetForm (formName) {
         this.$refs[formName].resetFields();
       },
-
-      //* 全部保存按钮
+      // 全部保存按钮
       allSave () {
         var submit = () => {
           return new Promise((resolve, reject) => {
@@ -854,7 +867,7 @@
             }
           });
       }, // 发送请求
-      /* 编辑成功弹窗 */
+      // 编辑成功弹窗
       open2 (title, main, confirm, cancel) {
         this.$confirm(main, title, {
           confirmButtonText: confirm,
@@ -863,12 +876,14 @@
         }).then(() => {
           this.clearData();
           this.follow_id = '';
+          this.resetForm('follow');
         }).catch(() => {
           this.$emit('closeFollow', false);
           this.clearData();
           this.follow_id = '';
         });
       },
+      // 清除所有数据
       clearData () {
         this.uploadShow.lists = [];
         this.investor_id = this.investorid || '';
@@ -880,16 +895,10 @@
         this.follow.card_name = this.cardname || '';
         this.investor_id = this.investorid || '';
         this.saveJumpData = this.follow;
-      }// 清除所有数据
+      }
     },
-    created () {
-
-    },
+    created () {},
     watch: {
-      followid: function (e) {
-
-      }, // 获取跟进id
-
       followDisplay: function (e) {
         if (e) {
           this.clearData();
@@ -910,9 +919,7 @@
         }
       }// 清空数据
     },
-    mounted () {
-
-    }
+    mounted () {}
   };
 </script>
 

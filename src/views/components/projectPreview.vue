@@ -416,6 +416,7 @@
       };
     },
     methods: {
+      // 项目来源编辑
       getteam_tag (arr) {
         let str = [];
         for (let i = 0; i < arr.length; i++) {
@@ -424,10 +425,12 @@
           }
         }
         return str;
-      }, // 项目来源编辑
+      },
+      // 关闭当前弹窗
       closePreview () {
         this.$emit('closePreview', false);
-      }, // 关闭当前弹窗
+      },
+      // 获取当前用户部分信息
       getFirstUser () {
         this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id})
           .then(res => {
@@ -442,7 +445,8 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 获取当前用户部分信息
+      },
+      // 项目来源编辑
       getProjectTag (arr) {
         let str = '';
         for (let i = 0; i < arr.length; i++) {
@@ -451,7 +455,8 @@
           }
         }
         return str;
-      }, // 项目来源编辑
+      },
+      // 获取项目详情数据
       getProjectDetail () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -506,7 +511,8 @@
               console.log(err);
             });
         });
-      }, // 获取项目详情数据
+      },
+      // 推送项目
       pushProject () {
         if (this.comeFrom === 'contacts') {
           this.$http.post(this.URL.pushUser, this.pushMessage)
@@ -525,7 +531,7 @@
         } else {
           this.$emit('previewPush', true);
         }
-      }// 推送项目
+      }
     },
     create () {
 //    this.getProjectDetail();

@@ -214,6 +214,7 @@
 
         this.pushTitle1 = this.pushbrand + this.user_company_career + this.user_real_name + '推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
       },
+      // 推送预览
       preview () {
         if (this.pushCount !== 0) {
           if (this.projectRadio === '' || this.projectRadio === undefined) error('请选择要推送的项目');
@@ -242,8 +243,8 @@
         } else {
           warning('您今日的推送次数已用完,请明天再试');
         }
-      }, // 推送预览
-
+      },
+      // 推送按钮
       push (type) {
         if (this.pushCount !== 0) {
           this.firstInData.email = this.email;
@@ -283,8 +284,8 @@
         } else {
           warning('您今日的推送次数已用完');
         }
-      }, // 推送按钮
-
+      },
+      // 项目搜索
       remoteMethod (query) {
         return new Promise((resolve, reject) => {
           if (query === '') this.projectRadio = '';
@@ -309,7 +310,8 @@
               this.loading = false;
             });
         });
-      }, // 项目搜索
+      },
+      // 页码控制
       filterChangeMatchProject (page) {
         this.loading = true;
         this.searchProject.page = page;
@@ -326,11 +328,13 @@
             console.log(err);
             this.loading = false;
           });
-      }, // 页码控制
+      },
+      // 删除标签
       removeTag (e) {
         this.projectRadio = '';
         this.remoteMethod('');
-      }, // 删除标签
+      },
+      // 设置项目下拉框,虽然没什么卵用
       setProjectAll (data) {
         let arr = [];
         data.forEach((x) => {
@@ -340,13 +344,15 @@
           arr.push(obj);
         });
         return arr;
-      }, // 设置项目下拉框,虽然没什么卵用
+      },
+      // 控制列表颜色
       tableRowClassName (row, index) {
         if (index % 2 === 1) {
           return 'info-row';
         }
         return '';
-      }, // 控制列表颜色
+      },
+      // 获取项目详情
       getIntroduce (id) {
         if (id !== '') {
           this.projectList = [];
@@ -358,7 +364,7 @@
             }
           }
         }
-      }, // 获取项目详情
+      },
       submitForm (formName) {
         let check = true;
         this.$refs[formName].validate((valid) => {
@@ -370,9 +376,11 @@
         });
         return check;
       },
+      // 关闭项目推送
       closeProjectPush () {
         this.$emit('closeProjectPush', false);
-      }, // 关闭项目推送
+      },
+      // 获取剩余推送次数
       getpushCount () {
         this.$http.post(this.URL.pushCount, {
           user_id: localStorage.user_id})
@@ -384,11 +392,12 @@
             console.log(err);
             this.loading = false;
           });
-      }, // 获取剩余推送次数
+      },
+      // 点击单选
       handleSelect (row, event, column) {
         this.projectRadio = row.project_id;
         this.remoteMethod(row.pro_intro);
-      }, // 点击单选
+      },
       open2 (title, main, confirm, cancel) {
         this.$confirm(main, title, {
           confirmButtonText: confirm,

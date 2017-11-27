@@ -492,7 +492,6 @@
       handleIconClick () {
         this.activeName === 'myContacts' ? this.getMyContacts() : this.getNetContacts();
       },
-
       // 获取可用推送次数
       getPushCount () {
         this.$http.post(this.URL.pushCount, {
@@ -503,7 +502,6 @@
           }
         });
       },
-
       // 获取我的人脉数据
       getMyContacts (page = 1) {
         this.pushTagMyConCheckAll = [];
@@ -554,7 +552,6 @@
       handleClose () {
         this.$emit('closeProjectPush2', false);
       },
-
       // 删除标签
       tagDelete (tag) {
         let indexMyCon = this.pushTagMyCon.indexOf(tag);// 是不是我的人脉选中里的
@@ -569,7 +566,6 @@
           this.pushTagNetConCheck.splice(indexNetCon, 1);
         }
       },
-
       // 添加标签
       addTag (data) {
         let activeNameSelect = 'pushTagMyCon';
@@ -634,7 +630,6 @@
         }
         return '';
       },
-
       // 取消添加自定义人脉
       cancelAdd () {
         this.$refs['customerAddForm'].resetFields();
@@ -678,8 +673,7 @@
           });
         }
       },
-
-      //* 检查所有必填项目以及获取所有数据/true过.false不过
+      // 检查所有必填项目以及获取所有数据/true过.false不过
       submitForm (formName, checkName) {
         this.$refs[formName].validate((valid) => {
           this[checkName] = !valid;

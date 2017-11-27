@@ -441,10 +441,11 @@
       };
     },
     methods: {
+      // 下载文件
       download (e) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + e;
         window.location.href = url;
-      }, // 下载文件
+      },
       // 关闭弹窗
       handleClose () {
         this.$emit('changeAlertProjectDetail', false);
@@ -497,9 +498,7 @@
         return str;
       }
     },
-    created () {
-
-    },
+    created () {},
     watch: {
       alertProjectDetailDisplay: function (e) {
         if (e) {

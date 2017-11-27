@@ -152,25 +152,8 @@
           .then(res => {
             if (res.data.status_code === 2000000) {
               let data = res.data.data;
-//            console.log(data);
               this.$store.state.syncData.data = data;
-              /*            if(data.project.pro_scale=="") {data.project.pro_scale={};data.project.pro_scale.scale_money="-";}
-               if(data.project.pro_area=="") {data.project.pro_area={};data.project.pro_area.area_title="-";}
-               if(data.project.pro_stage==''){data.project.pro_stage={};data.project.pro_stage.stage_name='-'}
-               if(data.project.pro_finance_stock_after==''){data.project.pro_finance_stock_after={};data.project.pro_finance_stock_after='-'}
-               if(data.project.pro_intro==''){data.project.pro_intro={};data.project.pro_intro='-'}
-               if(data.project.pro_industry==''){data.project.pro_industry={};data.project.pro_industry.industry_name='-'} */
               this.project = data.project;
-              /*            //团队
-               this.team=data.team;
-               //公司运营
-               this.company=data.company;
-               //融资信息
-               this.financing=data.financing;
-               //里程碑
-               this.milepost=data.milepost;
-               //brand
-               this.brands=data.brands; */
             }
             this.loading = false;
           })

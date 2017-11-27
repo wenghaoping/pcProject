@@ -241,9 +241,11 @@
         this[v] = false;
         this.projectLists = this.projectListsSmall.slice(0);
       },
+      // 控制项目页码1
       filterChangeCurrent (page) {
         this.getProjectList(page);
-      }, // 控制项目页码1
+      },
+      // 设置项目库函数
       setProjectList (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -262,9 +264,8 @@
           arr.push(obj);
         }
         return arr;
-      }, // 设置项目库函数
-      /* 请求函数 */
-
+      },
+      // 获取项目列表
       getProjectList (page) {
         this.loading1 = true;
         this.getPra.user_id = this.contacts.user_id;
@@ -287,8 +288,8 @@
             });
           this.loading1 = false;
         }
-      }, // 获取项目列表
-      /* 以下都是辅助函数 */
+      },
+      // 设置投资案例
       setProjectCase (arr) {
         let newArr = [];
         arr.forEach((x) => {
@@ -302,7 +303,8 @@
           newArr.push(obj);
         });
         return newArr;
-      }, // 设置投资案例
+      },
+      // 获取个人详情
       getOneUserInfo () {
         this.loading = true;
         this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.contacts.card_id, investor_user_id: this.contacts.user_id})
@@ -334,12 +336,10 @@
             console.log(err);
           });
         this.loading = false;
-      }// 获取个人详情
+      }
 
     },
-    created () {
-
-    },
+    created () {},
     watch: {
       contactDisplay: function (e) {
         if (e) {
