@@ -1,6 +1,6 @@
 <template>
   <div class="cardUpload">
-    <span>
+    <span style="margin-left: 20px;" class="fl">
       <el-upload class="uploadImg"
                  ref="upload"
                  :action="uploadCardAddress"
@@ -10,7 +10,8 @@
                  :on-success="CardPlanuploadsuccess"
                  :on-remove="CardPlanRemove"
                  :on-error="uploaderror"
-                 :file-list="CardplanList"
+                 :file-list="cardplanList"
+                 accept=".jpg, .png, .jpeg"
                  :before-upload="beforeUpload"
                  :data="uploadDate">
         <i class="el-icon-plus" v-show="cardPlanButton"></i>
@@ -29,30 +30,24 @@
       uploadDate: {
         type: Object
       },
-      filetypes: {
-        type: Array,
-        default: []
-      },
       uploadCardAddress: {
         type: String,
         required: true
+      },
+      cardplanList: {
+        type: Array,
+        default: []
       }
-
     },
     data () {
       return {
         dialogImg: false, // 预览显示
         dialogImageUrl: '', // 预览地址
-        CardplanList: [
-//                    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-        ], // 名片上传列表
         cardPlanButton: true // 控制上传按钮的显示
       };
     },
     computed: {},
-    mounted () {
-
-    },
+    mounted () {},
     // 组件
     components: {},
     methods: {
@@ -62,7 +57,8 @@
       },
       // 上传前的验证
       beforeUpload (file) {
-        let filetypes = this.filetypes;
+        this.$emit('changeUploadData', file);
+        let filetypes = ['.jpg', '.png', '.jpeg'];
         let name = file.name;
         let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
         let isnext = false;
@@ -86,7 +82,7 @@
       },
       // 上传名片======================================================
       CardPlanChange (file, fileList) {
-        this.CardplanList = fileList;
+        this.$emit('planChange', fileList);
         if (file.status === 'fail') this.cardPlanButton = true;
         else this.cardPlanButton = false;
       },
@@ -113,9 +109,7 @@
       }
     },
     // 当dom一创建时
-    created () {
-
-    },
+    created () {},
     watch: {}
   };
 </script>

@@ -223,14 +223,10 @@
     created () {
       this.filterChangeCurrent(1);
     },
-    watch: {
-
-    }
+    watch: {}
   };
 </script>
 
 <style lang="less">
   @import '../../../assets/css/onlineData.less';
-
-
 </style>

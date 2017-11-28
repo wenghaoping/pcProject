@@ -1,5 +1,5 @@
 <template>
-  <div id="check">
+<!--  <div id="check">
     <draggable v-model="tags" :move="getdata" @update="datadragEnd">
       <transition-group>
         <div v-for="element in tags" :key="element.id" class="tab">
@@ -7,20 +7,24 @@
         </div>
       </transition-group>
     </draggable>
-    <card-upload :uploadCardAddress="uploadCardAddress" :filetypes="filetypes" :uploadDate="uploadDate"
+    <card-upload :uploadCardAddress="uploadCardAddress" :uploadDate="uploadDate"
                  @delete="remove" @success="success">
     </card-upload>
 
-    <carousel>
-
-    </carousel>
+    <carousel></carousel>-->
+  <div style="height: 300px;">
+    <radar height='100%' width='100%' :indicator="indicator" :innerValue="innerValue"></radar>
   </div>
+
+  <!--</div>-->
 </template>
 
 <script>
   import draggable from 'vuedraggable';
   import cardUpload from '@/components/upload/cardUpload.vue';
+  import radar from '@/components/Charts/radar.vue';
   import carousel from '@/views/components/carousel.vue';
+
   export default {
     data () {
       return {
@@ -32,8 +36,13 @@
           {id: 4, name: '5'}
         ],
         uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadConnectCard + localStorage.token,
-        filetypes: ['.jpg', '.png', '.jpeg'],
-        uploadDate: {user_id: localStorage.user_id}
+        uploadDate: {user_id: localStorage.user_id},
+        indicator: [
+          {name: '竞争力', max: 100},
+          {name: '商业前景', max: 100},
+          {name: '发展战略', max: 100}
+        ],
+        innerValue: [50, 60, 32]
       };
     },
     methods: {
@@ -58,7 +67,8 @@
     components: {
       draggable,
       cardUpload,
-      carousel
+      carousel,
+      radar
     },
     watch: {
       '$route' (to, from) {

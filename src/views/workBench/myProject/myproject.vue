@@ -26,6 +26,7 @@
         </div>
         <div class="btns-box">
           <el-button type="primary" @click="closeScore(true)" v-if="is_competition == 'true'">大赛评分指标</el-button>
+          <el-button type="primary" @click="closeLists(true)">自定义列表</el-button>
           <el-button type="primary" @click="scoreDownload" v-if="is_competition == 'true'">评分下载</el-button>
           <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
@@ -40,7 +41,7 @@
                       @filter-change="filterChange" stripe
                       v-loading="loading"
                       element-loading-text="拼命加载中">
-            <el-table-column prop="pro_name" label="项目名称" width="170" show-overflow-tooltip>
+            <el-table-column prop="pro_name" label="项目名称" min-width="170" show-overflow-tooltip>
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 14 ? false:true">
                   <div slot="content">
@@ -56,7 +57,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_intro" label="一句话介绍" width="222">
+            <el-table-column prop="pro_intro" label="一句话介绍" min-width="222">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 14 ? false:true">
                   <div slot="content">
@@ -68,7 +69,7 @@
                 </el-tooltip>
               </template>
             </el-table-column>
-            <el-table-column prop="pro_source" label="项目来源" width="96" :filters="pro_sourceFilters"
+            <el-table-column prop="pro_source" label="项目来源" min-width="96" :filters="pro_sourceFilters"
                              filter-placement="bottom-end"
                              column-key="pro_source"
                              show-overflow-tooltip>
@@ -81,7 +82,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="pro_schedule" label="项目进度" width="96" :filters="pro_scheduleFilters"
+            <el-table-column prop="pro_schedule" label="项目进度" min-width="96" :filters="pro_scheduleFilters"
                              filter-placement="bottom-end"
                              :filter-multiple="stateCheck"
                              column-key="pro_schedule"
@@ -96,7 +97,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_industry" label="领域" width="166"
+            <el-table-column prop="pro_industry" label="领域" min-width="166"
                              :filters="pro_industryFilters"
                              filter-placement="bottom-end"
                              show-overflow-tooltip
@@ -116,7 +117,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="is_exclusive" label="是否独家" width="98" :filters="soleFilters"
+            <el-table-column prop="is_exclusive" label="是否独家" min-width="98" :filters="soleFilters"
                              filter-placement="bottom-end" sortable="custom" column-key="is_exclusive">
               <template scope="scope">
 
@@ -131,7 +132,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_stage" label="轮次" width="80" :filters="pro_stageFilters"
+            <el-table-column prop="pro_stage" label="轮次" min-width="80" :filters="pro_stageFilters"
                              filter-placement="bottom-end"
                              sortable="custom" column-key="pro_stage">
               <template scope="scope">
@@ -144,7 +145,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_area" label="地区" width="80"
+            <el-table-column prop="pro_area" label="地区" min-width="80"
                              column-key="pro_area"
                              :filters="pro_areaFilters"
                              filter-placement="bottom-end"
@@ -159,7 +160,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_scale" label="期望融资" width="102"
+            <el-table-column prop="pro_scale" label="期望融资" min-width="102"
                              :filters="pro_scaleFilters"
                              filter-placement="bottom-end"
                              column-key="pro_scale"
@@ -174,7 +175,7 @@
               </template>
             </el-table-column>
 
-              <el-table-column prop="created_at" label="创建时间" width="96" show-overflow-tooltip
+              <el-table-column prop="created_at" label="创建时间" min-width="96" show-overflow-tooltip
                                sortable="custom" column-key="created_at">
                 <template scope="scope">
                   <el-tooltip placement="top" :disabled="scope.row.created_at.length > 5 ? false:true">
@@ -269,6 +270,9 @@
     <!--自定义项目阶段-->
     <stage-custom :stageDisplay="stageDisplay" @closeStage="closeStage"></stage-custom>
 
+    <!--自定义项目列表-->
+    <project-lists-custom :listsDisplay="listsDisplay" @closeLists="closeLists"></project-lists-custom>
+
 <!--    <div class="page-grid wrap-right contain-right-2 fl">
       <div class="main-box">
         <div class="title-box">
@@ -285,6 +289,7 @@
   import alertUpload from './alertUpload.vue';
   import scoreIndex from './scoreIndex.vue';
   import stageCustom from './stageCustom.vue';
+  import projectListsCustom from './projectListsCustom.vue';
   import addfollow from '@/views/components/addFollow.vue';
   import projectpushtopro from '@/views/components/projectPushToPro.vue';
   import projectpreview from '@/views/components/projectPreview.vue';
@@ -300,7 +305,8 @@
       projectpushtopro,
       scoreIndex,
       stageCustom,
-      carousel
+      carousel,
+      projectListsCustom
     },
     data () {
       return {
@@ -311,6 +317,7 @@
         scoreDisplay: false, // 评分指标弹窗
         stageDisplay: false, // 自定义阶段弹窗控制
         scoreDowlondDisplay: false, // 评分下载弹框
+        listsDisplay: false, // 列表自定义弹窗
         projecmessage: {
           project_id: '',
           project_name: ''
@@ -683,6 +690,13 @@
         this.stageDisplay = e;
         if (!e) {
           this.getNodeCount();
+        }
+      },
+      // 项目列表自定义
+      closeLists (e) {
+        this.listsDisplay = e;
+        if (!e) {
+          this.filterChangeCurrent(this.currentPage || 1);
         }
       }
     },

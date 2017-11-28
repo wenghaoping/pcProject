@@ -17,32 +17,14 @@
       <el-collapse-transition >
         <div v-show="baseInfo" >
           <!--名片-->
-          <div class="block-info block-cc-file block-cc-pro clearfix inlineBlock" style="height: 149px;margin-top: 32px;">
+          <div class="block-info block-cc-file block-cc-pro clearfix" style="height: 149px;margin-top: 32px;">
             <span class="f-title fl">名片</span>
-            <span style="margin-left: 20px;" class="fl">
-              <el-upload class="UploadImg"
-                         ref="upload"
-                         :action="uploadCardAddress"
-                         list-type="picture-card"
-                         :on-preview="handlePictureCardPreview"
-                         :on-change="CardPlanChange"
-                         :on-success="CardPlanuploadsuccess"
-                         :on-remove="CardPlanRemove"
-                         :on-error="uploaderror"
-                         :file-list="CardplanList"
-                         :before-upload="beforeUpload"
-                         accept=".jpg, .png, .jpeg"
-                         :data="uploadDate">
-                <i class="el-icon-plus" v-show="cardPlanButton"></i>
-                <!--<div slot="tip" class="el-upload__tip fr" v-show="cardPlanButton">支持JPG、PNG、JPEG、<br>文件不大于1M</div>-->
-              </el-upload>
-              <el-dialog v-model="dialogImg" size="small">
-                <img width="100%" :src="dialogImageUrl" alt="">
-              </el-dialog>
-            </span>
+            <cardUpload :uploadCardAddress="uploadCardAddress"
+                        :uploadDate="uploadDate" :cardplanList="CardplanList"
+                        @delete="CardPlanRemove" @success="CardPlanuploadsuccess"
+                        @changeUploadData="beforeUpload">
+            </cardUpload>
           </div>
-
-
           <!--基本资料Form-->
           <el-form :model="auth_info" :rules="rule1" ref="auth_info" label-width="100px" class="demo-ruleForm"
                    label-position="top" style="height: 520px;margin-top: 22px;">
@@ -371,7 +353,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import cardUpload from '../../components/cardUpload.vue';
+  import cardUpload from '@/components/upload/cardUpload.vue';
   import { error, success } from '@/utils/notification';
   import * as validata from '@/utils/validata';
   import * as formatData from '@/utils/formatData';
@@ -748,7 +730,7 @@
             this.area1Change(data.project_case);
             setTimeout(() => {
               this.investCases.investCase = data.project_case; // 成功案例
-            }, 500);
+            }, 200);
             this.loading = false;
           })
           .catch(err => {
@@ -826,46 +808,17 @@
         this.uploadDate.user_id = localStorage.user_id;
         if (this.card_id === 'creat') this.card_id = 0;
         this.uploadDate.card_id = this.card_id;
-        let filetypes = ['.jpg', '.png', '.jpeg'];
-        let name = file.name;
-        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
-        let isnext = false;
-        if (filetypes && filetypes.length > 0) {
-          for (var i = 0; i < filetypes.length; i++) {
-            if (filetypes[i] === fileend) {
-              isnext = true;
-              break;
-            }
-          }
-        }
-        this.loading = false;
-        if (!isnext) {
-          error(file.name + '是不支持的文件格式');
-          return false;
-        }
-        if (parseInt(file.size) > parseInt(1048580)) {
-          error(file.name + '超过1M大小哦');
-          return false;
-        };
         this.submitButton = true;
       },
-      // 上传名片======================================================
-      CardPlanChange (file, fileList) {
-        this.CardplanList = fileList;
-        if (file.status === 'fail') this.cardPlanButton = true;
-        else this.cardPlanButton = false;
-      },
       // 上传成功后添加字段
-      CardPlanuploadsuccess (response, file, fileList) {
+      CardPlanuploadsuccess (response) {
         success('上传成功');
         this.submitButton = false;
         this.addplan(response.image_id, 'CardUploadShow');
       },
       // 删除文件
-      CardPlanRemove (file, fileList) {
+      CardPlanRemove (file) {
         if (file) {
-          if (fileList.length === 0) this.cardPlanButton = true;
-          else this.cardPlanButton = true;
           this.submitButton = false;
           if (this.card_id === 'creat') this.card_id = 0;
           this.$http.post(this.URL.deleteCard, {user_id: localStorage.user_id, image_id: this.CardUploadShow.image_id, authenticate_id: localStorage.authenticate_id})
@@ -915,11 +868,6 @@
 
 <style lang="less">
   @import "../../assets/css/indentity.less";
-  .UploadImg{
-    height: 148px;
-    width: 308px;
-    overflow: hidden;
-  }
   .el-input__inner {
     border-radius: 2px !important;
   }

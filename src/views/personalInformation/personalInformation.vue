@@ -20,52 +20,22 @@
                 <el-collapse-transition>
                   <div v-show="cardShow">
                     <!--头像-->
-                    <div class="block-info block-cc-file block-cc-pro clearfix inlineBlock" style="height: 149px;">
+                    <div class="block-info block-cc-file clearfix inlineBlock" style="width: 388px;">
                       <span class="f-title fl">头像</span>
-                      <span style="margin-left: 20px;" class="fl">
-                              <el-upload class="UploadImg"
-                                         ref="upload"
-                                         :action="uploadHeadAddress"
-                                         list-type="picture-card"
-                                         :on-preview="handlePictureCardPreview"
-                                         :on-change="HeadPlanChange"
-                                         :on-success="HeadPlanuploadsuccess"
-                                         :on-remove="HeadPlanRemove"
-                                         :on-error="uploaderror"
-                                         :file-list="HeadPlanList"
-                                         :before-upload="beforeUpload"
-                                         accept=".jpg, .png, .jpeg"
-                                         :data="uploadDate">
-                                <i class="el-icon-plus" v-show="headPlanButton"></i>
-                                <!--<div slot="tip" class="el-upload__tip fr" >支持JPG、PNG、JPEG、<br>文件不大于1M</div>-->
-                              </el-upload>
-
-                              <el-dialog v-model="dialogImg" size="small">
-                                <img width="100%" :src="dialogImageUrl" alt="">
-                              </el-dialog>
-                            </span>
+                      <cardUpload :uploadCardAddress="uploadHeadAddress"
+                                  :uploadDate="uploadDate" :cardplanList="HeadPlanList"
+                                  @delete="HeadPlanRemove" @success="HeadPlanuploadsuccess"
+                                  @changeUploadData="beforeUpload">
+                      </cardUpload>
                     </div>
                     <!--名片-->
-                    <div class="block-info block-cc-file block-cc-pro clearfix inlineBlock" style="height: 149px;">
+                    <div class="block-info block-cc-file clearfix inlineBlock" style="width: 360px;">
                       <span class="f-title fl">名片</span>
-                      <span style="margin-left: 20px;" class="fl">
-                              <el-upload class="UploadImg"
-                                         ref="upload"
-                                         :action="uploadCardAddress"
-                                         list-type="picture-card"
-                                         :on-preview="handlePictureCardPreview"
-                                         :on-change="CardPlanChange"
-                                         :on-success="CardPlanuploadsuccess"
-                                         :on-remove="CardPlanRemove"
-                                         :on-error="uploaderror"
-                                         :file-list="CardplanList"
-                                         :before-upload="beforeUpload"
-                                         accept=".jpg, .png, .jpeg"
-                                         :data="uploadDate">
-                                <i class="el-icon-plus" v-show="cardPlanButton"></i>
-                                <!--<div slot="tip" class="el-upload__tip fr" v-show="cardPlanButton">支持JPG、PNG、JPEG、<br>文件不大于1M</div>-->
-                              </el-upload>
-                            </span>
+                      <cardUpload :uploadCardAddress="uploadCardAddress"
+                                  :uploadDate="uploadDate" :cardplanList="CardplanList"
+                                  @delete="CardPlanRemove" @success="CardPlanuploadsuccess"
+                                  @changeUploadData="beforeUpload">
+                      </cardUpload>
                     </div>
 
                     <el-form :model="user_info" ref="user_info" label-width="100px" class="padding" label-position="top">
@@ -461,6 +431,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import cardUpload from '@/components/upload/cardUpload.vue';
   import behavior from './behavior.vue';
   import { getCity } from '@/utils/setSelect';
   import { error, success, warning } from '@/utils/notification';
@@ -625,7 +596,10 @@
 
     },
     // 组件
-    components: {behavior},
+    components: {
+      behavior,
+      cardUpload
+    },
     methods: {
       openDiv (v) {
         this[v] = true;
@@ -791,34 +765,15 @@
           resolve(1);
         });
       },
-      // 点击预览名片
-      handlePictureCardPreview (file) {
-        this.dialogImageUrl = file.url;
-        this.dialogImg = true;
-      },
-      // 上传头像======================================================
-      HeadPlanChange (file, fileList) {
-        this.HeadPlanList = fileList;
-        if (file.status === 'fail') this.headPlanButton = true;
-        else this.headPlanButton = false;
-      },
       // 上传成功后添加字段
-      HeadPlanuploadsuccess (response, file, fileList) {
+      HeadPlanuploadsuccess (response) {
         success('上传成功');
         this.submitButton = false;
         this.addplan(response.image_id, 'HeadUploadShow');
       },
-      // 上传失败
-      uploaderror (err, file, fileList) {
-        console.log(err);
-        error('上传失败,请联系管理员');
-        this.submitButton = false;
-      },
       // 删除文件
-      HeadPlanRemove (file, fileList) {
+      HeadPlanRemove (file) {
         if (file) {
-          if (fileList.length === 0) this.headPlanButton = true;
-          else this.headPlanButton = true;
           this.$http.post(this.URL.deleteImage, {user_id: localStorage.user_id, image_id: this.HeadUploadShow.image_id})
             .then(res => {
               if (res.status === 200) {
@@ -846,46 +801,16 @@
         this.uploadDate.user_id = localStorage.user_id;
         if (this.card_id === 'creat') this.card_id = 0;
         this.uploadDate.card_id = this.card_id;
-        let filetypes = ['.jpg', '.png', '.jpeg'];
-        let name = file.name;
-        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
-        let isnext = false;
-        if (filetypes && filetypes.length > 0) {
-          for (var i = 0; i < filetypes.length; i++) {
-            if (filetypes[i] === fileend) {
-              isnext = true;
-              break;
-            }
-          }
-        }
-        this.loading = false;
-        if (!isnext) {
-          error(file.name + '是不支持的文件格式');
-          return false;
-        }
-        if (parseInt(file.size) > parseInt(1048580)) {
-          error(file.name + '超过1M大小哦');
-          return false;
-        };
-        this.submitButton = true;
-      },
-      // 上传名片======================================================
-      CardPlanChange (file, fileList) {
-        this.CardplanList = fileList;
-        if (file.status === 'fail') this.cardPlanButton = true;
-        else this.cardPlanButton = false;
       },
       // 上传成功后添加字段
-      CardPlanuploadsuccess (response, file, fileList) {
+      CardPlanuploadsuccess (response) {
         success('上传成功');
         this.submitButton = false;
         this.addplan(response.image_id, 'CardUploadShow');
       },
       // 删除文件
-      CardPlanRemove (file, fileList) {
+      CardPlanRemove (file) {
         if (file) {
-          if (fileList.length === 0) this.cardPlanButton = true;
-          else this.cardPlanButton = true;
           this.submitButton = false;
           this.$http.post(this.URL.deleteCardImage, {user_id: localStorage.user_id, image_id: this.CardUploadShow.image_id})
             .then(res => {
@@ -1111,33 +1036,7 @@
         transform: rotate(360deg);
       }
     }
-    .Upload {
-      .el-upload-list__item {
-        line-height: 1.8;
-        margin-top: 0px;
 
-      }
-      .el-upload-list__item-name {
-        font-size: 14px;
-        color: #475669;
-        letter-spacing: 0;
-        text-decoration: underline
-      }
-      .el-upload-list__item:first-child{
-        margin-top: 0px;
-      }
-
-    }
-    .el-upload__tip{
-      margin-left: 16px;
-      font-size:14px;
-      color:#5e6d82;
-      line-height: 18px;
-    }
-    .is-success{
-      width: 300px;
-      height: 150px;
-    }
   }
 
 </style>

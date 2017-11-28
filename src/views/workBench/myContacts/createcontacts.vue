@@ -1,5 +1,5 @@
 <template>
-  <div id="createcontacts">
+  <div id="createcontacts" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <div class="contain-center edit-page">
       <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
       <div class="main-box" style="display: inline-block">
@@ -17,29 +17,11 @@
               <div v-show="contactShow">
                 <div class="block-info block-cc-file clearfix" style="height: 149px;">
                   <span class="f-title fl">名片</span>
-                  <span style="margin-left: 20px;" class="fl">
-                    <el-upload class="UploadImg"
-                               ref="upload"
-                               :action="uploadAddress"
-                               list-type="picture-card"
-                               :on-preview="handlePictureCardPreview"
-                               :on-change="planChange"
-                               :on-success="planuploadsuccess"
-                               :on-remove="planRemove"
-                               :on-error="planuploaderror"
-                               :file-list="planList"
-                               :before-upload="beforeUpload"
-                               accept=".jpg, .png, .jpeg"
-                               :data="uploadDate">
-                      <i class="el-icon-plus" v-show="planButton"></i>
-                      <!--<el-button slot="trigger" type="primary" v-show="planButton" class="fl button"><i class="el-icon-plus"></i>上传名片</el-button>-->
-                      <div slot="tip" class="el-upload__tip fr" v-show="planButton">支持JPG、PNG、JPEG、文件不大于1M</div>
-                    </el-upload>
-
-                    <el-dialog v-model="dialogImg" size="tiny">
-                      <img width="100%" :src="dialogImageUrl" alt="">
-                    </el-dialog>
-                  </span>
+                  <cardUpload :uploadCardAddress="uploadAddress"
+                              :uploadDate="uploadDate" :cardplanList="planList"
+                              @delete="planRemove" @success="planuploadsuccess"
+                              @changeUploadData="changeUploadData">
+                  </cardUpload>
                 </div>
                 <el-form :model="contacts" ref="contacts" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
@@ -307,6 +289,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import cardUpload from '@/components/upload/cardUpload.vue';
   import * as validata from '@/utils/validata';
   import { error, success, warning } from '@/utils/notification';
   import * as formatData from '@/utils/formatData';
@@ -341,6 +324,7 @@
         }
       };// 电话号码正则判断
       return {
+        loading: false,
         uploadAddress: this.URL.weitianshiLine + this.URL.uploadConnectCard + localStorage.token, // 上传地址
         card_id: '', // 名片ID
         nullRule: { validator: checkNull, trigger: 'blur' },
@@ -407,23 +391,12 @@
         this.$router.go(-1);
       },
       //* 商业计划书
-      planChange (file, fileList) {
-        this.planList = fileList;
-        if (file.status === 'fail') this.planButton = true;
-        else this.planButton = false;
-      },
-      planuploadsuccess (response, file, fileList) {
+      planuploadsuccess (response) {
         success('上传成功');
         this.addplan(response.image_id);
       }, // 上传成功后添加字段
-      planuploaderror (err, file, fileList) {
-        console.log(err);
-        error('上传失败,请联系管理员');
-      }, // 上传失败
-      planRemove (file, fileList) {
+      planRemove (file) {
         if (file) {
-          if (fileList.length === 0) this.planButton = true;
-          else this.planButton = true;
           if (this.card_id === 'creat') this.card_id = 0;
           this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id, card_id: this.card_id})
             .then(res => {
@@ -446,36 +419,11 @@
         object.image_id = imageId;
         this.uploadShow = object;
       }, // 添加上传文件时,保存返回的数据
-      beforeUpload (file) {
+      changeUploadData (file) {
         this.uploadDate.user_id = localStorage.user_id;
         if (this.card_id === 'creat') this.card_id = 0;
         this.uploadDate.card_id = this.card_id;
-        let filetypes = ['.jpg', '.png', '.jpeg'];
-        let name = file.name;
-        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
-        let isnext = false;
-        if (filetypes && filetypes.length > 0) {
-          for (var i = 0; i < filetypes.length; i++) {
-            if (filetypes[i] === fileend) {
-              isnext = true;
-              break;
-            }
-          }
-        }
-        this.loading = false;
-        if (!isnext) {
-          error(file.name + '是不支持的文件格式');
-          return false;
-        }
-        if (parseInt(file.size) > parseInt(1048580)) {
-          error(file.name + '超过1M大小哦');
-          return false;
-        };
-      }, // 上传前的验证
-      handlePictureCardPreview (file) {
-        this.dialogImageUrl = file.url;
-        this.dialogImg = true;
-      }, // 点击预览名片
+      }, // 上传前的数据修改
       // 添加人脉标签
       addChangeTag (e) {
         let tagName = formatData.checkArr(e, this.tags_con);
@@ -533,12 +481,12 @@
         return check;
       }, // 邮箱验证高级版
       allSave () {
-        this.loading = true;
         let contacts = this.submitForm('contacts');
         let contacts1 = this.submitForm('contacts1');
         let contacts2 = this.submitForm('contacts2');
         if (validata.getNull(this.contacts.user_real_name)) { error('姓名不能为空'); } else if (this.$tool.checkLength(this.contacts.user_real_name)) { error('姓名不超过20字'); } else if (this.$tool.checkLength(this.contacts.user_nickname)) { error('昵称不超过20字'); } else if (!this.checkEmail(this.contacts.user_email)) { } else if (!this.checkPhoneNumber(this.contacts.user_mobile)) { } else if (this.$tool.checkLength1(this.contacts.user_company_name)) { error('公司不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_brand)) { error('品牌不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_company_career)) { error('职位不超过40字'); } else if (!contacts) {} else if (!contacts1) { error('投资需求不超过500字'); } else if (!contacts2) { error('资源需求不超过500字'); } else {
           this.zgClick('提交人脉');
+          this.loading = true;
           formatData.setTag(this.contacts.user_invest_tag, this.tags.changecont);
           let allData = {};
           allData = this.contacts;
@@ -616,7 +564,6 @@
         return check;
       }, // 提交用
       getWxProjectCategory () {
-        this.loading = true;
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           setTimeout(() => {
@@ -629,7 +576,6 @@
             this.giveTo = this.$global.data.resource;// 设置提供的资源和对接的资源
             this.pushTo = this.$global.data.resource;// 设置提供的资源和对接的资源
             resolve(2);
-            this.loading = false;
           }, 200);
         });
       }, // 获取所有下拉框的数据
@@ -682,6 +628,9 @@
         this.card_id = this.$route.query.card_id;
       }// 获取id
     },
+    components: {
+      cardUpload
+    },
     created () {
       this.$tool.getTop();
       this.getContactsId();
@@ -698,12 +647,7 @@
 
 <style lang="less">
   @import '../../../assets/css/edit.less';
-
    #createcontacts{
-     .is-success{
-       width: 300px;
-       height: 150px;
-     }
      .button{
        background:#40587a;
        border-radius:2px;

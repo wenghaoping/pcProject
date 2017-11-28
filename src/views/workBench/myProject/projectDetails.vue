@@ -122,11 +122,6 @@
                 <div class="item">
                   <span class="title"><img class="img" src="../../../assets/images/projectIntroduce.png">项目介绍</span>
                   <span class="flower" v-show="project.follow_user!=''">跟进人 : {{project.follow_user}}</span>
-                  <!--<div class="person-info" v-if="project.contact.user_name!=''">-->
-                  <!--<span>项目联系人 : </span>-->
-                  <!--<span>{{project.contact.user_name}}</span>-->
-                  <!--<span>{{project.contact.user_mobile}}</span>-->
-                  <!--</div>-->
                 </div>
                 <div class="item" style="margin-top:33px;">
                   <span class="person-tag" style="margin-bottom: 10px" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
@@ -419,15 +414,13 @@
                        @toDetail="toDetail"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
-              <filemanagement :proid="project.project_id">
-
-              </filemanagement>
+              <filemanagement :proid="project.project_id"></filemanagement>
             </el-tab-pane>
             <el-tab-pane label="上线后数据" name="onlinedata">
-              <onlinedata :proid="project.project_id">
-
-              </onlinedata>
-
+              <onlinedata :proid="project.project_id"></onlinedata>
+            </el-tab-pane>
+            <el-tab-pane label="评分统计" name="scoreStatistics">
+              <score-statistics :proid="project.project_id"></score-statistics>
             </el-tab-pane>
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
@@ -441,6 +434,7 @@
         <div style="height: 100px;background: rgb(243, 244, 248);"></div>
       </div>
     </div>
+
     <div class="contain-grid contain-right-1 fl" ref="right">
       <div class="main-box header_none">
         <el-tabs v-model="activeName" @tab-click="handleClick2" style="position: relative">
@@ -683,6 +677,7 @@
   import folowup from './followUpDetail.vue';
   import filemanagement from './fileManagement.vue';
   import onlinedata from './onlineData.vue';
+  import scoreStatistics from './scoreStatistics.vue';
   import projectpreview from '@/views/components/projectPreview.vue';
   import alertcontactsdetail from '@/views/components/alertContactsDetail.vue';
   import addfollow from '@/views/components/addFollow.vue';
@@ -956,13 +951,13 @@
       projectpushtopro,
       projectpreview,
       projectpush,
-      onlinedata
+      onlinedata,
+      scoreStatistics
     },
     // Echart组件
     mounted () {
 //      this.eChart();
     },
-
     methods: {
       addFollow () {
         this.zgClick('添加跟进');
