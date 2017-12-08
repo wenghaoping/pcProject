@@ -26,7 +26,7 @@
         </div>
         <div class="btns-box">
           <el-button type="primary" @click="closeScore(true)" v-if="is_competition == 'true'">大赛评分指标</el-button>
-          <el-button type="primary" @click="closeLists(true)">自定义列表</el-button>
+          <el-button type="primary" @click="openLists(true)">自定义列表</el-button>
           <el-button type="primary" @click="scoreDownload" v-if="is_competition == 'true'">评分下载</el-button>
           <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
@@ -41,7 +41,8 @@
                       @filter-change="filterChange" stripe
                       v-loading="loading"
                       element-loading-text="拼命加载中">
-            <el-table-column prop="pro_name" label="项目名称" min-width="170" show-overflow-tooltip>
+            <el-table-column prop="pro_name" label="项目名称" min-width="170" show-overflow-tooltip
+            v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_name';}) !== -1">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 14 ? false:true">
                   <div slot="content">
@@ -57,7 +58,8 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_intro" label="一句话介绍" min-width="222">
+            <el-table-column prop="pro_intro" label="一句话介绍" min-width="222" show-overflow-tooltip
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_intro';}) !== -1">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 14 ? false:true">
                   <div slot="content">
@@ -72,7 +74,8 @@
             <el-table-column prop="pro_source" label="项目来源" min-width="96" :filters="pro_sourceFilters"
                              filter-placement="bottom-end"
                              column-key="pro_source"
-                             show-overflow-tooltip>
+                             show-overflow-tooltip
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_source';}) !== -1">
               <template scope="scope">
                 <div v-if="scope.row.pro_source.length === 0">
                   -
@@ -86,7 +89,8 @@
                              filter-placement="bottom-end"
                              :filter-multiple="stateCheck"
                              column-key="pro_schedule"
-                             sortable="custom">
+                             sortable="custom"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_schedule';}) !== -1">
               <template scope="scope">
                 <div v-if="scope.row.pro_schedule==''">
                   -
@@ -101,7 +105,8 @@
                              :filters="pro_industryFilters"
                              filter-placement="bottom-end"
                              show-overflow-tooltip
-                             column-key="pro_industry">
+                             column-key="pro_industry"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_industry';}) !== -1">
               <template scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.pro_industry.length > 8 ? false:true">
                   <div slot="content">
@@ -118,7 +123,8 @@
             </el-table-column>
 
             <el-table-column prop="is_exclusive" label="是否独家" min-width="98" :filters="soleFilters"
-                             filter-placement="bottom-end" sortable="custom" column-key="is_exclusive">
+                             filter-placement="bottom-end" sortable="custom" column-key="is_exclusive"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'is_exclusive';}) !== -1">
               <template scope="scope">
 
                 <el-tag :type="scope.row.is_exclusive === '独家' ? 'primary' : scope.row.is_exclusive === '非独家'  ? 'success':'gray' " close-transition>
@@ -134,7 +140,8 @@
 
             <el-table-column prop="pro_stage" label="轮次" min-width="80" :filters="pro_stageFilters"
                              filter-placement="bottom-end"
-                             sortable="custom" column-key="pro_stage">
+                             sortable="custom" column-key="pro_stage"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_stage';}) !== -1">
               <template scope="scope">
                 <div v-if="scope.row.pro_stage.length === 0">
                   -
@@ -149,7 +156,8 @@
                              column-key="pro_area"
                              :filters="pro_areaFilters"
                              filter-placement="bottom-end"
-                             sortable="custom">
+                             sortable="custom"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_area';}) !== -1">
               <template scope="scope">
                 <div v-if="scope.row.pro_area.length === 0">
                   -
@@ -160,11 +168,42 @@
               </template>
             </el-table-column>
 
+            <!--===============================默认隐藏区===============================-->
+
+            <el-table-column prop="total_score" label="总分" min-width="80" show-overflow-tooltip
+                             sortable="custom" column-key="total_score"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'total_score';}) !== -1">
+              <template scope="scope">
+                <div v-if="scope.row.total_score === ''">
+                  -
+                </div>
+                <div v-else>
+                  {{scope.row.total_score}}
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="average_score" label="投资指数" min-width="95" show-overflow-tooltip
+                             sortable="custom" column-key="score"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'average_score';}) !== -1">
+              <template scope="scope">
+                <div v-if="scope.row.average_score === ''">
+                  -
+                </div>
+                <div v-else>
+                  {{scope.row.average_score}}
+                </div>
+              </template>
+            </el-table-column>
+
+            <!--===============================默认隐藏区===============================-->
+
             <el-table-column prop="pro_scale" label="期望融资" min-width="102"
                              :filters="pro_scaleFilters"
                              filter-placement="bottom-end"
                              column-key="pro_scale"
-                             :filter-multiple="stateCheck">
+                             :filter-multiple="stateCheck"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_scale';}) !== -1">
               <template scope="scope">
                 <div v-if="scope.row.pro_scale.length === 0">
                   -
@@ -175,22 +214,23 @@
               </template>
             </el-table-column>
 
-              <el-table-column prop="created_at" label="创建时间" min-width="96" show-overflow-tooltip
-                               sortable="custom" column-key="created_at">
-                <template scope="scope">
-                  <el-tooltip placement="top" :disabled="scope.row.created_at.length > 5 ? false:true">
-                    <div slot="content">
-                      <div class="tips-txt">{{scope.row.created_at}}</div>
-                    </div>
-                    <div>
-                      {{scope.row.created_at}}
-                    </div>
-                  </el-tooltip>
-                  <div v-if="scope.row.created_at.length === 0">
-                    -
+            <el-table-column prop="created_at" label="创建时间" min-width="96" show-overflow-tooltip
+                             sortable="custom" column-key="created_at"
+                             v-if="this.column.findIndex(function(value, index, arr) {return value === 'created_at';}) !== -1">
+              <template scope="scope">
+                <el-tooltip placement="top" :disabled="scope.row.created_at.length > 5 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.created_at}}</div>
                   </div>
-                </template>
-              </el-table-column>
+                  <div>
+                    {{scope.row.created_at}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.created_at.length === 0">
+                  -
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="reset"
               label="重置"
@@ -221,6 +261,7 @@
                     <img src="../../../assets/images/more.png" alt="" class="more">
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item><div @click="goScoreStatistics(scope.$index, scope.row)">项目评价</div></el-dropdown-item>
                     <el-dropdown-item><div @click="deleteProject(scope.$index, scope.row)">删除</div></el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -265,7 +306,7 @@
                     @previewPush="previewPush"></projectpreview>
 
     <!--评分指标-->
-    <score-index :scoreDisplay="scoreDisplay" @closeScore="closeScore" :nodelist="nodeCount.nodelist"></score-index>
+    <score-index :scoreDisplay="scoreDisplay" @closeScore="closeScore" @chengeSchedule="chengeSchedule"></score-index>
 
     <!--自定义项目阶段-->
     <stage-custom :stageDisplay="stageDisplay" @closeStage="closeStage"></stage-custom>
@@ -287,7 +328,7 @@
 
 <script type="text/ecmascript-6">
   import alertUpload from './alertUpload.vue';
-  import scoreIndex from './scoreIndex.vue';
+  import scoreIndex from '@/views/components/scoreIndex.vue';
   import stageCustom from './stageCustom.vue';
   import projectListsCustom from './projectListsCustom.vue';
   import addfollow from '@/views/components/addFollow.vue';
@@ -296,7 +337,7 @@
   import carousel from '@/views/components/carousel.vue';
   import * as formatData from '@/utils/formatData';
   import { getTitleSift } from '@/utils/setSelect';
-  import { error, success } from '@/utils/notification';
+  import { error, success, warning } from '@/utils/notification';
   export default {
     components: {
       alertUpload,
@@ -338,7 +379,7 @@
            project_id:''
            } */
         ],
-        pro_sourceFilters: [/*            { text: '约谈', value: '约谈' } */],
+        pro_sourceFilters: [/* { text: '约谈', value: '约谈' } */],
         pro_scheduleFilters: [/* { text: '项目线索', value: '项目线索' } */],
         pro_industryFilters: [/* { text: '大数据服务', value: '大数据服务' } */],
         soleFilters: [{text: '独家', value: 1}, {text: '非独', value: 2}, {text: '其他', value: 0}],
@@ -367,7 +408,16 @@
         pushId: '', // 推送项目传值-项目ID
         pushIntro: '', // 推送项目传值-项目名称
         emitPush: false, // 控制项目推送-项目入口的推送函数触发
-        pro_schedule: '' // 筛选选项
+        pro_schedule: '', // 筛选选项
+        column: [], // 选中中
+        columns: [
+          'pro_name', 'pro_intro', 'pro_source',
+          'pro_schedule', 'pro_industry', 'is_exclusive',
+          'pro_stage', 'pro_area', 'pro_scale',
+          'created_at'
+        ],
+        checkTime: null, // 点击放慢
+        checkTimeTrue: true
       };
     },
     methods: {
@@ -417,7 +467,6 @@
       uploadDisplayChange (msg) {
         this.uploadDisplay = msg;
       },
-
       // 跟进
       // 点击写跟近按钮
       addFollow (index, row) {
@@ -444,13 +493,11 @@
       // 关闭项目推送弹窗
       closeProjectPush2 (msg) {
         this.projectPushDisplay2 = msg;
-//        this.handleIconClick();
       },
       // 关闭预览AND关闭项目推送1,关闭项目推送2
       closePreviewANDProjectPush (msg) {
         this.projectPushDisplay2 = false;
         this.previewDisplay = false;
-//        this.handleIconClick();
       },
 
       // 请求函数
@@ -467,6 +514,7 @@
           .then(res => {
             let data = res.data.data;
             this.tableData = this.getProjectList(data);
+            this.column = res.data.column === '' ? this.columns : res.data.column;
             this.loading = false;
             this.totalData = res.data.count;
           })
@@ -515,6 +563,7 @@
             this.loading = false;
             let data = res.data.data;
             this.tableData = this.getProjectList(data);
+            this.column = res.data.column === '' ? this.columns : res.data.column;
             this.totalData = res.data.count;
           })
           .catch(err => {
@@ -524,6 +573,7 @@
       },
       // 控制页码
       filterChangeCurrent (page) {
+        this.column = [];
         delete this.getPra.page;
         this.loading = true;
         this.getPra.user_id = localStorage.user_id;
@@ -535,6 +585,7 @@
             let data = res.data.data;
             this.tableData = this.getProjectList(data);
             this.totalData = res.data.count;
+            this.column = res.data.column === '' ? this.columns : res.data.column;
             this.$tool.getTop();
           })
           .catch(err => {
@@ -634,11 +685,12 @@
           obj.pro_scale = formatData.setTagToString(list[i].pro_scale, 'scale_money');
           obj.project_id = list[i].project_id;
           obj.created_at = list[i].created_at;
+          obj.total_score = list[i].total_score;
+          obj.average_score = list[i].average_score;
           arr.push(obj);
         }
         return arr;
       },
-      // 更多按钮
       // 删除项目
       deleteProject (index, row) {
         this.setRouterData();
@@ -685,6 +737,13 @@
       closeScore (e) {
         this.scoreDisplay = e;
       },
+      setListsCheck () {
+        console.log(this.checkTimeTrue, 1, '定时开始');
+        this.checkTime = setTimeout(() => {
+          this.checkTimeTrue = true;
+          console.log(this.checkTimeTrue, 2, '定时结束');
+        }, 7000);
+      },
       // 控制自定义
       closeStage (e) {
         this.stageDisplay = e;
@@ -698,11 +757,29 @@
         if (!e) {
           this.filterChangeCurrent(this.currentPage || 1);
         }
+      },
+      openLists (e) {
+        if (this.checkTimeTrue) {
+          this.listsDisplay = e;
+          this.checkTimeTrue = false;
+          this.setListsCheck();
+        } else {
+          warning('您操作太频繁，请等一会再试');
+        }
+      },
+      // 改变指标
+      chengeSchedule (e) {
+        this.getPra.schedule_id = e;
+        this.filterChangeCurrent(1);
+      },
+      // 跳转到评价
+      goScoreStatistics (index, row) {
+        this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'scoreStatistics'}});
+        this.setRouterData();
       }
     },
-    computed: {
-
-    },
+    computed: {},
+    mounted () {},
     created () {
       this.is_competition = localStorage.is_competition;
       // 组件创建完后获取数据，
@@ -713,15 +790,7 @@
       this.titleSift();
       this.filterChangeCurrent(this.currentPage || 1);
     },
-    watch: {
-      /* // 如果路由有变化，会再次执行该方法
-       '$route' (to, from) {
-       console.log(to);
-       console.log(from);
-
-       } */
-    }
-
+    watch: {}
   };
 </script>
 

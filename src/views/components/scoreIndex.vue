@@ -22,7 +22,7 @@
                 <el-select v-model="schedule_id"
                            placeholder="请选择" @change="getCompetitionIndex2">
                   <el-option
-                    v-for="item in competitionChooseUse"
+                    v-for="item in schedule"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -76,7 +76,7 @@
         </el-form>
         <div class="marginAuto">
           <div class="addhover">
-            <i  class="addmemberimg"><img src="../../../assets/images/tianjia.png"></i>
+            <i  class="addmemberimg"><img src="../../assets/images/tianjia.png"></i>
             <el-button type="text" @click="addScore" class="addMember fl">添加更多</el-button>
           </div>
         </div>
@@ -90,7 +90,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import { getSchedule } from '@/utils/setSelect';
     import { error, success, warning } from '@/utils/notification';
     import * as validata from '@/utils/validata';
     export default {
@@ -99,8 +98,9 @@
           type: Boolean,
           default: false
         },
-        nodelist: {
-          type: Array
+        schid: {
+          type: [Number, String],
+          default: 0
         }
       },
       data () {
@@ -142,20 +142,24 @@
           },
           competitionMust: false,
           hunderdRule: {validator: checkHundred, trigger: 'blur'}, // 可以为空,必须为数字,比例数值1-100
-          schedule_id: ''
+          schedule_id: '',
+          schedule: []
         };
       },
-      computed: {
-        competitionChooseUse () {
-          return getSchedule(this.nodelist);
-        }
-      },
+      computed: {},
       mounted () {
 
       },
       // 组件
       components: {},
       methods: {
+        getWxProjectCategory () {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            this.schedule = this.$global.data.schedule;// 设置项目跟进状态
+            resolve(2);
+          });
+        },
         // 关闭
         handleClose (e) {
           this.$emit('closeScore', false);
@@ -170,9 +174,13 @@
             .then(res => {
               let data = res.data.data;
               if (data.schedule_id === 0) {
-                data.schedule_id = this.competitionChooseUse[0].value;
+                data.schedule_id = this.schedule[0].value;
               }
-              this.schedule_id = data.schedule_id;
+              if (this.schid) {
+                this.schedule_id = this.schid;
+              } else {
+                this.schedule_id = data.schedule_id;
+              }
               this.competition = data;
               if (data.competition_index.length === 0) {
                 this.addScore();
@@ -206,8 +214,6 @@
         },
         // 添加指标
         addScore () {
-          console.log(this.competition.competition_index.length);
-          console.log(this.competition.competition_index);
           if (this.competition.competition_index.length > 4) {
             warning('最多添加5项');
           } else {
@@ -289,6 +295,7 @@
                     if (res.data.status_code === 2000000) {
                       success('编辑成功');
                       this.$emit('closeScore', false);
+                      this.$emit('chengeSchedule', this.schedule_id);
                     } else {
                       error(res.data.error_msg);
                     }
@@ -304,13 +311,17 @@
         }
       },
       // 当dom一创建时
-      created () {
-
-      },
+      created () {},
       watch: {
         scoreDisplay: function (e) {
           if (e) {
-            this.getCompetitionIndex();
+            this.$global.func.getWxProjectCategory()
+              .then((data) => {
+                return this.getWxProjectCategory();
+              })
+              .then((data) => {
+                return this.getCompetitionIndex(this.schid);
+              });
           } else {
             this.$refs['competition'].resetFields();
           }
@@ -341,7 +352,7 @@
   .marginAuto{
     display: block;
     margin: 0 auto;
-    width: 90px;
+    width: 140px;
     height: 32px;
     margin-bottom: 20px;
     .addhover{

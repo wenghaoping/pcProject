@@ -120,4 +120,32 @@ button{
   border-radius: 2px !important;
 }
 
+.relative {
+  position: relative;
+}
 
+.absolute {
+  position: absolute;
+}
+
+.positionFixed{
+  position: fixed;
+}
+
+.m_auto {
+  margin: auto;
+}
+
+.width_100 {
+  width: 100%;
+}
+
+.height_100 {
+  height: 100%;
+}
+
+.nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -24,7 +24,6 @@
   import cardUpload from '@/components/upload/cardUpload.vue';
   import radar from '@/components/Charts/radar.vue';
   import carousel from '@/views/components/carousel.vue';
-
   export default {
     data () {
       return {

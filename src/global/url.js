@@ -9,12 +9,12 @@
 export default
 {
   /* 总地址,下载用的 */
-  weitianshi: 'https://pc.dev.weitianshi.cn/', // 下载用
-  weitianshiLine: 'https://pc.dev.weitianshi.cn/', // 上传
+  // weitianshi: 'https://pc.dev.weitianshi.cn/', // 下载用
+  // weitianshiLine: 'https://pc.dev.weitianshi.cn/', // 上传
   // weitianshi:"https://pc.debug.weitianshi.cn/",//接口下载用
   // weitianshiLine:"https://pc.debug.weitianshi.cn/",//接口上传
-  // weitianshi: 'https://wts.weitianshi.cn/', // 上线接口下载用
-  // weitianshiLine: 'https://wts.weitianshi.cn/', // 上线接口上传
+  weitianshi: 'https://wts.weitianshi.cn/', // 上线接口下载用
+  weitianshiLine: 'https://wts.weitianshi.cn/', // 上线接口上传
   openUrl: 'https://www.weitianshi.cn/workbench/#/API/DD', // 一键尽调对外接口
   oneUrl: 'https://www.weitianshi.cn/workbench/#/', // 一键尽调对内接口
   // 一键尽调跳转用接口
@@ -47,7 +47,9 @@ export default
   deleteCompetitionIndex: '/api/competition/deleteCompetitionIndex', // 删除自定义的指标
   createCompetitionIndex: '/api/competition/createCompetitionIndex', // 自定义指标的创建和更新
   exportScoreByCompetition: '/api/competition/exportScoreByCompetition', // 导出大赛的统计评分数据，数据按照大赛的阶段分成不同的sheet表
-  /* 项目详情页 */
+  getCheckedColumn: '/api/project/getCheckedColumn', // 获取用户选中显示的字段
+  editCheckedColumn: '/api/project/editCheckedColumn', // 修改用户选中显示的字段
+  // 项目详情页
   getProjectDetail: 'api/project/getProjectDetail',  // 获取項目詳情
   deleteCoreTeam: 'api/v/project/deleteCoreTeam',  // 删除核心成员
   deleteFinance: 'api/v/project/deleteFinance',  // 删除历史融资
@@ -193,5 +195,10 @@ export default
   getUserServiceData: 'api/user/getUserServiceData', // 行为数据-请求联系
 
   // 评分统计
-  getProjectJudgeScoreList: '/api/project/getProjectJudgeScoreList' // 评委评分列表
+  getProjectJudgeScoreList: '/api/project/getProjectJudgeScoreList', // 评委评分列表
+  getProjectUserScoreList: 'api/project/getProjectUserScoreList', // 普通用户评分列表
+  getScoreStatistics: '/api/project/getScoreStatistics', // 项目得分统计(最终评分,投资指数)
+  getScoreStatisticsGroup: '/api/project/getScoreStatisticsGroup', // 项目指标平均分统计(图表用)
+  editScoreShow: '/api/project/editScoreShow', // 修改项目评分背书展示
+  exportProjectScoreByCompetition: 'api/competition/exportProjectScoreByCompetition' // 导出项目评分结果(下载)
 };

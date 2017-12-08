@@ -368,7 +368,6 @@
         });
       }, // 点击删除按钮
       filterChange (filters) {
-//      console.log(filters)
         this.loading = true;
         this.currentPage = 1;
         this.getFollow.page = 1;// 控制当前页码
@@ -377,7 +376,7 @@
           if (filters.order === 'ascending') filters.order = 'asc';// 升降序
           else filters.order = 'desc';
           this.getFollow[filters.prop] = filters.order;
-        } else {
+        } else if (filters.order === null || filters.prop === null) {} else {
           for (let key in filters) {
             this.getFollow[key] = filters[key][0];
           }
@@ -387,8 +386,6 @@
             delete this.getFollow[key];
           }
         }// 删除空的查询项
-//      console.log(this.getFollow);
-
         this.$http.post(this.URL.get_follow_records, this.getFollow)
           .then(res => {
             let data = res.data.data;

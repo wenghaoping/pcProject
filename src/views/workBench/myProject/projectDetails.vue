@@ -13,14 +13,12 @@
                 <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
               <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 4 ? false:true">
-                <!--:disabled="project.pro_name.length > 3 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
                 <span class="title" style="width: 86px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
               </el-tooltip>
               <el-tooltip class="item" effect="dark"  placement="top-start" :disabled="project.pro_company_name.length > 13? false:true">
-                <!--:disabled="project.pro_company_name.length > 10 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_company_name}}</div>
                 </div>
@@ -30,7 +28,6 @@
             </div>
             <div class="item height" style="margin-top: 14px;">
               <el-tooltip class="item" effect="dark"  placement="top-start" :disabled="project.pro_intro.length > 40 ? false:true">
-                <!--:disabled="project.pro_intro.length > 40 ? false:true"-->
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_intro}}</div>
                 </div>
@@ -64,16 +61,16 @@
             </span>
               <span id="bottom_width2" class="project" style="width: 292px;">
               <div class="item progress height" style="padding-left: 5px">
-                <div class="txt begin" :class="{ scheduleColor: project.pro_schedule.schedule_name=='项目线索'}">项目线索</div>
+                <div class="txt begin" :class="{ scheduleColor: project.pro_schedule.schedule_name == scheduleFirst}">{{scheduleFirst}}</div>
                 <div class="progress-bar">
                   <span class="circle circle-s"></span>
                   <span class="bar-bg1">&nbsp;</span>
-                  <span  class="txt state" v-if="project.pro_schedule.schedule_name=='项目线索'"></span>
-                  <span  class="txt state" v-else-if="project.pro_schedule.schedule_name=='佣金收讫'"></span>
+                  <span  class="txt state" v-if="project.pro_schedule.schedule_name == scheduleFirst"></span>
+                  <span  class="txt state" v-else-if="project.pro_schedule.schedule_name == scheduleLast"></span>
                   <span  class="txt state" v-else>{{project.pro_schedule.schedule_name}}</span>
                   <span class="circle circle-e">&nbsp;</span>
                 </div>
-                <div class="txt end" :class="{ scheduleColor: project.pro_schedule.schedule_name=='佣金收讫'}">佣金收讫</div>
+                <div class="txt end" :class="{ scheduleColor: project.pro_schedule.schedule_name == scheduleLast}">{{scheduleLast}}</div>
                 <div class="img img1"><img src="../../../assets/images/editTo.png"></div>
                  <div class="selectIn fr">
                     <el-select v-model="project.pro_schedule.schedule_id" placeholder="请选择" @change="selectChange2">
@@ -103,12 +100,6 @@
               <div slot="content">根据项目公司名称检索微天使数据库,快速了解企业的<br/>工商、核心团队、产品数据、历史融资、新闻谬论等全方面信息</div>
               <span class="icon icon2" style="cursor: pointer"><img src="../../../assets/images/why.png"/></span>
             </el-tooltip>
-            <!--<div class="qrTab fr"><img src="../../../assets/images/qrTab.png"></div>-->
-
-            <!--<span class="qrposition">-->
-            <!--<img :src="qrImg">-->
-            <!--<span class="sanjiao"><img src="../../../assets/images/sanjiao.png"/></span>-->
-            <!--</span>-->
             <div class="button-float fr" @click="goOnkey" style="cursor:pointer" >一键尽调</div>
 
           </div>
@@ -419,8 +410,8 @@
             <el-tab-pane label="上线后数据" name="onlinedata">
               <onlinedata :proid="project.project_id"></onlinedata>
             </el-tab-pane>
-            <el-tab-pane label="评分统计" name="scoreStatistics">
-              <score-statistics :proid="project.project_id"></score-statistics>
+            <el-tab-pane label="项目评价" name="scoreStatistics">
+              <score-statistics :proid="project.project_id" :scheduleid="project.pro_schedule.schedule_id"></score-statistics>
             </el-tab-pane>
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
@@ -708,7 +699,7 @@
           pro_intro: ''
         }, // 项目名称,ID
         followDisplay: false, // 添加意向投资人
-        show: 'onlinedata',
+        show: 'detail',
         searchName: '',
         form: {
           name: '',
@@ -940,6 +931,12 @@
     computed: {
       jindiaoTitle () {
         return '尽调项目：' + this.project.pro_intro;
+      },
+      scheduleFirst () {
+        return this.schedule[0].label;
+      },
+      scheduleLast () {
+        return this.schedule[this.schedule.length - 1].label;
       }
     },
     components: {
@@ -1076,6 +1073,8 @@
         if (tab.name === 'detail') { this.zgClick('查看项目详情'); }
         if (tab.name === 'flow') { this.zgClick('查看跟进详情'); }
         if (tab.name === 'files') { this.zgClick('查看文件管理'); }
+        if (tab.name === 'onlinedata') { this.zgClick('查看上线后数据'); }
+        if (tab.name === 'scoreStatistics') { this.zgClick('查看评分统计'); }
       },
       goBack () {
         if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});

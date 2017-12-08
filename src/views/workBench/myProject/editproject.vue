@@ -2228,11 +2228,6 @@
           cb(callback);
         }
       },
-      createStateFilter (queryString) {
-        return (state) => {
-          return (state.value.indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
       handleSelect (item) {
         this.companyTitle = item.company_name;
         this.companyid = item.address;

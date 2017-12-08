@@ -562,7 +562,8 @@
 //        console.log(e)
         this.tagShow = 0;
       },
-      /* 获取列表各种数据 */
+      // 获取列表各种数据
+      // 获取所有下拉框的数据
       getWxProjectCategory () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -572,7 +573,8 @@
           this.industry = this.$global.data.industry;// 设置轮次信息
           resolve(1);
         });
-      }, // 获取所有下拉框的数据
+      },
+      // 设置二级城市下拉列表
       area1Change (data) {
         this.project.pro_area_city = '';
         this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})
@@ -583,46 +585,33 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 设置二级城市下拉列表
-      getNumberFull (data, title1, title2) {
-        let check = true;
-        if (validata.getNull(data)) {
-
-        } else {
-          if (validata.checkNumber(data)) {
-            if (parseFloat(data) > 100) {
-              error(title1);
-              check = false;
-            }
-          } else {
-            error(title2);
-            check = false;
-          }
-        }
-        return check;
-      }, // 1大于100,2必须为数字
+      },
+      // 判断是不是数字
       checkNumber (theObj) {
         let reg = /^[0-9]+.?[0-9]*$/;
         if (reg.test(theObj)) {
           return true;
         }
         return false;
-      }, // 判断是不是数字
-      /* 商业计划书 */
+      },
+      // 商业计划书
       planChange (file, fileList) {
         this.planList = fileList;
         if (file.status === 'fail') this.planButton = true;
         else this.planButton = false;
       },
+      // 上传成功后添加字段
       planuploadsuccess (response, file, fileList) {
         success('上传成功');
         let data = response.data;
         this.addplan(data.file_title, data.pro_intro, data.pro_name, data.project_id, data.file_id);
-      }, // 上传成功后添加字段
+      },
+      // 上传失败
       planuploaderror (err, file, fileList) {
         console.log(err);
         error('上传失败,请联系管理员');
-      }, // 上传失败
+      },
+      // 删除文件
       planRemove (file, fileList) {
         const deleteAtUpload = this.URL.deleteAtUpload;
         if (fileList.length === 0) this.planButton = true;
@@ -638,7 +627,8 @@
             console.log(err);
             error('删除失败,请联系管理员');
           });
-      }, // 删除文件
+      },
+      // 添加上传文件时,保存返回的数据
       addplan (fileTitle, proIntro, proName, projectId, fileId) {
         let object = {};
         object.file_title = fileTitle;
@@ -647,11 +637,13 @@
         object.project_id = projectId;
         object.file_id = fileId;
         this.uploadShow = object;
-      }, // 添加上传文件时,保存返回的数据
+      },
+      // 点击下载
       planPreview (file) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + this.uploadShow.file_id;
         window.location.href = url;
-      }, // 点击下载
+      },
+      // 上传前的验证
       beforeUpload (file) {
         let filetypes = ['.doc', '.ppt', '.pdf', '.zip', '.rar', '.docx', '.pptx'];
         let name = file.name;
@@ -673,13 +665,15 @@
           error('暂不支持超过50m文件上传哦');
           return false;
         }
-      }, // 上传前的验证
+      },
 
       // 项目同步
+      // 项目详情弹窗关闭函数
       changeSyncProjectDetail (msg) {
         this.syncCreatProjectDetailDisplay = msg;
         this.dialogVisible = false;
-      }, // 项目详情弹窗关闭函数
+      },
+      // 开始同步信息(是否覆盖信息)
       syncCompanyData (msg) {
         this.loading = true;
         this.dialogVisible = false;
@@ -765,20 +759,20 @@
           }
         };
         this.loading = false;
-      }, // 开始同步信息(是否覆盖信息)
+      },
 
       goBack () { // 返回上一层
         this.zgClick('退出创建项目');
         this.$router.go(-1);
       },
 
-      //* 检查所有必填项目以及获取所有数据
+      // 检查所有必填项目以及获取所有数据
       submitForm (formName, checkName) {
         this.$refs[formName].validate((valid) => {
           this[checkName] = !valid;
         });
       },
-      /// *创建成功弹
+      // 创建成功弹
       open2 (title, main, confirm, cancel) {
         this.$confirm(main, title, {
           confirmButtonText: confirm,
@@ -806,7 +800,7 @@
         }
         return check;
       },
-      /// *全部保存按钮
+      // 全部保存按钮
       allSave () {
         var submit = () => {
           return new Promise((resolve, reject) => {
@@ -856,8 +850,7 @@
             }
           });
       },
-
-      /// *获取数据
+      // 获取数据
       loadData (arr) {
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
@@ -869,7 +862,7 @@
         }
         return newArr;
       },
-      /// *自动搜索,接口写这里面
+      // 自动搜索,接口写这里面
       querySearchAsync (queryString, cb) {
         if (queryString.length > 2) {
           this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
@@ -893,18 +886,12 @@
           cb(callback);
         }
       },
-      createStateFilter (queryString) {
-        return (state) => {
-          return (state.value.indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
       handleSelect (item) {
         this.companyTitle = item.company_name;
         this.companyid = item.address;
         this.project.pro_company_name = item.company_name;
       },
-
-//      添加投资亮点
+      // 添加投资亮点
       addgoodNess () {
         this.project.goodness.pro_goodness.push({
           goodness_desc: '',
@@ -913,14 +900,13 @@
           type: 'pro_goodness'
         });
       },
-//      删除投资亮点
+      // 删除投资亮点
       removegoodNess (item) {
         var index = this.project.goodness.pro_goodness.indexOf(item);
         if (index !== -1) {
           this.project.goodness.pro_goodness.splice(index, 1);
         }
       },
-
       // 添加市场概况
       addgoodNess1 () {
         this.project.goodness.pro_market_genera.push({
@@ -930,14 +916,13 @@
           type: 'pro_market_genera'
         });
       },
-//      删除市场概况
+      // 删除市场概况
       removegoodNess1 (item) {
         var index = this.project.goodness.pro_market_genera.indexOf(item);
         if (index !== -1) {
           this.project.goodness.pro_market_genera.splice(index, 1);
         }
       },
-
       // 添加产品概况pro_servicepro_business_model
       addgoodNess2 () {
         this.project.goodness.pro_service.push({
@@ -947,14 +932,13 @@
           type: 'pro_service'
         });
       },
-//      删除产品概况
+      // 删除产品概况
       removegoodNess2 (item) {
         var index = this.project.goodness.pro_service.indexOf(item);
         if (index !== -1) {
           this.project.goodness.pro_service.splice(index, 1);
         }
       },
-
       // 添加商业模式pro_business_model
       addgoodNess3 () {
         this.project.goodness.pro_business_model.push({
@@ -964,14 +948,14 @@
           type: 'pro_business_model'
         });
       },
-//      删除商业模式
+      // 删除商业模式
       removegoodNess3 (item) {
         var index = this.project.goodness.pro_business_model.indexOf(item);
         if (index !== -1) {
           this.project.goodness.pro_business_model.splice(index, 1);
         }
       },
-      //* 一键同步按钮
+      // 一键同步按钮
       syncOne () {
         this.companyTitle = this.project.pro_company_name;
         if (this.companyTitle === '') {
@@ -996,8 +980,7 @@
             });
         }
       },
-
-      //* 一键同步按钮
+      // 一键同步按钮
       sync () {
         this.dialogVisible = false;
         this.syncCreatProjectDetailDisplay = true;

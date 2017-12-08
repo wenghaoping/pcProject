@@ -24,29 +24,27 @@
         default: '300px'
       },
       indicator: {
-        type: Array,
-        default: []
+        type: Array
       },
       innerValue: {
-        type: Array,
-        default: []
+        type: Array
       }
     },
     data () {
       return {
         chart: null
-/*         indicator: [
+        /* indicator: [
           {name: '竞争力', max: 100},
           {name: '商业前景', max: 100},
           {name: '发展战略', max: 100},
           {name: '团队素质', max: 100},
           {name: '财务管理', max: 100}
-        ]
+        ],
         value: [50, 60, 32, 80, 60, 90] */
       };
     },
     mounted () {
-      this.initCharts();
+//      this.initCharts();
       this.chart = null;
     },
     computed: {},
@@ -59,10 +57,7 @@
       },
       setOptions () {
         this.chart.setOption({
-          tooltip: {},
-          legend: {
-            data: ['统计']
-          },
+//          tooltip: {},
           radar: {
 //            shape: 'circle',
             name: {
@@ -74,26 +69,39 @@
               }
             },
             indicator: this.indicator,
+            center: ['50%', '50%'],
+            radius: 60,
             splitArea: {
               show: true,
               areaStyle: {
                 color: ['white']  // 图表背景网格的颜色
               }
+            },
+            splitLine: {
+              lineStyle: {
+                width: 0.5 // 分隔线线宽
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                width: 0.5 // 坐标轴线宽
+              }
             }
           },
           series: [{
             type: 'radar',
+            symbol: 'none', // 拐角原点去处
             label: {
               normal: {
                 position: 'center',
                 textStyle: {
-                  fontSize: '12'
+                  fontSize: '14' // 拐点字的大小
                 }
               }
             },
             itemStyle: {
               normal: {
-                color: '#009eff', // 图表中各个图区域的边框线拐点颜色
+                color: '#8492A6', // 图表中各个图区域的边框线拐点颜色
                 lineStyle: {
                   color: '#E0E6ED' // 图表中各个图区域的边框线颜色
                 }
@@ -126,7 +134,11 @@
     },
     // 当dom一创建时
     created () {},
-    watch: {}
+    watch: {
+      innerValue: function (e) {
+        this.initCharts();
+      }
+    }
   };
 </script>
 
